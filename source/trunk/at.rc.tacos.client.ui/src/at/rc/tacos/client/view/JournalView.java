@@ -1,10 +1,7 @@
 package at.rc.tacos.client.view;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.Calendar;
 
-import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
@@ -14,7 +11,6 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -32,118 +28,115 @@ import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.part.ViewPart;
 
-import at.rc.tacos.client.Activator;
 import at.rc.tacos.client.controller.CreateBackTransportAction;
 import at.rc.tacos.client.controller.EditTransportAction;
 import at.rc.tacos.client.controller.JournalMoveToRunningTransportsAction;
 import at.rc.tacos.client.controller.MoveToOutstandingTransportsAction;
-import at.rc.tacos.client.modelManager.LockManager;
-import at.rc.tacos.client.modelManager.ModelFactory;
+import at.rc.tacos.client.net.NetWrapper;
+import at.rc.tacos.client.net.handler.LockHandler;
+import at.rc.tacos.client.net.handler.TransportHandler;
 import at.rc.tacos.client.providers.JournalViewContentProvider;
 import at.rc.tacos.client.providers.JournalViewLabelProvider;
 import at.rc.tacos.client.providers.TransportDateFilter;
 import at.rc.tacos.client.providers.TransportStateViewFilter;
-import at.rc.tacos.client.providers.TransportViewFilter;
-import at.rc.tacos.client.util.CustomColors;
+import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.client.view.sorterAndTooltip.JournalViewTooltip;
 import at.rc.tacos.client.view.sorterAndTooltip.TransportSorter;
 import at.rc.tacos.platform.iface.IProgramStatus;
+import at.rc.tacos.platform.model.Lock;
 import at.rc.tacos.platform.model.Transport;
+import at.rc.tacos.platform.net.Message;
+import at.rc.tacos.platform.net.listeners.DataChangeListener;
+import at.rc.tacos.platform.net.mina.MessageIoSession;
 
-public class JournalView extends ViewPart implements PropertyChangeListener, IProgramStatus
-{
+public class JournalView extends ViewPart implements DataChangeListener<Object> {
+
 	public static final String ID = "at.rc.tacos.client.view.journal_view";
 
-	//the toolkit to use
+	// the toolkit to use
 	private FormToolkit toolkit;
 	private Form form;
 	private TableViewer viewer;
 	private JournalViewTooltip tooltip;
 
-	//the actions for the context menu
+	// the actions for the context menu
 	private EditTransportAction editTransportAction;
 	private MoveToOutstandingTransportsAction moveToOutstandingTransportsAction;
 	private JournalMoveToRunningTransportsAction moveToRunningTransportsAction;
 	private CreateBackTransportAction createBackTransportAction;
 
-	//the currently filtered date
-	private Calendar filteredDate = Calendar.getInstance();
-	
-	//the lock manager
-	private LockManager lockManager = ModelFactory.getInstance().getLockManager();
+	// the model handlers
+	private LockHandler lockHandler = (LockHandler) NetWrapper.getHandler(Lock.class);
+	private TransportHandler transportHandler = (TransportHandler) NetWrapper.getHandler(Transport.class);
 
 	/**
-	 * Constructs a new journal view and adds listeners 
+	 * Constructs a new journal view and adds listeners
 	 */
-	public JournalView()
-	{
-		ModelFactory.getInstance().getTransportManager().addPropertyChangeListener(this);
-		ModelFactory.getInstance().getLockManager().addPropertyChangeListener(this);
+	public JournalView() {
+		NetWrapper.registerListener(this, Transport.class);
+		NetWrapper.registerListener(this, Lock.class);
 	}
 
 	/**
-	 * Cleanup the view
+	 * Cleanup the view and remove the listeners
 	 */
 	@Override
-	public void dispose() 
-	{
-		ModelFactory.getInstance().getTransportManager().removePropertyChangeListener(this);
-		ModelFactory.getInstance().getLockManager().removePropertyChangeListener(this);
+	public void dispose() {
+		NetWrapper.removeListener(this, Transport.class);
+		NetWrapper.removeListener(this, Lock.class);
+		super.dispose();
 	}
 
 	/**
 	 * Callback method to create the control and initialize them.
-	 * @param parent the parent composite to add
+	 * 
+	 * @param parent
+	 *            the parent composite to add
 	 */
 	@Override
-	public void createPartControl(final Composite parent) 
-	{
+	public void createPartControl(final Composite parent) {
 		// Create the scrolled parent component
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
 		form = toolkit.createForm(parent);
 		toolkit.decorateFormHeading(form);
 		form.getBody().setLayout(new FillLayout());
-		
+
 		final Composite composite = form.getBody();
-		
-		viewer = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
+
+		viewer = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
 		viewer.setContentProvider(new JournalViewContentProvider());
 		viewer.setLabelProvider(new JournalViewLabelProvider());
-		viewer.setInput(ModelFactory.getInstance().getTransportManager());
+		viewer.setInput(transportHandler.toArray());
 		viewer.getTable().setLinesVisible(true);
-		
-		//set the tooltip
+
+		// set the tooltip
 		tooltip = new JournalViewTooltip(viewer.getControl());
 
-		//show the tooltip when the selection has changed
-		viewer.addSelectionChangedListener(new ISelectionChangedListener() 
-		{
-			public void selectionChanged(SelectionChangedEvent event) 
-			{
+		// show the tooltip when the selection has changed
+		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
+
+			public void selectionChanged(SelectionChangedEvent event) {
 				TableItem[] selection = viewer.getTable().getSelection();
-				if (selection != null && selection.length > 0) 
-				{
+				if (selection != null && selection.length > 0) {
 					Rectangle bounds = selection[0].getBounds();
 					tooltip.show(new Point(bounds.x, bounds.y));
 				}
 			}
-		});  
-		
-		viewer.getTable().addMouseListener(new MouseAdapter() 
-		{
-			public void mouseDown(MouseEvent e) 
-			{
-				if( viewer.getTable().getItem(new Point(e.x,e.y))==null ) 
-				{
+		});
+
+		viewer.getTable().addMouseListener(new MouseAdapter() {
+
+			public void mouseDown(MouseEvent e) {
+				if (viewer.getTable().getItem(new Point(e.x, e.y)) == null) {
 					viewer.setSelection(new StructuredSelection());
 				}
 			}
 		});
-		
-		//sort the table by default
-		viewer.setSorter(new TransportSorter(TransportSorter.TRANSPORT_FROM_SORTER,SWT.DOWN));
 
-		//create the table for the transports
+		// sort the table by default
+		viewer.setSorter(new TransportSorter(TransportSorter.TRANSPORT_FROM_SORTER, SWT.DOWN));
+
+		// create the table for the transports
 		final Table table = viewer.getTable();
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
@@ -165,7 +158,8 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		columnTNrJournal.setText("TNr");
 
 		final TableColumn columnPrioritaetJournal = new TableColumn(table, SWT.NONE);
-		columnPrioritaetJournal.setToolTipText("1 (NEF), 2 (Transport), 3 (Terminfahrt), 4 (Rücktransport), 5 (Heimtransport), 6 (Sonstiges), 7 (NEF extern)");
+		columnPrioritaetJournal
+				.setToolTipText("1 (NEF), 2 (Transport), 3 (Terminfahrt), 4 (Rücktransport), 5 (Heimtransport), 6 (Sonstiges), 7 (NEF extern)");
 		columnPrioritaetJournal.setWidth(20);
 		columnPrioritaetJournal.setText("Pr");
 
@@ -238,72 +232,69 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		columnSaniIIJournal.setWidth(120);
 		columnSaniIIJournal.setText("Sanitäter II");
 
-		//make the columns sort able
-		Listener sortListener = new Listener() 
-		{
-			public void handleEvent(Event e) 
-			{
+		// make the columns sort able
+		Listener sortListener = new Listener() {
+
+			public void handleEvent(Event e) {
 				// determine new sort column and direction
 				TableColumn sortColumn = viewer.getTable().getSortColumn();
 				TableColumn currentColumn = (TableColumn) e.widget;
 				int dir = viewer.getTable().getSortDirection();
-				//revert the sort order if the column is the same
-				if (sortColumn == currentColumn) 
-				{
-					if(dir == SWT.UP)
+				// revert the sort order if the column is the same
+				if (sortColumn == currentColumn) {
+					if (dir == SWT.UP)
 						dir = SWT.DOWN;
 					else
 						dir = SWT.UP;
-				} 
-				else 
-				{
+				}
+				else {
 					viewer.getTable().setSortColumn(currentColumn);
 					dir = SWT.UP;
 				}
 				// sort the data based on column and direction
 				String sortIdentifier = null;
-				if (currentColumn == columnTNrJournal) 
+				if (currentColumn == columnTNrJournal)
 					sortIdentifier = TransportSorter.TNR_SORTER;
-				if (currentColumn == columnPrioritaetJournal) 
+				if (currentColumn == columnPrioritaetJournal)
 					sortIdentifier = TransportSorter.PRIORITY_SORTER;
-				if (currentColumn == columnTransportVonJournal) 
+				if (currentColumn == columnTransportVonJournal)
 					sortIdentifier = TransportSorter.TRANSPORT_FROM_SORTER;
-				if (currentColumn == columnPatientJournal) 
+				if (currentColumn == columnPatientJournal)
 					sortIdentifier = TransportSorter.PATIENT_SORTER;
 				if (currentColumn == columnTransportNachJournal)
 					sortIdentifier = TransportSorter.TRANSPORT_TO_SORTER;
 				if (currentColumn == columnErkrVerlJournal)
 					sortIdentifier = TransportSorter.KIND_OF_ILLNESS_SORTER;
-				if(currentColumn == columnAEJournal)
+				if (currentColumn == columnAEJournal)
 					sortIdentifier = TransportSorter.AE_SORTER;
-				if(currentColumn == columnS1Journal)
+				if (currentColumn == columnS1Journal)
 					sortIdentifier = TransportSorter.S1_SORTER;
-				if(currentColumn == columnS2Journal)
+				if (currentColumn == columnS2Journal)
 					sortIdentifier = TransportSorter.S2_SORTER;
-				if(currentColumn == columnS3Journal)
+				if (currentColumn == columnS3Journal)
 					sortIdentifier = TransportSorter.S3_SORTER;
-				if(currentColumn == columnS4Journal)
+				if (currentColumn == columnS4Journal)
 					sortIdentifier = TransportSorter.S4_SORTER;
-				if(currentColumn == columnS5Journal)
+				if (currentColumn == columnS5Journal)
 					sortIdentifier = TransportSorter.S5_SORTER;
-				if(currentColumn == columnS6Journal)
+				if (currentColumn == columnS6Journal)
 					sortIdentifier = TransportSorter.S6_SORTER;
-				if(currentColumn == columnFzgJournal)
+				if (currentColumn == columnFzgJournal)
 					sortIdentifier = TransportSorter.VEHICLE_SORTER;
-				if(currentColumn == columnFahrerJournal)
+				if (currentColumn == columnFahrerJournal)
 					sortIdentifier = TransportSorter.DRIVER_SORTER;
-				if(currentColumn == columnSaniIJournal)
+				if (currentColumn == columnSaniIJournal)
 					sortIdentifier = TransportSorter.PARAMEDIC_I_SORTER;
-				if(currentColumn == columnSaniIIJournal)
+				if (currentColumn == columnSaniIIJournal)
 					sortIdentifier = TransportSorter.PARAMEDIC_II_SORTER;
-			
-				//apply the filter
+
+				// apply the filter
 				viewer.getTable().setSortDirection(dir);
-				viewer.setSorter(new TransportSorter(sortIdentifier,dir));
+				viewer.setSorter(new TransportSorter(sortIdentifier, dir));
 			}
 		};
 
-		//attach the listener
+		// attach the listener
 		columnTNrJournal.addListener(SWT.Selection, sortListener);
 		columnPrioritaetJournal.addListener(SWT.Selection, sortListener);
 		columnTransportVonJournal.addListener(SWT.Selection, sortListener);
@@ -320,13 +311,13 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 		columnFzgJournal.addListener(SWT.Selection, sortListener);
 		columnSaniIJournal.addListener(SWT.Selection, sortListener);
 		columnSaniIIJournal.addListener(SWT.Selection, sortListener);
-	
-		//create the actions
+
+		// create the actions
 		makeActions();
 		hookContextMenu();
 
-		//show only transport with the status journal
-		viewer.addFilter(new TransportStateViewFilter(PROGRAM_STATUS_JOURNAL));
+		// show only transport with the status journal
+		viewer.addFilter(new TransportStateViewFilter(IProgramStatus.PROGRAM_STATUS_JOURNAL));
 		viewer.addFilter(new TransportDateFilter(Calendar.getInstance()));
 		viewer.refresh();
 	}
@@ -334,8 +325,7 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 	/**
 	 * Creates the needed actions
 	 */
-	private void makeActions()
-	{		
+	private void makeActions() {
 		editTransportAction = new EditTransportAction(viewer, "journal");
 		moveToOutstandingTransportsAction = new MoveToOutstandingTransportsAction(viewer);
 		moveToRunningTransportsAction = new JournalMoveToRunningTransportsAction(viewer);
@@ -343,13 +333,13 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 	}
 
 	/**
-	 * Creates the context menue 
+	 * Creates the context menue
 	 */
-	private void hookContextMenu() 
-	{
+	private void hookContextMenu() {
 		MenuManager menuManager = new MenuManager("#JournalPopupMenu");
 		menuManager.setRemoveAllWhenShown(true);
 		menuManager.addMenuListener(new IMenuListener() {
+
 			public void menuAboutToShow(IMenuManager manager) {
 				fillContextMenu(manager);
 			}
@@ -362,33 +352,30 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 	/**
 	 * Fills the context menu with the actions
 	 */
-	private void fillContextMenu(IMenuManager manager)
-	{
-		//get the selected object
+	private void fillContextMenu(IMenuManager manager) {
+		// get the selected object
 		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
 
-		//cast to a Transport
-		Transport transport = (Transport)firstSelectedObject;
+		// cast to a Transport
+		Transport transport = (Transport) firstSelectedObject;
 
-		if(transport == null)
+		if (transport == null)
 			return;
 
-		//add the actions
+		// add the actions
 		manager.add(editTransportAction);
 		manager.add(new Separator());
 		manager.add(moveToOutstandingTransportsAction);
 		manager.add(moveToRunningTransportsAction);
 		manager.add(new Separator());
 		manager.add(createBackTransportAction);
-		
-		//disable actions if the transport is locked
-		if(lockManager.containsLock(Transport.ID, transport.getTransportId()))
-		{
+
+		// disable actions if the transport is locked
+		if (lockHandler.containsLock(transport.getTransportId(), Transport.class)) {
 			moveToOutstandingTransportsAction.setEnabled(false);
 			moveToRunningTransportsAction.setEnabled(false);
 		}
-		else
-		{
+		else {
 			moveToOutstandingTransportsAction.setEnabled(true);
 			moveToRunningTransportsAction.setEnabled(true);
 		}
@@ -398,85 +385,34 @@ public class JournalView extends ViewPart implements PropertyChangeListener, IPr
 	 * Passing the focus request to the viewer's control.
 	 */
 	@Override
-	public void setFocus()  { }
-
-	public void propertyChange(PropertyChangeEvent evt) 
-	{
-		//add the new element
-		if ("TRANSPORT_ADD".equals(evt.getPropertyName()))
-		{
-			Transport added = (Transport)evt.getNewValue();
-			//assert valid
-			if(added == null)
-			{
-				Activator.getDefault().log("JournalView - property change event for add contains no valid transport", IStatus.ERROR);
-				return;
-			}
-			//redraw this element
-			viewer.add(added);
-			viewer.refresh();
-		}
-		//update the new element
-		if("TRANSPORT_UPDATE".equalsIgnoreCase(evt.getPropertyName()))
-		{
-			Transport updated = (Transport)evt.getNewValue();
-			//assert valid
-			if(updated == null)
-			{
-				Activator.getDefault().log("JournalView - property change event for update contains no valid transport", IStatus.ERROR);
-				return;
-			}
-			//redraw this element
-			viewer.refresh(updated, true);
-			viewer.refresh();
-		}
-		//remove the removed element from the view
-		if("TRANSPORT_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
-		{
-			viewer.refresh();
-			Transport removed = (Transport)evt.getOldValue();
-			//assert valid
-			if(removed == null)
-			{
-				Activator.getDefault().log("JournalView - property change event for remove contains no valid transport", IStatus.ERROR);
-				return;
-			}
-			//remove this element form the table
-			viewer.remove(removed);
-			viewer.refresh();
-		}	
-		//listen to changes of the date to set up the filter
-		if("TRANSPORT_DATE_CHANGED".equalsIgnoreCase(evt.getPropertyName()))
-		{
-			//get the new value
-			this.filteredDate = (Calendar)evt.getNewValue();
-			viewer.resetFilters();
-			viewer.addFilter(new TransportStateViewFilter(PROGRAM_STATUS_JOURNAL));
-			viewer.addFilter(new TransportDateFilter(filteredDate));
-			viewer.refresh();
-		}
-		//listen to filter events
-		if("TRANSPORT_FILTER_CHANGED".equalsIgnoreCase(evt.getPropertyName()))
-		{
-			//get the new filter
-			TransportViewFilter searchFilter = (TransportViewFilter)evt.getNewValue();
-			//remove all filters and apply the new
-			for(ViewerFilter filter:viewer.getFilters())
-			{
-				if(!(filter instanceof TransportViewFilter))
-					continue;
-				viewer.removeFilter(filter);	
-			}
-			if(searchFilter != null)
-			{
-				viewer.addFilter(searchFilter);
-			}	
-		}
-		
-		//listen to lock changes
-		if("LOCK_ADD".equalsIgnoreCase(evt.getPropertyName()) || "LOCK_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
-		{
-			viewer.refresh();
-		}
+	public void setFocus() {
 	}
+
+	@Override
+	public void dataChanged(Message<Object> message, MessageIoSession messageIoSession) {
+		Object object = message.getFirstElement();
+		if (object instanceof Transport) {
+			viewer.refresh();
+			return;
+		}
+		if (object instanceof Lock) {
+			viewer.refresh();
+		}
+		// TODO: TRANSPORT_DATE_CHANGED
+		/**
+		 * viewer.resetFilters(); viewer.addFilter(new
+		 * TransportStateViewFilter(PROGRAM_STATUS_JOURNAL));
+		 * viewer.addFilter(new TransportDateFilter(filteredDate));
+		 * viewer.refresh();
+		 */
+		// TODO: TRANSPORT_FILTER_CHANGED
+		/**
+		 * TransportViewFilter searchFilter = (TransportViewFilter)
+		 * evt.getNewValue(); // remove all filters and apply the new for
+		 * (ViewerFilter filter : viewer.getFilters()) { if (!(filter instanceof
+		 * TransportViewFilter)) continue; viewer.removeFilter(filter); } if
+		 * (searchFilter != null) { viewer.addFilter(searchFilter); }
+		 */
+	}
+
 }

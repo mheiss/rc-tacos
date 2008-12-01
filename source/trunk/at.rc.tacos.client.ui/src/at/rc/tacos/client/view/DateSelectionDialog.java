@@ -1,9 +1,8 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2007 Mylyn project committers and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2004, 2007 Mylyn project committers and others. All rights
+ * reserved. This program and the accompanying materials are made available
+ * under the terms of the Eclipse Public License v1.0 which accompanies this
+ * distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
 package at.rc.tacos.client.view;
@@ -24,14 +23,15 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import at.rc.tacos.client.view.DatePickerPanel.DateSelection;
 
 /**
- * The date selection dialog from the clipse mylyn project.
- * (c) is by the eclipse mylyn project
+ * The date selection dialog from the clipse mylyn project. (c) is by the
+ * eclipse mylyn project
+ * 
  * @author Ken Sueda
  * @author Mik Kersten
  * @author Rob Elves
  */
-public class DateSelectionDialog extends Dialog 
-{
+public class DateSelectionDialog extends Dialog {
+
 	private Date reminderDate = null;
 
 	private String title = "Date Selection";

@@ -30,11 +30,8 @@ import org.eclipse.ui.forms.events.HyperlinkEvent;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ImageHyperlink;
 
-import at.rc.tacos.client.ImageFactory;
-import at.rc.tacos.client.modelManager.LockManager;
-import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.modelManager.TransportManager;
-import at.rc.tacos.client.net.NetWrapper;
+import at.rc.tacos.client.net.NetActivator;
 import at.rc.tacos.client.providers.MobilePhoneContentProvider;
 import at.rc.tacos.client.providers.MobilePhoneLabelProvider;
 import at.rc.tacos.client.providers.StaffMemberVehicleContentProvider;
@@ -43,7 +40,10 @@ import at.rc.tacos.client.providers.StationContentProvider;
 import at.rc.tacos.client.providers.StationLabelProvider;
 import at.rc.tacos.client.providers.VehicleContentProvider;
 import at.rc.tacos.client.providers.VehicleLabelProvider;
-import at.rc.tacos.client.util.CustomColors;
+import at.rc.tacos.client.ui.ImageFactory;
+import at.rc.tacos.client.ui.modelManager.LockManager;
+import at.rc.tacos.client.ui.modelManager.ModelFactory;
+import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.platform.model.Location;
 import at.rc.tacos.platform.model.MobilePhoneDetail;
 import at.rc.tacos.platform.model.StaffMember;
@@ -243,7 +243,7 @@ public class VehicleForm extends TitleAreaDialog
 		if(!readyButton.getSelection())
 			vehicleDetail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
 		//Send the update message
-		NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, vehicleDetail);
+		NetActivator.getDefault().sendUpdateMessage(VehicleDetail.ID, vehicleDetail);
 		getShell().close();
 		
 		//overwrite the vehicle details of all outstanding transports
@@ -251,7 +251,7 @@ public class VehicleForm extends TitleAreaDialog
 		for(Transport transport: transportList)
 		{
 			transport.setVehicleDetail(vehicleDetail);
-			NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
+			NetActivator.getDefault().sendUpdateMessage(Transport.ID, transport);
 		}
 		
 		LockManager.removeLock(VehicleDetail.ID, vehicleDetail.getVehicleName());

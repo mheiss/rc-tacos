@@ -52,16 +52,11 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 
-import at.rc.tacos.client.ImageFactory;
 import at.rc.tacos.client.controller.AssignCarAction;
 import at.rc.tacos.client.controller.DuplicatePriorityATransportAction;
 import at.rc.tacos.client.controller.RemoveTransportFromMultiTransportList;
 import at.rc.tacos.client.jobs.FilterAddressJob;
-import at.rc.tacos.client.modelManager.DiseaseManager;
-import at.rc.tacos.client.modelManager.LockManager;
-import at.rc.tacos.client.modelManager.ModelFactory;
-import at.rc.tacos.client.modelManager.SessionManager;
-import at.rc.tacos.client.net.NetWrapper;
+import at.rc.tacos.client.net.NetActivator;
 import at.rc.tacos.client.providers.AssignVehicleContentProvider;
 import at.rc.tacos.client.providers.DiseaseContentProvider;
 import at.rc.tacos.client.providers.DiseaseLabelProvider;
@@ -72,8 +67,13 @@ import at.rc.tacos.client.providers.StaffMemberLabelProvider;
 import at.rc.tacos.client.providers.StationContentProvider;
 import at.rc.tacos.client.providers.StationLabelProvider;
 import at.rc.tacos.client.providers.VehicleAssignLabelProvider;
-import at.rc.tacos.client.util.CustomColors;
-import at.rc.tacos.client.util.Util;
+import at.rc.tacos.client.ui.ImageFactory;
+import at.rc.tacos.client.ui.modelManager.DiseaseManager;
+import at.rc.tacos.client.ui.modelManager.LockManager;
+import at.rc.tacos.client.ui.modelManager.ModelFactory;
+import at.rc.tacos.client.ui.modelManager.SessionManager;
+import at.rc.tacos.client.ui.utils.CustomColors;
+import at.rc.tacos.client.ui.utils.Util;
 import at.rc.tacos.client.view.sorterAndTooltip.TransportSorter;
 import at.rc.tacos.client.view.sorterAndTooltip.VehicleSorter;
 import at.rc.tacos.platform.iface.IDirectness;
@@ -1041,7 +1041,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 					person.setStreetname(textFromStreet.getText());
 					person.setKindOfTransport(combokindOfTransport.getText());					
 
-					NetWrapper.getDefault().sendAddMessage(SickPerson.ID, person);
+					NetActivator.getDefault().sendAddMessage(SickPerson.ID, person);
 				}
 				else
 				{
@@ -2953,7 +2953,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 				}
 
 				//create and run the add action
-				NetWrapper.getDefault().sendAddMessage(Transport.ID, transport);
+				NetActivator.getDefault().sendAddMessage(Transport.ID, transport);
 
 				if(transport.getTransportPriority().equalsIgnoreCase("A"))
 				{
@@ -2969,7 +2969,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 					objectList = multiTransportProvider.getObjectList();
 					for(Transport transport : objectList)
 					{
-						NetWrapper.getDefault().sendAddMessage(Transport.ID, transport);
+						NetActivator.getDefault().sendAddMessage(Transport.ID, transport);
 					}
 				}
 			}       
@@ -3088,7 +3088,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 				duplicateAction.run();
 			}
 
-			NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
+			NetActivator.getDefault().sendUpdateMessage(Transport.ID, transport);
 		}
 		if(!mehrfachtransport) 
 			getShell().close();

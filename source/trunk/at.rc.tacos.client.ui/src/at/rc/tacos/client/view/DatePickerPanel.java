@@ -1,9 +1,8 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2007 Mylyn project committers and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2004, 2007 Mylyn project committers and others. All rights
+ * reserved. This program and the accompanying materials are made available
+ * under the terms of the Eclipse Public License v1.0 which accompanies this
+ * distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
 package at.rc.tacos.client.view;
@@ -32,6 +31,7 @@ import org.eclipse.swt.widgets.DateTime;
 
 /**
  * The DatePickerPanel from the eclipse mylin projekt.
+ * 
  * @author Bahadir Yagan
  * @author Mik Kersten
  * @author Rob Elves
@@ -53,7 +53,7 @@ public class DatePickerPanel extends Composite implements KeyListener, ISelectio
 		this.date = initialDate;
 		initialize();
 		setDate(date);
-		//this.setBackground()
+		// this.setBackground()
 	}
 
 	private void initialize() {
@@ -85,7 +85,6 @@ public class DatePickerPanel extends Composite implements KeyListener, ISelectio
 
 	/**
 	 * This method initializes the month combo
-	 * 
 	 */
 	private void createTimeList(Composite composite) {
 
@@ -95,18 +94,17 @@ public class DatePickerPanel extends Composite implements KeyListener, ISelectio
 		tempCalendar.set(Calendar.SECOND, 0);
 		String[] times = new String[48];
 		int pos = 0;
-		for (int x = 0; x < 24; x++) 
-		{
-			//hour
+		for (int x = 0; x < 24; x++) {
+			// hour
 			tempCalendar.set(Calendar.MINUTE, 0);
 			tempCalendar.set(Calendar.HOUR_OF_DAY, x);
 			times[pos] = dateFormat.format(tempCalendar.getTime());
-			//count up the position for the minute
+			// count up the position for the minute
 			pos++;
-			//minute
+			// minute
 			tempCalendar.set(Calendar.MINUTE, 30);
 			times[pos] = dateFormat.format(tempCalendar.getTime());
-			//count up the position for the hour
+			// count up the position for the hour
 			pos++;
 		}
 
@@ -119,17 +117,14 @@ public class DatePickerPanel extends Composite implements KeyListener, ISelectio
 
 		listViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
-			public void selectionChanged(SelectionChangedEvent event) 
-			{
-				//even index -> just hour
-				if(timeList.getSelectionIndex() %2 == 0)
-				{
-					date.set(Calendar.HOUR_OF_DAY,timeList.getSelectionIndex()/2);
+			public void selectionChanged(SelectionChangedEvent event) {
+				// even index -> just hour
+				if (timeList.getSelectionIndex() % 2 == 0) {
+					date.set(Calendar.HOUR_OF_DAY, timeList.getSelectionIndex() / 2);
 					date.set(Calendar.MINUTE, 0);
 				}
-				else
-				{
-					date.set(Calendar.HOUR_OF_DAY,timeList.getSelectionIndex()/2);
+				else {
+					date.set(Calendar.HOUR_OF_DAY, timeList.getSelectionIndex() / 2);
 					date.set(Calendar.MINUTE, 30);
 				}
 				setSelection(new DateSelection(date));
@@ -138,14 +133,13 @@ public class DatePickerPanel extends Composite implements KeyListener, ISelectio
 		});
 
 		GridDataFactory.fillDefaults().hint(SWT.DEFAULT, 150).grab(false, true).applyTo(timeList);
-		if (date != null) 
-		{
-			//if we have a minute -> select it
-			if(date.get(Calendar.MINUTE) > 0)
-				listViewer.setSelection(new StructuredSelection(times[date.get(Calendar.HOUR_OF_DAY)+1]), true);
+		if (date != null) {
+			// if we have a minute -> select it
+			if (date.get(Calendar.MINUTE) > 0)
+				listViewer.setSelection(new StructuredSelection(times[date.get(Calendar.HOUR_OF_DAY) + 1]), true);
 			else
 				listViewer.setSelection(new StructuredSelection(times[date.get(Calendar.HOUR_OF_DAY)]), true);
-		} 
+		}
 		else {
 			listViewer.setSelection(new StructuredSelection(times[8]), true);
 		}
@@ -162,6 +156,7 @@ public class DatePickerPanel extends Composite implements KeyListener, ISelectio
 	public void keyPressed(KeyEvent e) {
 		if (e.keyCode == SWT.ESC) {
 			SelectionChangedEvent changeEvent = new SelectionChangedEvent(this, new ISelection() {
+
 				public boolean isEmpty() {
 					return true;
 				}
@@ -196,6 +191,7 @@ public class DatePickerPanel extends Composite implements KeyListener, ISelectio
 	}
 
 	public class DateSelection implements ISelection {
+
 		private Calendar date;
 
 		public DateSelection(Calendar calendar) {
