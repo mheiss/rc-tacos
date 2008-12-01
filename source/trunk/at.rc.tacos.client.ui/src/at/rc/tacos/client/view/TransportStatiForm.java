@@ -17,11 +17,11 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 
-import at.rc.tacos.client.ImageFactory;
-import at.rc.tacos.client.modelManager.LockManager;
-import at.rc.tacos.client.net.NetWrapper;
-import at.rc.tacos.client.util.TimeValidator;
-import at.rc.tacos.client.util.TransformTimeToLong;
+import at.rc.tacos.client.net.NetActivator;
+import at.rc.tacos.client.ui.ImageFactory;
+import at.rc.tacos.client.ui.modelManager.LockManager;
+import at.rc.tacos.client.ui.utils.TimeValidator;
+import at.rc.tacos.client.ui.utils.TransformTimeToLong;
 import at.rc.tacos.platform.iface.ITransportStatus;
 import at.rc.tacos.platform.model.Transport;
 
@@ -212,7 +212,7 @@ public class TransportStatiForm implements ITransportStatus
             	else
             		transport.removeStatus(TRANSPORT_STATUS_AT_DESTINATION);
         
-            	NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
+            	NetActivator.getDefault().sendUpdateMessage(Transport.ID, transport);
             	    
             	LockManager.removeLock(Transport.ID, transport.getTransportId());
                 shell.close();

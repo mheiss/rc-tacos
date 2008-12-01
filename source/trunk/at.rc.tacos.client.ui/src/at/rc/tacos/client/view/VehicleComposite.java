@@ -9,8 +9,8 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-import at.rc.tacos.client.modelManager.ModelFactory;
-import at.rc.tacos.client.util.CustomColors;
+import at.rc.tacos.client.ui.modelManager.ModelFactory;
+import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.platform.model.VehicleDetail;
 
 /**

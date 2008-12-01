@@ -17,10 +17,10 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.ViewPart;
 
-import at.rc.tacos.client.Activator;
 import at.rc.tacos.client.controller.RefreshViewAction;
-import at.rc.tacos.client.modelManager.ModelFactory;
-import at.rc.tacos.client.util.CustomColors;
+import at.rc.tacos.client.ui.Activator;
+import at.rc.tacos.client.ui.modelManager.ModelFactory;
+import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.platform.model.Location;
 import at.rc.tacos.platform.model.VehicleDetail;
 

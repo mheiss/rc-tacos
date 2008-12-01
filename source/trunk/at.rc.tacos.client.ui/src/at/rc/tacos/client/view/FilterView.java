@@ -23,67 +23,63 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.ViewPart;
 
-import at.rc.tacos.client.ImageFactory;
 import at.rc.tacos.client.controller.SelectTransportDateAction;
-import at.rc.tacos.client.modelManager.ModelFactory;
-import at.rc.tacos.client.modelManager.TransportManager;
 import at.rc.tacos.client.providers.TransportViewFilter;
-import at.rc.tacos.client.util.CustomColors;
-
+import at.rc.tacos.client.ui.Activator;
+import at.rc.tacos.client.ui.utils.CustomColors;
 
 /**
  * A view showing custom informations
+ * 
  * @author b.thek
  */
-public class FilterView extends ViewPart
-{
-	public static final String ID = "at.rc.tacos.client.view.filter"; 
+public class FilterView extends ViewPart {
 
-	//the components
+	public static final String ID = "at.rc.tacos.client.view.filter";
+
+	// the components
 	private CDateTime dateTime;
 	private FormToolkit toolkit;
 	private ScrolledForm form;
 	private Composite calendar;
 	private Composite filter;
 
-	//text fields for the filter
-	private Text from,patient,to,location, transportNumber, priority, vehicle, disease;
-	//to apply the filter
-	private ImageHyperlink applyFilter,resetFilter;
+	// text fields for the filter
+	private Text from, patient, to, location, transportNumber, priority, vehicle, disease;
+	// to apply the filter
+	private ImageHyperlink applyFilter, resetFilter;
 
-	//labels for the view
+	// labels for the view
 	public final static String LABEL_NOTES = "Filterfunktion";
 	public final static String LABEL_CALENDAR = "Kalender";
 	public final static String LABEL_INFO = "Informationen";
 
-
 	/**
 	 * Default class constructor
 	 */
-	public FilterView()
-	{
+	public FilterView() {
 	}
 
 	/**
 	 * Cleanup the view
 	 */
 	@Override
-	public void dispose() 
-	{
+	public void dispose() {
 		super.dispose();
 	}
 
 	/**
 	 * Creates the view.
-	 * @param parent the parent frame to insert the new content
+	 * 
+	 * @param parent
+	 *            the parent frame to insert the new content
 	 */
 	@Override
-	public void createPartControl(Composite parent) 
-	{
-		//the scrolled form
+	public void createPartControl(Composite parent) {
+		// the scrolled form
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
 		form = toolkit.createScrolledForm(parent);
-		form.setText("Filterfunktionen"); 
+		form.setText("Filterfunktionen");
 		toolkit.decorateFormHeading(form.getForm());
 		GridLayout layout = new GridLayout();
 		layout.horizontalSpacing = 0;
@@ -96,11 +92,11 @@ public class FilterView extends ViewPart
 		data.grabExcessHorizontalSpace = false;
 		form.getBody().setLayoutData(data);
 
-		//add the composites
+		// add the composites
 		createCalendarSection(form.getBody());
 		createFilterSection(form.getBody());
 
-		//reflow
+		// reflow
 		form.reflow(true);
 		form.update();
 	}
@@ -109,20 +105,20 @@ public class FilterView extends ViewPart
 	 * Passing the focus request to the viewer's control.
 	 */
 	@Override
-	public void setFocus() 
-	{ 
+	public void setFocus() {
 		form.setFocus();
 	}
 
-
 	/**
 	 * Helper method to create a composite
-	 * @param parent the parent control
-	 * @param col the number of cols
+	 * 
+	 * @param parent
+	 *            the parent control
+	 * @param col
+	 *            the number of cols
 	 * @return the returned composite
 	 */
-	public Composite makeComposite(Composite parent, int col) 
-	{
+	public Composite makeComposite(Composite parent, int col) {
 		Composite nameValueComp = toolkit.createComposite(parent);
 		GridLayout layout = new GridLayout(col, false);
 		layout.marginHeight = 3;
@@ -133,31 +129,31 @@ public class FilterView extends ViewPart
 
 	/**
 	 * Creates the calendar section of the view.
-	 * @param parent the parent view to integrate
+	 * 
+	 * @param parent
+	 *            the parent view to integrate
 	 */
-	private void createCalendarSection(Composite parent)
-	{
-		//create the section
-		calendar = createSection(parent,"Datum der Transporte");
+	private void createCalendarSection(Composite parent) {
+		// create the section
+		calendar = createSection(parent, "Datum der Transporte");
 
-		//Calendar field
-		dateTime = new CDateTime(calendar,CDT.SIMPLE);
+		// Calendar field
+		dateTime = new CDateTime(calendar, CDT.SIMPLE);
 		dateTime.setLocale(Locale.GERMAN);
-        dateTime.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		dateTime.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		dateTime.setToolTipText("Datum der anzuzeigenden Transporte auswählen");
-		dateTime.addSelectionListener (new SelectionAdapter () 
-		{
+		dateTime.addSelectionListener(new SelectionAdapter() {
+
 			@Override
-        	public void widgetDefaultSelected(SelectionEvent e) {
-        		widgetSelected(e);
-        	}
-			
+			public void widgetDefaultSelected(SelectionEvent e) {
+				widgetSelected(e);
+			}
+
 			@Override
-			public void widgetSelected (SelectionEvent e) 
-			{
+			public void widgetSelected(SelectionEvent e) {
 				Calendar cal = Calendar.getInstance();
-				cal.setTime((Date)e.data);
-				//run the action to query the transports for the selected date
+				cal.setTime((Date) e.data);
+				// run the action to query the transports for the selected date
 				SelectTransportDateAction selectAction = new SelectTransportDateAction(cal);
 				selectAction.run();
 			}
@@ -165,72 +161,68 @@ public class FilterView extends ViewPart
 	}
 
 	/**
-	 * Creates the filter section 
+	 * Creates the filter section
+	 * 
 	 * @param parent
 	 */
-	private void createFilterSection(Composite parent)
-	{
-		filter = createSection(parent,"Filterfunktion");
+	private void createFilterSection(Composite parent) {
+		filter = createSection(parent, "Filterfunktion");
 
-		//create the input fields, from street
+		// create the input fields, from street
 		final Label labelTransportNumber = toolkit.createLabel(filter, "Transportnummer");
 		transportNumber = toolkit.createText(filter, "");
-		
-		//create the input fields, from street
+
+		// create the input fields, from street
 		final Label labelFrom = toolkit.createLabel(filter, "von");
 		from = toolkit.createText(filter, "");
 
-		//the patient
+		// the patient
 		final Label labelPatient = toolkit.createLabel(filter, "Patient");
 		patient = toolkit.createText(filter, "");
 
-		//the to street
+		// the to street
 		final Label labelTo = toolkit.createLabel(filter, "nach");
 		to = toolkit.createText(filter, "");
-		
-		//the location
+
+		// the location
 		final Label labelLocation = toolkit.createLabel(filter, "Ortsstelle");
 		location = toolkit.createText(filter, "");
-		
-		//the priority
+
+		// the priority
 		final Label labelPriority = toolkit.createLabel(filter, "Priorität");
 		priority = toolkit.createText(filter, "");
-		
-		//the vehicle
+
+		// the vehicle
 		final Label labelVehicle = toolkit.createLabel(filter, "Fahrzeug");
 		vehicle = toolkit.createText(filter, "");
-		
-		//the disease
+
+		// the disease
 		final Label labelDisease = toolkit.createLabel(filter, "Erkrankung");
 		disease = toolkit.createText(filter, "");
 
-		//Create the hyperlink to import the data
+		// Create the hyperlink to import the data
 		applyFilter = toolkit.createImageHyperlink(filter, SWT.NONE);
 		applyFilter.setText("Transporte filtern");
-		applyFilter.setImage(ImageFactory.getInstance().getRegisteredImage("resource.import"));
-		applyFilter.addHyperlinkListener(new HyperlinkAdapter() 
-		{
+		applyFilter.setImage(Activator.getDefault().getImageRegistry().get("resource.import"));
+		applyFilter.addHyperlinkListener(new HyperlinkAdapter() {
+
 			@Override
-			public void linkActivated(HyperlinkEvent e) 
-			{
+			public void linkActivated(HyperlinkEvent e) {
 				calendar.setBackground(CustomColors.BACKGROUND_RED);
 				applyFilter.setBackground(CustomColors.BACKGROUND_RED);
-				
-				
 				inputChanged();
 			}
 		});
 
-		//create the hyperlink to add a new job
+		// create the hyperlink to add a new job
 		resetFilter = toolkit.createImageHyperlink(filter, SWT.NONE);
 		resetFilter.setText("Einschränkungen entfernen");
-		resetFilter.setImage(ImageFactory.getInstance().getRegisteredImage("admin.addressAdd"));
-		resetFilter.addHyperlinkListener(new HyperlinkAdapter()
-		{
+		resetFilter.setImage(Activator.getDefault().getImageRegistry().get("admin.addressAdd"));
+		resetFilter.addHyperlinkListener(new HyperlinkAdapter() {
+
 			@Override
-			public void linkActivated(HyperlinkEvent e) 
-			{
-				//reset the fields
+			public void linkActivated(HyperlinkEvent e) {
+				// reset the fields
 				transportNumber.setText("");
 				from.setText("");
 				patient.setText("");
@@ -239,15 +231,15 @@ public class FilterView extends ViewPart
 				priority.setText("");
 				vehicle.setText("");
 				disease.setText("");
-				//reset the background color
+				// reset the background color
 				applyFilter.setBackground(CustomColors.SECTION_BACKGROUND);
 				calendar.setBackground(CustomColors.SECTION_BACKGROUND);
-				//apply the filter
+				// apply the filter
 				inputChanged();
 			}
 		});
 
-		//set the layout for the composites
+		// set the layout for the composites
 		GridData data = new GridData();
 		data.widthHint = 90;
 		labelTransportNumber.setLayoutData(data);
@@ -268,7 +260,7 @@ public class FilterView extends ViewPart
 		data.widthHint = 90;
 		labelDisease.setLayoutData(data);
 		data.widthHint = 70;
-		//layout for the text fields
+		// layout for the text fields
 		GridData data2 = new GridData();
 		data2.widthHint = 120;
 		transportNumber.setLayoutData(data2);
@@ -277,10 +269,10 @@ public class FilterView extends ViewPart
 		from.setLayoutData(data2);
 		data2 = new GridData();
 		data2.widthHint = 120;
-		patient.setLayoutData(data2);	
+		patient.setLayoutData(data2);
 		data2 = new GridData();
 		data2.widthHint = 120;
-		to.setLayoutData(data2);	
+		to.setLayoutData(data2);
 		data2 = new GridData();
 		data2.widthHint = 120;
 		location.setLayoutData(data2);
@@ -295,27 +287,29 @@ public class FilterView extends ViewPart
 		disease.setLayoutData(data2);
 	}
 
-	//Helper methods
+	// Helper methods
 	/**
 	 * Creates and returns a section and a composite with two colums
-	 * @param parent the parent composite
-	 * @param sectionName the title of the section
+	 * 
+	 * @param parent
+	 *            the parent composite
+	 * @param sectionName
+	 *            the title of the section
 	 * @return the created composite to hold the other widgets
 	 */
-	private Composite createSection(Composite parent,String sectionName)
-	{
-		//create the section
-		Section section = toolkit.createSection(parent,ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+	private Composite createSection(Composite parent, String sectionName) {
+		// create the section
+		Section section = toolkit.createSection(parent, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		toolkit.createCompositeSeparator(section);
 		section.setText(sectionName);
 		section.setLayout(new GridLayout());
 		section.setLayoutData(new GridData(GridData.BEGINNING | GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING));
 		section.setExpanded(true);
-		//composite to add the client area
+		// composite to add the client area
 		Composite client = new Composite(section, SWT.NONE);
 		section.setClient(client);
 
-		//layout
+		// layout
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 1;
 		layout.makeColumnsEqualWidth = false;
@@ -329,10 +323,9 @@ public class FilterView extends ViewPart
 	/**
 	 * Helper method to apply the filer
 	 */
-	private void inputChanged()
-	{
+	private void inputChanged() {
 		TransportManager manager = ModelFactory.getInstance().getTransportManager();
-		//get the values
+		// get the values
 		final String strTrNr = transportNumber.getText();
 		final String strFrom = from.getText();
 		final String strPat = patient.getText();
@@ -341,7 +334,8 @@ public class FilterView extends ViewPart
 		final String strPriority = priority.getText();
 		final String strVehicle = vehicle.getText();
 		final String strDisease = disease.getText();
-		//inform the viewer
-		manager.fireTransportFilterChanged(new TransportViewFilter(strTrNr, strFrom,strPat,strTo,strLocation, strPriority, strVehicle, strDisease));
+		// inform the viewer
+		manager
+				.fireTransportFilterChanged(new TransportViewFilter(strTrNr, strFrom, strPat, strTo, strLocation, strPriority, strVehicle, strDisease));
 	}
 }

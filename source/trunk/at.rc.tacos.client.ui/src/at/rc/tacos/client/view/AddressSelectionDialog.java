@@ -1,15 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2004 - 2006 Mylar committers and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2004 - 2006 Mylar committers and others. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
  *******************************************************************************/
 
 package at.rc.tacos.client.view;
-
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -34,79 +30,82 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.SelectionStatusDialog;
 
-import at.rc.tacos.client.Activator;
 import at.rc.tacos.client.jobs.FilterAddressJob;
-import at.rc.tacos.client.modelManager.ModelFactory;
+import at.rc.tacos.client.net.NetWrapper;
+import at.rc.tacos.client.net.handler.AddressHandler;
 import at.rc.tacos.client.providers.AddressContentProvider;
 import at.rc.tacos.client.providers.AddressLabelProvider;
+import at.rc.tacos.client.ui.Activator;
 import at.rc.tacos.platform.model.Address;
+import at.rc.tacos.platform.net.Message;
+import at.rc.tacos.platform.net.listeners.DataChangeListener;
+import at.rc.tacos.platform.net.mina.MessageIoSession;
 
 /**
  * Provides a selection dialog to choose a address
  */
-public class AddressSelectionDialog extends SelectionStatusDialog implements PropertyChangeListener
-{
+public class AddressSelectionDialog extends SelectionStatusDialog implements DataChangeListener<Address> {
+
 	private TableViewer viewer;
-	private String initStreetValue,initCityValue;
-	private Text filterStreet,filterCity;
-	
+	private String initStreetValue, initCityValue;
+	private Text filterStreet, filterCity;
+
 	/**
 	 * The scheduler job to start the filter
 	 */
 	private FilterAddressJob filterJob;
 
+	// the handler
+	private AddressHandler addressHandler = (AddressHandler) NetWrapper.getHandler(Address.class);
+
 	/**
 	 * Defaul class constructor to set up a new address select dialog
+	 * 
 	 * @param parent
 	 */
-	public AddressSelectionDialog(String initStreetValue,String initCityValue,final Shell parent) 
-	{
+	public AddressSelectionDialog(String initStreetValue, String initCityValue, final Shell parent) {
 		super(parent);
 		setShellStyle(getShellStyle() | SWT.RESIZE);
 		this.initStreetValue = initStreetValue;
 		this.initCityValue = initCityValue;
-		ModelFactory.getInstance().getAddressManager().addPropertyChangeListener(this);
+		// listen to address changes
+		NetWrapper.registerListener(this, Address.class);
 	}
-	
+
 	@Override
-	public boolean close() 
-	{
-		//cleanup the listeners
-		ModelFactory.getInstance().getAddressManager().removePropertyChangeListener(this);
-		//colse the dialog
+	public boolean close() {
+		NetWrapper.removeListener(this, Address.class);
 		return super.close();
 	}
 
 	@Override
-    protected void configureShell(final Shell shell)
-    {
-        shell.setText("Adresse Suche"); 
-        super.configureShell(shell);
-    }
+	protected void configureShell(final Shell shell) {
+		shell.setText("Adresse Suche");
+		super.configureShell(shell);
+	}
 
 	@Override
-	protected Control createDialogArea(final Composite parent) 
-	{
+	protected Control createDialogArea(final Composite parent) {
 		final Composite area = (Composite) super.createDialogArea(parent);
-		area.setLayout(new GridLayout(2,false));
+		area.setLayout(new GridLayout(2, false));
 		area.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		final Label message = new Label(area, SWT.NONE);
 		message.setText("&Bitte w‰hlen Sie eine Adresse aus:\n");
-		
-		final Label labelStreet = new Label(area,SWT.BOLD);
+
+		final Label labelStreet = new Label(area, SWT.BOLD);
 		labelStreet.setText("Straﬂe");
 		filterStreet = new Text(area, SWT.SINGLE | SWT.BORDER);
 		filterStreet.setLayoutData(new GridData(SWT.FILL, SWT.DEFAULT, true, false));
-		
-		final Label labelCity = new Label(area,SWT.BOLD);
+
+		final Label labelCity = new Label(area, SWT.BOLD);
 		labelCity.setText("Stadt");
 		filterCity = new Text(area, SWT.SINGLE | SWT.BORDER);
 		filterCity.setLayoutData(new GridData(SWT.FILL, SWT.DEFAULT, true, false));
 
 		final Label matches = new Label(area, SWT.NONE);
-		matches.setText("&Gefundene Adressen:"); 
-		
+		matches.setText("&Gefundene Adressen:");
+
 		viewer = new TableViewer(area, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
 		final Control control = this.viewer.getControl();
 		final GridData gd = new GridData(SWT.FILL, SWT.FILL, true, true);
@@ -114,17 +113,19 @@ public class AddressSelectionDialog extends SelectionStatusDialog implements Pro
 		gd.heightHint = 200;
 		gd.horizontalSpan = 2;
 		control.setLayoutData(gd);
-        
+
 		viewer.setLabelProvider(new AddressLabelProvider());
 		viewer.setContentProvider(new AddressContentProvider());
 		viewer.setUseHashlookup(true);
-		viewer.setInput(ModelFactory.getInstance().getAddressManager().getAddressList());
+
+		// the handler for the address objects
+		viewer.setInput(addressHandler.toArray());
 		Table table = viewer.getTable();
-		
+
 		viewer.getTable().setLinesVisible(true);
 		viewer.getTable().setHeaderVisible(true);
-		
-		//create the columns
+
+		// create the columns
 		final TableColumn imageColumn = new TableColumn(table, SWT.NONE);
 		imageColumn.setToolTipText("");
 		imageColumn.setWidth(30);
@@ -144,128 +145,111 @@ public class AddressSelectionDialog extends SelectionStatusDialog implements Pro
 		streetColumn.setToolTipText("Name der Straﬂe");
 		streetColumn.setWidth(180);
 		streetColumn.setText("Straﬂe");
-		
-		filterStreet.addModifyListener(new ModifyListener() 
-		{
-			public void modifyText(final ModifyEvent e) 
-			{
+
+		filterStreet.addModifyListener(new ModifyListener() {
+
+			public void modifyText(final ModifyEvent e) {
 				inputChanged();
 			}
 		});
-		filterCity.addModifyListener(new ModifyListener() 
-		{
-			public void modifyText(final ModifyEvent e) 
-			{
+		filterCity.addModifyListener(new ModifyListener() {
+
+			public void modifyText(final ModifyEvent e) {
 				inputChanged();
 			}
 		});
-		
-        viewer.addSelectionChangedListener(new ISelectionChangedListener() 
-        {
-            public void selectionChanged(final SelectionChangedEvent event) 
-            {
-                if (!event.getSelection().isEmpty()) 
-                	updateStatus(new Status(IStatus.INFO, Activator.PLUGIN_ID, ((Address)((IStructuredSelection) event.getSelection()).getFirstElement()).toString() + " ausgew‰hlt"));
-                else 
-                    updateStatus(new Status(IStatus.ERROR,Activator.PLUGIN_ID,"Bitte w‰hlen Sie eine Adresse aus"));      
-            }
-        });
-        
-        setStatusLineAboveButtons(true);
-        
-        //layout the components
-        GridData data = new GridData(GridData.FILL_HORIZONTAL);
-        data.horizontalSpan = 2;
-        message.setLayoutData(data);
-        //the "matches" label
-        data = new GridData(GridData.FILL_HORIZONTAL);
-        data.horizontalSpan = 2;
-        matches.setLayoutData(data);
-        //the input fields
-        data = new GridData(GridData.FILL_HORIZONTAL);
-        filterStreet.setLayoutData(data);
-        data = new GridData(GridData.FILL_HORIZONTAL);
-        filterCity.setLayoutData(data);
-        //the labels
-        data = new GridData();
-        data.widthHint = 50;
-        labelStreet.setLayoutData(data);
-        data = new GridData();
-        data.widthHint = 50;
-        labelCity.setLayoutData(data);
-        
-        //setup the initial value
-        filterCity.setText(initCityValue);
-        filterStreet.setText(initStreetValue);
-        
-        viewer.refresh();
-        
+
+		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
+
+			public void selectionChanged(final SelectionChangedEvent event) {
+				if (!event.getSelection().isEmpty())
+					updateStatus(new Status(IStatus.INFO, Activator.PLUGIN_ID, ((Address) ((IStructuredSelection) event.getSelection())
+							.getFirstElement()).toString()
+							+ " ausgew‰hlt"));
+				else
+					updateStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Bitte w‰hlen Sie eine Adresse aus"));
+			}
+		});
+
+		setStatusLineAboveButtons(true);
+
+		// layout the components
+		GridData data = new GridData(GridData.FILL_HORIZONTAL);
+		data.horizontalSpan = 2;
+		message.setLayoutData(data);
+		// the "matches" label
+		data = new GridData(GridData.FILL_HORIZONTAL);
+		data.horizontalSpan = 2;
+		matches.setLayoutData(data);
+		// the input fields
+		data = new GridData(GridData.FILL_HORIZONTAL);
+		filterStreet.setLayoutData(data);
+		data = new GridData(GridData.FILL_HORIZONTAL);
+		filterCity.setLayoutData(data);
+		// the labels
+		data = new GridData();
+		data.widthHint = 50;
+		labelStreet.setLayoutData(data);
+		data = new GridData();
+		data.widthHint = 50;
+		labelCity.setLayoutData(data);
+
+		// setup the initial value
+		filterCity.setText(initCityValue);
+		filterStreet.setText(initStreetValue);
+
+		viewer.refresh();
+
 		return area;
 	}
 
 	@Override
-	protected void computeResult() 
-	{
+	protected void computeResult() {
 		setResult(((IStructuredSelection) viewer.getSelection()).toList());
 	}
-	
-	/**
-	 * This listener will be informed when the server sends new address recoreds based on the entered text
-	 */
+
 	@Override
-	public void propertyChange(PropertyChangeEvent evt) 
-	{
-		String event = evt.getPropertyName();
-		if("ADDRESS_ADD".equalsIgnoreCase(event) ||
-				"ADDRESS_REMOVE".equalsIgnoreCase(event) ||
-				"ADDRESS_UPDATE".equalsIgnoreCase(event) ||
-				"ADDRESS_CLEARED".equalsIgnoreCase(event) ||
-				"ADDRESS_ADD_ALL".equalsIgnoreCase(event))
-		{
-			viewer.refresh(true);
-			final Object first = viewer.getElementAt(0);
-			if (first != null) 
-			{
-				AddressSelectionDialog.this.viewer.setSelection(new StructuredSelection(first));
-                updateStatus(new Status(IStatus.INFO, Activator.PLUGIN_ID,((Address)first).toString() + " ausgew‰hlt")); 
-			}
-			else 
-			    updateStatus(new Status(IStatus.ERROR,Activator.PLUGIN_ID,"Bitte w‰hlen Sie eine Adresse aus."));
+	public void dataChanged(Message<Address> message, MessageIoSession messageIoSession) {
+		viewer.refresh(true);
+		final Object first = viewer.getElementAt(0);
+		if (first == null) {
+			updateStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Bitte w‰hlen Sie eine Adresse aus."));
+			return;
 		}
+		// show the new address objects
+		AddressSelectionDialog.this.viewer.setSelection(new StructuredSelection(first));
+		updateStatus(new Status(IStatus.INFO, Activator.PLUGIN_ID, ((Address) first).toString() + " ausgew‰hlt"));
 	}
-	
-	//PRIVATE METHODS
+
+	// PRIVATE METHODS
 	/**
 	 * Called when the input text of a filter is changes
 	 */
-	private void inputChanged()
-	{
-		//get the values
+	private void inputChanged() {
+		// get the values
 		final String strStreet = filterStreet.getText().toLowerCase();
 		final String strCity = filterCity.getText().toLowerCase();
 		final String strZip = "";
-		
-		//create a new instance of the filter job if we do not have one
-		if(filterJob == null)
+
+		// create a new instance of the filter job if we do not have one
+		if (filterJob == null)
 			filterJob = new FilterAddressJob(viewer);
-		
-		//check the length of the entered text
-		if(strStreet.length() < 1 && strCity.length() < 1)
-		{
-			updateStatus(new Status(Status.WARNING,Activator.PLUGIN_ID,"Bitte geben sie mindestens ein Zeichen"));
+
+		// check the length of the entered text
+		if (strStreet.length() < 1 && strCity.length() < 1) {
+			updateStatus(new Status(Status.WARNING, Activator.PLUGIN_ID, "Bitte geben sie mindestens ein Zeichen"));
 			Display.getCurrent().beep();
 			return;
 		}
-		updateStatus(new Status(IStatus.INFO,Activator.PLUGIN_ID,"Bitte w‰hlen Sie eine Addresse aus"));
-		
-		//check the state
-		if(filterJob.getState() == Job.RUNNING)
-		{
+		updateStatus(new Status(IStatus.INFO, Activator.PLUGIN_ID, "Bitte w‰hlen Sie eine Addresse aus"));
+
+		// check the state
+		if (filterJob.getState() == Job.RUNNING) {
 			System.out.println("Job is currently running");
 			return;
 		}
-		
-		//pass the entered text
+
+		// pass the entered text
 		filterJob.setStrStreet(strStreet);
 		filterJob.setStrCity(strCity);
 		filterJob.setStrZip(strZip);

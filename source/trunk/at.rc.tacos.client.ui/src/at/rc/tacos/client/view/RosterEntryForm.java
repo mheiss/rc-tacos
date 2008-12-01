@@ -23,11 +23,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 
-import at.rc.tacos.client.ImageFactory;
-import at.rc.tacos.client.modelManager.LockManager;
-import at.rc.tacos.client.modelManager.ModelFactory;
-import at.rc.tacos.client.modelManager.SessionManager;
-import at.rc.tacos.client.net.NetWrapper;
+import at.rc.tacos.client.net.NetActivator;
 import at.rc.tacos.client.providers.JobContentProvider;
 import at.rc.tacos.client.providers.JobLabelProvider;
 import at.rc.tacos.client.providers.ServiceTypeContentProvider;
@@ -36,7 +32,11 @@ import at.rc.tacos.client.providers.StaffMemberContentProvider;
 import at.rc.tacos.client.providers.StaffMemberLabelProvider;
 import at.rc.tacos.client.providers.StationContentProvider;
 import at.rc.tacos.client.providers.StationLabelProvider;
-import at.rc.tacos.client.util.CustomColors;
+import at.rc.tacos.client.ui.ImageFactory;
+import at.rc.tacos.client.ui.modelManager.LockManager;
+import at.rc.tacos.client.ui.modelManager.ModelFactory;
+import at.rc.tacos.client.ui.modelManager.SessionManager;
+import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.platform.model.Job;
 import at.rc.tacos.platform.model.Location;
 import at.rc.tacos.platform.model.RosterEntry;
@@ -253,9 +253,9 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 
 			//create or update the roster entry
 			if(createNew)
-				NetWrapper.getDefault().sendAddMessage(RosterEntry.ID, rosterEntry);
+				NetActivator.getDefault().sendAddMessage(RosterEntry.ID, rosterEntry);
 			else
-				NetWrapper.getDefault().sendUpdateMessage(RosterEntry.ID, rosterEntry);
+				NetActivator.getDefault().sendUpdateMessage(RosterEntry.ID, rosterEntry);
 			
 			//closes the sehll
 			super.okPressed();

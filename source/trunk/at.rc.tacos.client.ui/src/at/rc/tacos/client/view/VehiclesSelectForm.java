@@ -12,11 +12,11 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
-import at.rc.tacos.client.ImageFactory;
 import at.rc.tacos.client.controller.VehicleEditAction;
-import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.VehicleContentProvider;
 import at.rc.tacos.client.providers.VehicleLabelProvider;
+import at.rc.tacos.client.ui.ImageFactory;
+import at.rc.tacos.client.ui.modelManager.ModelFactory;
 import at.rc.tacos.platform.model.VehicleDetail;
 
 public class VehiclesSelectForm extends TitleAreaDialog
