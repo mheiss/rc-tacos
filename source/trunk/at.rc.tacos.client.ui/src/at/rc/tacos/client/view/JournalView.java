@@ -1,5 +1,7 @@
 package at.rc.tacos.client.view;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Calendar;
 
 import org.eclipse.jface.action.IMenuListener;
@@ -11,6 +13,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -27,6 +30,8 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.part.ViewPart;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import at.rc.tacos.client.controller.CreateBackTransportAction;
 import at.rc.tacos.client.controller.EditTransportAction;
@@ -39,6 +44,9 @@ import at.rc.tacos.client.providers.JournalViewContentProvider;
 import at.rc.tacos.client.providers.JournalViewLabelProvider;
 import at.rc.tacos.client.providers.TransportDateFilter;
 import at.rc.tacos.client.providers.TransportStateViewFilter;
+import at.rc.tacos.client.providers.TransportViewFilter;
+import at.rc.tacos.client.ui.Activator;
+import at.rc.tacos.client.ui.ListenerConstants;
 import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.client.view.sorterAndTooltip.JournalViewTooltip;
 import at.rc.tacos.client.view.sorterAndTooltip.TransportSorter;
@@ -49,9 +57,10 @@ import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.listeners.DataChangeListener;
 import at.rc.tacos.platform.net.mina.MessageIoSession;
 
-public class JournalView extends ViewPart implements DataChangeListener<Object> {
+public class JournalView extends ViewPart implements DataChangeListener<Object>, PropertyChangeListener {
 
 	public static final String ID = "at.rc.tacos.client.view.journal_view";
+	private Logger log = LoggerFactory.getLogger(JournalView.class);
 
 	// the toolkit to use
 	private FormToolkit toolkit;
@@ -70,20 +79,13 @@ public class JournalView extends ViewPart implements DataChangeListener<Object> 
 	private TransportHandler transportHandler = (TransportHandler) NetWrapper.getHandler(Transport.class);
 
 	/**
-	 * Constructs a new journal view and adds listeners
-	 */
-	public JournalView() {
-		NetWrapper.registerListener(this, Transport.class);
-		NetWrapper.registerListener(this, Lock.class);
-	}
-
-	/**
-	 * Cleanup the view and remove the listeners
+	 * Cleanup the view and remove the listeners.
 	 */
 	@Override
 	public void dispose() {
 		NetWrapper.removeListener(this, Transport.class);
 		NetWrapper.removeListener(this, Lock.class);
+		Activator.getDefault().removeListener(this);
 		super.dispose();
 	}
 
@@ -320,6 +322,11 @@ public class JournalView extends ViewPart implements DataChangeListener<Object> 
 		viewer.addFilter(new TransportStateViewFilter(IProgramStatus.PROGRAM_STATUS_JOURNAL));
 		viewer.addFilter(new TransportDateFilter(Calendar.getInstance()));
 		viewer.refresh();
+
+		// register as transport date and view listener
+		Activator.getDefault().registerListener(this);
+		NetWrapper.registerListener(this, Transport.class);
+		NetWrapper.registerListener(this, Lock.class);
 	}
 
 	/**
@@ -398,21 +405,39 @@ public class JournalView extends ViewPart implements DataChangeListener<Object> 
 		if (object instanceof Lock) {
 			viewer.refresh();
 		}
-		// TODO: TRANSPORT_DATE_CHANGED
-		/**
-		 * viewer.resetFilters(); viewer.addFilter(new
-		 * TransportStateViewFilter(PROGRAM_STATUS_JOURNAL));
-		 * viewer.addFilter(new TransportDateFilter(filteredDate));
-		 * viewer.refresh();
-		 */
-		// TODO: TRANSPORT_FILTER_CHANGED
-		/**
-		 * TransportViewFilter searchFilter = (TransportViewFilter)
-		 * evt.getNewValue(); // remove all filters and apply the new for
-		 * (ViewerFilter filter : viewer.getFilters()) { if (!(filter instanceof
-		 * TransportViewFilter)) continue; viewer.removeFilter(filter); } if
-		 * (searchFilter != null) { viewer.addFilter(searchFilter); }
-		 */
+
 	}
 
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		final String event = evt.getPropertyName();
+		final Object newValue = evt.getNewValue();
+
+		// update the view filter with the new date
+		if (ListenerConstants.TRANSPORT_DATE_CHANGED.equalsIgnoreCase(event)) {
+			if (!(newValue instanceof Calendar)) {
+				log.error("Expected 'Calendar' but was " + newValue == null ? "null" : newValue.getClass().getName());
+			}
+			// apply the filter
+			viewer.resetFilters();
+			viewer.addFilter(new TransportStateViewFilter(IProgramStatus.PROGRAM_STATUS_JOURNAL));
+			viewer.addFilter(new TransportDateFilter((Calendar) newValue));
+			viewer.refresh();
+		}
+
+		// filter out unwanted elements
+		if (ListenerConstants.TRANSPORT_FILTER_CHANGED.equalsIgnoreCase(event)) {
+			TransportViewFilter searchFilter = (TransportViewFilter) newValue;
+			// remove all filters and apply the new
+			for (ViewerFilter filter : viewer.getFilters()) {
+				if (filter instanceof TransportViewFilter) {
+					viewer.removeFilter(filter);
+				}
+			}
+			// apply the new filter
+			if (searchFilter != null) {
+				viewer.addFilter(searchFilter);
+			}
+		}
+	}
 }

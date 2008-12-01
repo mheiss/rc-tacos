@@ -1,7 +1,8 @@
 package at.rc.tacos.client.view;
 
+import java.beans.PropertyChangeEvent;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 import org.eclipse.swt.SWT;
@@ -23,10 +24,14 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.ViewPart;
 
-import at.rc.tacos.client.controller.SelectTransportDateAction;
+import at.rc.tacos.client.net.NetWrapper;
 import at.rc.tacos.client.providers.TransportViewFilter;
 import at.rc.tacos.client.ui.Activator;
+import at.rc.tacos.client.ui.ListenerConstants;
 import at.rc.tacos.client.ui.utils.CustomColors;
+import at.rc.tacos.platform.iface.IFilterTypes;
+import at.rc.tacos.platform.model.Transport;
+import at.rc.tacos.platform.net.message.GetMessage;
 
 /**
  * A view showing custom informations
@@ -53,20 +58,6 @@ public class FilterView extends ViewPart {
 	public final static String LABEL_NOTES = "Filterfunktion";
 	public final static String LABEL_CALENDAR = "Kalender";
 	public final static String LABEL_INFO = "Informationen";
-
-	/**
-	 * Default class constructor
-	 */
-	public FilterView() {
-	}
-
-	/**
-	 * Cleanup the view
-	 */
-	@Override
-	public void dispose() {
-		super.dispose();
-	}
 
 	/**
 	 * Creates the view.
@@ -152,10 +143,22 @@ public class FilterView extends ViewPart {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				Calendar cal = Calendar.getInstance();
-				cal.setTime((Date) e.data);
-				// run the action to query the transports for the selected date
-				SelectTransportDateAction selectAction = new SelectTransportDateAction(cal);
-				selectAction.run();
+				cal.setTime(dateTime.getSelection());
+
+				// query the filtered transports
+				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+				GetMessage<Transport> getMessage = new GetMessage<Transport>(new Transport());
+				getMessage.addParameter(IFilterTypes.DATE_FILTER, sdf.format(cal.getTime()));
+				NetWrapper.sendMessage(getMessage);
+
+				// setup the property change event to fire
+				Object source = dateTime;
+				String propertyName = ListenerConstants.TRANSPORT_DATE_CHANGED;
+				Object oldValue = null;
+				Object newValue = cal;
+				PropertyChangeEvent event = new PropertyChangeEvent(source, propertyName, oldValue, newValue);
+				// inform the listeners
+				Activator.getDefault().firePropertyChangeEvent(event);
 			}
 		});
 	}
@@ -210,7 +213,24 @@ public class FilterView extends ViewPart {
 			public void linkActivated(HyperlinkEvent e) {
 				calendar.setBackground(CustomColors.BACKGROUND_RED);
 				applyFilter.setBackground(CustomColors.BACKGROUND_RED);
-				inputChanged();
+
+				// setup the filter and inform the listeners
+				final String strTrNr = transportNumber.getText();
+				final String strFrom = from.getText();
+				final String strPat = patient.getText();
+				final String strTo = to.getText();
+				final String strLocation = location.getText();
+				final String strPriority = priority.getText();
+				final String strVehicle = vehicle.getText();
+				final String strDisease = disease.getText();
+
+				// setup the event and inform the listeners
+				Object source = this;
+				String propertyName = ListenerConstants.TRANSPORT_FILTER_CHANGED;
+				Object oldValue = null;
+				Object newValue = new TransportViewFilter(strTrNr, strFrom, strPat, strTo, strLocation, strPriority, strVehicle, strDisease);
+				PropertyChangeEvent event = new PropertyChangeEvent(source, propertyName, oldValue, newValue);
+				Activator.getDefault().firePropertyChangeEvent(event);
 			}
 		});
 
@@ -235,7 +255,12 @@ public class FilterView extends ViewPart {
 				applyFilter.setBackground(CustomColors.SECTION_BACKGROUND);
 				calendar.setBackground(CustomColors.SECTION_BACKGROUND);
 				// apply the filter
-				inputChanged();
+				Object source = this;
+				String propertyName = ListenerConstants.TRANSPORT_FILTER_CHANGED;
+				Object oldValue = null;
+				Object newValue = null;
+				PropertyChangeEvent event = new PropertyChangeEvent(source, propertyName, oldValue, newValue);
+				Activator.getDefault().firePropertyChangeEvent(event);
 			}
 		});
 
@@ -310,32 +335,10 @@ public class FilterView extends ViewPart {
 		section.setClient(client);
 
 		// layout
-		GridLayout layout = new GridLayout();
-		layout.numColumns = 1;
-		layout.makeColumnsEqualWidth = false;
-		client.setLayout(layout);
+		client.setLayout(new GridLayout(1, false));
 		GridData clientDataLayout = new GridData(GridData.BEGINNING | GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING);
 		client.setLayoutData(clientDataLayout);
 
 		return client;
-	}
-
-	/**
-	 * Helper method to apply the filer
-	 */
-	private void inputChanged() {
-		TransportManager manager = ModelFactory.getInstance().getTransportManager();
-		// get the values
-		final String strTrNr = transportNumber.getText();
-		final String strFrom = from.getText();
-		final String strPat = patient.getText();
-		final String strTo = to.getText();
-		final String strLocation = location.getText();
-		final String strPriority = priority.getText();
-		final String strVehicle = vehicle.getText();
-		final String strDisease = disease.getText();
-		// inform the viewer
-		manager
-				.fireTransportFilterChanged(new TransportViewFilter(strTrNr, strFrom, strPat, strTo, strLocation, strPriority, strVehicle, strDisease));
 	}
 }
