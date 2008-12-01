@@ -842,6 +842,7 @@ public class DialysisForm implements IKindOfTransport, DataChangeListener<Addres
 
 					dia.setAssistantPerson(assistant);
 
+					// send the update message to the server
 					UpdateMessage<DialysisPatient> updateMessage = new UpdateMessage<DialysisPatient>(dia);
 					NetWrapper.sendMessage(updateMessage);
 				}

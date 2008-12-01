@@ -63,8 +63,6 @@ public class DialysisView extends ViewPart implements DataChangeListener<Object>
 	 * Constructs a new outstanding transports view adds listeners.
 	 */
 	public DialysisView() {
-		NetWrapper.registerListener(this, DialysisPatient.class);
-		NetWrapper.registerListener(this, Lock.class);
 	}
 
 	/**
@@ -260,8 +258,10 @@ public class DialysisView extends ViewPart implements DataChangeListener<Object>
 		makeActions();
 		hookContextMenu();
 		createToolBarActions();
-
-		viewer.refresh();
+		
+		//add the listeners to keep in track of updates
+		NetWrapper.registerListener(this, DialysisPatient.class);
+		NetWrapper.registerListener(this, Lock.class);
 	}
 
 	/**

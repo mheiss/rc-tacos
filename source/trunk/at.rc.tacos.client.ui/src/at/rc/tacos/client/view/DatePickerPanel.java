@@ -53,7 +53,6 @@ public class DatePickerPanel extends Composite implements KeyListener, ISelectio
 		this.date = initialDate;
 		initialize();
 		setDate(date);
-		// this.setBackground()
 	}
 
 	private void initialize() {
