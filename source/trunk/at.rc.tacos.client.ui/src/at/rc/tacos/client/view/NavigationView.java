@@ -15,8 +15,8 @@ import at.rc.tacos.client.controller.OpenEmergencyTransportAction;
 import at.rc.tacos.client.controller.OpenTransportAction;
 import at.rc.tacos.client.controller.PersonalNewEntryAction;
 import at.rc.tacos.client.ui.Activator;
+import at.rc.tacos.client.ui.custom.MyToolbarManager;
 import at.rc.tacos.client.ui.utils.CustomColors;
-import at.rc.tacos.client.ui.utils.MyToolbarManager;
 
 /**
  * The navigation on the top including the toolbar.
