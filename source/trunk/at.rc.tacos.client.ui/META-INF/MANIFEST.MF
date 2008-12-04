@@ -18,7 +18,12 @@ Require-Bundle: org.eclipse.ui,
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: FH-Joanneum / ITM
-Export-Package: at.rc.tacos.client.ui
+Export-Package: at.rc.tacos.client.ui,
+ at.rc.tacos.client.ui.custom,
+ at.rc.tacos.client.ui.dialog,
+ at.rc.tacos.client.ui.perspectives,
+ at.rc.tacos.client.ui.splash,
+ at.rc.tacos.client.ui.utils
 Bundle-ClassPath: lib/org.eclipse.nebula.widgets.gallery_1.0.0.200802110300.jar,
  lib/nebula_cdatetime_0.9.0.jar,
  .
