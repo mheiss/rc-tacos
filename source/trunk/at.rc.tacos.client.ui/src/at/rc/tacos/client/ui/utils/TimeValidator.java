@@ -33,7 +33,7 @@ public class TimeValidator implements IInputValidator {
 			DateUtils.parseDate(input, new String[] { pattern1, pattern2 });
 		}
 		catch (Exception e) {
-			return "Keine gültige Uhrzeit\n" + "Bitte im Format hh:mm  oder hhmm eingeben";
+			return "Keine gültige Uhrzeit.\n Bitte im Format HH:mm oder HHmm eingeben";
 		}
 
 		// this date is valid
