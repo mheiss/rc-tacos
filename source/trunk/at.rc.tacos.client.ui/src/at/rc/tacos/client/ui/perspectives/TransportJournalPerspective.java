@@ -3,9 +3,9 @@ package at.rc.tacos.client.ui.perspectives;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
-import at.rc.tacos.client.view.FilterView;
-import at.rc.tacos.client.view.JournalView;
-import at.rc.tacos.client.view.NavigationView;
+import at.rc.tacos.client.ui.view.FilterView;
+import at.rc.tacos.client.ui.view.JournalView;
+import at.rc.tacos.client.ui.view.NavigationView;
 
 public class TransportJournalPerspective implements IPerspectiveFactory {
 

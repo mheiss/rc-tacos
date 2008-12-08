@@ -3,8 +3,8 @@ package at.rc.tacos.client.ui;
 import java.util.Calendar;
 
 import at.rc.tacos.client.providers.TransportViewFilter;
-import at.rc.tacos.client.view.FilterView;
-import at.rc.tacos.client.view.InfoView;
+import at.rc.tacos.client.ui.view.FilterView;
+import at.rc.tacos.client.ui.view.InfoView;
 
 /**
  * This interface holds the available custom listeners.

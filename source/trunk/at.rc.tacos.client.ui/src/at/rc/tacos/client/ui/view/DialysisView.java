@@ -1,4 +1,4 @@
-package at.rc.tacos.client.view;
+package at.rc.tacos.client.ui.view;
 
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;

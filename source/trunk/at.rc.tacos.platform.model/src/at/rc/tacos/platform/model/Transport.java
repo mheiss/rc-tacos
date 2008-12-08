@@ -119,6 +119,7 @@ public class Transport implements ITransportPriority, IDirectness, ITransportSta
 	 *            the direction of the transport
 	 */
 	public Transport(String fromStreet, String fromCity, Location planedLocation, long dateOfTransport, long plannedStartOfTransport, String transportPriority, int direction) {
+		this();
 		setFromStreet(fromStreet);
 		setFromCity(fromCity);
 		setPlanedLocation(planedLocation);

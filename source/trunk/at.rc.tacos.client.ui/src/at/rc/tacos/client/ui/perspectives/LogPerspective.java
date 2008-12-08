@@ -3,7 +3,7 @@ package at.rc.tacos.client.ui.perspectives;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
-import at.rc.tacos.client.view.NavigationView;
+import at.rc.tacos.client.ui.view.NavigationView;
 
 public class LogPerspective implements IPerspectiveFactory {
 

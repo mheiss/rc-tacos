@@ -1,4 +1,4 @@
-package at.rc.tacos.client.view;
+package at.rc.tacos.client.ui.view;
 
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.SWT;

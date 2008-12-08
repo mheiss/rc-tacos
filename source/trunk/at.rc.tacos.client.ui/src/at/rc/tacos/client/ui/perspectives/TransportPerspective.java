@@ -3,9 +3,9 @@ package at.rc.tacos.client.ui.perspectives;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
-import at.rc.tacos.client.view.NavigationView;
-import at.rc.tacos.client.view.OutstandingTransportsView;
-import at.rc.tacos.client.view.UnderwayTransportsView;
+import at.rc.tacos.client.ui.view.NavigationView;
+import at.rc.tacos.client.ui.view.OutstandingTransportsView;
+import at.rc.tacos.client.ui.view.UnderwayTransportsView;
 
 /**
  * The perspective for the transport overview
