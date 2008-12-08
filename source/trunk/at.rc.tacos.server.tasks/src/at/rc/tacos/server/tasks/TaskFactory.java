@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.mina.transport.socket.SocketAcceptor;
 import org.slf4j.Logger;
@@ -14,7 +16,7 @@ import at.rc.tacos.server.tasks.impl.DialysisPatientTask;
 import at.rc.tacos.server.tasks.impl.TransportTask;
 
 /**
- * The task factory manages live cylce the available tasks
+ * The task factory manages the live cylce of the available tasks.
  * 
  * @author mheiss
  */
@@ -64,13 +66,16 @@ public class TaskFactory {
 	}
 
 	/**
-	 * Schedule all tasks to run
+	 * Schedules all tasks to run. Each task will be scheduled to run with a
+	 * random initial delay between 0 and 60 seconds.
 	 */
 	public void scheduleTasks() {
+		Random randStart = new Random(System.currentTimeMillis());
 		synchronized (taskList) {
 			for (AbstractTask task : taskList) {
-				task.schedule();
-				log.info("scheduling task " + task.getName());
+				int delay = randStart.nextInt(60);
+				task.schedule(TimeUnit.MILLISECONDS.convert(delay, TimeUnit.SECONDS));
+				log.info("Scheduling task " + task.getName() + " with startup delay:" + delay + " seconds");
 			}
 		}
 	}

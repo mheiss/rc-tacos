@@ -70,8 +70,9 @@ public class TransportStatusDialog extends TitleAreaDialog {
 	@Override
 	protected Control createContents(Composite parent) {
 		Control contents = super.createContents(parent);
-		setTitle("Transportstati bearbeiten");
-		setMessage("Hier können sie die einzelnen Statusmeldungen eines Transports bearbeiten", IMessageProvider.INFORMATION);
+		setTitle("Transportstatusmeldungen bearbeiten");
+		String ident = transport != null ? String.valueOf(transport.getTransportNumber()) : "";
+		setMessage("Statusmeldungen des Transports #'" + ident + "' bearbeiten.", IMessageProvider.INFORMATION);
 		setTitleImage(imageRegistry.get("application.logo"));
 		return contents;
 	}

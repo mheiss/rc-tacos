@@ -4,7 +4,7 @@ import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
-import at.rc.tacos.client.view.NavigationView;
+import at.rc.tacos.client.ui.view.NavigationView;
 import at.rc.tacos.client.view.admin.AddressAdminView;
 import at.rc.tacos.client.view.admin.CompetenceAdminView;
 import at.rc.tacos.client.view.admin.DiseaseAdminView;

@@ -4,15 +4,15 @@ import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
-import at.rc.tacos.client.view.DialysisView;
-import at.rc.tacos.client.view.FilterView;
-import at.rc.tacos.client.view.InfoView;
-import at.rc.tacos.client.view.JournalView;
-import at.rc.tacos.client.view.NavigationView;
-import at.rc.tacos.client.view.PersonalView;
-import at.rc.tacos.client.view.PrebookingView;
-import at.rc.tacos.client.view.UnderwayTransportsView;
-import at.rc.tacos.client.view.VehiclesViewTableDetailed;
+import at.rc.tacos.client.ui.view.DialysisView;
+import at.rc.tacos.client.ui.view.FilterView;
+import at.rc.tacos.client.ui.view.InfoView;
+import at.rc.tacos.client.ui.view.JournalView;
+import at.rc.tacos.client.ui.view.NavigationView;
+import at.rc.tacos.client.ui.view.PersonalView;
+import at.rc.tacos.client.ui.view.PrebookingView;
+import at.rc.tacos.client.ui.view.UnderwayTransportsView;
+import at.rc.tacos.client.ui.view.VehiclesViewTableDetailed;
 
 /**
  * This is the standard perspective for the employees to work

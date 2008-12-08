@@ -223,7 +223,7 @@ public class AddressSelectionDialog extends SelectionStatusDialog implements Dat
 
 	// PRIVATE METHODS
 	/**
-	 * Called when the input text of a filter is changes
+	 * Called when the text of of an input field has changed
 	 */
 	private void inputChanged() {
 		// get the values
@@ -245,7 +245,6 @@ public class AddressSelectionDialog extends SelectionStatusDialog implements Dat
 
 		// check the state
 		if (filterJob.getState() == Job.RUNNING) {
-			System.out.println("Job is currently running");
 			return;
 		}
 

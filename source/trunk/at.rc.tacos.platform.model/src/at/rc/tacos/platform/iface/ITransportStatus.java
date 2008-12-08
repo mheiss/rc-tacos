@@ -1,15 +1,14 @@
 package at.rc.tacos.platform.iface;
 
 /**
- * The available status messages for a transport, set by time.
- * Below the status types for the visialisation are shown
- * - green if : 0,1,2,5,6
- * - yellow if : 2,4,9
- * - red if: 3,7 
+ * The available status messages for a transport, set by time. Below the status
+ * types for the visialisation are shown - green if : 0,1,2,5,6 - yellow if :
+ * 2,4,9 - red if: 3,7
+ * 
  * @author b.thek
  */
-public interface ITransportStatus 
-{
+public interface ITransportStatus {
+
 	/** S0 Auftrag erteilt */
 	public final static int TRANSPORT_STATUS_ORDER_PLACED = 0;
 	/** S1 Fahrzeug unterwegs */
@@ -31,4 +30,3 @@ public interface ITransportStatus
 	/** S9 Sonderstatus, Sonstiges (z.B. Ambulanz, Essen,...) */
 	public final static int TRANSPORT_STATUS_OTHER = 9;
 }
-

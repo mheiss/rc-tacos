@@ -1,4 +1,4 @@
-package at.rc.tacos.client.view;
+package at.rc.tacos.client.ui.view;
 
 import java.util.ArrayList;
 import java.util.List;
