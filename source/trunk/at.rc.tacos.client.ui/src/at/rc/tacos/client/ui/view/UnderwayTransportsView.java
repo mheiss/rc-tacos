@@ -47,7 +47,7 @@ import at.rc.tacos.client.providers.TransportViewFilter;
 import at.rc.tacos.client.providers.UnderwayTransportsViewContentProvider;
 import at.rc.tacos.client.providers.UnderwayTransportsViewLabelProvider;
 import at.rc.tacos.client.ui.ListenerConstants;
-import at.rc.tacos.client.view.sorterAndTooltip.TransportSorter;
+import at.rc.tacos.client.ui.sorterAndTooltip.TransportSorter;
 import at.rc.tacos.platform.iface.IProgramStatus;
 import at.rc.tacos.platform.iface.ITransportStatus;
 import at.rc.tacos.platform.model.Lock;
