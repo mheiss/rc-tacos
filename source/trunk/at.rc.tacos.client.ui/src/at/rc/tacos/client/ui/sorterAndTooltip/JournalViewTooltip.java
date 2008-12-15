@@ -1,5 +1,5 @@
 
-package at.rc.tacos.client.view.sorterAndTooltip;
+package at.rc.tacos.client.ui.sorterAndTooltip;
 
 import java.text.SimpleDateFormat;
 

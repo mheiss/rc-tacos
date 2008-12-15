@@ -1,9 +1,7 @@
+package at.rc.tacos.client.ui.sorterAndTooltip;
 /** not in use at the time*/
-
 //
 //package at.rc.tacos.client.view.sorterAndTooltip;
-//
-//import java.text.SimpleDateFormat;
 //
 //import org.eclipse.jface.window.ToolTip;
 //import org.eclipse.swt.SWT;
@@ -23,31 +21,26 @@
 //import at.rc.tacos.model.Transport;
 //
 ///**
-// * This shows the tool tip for the transports of the underway (disponierte) transports view
+// * This shows the tool tip for the transports of the outstanding transports view
 // * @author b.thek
 // */
-//public class UnderwayTransportsTooltip extends ToolTip implements IDirectness
+//public class OutstandingTransportsTooltip extends ToolTip implements IDirectness
 //{	
 //	//properties
 //	private Transport transport;
-//	private String police = "";
-//	private String firebrigade = "";
-//	private String brkdt = "";
-//	private String df = "";
-//	private String emergencyDoctor = "";
-//	private String helicopter= "";
-//	private String mountainRescue = "";
-//	private String emergencyPhone = "";
+//
+//
 //	/**
 //	 * Creates a new tool tip for the outstanding transport
 //	 * @param control the control for the tool tip to show
 //	 */
-//	public UnderwayTransportsTooltip(Control control) 
+//	public OutstandingTransportsTooltip(Control control) 
 //	{
 //		super(control);
 //		setShift(new Point(1, 1));
 //	}
-//	
+//
+//
 //	/**
 //	 * Returns whether or not the tooltip should be created.
 //	 * @param event the triggered event
@@ -65,118 +58,77 @@
 //		//no valid element selected
 //		return false;
 //	}
-//	
-//	
+//
+//
+//
 //
 //	@Override
 //	protected Composite createToolTipContentArea(Event event, Composite parent) 
 //	{		
 //		//get the selected transport
 //		Composite composite = createToolTipContentAreaComposite(parent);	
-//		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-//		String plannedStartTime;
-//		String plannedTimeAtPatient;
-//		String term;
+//
+//		String alarming = "";
 //		
-//		//notifying
 //		if (transport.isFirebrigadeAlarming())
-//			firebrigade = "Bergrettung";
+//			alarming = "Bergrettung";
 //		if (transport.isBrkdtAlarming())
-//			brkdt = "Bezirksrettungskommandant";
+//			alarming = alarming +" Bezirksrettungskommandant";
 //		if (transport.isDfAlarming())
-//			df = "Dienstführender";
+//			alarming = alarming +" Dienstführender";
 //		if (transport.isEmergencyDoctorAlarming())
-//			emergencyDoctor = "Notarzt";
+//			alarming = alarming +" Notarzt";
 //		if (transport.isEmergencyPhone())
-//			emergencyPhone = "Rufhilfe";
+//			alarming = alarming +" Rufhilfe";
 //		if (transport.isHelicopterAlarming())
-//			helicopter = "Notarzthubschrauber";
+//			alarming = alarming +" Notarzthubschrauber";
 //		if (transport.isPoliceAlarming())
-//			police = "Polizei";
-//		
-//		
+//			alarming = alarming +" Polizei";
+//
 //		//directness
-//        int direction = transport.getDirection();
-//        String directness;
-//        if (TOWARDS_KAPFENBERG == direction)
-//        {
-//        	directness = "Kapfenberg";
-//        }
-//        else if (TOWARDS_GRAZ == direction)
-//        {
-//        	directness = "Graz";
-//        }
-//        else if (TOWARDS_LEOBEN == direction)
-//        {
-//        	directness = "Leoben";
-//        }
-//        else if (TOWARDS_MARIAZELL== direction)
-//        {
-//        	directness = "Mariazell";
-//        }
-//        else if (TOWARDS_VIENNA == direction)
-//        {
-//        	directness = "Wien";
-//        }
-//        else directness = "Bruck"; //default
-//        
+//		int direction = transport.getDirection();
+//		String directness;
+//		if (TOWARDS_KAPFENBERG == direction)
+//		{
+//			directness = "Kapfenberg";
+//		}
+//		else if (TOWARDS_GRAZ == direction)
+//		{
+//			directness = "Graz";
+//		}
+//		else if (TOWARDS_LEOBEN == direction)
+//		{
+//			directness = "Leoben";
+//		}
+//		else if (TOWARDS_MARIAZELL== direction)
+//		{
+//			directness = "Mariazell";
+//		}
+//		else if (TOWARDS_VIENNA == direction)
+//		{
+//			directness = "Wien";
+//		}
+//		else directness = "Bruck"; //default
+//
 //		Image image = ImageFactory.getInstance().getRegisteredImage("transport.directness");
 //		String title = transport.getFromStreet() +"/" +transport.getFromCity() +" " 
-//			+transport.getPatient().getLastname() +" " +transport.getPatient().getFirstname() +" "
-//			+transport.getToStreet() +"/" +transport.getToCity();
+//		+transport.getPatient().getLastname() +" " +transport.getPatient().getFirstname() +" "
+//		+transport.getToStreet() +"/" +transport.getToCity();
 //		addIconAndLabel(composite, image, title);
 //
-//		//planned times
-//		if(transport.getPlannedStartOfTransport()!= 0)
-//			plannedStartTime = sdf.format(transport.getPlannedStartOfTransport());
-//			else
-//				plannedStartTime = "";
-//		if(transport.getPlannedTimeAtPatient() != 0)
-//			plannedTimeAtPatient = sdf.format(transport.getPlannedTimeAtPatient());
-//			else 
-//			plannedTimeAtPatient = "";
-//		if(transport.getAppointmentTimeAtDestination() != 0)
-//			term = sdf.format(transport.getAppointmentTimeAtDestination());
-//		else
-//			term = "";
-//		if((!plannedStartTime.equalsIgnoreCase("") || !plannedTimeAtPatient.equalsIgnoreCase("") || !term.equalsIgnoreCase("")))
-//		{
-//			image = ImageFactory.getInstance().getRegisteredImage("transport.late");
-//			title = "Abfahrt: " +plannedStartTime
-//			+" Bei Patient: " +plannedTimeAtPatient
-//			+" Termin: " +term;
-//			addIconAndLabel(composite,image,title);
-//		}
-//		
-//		//aufg
-//		if(transport.getCreationTime() != 0)
-//		{
-//			image = ImageFactory.getInstance().getRegisteredImage("transport.late");
-//			title = "Aufgenommen: " +sdf.format(transport.getCreationTime());
-//			addIconAndLabel(composite,image,title);
-//		}
-//		
 //		//the notes
 //		if(transport.hasNotes())
 //		{
-//			image = ImageFactory.getInstance().getRegisteredImage("resource.info");
+//			image = ImageFactory.getInstance().getRegisteredImage("resource.user");
 //			title = transport.getNotes();
 //			addIconAndLabel(composite,image,title);
 //		}
-//		
-//		//feedback
-//		if(transport.hasFeedback())
-//		{
-//			image = ImageFactory.getInstance().getRegisteredImage("transport.feedback");
-//			title = transport.getFeedback();
-//			addIconAndLabel(composite,image,title);
-//		}
-//		
+//
 //		//directness
 //		image = ImageFactory.getInstance().getRegisteredImage("transport.directness");
 //		title = directness;
 //		addIconAndLabel(composite,image,title);
-//		
+//
 //		//caller
 //		if (transport.getCallerDetail() != null)
 //		{
@@ -184,33 +136,33 @@
 //			title = transport.getCallerDetail().getCallerName() +" " +transport.getCallerDetail().getCallerTelephoneNumber();
 //			addIconAndLabel(composite,image,title);
 //		}
-//		
+//
 //		//notified
-//		if (!(emergencyDoctor.equalsIgnoreCase("") || helicopter.equalsIgnoreCase("")|| police.equalsIgnoreCase("") || brkdt.equalsIgnoreCase("")|| df.equalsIgnoreCase("")
-//				|| firebrigade.equalsIgnoreCase("")))
+//		if (!alarming.equalsIgnoreCase(""))
 //		{
 //			image = ImageFactory.getInstance().getRegisteredImage("transport.exclamation");
-//			title = emergencyDoctor +" " +helicopter +" " +police +" " +brkdt +" " +df  +" "+firebrigade +mountainRescue;
+//			title = alarming;
 //			addIconAndLabel(composite,image,title);
 //		}
-//		
+//
+//		//rufhilfe
 //		if(transport.isEmergencyPhone())
 //		{
 //			image = ImageFactory.getInstance().getRegisteredImage("resource.phone");
-//			title = emergencyPhone;
+//			title = "Rufhilfepatient";
 //			addIconAndLabel(composite,image,title);
 //		}
-//		
-//		if(transport.getKindOfIllness() != null)
+//
+//		if(transport.isBackTransport())
 //		{
-//			image = ImageFactory.getInstance().getRegisteredImage("transport.heart");
-//			title = transport.getKindOfIllness().getDiseaseName();
+//			image = ImageFactory.getInstance().getRegisteredImage("transport.backtransport");
+//			title = "Rücktransport möglich";
 //			addIconAndLabel(composite,image,title);
 //		}
 //
 //		return composite;
 //	}  
-//	
+//
 //	protected void addIconAndLabel(Composite parent, Image image, String text) 
 //	{
 //		Label imageLabel = new Label(parent, SWT.NONE);
@@ -225,7 +177,7 @@
 //		textLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_CENTER));
 //		textLabel.setText(text);
 //	}
-//	
+//
 //	/**
 //	 * Creates the tool tip content area for the tool tip
 //	 * @param parent the parent window
@@ -242,7 +194,7 @@
 //		composite.setBackground(composite.getDisplay().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
 //		return composite;
 //	}
-//	
+//
 //	/**
 //	 * Returns the widget source for this tool tip
 //	 * @param event the event triggered
@@ -252,7 +204,7 @@
 //	{
 //		Point widgetPosition = new Point(event.x, event.y);
 //		Widget widget = event.widget;
-//		
+//
 //		if (widget instanceof Table) 
 //		{
 //			Table w = (Table) widget;
@@ -261,7 +213,7 @@
 //
 //		return widget;
 //	}
-//	
+//
 //	/**
 //	 * Returns the element for this tool tip
 //	 * @param hoverObject the object under hover
@@ -279,7 +231,7 @@
 //		}
 //		return null;
 //	}
-//	
+//
 //	/**
 //	 * Hides the tool tip window
 //	 */

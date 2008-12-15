@@ -1,20 +1,9 @@
 package at.rc.tacos.client.ui.perspectives;
 
-import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
 import at.rc.tacos.client.ui.view.NavigationView;
-import at.rc.tacos.client.view.admin.AddressAdminView;
-import at.rc.tacos.client.view.admin.CompetenceAdminView;
-import at.rc.tacos.client.view.admin.DiseaseAdminView;
-import at.rc.tacos.client.view.admin.JobAdminView;
-import at.rc.tacos.client.view.admin.LocationAdminView;
-import at.rc.tacos.client.view.admin.PhoneAdminView;
-import at.rc.tacos.client.view.admin.ServiceTypeAdminView;
-import at.rc.tacos.client.view.admin.SickPersonAdminView;
-import at.rc.tacos.client.view.admin.StaffMemberAdminView;
-import at.rc.tacos.client.view.admin.VehicleAdminView;
 
 /**
  * The perspective for the administrator
@@ -40,16 +29,16 @@ public class AdminPerspective implements IPerspectiveFactory {
 		layout.addStandaloneView(NavigationView.ID, false, IPageLayout.TOP, 0.10f, editorArea);
 
 		// Create a folder on the left
-		IFolderLayout left = layout.createFolder("left", IPageLayout.LEFT, 0.32f, editorArea);
-		left.addView(StaffMemberAdminView.ID);
-		left.addView(VehicleAdminView.ID);
-		left.addView(LocationAdminView.ID);
-		left.addView(PhoneAdminView.ID);
-		left.addView(CompetenceAdminView.ID);
-		left.addView(JobAdminView.ID);
-		left.addView(ServiceTypeAdminView.ID);
-		left.addView(SickPersonAdminView.ID);
-		left.addView(AddressAdminView.ID);
-		left.addView(DiseaseAdminView.ID);
+//		IFolderLayout left = layout.createFolder("left", IPageLayout.LEFT, 0.32f, editorArea);
+//		left.addView(StaffMemberAdminView.ID);
+//		left.addView(VehicleAdminView.ID);
+//		left.addView(LocationAdminView.ID);
+//		left.addView(PhoneAdminView.ID);
+//		left.addView(CompetenceAdminView.ID);
+//		left.addView(JobAdminView.ID);
+//		left.addView(ServiceTypeAdminView.ID);
+//		left.addView(SickPersonAdminView.ID);
+//		left.addView(AddressAdminView.ID);
+//		left.addView(DiseaseAdminView.ID);
 	}
 }

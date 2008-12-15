@@ -32,7 +32,7 @@ import at.rc.tacos.client.net.handler.LockHandler;
 import at.rc.tacos.client.net.handler.VehicleHandler;
 import at.rc.tacos.client.providers.VehicleContentProvider;
 import at.rc.tacos.client.providers.VehicleViewTableDetailLabelProvider;
-import at.rc.tacos.client.view.sorterAndTooltip.VehicleViewTableSorter;
+import at.rc.tacos.client.ui.sorterAndTooltip.VehicleViewTableSorter;
 import at.rc.tacos.platform.model.Job;
 import at.rc.tacos.platform.model.Lock;
 import at.rc.tacos.platform.model.RosterEntry;
