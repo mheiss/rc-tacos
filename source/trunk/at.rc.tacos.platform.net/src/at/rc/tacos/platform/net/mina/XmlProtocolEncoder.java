@@ -15,7 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.rc.tacos.platform.net.Message;
-import at.rc.tacos.platform.net.XStream2;
+import at.rc.tacos.platform.xstream.XStream2;
 
 /**
  * <p>

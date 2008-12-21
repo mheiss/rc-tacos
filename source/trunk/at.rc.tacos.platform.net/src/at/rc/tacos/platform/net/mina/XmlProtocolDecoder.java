@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.rc.tacos.platform.net.Message;
-import at.rc.tacos.platform.net.XStream2;
+import at.rc.tacos.platform.xstream.XStream2;
 
 import com.thoughtworks.xstream.XStreamException;
 
@@ -58,7 +58,6 @@ public class XmlProtocolDecoder extends TextLineDecoder {
 	 */
 	@Override
 	protected void writeText(IoSession session, String text, ProtocolDecoderOutput out) {
-
 		// try to decode the message
 		try {
 			Object message = xStream.fromXML(text);
@@ -72,7 +71,8 @@ public class XmlProtocolDecoder extends TextLineDecoder {
 			out.write(message);
 		}
 		catch (XStreamException xse) {
-			logAndThrowException("Failed to decode the message body: " + xse.getMessage(), xse.getCause());
+			logAndThrowException("Failed to decode the message: " + xse.getMessage(), xse);
+			xse.printStackTrace();
 		}
 	}
 
@@ -86,6 +86,7 @@ public class XmlProtocolDecoder extends TextLineDecoder {
 	 */
 	private void logAndThrowException(String message, Throwable error) {
 		log.error(message, error);
+		error.printStackTrace();
 		throw new IllegalArgumentException(message, error);
 	}
 }

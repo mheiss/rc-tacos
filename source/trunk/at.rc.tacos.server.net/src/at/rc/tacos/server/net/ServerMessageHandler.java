@@ -48,7 +48,7 @@ public class ServerMessageHandler implements MessageHandler {
 		DbalServiceFactory serviceFactory = serverContext.getDbalServiceFactory();
 		DataSource dataSource = serverContext.getDataSource();
 
-		long start = System.currentTimeMillis();
+		long startResolve = System.currentTimeMillis();
 
 		// assert we have a connection
 		Connection connection = dataSource.getConnection();
@@ -62,42 +62,24 @@ public class ServerMessageHandler implements MessageHandler {
 			throw new NoSuchHandlerException(firstElement.getClass().getName());
 		}
 
-		// now inject the needed services by this handler
-		// and for all dependend services
+		// inject the needed services by this handler and all dependend services
 		ServiceAnnotationResolver resolver = new ServiceAnnotationResolver(serviceFactory);
 		List<Object> resolvedServices = resolver.resolveAnnotations(handler);
 		// now check if the resolved services need a data source
 		DataSourceResolver dataSourceResolver = new DataSourceResolver(connection);
-		List<Object> resolvedSources = dataSourceResolver.resolveAnnotations(resolvedServices.toArray());
+		dataSourceResolver.resolveAnnotations(resolvedServices.toArray());
 
-		long end = System.currentTimeMillis();
-
-		// print out debugging information
-		if (log.isTraceEnabled()) {
-			// the handlers
-			StringBuffer buffer = new StringBuffer();
-			for (Object obj : resolvedServices) {
-				buffer.append(obj.getClass().getSimpleName());
-			}
-			log.trace("Resolved handlers: " + buffer.toString());
-
-			// the resources
-			buffer = new StringBuffer();
-			for (Object obj : resolvedSources) {
-				buffer.append(obj.getClass().getSimpleName());
-			}
-			log.trace("Data source set for: " + buffer.toString());
-		}
+		long endResolve = System.currentTimeMillis();
 
 		// log the results
 		if (log.isDebugEnabled()) {
-			log.debug("Resolving the request agains " + handler.getClass().getSimpleName() + " took " + (end - start) + " ms");
+			log.debug("Resolving the request agains " + handler.getClass().getSimpleName() + " took " + (endResolve - startResolve) + " ms");
 		}
 
 		// create a savepoint bevor handling the request
+		long startHandle = System.currentTimeMillis();
 		connection.setAutoCommit(false);
 		connection.setSavepoint();
-
 		try {
 
 			// now handle the request
@@ -137,9 +119,12 @@ public class ServerMessageHandler implements MessageHandler {
 			// send back to the client
 			session.writeError(message, errorMessage);
 		}
-
 		// close the connection
 		connection.close();
+		long endHandle = System.currentTimeMillis();
+		if (log.isDebugEnabled()) {
+			log.debug("Handling the request agains " + handler.getClass().getSimpleName() + " took " + (endHandle - startHandle) + " ms");
+		}
 	}
 
 	@Override
