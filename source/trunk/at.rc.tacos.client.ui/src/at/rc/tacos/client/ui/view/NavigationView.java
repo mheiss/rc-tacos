@@ -14,7 +14,7 @@ import at.rc.tacos.client.controller.OpenDialysisTransportAction;
 import at.rc.tacos.client.controller.OpenEmergencyTransportAction;
 import at.rc.tacos.client.controller.OpenTransportAction;
 import at.rc.tacos.client.controller.PersonalNewEntryAction;
-import at.rc.tacos.client.ui.Activator;
+import at.rc.tacos.client.ui.UiWrapper;
 import at.rc.tacos.client.ui.custom.MyToolbarManager;
 import at.rc.tacos.client.ui.utils.CustomColors;
 
@@ -28,7 +28,7 @@ public class NavigationView extends ViewPart {
 	public static final String ID = "at.rc.tacos.client.view.navigation";
 
 	// properties
-	private ImageRegistry imageRegistry = Activator.getDefault().getImageRegistry();
+	private ImageRegistry imageRegistry = UiWrapper.getDefault().getImageRegistry();
 
 	@Override
 	public void createPartControl(Composite parent) {

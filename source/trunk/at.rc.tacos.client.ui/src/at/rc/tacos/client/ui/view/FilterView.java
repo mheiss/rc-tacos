@@ -26,7 +26,7 @@ import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.client.net.NetWrapper;
 import at.rc.tacos.client.providers.TransportViewFilter;
-import at.rc.tacos.client.ui.Activator;
+import at.rc.tacos.client.ui.UiWrapper;
 import at.rc.tacos.client.ui.ListenerConstants;
 import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.platform.iface.IFilterTypes;
@@ -158,7 +158,7 @@ public class FilterView extends ViewPart {
 				Object newValue = cal;
 				PropertyChangeEvent event = new PropertyChangeEvent(source, propertyName, oldValue, newValue);
 				// inform the listeners
-				Activator.getDefault().firePropertyChangeEvent(event);
+				UiWrapper.getDefault().firePropertyChangeEvent(event);
 			}
 		});
 	}
@@ -206,7 +206,7 @@ public class FilterView extends ViewPart {
 		// Create the hyperlink to import the data
 		applyFilter = toolkit.createImageHyperlink(filter, SWT.NONE);
 		applyFilter.setText("Transporte filtern");
-		applyFilter.setImage(Activator.getDefault().getImageRegistry().get("resource.import"));
+		applyFilter.setImage(UiWrapper.getDefault().getImageRegistry().get("resource.import"));
 		applyFilter.addHyperlinkListener(new HyperlinkAdapter() {
 
 			@Override
@@ -230,14 +230,14 @@ public class FilterView extends ViewPart {
 				Object oldValue = null;
 				Object newValue = new TransportViewFilter(strTrNr, strFrom, strPat, strTo, strLocation, strPriority, strVehicle, strDisease);
 				PropertyChangeEvent event = new PropertyChangeEvent(source, propertyName, oldValue, newValue);
-				Activator.getDefault().firePropertyChangeEvent(event);
+				UiWrapper.getDefault().firePropertyChangeEvent(event);
 			}
 		});
 
 		// create the hyperlink to add a new job
 		resetFilter = toolkit.createImageHyperlink(filter, SWT.NONE);
 		resetFilter.setText("Einschränkungen entfernen");
-		resetFilter.setImage(Activator.getDefault().getImageRegistry().get("admin.addressAdd"));
+		resetFilter.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.addressAdd"));
 		resetFilter.addHyperlinkListener(new HyperlinkAdapter() {
 
 			@Override
@@ -260,7 +260,7 @@ public class FilterView extends ViewPart {
 				Object oldValue = null;
 				Object newValue = null;
 				PropertyChangeEvent event = new PropertyChangeEvent(source, propertyName, oldValue, newValue);
-				Activator.getDefault().firePropertyChangeEvent(event);
+				UiWrapper.getDefault().firePropertyChangeEvent(event);
 			}
 		});
 

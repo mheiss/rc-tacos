@@ -2,7 +2,7 @@ package at.rc.tacos.client.ui.perspectives;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 
-import at.rc.tacos.client.ui.Activator;
+import at.rc.tacos.client.ui.UiWrapper;
 
 /**
  * Switches to the journal perspective
@@ -20,7 +20,7 @@ public class SwitchToTransportJournalPerspective extends AbstractPerspectiveSwit
 	 */
 	@Override
 	public ImageDescriptor getImageDescriptor() {
-		return Activator.getDefault().getImageRegistry().getDescriptor("toolbar.transportJournal");
+		return UiWrapper.getDefault().getImageRegistry().getDescriptor("toolbar.transportJournal");
 	}
 
 	/**

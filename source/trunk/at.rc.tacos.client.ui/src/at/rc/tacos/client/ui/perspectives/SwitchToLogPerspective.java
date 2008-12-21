@@ -2,7 +2,7 @@ package at.rc.tacos.client.ui.perspectives;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 
-import at.rc.tacos.client.ui.Activator;
+import at.rc.tacos.client.ui.UiWrapper;
 
 /**
  * This is a workbench action to switch to the log perspective
@@ -20,7 +20,7 @@ public class SwitchToLogPerspective extends AbstractPerspectiveSwitcher {
 	 */
 	@Override
 	public ImageDescriptor getImageDescriptor() {
-		return Activator.getDefault().getImageRegistry().getDescriptor("toolbar.log");
+		return UiWrapper.getDefault().getImageRegistry().getDescriptor("toolbar.log");
 	}
 
 	/**

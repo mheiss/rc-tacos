@@ -2,7 +2,7 @@ package at.rc.tacos.client.ui.perspectives;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 
-import at.rc.tacos.client.ui.Activator;
+import at.rc.tacos.client.ui.UiWrapper;
 
 public class SwitchToTransportPrebookingPerspective extends AbstractPerspectiveSwitcher {
 
@@ -15,7 +15,7 @@ public class SwitchToTransportPrebookingPerspective extends AbstractPerspectiveS
 	 */
 	@Override
 	public ImageDescriptor getImageDescriptor() {
-		return Activator.getDefault().getImageRegistry().getDescriptor("toolbar.transportPrebooking");
+		return UiWrapper.getDefault().getImageRegistry().getDescriptor("toolbar.transportPrebooking");
 	}
 
 	/**

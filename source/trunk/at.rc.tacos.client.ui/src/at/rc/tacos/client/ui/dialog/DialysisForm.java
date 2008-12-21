@@ -40,7 +40,7 @@ import at.rc.tacos.client.net.handler.AddressHandler;
 import at.rc.tacos.client.net.handler.LocationHandler;
 import at.rc.tacos.client.providers.StationContentProvider;
 import at.rc.tacos.client.providers.StationLabelProvider;
-import at.rc.tacos.client.ui.Activator;
+import at.rc.tacos.client.ui.UiWrapper;
 import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.platform.iface.IFilterTypes;
 import at.rc.tacos.platform.iface.IKindOfTransport;
@@ -254,7 +254,7 @@ public class DialysisForm implements IKindOfTransport, DataChangeListener<Addres
 			}
 		});
 		shell.setLayout(new FormLayout());
-		shell.setImage(Activator.getDefault().getImageRegistry().get("application.logo"));
+		shell.setImage(UiWrapper.getDefault().getImageRegistry().get("application.logo"));
 		shell.setText("Dialysepatient");
 
 		transportdatenGroup = new Group(shell, SWT.NONE);
@@ -1163,7 +1163,7 @@ public class DialysisForm implements IKindOfTransport, DataChangeListener<Addres
 		fd_label_1.bottom = new FormAttachment(0, 75);
 		fd_label_1.top = new FormAttachment(0, 1);
 		label_1.setLayoutData(fd_label_1);
-		label_1.setBackgroundImage(Activator.getDefault().getImageRegistry().get("application.logo"));
+		label_1.setBackgroundImage(UiWrapper.getDefault().getImageRegistry().get("application.logo"));
 		shell.setTabList(new Control[] { planungGroup, patientenzustandGroup, transportdatenGroup, okButton, abbrechenButton, dialysetransportLabel,
 				dialysetransportBearbeitenLabel, composite });
 	}

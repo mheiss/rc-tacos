@@ -7,7 +7,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.Display;
 
-import at.rc.tacos.client.net.NetWrapper;
+import at.rc.tacos.client.net.NetActivator;
 import at.rc.tacos.client.providers.PatientViewFilter;
 import at.rc.tacos.platform.iface.IFilterTypes;
 import at.rc.tacos.platform.model.QueryFilter;
@@ -42,7 +42,7 @@ public class FilterPatientJob extends Job
 			return Status.OK_STATUS;
 		
 		//send a request to the server to list all matching patients
-		NetWrapper.getDefault().requestListing(SickPerson.ID,new QueryFilter(IFilterTypes.SEARCH_STRING,searchString));
+		NetActivator.getDefault().requestListing(SickPerson.ID,new QueryFilter(IFilterTypes.SEARCH_STRING,searchString));
 		
 		//apply the filter
 		Display.getDefault().asyncExec(new Runnable ()    

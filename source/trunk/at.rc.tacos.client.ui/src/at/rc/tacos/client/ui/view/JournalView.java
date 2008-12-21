@@ -45,7 +45,7 @@ import at.rc.tacos.client.providers.JournalViewLabelProvider;
 import at.rc.tacos.client.providers.TransportDateFilter;
 import at.rc.tacos.client.providers.TransportStateViewFilter;
 import at.rc.tacos.client.providers.TransportViewFilter;
-import at.rc.tacos.client.ui.Activator;
+import at.rc.tacos.client.ui.UiWrapper;
 import at.rc.tacos.client.ui.ListenerConstants;
 import at.rc.tacos.client.ui.sorterAndTooltip.JournalViewTooltip;
 import at.rc.tacos.client.ui.sorterAndTooltip.TransportSorter;
@@ -85,7 +85,7 @@ public class JournalView extends ViewPart implements DataChangeListener<Object>,
 	public void dispose() {
 		NetWrapper.removeListener(this, Transport.class);
 		NetWrapper.removeListener(this, Lock.class);
-		Activator.getDefault().removeListener(this);
+		UiWrapper.getDefault().removeListener(this);
 		super.dispose();
 	}
 
@@ -324,7 +324,7 @@ public class JournalView extends ViewPart implements DataChangeListener<Object>,
 		viewer.refresh();
 
 		// register as transport date and view listener
-		Activator.getDefault().registerListener(this);
+		UiWrapper.getDefault().registerListener(this);
 		NetWrapper.registerListener(this, Transport.class);
 		NetWrapper.registerListener(this, Lock.class);
 	}

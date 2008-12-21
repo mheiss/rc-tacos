@@ -72,7 +72,7 @@ import at.rc.tacos.client.providers.StaffMemberLabelProvider;
 import at.rc.tacos.client.providers.StationContentProvider;
 import at.rc.tacos.client.providers.StationLabelProvider;
 import at.rc.tacos.client.providers.VehicleAssignLabelProvider;
-import at.rc.tacos.client.ui.Activator;
+import at.rc.tacos.client.ui.UiWrapper;
 import at.rc.tacos.client.ui.sorterAndTooltip.TransportSorter;
 import at.rc.tacos.client.ui.sorterAndTooltip.VehicleSorter;
 import at.rc.tacos.client.ui.utils.CustomColors;
@@ -236,7 +236,7 @@ public class TransportForm extends TitleAreaDialog implements DataChangeListener
     // the handlers
     private String username = NetWrapper.getSession().getUsername();
     private String authorization = NetWrapper.getSession().getLogin().getAuthorization();
-    private ImageRegistry imageRegistry = Activator.getDefault().getImageRegistry();
+    private ImageRegistry imageRegistry = UiWrapper.getDefault().getImageRegistry();
 
     private AddressHandler addressHandler = (AddressHandler) NetWrapper.getHandler(Address.class);
     private DiseaseHandler diseaseHandler = (DiseaseHandler) NetWrapper.getHandler(Disease.class);

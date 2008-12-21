@@ -10,8 +10,6 @@ import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -19,6 +17,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Text;
+
+import at.rc.tacos.client.ui.utils.FontUtils;
 
 /**
  * Helper class for creating fields with label and text. With the attached
@@ -50,6 +50,9 @@ public class FieldEntry extends Composite implements FocusListener, ModifyListen
 	// the controls
 	private Label label;
 	private Text text;
+
+	// required indicator
+	private boolean required;
 
 	// validation message
 	private String lastValidationMessage = null;
@@ -150,11 +153,14 @@ public class FieldEntry extends Composite implements FocusListener, ModifyListen
 
 	@Override
 	public void focusLost(FocusEvent e) {
-		if (!containsText()) {
-			doReset();
+		// if the field is required then empty text is not allowed
+		if (isRequired()) {
+			doValidate();
 			return;
 		}
-		doValidate();
+		if (!containsText()) {
+			doReset();
+		}
 	}
 
 	@Override
@@ -203,6 +209,7 @@ public class FieldEntry extends Composite implements FocusListener, ModifyListen
 	 * @return true if the content is valid otherwise false
 	 */
 	public boolean isValid() {
+		doValidate();
 		return lastValidationMessage == null ? true : false;
 	}
 
@@ -224,6 +231,7 @@ public class FieldEntry extends Composite implements FocusListener, ModifyListen
 	 * Sets this field as required field and sets the required decorator.
 	 */
 	public void setRequired() {
+		this.required = true;
 		// create the decorator
 		FieldDecoration decRequired = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_REQUIRED);
 		decRequired.setDescription("Eingabe erforderlich");
@@ -232,16 +240,15 @@ public class FieldEntry extends Composite implements FocusListener, ModifyListen
 		requiredDecorator.setDescriptionText(decRequired.getDescription());
 		requiredDecorator.setImage(decRequired.getImage());
 		// set the label to bold
-		FontData[] datas = label.getFont().getFontData();
-		for (FontData data : datas) {
-			data.setStyle(SWT.BOLD);
-		}
-		Font bold = new Font(Display.getCurrent(), datas);
-		label.setFont(bold);
+		label.setFont(FontUtils.getBold(label.getFont()));
 	}
-	
+
+	public boolean isRequired() {
+		return required;
+	}
+
 	/**
-	 *  Disables the textfield so that it cannot be edited
+	 * Disables the textfield so that it cannot be edited
 	 */
 	public void setDisabled() {
 		text.setEditable(false);
@@ -280,5 +287,15 @@ public class FieldEntry extends Composite implements FocusListener, ModifyListen
 	@Override
 	public void setLayoutData(Object layoutData) {
 		// managed by the component
+	}
+
+	/**
+	 * Sets the fous to the input field
+	 */
+	@Override
+	public boolean setFocus() {
+		boolean hasFocus = text.setFocus();
+		doReset();
+		return hasFocus;
 	}
 }

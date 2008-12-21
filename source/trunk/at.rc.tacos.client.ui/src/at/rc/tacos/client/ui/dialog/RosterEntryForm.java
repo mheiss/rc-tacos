@@ -35,7 +35,7 @@ import at.rc.tacos.client.providers.StaffMemberContentProvider;
 import at.rc.tacos.client.providers.StaffMemberLabelProvider;
 import at.rc.tacos.client.providers.StationContentProvider;
 import at.rc.tacos.client.providers.StationLabelProvider;
-import at.rc.tacos.client.ui.Activator;
+import at.rc.tacos.client.ui.UiWrapper;
 import at.rc.tacos.client.ui.custom.DatePicker;
 import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.platform.model.Job;
@@ -78,7 +78,7 @@ public class RosterEntryForm extends TitleAreaDialog implements DataChangeListen
 
 	// the model handlers
 	private MessageIoSession session = NetWrapper.getSession();
-	private ImageRegistry imageRegistry = Activator.getDefault().getImageRegistry();
+	private ImageRegistry imageRegistry = UiWrapper.getDefault().getImageRegistry();
 
 	private JobHandler jobHandler = (JobHandler) NetWrapper.getHandler(Job.class);
 	private LocationHandler locationHandler = (LocationHandler) NetWrapper.getHandler(Location.class);
