@@ -10,6 +10,9 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.fieldassist.FieldDecoration;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
+import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.CLabel;
@@ -33,10 +36,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.rc.tacos.client.net.NetWrapper;
+import at.rc.tacos.client.ui.UiWrapper;
 import at.rc.tacos.client.ui.custom.FieldEntry;
+import at.rc.tacos.client.ui.providers.ListContentProvider;
+import at.rc.tacos.client.ui.providers.LoginLabelProvider;
 import at.rc.tacos.client.ui.utils.FontUtils;
 import at.rc.tacos.client.ui.utils.MessageUtils;
 import at.rc.tacos.platform.model.Login;
+import at.rc.tacos.platform.model.ServerInfo;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.message.ExecMessage;
 
@@ -54,7 +61,7 @@ public class LoginSplashHandler extends AbstractSplashHandler {
 	private Composite progressComposite;
 
 	// the input controls
-	private CCombo serverCombo;
+	private ComboViewer serverViewer;
 	private FieldEntry userEntry;
 	private FieldEntry pwdEntry;
 	private Button buttonOk, buttonCancel;
@@ -155,10 +162,14 @@ public class LoginSplashHandler extends AbstractSplashHandler {
 		data.widthHint = LABEL_WIDTH;
 		serverLabel.setLayoutData(data);
 
-		serverCombo = new CCombo(serverComposite, SWT.BORDER);
+		serverViewer = new ComboViewer(new CCombo(serverComposite, SWT.BORDER));
 		data = new GridData();
 		data.widthHint = INPUT_WIDTH + 5;
-		serverCombo.setLayoutData(data);
+		serverViewer.getCCombo().setLayoutData(data);
+		serverViewer.setLabelProvider(new LoginLabelProvider());
+		serverViewer.setContentProvider(new ListContentProvider());
+		serverViewer.setInput(UiWrapper.getDefault().getClientContext().getServers());
+		serverViewer.setSelection(new StructuredSelection(serverViewer.getElementAt(0)));
 
 		// create the controls
 		Composite controlComposite = new Composite(loginComposite, SWT.NONE);
@@ -279,17 +290,23 @@ public class LoginSplashHandler extends AbstractSplashHandler {
 			Display.getDefault().beep();
 			return;
 		}
+		if (serverViewer.getSelection().isEmpty()) {
+			MessageUtils.showSyncErrorMessage("Server auswählen", "Bitte wählen Sie einen Server aus");
+			return;
+		}
+		IStructuredSelection selection = (IStructuredSelection) serverViewer.getSelection();
+		ServerInfo serverInfo = (ServerInfo) selection.getFirstElement();
 
 		stackLayout.topControl = progressComposite;
 		client.layout(true);
 
 		// try to open a connection to the selected server
-		InetSocketAddress addr = NetWrapper.getInstance().getClientContext().getINetSocketList().get(0);
 		try {
-			NetWrapper.getInstance().openConnection(addr);
+			InetSocketAddress socketAddr = new InetSocketAddress(serverInfo.getHostName(), serverInfo.getPort());
+			NetWrapper.getInstance().openConnection(socketAddr);
 		}
 		catch (Exception e) {
-			loginFailure("Die Verbindung zum Server '" + addr.getHostName() + "' kann nicht hergestellt werden");
+			loginFailure("Die Verbindung zum Server '" + serverInfo.getHostName() + ":" + serverInfo.getPort() + "' kann nicht hergestellt werden");
 			return;
 		}
 
