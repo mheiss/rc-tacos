@@ -1,8 +1,8 @@
 package at.rc.tacos.platform.net;
 
-import java.net.InetSocketAddress;
 import java.util.List;
 
+import at.rc.tacos.platform.model.ServerInfo;
 import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.handler.HandlerFactory;
 import at.rc.tacos.platform.net.listeners.DataChangeListener;
@@ -33,11 +33,11 @@ public interface ClientContext {
 	public HandlerFactory getHandlerFactory();
 
 	/**
-	 * Returns a list of {@link InetSocketAddress} address object that are
-	 * available to connect.
+	 * Returns a list of {@link ServerInfo} instances object that are available
+	 * to connect.
 	 * 
 	 * @return the available remote hosts
 	 */
-	public List<InetSocketAddress> getINetSocketList();
+	public List<ServerInfo> getServers();
 
 }
