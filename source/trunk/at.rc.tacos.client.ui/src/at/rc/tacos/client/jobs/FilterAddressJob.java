@@ -7,7 +7,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.swt.widgets.Display;
 
-import at.rc.tacos.client.net.NetWrapper;
+import at.rc.tacos.client.net.NetActivator;
 import at.rc.tacos.client.providers.AddressAdminViewFilter;
 import at.rc.tacos.platform.iface.IFilterTypes;
 import at.rc.tacos.platform.model.Address;
@@ -58,7 +58,7 @@ public class FilterAddressJob extends Job
 			queryFilter.add(IFilterTypes.SEARCH_STRING_ZIP, strZip);
 		
 		//send a request to the server to list all matching address records
-		NetWrapper.getDefault().requestListing(Address.ID,queryFilter);
+		NetActivator.getDefault().requestListing(Address.ID,queryFilter);
 		
 		//assert we have a valid viewer to show the results
 		if(viewer != null)

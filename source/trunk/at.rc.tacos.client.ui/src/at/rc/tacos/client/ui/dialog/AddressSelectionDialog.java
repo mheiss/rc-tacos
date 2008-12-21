@@ -35,7 +35,7 @@ import at.rc.tacos.client.net.NetWrapper;
 import at.rc.tacos.client.net.handler.AddressHandler;
 import at.rc.tacos.client.providers.AddressContentProvider;
 import at.rc.tacos.client.providers.AddressLabelProvider;
-import at.rc.tacos.client.ui.Activator;
+import at.rc.tacos.client.ui.UiWrapper;
 import at.rc.tacos.platform.model.Address;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.listeners.DataChangeListener;
@@ -163,11 +163,11 @@ public class AddressSelectionDialog extends SelectionStatusDialog implements Dat
 
 			public void selectionChanged(final SelectionChangedEvent event) {
 				if (!event.getSelection().isEmpty())
-					updateStatus(new Status(IStatus.INFO, Activator.PLUGIN_ID, ((Address) ((IStructuredSelection) event.getSelection())
+					updateStatus(new Status(IStatus.INFO, UiWrapper.PLUGIN_ID, ((Address) ((IStructuredSelection) event.getSelection())
 							.getFirstElement()).toString()
 							+ " ausgewählt"));
 				else
-					updateStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Bitte wählen Sie eine Adresse aus"));
+					updateStatus(new Status(IStatus.ERROR, UiWrapper.PLUGIN_ID, "Bitte wählen Sie eine Adresse aus"));
 			}
 		});
 
@@ -213,12 +213,12 @@ public class AddressSelectionDialog extends SelectionStatusDialog implements Dat
 		viewer.refresh(true);
 		final Object first = viewer.getElementAt(0);
 		if (first == null) {
-			updateStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Bitte wählen Sie eine Adresse aus."));
+			updateStatus(new Status(IStatus.ERROR, UiWrapper.PLUGIN_ID, "Bitte wählen Sie eine Adresse aus."));
 			return;
 		}
 		// show the new address objects
 		AddressSelectionDialog.this.viewer.setSelection(new StructuredSelection(first));
-		updateStatus(new Status(IStatus.INFO, Activator.PLUGIN_ID, ((Address) first).toString() + " ausgewählt"));
+		updateStatus(new Status(IStatus.INFO, UiWrapper.PLUGIN_ID, ((Address) first).toString() + " ausgewählt"));
 	}
 
 	// PRIVATE METHODS
@@ -237,11 +237,11 @@ public class AddressSelectionDialog extends SelectionStatusDialog implements Dat
 
 		// check the length of the entered text
 		if (strStreet.length() < 1 && strCity.length() < 1) {
-			updateStatus(new Status(Status.WARNING, Activator.PLUGIN_ID, "Bitte geben sie mindestens ein Zeichen"));
+			updateStatus(new Status(Status.WARNING, UiWrapper.PLUGIN_ID, "Bitte geben sie mindestens ein Zeichen"));
 			Display.getCurrent().beep();
 			return;
 		}
-		updateStatus(new Status(IStatus.INFO, Activator.PLUGIN_ID, "Bitte wählen Sie eine Addresse aus"));
+		updateStatus(new Status(IStatus.INFO, UiWrapper.PLUGIN_ID, "Bitte wählen Sie eine Addresse aus"));
 
 		// check the state
 		if (filterJob.getState() == Job.RUNNING) {

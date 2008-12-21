@@ -33,7 +33,7 @@ import at.rc.tacos.client.net.NetWrapper;
 import at.rc.tacos.client.net.handler.SickPersonHandler;
 import at.rc.tacos.client.providers.SickPersonContentProvider;
 import at.rc.tacos.client.providers.SickPersonLabelProvider;
-import at.rc.tacos.client.ui.Activator;
+import at.rc.tacos.client.ui.UiWrapper;
 import at.rc.tacos.platform.model.SickPerson;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.listeners.DataChangeListener;
@@ -119,12 +119,12 @@ public class PatientSelectionDialog extends SelectionStatusDialog implements Dat
 					SickPerson person = (SickPerson) selection.getFirstElement();
 					String text = person.getLastName() + " ausgewählt";
 					// update the status
-					Status status = new Status(IStatus.INFO, Activator.PLUGIN_ID, text);
+					Status status = new Status(IStatus.INFO, UiWrapper.PLUGIN_ID, text);
 					updateStatus(status);
 					return;
 				}
 				// nothing selected
-				updateStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Bitte wählen Sie einen Patienten aus"));
+				updateStatus(new Status(IStatus.ERROR, UiWrapper.PLUGIN_ID, "Bitte wählen Sie einen Patienten aus"));
 			}
 		});
 
@@ -179,10 +179,10 @@ public class PatientSelectionDialog extends SelectionStatusDialog implements Dat
 		final Object first = viewer.getElementAt(0);
 		if (first != null) {
 			PatientSelectionDialog.this.viewer.setSelection(new StructuredSelection(first));
-			updateStatus(new Status(IStatus.INFO, Activator.PLUGIN_ID, ((SickPerson) first).getLastName() + " ausgewählt"));
+			updateStatus(new Status(IStatus.INFO, UiWrapper.PLUGIN_ID, ((SickPerson) first).getLastName() + " ausgewählt"));
 		}
 		else
-			updateStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Bitte wählen Sie einen Patienten aus"));
+			updateStatus(new Status(IStatus.ERROR, UiWrapper.PLUGIN_ID, "Bitte wählen Sie einen Patienten aus"));
 	}
 
 	// PRIVATE METHODS
@@ -193,10 +193,10 @@ public class PatientSelectionDialog extends SelectionStatusDialog implements Dat
 		// get the entered text
 		String filterValue = filterText.getText().toLowerCase();
 		if (filterValue.trim().length() < 1) {
-			updateStatus(new Status(Status.WARNING, Activator.PLUGIN_ID, "Bitte geben sie mindestens ein Zeichen des Nachnamens ein"));
+			updateStatus(new Status(Status.WARNING, UiWrapper.PLUGIN_ID, "Bitte geben sie mindestens ein Zeichen des Nachnamens ein"));
 			return;
 		}
-		updateStatus(new Status(IStatus.INFO, Activator.PLUGIN_ID, "Bitte wählen Sie einen Patienten aus"));
+		updateStatus(new Status(IStatus.INFO, UiWrapper.PLUGIN_ID, "Bitte wählen Sie einen Patienten aus"));
 
 		if (filterJob == null)
 			filterJob = new FilterPatientJob(viewer);

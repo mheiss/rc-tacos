@@ -20,7 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.rc.tacos.client.net.NetWrapper;
-import at.rc.tacos.client.ui.Activator;
+import at.rc.tacos.client.ui.UiWrapper;
 import at.rc.tacos.client.ui.custom.FieldEntry;
 import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.client.ui.utils.TimeValidator;
@@ -45,7 +45,7 @@ public class TransportStatusDialog extends TitleAreaDialog {
 	private Transport transport;
 
 	// common helper classes
-	private ImageRegistry imageRegistry = Activator.getDefault().getImageRegistry();
+	private ImageRegistry imageRegistry = UiWrapper.getDefault().getImageRegistry();
 
 	/**
 	 * Creates a new instance of a <code>TransportStatiForm</code>.

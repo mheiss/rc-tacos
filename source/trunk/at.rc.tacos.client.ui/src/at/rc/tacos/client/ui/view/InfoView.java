@@ -35,7 +35,7 @@ import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.client.net.NetWrapper;
 import at.rc.tacos.client.net.handler.DayInfoHandler;
-import at.rc.tacos.client.ui.Activator;
+import at.rc.tacos.client.ui.UiWrapper;
 import at.rc.tacos.client.ui.ListenerConstants;
 import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.platform.iface.IFilterTypes;
@@ -89,7 +89,7 @@ public class InfoView extends ViewPart implements DataChangeListener<Object> {
 
 	// the handler
 	private DayInfoHandler dayInfoHandler = (DayInfoHandler) NetWrapper.getHandler(DayInfoMessage.class);
-	private ImageRegistry imageRegistry = Activator.getDefault().getImageRegistry();
+	private ImageRegistry imageRegistry = UiWrapper.getDefault().getImageRegistry();
 
 	/**
 	 * Cleanup the view
@@ -299,7 +299,7 @@ public class InfoView extends ViewPart implements DataChangeListener<Object> {
 				Object newValue = cal;
 				PropertyChangeEvent event = new PropertyChangeEvent(source, propertyName, oldValue, newValue);
 				// inform the listeners
-				Activator.getDefault().firePropertyChangeEvent(event);
+				UiWrapper.getDefault().firePropertyChangeEvent(event);
 			}
 		});
 	}

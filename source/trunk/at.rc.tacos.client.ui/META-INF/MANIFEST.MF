@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Client Plug-in
 Bundle-SymbolicName: at.rc.tacos.client.ui;singleton:=true
 Bundle-Version: 1.0.0
-Bundle-Activator: at.rc.tacos.client.ui.Activator
+Bundle-Activator: at.rc.tacos.client.ui.UiWrapper
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources;bundle-version="3.4.1",

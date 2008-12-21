@@ -49,7 +49,7 @@ import at.rc.tacos.client.providers.TransportDateFilter;
 import at.rc.tacos.client.providers.TransportDirectnessFilter;
 import at.rc.tacos.client.providers.TransportStateViewFilter;
 import at.rc.tacos.client.providers.TransportViewFilter;
-import at.rc.tacos.client.ui.Activator;
+import at.rc.tacos.client.ui.UiWrapper;
 import at.rc.tacos.client.ui.ListenerConstants;
 import at.rc.tacos.client.ui.sorterAndTooltip.JournalViewTooltip;
 import at.rc.tacos.client.ui.sorterAndTooltip.TransportSorter;
@@ -129,7 +129,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 	public void dispose() {
 		NetWrapper.removeListener(this, Lock.class);
 		NetWrapper.removeListener(this, Transport.class);
-		Activator.getDefault().removeListener(this);
+		UiWrapper.getDefault().removeListener(this);
 	}
 
 	/**
@@ -237,7 +237,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		// register listeners to keep in track
 		NetWrapper.registerListener(this, Lock.class);
 		NetWrapper.registerListener(this, Transport.class);
-		Activator.getDefault().registerListener(this);
+		UiWrapper.getDefault().registerListener(this);
 	}
 
 	/**
