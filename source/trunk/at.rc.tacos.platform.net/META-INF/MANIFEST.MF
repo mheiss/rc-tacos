@@ -48,6 +48,7 @@ Export-Package: at.rc.tacos.platform.net,
  org.apache.mina.util
 Require-Bundle: at.rc.tacos.platform.log;bundle-version="1.0.0",
  at.rc.tacos.platform.model;bundle-version="1.0.0",
- at.rc.tacos.platform.xstream;bundle-version="1.0.0",
+ at.rc.tacos.platform.xstream;bundle-version="1.0.0";visibility:=reexport,
  at.rc.tacos.platform.services;bundle-version="1.0.0"
 Bundle-Vendor: FH-Joanneum / ITM
+Eclipse-RegisterBuddy: at.rc.tacos.platform.xstream

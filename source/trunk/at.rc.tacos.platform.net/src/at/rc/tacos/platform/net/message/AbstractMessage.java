@@ -102,10 +102,10 @@ public abstract class AbstractMessage<T> implements Message<T>, Request<T> {
 	 */
 	@Override
 	public Message<T> synchronRequest(IoSession session) throws Exception {
+		if (session == null) {
+			throw new IllegalArgumentException("The session cannot be null");
+		}
 		try {
-			if (session == null)
-				throw new IllegalArgumentException("The session cannot be null");
-
 			// setup and initialize the values to send
 			init();
 
@@ -113,8 +113,8 @@ public abstract class AbstractMessage<T> implements Message<T>, Request<T> {
 			UUID requestIdentifier = UUID.fromString(id);
 
 			// wait for the response
-			session.write(this);
 			session.getConfig().setUseReadOperation(true);
+			session.write(this);
 
 			// flag to determine if we have a response
 			boolean validResponse = false;
