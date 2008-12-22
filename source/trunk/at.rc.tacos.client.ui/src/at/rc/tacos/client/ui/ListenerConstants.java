@@ -2,7 +2,7 @@ package at.rc.tacos.client.ui;
 
 import java.util.Calendar;
 
-import at.rc.tacos.client.providers.TransportViewFilter;
+import at.rc.tacos.client.ui.filters.TransportViewFilter;
 import at.rc.tacos.client.ui.view.FilterView;
 import at.rc.tacos.client.ui.view.InfoView;
 

@@ -14,6 +14,7 @@ public class ServerInfo {
 	private int port;
 	private String hostName;
 	private String description;
+	private boolean defaultServer;
 
 	/**
 	 * Default class constructor to setup a new instance
@@ -90,6 +91,17 @@ public class ServerInfo {
 		return builder.isEquals();
 	}
 
+	/**
+	 * Sets this server entry as the default entry that should be preselected
+	 * and preferred.
+	 * 
+	 * @param defaultServer
+	 *            true to set this server as default
+	 */
+	public void setDefaultServer(boolean defaultServer) {
+		this.defaultServer = defaultServer;
+	}
+
 	public String getHostName() {
 		return hostName;
 	}
@@ -100,5 +112,14 @@ public class ServerInfo {
 
 	public String getDescription() {
 		return description;
+	}
+
+	/**
+	 * Returns whether this server entry is the default entry.
+	 * 
+	 * @return true if this entry is the default, otherwise false
+	 */
+	public boolean isDefaultServer() {
+		return defaultServer;
 	}
 }

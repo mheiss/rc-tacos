@@ -1,4 +1,4 @@
-package at.rc.tacos.client.impl;
+package at.rc.tacos.platform.config;
 
 import java.util.ArrayList;
 import java.util.List;

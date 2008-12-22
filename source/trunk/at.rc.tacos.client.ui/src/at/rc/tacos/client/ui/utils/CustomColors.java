@@ -21,6 +21,7 @@ public final class CustomColors {
 	public static final Color COLOR_WHITE = new Color(null, 255, 255, 255);
 	public static final Color COLOR_GREY = new Color(null, 128, 128, 128);
 	public static final Color COLOR_BLUE = new Color(null, 0, 0, 255);
+	public static final Color COLOR_LIGHT_BLUE = new Color(null, 128, 128, 255);
 	public static final Color COLOR_DARK_BLUE = new Color(null, 25, 25, 112);
 
 	/** Set the default font */
