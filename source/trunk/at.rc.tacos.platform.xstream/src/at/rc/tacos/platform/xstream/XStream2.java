@@ -43,6 +43,7 @@ public class XStream2 extends XStream {
 		super.setupAliases();
 		aliasPackage("model", "at.rc.tacos.platform.model");
 		aliasPackage("message", "at.rc.tacos.platform.net.message");
+		aliasPackage("config", "at.rc.tacos.platform.config");
 	}
 
 	/**

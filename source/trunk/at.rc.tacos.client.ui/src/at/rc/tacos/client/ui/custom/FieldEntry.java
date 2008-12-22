@@ -10,6 +10,7 @@ import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -40,6 +41,12 @@ public class FieldEntry extends Composite implements FocusListener, ModifyListen
 	// the color for the invalid field
 	private final static Color COLOR_BACKGROUND = new Color(Display.getCurrent(), 255, 255, 255);
 	private final static Color COLOR_VALIDATION_ERROR = new Color(Display.getCurrent(), 255, 230, 230);
+
+	/**
+	 * The error decorator image that can be used for the field. <b>DO NOT
+	 * DISPOSE THIS IMAGE</b>.
+	 */
+	public final static Image DECORATOR_ERROR = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_ERROR).getImage();
 
 	// validators
 	private IInputValidator validator;
@@ -77,7 +84,7 @@ public class FieldEntry extends Composite implements FocusListener, ModifyListen
 	 */
 	private void init(Composite parent) {
 		super.setLayout(new GridLayout(2, false));
-		super.setLayoutData(new GridData());
+		super.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		setBackgroundMode(SWT.INHERIT_FORCE);
 		setBackground(COLOR_BACKGROUND);
 		// create the content
@@ -196,6 +203,14 @@ public class FieldEntry extends Composite implements FocusListener, ModifyListen
 		if (requiredDecorator != null) {
 			requiredDecorator.show();
 		}
+	}
+
+	/**
+	 * Resets the content of the field and removes the error decorators.
+	 */
+	public void reset() {
+		text.setText("");
+		doReset();
 	}
 
 	/**

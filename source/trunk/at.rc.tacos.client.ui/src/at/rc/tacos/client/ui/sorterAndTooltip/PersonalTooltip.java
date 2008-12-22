@@ -68,8 +68,7 @@ public class PersonalTooltip extends ToolTip {
 			text = rosterEntry.getRosterNotes();
 			addTitleAndLabel(composite, "Anmerkungen: ", text);
 		}
-		VehicleDetail assignedVehicle = null;// TODO:
-		// vehicleManager.getVehicleOfStaff(rosterEntry.getStaffMember().getStaffMemberId());
+		VehicleDetail assignedVehicle = null;// TODO: vehicleManager.getVehicleOfStaff(rosterEntry.getStaffMember().getStaffMemberId());
 		if (assignedVehicle != null) {
 			text = assignedVehicle.getVehicleName() + " als " + rosterEntry.getJob().getJobName();
 			addTitleAndLabel(composite, "Zugewiesenes Fahrzeug: ", text);

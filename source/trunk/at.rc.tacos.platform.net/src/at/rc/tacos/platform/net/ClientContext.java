@@ -1,8 +1,8 @@
 package at.rc.tacos.platform.net;
 
-import java.util.List;
+import java.io.File;
 
-import at.rc.tacos.platform.model.ServerInfo;
+import at.rc.tacos.platform.config.ClientConfiguration;
 import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.handler.HandlerFactory;
 import at.rc.tacos.platform.net.listeners.DataChangeListener;
@@ -33,11 +33,17 @@ public interface ClientContext {
 	public HandlerFactory getHandlerFactory();
 
 	/**
-	 * Returns a list of {@link ServerInfo} instances object that are available
-	 * to connect.
+	 * Returns the current {@link ClientConfiguration} instance that is attached
+	 * to this context.
 	 * 
-	 * @return the available remote hosts
+	 * @return the client configuration
 	 */
-	public List<ServerInfo> getServers();
+	public ClientConfiguration getClientConfiguration();
 
+	/**
+	 * Returns the configuration file of the client instance
+	 * 
+	 * @return the configuration file of the client.
+	 */
+	public File getConfigurationFile();
 }
