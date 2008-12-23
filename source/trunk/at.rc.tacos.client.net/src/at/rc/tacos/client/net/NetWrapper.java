@@ -123,21 +123,6 @@ public class NetWrapper {
 	}
 
 	/**
-	 * Sends the message using the current {@link IoSession} instance. This is
-	 * the recommended way to send a message asynchronous to the server.
-	 * <p>
-	 * If there is currently no valid session available then the message is
-	 * cached and will be send when the sessions is available again.
-	 * </p>
-	 * 
-	 * @param message
-	 *            the message to send to the server
-	 */
-	public static void sendMessage(Message<?> message) {
-
-	}
-
-	/**
 	 * Convenient wrapper around
 	 * {@link DataChangeListenerFactory#registerListener(DataChangeListener, Class)}
 	 * to register a listener.
