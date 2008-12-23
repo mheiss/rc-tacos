@@ -35,8 +35,8 @@ import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.client.net.NetWrapper;
 import at.rc.tacos.client.net.handler.DayInfoHandler;
-import at.rc.tacos.client.ui.UiWrapper;
 import at.rc.tacos.client.ui.ListenerConstants;
+import at.rc.tacos.client.ui.UiWrapper;
 import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.platform.iface.IFilterTypes;
 import at.rc.tacos.platform.model.DayInfoMessage;
@@ -285,20 +285,19 @@ public class InfoView extends ViewPart implements DataChangeListener<Object> {
 				// query the rosterEntry
 				GetMessage<RosterEntry> getRosterMessage = new GetMessage<RosterEntry>(new RosterEntry());
 				getRosterMessage.addParameter(IFilterTypes.DATE_FILTER, strDate);
-				NetWrapper.sendMessage(getRosterMessage);
+				getRosterMessage.asnchronRequest(NetWrapper.getSession());
 
 				// query the dayInfoMessage
 				GetMessage<DayInfoMessage> getInfoMessage = new GetMessage<DayInfoMessage>(new DayInfoMessage());
 				getInfoMessage.addParameter(IFilterTypes.DATE_FILTER, strDate);
-				NetWrapper.sendMessage(getInfoMessage);
+				getInfoMessage.asnchronRequest(NetWrapper.getSession());
 
-				// setup the property change event to fire
+				// setup the property change event and inform the listeners
 				Object source = dateTime;
 				String propertyName = ListenerConstants.ROSTER_DATE_CHANGED;
 				Object oldValue = null;
 				Object newValue = cal;
 				PropertyChangeEvent event = new PropertyChangeEvent(source, propertyName, oldValue, newValue);
-				// inform the listeners
 				UiWrapper.getDefault().firePropertyChangeEvent(event);
 			}
 		});
@@ -344,7 +343,7 @@ public class InfoView extends ViewPart implements DataChangeListener<Object> {
 				DayInfoMessage dayInfo = new DayInfoMessage(message, timestamp, user);
 				dayInfo.setDirty(true);
 				UpdateMessage<DayInfoMessage> updateMessage = new UpdateMessage<DayInfoMessage>(dayInfo);
-				NetWrapper.sendMessage(updateMessage);
+				updateMessage.asnchronRequest(NetWrapper.getSession());
 			}
 		});
 

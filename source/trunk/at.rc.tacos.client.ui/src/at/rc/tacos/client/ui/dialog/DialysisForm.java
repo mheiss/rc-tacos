@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.fieldassist.AutoCompleteField;
 import org.eclipse.jface.fieldassist.TextContentAdapter;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
@@ -38,7 +39,6 @@ import at.rc.tacos.client.jobs.FilterAddressJob;
 import at.rc.tacos.client.net.NetWrapper;
 import at.rc.tacos.client.net.handler.AddressHandler;
 import at.rc.tacos.client.net.handler.LocationHandler;
-import at.rc.tacos.client.providers.StationContentProvider;
 import at.rc.tacos.client.providers.StationLabelProvider;
 import at.rc.tacos.client.ui.UiWrapper;
 import at.rc.tacos.client.ui.utils.CustomColors;
@@ -47,13 +47,12 @@ import at.rc.tacos.platform.iface.IKindOfTransport;
 import at.rc.tacos.platform.model.Address;
 import at.rc.tacos.platform.model.DialysisPatient;
 import at.rc.tacos.platform.model.Location;
-import at.rc.tacos.platform.model.Lock;
 import at.rc.tacos.platform.model.Patient;
 import at.rc.tacos.platform.model.SickPerson;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.listeners.DataChangeListener;
 import at.rc.tacos.platform.net.message.AddMessage;
-import at.rc.tacos.platform.net.message.RemoveMessage;
+import at.rc.tacos.platform.net.message.ExecMessage;
 import at.rc.tacos.platform.net.message.UpdateMessage;
 import at.rc.tacos.platform.net.mina.MessageIoSession;
 
@@ -94,9 +93,8 @@ public class DialysisForm implements IKindOfTransport, DataChangeListener<Addres
 	private Listener exitListener;
 	private ComboViewer zustaendigeOrtsstelle;
 
-	private boolean createNew;
-
 	private DialysisPatient dia;
+	private boolean createNew;
 
 	private Text textPatientLastName, textPatientFirstName;
 	private Text textFromStreet, textToStreet, textFromCity, textToCity;
@@ -246,10 +244,12 @@ public class DialysisForm implements IKindOfTransport, DataChangeListener<Addres
 
 			public void shellClosed(final ShellEvent e) {
 				// remove the lock from the object
-				Lock lock = new Lock(dia.getId(), DialysisPatient.class, "");
-				RemoveMessage<Lock> removeMessage = new RemoveMessage<Lock>(lock);
-				NetWrapper.sendMessage(removeMessage);
-				// remove the listener
+				dia.setLocked(false);
+				dia.setLockedBy(null);
+				
+				//execute the request
+				ExecMessage<DialysisPatient> execMessage = new ExecMessage<DialysisPatient>("doUnlock",dia);
+				execMessage.asnchronRequest(NetWrapper.getSession());
 				NetWrapper.removeListener(DialysisForm.this, Address.class);
 			}
 		});
@@ -476,7 +476,7 @@ public class DialysisForm implements IKindOfTransport, DataChangeListener<Addres
 
 		Combo comboZustaendigeOrtsstelle = new Combo(transportdatenGroup, SWT.READ_ONLY);
 		zustaendigeOrtsstelle = new ComboViewer(comboZustaendigeOrtsstelle);
-		zustaendigeOrtsstelle.setContentProvider(new StationContentProvider());
+		zustaendigeOrtsstelle.setContentProvider(new ArrayContentProvider());
 		zustaendigeOrtsstelle.setLabelProvider(new StationLabelProvider());
 		zustaendigeOrtsstelle.setInput(locationHandler.toArray());
 		comboZustaendigeOrtsstelle.setBounds(322, 113, 112, 21);
@@ -811,7 +811,7 @@ public class DialysisForm implements IKindOfTransport, DataChangeListener<Addres
 
 					// send the message to the server
 					AddMessage<DialysisPatient> addMessage = new AddMessage<DialysisPatient>(dia);
-					NetWrapper.sendMessage(addMessage);
+					addMessage.asnchronRequest(NetWrapper.getSession());
 				}
 				else {
 					dia.setAppointmentTimeAtDialysis(termLong);
@@ -842,9 +842,13 @@ public class DialysisForm implements IKindOfTransport, DataChangeListener<Addres
 
 					dia.setAssistantPerson(assistant);
 
+					// remove the lock
+					dia.setLocked(false);
+					dia.setLockedBy(null);
+
 					// send the update message to the server
 					UpdateMessage<DialysisPatient> updateMessage = new UpdateMessage<DialysisPatient>(dia);
-					NetWrapper.sendMessage(updateMessage);
+					updateMessage.asnchronRequest(NetWrapper.getSession());
 				}
 				shell.close();
 			}

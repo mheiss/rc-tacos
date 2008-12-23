@@ -8,6 +8,7 @@ import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -43,18 +44,15 @@ import at.rc.tacos.client.controller.PersonalEditEntryAction;
 import at.rc.tacos.client.controller.PersonalSignInAction;
 import at.rc.tacos.client.controller.PersonalSignOutAction;
 import at.rc.tacos.client.net.NetWrapper;
-import at.rc.tacos.client.net.handler.LockHandler;
 import at.rc.tacos.client.net.handler.RosterHandler;
-import at.rc.tacos.client.providers.PersonalDateFilter;
-import at.rc.tacos.client.providers.PersonalViewContentProvider;
-import at.rc.tacos.client.providers.PersonalViewFilter;
 import at.rc.tacos.client.providers.PersonalViewLabelProvider;
+import at.rc.tacos.client.ui.filters.PersonalDateFilter;
+import at.rc.tacos.client.ui.filters.PersonalViewFilter;
 import at.rc.tacos.client.ui.sorterAndTooltip.PersonalTooltip;
 import at.rc.tacos.client.ui.sorterAndTooltip.PersonalViewSorter;
 import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.platform.model.Job;
 import at.rc.tacos.platform.model.Location;
-import at.rc.tacos.platform.model.Lock;
 import at.rc.tacos.platform.model.RosterEntry;
 import at.rc.tacos.platform.model.ServiceType;
 import at.rc.tacos.platform.model.StaffMember;
@@ -85,21 +83,7 @@ public class PersonalView extends ViewPart implements DataChangeListener<Object>
 	private PersonalDeleteEntryAction deleteEntryAction;
 
 	// the model handlers
-	private LockHandler lockHandler = (LockHandler) NetWrapper.getHandler(Lock.class);
 	private RosterHandler rosterHandler = (RosterHandler) NetWrapper.getHandler(RosterEntry.class);
-
-	/**
-	 * Constructs a new personal view and register the listeners
-	 */
-	public PersonalView() {
-		NetWrapper.registerListener(this, RosterEntry.class);
-		NetWrapper.registerListener(this, Location.class);
-		NetWrapper.registerListener(this, VehicleDetail.class);
-		NetWrapper.registerListener(this, Lock.class);
-		NetWrapper.registerListener(this, StaffMember.class);
-		NetWrapper.registerListener(this, ServiceType.class);
-		NetWrapper.registerListener(this, Job.class);
-	}
 
 	/**
 	 * Cleanup the view and remove the listeners
@@ -109,7 +93,6 @@ public class PersonalView extends ViewPart implements DataChangeListener<Object>
 		NetWrapper.removeListener(this, RosterEntry.class);
 		NetWrapper.removeListener(this, Location.class);
 		NetWrapper.removeListener(this, VehicleDetail.class);
-		NetWrapper.removeListener(this, Lock.class);
 		NetWrapper.removeListener(this, StaffMember.class);
 		NetWrapper.removeListener(this, ServiceType.class);
 		NetWrapper.removeListener(this, Job.class);
@@ -155,7 +138,7 @@ public class PersonalView extends ViewPart implements DataChangeListener<Object>
 		});
 
 		viewer = new TableViewer(tabFolder, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
-		viewer.setContentProvider(new PersonalViewContentProvider());
+		viewer.setContentProvider(new ArrayContentProvider());
 		viewer.setLabelProvider(new PersonalViewLabelProvider());
 		viewer.setInput(rosterHandler.toArray());
 		viewer.getTable().setLinesVisible(true);
@@ -290,6 +273,14 @@ public class PersonalView extends ViewPart implements DataChangeListener<Object>
 		// create the actions
 		makeActions();
 		hookContextMenu();
+
+		// register the listeners
+		NetWrapper.registerListener(this, RosterEntry.class);
+		NetWrapper.registerListener(this, Location.class);
+		NetWrapper.registerListener(this, VehicleDetail.class);
+		NetWrapper.registerListener(this, StaffMember.class);
+		NetWrapper.registerListener(this, ServiceType.class);
+		NetWrapper.registerListener(this, Job.class);
 	}
 
 	/**
@@ -325,13 +316,10 @@ public class PersonalView extends ViewPart implements DataChangeListener<Object>
 	 * Fills the context menu with the actions
 	 */
 	private void fillContextMenu(IMenuManager manager) {
-		// get the selected object
+		// get the selected roster entry
 		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
-
-		// cast to a RosterEntry
-		RosterEntry entry = (RosterEntry) firstSelectedObject;
-
-		if (entry == null)
+		RosterEntry rosterEntry = (RosterEntry) firstSelectedObject;
+		if (rosterEntry == null)
 			return;
 
 		// add the actions
@@ -353,7 +341,7 @@ public class PersonalView extends ViewPart implements DataChangeListener<Object>
 		cancelSignOutAction.setEnabled(true);
 
 		// enable or disable the actions
-		if (entry.getRealStartOfWork() > 0) {
+		if (rosterEntry.getRealStartOfWork() > 0) {
 			signInAction.setEnabled(false);
 			cancelSignInAction.setEnabled(true);
 		}
@@ -361,7 +349,7 @@ public class PersonalView extends ViewPart implements DataChangeListener<Object>
 			signInAction.setEnabled(true);
 			cancelSignInAction.setEnabled(false);
 		}
-		if (entry.getRealEndOfWork() > 0) {
+		if (rosterEntry.getRealEndOfWork() > 0) {
 			signOutAction.setEnabled(false);
 			cancelSignOutAction.setEnabled(true);
 		}
@@ -371,7 +359,7 @@ public class PersonalView extends ViewPart implements DataChangeListener<Object>
 		}
 
 		// disable actions if the vehicle is locked
-		if (lockHandler.containsLock(entry.getRosterId(), RosterEntry.class)) {
+		if (rosterEntry.isLocked()) {
 			signInAction.setEnabled(false);
 			signOutAction.setEnabled(false);
 			deleteEntryAction.setEnabled(false);

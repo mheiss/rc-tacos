@@ -8,6 +8,7 @@ import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.TextViewer;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
@@ -27,27 +28,22 @@ import at.rc.tacos.client.net.handler.JobHandler;
 import at.rc.tacos.client.net.handler.LocationHandler;
 import at.rc.tacos.client.net.handler.ServiceTypeHandler;
 import at.rc.tacos.client.net.handler.StaffHandler;
-import at.rc.tacos.client.providers.JobContentProvider;
 import at.rc.tacos.client.providers.JobLabelProvider;
-import at.rc.tacos.client.providers.ServiceTypeContentProvider;
 import at.rc.tacos.client.providers.ServiceTypeLabelProvider;
-import at.rc.tacos.client.providers.StaffMemberContentProvider;
 import at.rc.tacos.client.providers.StaffMemberLabelProvider;
-import at.rc.tacos.client.providers.StationContentProvider;
 import at.rc.tacos.client.providers.StationLabelProvider;
 import at.rc.tacos.client.ui.UiWrapper;
 import at.rc.tacos.client.ui.custom.DatePicker;
 import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.platform.model.Job;
 import at.rc.tacos.platform.model.Location;
-import at.rc.tacos.platform.model.Lock;
 import at.rc.tacos.platform.model.RosterEntry;
 import at.rc.tacos.platform.model.ServiceType;
 import at.rc.tacos.platform.model.StaffMember;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.listeners.DataChangeListener;
 import at.rc.tacos.platform.net.message.AddMessage;
-import at.rc.tacos.platform.net.message.RemoveMessage;
+import at.rc.tacos.platform.net.message.ExecMessage;
 import at.rc.tacos.platform.net.message.UpdateMessage;
 import at.rc.tacos.platform.net.mina.MessageIoSession;
 
@@ -121,9 +117,11 @@ public class RosterEntryForm extends TitleAreaDialog implements DataChangeListen
 		}
 		// remove the lock from the object
 		if (!createNew) {
-			Lock lock = new Lock(rosterEntry.getRosterId(), RosterEntry.class, "");
-			RemoveMessage<Lock> removeMessage = new RemoveMessage<Lock>(lock);
-			NetWrapper.sendMessage(removeMessage);
+			rosterEntry.setLocked(false);
+			rosterEntry.setLockedBy(null);
+			// send the request
+			ExecMessage<RosterEntry> execMessage = new ExecMessage<RosterEntry>("doUnlock", rosterEntry);
+			execMessage.asnchronRequest(NetWrapper.getSession());
 		}
 		// cleanup the listeners
 		NetWrapper.removeListener(this, StaffMember.class);
@@ -248,15 +246,19 @@ public class RosterEntryForm extends TitleAreaDialog implements DataChangeListen
 			rosterEntry.setRosterNotes(noteEditor.getTextWidget().getText());
 			rosterEntry.setStandby(bereitschaftButton.getSelection());
 
+			// remove the lock
+			rosterEntry.setLocked(false);
+			rosterEntry.setLockedBy(null);
+
 			// create or update the roster entry
 			if (createNew) {
 				rosterEntry.setCreatedByUsername(session.getUsername());
 				AddMessage<RosterEntry> addMessage = new AddMessage<RosterEntry>(rosterEntry);
-				NetWrapper.sendMessage(addMessage);
+				addMessage.asnchronRequest(NetWrapper.getSession());
 			}
 			else {
 				UpdateMessage<RosterEntry> updateMessage = new UpdateMessage<RosterEntry>(rosterEntry);
-				NetWrapper.sendMessage(updateMessage);
+				updateMessage.asnchronRequest(NetWrapper.getSession());
 			}
 
 			// closes the sehll
@@ -291,7 +293,7 @@ public class RosterEntryForm extends TitleAreaDialog implements DataChangeListen
 
 		Combo combo = new Combo(client, SWT.READ_ONLY);
 		employeenameCombo = new ComboViewer(combo);
-		employeenameCombo.setContentProvider(new StaffMemberContentProvider());
+		employeenameCombo.setContentProvider(new ArrayContentProvider());
 		employeenameCombo.setLabelProvider(new StaffMemberLabelProvider());
 		employeenameCombo.setInput(staffHandler.toArray());
 
@@ -301,7 +303,7 @@ public class RosterEntryForm extends TitleAreaDialog implements DataChangeListen
 
 		Combo comboOrts = new Combo(client, SWT.READ_ONLY);
 		comboOrtsstelle = new ComboViewer(comboOrts);
-		comboOrtsstelle.setContentProvider(new StationContentProvider());
+		comboOrtsstelle.setContentProvider(new ArrayContentProvider());
 		comboOrtsstelle.setLabelProvider(new StationLabelProvider());
 		comboOrtsstelle.setInput(locationHandler.toArray());
 
@@ -319,7 +321,7 @@ public class RosterEntryForm extends TitleAreaDialog implements DataChangeListen
 
 		Combo comboVerw = new Combo(client, SWT.READ_ONLY);
 		comboVerwendung = new ComboViewer(comboVerw);
-		comboVerwendung.setContentProvider(new JobContentProvider());
+		comboVerwendung.setContentProvider(new ArrayContentProvider());
 		comboVerwendung.setLabelProvider(new JobLabelProvider());
 		comboVerwendung.setInput(jobHandler.toArray());
 
@@ -329,7 +331,7 @@ public class RosterEntryForm extends TitleAreaDialog implements DataChangeListen
 
 		Combo comboDienstv = new Combo(client, SWT.READ_ONLY);
 		comboDienstverhaeltnis = new ComboViewer(comboDienstv);
-		comboDienstverhaeltnis.setContentProvider(new ServiceTypeContentProvider());
+		comboDienstverhaeltnis.setContentProvider(new ArrayContentProvider());
 		comboDienstverhaeltnis.setLabelProvider(new ServiceTypeLabelProvider());
 		comboDienstverhaeltnis.setInput(serviceHandler.toArray());
 
