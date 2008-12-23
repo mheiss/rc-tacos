@@ -9,7 +9,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * 
  * @author Michael
  */
-public class Job {
+public class Job extends Lockable {
 
 	private int id;
 	private String jobName;
@@ -88,6 +88,17 @@ public class Job {
 		EqualsBuilder builder = new EqualsBuilder();
 		builder.append(id, job.id);
 		return builder.isEquals();
+	}
+
+	// LOCKABLE IMPLEMENTATION
+	@Override
+	public int getLockedId() {
+		return id;
+	}
+
+	@Override
+	public Class<?> getLockedClass() {
+		return Job.class;
 	}
 
 	// GETTERS AND SETTERS

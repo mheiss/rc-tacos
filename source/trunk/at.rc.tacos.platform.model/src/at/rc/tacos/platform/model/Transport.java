@@ -19,7 +19,7 @@ import at.rc.tacos.platform.iface.ITransportStatus;
  * 
  * @author b.thek
  */
-public class Transport implements ITransportPriority, IDirectness, ITransportStatus {
+public class Transport extends Lockable implements ITransportPriority, IDirectness, ITransportStatus {
 
 	public final static int TRANSPORT_CANCLED = -1;
 	public final static int TRANSPORT_FORWARD = -2;
@@ -461,6 +461,18 @@ public class Transport implements ITransportPriority, IDirectness, ITransportSta
 		return builder.isEquals();
 	}
 
+	// LOCKABLE IMPLEMENTATION
+	@Override
+	public int getLockedId() {
+		return transportId;
+	}
+
+	@Override
+	public Class<?> getLockedClass() {
+		return Transport.class;
+	}
+
+	// GETTERS AND SETTERS
 	/**
 	 * Returns the identification string of this transport
 	 * 

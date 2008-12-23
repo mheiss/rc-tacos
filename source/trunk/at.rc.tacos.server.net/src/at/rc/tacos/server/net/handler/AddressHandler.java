@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import at.rc.tacos.platform.iface.IFilterTypes;
 import at.rc.tacos.platform.model.Address;
+import at.rc.tacos.platform.model.Lockable;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.exception.NoSuchCommandException;
 import at.rc.tacos.platform.net.handler.Handler;
@@ -16,6 +17,7 @@ import at.rc.tacos.platform.net.message.AbstractMessage;
 import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.AddressService;
+import at.rc.tacos.platform.services.dbal.LockableService;
 import at.rc.tacos.platform.services.exception.ServiceException;
 
 /**
@@ -29,6 +31,9 @@ public class AddressHandler implements Handler<Address> {
 	@Service(clazz = AddressService.class)
 	private AddressService addressService;
 
+	@Service(clazz = LockableService.class)
+	private LockableService lockableService;
+
 	// the logger for this class
 	private Logger log = LoggerFactory.getLogger(AddressHandler.class);
 
@@ -37,7 +42,6 @@ public class AddressHandler implements Handler<Address> {
 		List<Address> addressList = message.getObjects();
 		// loop and try to add each address object
 		for (Address adr : addressList) {
-			System.out.println("adding: "+adr);
 			// add each record to the database
 			int id = addressService.addAddress(adr);
 			if (id == -1)
@@ -84,6 +88,16 @@ public class AddressHandler implements Handler<Address> {
 		if (addressList == null)
 			throw new ServiceException("Failed to list the address records by search string");
 
+		// check if we have locks for this address records
+		for (Address adr : addressList) {
+			Lockable lockable = lockableService.getLock(adr);
+			if (lockable == null) {
+				continue;
+			}
+			adr.setLocked(lockable.isLocked());
+			adr.setLockedBy(lockable.getLockedBy());
+		}
+
 		// write the result back to the client
 		session.write(message, addressList);
 	}
@@ -91,10 +105,12 @@ public class AddressHandler implements Handler<Address> {
 	@Override
 	public void remove(MessageIoSession session, Message<Address> message) throws ServiceException, SQLException {
 		List<Address> addressList = message.getObjects();
-		// loop and try to add each address object
+		// loop and try to remove each address object
 		for (Address adr : addressList) {
 			if (!addressService.removeAddress(adr.getAddressId()))
 				throw new ServiceException("Failed to remove the address record");
+			// remove the lockable instance
+			lockableService.removeLock(adr);
 		}
 		// write the result back to the client
 		session.writeBrodcast(message, addressList);
@@ -107,6 +123,8 @@ public class AddressHandler implements Handler<Address> {
 		for (Address adr : addressList) {
 			if (!addressService.updateAddress(adr))
 				throw new ServiceException("Failed to update the address record");
+			// update the lockable instance
+			lockableService.updateLock(adr);
 		}
 		// write the result back to the client
 		session.writeBrodcast(message, addressList);
@@ -114,9 +132,18 @@ public class AddressHandler implements Handler<Address> {
 
 	@Override
 	public void execute(MessageIoSession session, Message<Address> message) throws SQLException, NoSuchCommandException {
-		// throw an execption because the 'exec' command is not implemented
 		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
 		String handler = getClass().getSimpleName();
+		// update the locks
+		if ("doLock".equalsIgnoreCase(command)) {
+			lockableService.addAllLocks(message.getObjects());
+			return;
+		}
+		if ("doUnlock".equalsIgnoreCase(command)) {
+			lockableService.removeAllLocks(message.getObjects());
+			return;
+		}
+		// throw an execption because the 'exec' command is not implemented
 		throw new NoSuchCommandException(handler, command);
 	}
 }

@@ -9,7 +9,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * 
  * @author b.thek
  */
-public class SickPerson {
+public class SickPerson extends Lockable {
 
 	private int sickPersonId;
 	private String lastName;
@@ -104,6 +104,18 @@ public class SickPerson {
 		return builder.isEquals();
 	}
 
+	// LOCKABLE IMPLEMENTATION
+	@Override
+	public int getLockedId() {
+		return sickPersonId;
+	}
+
+	@Override
+	public Class<?> getLockedClass() {
+		return SickPerson.class;
+	}
+
+	// GETTERS AND SETTERS
 	/**
 	 * Returns the personal identification number.
 	 * 

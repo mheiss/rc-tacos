@@ -9,7 +9,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * 
  * @author Michael
  */
-public class ServiceType {
+public class ServiceType extends Lockable {
 
 	// properties
 	private int id;
@@ -91,6 +91,17 @@ public class ServiceType {
 		EqualsBuilder builder = new EqualsBuilder();
 		builder.append(id, serviceType.id);
 		return builder.isEquals();
+	}
+
+	// LOCKABLE IMPLEMENTATION
+	@Override
+	public int getLockedId() {
+		return id;
+	}
+
+	@Override
+	public Class<?> getLockedClass() {
+		return ServiceType.class;
 	}
 
 	// GETTERS AND SETTERS

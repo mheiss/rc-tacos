@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import at.rc.tacos.platform.iface.IFilterTypes;
+import at.rc.tacos.platform.model.Lockable;
 import at.rc.tacos.platform.model.RosterEntry;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.exception.NoSuchCommandException;
@@ -13,6 +14,7 @@ import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.message.AbstractMessage;
 import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.Service;
+import at.rc.tacos.platform.services.dbal.LockableService;
 import at.rc.tacos.platform.services.dbal.RosterService;
 import at.rc.tacos.platform.services.exception.ServiceException;
 import at.rc.tacos.platform.util.MyUtils;
@@ -21,6 +23,9 @@ public class RosterHandler implements Handler<RosterEntry> {
 
 	@Service(clazz = RosterService.class)
 	private RosterService rosterService;
+
+	@Service(clazz = LockableService.class)
+	private LockableService lockableService;
 
 	@Override
 	public void add(MessageIoSession session, Message<RosterEntry> message) throws ServiceException, SQLException {
@@ -56,6 +61,16 @@ public class RosterHandler implements Handler<RosterEntry> {
 						+ MyUtils.timestampToString(dateEnd, MyUtils.dateFormat);
 				throw new ServiceException("Failed to list the roster entries by date from " + time);
 			}
+			// check for locks
+			for (RosterEntry entry : rosterList) {
+				if (!lockableService.containsLock(entry)) {
+					continue;
+				}
+				Lockable lockable = lockableService.getLock(entry);
+				entry.setLocked(lockable.isLocked());
+				entry.setLockedBy(lockable.getLockedBy());
+			}
+
 			// send the result back
 			session.write(message, rosterList);
 			return;
@@ -89,9 +104,22 @@ public class RosterHandler implements Handler<RosterEntry> {
 			}
 			List<RosterEntry> rosterList = rosterService.listRosterEntriesForRosterMonth(locationFilter, monthFilter, yearFilter,
 					locationStaffMemberFilter, functionStaffMemberCompetenceFilter, staffMemberFilter, statisticFilter, serviceTypeFilter);
+
+			// assert valid list
 			if (rosterList == null) {
 				throw new ServiceException("Failed to list the roster entries by date from.");
 			}
+
+			// check for locks
+			for (RosterEntry entry : rosterList) {
+				if (!lockableService.containsLock(entry)) {
+					continue;
+				}
+				Lockable lockable = lockableService.getLock(entry);
+				entry.setLocked(lockable.isLocked());
+				entry.setLockedBy(lockable.getLockedBy());
+			}
+
 			// send the result back
 			session.write(message, rosterList);
 			return;
@@ -110,6 +138,17 @@ public class RosterHandler implements Handler<RosterEntry> {
 						+ MyUtils.timestampToString(dateEnd, MyUtils.dateFormat);
 				throw new ServiceException("Failed to list the roster entries by date from " + time);
 			}
+
+			// check for locks
+			for (RosterEntry entry : rosterList) {
+				if (!lockableService.containsLock(entry)) {
+					continue;
+				}
+				Lockable lockable = lockableService.getLock(entry);
+				entry.setLocked(lockable.isLocked());
+				entry.setLockedBy(lockable.getLockedBy());
+			}
+
 			// send the result back
 			session.write(message, rosterList);
 			return;
@@ -121,6 +160,14 @@ public class RosterHandler implements Handler<RosterEntry> {
 			RosterEntry entry = rosterService.getRosterEntryById(id);
 			if (entry == null)
 				throw new ServiceException("Failed to list the roster entry by id:" + id);
+
+			// check for locks
+			if (lockableService.containsLock(entry)) {
+				Lockable lockable = lockableService.getLock(entry);
+				entry.setLocked(lockable.isLocked());
+				entry.setLockedBy(lockable.getLockedBy());
+			}
+
 			// send the result back
 			session.write(message, entry);
 			return;
@@ -137,6 +184,8 @@ public class RosterHandler implements Handler<RosterEntry> {
 		for (RosterEntry entry : rosterList) {
 			if (!rosterService.removeRosterEntry(entry.getRosterId()))
 				throw new ServiceException("Failed to remove the roster entry:" + entry);
+			// remove the lock
+			lockableService.removeLock(entry);
 		}
 		// brodcast the removed roster objects
 		session.writeBrodcast(message, rosterList);
@@ -149,6 +198,8 @@ public class RosterHandler implements Handler<RosterEntry> {
 		for (RosterEntry entry : rosterList) {
 			if (!rosterService.updateRosterEntry(entry))
 				throw new ServiceException("Failed to update the roster entry:" + entry);
+			// update the lock
+			lockableService.updateLock(entry);
 		}
 		// brodcast the updated roster objects
 		session.writeBrodcast(message, rosterList);
@@ -159,6 +210,15 @@ public class RosterHandler implements Handler<RosterEntry> {
 		// throw an execption because the 'exec' command is not implemented
 		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
 		String handler = getClass().getSimpleName();
+		// update the locks
+		if ("doLock".equalsIgnoreCase(command)) {
+			lockableService.addAllLocks(message.getObjects());
+			return;
+		}
+		if ("doUnlock".equalsIgnoreCase(command)) {
+			lockableService.removeAllLocks(message.getObjects());
+			return;
+		}
 		throw new NoSuchCommandException(handler, command);
 	}
 }

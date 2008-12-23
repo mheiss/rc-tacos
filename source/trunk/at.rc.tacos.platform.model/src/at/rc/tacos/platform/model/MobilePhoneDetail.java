@@ -9,7 +9,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * 
  * @author b.thek
  */
-public class MobilePhoneDetail {
+public class MobilePhoneDetail extends Lockable {
 
 	private int id;
 	private String mobilePhoneName;
@@ -99,6 +99,18 @@ public class MobilePhoneDetail {
 		return builder.isEquals();
 	}
 
+	// LOCKABLE IMPLEMENTATION
+	@Override
+	public int getLockedId() {
+		return id;
+	}
+
+	@Override
+	public Class<?> getLockedClass() {
+		return MobilePhoneDetail.class;
+	}
+
+	// GETTERS AND SETTERS
 	/**
 	 * Returns the internal identification number of the mobile phone. The id is
 	 * a internal value in the database to identify the phone.

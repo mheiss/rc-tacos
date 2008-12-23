@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.rc.tacos.platform.iface.IFilterTypes;
+import at.rc.tacos.platform.model.Lockable;
 import at.rc.tacos.platform.model.Login;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.exception.NoSuchCommandException;
@@ -17,6 +18,7 @@ import at.rc.tacos.platform.net.message.AbstractMessage;
 import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.AuthenticationService;
+import at.rc.tacos.platform.services.dbal.LockableService;
 import at.rc.tacos.platform.services.exception.ServiceException;
 
 public class AuthenticationHandler implements Handler<Login> {
@@ -25,6 +27,9 @@ public class AuthenticationHandler implements Handler<Login> {
 
 	@Service(clazz = AuthenticationService.class)
 	private AuthenticationService authenticationService;
+
+	@Service(clazz = LockableService.class)
+	private LockableService lockableService;
 
 	@Override
 	public void add(MessageIoSession session, Message<Login> message) throws ServiceException, SQLException {
@@ -51,6 +56,20 @@ public class AuthenticationHandler implements Handler<Login> {
 		else {
 			loginList = authenticationService.listLogins();
 		}
+		// assert valid
+		if (loginList == null)
+			throw new ServiceException("Failed to list the login records.");
+
+		// check if we have locks for the login records
+		for (Login login : loginList) {
+			Lockable lockable = lockableService.getLock(login);
+			if (lockable == null) {
+				continue;
+			}
+			login.setLocked(lockable.isLocked());
+			login.setLockedBy(lockable.getLockedBy());
+		}
+
 		// write back the result
 		session.write(message, loginList);
 	}
@@ -64,6 +83,8 @@ public class AuthenticationHandler implements Handler<Login> {
 			if (!authenticationService.lockLogin(login.getUsername()))
 				throw new ServiceException("Failed to lock the login: " + login);
 			login.setIslocked(true);
+			// remove the lockable object
+			lockableService.removeLock(login);
 		}
 		session.writeBrodcast(message, loginList);
 	}
@@ -83,6 +104,8 @@ public class AuthenticationHandler implements Handler<Login> {
 				throw new ServiceException("Failed to update the login: " + login);
 			// reset the password
 			login.resetPassword();
+			// update the lockable object
+			lockableService.removeLock(login);
 		}
 		session.writeBrodcast(message, loginList);
 	}
@@ -98,8 +121,17 @@ public class AuthenticationHandler implements Handler<Login> {
 			doLogin(session, message);
 			return;
 		}
-		else if ("logout".equalsIgnoreCase(command)) {
+		if ("logout".equalsIgnoreCase(command)) {
 			doLogout(session, message);
+			return;
+		}
+		// update the locks
+		if ("doLock".equalsIgnoreCase(command)) {
+			lockableService.addAllLocks(message.getObjects());
+			return;
+		}
+		if ("doUnlock".equalsIgnoreCase(command)) {
+			lockableService.removeAllLocks(message.getObjects());
 			return;
 		}
 

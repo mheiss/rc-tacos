@@ -13,6 +13,7 @@ import at.rc.tacos.platform.services.dbal.DiseaseService;
 import at.rc.tacos.platform.services.dbal.JobService;
 import at.rc.tacos.platform.services.dbal.LinkService;
 import at.rc.tacos.platform.services.dbal.LocationService;
+import at.rc.tacos.platform.services.dbal.LockableService;
 import at.rc.tacos.platform.services.dbal.MobilePhoneService;
 import at.rc.tacos.platform.services.dbal.RosterService;
 import at.rc.tacos.platform.services.dbal.ServiceTypeService;
@@ -21,6 +22,7 @@ import at.rc.tacos.platform.services.dbal.StaffMemberService;
 import at.rc.tacos.platform.services.dbal.TransportService;
 import at.rc.tacos.platform.services.dbal.AuthenticationService;
 import at.rc.tacos.platform.services.dbal.VehicleService;
+import at.rc.tacos.server.dbal.impl.LockableServiceImpl;
 import at.rc.tacos.server.dbal.sqlserver.AddressSqlService;
 import at.rc.tacos.server.dbal.sqlserver.CallerSqlService;
 import at.rc.tacos.server.dbal.sqlserver.CompetenceSqlService;
@@ -51,6 +53,7 @@ public class ServiceFactoryImpl implements DbalServiceFactory {
 
 	// populate the services
 	static {
+		SERVICE_MAP.put(LockableService.class.getName(), new LockableServiceImpl());
 		SERVICE_MAP.put(AddressService.class.getName(), new AddressSqlService());
 		SERVICE_MAP.put(CallerService.class.getName(), new CallerSqlService());
 		SERVICE_MAP.put(CompetenceService.class.getName(), new CompetenceSqlService());

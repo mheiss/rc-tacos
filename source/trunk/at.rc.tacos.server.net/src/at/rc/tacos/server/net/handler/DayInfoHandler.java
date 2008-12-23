@@ -6,6 +6,7 @@ import java.util.Map;
 
 import at.rc.tacos.platform.iface.IFilterTypes;
 import at.rc.tacos.platform.model.DayInfoMessage;
+import at.rc.tacos.platform.model.Lockable;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.exception.NoSuchCommandException;
 import at.rc.tacos.platform.net.handler.Handler;
@@ -14,14 +15,17 @@ import at.rc.tacos.platform.net.message.AbstractMessage;
 import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.DayInfoService;
+import at.rc.tacos.platform.services.dbal.LockableService;
 import at.rc.tacos.platform.services.exception.ServiceException;
 import at.rc.tacos.platform.util.MyUtils;
 
 public class DayInfoHandler implements Handler<DayInfoMessage> {
 
-	// the day info service
 	@Service(clazz = DayInfoService.class)
 	private DayInfoService dayInfoService;
+
+	@Service(clazz = LockableService.class)
+	private LockableService lockableService;
 
 	@Override
 	public void add(MessageIoSession session, Message<DayInfoMessage> message) throws ServiceException, SQLException {
@@ -50,6 +54,14 @@ public class DayInfoHandler implements Handler<DayInfoMessage> {
 				dayInfoMessage.setDirty(false);
 				dayInfoMessage.setLastChangedBy("<keine Änderung>");
 			}
+
+			// check for locks of this object
+			if (lockableService.containsLock(dayInfoMessage)) {
+				Lockable lock = lockableService.getLock(dayInfoMessage);
+				dayInfoMessage.setLocked(lock.isLocked());
+				dayInfoMessage.setLockedBy(lock.getLockedBy());
+			}
+
 			// return the requested message
 			session.write(message, dayInfoMessage);
 			return;
@@ -75,6 +87,9 @@ public class DayInfoHandler implements Handler<DayInfoMessage> {
 				throw new ServiceException("Failed to update the day info message: " + dayInfoMessage);
 			// reset the dirty flag
 			dayInfoMessage.setDirty(false);
+
+			// update the locks
+			lockableService.updateLock(dayInfoMessage);
 		}
 		session.writeBrodcast(message, dayInfoList);
 	}
@@ -84,6 +99,15 @@ public class DayInfoHandler implements Handler<DayInfoMessage> {
 		// throw an execption because the 'exec' command is not implemented
 		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
 		String handler = getClass().getSimpleName();
+		// update the locks
+		if ("doLock".equalsIgnoreCase(command)) {
+			lockableService.addAllLocks(message.getObjects());
+			return;
+		}
+		if ("doUnlock".equalsIgnoreCase(command)) {
+			lockableService.removeAllLocks(message.getObjects());
+			return;
+		}
 		throw new NoSuchCommandException(handler, command);
 	}
 

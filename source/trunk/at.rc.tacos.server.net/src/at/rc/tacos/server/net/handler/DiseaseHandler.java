@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import at.rc.tacos.platform.model.Disease;
+import at.rc.tacos.platform.model.Lockable;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.exception.NoSuchCommandException;
 import at.rc.tacos.platform.net.handler.Handler;
@@ -11,12 +12,16 @@ import at.rc.tacos.platform.net.message.AbstractMessage;
 import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.DiseaseService;
+import at.rc.tacos.platform.services.dbal.LockableService;
 import at.rc.tacos.platform.services.exception.ServiceException;
 
 public class DiseaseHandler implements Handler<Disease> {
 
 	@Service(clazz = DiseaseService.class)
 	private DiseaseService diseaseService;
+
+	@Service(clazz = LockableService.class)
+	private LockableService lockableService;
 
 	@Override
 	public void add(MessageIoSession session, Message<Disease> message) throws ServiceException, SQLException {
@@ -40,6 +45,16 @@ public class DiseaseHandler implements Handler<Disease> {
 		if (diseaseList == null)
 			throw new ServiceException("Failed to list the diseases");
 
+		// check for locks
+		for (Disease disease : diseaseList) {
+			if (!lockableService.containsLock(disease)) {
+				continue;
+			}
+			Lockable lockable = lockableService.getLock(disease);
+			disease.setLocked(lockable.isLocked());
+			disease.setLockedBy(lockable.getLockedBy());
+		}
+
 		// send the list back
 		session.write(message, diseaseList);
 	}
@@ -51,6 +66,8 @@ public class DiseaseHandler implements Handler<Disease> {
 		for (Disease disease : diseaseList) {
 			if (!diseaseService.removeDisease(disease.getId()))
 				throw new ServiceException("Failed to remove the disease: " + disease);
+			// remove the lock
+			lockableService.removeLock(disease);
 		}
 		session.writeBrodcast(message, diseaseList);
 	}
@@ -62,6 +79,8 @@ public class DiseaseHandler implements Handler<Disease> {
 		for (Disease disease : diseaseList) {
 			if (!diseaseService.updateDisease(disease))
 				throw new ServiceException("Failed to update the disease: " + disease);
+			// update the locks
+			lockableService.updateLock(disease);
 		}
 		session.writeBrodcast(message, diseaseList);
 	}
@@ -71,6 +90,15 @@ public class DiseaseHandler implements Handler<Disease> {
 		// throw an execption because the 'exec' command is not implemented
 		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
 		String handler = getClass().getSimpleName();
+		// update the locks
+		if ("doLock".equalsIgnoreCase(command)) {
+			lockableService.addAllLocks(message.getObjects());
+			return;
+		}
+		if ("doUnlock".equalsIgnoreCase(command)) {
+			lockableService.removeAllLocks(message.getObjects());
+			return;
+		}
 		throw new NoSuchCommandException(handler, command);
 	}
 }

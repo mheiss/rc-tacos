@@ -6,6 +6,7 @@ import java.util.Map;
 
 import at.rc.tacos.platform.iface.IFilterTypes;
 import at.rc.tacos.platform.model.CallerDetail;
+import at.rc.tacos.platform.model.Lockable;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.exception.NoSuchCommandException;
 import at.rc.tacos.platform.net.handler.Handler;
@@ -14,12 +15,16 @@ import at.rc.tacos.platform.net.message.AbstractMessage;
 import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.CallerService;
+import at.rc.tacos.platform.services.dbal.LockableService;
 import at.rc.tacos.platform.services.exception.ServiceException;
 
 public class NotifyDetailHandler implements Handler<CallerDetail> {
 
 	@Service(clazz = CallerService.class)
 	private CallerService callerService;
+
+	@Service(clazz = LockableService.class)
+	private LockableService lockableService;
 
 	@Override
 	public void add(MessageIoSession session, Message<CallerDetail> message) throws ServiceException, SQLException {
@@ -29,6 +34,7 @@ public class NotifyDetailHandler implements Handler<CallerDetail> {
 			int id = callerService.addCaller(detail);
 			if (id == -1)
 				throw new ServiceException("Failed to add the caller:" + detail);
+			detail.setId(id);
 		}
 		// brodcast the added callers
 		session.writeBrodcast(message, callerList);
@@ -46,6 +52,14 @@ public class NotifyDetailHandler implements Handler<CallerDetail> {
 			CallerDetail caller = callerService.getCallerByID(id);
 			if (caller == null)
 				throw new ServiceException("Failed to get the caller by id:" + id);
+
+			// update the lock
+			if (lockableService.containsLock(caller)) {
+				Lockable lockable = lockableService.getLock(caller);
+				caller.setLocked(lockable.isLocked());
+				caller.setLockedBy(lockable.getLockedBy());
+			}
+
 			// send the result back
 			session.write(message, caller);
 		}
@@ -56,7 +70,7 @@ public class NotifyDetailHandler implements Handler<CallerDetail> {
 
 	@Override
 	public void remove(MessageIoSession session, Message<CallerDetail> message) throws ServiceException, SQLException {
-		// throw an execption because the 'exec' command is not implemented
+		// throw an execption because the 'remove' command is not implemented
 		String command = MessageType.REMOVE.toString();
 		String handler = getClass().getSimpleName();
 		throw new NoSuchCommandException(handler, command);
@@ -69,6 +83,8 @@ public class NotifyDetailHandler implements Handler<CallerDetail> {
 		for (CallerDetail detail : callerList) {
 			if (!callerService.updateCaller(detail))
 				throw new ServiceException("Failed to update the caller:" + detail);
+			// update the lock
+			lockableService.updateLock(detail);
 		}
 		// brodcast the updated callers
 		session.writeBrodcast(message, callerList);
@@ -79,6 +95,15 @@ public class NotifyDetailHandler implements Handler<CallerDetail> {
 		// throw an execption because the 'exec' command is not implemented
 		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
 		String handler = getClass().getSimpleName();
+		// update the locks
+		if ("doLock".equalsIgnoreCase(command)) {
+			lockableService.addAllLocks(message.getObjects());
+			return;
+		}
+		if ("doUnlock".equalsIgnoreCase(command)) {
+			lockableService.removeAllLocks(message.getObjects());
+			return;
+		}
 		throw new NoSuchCommandException(handler, command);
 	}
 }
