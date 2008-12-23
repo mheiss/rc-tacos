@@ -32,7 +32,6 @@ import at.rc.tacos.server.net.handler.DiseaseHandler;
 import at.rc.tacos.server.net.handler.JobHandler;
 import at.rc.tacos.server.net.handler.LinkHandler;
 import at.rc.tacos.server.net.handler.LocationHandler;
-import at.rc.tacos.server.net.handler.LockHandler;
 import at.rc.tacos.server.net.handler.MobilePhoneHandler;
 import at.rc.tacos.server.net.handler.NotifyDetailHandler;
 import at.rc.tacos.server.net.handler.PeriodHandler;
@@ -65,7 +64,6 @@ public class HandlerFactoryImpl implements HandlerFactory {
 		HANDLER_MAP.put(Job.class.getName(), new JobHandler());
 		HANDLER_MAP.put(Link.class.getName(), new LinkHandler());
 		HANDLER_MAP.put(Location.class.getName(), new LocationHandler());
-		HANDLER_MAP.put(LockHandler.class.getName(), new LockHandler());
 		HANDLER_MAP.put(MobilePhoneDetail.class.getName(), new MobilePhoneHandler());
 		HANDLER_MAP.put(CallerDetail.class.getName(), new NotifyDetailHandler());
 		HANDLER_MAP.put(Period.class.getName(), new PeriodHandler());

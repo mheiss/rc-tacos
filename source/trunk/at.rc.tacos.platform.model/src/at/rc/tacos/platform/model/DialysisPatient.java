@@ -12,7 +12,7 @@ import at.rc.tacos.platform.util.MyUtils;
  * 
  * @author b.thek
  */
-public class DialysisPatient {
+public class DialysisPatient extends Lockable {
 
 	private int id;
 	private Patient patient;
@@ -145,6 +145,17 @@ public class DialysisPatient {
 		EqualsBuilder builder = new EqualsBuilder();
 		builder.append(id, dialysisPatient.id);
 		return builder.isEquals();
+	}
+
+	// LOCKABLE IMPLEMENTATION
+	@Override
+	public int getLockedId() {
+		return id;
+	}
+
+	@Override
+	public Class<?> getLockedClass() {
+		return DialysisPatient.class;
 	}
 
 	// GETTERS AND SETTERS

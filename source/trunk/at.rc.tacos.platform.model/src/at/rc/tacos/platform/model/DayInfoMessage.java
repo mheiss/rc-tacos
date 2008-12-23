@@ -11,7 +11,7 @@ import at.rc.tacos.platform.util.MyUtils;
  * 
  * @author Michael
  */
-public class DayInfoMessage {
+public class DayInfoMessage extends Lockable {
 
 	// properties
 	private long timestamp;
@@ -102,7 +102,18 @@ public class DayInfoMessage {
 		return builder.isEquals();
 	}
 
-	// getters and setters
+	// LOCKABLE IMPLEMENTATION
+	@Override
+	public int getLockedId() {
+		return hashCode();
+	}
+
+	@Override
+	public Class<?> getLockedClass() {
+		return DayInfoMessage.class;
+	}
+
+	// GETTERS AND SETTERS
 	/**
 	 * Returns the timestamp containing the day the message is assigned to
 	 * 

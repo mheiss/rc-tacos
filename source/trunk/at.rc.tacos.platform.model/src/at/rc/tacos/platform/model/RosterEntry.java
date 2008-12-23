@@ -11,7 +11,7 @@ import at.rc.tacos.platform.util.MyUtils;
  * 
  * @author b.thek
  */
-public class RosterEntry {
+public class RosterEntry extends Lockable {
 
 	private int rosterId;
 	private Location station;
@@ -172,6 +172,17 @@ public class RosterEntry {
 		}
 		// we have notes :)
 		return true;
+	}
+
+	// LOCKABLE IMPLEMENTATION
+	@Override
+	public int getLockedId() {
+		return rosterId;
+	}
+
+	@Override
+	public Class<?> getLockedClass() {
+		return RosterEntry.class;
 	}
 
 	// GETTERS AND SETTERS

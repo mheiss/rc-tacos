@@ -9,7 +9,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * 
  * @author Michael
  */
-public class Competence {
+public class Competence extends Lockable {
 
 	private int id;
 	private String competenceName;
@@ -90,6 +90,17 @@ public class Competence {
 		EqualsBuilder builder = new EqualsBuilder();
 		builder.append(id, competence.id);
 		return builder.isEquals();
+	}
+
+	// LOCKABLE IMPLEMENTATION
+	@Override
+	public int getLockedId() {
+		return id;
+	}
+
+	@Override
+	public Class<?> getLockedClass() {
+		return Competence.class;
 	}
 
 	// GETTERS AND SETTERS

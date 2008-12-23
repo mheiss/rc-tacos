@@ -10,7 +10,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * @author Payer Martin
  * @version 1.0
  */
-public class Link {
+public class Link extends Lockable {
 
 	private int id;
 	private String innerText;
@@ -83,6 +83,18 @@ public class Link {
 		return builder.isEquals();
 	}
 
+	// LOCKABLE IMPLEMENTATION
+	@Override
+	public int getLockedId() {
+		return id;
+	}
+
+	@Override
+	public Class<?> getLockedClass() {
+		return Link.class;
+	}
+
+	// GETTERS AND SETTERS
 	public int getId() {
 		return id;
 	}

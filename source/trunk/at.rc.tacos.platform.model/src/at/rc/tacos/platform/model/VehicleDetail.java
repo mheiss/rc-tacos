@@ -9,7 +9,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * 
  * @author b.thek
  */
-public class VehicleDetail {
+public class VehicleDetail extends Lockable {
 
 	private String vehicleName;
 	private String vehicleType;
@@ -122,6 +122,17 @@ public class VehicleDetail {
 		EqualsBuilder builder = new EqualsBuilder();
 		builder.append(vehicleName, vehicleDetail.vehicleName);
 		return builder.isEquals();
+	}
+
+	// LOCKABLE IMPLEMENTATION
+	@Override
+	public int getLockedId() {
+		return hashCode();
+	}
+
+	@Override
+	public Class<?> getLockedClass() {
+		return VehicleDetail.class;
 	}
 
 	// GETTERS AND SETTERS

@@ -9,7 +9,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * 
  * @author Michael
  */
-public class Address {
+public class Address extends Lockable {
 
 	private int id;
 	private int zip;
@@ -77,8 +77,8 @@ public class Address {
 	}
 
 	/**
-	 * Returns wheter or not this <code>Address</code> instance is equal to
-	 * the compared object.
+	 * Returns wheter or not this <code>Address</code> instance is equal to the
+	 * compared object.
 	 * <p>
 	 * The compared fields are {@link Address#getCity()},
 	 * {@link Address#getStreet()} and {@link Address#getZip()}
@@ -105,6 +105,18 @@ public class Address {
 		return builder.isEquals();
 	}
 
+	// LOCKABLE IMPLEMENTATION
+	@Override
+	public int getLockedId() {
+		return id;
+	}
+
+	@Override
+	public Class<?> getLockedClass() {
+		return Address.class;
+	}
+
+	// GETTERS AND SETTERS
 	/**
 	 * Returns the zip code of this address record
 	 * 

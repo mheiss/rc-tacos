@@ -9,7 +9,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * 
  * @author Birgit
  */
-public class Period {
+public class Period extends Lockable {
 
 	private int id;
 	private String periodName;
@@ -93,6 +93,18 @@ public class Period {
 		return builder.isEquals();
 	}
 
+	// LOCKABLE IMPLEMENTATION
+	@Override
+	public int getLockedId() {
+		return id;
+	}
+
+	@Override
+	public Class<?> getLockedClass() {
+		return Period.class;
+	}
+
+	// GETTERS AND SETTERS
 	/**
 	 * Returns the name of the period.
 	 * 

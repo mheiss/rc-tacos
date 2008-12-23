@@ -10,7 +10,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * 
  * @author b.thek
  */
-public class CallerDetail {
+public class CallerDetail extends Lockable {
 
 	private int id;
 	private String name;
@@ -39,7 +39,8 @@ public class CallerDetail {
 	}
 
 	/**
-	 * Returns the human readable string for this <code>CallerDetail</code> instance.
+	 * Returns the human readable string for this <code>CallerDetail</code>
+	 * instance.
 	 * 
 	 * @return the build string
 	 */
@@ -94,6 +95,18 @@ public class CallerDetail {
 		return builder.isEquals();
 	}
 
+	// LOCKABLE IMPLEMENTATION
+	@Override
+	public int getLockedId() {
+		return id;
+	}
+
+	@Override
+	public Class<?> getLockedClass() {
+		return CallerDetail.class;
+	}
+
+	// GETTERS AND SETTERS
 	/**
 	 * Returns the id of the caller.<br>
 	 * The id is a internal value to identify the caller

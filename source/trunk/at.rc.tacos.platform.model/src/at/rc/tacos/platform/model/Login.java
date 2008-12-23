@@ -22,7 +22,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * 
  * @author Michael
  */
-public class Login {
+public class Login extends Lockable {
 
 	// properties
 	private String username;
@@ -125,6 +125,17 @@ public class Login {
 		EqualsBuilder builder = new EqualsBuilder();
 		builder.append(username, login.getUsername());
 		return builder.isEquals();
+	}
+
+	// LOCKABLE IMPLEMENTATION
+	@Override
+	public int getLockedId() {
+		return hashCode();
+	}
+
+	@Override
+	public Class<?> getLockedClass() {
+		return Login.class;
 	}
 
 	// GETTERS AND SETTERS

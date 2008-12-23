@@ -79,6 +79,7 @@ public class SystemMessage {
 		return builder.isEquals();
 	}
 
+	// GETTERS AND SETTERS
 	/**
 	 * Returns the system message.
 	 * 

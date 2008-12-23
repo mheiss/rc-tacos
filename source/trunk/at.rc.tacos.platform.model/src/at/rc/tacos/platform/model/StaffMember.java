@@ -14,7 +14,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * 
  * @author b.thek
  */
-public class StaffMember {
+public class StaffMember extends Lockable {
 
 	private int staffMemberId;
 	private Location primaryLocation;
@@ -141,6 +141,18 @@ public class StaffMember {
 		return builder.isEquals();
 	}
 
+	// LOCKABLE IMPLEMENTATION
+	@Override
+	public int getLockedId() {
+		return staffMemberId;
+	}
+
+	@Override
+	public Class<?> getLockedClass() {
+		return StaffMember.class;
+	}
+
+	// GETTERS AND SETTERS
 	/**
 	 * Returns the personal identification number.
 	 * 

@@ -9,7 +9,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * 
  * @author Michael
  */
-public class Location {
+public class Location extends Lockable {
 
 	private int id;
 	private String locationName;
@@ -80,7 +80,8 @@ public class Location {
 	 */
 	@Override
 	public int hashCode() {
-		HashCodeBuilder builder = new HashCodeBuilder(31, 41);
+		HashCodeBuilder builder = new HashCodeBuilder(59, 69);
+		builder.append(id);
 		builder.append(id);
 		return builder.toHashCode();
 	}
@@ -111,6 +112,18 @@ public class Location {
 		return builder.isEquals();
 	}
 
+	// LOCKABLE IMPLEMENTATION
+	@Override
+	public int getLockedId() {
+		return id;
+	}
+
+	@Override
+	public Class<?> getLockedClass() {
+		return Location.class;
+	}
+
+	// GETTERS AND SETTERS
 	/**
 	 * @return the id
 	 */

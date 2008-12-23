@@ -10,7 +10,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * 
  * @author b.thek
  */
-public class Patient {
+public class Patient extends Lockable {
 
 	// properties
 	private long patientId;
@@ -98,6 +98,17 @@ public class Patient {
 		builder.append(firstname, patient.firstname);
 		builder.append(lastname, patient.lastname);
 		return builder.isEquals();
+	}
+
+	// LOCKABLE IMPLEMENTATION
+	@Override
+	public int getLockedId() {
+		return (int) patientId;
+	}
+
+	@Override
+	public Class<?> getLockedClass() {
+		return Patient.class;
 	}
 
 	// GETTERS AND SETTERS

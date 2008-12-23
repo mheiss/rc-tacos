@@ -9,7 +9,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * 
  * @author Michael
  */
-public class Disease {
+public class Disease extends Lockable {
 
 	private int id;
 	private String diseaseName;
@@ -87,8 +87,18 @@ public class Disease {
 		return builder.isEquals();
 	}
 
-	// GETTERS AND SETTERS
+	// LOCKABLE IMPLEMENTATION
+	@Override
+	public int getLockedId() {
+		return id;
+	}
 
+	@Override
+	public Class<?> getLockedClass() {
+		return Disease.class;
+	}
+
+	// GETTERS AND SETTERS
 	/**
 	 * Returns the id of the disease
 	 * 

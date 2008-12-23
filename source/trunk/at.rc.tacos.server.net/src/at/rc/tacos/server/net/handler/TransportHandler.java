@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import at.rc.tacos.platform.iface.IFilterTypes;
+import at.rc.tacos.platform.model.Lockable;
 import at.rc.tacos.platform.model.Transport;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.exception.NoSuchCommandException;
@@ -14,6 +15,7 @@ import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.message.AbstractMessage;
 import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.Service;
+import at.rc.tacos.platform.services.dbal.LockableService;
 import at.rc.tacos.platform.services.dbal.TransportService;
 import at.rc.tacos.platform.services.exception.ServiceException;
 import at.rc.tacos.platform.util.MyUtils;
@@ -22,6 +24,9 @@ public class TransportHandler implements Handler<Transport> {
 
 	@Service(clazz = TransportService.class)
 	private TransportService transportService;
+
+	@Service(clazz = LockableService.class)
+	private LockableService lockableService;
 
 	@Override
 	public void add(MessageIoSession session, Message<Transport> message) throws ServiceException, SQLException {
@@ -103,6 +108,9 @@ public class TransportHandler implements Handler<Transport> {
 				list.add(transport);
 			}
 
+			// check for locks
+			syncronizeLocks(list);
+
 			// send back the requested transports
 			session.write(message, list);
 			return;
@@ -127,6 +135,10 @@ public class TransportHandler implements Handler<Transport> {
 						+ MyUtils.timestampToString(dateEnd, MyUtils.dateFormat);
 				throw new ServiceException("Failed to list the archived transports by date and vehicle from " + time + " " + vehicleFilter);
 			}
+
+			// check for locks
+			syncronizeLocks(list);
+
 			// send back the requested transports
 			session.write(message, list);
 			return;
@@ -143,6 +155,10 @@ public class TransportHandler implements Handler<Transport> {
 			if (list == null) {
 				throw new ServiceException("Failed to list the transports todo (prebooked and outstanding)");
 			}
+
+			// check for locks
+			syncronizeLocks(list);
+
 			// send back the requested transports
 			session.write(message, list);
 			return;
@@ -158,6 +174,10 @@ public class TransportHandler implements Handler<Transport> {
 			if (list == null) {
 				throw new ServiceException("Failed to list the underway transports");
 			}
+
+			// check for locks
+			syncronizeLocks(list);
+
 			// send back the requested transports
 			session.write(message, list);
 			return;
@@ -203,6 +223,10 @@ public class TransportHandler implements Handler<Transport> {
 				}
 				list.add(transport);
 			}
+
+			// check for locks
+			syncronizeLocks(list);
+
 			// send back the requested transports
 			session.write(message, list);
 			return;
@@ -226,6 +250,10 @@ public class TransportHandler implements Handler<Transport> {
 						+ MyUtils.timestampToString(dateEnd, MyUtils.dateFormat);
 				throw new ServiceException("Failed to list the archived transports by date from " + time);
 			}
+
+			// check for locks
+			syncronizeLocks(list);
+
 			// send back the requested transports
 			session.write(message, list);
 			return;
@@ -261,6 +289,10 @@ public class TransportHandler implements Handler<Transport> {
 				throw new ServiceException("Failed to list the archived transports by date from " + time);
 			}
 			list.addAll(tmpList);
+
+			// check for locks
+			syncronizeLocks(list);
+
 			// send back the requested transports
 			session.write(message, list);
 			return;
@@ -318,6 +350,9 @@ public class TransportHandler implements Handler<Transport> {
 			// send a simple update request to the dao
 			if (!transportService.updateTransport(transport))
 				throw new ServiceException("Failed to update the transport: " + transport);
+
+			// update the lock
+			lockableService.updateLock(transport);
 		}
 		// brodcast the updated transports
 		session.writeBrodcast(message, transports);
@@ -328,6 +363,29 @@ public class TransportHandler implements Handler<Transport> {
 		// throw an execption because the 'exec' command is not implemented
 		String command = message.getParams().get(AbstractMessage.ATTRIBUTE_COMMAND);
 		String handler = getClass().getSimpleName();
+		// update the locks
+		if ("doLock".equalsIgnoreCase(command)) {
+			lockableService.addAllLocks(message.getObjects());
+			return;
+		}
+		if ("doUnlock".equalsIgnoreCase(command)) {
+			lockableService.removeAllLocks(message.getObjects());
+			return;
+		}
 		throw new NoSuchCommandException(handler, command);
+	}
+
+	/**
+	 * Helper method to syncronize the locks
+	 */
+	private void syncronizeLocks(List<Transport> transportList) {
+		for (Transport transport : transportList) {
+			if (!lockableService.containsLock(transport)) {
+				continue;
+			}
+			Lockable lockable = lockableService.getLock(transport);
+			transport.setLocked(lockable.isLocked());
+			transport.setLockedBy(lockable.getLockedBy());
+		}
 	}
 }
