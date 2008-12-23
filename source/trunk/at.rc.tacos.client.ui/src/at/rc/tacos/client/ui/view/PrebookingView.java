@@ -8,6 +8,7 @@ import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -41,28 +42,25 @@ import at.rc.tacos.client.controller.CopyTransportAction;
 import at.rc.tacos.client.controller.EditTransportAction;
 import at.rc.tacos.client.controller.MoveToOutstandingTransportsAction;
 import at.rc.tacos.client.net.NetWrapper;
-import at.rc.tacos.client.net.handler.LockHandler;
 import at.rc.tacos.client.net.handler.TransportHandler;
-import at.rc.tacos.client.providers.PrebookingViewContentProvider;
 import at.rc.tacos.client.providers.PrebookingViewLabelProvider;
-import at.rc.tacos.client.providers.TransportDateFilter;
-import at.rc.tacos.client.providers.TransportDirectnessFilter;
-import at.rc.tacos.client.providers.TransportStateViewFilter;
-import at.rc.tacos.client.providers.TransportViewFilter;
-import at.rc.tacos.client.ui.UiWrapper;
 import at.rc.tacos.client.ui.ListenerConstants;
+import at.rc.tacos.client.ui.UiWrapper;
+import at.rc.tacos.client.ui.filters.TransportDateFilter;
+import at.rc.tacos.client.ui.filters.TransportDirectnessFilter;
+import at.rc.tacos.client.ui.filters.TransportStateViewFilter;
+import at.rc.tacos.client.ui.filters.TransportViewFilter;
 import at.rc.tacos.client.ui.sorterAndTooltip.JournalViewTooltip;
 import at.rc.tacos.client.ui.sorterAndTooltip.TransportSorter;
 import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.platform.iface.IDirectness;
 import at.rc.tacos.platform.iface.IProgramStatus;
-import at.rc.tacos.platform.model.Lock;
 import at.rc.tacos.platform.model.Transport;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.listeners.DataChangeListener;
 import at.rc.tacos.platform.net.mina.MessageIoSession;
 
-public class PrebookingView extends ViewPart implements PropertyChangeListener, DataChangeListener<Object> {
+public class PrebookingView extends ViewPart implements PropertyChangeListener, DataChangeListener<Transport> {
 
 	public static final String ID = "at.rc.tacos.client.view.prebooking_view";
 	private Logger log = LoggerFactory.getLogger(PrebookingView.class);
@@ -119,7 +117,6 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 	private TransportViewFilter transportViewFilter = null;
 
 	// the model handlers
-	private LockHandler lockHandler = (LockHandler) NetWrapper.getHandler(Lock.class);
 	private TransportHandler transportHandler = (TransportHandler) NetWrapper.getHandler(Transport.class);
 
 	/**
@@ -127,7 +124,6 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 	 */
 	@Override
 	public void dispose() {
-		NetWrapper.removeListener(this, Lock.class);
 		NetWrapper.removeListener(this, Transport.class);
 		UiWrapper.getDefault().removeListener(this);
 	}
@@ -235,7 +231,6 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		applyFilters();
 
 		// register listeners to keep in track
-		NetWrapper.registerListener(this, Lock.class);
 		NetWrapper.registerListener(this, Transport.class);
 		UiWrapper.getDefault().registerListener(this);
 	}
@@ -401,7 +396,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		manager.add(copyTransportActionBruck);
 
 		// disable actions if the transport is locked
-		if (lockHandler.containsLock(transport.getTransportId(), Transport.class)) {
+		if (transport.isLocked()) {
 			moveToOutstandingTransportsActionBruck.setEnabled(false);
 			cancelTransportActionBruck.setEnabled(false);
 			copyTransportActionBruck.setEnabled(false);
@@ -430,7 +425,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		manager.add(copyTransportActionKapfenberg);
 
 		// disable actions if the transport is locked
-		if (lockHandler.containsLock(transport.getTransportId(), Transport.class)) {
+		if (transport.isLocked()) {
 			moveToOutstandingTransportsActionKapfenberg.setEnabled(false);
 			cancelTransportActionKapfenberg.setEnabled(false);
 			copyTransportActionKapfenberg.setEnabled(false);
@@ -458,7 +453,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		manager.add(copyTransportActionLeoben);
 
 		// disable actions if the transport is locked
-		if (lockHandler.containsLock(transport.getTransportId(), Transport.class)) {
+		if (transport.isLocked()) {
 			moveToOutstandingTransportsActionLeoben.setEnabled(false);
 			cancelTransportActionLeoben.setEnabled(false);
 			copyTransportActionLeoben.setEnabled(false);
@@ -486,7 +481,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		manager.add(copyTransportActionMariazell);
 
 		// disable actions if the transport is locked
-		if (lockHandler.containsLock(transport.getTransportId(), Transport.class)) {
+		if (transport.isLocked()) {
 			moveToOutstandingTransportsActionMariazell.setEnabled(false);
 			cancelTransportActionMariazell.setEnabled(false);
 			copyTransportActionMariazell.setEnabled(false);
@@ -514,7 +509,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		manager.add(copyTransportActionGraz);
 
 		// disable actions if the transport is locked
-		if (lockHandler.containsLock(transport.getTransportId(), Transport.class)) {
+		if (transport.isLocked()) {
 			moveToOutstandingTransportsActionGraz.setEnabled(false);
 			cancelTransportActionGraz.setEnabled(false);
 			copyTransportActionGraz.setEnabled(false);
@@ -542,7 +537,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		manager.add(copyTransportActionWien);
 
 		// disable actions if the transport is locked
-		if (lockHandler.containsLock(transport.getTransportId(), Transport.class)) {
+		if (transport.isLocked()) {
 			moveToOutstandingTransportsActionWien.setEnabled(false);
 			cancelTransportActionWien.setEnabled(false);
 			copyTransportActionWien.setEnabled(false);
@@ -573,7 +568,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 	 */
 	private TableViewer createTableViewer(Composite parent) {
 		final TableViewer viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
-		viewer.setContentProvider(new PrebookingViewContentProvider());
+		viewer.setContentProvider(new ArrayContentProvider());
 		viewer.setLabelProvider(new PrebookingViewLabelProvider());
 		viewer.setInput(transportHandler.toArray());
 		viewer.getTable().setLinesVisible(true);
@@ -760,9 +755,8 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 	/***********************************
 	 * LISTENER CODE
 	 **********************************/
-
 	@Override
-	public void dataChanged(Message<Object> message, MessageIoSession messageIoSession) {
+	public void dataChanged(Message<Transport> message, MessageIoSession messageIoSession) {
 		viewerLeoben.refresh();
 		viewerBruck.refresh();
 		viewerGraz.refresh();

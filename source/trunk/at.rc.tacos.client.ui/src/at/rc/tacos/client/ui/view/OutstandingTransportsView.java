@@ -1,5 +1,7 @@
 package at.rc.tacos.client.ui.view;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,11 +9,13 @@ import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -34,30 +38,30 @@ import at.rc.tacos.client.controller.CopyTransportAction;
 import at.rc.tacos.client.controller.EditTransportAction;
 import at.rc.tacos.client.controller.ForwardTransportAction;
 import at.rc.tacos.client.net.NetWrapper;
-import at.rc.tacos.client.net.handler.LockHandler;
 import at.rc.tacos.client.net.handler.TransportHandler;
 import at.rc.tacos.client.net.handler.VehicleHandler;
-import at.rc.tacos.client.providers.OutstandingTransportsViewContentProvider;
 import at.rc.tacos.client.providers.OutstandingTransportsViewLabelProvider;
-import at.rc.tacos.client.providers.TransportStateViewFilter;
+import at.rc.tacos.client.ui.ListenerConstants;
+import at.rc.tacos.client.ui.UiWrapper;
+import at.rc.tacos.client.ui.filters.TransportStateViewFilter;
+import at.rc.tacos.client.ui.filters.TransportViewFilter;
 import at.rc.tacos.client.ui.sorterAndTooltip.TransportSorter;
 import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.platform.iface.IProgramStatus;
-import at.rc.tacos.platform.model.Lock;
 import at.rc.tacos.platform.model.Transport;
 import at.rc.tacos.platform.model.VehicleDetail;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.listeners.DataChangeListener;
 import at.rc.tacos.platform.net.mina.MessageIoSession;
 
-public class OutstandingTransportsView extends ViewPart implements DataChangeListener<Object> {
+public class OutstandingTransportsView extends ViewPart implements DataChangeListener<Transport>, PropertyChangeListener {
 
 	public static final String ID = "at.rc.tacos.client.view.outstandingTransports_view";
 
 	// the toolkit to use
 	private FormToolkit toolkit;
 	private Form form;
-	private TableViewer viewerOffTrans;
+	private TableViewer viewer;
 
 	// the actions for the context menu
 	private CopyTransportAction copyTransportAction;
@@ -66,25 +70,16 @@ public class OutstandingTransportsView extends ViewPart implements DataChangeLis
 	private EditTransportAction editTransportAction;
 
 	// the model handlers
-	private LockHandler lockHandler = (LockHandler) NetWrapper.getHandler(Lock.class);
 	private TransportHandler transportHandler = (TransportHandler) NetWrapper.getHandler(Transport.class);
 	private VehicleHandler vehicleHandler = (VehicleHandler) NetWrapper.getHandler(VehicleDetail.class);
 
 	/**
-	 * Constructs a new outstanding transports view.
-	 */
-	public OutstandingTransportsView() {
-		NetWrapper.registerListener(this, Transport.class);
-		NetWrapper.registerListener(this, Lock.class);
-	}
-
-	/**
-	 * Cleanup the view
+	 * Cleanup the view and remove the listeners
 	 */
 	@Override
 	public void dispose() {
 		NetWrapper.removeListener(this, Transport.class);
-		NetWrapper.removeListener(this, Lock.class);
+		UiWrapper.getDefault().removeListener(this);
 		super.dispose();
 	}
 
@@ -105,24 +100,24 @@ public class OutstandingTransportsView extends ViewPart implements DataChangeLis
 		final Composite composite = form.getBody();
 		composite.setLayout(new FillLayout());
 
-		viewerOffTrans = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
-		viewerOffTrans.setContentProvider(new OutstandingTransportsViewContentProvider());
-		viewerOffTrans.setLabelProvider(new OutstandingTransportsViewLabelProvider());
-		viewerOffTrans.setInput(transportHandler.toArray());
-		viewerOffTrans.getTable().setLinesVisible(true);
-		viewerOffTrans.getTable().addMouseListener(new MouseAdapter() {
+		viewer = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
+		viewer.setContentProvider(new ArrayContentProvider());
+		viewer.setLabelProvider(new OutstandingTransportsViewLabelProvider());
+		viewer.setInput(transportHandler.toArray());
+		viewer.getTable().setLinesVisible(true);
+		viewer.getTable().addMouseListener(new MouseAdapter() {
 
 			public void mouseDown(MouseEvent e) {
-				if (viewerOffTrans.getTable().getItem(new Point(e.x, e.y)) == null) {
-					viewerOffTrans.setSelection(new StructuredSelection());
+				if (viewer.getTable().getItem(new Point(e.x, e.y)) == null) {
+					viewer.setSelection(new StructuredSelection());
 				}
 			}
 		});
 		// make the actions for the context menu when selection has changed
-		viewerOffTrans.addSelectionChangedListener(new ISelectionChangedListener() {
+		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
 			ArrayList<AssignCarAction> actionList = new ArrayList<AssignCarAction>();
-			
+
 			public void selectionChanged(SelectionChangedEvent event) {
 				makeActions();
 				hookContextMenu();
@@ -132,16 +127,16 @@ public class OutstandingTransportsView extends ViewPart implements DataChangeLis
 			 * Creates the needed actions
 			 */
 			private void makeActions() {
-				forwardTransportAction = new ForwardTransportAction(viewerOffTrans);
-				editTransportAction = new EditTransportAction(viewerOffTrans, "outstanding");
-				cancelTransportAction = new CancelTransportAction(viewerOffTrans);
-				copyTransportAction = new CopyTransportAction(viewerOffTrans);
+				forwardTransportAction = new ForwardTransportAction(viewer);
+				editTransportAction = new EditTransportAction(viewer, "outstanding");
+				cancelTransportAction = new CancelTransportAction(viewer);
+				copyTransportAction = new CopyTransportAction(viewer);
 
 				// get the list of all vehicle with the status ready for action
 				List<VehicleDetail> readyVehicles = vehicleHandler.getReadyVehicleList();
 				actionList.clear();
 				for (VehicleDetail veh : readyVehicles) {
-					AssignCarAction action = new AssignCarAction(viewerOffTrans, veh);
+					AssignCarAction action = new AssignCarAction(viewer, veh);
 					actionList.add(action);
 				}
 			}
@@ -158,8 +153,8 @@ public class OutstandingTransportsView extends ViewPart implements DataChangeLis
 						fillContextMenu(manager);
 					}
 				});
-				Menu menu = menuManager.createContextMenu(viewerOffTrans.getControl());
-				viewerOffTrans.getControl().setMenu(menu);
+				Menu menu = menuManager.createContextMenu(viewer.getControl());
+				viewer.getControl().setMenu(menu);
 			}
 
 			/**
@@ -167,7 +162,7 @@ public class OutstandingTransportsView extends ViewPart implements DataChangeLis
 			 */
 			private void fillContextMenu(IMenuManager manager) {
 				// get the selected transport
-				final Object firstSelectedObject = ((IStructuredSelection) viewerOffTrans.getSelection()).getFirstElement();
+				final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
 				Transport transport = (Transport) firstSelectedObject;
 				if (transport == null)
 					return;
@@ -179,10 +174,9 @@ public class OutstandingTransportsView extends ViewPart implements DataChangeLis
 
 				// create a list of ready vehicles and disable the selection if
 				// the transport is locked
-				boolean locked = lockHandler.containsLock(transport.getTransportId(), Transport.class);
 				for (AssignCarAction ac : actionList) {
 					menuManagerSub.add(ac);
-					if (locked) {
+					if (transport.isLocked()) {
 						ac.setEnabled(false);
 					}
 				}
@@ -195,19 +189,15 @@ public class OutstandingTransportsView extends ViewPart implements DataChangeLis
 				manager.add(new Separator());
 				manager.add(copyTransportAction);
 
-				// if locked
-				if (locked) {
-					copyTransportAction.setEnabled(false);
-				}
-				else
-					copyTransportAction.setEnabled(true);
+				// if locked disable the actions
+				copyTransportAction.setEnabled(!transport.isLocked());
 			}
 		});
 
 		// set the default sorter
-		viewerOffTrans.setSorter(new TransportSorter(TransportSorter.PRIORITY_SORTER, SWT.UP));
+		viewer.setSorter(new TransportSorter(TransportSorter.PRIORITY_SORTER, SWT.UP));
 
-		final Table tableOff = viewerOffTrans.getTable();
+		final Table tableOff = viewer.getTable();
 		tableOff.setLinesVisible(true);
 		tableOff.setHeaderVisible(true);
 
@@ -277,9 +267,9 @@ public class OutstandingTransportsView extends ViewPart implements DataChangeLis
 
 			public void handleEvent(Event e) {
 				// determine new sort column and direction
-				TableColumn sortColumn = viewerOffTrans.getTable().getSortColumn();
+				TableColumn sortColumn = viewer.getTable().getSortColumn();
 				TableColumn currentColumn = (TableColumn) e.widget;
-				int dir = viewerOffTrans.getTable().getSortDirection();
+				int dir = viewer.getTable().getSortDirection();
 				// revert the sort order if the column is the same
 				if (sortColumn == currentColumn) {
 					if (dir == SWT.UP)
@@ -288,7 +278,7 @@ public class OutstandingTransportsView extends ViewPart implements DataChangeLis
 						dir = SWT.UP;
 				}
 				else {
-					viewerOffTrans.getTable().setSortColumn(currentColumn);
+					viewer.getTable().setSortColumn(currentColumn);
 					dir = SWT.UP;
 				}
 				// sort the data based on column and direction
@@ -319,8 +309,8 @@ public class OutstandingTransportsView extends ViewPart implements DataChangeLis
 					sortIdentifier = TransportSorter.NOTES_SORTER;
 
 				// apply the filter
-				viewerOffTrans.getTable().setSortDirection(dir);
-				viewerOffTrans.setSorter(new TransportSorter(sortIdentifier, dir));
+				viewer.getTable().setSortDirection(dir);
+				viewer.setSorter(new TransportSorter(sortIdentifier, dir));
 			}
 		};
 
@@ -338,10 +328,13 @@ public class OutstandingTransportsView extends ViewPart implements DataChangeLis
 		erkrankungVerletzungOffeneTransporte.addListener(SWT.Selection, sortListener);
 		anmerkungOffeneTransporte.addListener(SWT.Selection, sortListener);
 
-		viewerOffTrans.resetFilters();
 		// apply the filter to show only outstanding transports
-		viewerOffTrans.addFilter(new TransportStateViewFilter(IProgramStatus.PROGRAM_STATUS_OUTSTANDING));
-		viewerOffTrans.refresh();
+		viewer.addFilter(new TransportStateViewFilter(IProgramStatus.PROGRAM_STATUS_OUTSTANDING));
+		viewer.refresh();
+
+		// register as transport date and view listener
+		UiWrapper.getDefault().registerListener(this);
+		NetWrapper.registerListener(this, Transport.class);
 	}
 
 	/**
@@ -352,22 +345,28 @@ public class OutstandingTransportsView extends ViewPart implements DataChangeLis
 	}
 
 	@Override
-	public void dataChanged(Message<Object> message,MessageIoSession messageIoSession) {
-		viewerOffTrans.refresh();
-		//TODO: TRANSPORT_FILTER_CHANGED
-		/**
-		 * // get the new filter
-			TransportViewFilter searchFilter = (TransportViewFilter) evt.getNewValue();
-			// remove all filters and apply the new
-			for (ViewerFilter filter : viewerOffTrans.getFilters()) {
-				if (!(filter instanceof TransportViewFilter))
-					continue;
-				viewerOffTrans.removeFilter(filter);
+	public void dataChanged(Message<Transport> message, MessageIoSession messageIoSession) {
+		viewer.refresh();
+	}
 
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		final String event = evt.getPropertyName();
+		final Object newValue = evt.getNewValue();
+
+		// filter out unwanted elements
+		if (ListenerConstants.TRANSPORT_FILTER_CHANGED.equalsIgnoreCase(event)) {
+			TransportViewFilter searchFilter = (TransportViewFilter) newValue;
+			// remove all filters and apply the new
+			for (ViewerFilter filter : viewer.getFilters()) {
+				if (filter instanceof TransportViewFilter) {
+					viewer.removeFilter(filter);
+				}
 			}
+			// apply the new filter
 			if (searchFilter != null) {
-				viewerOffTrans.addFilter(searchFilter);
+				viewer.addFilter(searchFilter);
 			}
-		 */
+		}
 	}
 }

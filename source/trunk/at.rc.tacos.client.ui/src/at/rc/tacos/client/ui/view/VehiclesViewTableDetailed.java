@@ -7,6 +7,7 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.fieldassist.FieldDecoration;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
@@ -28,13 +29,10 @@ import at.rc.tacos.client.controller.VehicleTableEditAction;
 import at.rc.tacos.client.controller.VehicleTableSetReadyAction;
 import at.rc.tacos.client.controller.VehicleTableSetRepairStatusAction;
 import at.rc.tacos.client.net.NetWrapper;
-import at.rc.tacos.client.net.handler.LockHandler;
 import at.rc.tacos.client.net.handler.VehicleHandler;
-import at.rc.tacos.client.providers.VehicleContentProvider;
 import at.rc.tacos.client.providers.VehicleViewTableDetailLabelProvider;
 import at.rc.tacos.client.ui.sorterAndTooltip.VehicleViewTableSorter;
 import at.rc.tacos.platform.model.Job;
-import at.rc.tacos.platform.model.Lock;
 import at.rc.tacos.platform.model.RosterEntry;
 import at.rc.tacos.platform.model.ServiceType;
 import at.rc.tacos.platform.model.StaffMember;
@@ -56,7 +54,6 @@ public class VehiclesViewTableDetailed extends AbstractView {
 	private VehicleTableAtStationAction vehicleAtStationAction;
 
 	// the managers
-	private LockHandler lockHandler = (LockHandler) NetWrapper.getHandler(Lock.class);
 	private VehicleHandler vehicleHandler = (VehicleHandler) NetWrapper.getHandler(VehicleDetail.class);
 
 	@Override
@@ -66,7 +63,6 @@ public class VehiclesViewTableDetailed extends AbstractView {
 		NetWrapper.registerListener(this, StaffMember.class);
 		NetWrapper.registerListener(this, ServiceType.class);
 		NetWrapper.registerListener(this, Job.class);
-		NetWrapper.registerListener(this, Lock.class);
 	}
 
 	@Override
@@ -76,7 +72,6 @@ public class VehiclesViewTableDetailed extends AbstractView {
 		NetWrapper.removeListener(this, StaffMember.class);
 		NetWrapper.removeListener(this, ServiceType.class);
 		NetWrapper.removeListener(this, Job.class);
-		NetWrapper.removeListener(this, Lock.class);
 	}
 
 	@Override
@@ -87,7 +82,7 @@ public class VehiclesViewTableDetailed extends AbstractView {
 		// setup the layout and initialize the controls
 		body.setLayout(new FillLayout());
 		viewer = new TableViewer(body, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
-		viewer.setContentProvider(new VehicleContentProvider());
+		viewer.setContentProvider(new ArrayContentProvider());
 		viewer.setLabelProvider(new VehicleViewTableDetailLabelProvider());
 		viewer.setInput(vehicleHandler.toArray());
 		viewer.getTable().setLinesVisible(true);
@@ -291,7 +286,7 @@ public class VehiclesViewTableDetailed extends AbstractView {
 			repairStatus.setEnabled(true);
 		}
 
-		if (lockHandler.containsLock(vehicle.hashCode(), VehicleDetail.class)) {
+		if (vehicle.isLocked()) {
 			detachAction.setEnabled(false);
 			vehicleAtStationAction.setEnabled(false);
 			readyStatus.setEnabled(false);

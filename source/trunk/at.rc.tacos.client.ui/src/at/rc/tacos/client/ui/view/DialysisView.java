@@ -4,6 +4,7 @@ import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
@@ -29,19 +30,16 @@ import at.rc.tacos.client.controller.DialysisTransportNowAction;
 import at.rc.tacos.client.controller.RefreshViewAction;
 import at.rc.tacos.client.net.NetWrapper;
 import at.rc.tacos.client.net.handler.DialysisHandler;
-import at.rc.tacos.client.net.handler.LockHandler;
-import at.rc.tacos.client.providers.DialysisTransportContentProvider;
 import at.rc.tacos.client.providers.DialysisTransportLabelProvider;
 import at.rc.tacos.client.ui.sorterAndTooltip.DialysisTransportSorter;
 import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.platform.model.DialysisPatient;
-import at.rc.tacos.platform.model.Lock;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.listeners.DataChangeListener;
 import at.rc.tacos.platform.net.message.GetMessage;
 import at.rc.tacos.platform.net.mina.MessageIoSession;
 
-public class DialysisView extends ViewPart implements DataChangeListener<Object> {
+public class DialysisView extends ViewPart implements DataChangeListener<DialysisPatient> {
 
 	public static final String ID = "at.rc.tacos.client.view.dialysis_view";
 
@@ -56,7 +54,6 @@ public class DialysisView extends ViewPart implements DataChangeListener<Object>
 	private DialysisTransportNowAction dialysisTransportNowAction;
 
 	// the lock manager
-	private LockHandler lockHandler = (LockHandler) NetWrapper.getHandler(Lock.class);
 	private DialysisHandler dialysisHandler = (DialysisHandler) NetWrapper.getHandler(DialysisPatient.class);
 
 	/**
@@ -71,7 +68,6 @@ public class DialysisView extends ViewPart implements DataChangeListener<Object>
 	@Override
 	public void dispose() {
 		NetWrapper.removeListener(this, DialysisPatient.class);
-		NetWrapper.removeListener(this, Lock.class);
 	}
 
 	/**
@@ -91,7 +87,7 @@ public class DialysisView extends ViewPart implements DataChangeListener<Object>
 		final Composite composite = form.getBody();
 
 		viewer = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
-		viewer.setContentProvider(new DialysisTransportContentProvider());
+		viewer.setContentProvider(new ArrayContentProvider());
 		viewer.setLabelProvider(new DialysisTransportLabelProvider());
 		viewer.setInput(dialysisHandler.toArray());
 		viewer.getTable().setLinesVisible(true);
@@ -258,10 +254,9 @@ public class DialysisView extends ViewPart implements DataChangeListener<Object>
 		makeActions();
 		hookContextMenu();
 		createToolBarActions();
-		
-		//add the listeners to keep in track of updates
+
+		// add the listeners to keep in track of updates
 		NetWrapper.registerListener(this, DialysisPatient.class);
-		NetWrapper.registerListener(this, Lock.class);
 	}
 
 	/**
@@ -298,8 +293,8 @@ public class DialysisView extends ViewPart implements DataChangeListener<Object>
 		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
 
 		// cast to a dialysis transport
-		DialysisPatient dia = (DialysisPatient) firstSelectedObject;
-		if (dia == null)
+		DialysisPatient dialysisPatient = (DialysisPatient) firstSelectedObject;
+		if (dialysisPatient == null)
 			return;
 
 		// add the actions
@@ -310,7 +305,7 @@ public class DialysisView extends ViewPart implements DataChangeListener<Object>
 		manager.add(dialysisTransportNowAction);
 
 		// disable the context menu actions is the item is locked
-		if (lockHandler.containsLock(dia.getId(), DialysisPatient.class)) {
+		if (dialysisPatient.isLocked()) {
 			dialysisDeleteAction.setEnabled(false);
 			dialysisTransportNowAction.setEnabled(false);
 		}
@@ -339,7 +334,7 @@ public class DialysisView extends ViewPart implements DataChangeListener<Object>
 	}
 
 	@Override
-	public void dataChanged(Message<Object> message, MessageIoSession messageIoSession) {
+	public void dataChanged(Message<DialysisPatient> message, MessageIoSession messageIoSession) {
 		viewer.refresh();
 	}
 }

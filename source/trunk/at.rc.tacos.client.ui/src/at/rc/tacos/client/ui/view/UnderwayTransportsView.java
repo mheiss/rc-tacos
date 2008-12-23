@@ -7,6 +7,7 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.fieldassist.FieldDecoration;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
@@ -40,17 +41,14 @@ import at.rc.tacos.client.controller.SetBD2Action;
 import at.rc.tacos.client.controller.SetBackTransportPossibleAction;
 import at.rc.tacos.client.controller.SetTransportStatusAction;
 import at.rc.tacos.client.net.NetWrapper;
-import at.rc.tacos.client.net.handler.LockHandler;
 import at.rc.tacos.client.net.handler.TransportHandler;
-import at.rc.tacos.client.providers.TransportStateViewFilter;
-import at.rc.tacos.client.providers.TransportViewFilter;
-import at.rc.tacos.client.providers.UnderwayTransportsViewContentProvider;
 import at.rc.tacos.client.providers.UnderwayTransportsViewLabelProvider;
 import at.rc.tacos.client.ui.ListenerConstants;
+import at.rc.tacos.client.ui.filters.TransportStateViewFilter;
+import at.rc.tacos.client.ui.filters.TransportViewFilter;
 import at.rc.tacos.client.ui.sorterAndTooltip.TransportSorter;
 import at.rc.tacos.platform.iface.IProgramStatus;
 import at.rc.tacos.platform.iface.ITransportStatus;
-import at.rc.tacos.platform.model.Lock;
 import at.rc.tacos.platform.model.Transport;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.mina.MessageIoSession;
@@ -94,7 +92,6 @@ public class UnderwayTransportsView extends AbstractView {
 	private SetAlarmingAction setAlarmingActionKIT;
 
 	// the managers
-	private LockHandler lockHandler = (LockHandler) NetWrapper.getHandler(Lock.class);
 	private TransportHandler transportHandler = (TransportHandler) NetWrapper.getHandler(Transport.class);
 
 	/**
@@ -103,7 +100,6 @@ public class UnderwayTransportsView extends AbstractView {
 	@Override
 	public void addListeners() {
 		NetWrapper.registerListener(this, Transport.class);
-		NetWrapper.registerListener(this, Lock.class);
 	}
 
 	/**
@@ -112,7 +108,6 @@ public class UnderwayTransportsView extends AbstractView {
 	@Override
 	public void removeListeners() {
 		NetWrapper.removeListener(this, Transport.class);
-		NetWrapper.removeListener(this, Lock.class);
 	}
 
 	@Override
@@ -128,7 +123,7 @@ public class UnderwayTransportsView extends AbstractView {
 		SashForm sashForm = new SashForm(body, SWT.VERTICAL);
 
 		viewer = new TableViewer(sashForm, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
-		viewer.setContentProvider(new UnderwayTransportsViewContentProvider());
+		viewer.setContentProvider(new ArrayContentProvider());
 		viewer.setLabelProvider(new UnderwayTransportsViewLabelProvider());
 		viewer.setInput(transportHandler.toArray());
 		viewer.getTable().setLinesVisible(true);
@@ -406,7 +401,7 @@ public class UnderwayTransportsView extends AbstractView {
 		manager.add(copyTransportDetailsIntoClipboardAction);
 
 		// disable the selection if the transport is locked
-		if (lockHandler.containsLock(transport.getTransportId(), Transport.class)) {
+		if (transport.isLocked()) {
 			// transport detail actions
 			setAccompanyingPersonAction.setEnabled(false);
 			setBD1Action.setEnabled(false);

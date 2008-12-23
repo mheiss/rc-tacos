@@ -25,9 +25,9 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.client.net.NetWrapper;
-import at.rc.tacos.client.providers.TransportViewFilter;
-import at.rc.tacos.client.ui.UiWrapper;
 import at.rc.tacos.client.ui.ListenerConstants;
+import at.rc.tacos.client.ui.UiWrapper;
+import at.rc.tacos.client.ui.filters.TransportViewFilter;
 import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.platform.iface.IFilterTypes;
 import at.rc.tacos.platform.model.Transport;
@@ -149,15 +149,14 @@ public class FilterView extends ViewPart {
 				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 				GetMessage<Transport> getMessage = new GetMessage<Transport>(new Transport());
 				getMessage.addParameter(IFilterTypes.DATE_FILTER, sdf.format(cal.getTime()));
-				NetWrapper.sendMessage(getMessage);
+				getMessage.asnchronRequest(NetWrapper.getSession());
 
-				// setup the property change event to fire
+				// setup the property change eventand inform the listeners
 				Object source = dateTime;
 				String propertyName = ListenerConstants.TRANSPORT_DATE_CHANGED;
 				Object oldValue = null;
 				Object newValue = cal;
 				PropertyChangeEvent event = new PropertyChangeEvent(source, propertyName, oldValue, newValue);
-				// inform the listeners
 				UiWrapper.getDefault().firePropertyChangeEvent(event);
 			}
 		});

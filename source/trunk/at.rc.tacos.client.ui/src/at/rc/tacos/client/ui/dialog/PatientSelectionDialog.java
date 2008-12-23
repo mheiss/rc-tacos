@@ -9,6 +9,7 @@ package at.rc.tacos.client.ui.dialog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -31,7 +32,6 @@ import at.rc.tacos.client.jobs.FilterAddressJob;
 import at.rc.tacos.client.jobs.FilterPatientJob;
 import at.rc.tacos.client.net.NetWrapper;
 import at.rc.tacos.client.net.handler.SickPersonHandler;
-import at.rc.tacos.client.providers.SickPersonContentProvider;
 import at.rc.tacos.client.providers.SickPersonLabelProvider;
 import at.rc.tacos.client.ui.UiWrapper;
 import at.rc.tacos.platform.model.SickPerson;
@@ -109,7 +109,7 @@ public class PatientSelectionDialog extends SelectionStatusDialog implements Dat
 		viewer.getTable().setLinesVisible(true);
 		viewer.getTable().setHeaderVisible(true);
 		viewer.setLabelProvider(new SickPersonLabelProvider());
-		viewer.setContentProvider(new SickPersonContentProvider());
+		viewer.setContentProvider(new ArrayContentProvider());
 		viewer.setInput(sickPersonHandler.toArray());
 		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
 

@@ -23,11 +23,10 @@ import at.rc.tacos.client.net.NetWrapper;
 import at.rc.tacos.client.ui.UiWrapper;
 import at.rc.tacos.client.ui.custom.FieldEntry;
 import at.rc.tacos.client.ui.utils.CustomColors;
-import at.rc.tacos.client.ui.utils.TimeValidator;
+import at.rc.tacos.client.ui.validators.TimeValidator;
 import at.rc.tacos.platform.iface.ITransportStatus;
-import at.rc.tacos.platform.model.Lock;
 import at.rc.tacos.platform.model.Transport;
-import at.rc.tacos.platform.net.message.RemoveMessage;
+import at.rc.tacos.platform.net.message.ExecMessage;
 import at.rc.tacos.platform.net.message.UpdateMessage;
 
 public class TransportStatusDialog extends TitleAreaDialog {
@@ -87,9 +86,12 @@ public class TransportStatusDialog extends TitleAreaDialog {
 			}
 		}
 		// remove the lock from the transport
-		Lock lock = new Lock(transport.getTransportId(), Transport.class, "");
-		RemoveMessage<Lock> removeMessage = new RemoveMessage<Lock>(lock);
-		NetWrapper.sendMessage(removeMessage);
+		transport.setLocked(false);
+		transport.setLockedBy(null);
+
+		// send the request
+		ExecMessage<Transport> execMessage = new ExecMessage<Transport>("doUnlock", transport);
+		execMessage.asnchronRequest(NetWrapper.getSession());
 		return super.close();
 	}
 
@@ -196,8 +198,11 @@ public class TransportStatusDialog extends TitleAreaDialog {
 			transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION);
 		}
 
+		// remove the lock
+		transport.setLocked(false);
+		transport.setLockedBy(null);
 		UpdateMessage<Transport> updateMessage = new UpdateMessage<Transport>(transport);
-		NetWrapper.sendMessage(updateMessage);
+		updateMessage.asnchronRequest(NetWrapper.getSession());
 
 		// closes the sehll
 		super.okPressed();

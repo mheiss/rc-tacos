@@ -10,6 +10,7 @@ package at.rc.tacos.client.ui.dialog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -33,7 +34,6 @@ import org.eclipse.ui.dialogs.SelectionStatusDialog;
 import at.rc.tacos.client.jobs.FilterAddressJob;
 import at.rc.tacos.client.net.NetWrapper;
 import at.rc.tacos.client.net.handler.AddressHandler;
-import at.rc.tacos.client.providers.AddressContentProvider;
 import at.rc.tacos.client.providers.AddressLabelProvider;
 import at.rc.tacos.client.ui.UiWrapper;
 import at.rc.tacos.platform.model.Address;
@@ -115,15 +115,14 @@ public class AddressSelectionDialog extends SelectionStatusDialog implements Dat
 		control.setLayoutData(gd);
 
 		viewer.setLabelProvider(new AddressLabelProvider());
-		viewer.setContentProvider(new AddressContentProvider());
+		viewer.setContentProvider(new ArrayContentProvider());
 		viewer.setUseHashlookup(true);
-
-		// the handler for the address objects
 		viewer.setInput(addressHandler.toArray());
-		Table table = viewer.getTable();
 
-		viewer.getTable().setLinesVisible(true);
-		viewer.getTable().setHeaderVisible(true);
+		//setup the underlying table
+		Table table = viewer.getTable();
+		table.setLinesVisible(true);
+		table.setHeaderVisible(true);
 
 		// create the columns
 		final TableColumn imageColumn = new TableColumn(table, SWT.NONE);
