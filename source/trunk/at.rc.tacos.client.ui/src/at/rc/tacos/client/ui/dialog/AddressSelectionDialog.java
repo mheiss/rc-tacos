@@ -31,11 +31,11 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.SelectionStatusDialog;
 
-import at.rc.tacos.client.jobs.FilterAddressJob;
 import at.rc.tacos.client.net.NetWrapper;
 import at.rc.tacos.client.net.handler.AddressHandler;
-import at.rc.tacos.client.providers.AddressLabelProvider;
 import at.rc.tacos.client.ui.UiWrapper;
+import at.rc.tacos.client.ui.jobs.FilterAddressJob;
+import at.rc.tacos.client.ui.providers.AddressLabelProvider;
 import at.rc.tacos.platform.model.Address;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.listeners.DataChangeListener;

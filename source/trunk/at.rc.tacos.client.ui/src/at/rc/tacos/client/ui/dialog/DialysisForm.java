@@ -35,12 +35,12 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 
-import at.rc.tacos.client.jobs.FilterAddressJob;
 import at.rc.tacos.client.net.NetWrapper;
 import at.rc.tacos.client.net.handler.AddressHandler;
 import at.rc.tacos.client.net.handler.LocationHandler;
-import at.rc.tacos.client.providers.StationLabelProvider;
 import at.rc.tacos.client.ui.UiWrapper;
+import at.rc.tacos.client.ui.jobs.FilterAddressJob;
+import at.rc.tacos.client.ui.providers.StationLabelProvider;
 import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.platform.iface.IFilterTypes;
 import at.rc.tacos.platform.iface.IKindOfTransport;

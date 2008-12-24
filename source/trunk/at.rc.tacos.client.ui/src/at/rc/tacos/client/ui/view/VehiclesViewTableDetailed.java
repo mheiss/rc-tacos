@@ -30,7 +30,7 @@ import at.rc.tacos.client.controller.VehicleTableSetReadyAction;
 import at.rc.tacos.client.controller.VehicleTableSetRepairStatusAction;
 import at.rc.tacos.client.net.NetWrapper;
 import at.rc.tacos.client.net.handler.VehicleHandler;
-import at.rc.tacos.client.providers.VehicleViewTableDetailLabelProvider;
+import at.rc.tacos.client.ui.providers.VehicleViewTableDetailLabelProvider;
 import at.rc.tacos.client.ui.sorterAndTooltip.VehicleViewTableSorter;
 import at.rc.tacos.platform.model.Job;
 import at.rc.tacos.platform.model.RosterEntry;

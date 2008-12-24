@@ -30,7 +30,7 @@ import at.rc.tacos.client.controller.DialysisTransportNowAction;
 import at.rc.tacos.client.controller.RefreshViewAction;
 import at.rc.tacos.client.net.NetWrapper;
 import at.rc.tacos.client.net.handler.DialysisHandler;
-import at.rc.tacos.client.providers.DialysisTransportLabelProvider;
+import at.rc.tacos.client.ui.providers.DialysisTransportLabelProvider;
 import at.rc.tacos.client.ui.sorterAndTooltip.DialysisTransportSorter;
 import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.platform.model.DialysisPatient;
