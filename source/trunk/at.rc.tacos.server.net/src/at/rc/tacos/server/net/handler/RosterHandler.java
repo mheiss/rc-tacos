@@ -2,20 +2,29 @@ package at.rc.tacos.server.net.handler;
 
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.lang.time.DateUtils;
 
 import at.rc.tacos.platform.iface.IFilterTypes;
 import at.rc.tacos.platform.model.Lockable;
 import at.rc.tacos.platform.model.RosterEntry;
+import at.rc.tacos.platform.model.StaffMember;
+import at.rc.tacos.platform.model.SystemMessage;
+import at.rc.tacos.platform.model.VehicleDetail;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.exception.NoSuchCommandException;
 import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.message.AbstractMessage;
+import at.rc.tacos.platform.net.message.ExecMessage;
+import at.rc.tacos.platform.net.message.UpdateMessage;
 import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.LockableService;
 import at.rc.tacos.platform.services.dbal.RosterService;
+import at.rc.tacos.platform.services.dbal.VehicleService;
 import at.rc.tacos.platform.services.exception.ServiceException;
 import at.rc.tacos.platform.util.MyUtils;
 
@@ -23,6 +32,9 @@ public class RosterHandler implements Handler<RosterEntry> {
 
 	@Service(clazz = RosterService.class)
 	private RosterService rosterService;
+
+	@Service(clazz = VehicleService.class)
+	private VehicleService vehicleService;
 
 	@Service(clazz = LockableService.class)
 	private LockableService lockableService;
@@ -38,7 +50,7 @@ public class RosterHandler implements Handler<RosterEntry> {
 			entry.setRosterId(id);
 		}
 		// brodcast the added roster entries
-		session.writeBrodcast(message, rosterList);
+		session.writeResponseBrodcast(message, rosterList);
 	}
 
 	@Override
@@ -72,7 +84,7 @@ public class RosterHandler implements Handler<RosterEntry> {
 			}
 
 			// send the result back
-			session.write(message, rosterList);
+			session.writeResponse(message, rosterList);
 			return;
 		}
 		if (params.containsKey(IFilterTypes.ROSTER_MONTH_FILTER) && params.containsKey(IFilterTypes.ROSTER_YEAR_FILTER)) {
@@ -121,7 +133,7 @@ public class RosterHandler implements Handler<RosterEntry> {
 			}
 
 			// send the result back
-			session.write(message, rosterList);
+			session.writeResponse(message, rosterList);
 			return;
 		}
 		if (params.containsKey(IFilterTypes.DATE_FILTER)) {
@@ -150,7 +162,7 @@ public class RosterHandler implements Handler<RosterEntry> {
 			}
 
 			// send the result back
-			session.write(message, rosterList);
+			session.writeResponse(message, rosterList);
 			return;
 		}
 		if (params.containsKey(IFilterTypes.ID_FILTER)) {
@@ -169,7 +181,7 @@ public class RosterHandler implements Handler<RosterEntry> {
 			}
 
 			// send the result back
-			session.write(message, entry);
+			session.writeResponse(message, entry);
 			return;
 		}
 
@@ -188,7 +200,7 @@ public class RosterHandler implements Handler<RosterEntry> {
 			lockableService.removeLock(entry);
 		}
 		// brodcast the removed roster objects
-		session.writeBrodcast(message, rosterList);
+		session.writeResponseBrodcast(message, rosterList);
 	}
 
 	@Override
@@ -200,9 +212,12 @@ public class RosterHandler implements Handler<RosterEntry> {
 				throw new ServiceException("Failed to update the roster entry:" + entry);
 			// update the lock
 			lockableService.updateLock(entry);
+
+			// check and detach staff if needed
+			updateVehicleOfEntry(session, entry);
 		}
 		// brodcast the updated roster objects
-		session.writeBrodcast(message, rosterList);
+		session.writeResponseBrodcast(message, rosterList);
 	}
 
 	@Override
@@ -220,5 +235,73 @@ public class RosterHandler implements Handler<RosterEntry> {
 			return;
 		}
 		throw new NoSuchCommandException(handler, command);
+	}
+
+	/**
+	 * Helper method to update a staff member entry
+	 */
+	private void updateVehicleOfEntry(MessageIoSession session, RosterEntry entry) throws ServiceException, SQLException {
+		// we need only to check staff members who signed out
+		if (entry.getRealEndOfWork() == 0)
+			return;
+
+		// get the staff member of this entry
+		StaffMember staffmember = entry.getStaffMember();
+		if (staffmember == null) {
+			return;
+		}
+
+		// check if this staff member is assigned to a vehicle
+		VehicleDetail vehicleDetail = vehicleService.getVehicleByStaffMember(staffmember.getStaffMemberId());
+		if (vehicleDetail == null) {
+			return;
+		}
+
+		// setup the current day
+		Date currentDay = DateUtils.truncate(Calendar.getInstance().getTime(), Calendar.DAY_OF_MONTH);
+		Date nextDay = DateUtils.addDays(currentDay, 1);
+
+		// check if this staff member has another roster entry for this day
+		List<RosterEntry> rosterList = rosterService.listRosterEntriesByDateAndStaff(currentDay.getTime(), nextDay.getTime(), staffmember
+				.getStaffMemberId());
+		for (RosterEntry rosterEntry : rosterList) {
+			if (rosterEntry.getRealEndOfWork() == 0) {
+				return;
+			}
+		}
+
+		// remove the staff member from the vehicle
+		if (staffmember.equals(vehicleDetail.getDriver())) {
+			vehicleDetail.setDriver(null);
+		}
+		// paramedic
+		if (staffmember.equals(vehicleDetail.getFirstParamedic())) {
+			vehicleDetail.setFirstParamedic(null);
+		}
+		// paramedic
+		if (staffmember.equals(vehicleDetail.getSecondParamedic())) {
+			vehicleDetail.setSecondParamedic(null);
+		}
+
+		// adjust the status
+		vehicleDetail.setReadyForAction(false);
+		vehicleDetail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
+
+		// persist the status of the vehicle
+		if (!vehicleService.updateVehicle(vehicleDetail)) {
+			throw new ServiceException("Failed to update the vehicle status during staff member detach.");
+		}
+		// brodcast the new status of the vehicle
+		UpdateMessage<VehicleDetail> updateMessage = new UpdateMessage<VehicleDetail>(vehicleDetail);
+		session.brodcastMessage(updateMessage);
+
+		// send a message to the originator
+		SystemMessage message = new SystemMessage();
+		message.setMessage("Der Mitarbeiter " + staffmember.getFirstName() + " " + staffmember.getLastName() + " hat sich abgemeldet.\n"
+				+ "Er wurde vom Fahrzeug " + vehicleDetail.getVehicleName() + " abgezogen");
+
+		// send the message back
+		ExecMessage<SystemMessage> execMessage = new ExecMessage<SystemMessage>("info", message);
+		session.write(execMessage);
 	}
 }

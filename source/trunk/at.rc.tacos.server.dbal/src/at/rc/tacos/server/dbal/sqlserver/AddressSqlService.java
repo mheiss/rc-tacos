@@ -28,9 +28,6 @@ public class AddressSqlService implements AddressService {
 
 	@Override
 	public Address getAddress(int addressID) throws SQLException {
-		// SELECT a.address_ID, a.street, a.streetnumber, a.city, a.gkz \
-		// FROM address a \
-		// WHERE a.address_ID = ?;
 		final PreparedStatement query = connection.prepareStatement(queries.getStatment("get.addressByID"));
 		query.setInt(1, addressID);
 		final ResultSet rs = query.executeQuery();
@@ -56,11 +53,8 @@ public class AddressSqlService implements AddressService {
 		final ResultSet rs = stmt.executeQuery();
 		if (!rs.next())
 			return -1;
-
 		id = rs.getInt(1);
 
-		// INSERT INTO address(address_ID, street, streetnumber, city, gkz)
-		// VALUES(?, ?, ?, ?, ?);
 		final PreparedStatement query = connection.prepareStatement(queries.getStatment("insert.address"));
 		query.setInt(1, id);
 		query.setString(2, address.getStreet());
@@ -76,10 +70,6 @@ public class AddressSqlService implements AddressService {
 
 	@Override
 	public List<Address> getAddressList(String streetFilter, String streetNumberFilter, String cityFilter, String plzFilter) throws SQLException {
-		// SELECT a.address_ID,a.street, a.streetnumber, a.city, a.gkz
-		// FROM address a \
-		// WHERE a.street like ? or a.streetnumber like ? or a.city like ?
-		// or a.gkz like ?;
 		final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.addressesBySearchString"));
 		query.setString(1, streetFilter);
 		query.setString(2, streetNumberFilter);
@@ -114,8 +104,6 @@ public class AddressSqlService implements AddressService {
 
 	@Override
 	public boolean updateAddress(Address address) throws SQLException {
-		// UPDATE address SET street = ?, streetnumber = ?, city = ?, gkz =
-		// ? WHERE address_ID = ?;
 		final PreparedStatement query = connection.prepareStatement(queries.getStatment("update.address"));
 		query.setString(1, address.getStreet());
 		query.setString(2, address.getStreetNumber());

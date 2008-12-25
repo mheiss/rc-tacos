@@ -12,7 +12,7 @@ public interface TransportService {
 	public static final String TABLE_DEPENDENT_SELECTED = "transport_selected";
 	public static final String TABLE_DEPENDENT_ASSIGNED_VEHICLES = "assigned_vehicle";
 	public static final String TABLE_DEPENDENT_TMP = "tmptransports";
-	
+
 	/**
 	 * Indicates an database error
 	 */
@@ -96,9 +96,19 @@ public interface TransportService {
 	 * Returns all underway transports:
 	 * <code>IProgramStatus.PROGRAM_STATUS_UNDERWAY</code>.
 	 * 
-	 * @return the list of all prebooked transports in the database
+	 * @return the list of all underway transports in the database
 	 */
 	public List<Transport> listUnderwayTransports() throws SQLException;
+
+	/**
+	 * Returns a list of all <code>IProgramStatus.PROGRAM_STATUS_UNDERWAY</code>
+	 * transports that are assigned to this vehicle.
+	 * 
+	 * @param vehicleID
+	 *            the identifier of the vehicle
+	 * @return the list of all underway transports in the database
+	 */
+	public List<Transport> listUnderwayTransportsByVehicle(String vehicleId) throws SQLException;
 
 	/**
 	 * Returns all transports in the given intervall with the status

@@ -20,7 +20,7 @@ import at.rc.tacos.server.dbal.SQLQueries;
  * @author Michael
  */
 public class LocationSqlService implements LocationService {
-	
+
 	@Resource(name = "sqlConnection")
 	protected Connection connection;
 
@@ -36,23 +36,7 @@ public class LocationSqlService implements LocationService {
 		final ResultSet rs = query.executeQuery();
 		// assert we have a result
 		if (rs.next()) {
-			Location location = new Location();
-			location.setCity(rs.getString("city"));
-			location.setId(rs.getInt("location_ID"));
-			location.setLocationName(rs.getString("locationname"));
-			location.setNotes(rs.getString("note"));
-			location.setStreet(rs.getString("street"));
-			location.setStreetNumber(rs.getString("streetnumber"));
-			location.setZipcode(rs.getInt("zipcode"));
-
-			// get the mobile phone
-			MobilePhoneDetail phone = new MobilePhoneDetail();
-			phone.setMobilePhoneNumber(rs.getString("phonenumber"));
-			phone.setMobilePhoneName(rs.getString("phonename"));
-			phone.setId(rs.getInt("phonenumber_ID"));
-			location.setPhone(phone);
-
-			return location;
+			return setupLocation(rs);
 		}
 		// no result
 		return null;
@@ -64,28 +48,7 @@ public class LocationSqlService implements LocationService {
 		// lo.city, lo.zipcode, lo.phonenumber_ID, pn.phonenumber, lo.note
 		final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.locations"));
 		final ResultSet rs = query.executeQuery();
-		// assert we have a result
-		List<Location> locations = new ArrayList<Location>();
-		while (rs.next()) {
-			Location location = new Location();
-			location.setCity(rs.getString("city"));
-			location.setId(rs.getInt("location_ID"));
-			location.setLocationName(rs.getString("locationname"));
-			location.setNotes(rs.getString("note"));
-			// set the mobile phone
-			MobilePhoneDetail phone = new MobilePhoneDetail();
-			phone.setId(rs.getInt("phonenumber_ID"));
-			phone.setMobilePhoneNumber(rs.getString("phonenumber"));
-			phone.setMobilePhoneName(rs.getString("phonename"));
-			location.setPhone(phone);
-
-			location.setStreet(rs.getString("street"));
-			location.setStreetNumber(rs.getString("streetnumber"));
-			location.setZipcode(rs.getInt("zipcode"));
-
-			locations.add(location);
-		}
-		return locations;
+		return setupLocationList(rs);
 	}
 
 	@Override
@@ -128,8 +91,6 @@ public class LocationSqlService implements LocationService {
 
 	@Override
 	public boolean updateLocation(Location location) throws SQLException {
-		// locationname, street, streetnumber, zipcode, city, note,
-		// phonenumber_ID, location_ID
 		final PreparedStatement query = connection.prepareStatement(queries.getStatment("update.location"));
 		query.setString(1, location.getLocationName());
 		query.setString(2, location.getStreet());
@@ -147,30 +108,48 @@ public class LocationSqlService implements LocationService {
 
 	@Override
 	public Location getLocationByName(String locationname) throws SQLException {
-		// lo.location_ID, lo.locationname, lo.street, lo. streetnumber,
-		// lo.city, lo.zipcode, lo.phonenumber_ID, pn.phonenumber, lo.note
 		final PreparedStatement query = connection.prepareStatement(queries.getStatment("get.locationByName"));
 		query.setString(1, locationname);
 		final ResultSet rs = query.executeQuery();
 		// assert we have a result set
 		if (rs.next()) {
-			Location location = new Location();
-			location.setCity(rs.getString("city"));
-			location.setId(rs.getInt("location_ID"));
-			location.setLocationName(rs.getString("locationname"));
-			location.setNotes(rs.getString("note"));
-			// get the phone
-			MobilePhoneDetail phone = new MobilePhoneDetail();
-			phone.setMobilePhoneNumber(rs.getString("phonenumber"));
-			phone.setMobilePhoneName(rs.getString("phonename"));
-			phone.setId(rs.getInt("phonenumber_ID"));
-			location.setPhone(phone);
-			location.setStreet(rs.getString("street"));
-			location.setStreetNumber(rs.getString("streetnumber"));
-			location.setZipcode(rs.getInt("zipcode"));
-			return location;
+			return setupLocation(rs);
 		}
 		// no result set
 		return null;
+	}
+
+	/**
+	 * Helper method to setup a list of location entries
+	 */
+	private List<Location> setupLocationList(ResultSet rs) throws SQLException {
+		// assert we have a result
+		List<Location> locationList = new ArrayList<Location>();
+		while (rs.next()) {
+			Location location = setupLocation(rs);
+			locationList.add(location);
+		}
+		return locationList;
+	}
+
+	/**
+	 * Helper method to setup a single location
+	 */
+	private Location setupLocation(ResultSet rs) throws SQLException {
+		Location location = new Location();
+		location.setCity(rs.getString("city"));
+		location.setId(rs.getInt("location_ID"));
+		location.setLocationName(rs.getString("locationname"));
+		location.setNotes(rs.getString("note"));
+		// get the phone
+		MobilePhoneDetail phone = new MobilePhoneDetail();
+		phone.setMobilePhoneNumber(rs.getString("phonenumber"));
+		phone.setMobilePhoneName(rs.getString("phonename"));
+		phone.setId(rs.getInt("phonenumber_ID"));
+		location.setPhone(phone);
+		location.setStreet(rs.getString("street"));
+		location.setStreetNumber(rs.getString("streetnumber"));
+		location.setZipcode(rs.getInt("zipcode"));
+		return location;
 	}
 }

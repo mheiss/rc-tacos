@@ -65,8 +65,17 @@ public interface RosterService {
 	 */
 	public List<RosterEntry> listRosterEntryByDate(long startTime, long endTime) throws SQLException;
 
+	/**
+	 * Lists all roster entries in the given time intervall filtered by the
+	 * staff member
+	 */
+	public List<RosterEntry> listRosterEntriesByDateAndStaff(long startTime, long endTime, int staffId) throws SQLException;
+
+	/**
+	 * Lists all roster entries in the given time intervall filtered by the
+	 * location
+	 */
 	public List<RosterEntry> listRosterEntriesByDateAndLocation(long startTime, long endTime, int filterLocationId) throws SQLException;
 
 	public List<RosterEntry> listRosterEntriesForRosterMonth(int locationFilter, int monthFilter, int yearFilter, int locationStaffMemberFilter, String functionStaffMemberCompetenceFilter, int staffMemberFilter, String statisticFilter, int serviceTypeFilter) throws SQLException;
-
 }

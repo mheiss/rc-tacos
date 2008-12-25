@@ -34,7 +34,7 @@ public class MobilePhoneHandler implements Handler<MobilePhoneDetail> {
 			phone.setId(id);
 		}
 		// brodcast the added phones
-		session.writeBrodcast(message, phoneList);
+		session.writeResponseBrodcast(message, phoneList);
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class MobilePhoneHandler implements Handler<MobilePhoneDetail> {
 		}
 
 		// send back the results
-		session.write(message, phoneList);
+		session.writeResponse(message, phoneList);
 	}
 
 	@Override
@@ -68,7 +68,7 @@ public class MobilePhoneHandler implements Handler<MobilePhoneDetail> {
 			lockableService.removeLock(phone);
 		}
 		// brodcast the removed phones
-		session.writeBrodcast(message, phoneList);
+		session.writeResponseBrodcast(message, phoneList);
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class MobilePhoneHandler implements Handler<MobilePhoneDetail> {
 			lockableService.removeLock(phone);
 		}
 		// brodcast the updated phones
-		session.writeBrodcast(message, phoneList);
+		session.writeResponseBrodcast(message, phoneList);
 	}
 
 	@Override

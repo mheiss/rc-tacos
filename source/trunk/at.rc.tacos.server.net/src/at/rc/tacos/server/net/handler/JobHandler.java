@@ -34,7 +34,7 @@ public class JobHandler implements Handler<Job> {
 			// set the returned id
 			job.setId(id);
 		}
-		session.writeBrodcast(message, jobList);
+		session.writeResponseBrodcast(message, jobList);
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class JobHandler implements Handler<Job> {
 		}
 
 		// send the jobs back
-		session.write(message, jobList);
+		session.writeResponse(message, jobList);
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public class JobHandler implements Handler<Job> {
 			// remove the lock
 			lockableService.removeLock(job);
 		}
-		session.writeBrodcast(message, jobList);
+		session.writeResponseBrodcast(message, jobList);
 	}
 
 	@Override
@@ -80,7 +80,7 @@ public class JobHandler implements Handler<Job> {
 			// update the lock
 			lockableService.updateLock(job);
 		}
-		session.writeBrodcast(message, jobList);
+		session.writeResponseBrodcast(message, jobList);
 	}
 
 	@Override

@@ -63,45 +63,16 @@ public class VehicleDetailSqlService implements VehicleService {
 		final PreparedStatement query = connection.prepareStatement(queries.getStatment("get.vehicleByID"));
 		query.setString(1, vehicleName);
 		final ResultSet rs = query.executeQuery();
-
-		// v.vehicle_ID, v.medic1_ID, v.medic2_ID, v.driver_ID,
-		// v.currentLocation, v.primaryLocation, lo.locationname,
-		// lo.location_ID,
-		// v.vehicletype, v.readyForAction, v.outOfOrder, v.transportStatus,
-		// v.phonenumber_ID, pn.phonenumber, v.note
 		if (rs.next()) {
-			VehicleDetail vehicle = new VehicleDetail();
-			vehicle.setVehicleName(rs.getString("vehicle_ID"));
-			vehicle.setVehicleType(rs.getString("vehicletype"));
-			vehicle.setReadyForAction(rs.getBoolean("readyForAction"));
-			vehicle.setOutOfOrder(rs.getBoolean("outOfOrder"));
-			vehicle.setVehicleNotes(rs.getString("note"));
-			vehicle.setLastDestinationFree(rs.getString("lastDestinationFree"));
-			vehicle.setTransportStatus(rs.getInt("transportStatus"));
-			// the mobile phone for the vehicle
-			MobilePhoneDetail phone = new MobilePhoneDetail();
-			phone.setId(rs.getInt("phonenumber_ID"));
-			phone.setMobilePhoneNumber(rs.getString("phonenumber"));
-			phone.setMobilePhoneName(rs.getString("phonename"));
-			vehicle.setMobilPhone(phone);
-			// the basic location
-			Location basicStation = locationDAO.getLocation(rs.getInt("primaryLocation"));
-			vehicle.setBasicStation(basicStation);
-			// the current location
-			Location currentStation = locationDAO.getLocation(rs.getInt("currentLocation"));
-			vehicle.setCurrentStation(currentStation);
-			// the driver
-			StaffMember driver = staffMemberDAO.getStaffMemberByID(rs.getInt("driver_ID"));
-			vehicle.setDriver(driver);
-			// the first paramedic
-			StaffMember firstParamedic = staffMemberDAO.getStaffMemberByID(rs.getInt("medic1_ID"));
-			vehicle.setFirstParamedic(firstParamedic);
-			// the second paramedic
-			StaffMember secondParamedic = staffMemberDAO.getStaffMemberByID(rs.getInt("medic2_ID"));
-			vehicle.setSecondParamedic(secondParamedic);
-			return vehicle;
+			return setupVehicle(rs);
 		}
 		// no result set
+		return null;
+	}
+	
+	@Override
+	public VehicleDetail getVehicleByStaffMember(int staffMemberId) throws SQLException {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -109,45 +80,14 @@ public class VehicleDetailSqlService implements VehicleService {
 	public List<VehicleDetail> listVehicles() throws SQLException {
 		final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.vehicles"));
 		final ResultSet rs = query.executeQuery();
-		// v.vehicle_ID, v.medic1_ID, v.medic2_ID, v.driver_ID,
-		// v.currentLocation, v.primaryLocation, lo.locationname,
-		// lo.location_ID,
-		// v.vehicletype, v.readyForAction, v.outOfOrder, v.phonenumber_ID,
-		// pn.phonenumber, v.note
-		List<VehicleDetail> vehicles = new ArrayList<VehicleDetail>();
-		while (rs.next()) {
-			VehicleDetail vehicle = new VehicleDetail();
-			vehicle.setVehicleName(rs.getString("vehicle_ID"));
-			vehicle.setVehicleType(rs.getString("vehicletype"));
-			vehicle.setReadyForAction(rs.getBoolean("readyForAction"));
-			vehicle.setOutOfOrder(rs.getBoolean("outOfOrder"));
-			vehicle.setVehicleNotes(rs.getString("note"));
-			vehicle.setLastDestinationFree(rs.getString("lastDestinationFree"));
-			vehicle.setTransportStatus(rs.getInt("transportStatus"));
+		return setupVehicleList(rs);
+	}
 
-			MobilePhoneDetail phone = new MobilePhoneDetail();
-			phone.setId(rs.getInt("phonenumber_ID"));
-			phone.setMobilePhoneNumber(rs.getString("phonenumber"));
-			phone.setMobilePhoneName(rs.getString("phonename"));
-			vehicle.setMobilPhone(phone);
-
-			Location basicStation = locationDAO.getLocation(rs.getInt("primaryLocation"));
-			vehicle.setBasicStation(basicStation);
-
-			Location currentStation = locationDAO.getLocation(rs.getInt("currentLocation"));
-			vehicle.setCurrentStation(currentStation);
-
-			StaffMember driver = staffMemberDAO.getStaffMemberByID(rs.getInt("driver_ID"));
-			vehicle.setDriver(driver);
-
-			StaffMember firstParamedic = staffMemberDAO.getStaffMemberByID(rs.getInt("medic1_ID"));
-			vehicle.setFirstParamedic(firstParamedic);
-
-			StaffMember secondParamedic = staffMemberDAO.getStaffMemberByID(rs.getInt("medic2_ID"));
-			vehicle.setSecondParamedic(secondParamedic);
-			vehicles.add(vehicle);
-		}
-		return vehicles;
+	@Override
+	public List<VehicleDetail> listReadyVehicles() throws SQLException {
+		final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.readyVehicles"));
+		final ResultSet rs = query.executeQuery();
+		return setupVehicleList(rs);
 	}
 
 	@Override
@@ -200,5 +140,61 @@ public class VehicleDetailSqlService implements VehicleService {
 		if (query.executeUpdate() == 0)
 			return false;
 		return true;
+	}
+
+	/**
+	 * Helper method to setup a vehicle instance with the result set.
+	 * 
+	 * @param the
+	 *            result set from the database
+	 * @return the vehicle instance
+	 */
+	private VehicleDetail setupVehicle(ResultSet rs) throws SQLException {
+		VehicleDetail vehicle = new VehicleDetail();
+		vehicle.setVehicleName(rs.getString("vehicle_ID"));
+		vehicle.setVehicleType(rs.getString("vehicletype"));
+		vehicle.setReadyForAction(rs.getBoolean("readyForAction"));
+		vehicle.setOutOfOrder(rs.getBoolean("outOfOrder"));
+		vehicle.setVehicleNotes(rs.getString("note"));
+		vehicle.setLastDestinationFree(rs.getString("lastDestinationFree"));
+		vehicle.setTransportStatus(rs.getInt("transportStatus"));
+
+		MobilePhoneDetail phone = new MobilePhoneDetail();
+		phone.setId(rs.getInt("phonenumber_ID"));
+		phone.setMobilePhoneNumber(rs.getString("phonenumber"));
+		phone.setMobilePhoneName(rs.getString("phonename"));
+		vehicle.setMobilPhone(phone);
+
+		Location basicStation = locationDAO.getLocation(rs.getInt("primaryLocation"));
+		vehicle.setBasicStation(basicStation);
+
+		Location currentStation = locationDAO.getLocation(rs.getInt("currentLocation"));
+		vehicle.setCurrentStation(currentStation);
+
+		StaffMember driver = staffMemberDAO.getStaffMemberByID(rs.getInt("driver_ID"));
+		vehicle.setDriver(driver);
+
+		StaffMember firstParamedic = staffMemberDAO.getStaffMemberByID(rs.getInt("medic1_ID"));
+		vehicle.setFirstParamedic(firstParamedic);
+
+		StaffMember secondParamedic = staffMemberDAO.getStaffMemberByID(rs.getInt("medic2_ID"));
+		vehicle.setSecondParamedic(secondParamedic);
+		return vehicle;
+	}
+
+	/**
+	 * Helper method to setup a list of vehicle from an result set
+	 * 
+	 * @param rs
+	 *            the unmodified result set
+	 * @return the list of vehicles
+	 */
+	private List<VehicleDetail> setupVehicleList(ResultSet rs) throws SQLException {
+		List<VehicleDetail> vehicles = new ArrayList<VehicleDetail>();
+		while (rs.next()) {
+			VehicleDetail vehicleDetail = setupVehicle(rs);
+			vehicles.add(vehicleDetail);
+		}
+		return vehicles;
 	}
 }

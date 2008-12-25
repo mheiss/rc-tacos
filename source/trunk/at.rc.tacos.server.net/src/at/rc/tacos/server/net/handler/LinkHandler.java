@@ -35,7 +35,7 @@ public class LinkHandler implements Handler<Link> {
 				throw new ServiceException("Failed to add the link " + link);
 			link.setId(id);
 		}
-		session.writeBrodcast(message, linkList);
+		session.writeResponseBrodcast(message, linkList);
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class LinkHandler implements Handler<Link> {
 				link.setLocked(lockable.isLocked());
 				link.setLockedBy(lockable.getLockedBy());
 			}
-			session.write(message, link);
+			session.writeResponse(message, link);
 			return;
 		}
 
@@ -76,7 +76,7 @@ public class LinkHandler implements Handler<Link> {
 		}
 
 		// write the result back
-		session.write(message, linkList);
+		session.writeResponse(message, linkList);
 	}
 
 	@Override
@@ -90,7 +90,7 @@ public class LinkHandler implements Handler<Link> {
 			lockableService.removeLock(link);
 		}
 		// brodcast the removed links
-		session.writeBrodcast(message, linkList);
+		session.writeResponseBrodcast(message, linkList);
 	}
 
 	@Override
@@ -104,7 +104,7 @@ public class LinkHandler implements Handler<Link> {
 			lockableService.updateLock(link);
 		}
 		// brodcast the updated links
-		session.writeBrodcast(message, linkList);
+		session.writeResponseBrodcast(message, linkList);
 	}
 
 	@Override

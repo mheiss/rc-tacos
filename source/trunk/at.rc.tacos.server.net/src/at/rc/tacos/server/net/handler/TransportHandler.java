@@ -7,16 +7,21 @@ import java.util.List;
 import java.util.Map;
 
 import at.rc.tacos.platform.iface.IFilterTypes;
+import at.rc.tacos.platform.iface.IProgramStatus;
+import at.rc.tacos.platform.iface.ITransportStatus;
 import at.rc.tacos.platform.model.Lockable;
 import at.rc.tacos.platform.model.Transport;
+import at.rc.tacos.platform.model.VehicleDetail;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.exception.NoSuchCommandException;
 import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.message.AbstractMessage;
+import at.rc.tacos.platform.net.message.UpdateMessage;
 import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.LockableService;
 import at.rc.tacos.platform.services.dbal.TransportService;
+import at.rc.tacos.platform.services.dbal.VehicleService;
 import at.rc.tacos.platform.services.exception.ServiceException;
 import at.rc.tacos.platform.util.MyUtils;
 
@@ -24,6 +29,9 @@ public class TransportHandler implements Handler<Transport> {
 
 	@Service(clazz = TransportService.class)
 	private TransportService transportService;
+
+	@Service(clazz = VehicleService.class)
+	private VehicleService vehicleService;
 
 	@Service(clazz = LockableService.class)
 	private LockableService lockableService;
@@ -38,8 +46,9 @@ public class TransportHandler implements Handler<Transport> {
 				throw new ServiceException("Failed to add the transport: " + transport);
 			}
 			transport.setTransportId(id);
+			VehicleDetail transportVehicle = transport.getVehicleDetail();
 			// for the direct car assign to a transport (in the transport form)
-			if (transport.getVehicleDetail() != null && transport.getTransportNumber() == 0) {
+			if (transportVehicle != null && transport.getTransportNumber() == 0) {
 				// set the current year to generate a valid transport numer
 				transport.setYear(Calendar.getInstance().get(Calendar.YEAR));
 				int transportNr = transportService.generateTransportNumber(transport);
@@ -50,9 +59,28 @@ public class TransportHandler implements Handler<Transport> {
 				if (!transportService.updateTransport(transport))
 					throw new ServiceException("Failed to update the newly added transport: " + transport);
 			}
+			// query the status of the vehicle from the database
+			VehicleDetail vehicleDetail = vehicleService.getVehicleByName(transportVehicle.getVehicleName());
+			if (vehicleDetail != null) {
+				// query all underway transports of this vehicle
+				List<Transport> currentTransports = transportService.listUnderwayTransportsByVehicle(vehicleDetail.getVehicleName());
+
+				// update the status color of the vehicle
+				checkVehicleColorState(currentTransports, vehicleDetail);
+
+				// persist the vehicle changes
+				if (!vehicleService.updateVehicle(vehicleDetail)) {
+					throw new SQLException("Failed to update the assigned vehicle '" + vehicleDetail + "' from the transport");
+				}
+
+				// brodcast the updated vehicle
+				UpdateMessage<VehicleDetail> updateMessage = new UpdateMessage<VehicleDetail>(vehicleDetail);
+				session.brodcastMessage(updateMessage);
+
+			}
 		}
 		// brodcast the updated transports
-		session.writeBrodcast(message, transports);
+		session.writeResponseBrodcast(message, transports);
 	}
 
 	@Override
@@ -112,7 +140,7 @@ public class TransportHandler implements Handler<Transport> {
 			syncronizeLocks(list);
 
 			// send back the requested transports
-			session.write(message, list);
+			session.writeResponse(message, list);
 			return;
 		}
 		// online transport listing for journal short if a vehicle is selected
@@ -140,7 +168,7 @@ public class TransportHandler implements Handler<Transport> {
 			syncronizeLocks(list);
 
 			// send back the requested transports
-			session.write(message, list);
+			session.writeResponse(message, list);
 			return;
 		}
 
@@ -160,7 +188,7 @@ public class TransportHandler implements Handler<Transport> {
 			syncronizeLocks(list);
 
 			// send back the requested transports
-			session.write(message, list);
+			session.writeResponse(message, list);
 			return;
 		}
 		// online transport listing
@@ -179,7 +207,7 @@ public class TransportHandler implements Handler<Transport> {
 			syncronizeLocks(list);
 
 			// send back the requested transports
-			session.write(message, list);
+			session.writeResponse(message, list);
 			return;
 		}
 		// online transport listing *** archived by location ***
@@ -228,7 +256,7 @@ public class TransportHandler implements Handler<Transport> {
 			syncronizeLocks(list);
 
 			// send back the requested transports
-			session.write(message, list);
+			session.writeResponse(message, list);
 			return;
 		}
 		// online transport listing *** only archived transports ***
@@ -255,7 +283,7 @@ public class TransportHandler implements Handler<Transport> {
 			syncronizeLocks(list);
 
 			// send back the requested transports
-			session.write(message, list);
+			session.writeResponse(message, list);
 			return;
 		}
 		if (params.containsKey(IFilterTypes.DATE_FILTER)) {
@@ -294,7 +322,7 @@ public class TransportHandler implements Handler<Transport> {
 			syncronizeLocks(list);
 
 			// send back the requested transports
-			session.write(message, list);
+			session.writeResponse(message, list);
 			return;
 		}
 
@@ -353,9 +381,32 @@ public class TransportHandler implements Handler<Transport> {
 
 			// update the lock
 			lockableService.updateLock(transport);
+
+			// only update outstanding transports
+			if (transport.getProgramStatus() != IProgramStatus.PROGRAM_STATUS_OUTSTANDING) {
+				continue;
+			}
+
+			// update the 'readyVehicles' list
+			List<VehicleDetail> readyVehicleList = vehicleService.listReadyVehicles();
+			for (VehicleDetail vehicleDetail : readyVehicleList) {
+				// query the underway transports for all vehicles
+				List<Transport> transportList = transportService.listUnderwayTransportsByVehicle(vehicleDetail.getVehicleName());
+				// check and update the vehicle status
+				checkVehicleColorState(transportList, vehicleDetail);
+
+				// persist the vehicle changes
+				if (!vehicleService.updateVehicle(vehicleDetail)) {
+					throw new SQLException("Failed to update the assigned vehicle '" + vehicleDetail + "' from the transport");
+				}
+
+				// brodcast the updated vehicle
+				UpdateMessage<VehicleDetail> updateMessage = new UpdateMessage<VehicleDetail>(vehicleDetail);
+				session.brodcastMessage(updateMessage);
+			}
 		}
 		// brodcast the updated transports
-		session.writeBrodcast(message, transports);
+		session.writeResponseBrodcast(message, transports);
 	}
 
 	@Override
@@ -387,5 +438,44 @@ public class TransportHandler implements Handler<Transport> {
 			transport.setLocked(lockable.isLocked());
 			transport.setLockedBy(lockable.getLockedBy());
 		}
+	}
+
+	/**
+	 * Helper method to update the status of the vehicles
+	 */
+	private void checkVehicleColorState(List<Transport> transportList, VehicleDetail detail) {
+		// simplest calculation comes first ;)
+		// green (30) is for a 'underway'(program status) vehicle not possible
+		if (transportList.isEmpty()) {
+			if (!detail.getLastDestinationFree().equalsIgnoreCase(""))
+				detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_BLUE);
+			else if (detail.getLastDestinationFree().equalsIgnoreCase(""))
+				detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
+
+			if (!detail.isReadyForAction() || detail.isOutOfOrder())
+				detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
+			return;
+		}
+
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		// get the most important status of each transport
+		for (Transport transport : transportList) {
+			int mostImportantStatus = transport.getMostImportantStatusMessageOfOneTransport();
+			list.add(mostImportantStatus);
+		}
+
+		// for a 'red' status
+		if (list.contains(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT)
+				|| list.contains(ITransportStatus.TRANSPORT_STATUS_OUT_OF_OPERATION_AREA)) {
+			detail.setTransportStatus(VehicleDetail.TRANSPROT_STATUS_RED); // 10
+			return;
+		}
+
+		// for a 'yellow' status
+		detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_YELLOW); // 20
+
+		// for a 'gray' status
+		if (detail.isOutOfOrder() | !detail.isReadyForAction() || detail.getDriver() == null)
+			detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
 	}
 }

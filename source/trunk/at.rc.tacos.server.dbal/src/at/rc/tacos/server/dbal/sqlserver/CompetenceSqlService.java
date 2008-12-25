@@ -19,7 +19,7 @@ import at.rc.tacos.server.dbal.SQLQueries;
  * @author Michael
  */
 public class CompetenceSqlService implements CompetenceService {
-	
+
 	@Resource(name = "sqlConnection")
 	protected Connection connection;
 
@@ -54,27 +54,7 @@ public class CompetenceSqlService implements CompetenceService {
 		// no result set
 		if (!rs.next())
 			return null;
-
-		Competence competence = new Competence();
-		competence.setCompetenceName(rs.getString("competence"));
-		competence.setId(id);
-		return competence;
-	}
-
-	@Override
-	public List<Competence> listCompetences() throws SQLException {
-		final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("list.competences"));
-		final ResultSet rs = stmt.executeQuery();
-		List<Competence> competences = new ArrayList<Competence>();
-		// assert we have a result set
-		while (rs.next()) {
-			Competence competence = new Competence();
-			competence.setCompetenceName(rs.getString("competence"));
-			competence.setId(rs.getInt("competence_ID"));
-			competences.add(competence);
-		}
-		// return the list
-		return competences;
+		return setupCompetence(rs);
 	}
 
 	@Override
@@ -100,18 +80,39 @@ public class CompetenceSqlService implements CompetenceService {
 	}
 
 	@Override
+	public List<Competence> listCompetences() throws SQLException {
+		final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("list.competences"));
+		final ResultSet rs = stmt.executeQuery();
+		return setupCompetenceList(rs);
+	}
+
+	@Override
 	public List<Competence> listCompetencesOfStaffMember(int id) throws SQLException {
 		final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("list.competenceOfStaffMember"));
 		stmt.setInt(1, id);
 		final ResultSet rs = stmt.executeQuery();
-		// create the returned result list and loop over the database result
-		List<Competence> competences = new ArrayList<Competence>();
+		return setupCompetenceList(rs);
+	}
+
+	/**
+	 * Helper method to setup a single competence
+	 */
+	private Competence setupCompetence(ResultSet rs) throws SQLException {
+		Competence competence = new Competence();
+		competence.setCompetenceName(rs.getString("competence"));
+		competence.setId(rs.getInt("competence_ID"));
+		return competence;
+	}
+
+	/**
+	 * Helper method to setup a list of competences
+	 */
+	private List<Competence> setupCompetenceList(ResultSet rs) throws SQLException {
+		List<Competence> competenceList = new ArrayList<Competence>();
 		while (rs.next()) {
-			Competence competence = new Competence();
-			competence.setCompetenceName(rs.getString("competence"));
-			competence.setId(rs.getInt("competence_ID"));
-			competences.add(competence);
+			Competence competence = setupCompetence(rs);
+			competenceList.add(competence);
 		}
-		return competences;
+		return competenceList;
 	}
 }

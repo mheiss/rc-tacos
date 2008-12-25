@@ -25,7 +25,7 @@ public class ServiceTypeSqlService implements ServiceTypeService {
 
 	// the source for the queries
 	protected final SQLQueries queries = SQLQueries.getInstance();
-	
+
 	@Override
 	public int addServiceType(ServiceType serviceType) throws SQLException {
 		// get the next id
@@ -44,53 +44,6 @@ public class ServiceTypeSqlService implements ServiceTypeService {
 			return -1;
 
 		return id;
-	}
-
-	@Override
-	public ServiceType getServiceTypeId(int id) throws SQLException {
-		final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("get.servicetypeByID"));
-		stmt.setInt(1, id);
-		final ResultSet rs = stmt.executeQuery();
-
-		// no result set
-		if (!rs.next())
-			return null;
-
-		ServiceType servicetype = new ServiceType();
-		servicetype.setServiceName(rs.getString("servicetype"));
-		servicetype.setId(id);
-		return servicetype;
-	}
-
-	@Override
-	public List<ServiceType> listServiceTypesByName(String name) throws SQLException {
-		final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("list.servicetypesByName"));
-		stmt.setString(1, name);
-		final ResultSet rs = stmt.executeQuery();
-		final List<ServiceType> serviceTypes = new ArrayList<ServiceType>();
-		// no result set
-		while (rs.next()) {
-			ServiceType servicetype = new ServiceType();
-			servicetype.setId(rs.getInt("servicetype_ID"));
-			servicetype.setServiceName(rs.getString("servicetype"));
-			serviceTypes.add(servicetype);
-		}
-		return serviceTypes;
-	}
-
-	@Override
-	public List<ServiceType> listServiceTypes() throws SQLException {
-		final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("list.servicetypes"));
-		final ResultSet rs = stmt.executeQuery();
-		// create the result list and loop over the result set
-		List<ServiceType> servicetypes = new ArrayList<ServiceType>();
-		while (rs.next()) {
-			ServiceType servicetype = new ServiceType();
-			servicetype.setId(rs.getInt("servicetype_ID"));
-			servicetype.setServiceName(rs.getString("servicetype"));
-			servicetypes.add(servicetype);
-		}
-		return servicetypes;
 	}
 
 	@Override
@@ -113,5 +66,56 @@ public class ServiceTypeSqlService implements ServiceTypeService {
 		if (stmt.executeUpdate() == 0)
 			return false;
 		return true;
+	}
+
+	@Override
+	public ServiceType getServiceTypeId(int id) throws SQLException {
+		final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("get.servicetypeByID"));
+		stmt.setInt(1, id);
+		final ResultSet rs = stmt.executeQuery();
+
+		// no result set
+		if (!rs.next())
+			return null;
+
+		return setupServiceType(rs);
+	}
+
+	@Override
+	public List<ServiceType> listServiceTypesByName(String name) throws SQLException {
+		final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("list.servicetypesByName"));
+		stmt.setString(1, name);
+		final ResultSet rs = stmt.executeQuery();
+		return setupServiceList(rs);
+	}
+
+	@Override
+	public List<ServiceType> listServiceTypes() throws SQLException {
+		final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("list.servicetypes"));
+		final ResultSet rs = stmt.executeQuery();
+		// create the result list and loop over the result set
+		return setupServiceList(rs);
+	}
+
+	/**
+	 * Helper method to setup a list of service types
+	 */
+	private List<ServiceType> setupServiceList(ResultSet rs) throws SQLException {
+		List<ServiceType> serviceList = new ArrayList<ServiceType>();
+		while (rs.next()) {
+			ServiceType serviceType = setupServiceType(rs);
+			serviceList.add(serviceType);
+		}
+		return serviceList;
+	}
+
+	/**
+	 * Helper method to setup a single service type
+	 */
+	private ServiceType setupServiceType(ResultSet rs) throws SQLException {
+		ServiceType servicetype = new ServiceType();
+		servicetype.setId(rs.getInt("servicetype_ID"));
+		servicetype.setServiceName(rs.getString("servicetype"));
+		return servicetype;
 	}
 }

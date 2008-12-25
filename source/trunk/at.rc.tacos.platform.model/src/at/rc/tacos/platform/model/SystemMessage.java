@@ -15,6 +15,12 @@ public class SystemMessage {
 	private String message;
 
 	/**
+	 * Default class constructor
+	 */
+	public SystemMessage() {
+	}
+
+	/**
 	 * Default class constructor to create a new message
 	 * 
 	 * @param message
@@ -87,5 +93,9 @@ public class SystemMessage {
 	 */
 	public String getMessage() {
 		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 }

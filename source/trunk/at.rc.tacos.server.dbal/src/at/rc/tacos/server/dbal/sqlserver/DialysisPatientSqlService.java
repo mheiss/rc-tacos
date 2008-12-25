@@ -23,7 +23,7 @@ import at.rc.tacos.server.dbal.SQLQueries;
  * @author Michael
  */
 public class DialysisPatientSqlService implements DialysisPatientService {
-	
+
 	@Resource(name = "sqlConnection")
 	protected Connection connection;
 
@@ -100,53 +100,7 @@ public class DialysisPatientSqlService implements DialysisPatientService {
 		stmt.setInt(1, id);
 		final ResultSet rs = stmt.executeQuery();
 		if (rs.next()) {
-			DialysisPatient dialysis = new DialysisPatient();
-			dialysis.setId(rs.getInt("dialysis_ID"));
-			dialysis.setAppointmentTimeAtDialysis(MyUtils.stringToTimestamp(rs.getString("appointmentTimeAtDialysis"), MyUtils.sqlServerDateTime));
-			dialysis.setAssistantPerson(rs.getBoolean("assistant"));
-			dialysis.setFriday(rs.getBoolean("friday"));
-			dialysis.setFromCity(rs.getString("fromCity"));
-			dialysis.setFromStreet(rs.getString("fromStreet"));
-			dialysis.setInsurance(rs.getString("insurance"));
-			if (rs.getString("kindOfTransport") != null)
-				dialysis.setKindOfTransport(rs.getString("kindOfTransport"));
-			dialysis.setPlannedStartForBackTransport(MyUtils.stringToTimestamp(rs.getString("plannedStartForBackTransport"),
-					MyUtils.sqlServerDateTime));
-			dialysis.setPlannedStartOfTransport(MyUtils.stringToTimestamp(rs.getString("plannedStartOfTransport"), MyUtils.sqlServerDateTime));
-			dialysis.setPlannedTimeAtPatient(MyUtils.stringToTimestamp(rs.getString("plannedTimeAtPatient"), MyUtils.sqlServerDateTime));
-			dialysis.setReadyTime(MyUtils.stringToTimestamp(rs.getString("readyTime"), MyUtils.sqlServerDateTime));
-			dialysis.setSaturday(rs.getBoolean("saturday"));
-			dialysis.setStationary(rs.getBoolean("stationary"));
-			dialysis.setSunday(rs.getBoolean("sunday"));
-			dialysis.setThursday(rs.getBoolean("thursday"));
-			dialysis.setToCity(rs.getString("toCity"));
-			dialysis.setToStreet(rs.getString("toStreet"));
-			dialysis.setTuesday(rs.getBoolean("tuesday"));
-			dialysis.setWednesday(rs.getBoolean("wednesday"));
-			dialysis.setMonday(rs.getBoolean("monday"));
-			// the location
-			int locationId = rs.getInt("location");
-			dialysis.setLocation(locationDAO.getLocation(locationId));
-			// the patient for the dialysis
-			Patient patient = new Patient();
-			if (rs.getString("firstname") == null)
-				patient.setFirstname("");
-			else
-				patient.setFirstname(rs.getString("firstname"));
-			if (rs.getString("lastname") == null)
-				patient.setLastname("");
-			else
-				patient.setLastname(rs.getString("lastname"));
-			dialysis.setPatient(patient);
-
-			// set the last generated transport dates
-			if (rs.getString("transport_date") != null)
-				dialysis.setLastTransportDate(MyUtils.stringToTimestamp(rs.getString("transport_date"), MyUtils.sqlServerDateTime));
-			if (rs.getString("return_date") != null)
-				dialysis.setLastBackTransportDate(MyUtils.stringToTimestamp(rs.getString("return_date"), MyUtils.sqlServerDateTime));
-
-			// return the patient
-			return dialysis;
+			return setupDialysisPatient(rs);
 		}
 		// no result set
 		return null;
@@ -156,58 +110,7 @@ public class DialysisPatientSqlService implements DialysisPatientService {
 	public List<DialysisPatient> listDialysisPatient() throws SQLException {
 		final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("list.dialysisPatients"));
 		final ResultSet rs = stmt.executeQuery();
-		List<DialysisPatient> dialysises = new ArrayList<DialysisPatient>();
-		while (rs.next()) {
-			DialysisPatient dialysis = new DialysisPatient();
-			dialysis.setId(rs.getInt("dialysis_ID"));
-			dialysis.setAppointmentTimeAtDialysis(MyUtils.stringToTimestamp(rs.getString("appointmentTimeAtDialysis"), MyUtils.sqlServerDateTime));
-			dialysis.setAssistantPerson(rs.getBoolean("assistant"));
-			dialysis.setFriday(rs.getBoolean("friday"));
-			dialysis.setFromCity(rs.getString("fromCity"));
-			dialysis.setFromStreet(rs.getString("fromStreet"));
-			dialysis.setInsurance(rs.getString("insurance"));
-			if (rs.getString("kindOfTransport") != null)
-				dialysis.setKindOfTransport(rs.getString("kindOfTransport"));
-			dialysis.setPlannedStartForBackTransport(MyUtils.stringToTimestamp(rs.getString("plannedStartForBackTransport"),
-					MyUtils.sqlServerDateTime));
-			dialysis.setPlannedStartOfTransport(MyUtils.stringToTimestamp(rs.getString("plannedStartOfTransport"), MyUtils.sqlServerDateTime));
-			dialysis.setPlannedTimeAtPatient(MyUtils.stringToTimestamp(rs.getString("plannedTimeAtPatient"), MyUtils.sqlServerDateTime));
-			dialysis.setReadyTime(MyUtils.stringToTimestamp(rs.getString("readyTime"), MyUtils.sqlServerDateTime));
-			dialysis.setSaturday(rs.getBoolean("saturday"));
-			dialysis.setStationary(rs.getBoolean("stationary"));
-			dialysis.setSunday(rs.getBoolean("sunday"));
-			dialysis.setThursday(rs.getBoolean("thursday"));
-			dialysis.setToCity(rs.getString("toCity"));
-			dialysis.setToStreet(rs.getString("toStreet"));
-			dialysis.setTuesday(rs.getBoolean("tuesday"));
-			dialysis.setWednesday(rs.getBoolean("wednesday"));
-			dialysis.setMonday(rs.getBoolean("monday"));
-			// the location
-			int locationId = rs.getInt("location");
-			dialysis.setLocation(locationDAO.getLocation(locationId));
-			// the patient for the dialysis
-			Patient patient = new Patient();
-			if (rs.getString("firstname") == null)
-				patient.setFirstname("");
-			else
-				patient.setFirstname(rs.getString("firstname"));
-			if (rs.getString("lastname") == null)
-				patient.setLastname("");
-			else
-				patient.setLastname(rs.getString("lastname"));
-			dialysis.setPatient(patient);
-
-			// set the last generated transport dates
-			if (rs.getString("transport_date") != null)
-				dialysis.setLastTransportDate(MyUtils.stringToTimestamp(rs.getString("transport_date"), MyUtils.sqlServerDateTime));
-			if (rs.getString("return_date") != null)
-				dialysis.setLastBackTransportDate(MyUtils.stringToTimestamp(rs.getString("return_date"), MyUtils.sqlServerDateTime));
-
-			// add to the list
-			dialysises.add(dialysis);
-		}
-		// return the list
-		return dialysises;
+		return setupDialysisList(rs);
 	}
 
 	@Override
@@ -284,5 +187,67 @@ public class DialysisPatientSqlService implements DialysisPatientService {
 			return false;
 		// everything is ok
 		return true;
+	}
+
+	/**
+	 * Helper method to setup a list of dialysis patients
+	 */
+	private List<DialysisPatient> setupDialysisList(ResultSet rs) throws SQLException {
+		List<DialysisPatient> dialysisList = new ArrayList<DialysisPatient>();
+		while (rs.next()) {
+			DialysisPatient patient = setupDialysisPatient(rs);
+			dialysisList.add(patient);
+		}
+		return dialysisList;
+	}
+
+	/**
+	 * Helper method to setup a single dialysis patient
+	 */
+	private DialysisPatient setupDialysisPatient(ResultSet rs) throws SQLException {
+		DialysisPatient dialysis = new DialysisPatient();
+		dialysis.setId(rs.getInt("dialysis_ID"));
+		dialysis.setAppointmentTimeAtDialysis(MyUtils.stringToTimestamp(rs.getString("appointmentTimeAtDialysis"), MyUtils.sqlServerDateTime));
+		dialysis.setAssistantPerson(rs.getBoolean("assistant"));
+		dialysis.setFriday(rs.getBoolean("friday"));
+		dialysis.setFromCity(rs.getString("fromCity"));
+		dialysis.setFromStreet(rs.getString("fromStreet"));
+		dialysis.setInsurance(rs.getString("insurance"));
+		if (rs.getString("kindOfTransport") != null)
+			dialysis.setKindOfTransport(rs.getString("kindOfTransport"));
+		dialysis.setPlannedStartForBackTransport(MyUtils.stringToTimestamp(rs.getString("plannedStartForBackTransport"), MyUtils.sqlServerDateTime));
+		dialysis.setPlannedStartOfTransport(MyUtils.stringToTimestamp(rs.getString("plannedStartOfTransport"), MyUtils.sqlServerDateTime));
+		dialysis.setPlannedTimeAtPatient(MyUtils.stringToTimestamp(rs.getString("plannedTimeAtPatient"), MyUtils.sqlServerDateTime));
+		dialysis.setReadyTime(MyUtils.stringToTimestamp(rs.getString("readyTime"), MyUtils.sqlServerDateTime));
+		dialysis.setSaturday(rs.getBoolean("saturday"));
+		dialysis.setStationary(rs.getBoolean("stationary"));
+		dialysis.setSunday(rs.getBoolean("sunday"));
+		dialysis.setThursday(rs.getBoolean("thursday"));
+		dialysis.setToCity(rs.getString("toCity"));
+		dialysis.setToStreet(rs.getString("toStreet"));
+		dialysis.setTuesday(rs.getBoolean("tuesday"));
+		dialysis.setWednesday(rs.getBoolean("wednesday"));
+		dialysis.setMonday(rs.getBoolean("monday"));
+		// the location
+		int locationId = rs.getInt("location");
+		dialysis.setLocation(locationDAO.getLocation(locationId));
+		// the patient for the dialysis
+		Patient patient = new Patient();
+		if (rs.getString("firstname") == null)
+			patient.setFirstname("");
+		else
+			patient.setFirstname(rs.getString("firstname"));
+		if (rs.getString("lastname") == null)
+			patient.setLastname("");
+		else
+			patient.setLastname(rs.getString("lastname"));
+		dialysis.setPatient(patient);
+
+		// set the last generated transport dates
+		if (rs.getString("transport_date") != null)
+			dialysis.setLastTransportDate(MyUtils.stringToTimestamp(rs.getString("transport_date"), MyUtils.sqlServerDateTime));
+		if (rs.getString("return_date") != null)
+			dialysis.setLastBackTransportDate(MyUtils.stringToTimestamp(rs.getString("return_date"), MyUtils.sqlServerDateTime));
+		return dialysis;
 	}
 }

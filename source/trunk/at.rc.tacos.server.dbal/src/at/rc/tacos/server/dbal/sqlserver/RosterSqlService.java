@@ -25,7 +25,7 @@ import at.rc.tacos.server.dbal.SQLQueries;
  * @author Michael
  */
 public class RosterSqlService implements RosterService {
-	
+
 	@Resource(name = "sqlConnection")
 	protected Connection connection;
 
@@ -34,7 +34,7 @@ public class RosterSqlService implements RosterService {
 
 	@Service(clazz = LocationService.class)
 	private LocationService locationDAO;
-	
+
 	// the source for the queries
 	protected final SQLQueries queries = SQLQueries.getInstance();
 
@@ -130,46 +130,7 @@ public class RosterSqlService implements RosterService {
 		final ResultSet rs = query.executeQuery();
 		// loop over the result set
 		if (rs.next()) {
-			RosterEntry entry = new RosterEntry();
-			entry.setRosterId(rs.getInt("roster_ID"));
-			entry.setCreatedByUsername(rs.getString("entry_createdBy"));
-			if (rs.getString("starttime") == null)
-				entry.setPlannedStartOfWork(0);
-			else
-				entry.setPlannedStartOfWork(MyUtils.stringToTimestamp(rs.getString("starttime"), MyUtils.sqlServerDateTime));
-			if (rs.getString("endtime") == null)
-				entry.setPlannedEndOfWork(0);
-			else
-				entry.setPlannedEndOfWork(MyUtils.stringToTimestamp(rs.getString("endtime"), MyUtils.sqlServerDateTime));
-			if (rs.getString("checkIn") == null)
-				entry.setRealStartOfWork(0);
-			else
-				entry.setRealStartOfWork(MyUtils.stringToTimestamp(rs.getString("checkIn"), MyUtils.sqlServerDateTime));
-			if (rs.getString("checkOut") == null)
-				entry.setRealEndOfWork(0);
-			else
-				entry.setRealEndOfWork(MyUtils.stringToTimestamp(rs.getString("checkOut"), MyUtils.sqlServerDateTime));
-			// Set the location
-			int locationId = rs.getInt("location_ID");
-			entry.setStation(locationDAO.getLocation(locationId));
-			// set the service type
-			ServiceType service = new ServiceType();
-			service.setId(rs.getInt("servicetype_ID"));
-			service.setServiceName(rs.getString("servicetype"));
-			entry.setServicetype(service);
-			// Set the job
-			Job job = new Job();
-			job.setId(rs.getInt("job_ID"));
-			job.setJobName(rs.getString("jobname"));
-			entry.setJob(job);
-			// set the notes
-			if (rs.getString("note") != null)
-				entry.setRosterNotes(rs.getString("note"));
-			entry.setStandby(rs.getBoolean("standby"));
-			// get the staff member
-			int staffId = rs.getInt("staffmember_ID");
-			entry.setStaffMember(staffDAO.getStaffMemberByID(staffId));
-			return entry;
+			return setupRosterEntry(rs);
 		}
 		// nothin in the result set
 		return null;
@@ -177,175 +138,40 @@ public class RosterSqlService implements RosterService {
 
 	@Override
 	public List<RosterEntry> listRosterEntryByStaffMember(int employeeID) throws SQLException {
-		// ro.roster_ID, ro.location_ID, lo.locationname,
-		// ro.entry_createdBy, e.username, , ro.staffmember_ID,
-		// ro.servicetype_ID,
-		// st.servicetype, ro.job_ID, j.jobname, ro.starttime, ro.endtime,
-		// ro.checkIn, ro.checkOut, ro.note, ro.standby
 		final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.RosterBystaffmemberID"));
 		query.setInt(1, employeeID);
 		final ResultSet rs = query.executeQuery();
-		List<RosterEntry> entrylist = new ArrayList<RosterEntry>();
-		while (rs.next()) {
-			RosterEntry entry = new RosterEntry();
-			entry.setRosterId(rs.getInt("roster_ID"));
-			entry.setCreatedByUsername(rs.getString("entry_createdBy"));
-			if (rs.getString("starttime") == null)
-				entry.setPlannedStartOfWork(0);
-			else
-				entry.setPlannedStartOfWork(MyUtils.stringToTimestamp(rs.getString("starttime"), MyUtils.sqlServerDateTime));
-			if (rs.getString("endtime") == null)
-				entry.setPlannedEndOfWork(0);
-			else
-				entry.setPlannedEndOfWork(MyUtils.stringToTimestamp(rs.getString("endtime"), MyUtils.sqlServerDateTime));
-			if (rs.getString("checkIn") == null)
-				entry.setRealStartOfWork(0);
-			else
-				entry.setRealStartOfWork(MyUtils.stringToTimestamp(rs.getString("checkIn"), MyUtils.sqlServerDateTime));
-			if (rs.getString("checkOut") == null)
-				entry.setRealEndOfWork(0);
-			else
-				entry.setRealEndOfWork(MyUtils.stringToTimestamp(rs.getString("checkOut"), MyUtils.sqlServerDateTime));
-			// Set the location
-			int locationId = rs.getInt("location_ID");
-			entry.setStation(locationDAO.getLocation(locationId));
-			// set the service type
-			ServiceType service = new ServiceType();
-			service.setId(rs.getInt("servicetype_ID"));
-			service.setServiceName(rs.getString("servicetype"));
-			entry.setServicetype(service);
-			// Set the job
-			Job job = new Job();
-			job.setId(rs.getInt("job_ID"));
-			job.setJobName(rs.getString("jobname"));
-			entry.setJob(job);
-			// set the notes
-			if (rs.getString("note") != null)
-				entry.setRosterNotes(rs.getString("note"));
-			entry.setStandby(rs.getBoolean("standby"));
-			// get the staff member
-			int staffId = rs.getInt("staffmember_ID");
-			entry.setStaffMember(staffDAO.getStaffMemberByID(staffId));
-			entrylist.add(entry);
-		}
-		return entrylist;
+		return setupRosterList(rs);
 	}
 
 	@Override
 	public List<RosterEntry> listRosterEntryByDate(long startTime, long endTime) throws SQLException {
-		// ro.roster_ID, ro.location_ID, lo.locationname,
-		// ro.entry_createdBy, e.username, , ro.staffmember_ID,
-		// ro.servicetype_ID,
-		// st.servicetype, ro.job_ID, j.jobname, ro.starttime, ro.endtime,
-		// ro.checkIn, ro.checkOut, ro.note, ro.standby
 		final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.RosterByTime"));
 		query.setString(1, MyUtils.timestampToString(startTime, MyUtils.timeAndDateFormat));
 		query.setString(2, MyUtils.timestampToString(endTime, MyUtils.timeAndDateFormat));
 		final ResultSet rs = query.executeQuery();
 		// create the result list and loop over the result
-		List<RosterEntry> entrylist = new ArrayList<RosterEntry>();
-		while (rs.next()) {
-			RosterEntry entry = new RosterEntry();
-			entry.setRosterId(rs.getInt("roster_ID"));
-			entry.setCreatedByUsername(rs.getString("entry_createdBy"));
-			if (rs.getString("starttime") == null)
-				entry.setPlannedStartOfWork(0);
-			else
-				entry.setPlannedStartOfWork(MyUtils.stringToTimestamp(rs.getString("starttime"), MyUtils.sqlServerDateTime));
-			if (rs.getString("endtime") == null)
-				entry.setPlannedEndOfWork(0);
-			else
-				entry.setPlannedEndOfWork(MyUtils.stringToTimestamp(rs.getString("endtime"), MyUtils.sqlServerDateTime));
-			if (rs.getString("checkIn") == null)
-				entry.setRealStartOfWork(0);
-			else
-				entry.setRealStartOfWork(MyUtils.stringToTimestamp(rs.getString("checkIn"), MyUtils.sqlServerDateTime));
-			if (rs.getString("checkOut") == null)
-				entry.setRealEndOfWork(0);
-			else
-				entry.setRealEndOfWork(MyUtils.stringToTimestamp(rs.getString("checkOut"), MyUtils.sqlServerDateTime));
-			// Set the location
-			int locationId = rs.getInt("location_ID");
-			entry.setStation(locationDAO.getLocation(locationId));
-			// set the service type
-			ServiceType service = new ServiceType();
-			service.setId(rs.getInt("servicetype_ID"));
-			service.setServiceName(rs.getString("servicetype"));
-			entry.setServicetype(service);
-			// Set the job
-			Job job = new Job();
-			job.setId(rs.getInt("job_ID"));
-			job.setJobName(rs.getString("jobname"));
-			entry.setJob(job);
-			// set the notes
-			if (rs.getString("note") != null)
-				entry.setRosterNotes(rs.getString("note"));
-			entry.setStandby(rs.getBoolean("standby"));
-			// get the staff member
-			int staffId = rs.getInt("staffmember_ID");
-			entry.setStaffMember(staffDAO.getStaffMemberByID(staffId));
-			entrylist.add(entry);
-		}
-		return entrylist;
+		return setupRosterList(rs);
 	}
 
 	@Override
 	public List<RosterEntry> listRosterEntriesByDateAndLocation(long startTime, long endTime, int filterLocationId) throws SQLException {
-		// ro.roster_ID, ro.location_ID, lo.locationname,
-		// ro.entry_createdBy, e.username, , ro.staffmember_ID,
-		// ro.servicetype_ID,
-		// st.servicetype, ro.job_ID, j.jobname, ro.starttime, ro.endtime,
-		// ro.checkIn, ro.checkOut, ro.note, ro.standby
 		final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.RosterByTimeAndLocation"));
 		query.setString(1, MyUtils.timestampToString(startTime, MyUtils.timeAndDateFormat));
 		query.setString(2, MyUtils.timestampToString(endTime, MyUtils.timeAndDateFormat));
 		query.setInt(3, filterLocationId);
 		final ResultSet rs = query.executeQuery();
-		// create the result list and loop over the result
-		List<RosterEntry> entrylist = new ArrayList<RosterEntry>();
-		while (rs.next()) {
-			RosterEntry entry = new RosterEntry();
-			entry.setRosterId(rs.getInt("roster_ID"));
-			entry.setCreatedByUsername(rs.getString("entry_createdBy"));
-			if (rs.getString("starttime") == null)
-				entry.setPlannedStartOfWork(0);
-			else
-				entry.setPlannedStartOfWork(MyUtils.stringToTimestamp(rs.getString("starttime"), MyUtils.sqlServerDateTime));
-			if (rs.getString("endtime") == null)
-				entry.setPlannedEndOfWork(0);
-			else
-				entry.setPlannedEndOfWork(MyUtils.stringToTimestamp(rs.getString("endtime"), MyUtils.sqlServerDateTime));
-			if (rs.getString("checkIn") == null)
-				entry.setRealStartOfWork(0);
-			else
-				entry.setRealStartOfWork(MyUtils.stringToTimestamp(rs.getString("checkIn"), MyUtils.sqlServerDateTime));
-			if (rs.getString("checkOut") == null)
-				entry.setRealEndOfWork(0);
-			else
-				entry.setRealEndOfWork(MyUtils.stringToTimestamp(rs.getString("checkOut"), MyUtils.sqlServerDateTime));
-			// Set the location
-			int locationId = rs.getInt("location_ID");
-			entry.setStation(locationDAO.getLocation(locationId));
-			// set the service type
-			ServiceType service = new ServiceType();
-			service.setId(rs.getInt("servicetype_ID"));
-			service.setServiceName(rs.getString("servicetype"));
-			entry.setServicetype(service);
-			// Set the job
-			Job job = new Job();
-			job.setId(rs.getInt("job_ID"));
-			job.setJobName(rs.getString("jobname"));
-			entry.setJob(job);
-			// set the notes
-			if (rs.getString("note") != null)
-				entry.setRosterNotes(rs.getString("note"));
-			entry.setStandby(rs.getBoolean("standby"));
-			// get the staff member
-			int staffId = rs.getInt("staffmember_ID");
-			entry.setStaffMember(staffDAO.getStaffMemberByID(staffId));
-			entrylist.add(entry);
-		}
-		return entrylist;
+		return setupRosterList(rs);
+	}
+
+	@Override
+	public List<RosterEntry> listRosterEntriesByDateAndStaff(long startTime, long endTime, int staffId) throws SQLException {
+		final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.RosterByTimeAndStaff"));
+		query.setString(1, MyUtils.timestampToString(startTime, MyUtils.timeAndDateFormat));
+		query.setString(2, MyUtils.timestampToString(endTime, MyUtils.timeAndDateFormat));
+		query.setInt(3, staffId);
+		final ResultSet rs = query.executeQuery();
+		return setupRosterList(rs);
 	}
 
 	@Override
@@ -411,50 +237,72 @@ public class RosterSqlService implements RosterService {
 
 		final ResultSet rs = query.executeQuery();
 		// create the result list and loop over the result
-		List<RosterEntry> entrylist = new ArrayList<RosterEntry>();
-		while (rs.next()) {
-			RosterEntry entry = new RosterEntry();
-			entry.setRosterId(rs.getInt("roster_ID"));
-			entry.setCreatedByUsername(rs.getString("entry_createdBy"));
-			if (rs.getString("starttime") == null)
-				entry.setPlannedStartOfWork(0);
-			else
-				entry.setPlannedStartOfWork(MyUtils.stringToTimestamp(rs.getString("starttime"), MyUtils.sqlServerDateTime));
-			if (rs.getString("endtime") == null)
-				entry.setPlannedEndOfWork(0);
-			else
-				entry.setPlannedEndOfWork(MyUtils.stringToTimestamp(rs.getString("endtime"), MyUtils.sqlServerDateTime));
-			if (rs.getString("checkIn") == null)
-				entry.setRealStartOfWork(0);
-			else
-				entry.setRealStartOfWork(MyUtils.stringToTimestamp(rs.getString("checkIn"), MyUtils.sqlServerDateTime));
-			if (rs.getString("checkOut") == null)
-				entry.setRealEndOfWork(0);
-			else
-				entry.setRealEndOfWork(MyUtils.stringToTimestamp(rs.getString("checkOut"), MyUtils.sqlServerDateTime));
-			// Set the location
-			int locationId = rs.getInt("location_ID");
-			entry.setStation(locationDAO.getLocation(locationId));
-			// set the service type
-			ServiceType service = new ServiceType();
-			service.setId(rs.getInt("servicetype_ID"));
-			service.setServiceName(rs.getString("servicetype"));
-			entry.setServicetype(service);
-			// Set the job
-			Job job = new Job();
-			job.setId(rs.getInt("job_ID"));
-			job.setJobName(rs.getString("jobname"));
-			entry.setJob(job);
-			// set the notes
-			if (rs.getString("note") != null)
-				entry.setRosterNotes(rs.getString("note"));
-			entry.setStandby(rs.getBoolean("standby"));
-			// get the staff member
-			int staffId = rs.getInt("staffmember_ID");
-			entry.setStaffMember(staffDAO.getStaffMemberByID(staffId));
-			entrylist.add(entry);
-		}
-		return entrylist;
+		return setupRosterList(rs);
 	}
 
+	/**
+	 * Helper method to setup a list of roster entries from an result set
+	 * 
+	 * @param rs
+	 *            the unmodified result set
+	 * @return the list of roster entries
+	 */
+	private List<RosterEntry> setupRosterList(ResultSet rs) throws SQLException {
+		List<RosterEntry> rosterList = new ArrayList<RosterEntry>();
+		while (rs.next()) {
+			RosterEntry entry = setupRosterEntry(rs);
+			rosterList.add(entry);
+		}
+		return rosterList;
+	}
+
+	/**
+	 * Helper method to setup a single roster entry from an result set
+	 * 
+	 * @param rs
+	 *            the result set to get the values
+	 * @return the new roster entry instance
+	 */
+	private RosterEntry setupRosterEntry(ResultSet rs) throws SQLException {
+		RosterEntry entry = new RosterEntry();
+		entry.setRosterId(rs.getInt("roster_ID"));
+		entry.setCreatedByUsername(rs.getString("entry_createdBy"));
+		if (rs.getString("starttime") == null)
+			entry.setPlannedStartOfWork(0);
+		else
+			entry.setPlannedStartOfWork(MyUtils.stringToTimestamp(rs.getString("starttime"), MyUtils.sqlServerDateTime));
+		if (rs.getString("endtime") == null)
+			entry.setPlannedEndOfWork(0);
+		else
+			entry.setPlannedEndOfWork(MyUtils.stringToTimestamp(rs.getString("endtime"), MyUtils.sqlServerDateTime));
+		if (rs.getString("checkIn") == null)
+			entry.setRealStartOfWork(0);
+		else
+			entry.setRealStartOfWork(MyUtils.stringToTimestamp(rs.getString("checkIn"), MyUtils.sqlServerDateTime));
+		if (rs.getString("checkOut") == null)
+			entry.setRealEndOfWork(0);
+		else
+			entry.setRealEndOfWork(MyUtils.stringToTimestamp(rs.getString("checkOut"), MyUtils.sqlServerDateTime));
+		// Set the location
+		int locationId = rs.getInt("location_ID");
+		entry.setStation(locationDAO.getLocation(locationId));
+		// set the service type
+		ServiceType service = new ServiceType();
+		service.setId(rs.getInt("servicetype_ID"));
+		service.setServiceName(rs.getString("servicetype"));
+		entry.setServicetype(service);
+		// Set the job
+		Job job = new Job();
+		job.setId(rs.getInt("job_ID"));
+		job.setJobName(rs.getString("jobname"));
+		entry.setJob(job);
+		// set the notes
+		if (rs.getString("note") != null)
+			entry.setRosterNotes(rs.getString("note"));
+		entry.setStandby(rs.getBoolean("standby"));
+		// get the staff member
+		int staffId = rs.getInt("staffmember_ID");
+		entry.setStaffMember(staffDAO.getStaffMemberByID(staffId));
+		return entry;
+	}
 }

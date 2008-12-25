@@ -76,7 +76,6 @@ public class UserLoginSqlService implements AuthenticationService {
 		final PreparedStatement query = connection.prepareStatement(queries.getStatment("get.loginByUsername"));
 		query.setString(1, username);
 		final ResultSet rs = query.executeQuery();
-		// assert we have a result
 		if (rs.next()) {
 			Login login = new Login();
 			login.setAuthorization(rs.getString("authorisation"));
@@ -93,7 +92,6 @@ public class UserLoginSqlService implements AuthenticationService {
 
 	@Override
 	public boolean addLogin(Login login) throws SQLException {
-		// username, pwd, authorisation, isloggedin, locked
 		final PreparedStatement query = connection.prepareStatement(queries.getStatment("insert.User"));
 		query.setString(1, login.getUsername());
 		query.setString(2, PasswordEncryption.getInstance().encrypt(login.getPassword()));
@@ -107,7 +105,6 @@ public class UserLoginSqlService implements AuthenticationService {
 
 	@Override
 	public boolean lockLogin(String username) throws SQLException {
-		// locked = ? WHERE username = ?
 		final PreparedStatement query = connection.prepareStatement(queries.getStatment("update.lockUser"));
 		query.setBoolean(1, true);
 		query.setString(2, username);
@@ -119,7 +116,6 @@ public class UserLoginSqlService implements AuthenticationService {
 
 	@Override
 	public boolean unlockLogin(String username) throws SQLException {
-		// locked = ? WHERE username = ?
 		final PreparedStatement query = connection.prepareStatement(queries.getStatment("update.lockUser"));
 		query.setBoolean(1, false);
 		query.setString(2, username);
@@ -131,7 +127,6 @@ public class UserLoginSqlService implements AuthenticationService {
 
 	@Override
 	public boolean updateLogin(Login login) throws SQLException {
-		// authorization = ?, isloggedin = ?, locked = ? WHERE username
 		final PreparedStatement query = connection.prepareStatement(queries.getStatment("update.User"));
 		query.setString(1, login.getAuthorization());
 		query.setBoolean(2, login.isLoggedIn());
@@ -145,7 +140,6 @@ public class UserLoginSqlService implements AuthenticationService {
 
 	@Override
 	public boolean updatePassword(String username, String newPwd) throws SQLException {
-		// pwd = ? WHERE username
 		final PreparedStatement query = connection.prepareStatement(queries.getStatment("update.Password"));
 		query.setString(1, PasswordEncryption.getInstance().encrypt(newPwd));
 		query.setString(2, username);
@@ -158,7 +152,6 @@ public class UserLoginSqlService implements AuthenticationService {
 	public List<Login> listLogins() throws SQLException {
 		final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.User"));
 		final ResultSet rs = query.executeQuery();
-		// loop and add the logins
 		List<Login> loginList = new ArrayList<Login>();
 		while (rs.next()) {
 			Login login = new Login();

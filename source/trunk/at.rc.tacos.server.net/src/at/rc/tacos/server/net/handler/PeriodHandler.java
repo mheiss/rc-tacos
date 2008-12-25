@@ -36,7 +36,7 @@ public class PeriodHandler implements Handler<Period> {
 			period.setId(id);
 		}
 		// brodcast the new objects
-		session.writeBrodcast(message, periodList);
+		session.writeResponseBrodcast(message, periodList);
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class PeriodHandler implements Handler<Period> {
 				period.setLockedBy(lockable.getLockedBy());
 			}
 			// send back the result
-			session.write(message, periodList);
+			session.writeResponse(message, periodList);
 		}
 		throw new ServiceException("Listing of all period records is denied");
 	}
@@ -77,7 +77,7 @@ public class PeriodHandler implements Handler<Period> {
 			lockableService.removeLock(period);
 		}
 		// brodcast the removed objects
-		session.writeBrodcast(message, periodList);
+		session.writeResponseBrodcast(message, periodList);
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class PeriodHandler implements Handler<Period> {
 			lockableService.updateLock(period);
 		}
 		// brodcast the updated objects
-		session.writeBrodcast(message, periodList);
+		session.writeResponseBrodcast(message, periodList);
 	}
 
 	@Override

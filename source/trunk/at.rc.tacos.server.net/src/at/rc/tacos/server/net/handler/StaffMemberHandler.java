@@ -36,7 +36,7 @@ public class StaffMemberHandler implements Handler<StaffMember> {
 			}
 		}
 		// brodcast the added persons
-		session.writeBrodcast(message, staffList);
+		session.writeResponseBrodcast(message, staffList);
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class StaffMemberHandler implements Handler<StaffMember> {
 			}
 
 			// send the requested staff member back
-			session.write(message, member);
+			session.writeResponse(message, member);
 			return;
 		}
 
@@ -79,7 +79,7 @@ public class StaffMemberHandler implements Handler<StaffMember> {
 				}
 				// check for locks
 				syncronizeLocks(staffList);
-				session.write(message, staffList);
+				session.writeResponse(message, staffList);
 				return;
 			}
 			// return all staff members
@@ -90,7 +90,7 @@ public class StaffMemberHandler implements Handler<StaffMember> {
 			// check for locks
 			syncronizeLocks(staffList);
 			// send the requested members back
-			session.write(message, staffList);
+			session.writeResponse(message, staffList);
 			return;
 		}
 		// query only the locked staff members
@@ -106,7 +106,7 @@ public class StaffMemberHandler implements Handler<StaffMember> {
 				// check for locks
 				syncronizeLocks(staffList);
 				// send the requested members back
-				session.write(message, staffList);
+				session.writeResponse(message, staffList);
 				return;
 			}
 			staffList = staffService.getLockedStaffMembers();
@@ -116,7 +116,7 @@ public class StaffMemberHandler implements Handler<StaffMember> {
 			// check for locks
 			syncronizeLocks(staffList);
 			// send the requested members back
-			session.write(message, staffList);
+			session.writeResponse(message, staffList);
 			return;
 		}
 
@@ -131,7 +131,7 @@ public class StaffMemberHandler implements Handler<StaffMember> {
 			// check for locks
 			syncronizeLocks(staffList);
 			// send the requested members back
-			session.write(message, staffList);
+			session.writeResponse(message, staffList);
 			return;
 		}
 
@@ -142,7 +142,7 @@ public class StaffMemberHandler implements Handler<StaffMember> {
 		}
 		// check for locks
 		syncronizeLocks(staffList);
-		session.write(message, staffList);
+		session.writeResponse(message, staffList);
 	}
 
 	@Override
@@ -164,7 +164,7 @@ public class StaffMemberHandler implements Handler<StaffMember> {
 			lockableService.updateLock(member);
 		}
 		// brodcast the updated members
-		session.writeBrodcast(message, staffList);
+		session.writeResponseBrodcast(message, staffList);
 	}
 
 	@Override

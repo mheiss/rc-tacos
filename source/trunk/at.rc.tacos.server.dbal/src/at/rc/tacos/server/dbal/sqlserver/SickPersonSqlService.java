@@ -25,33 +25,6 @@ public class SickPersonSqlService implements SickPersonService {
 
 	// the source for the queries
 	protected final SQLQueries queries = SQLQueries.getInstance();
-	
-	@Override
-	public SickPerson getSickPerson(int personID) throws SQLException {
-		// SELECT s.sickperson_ID, s.lastname, s.firstname, s.sex, s.city,
-		// s.street, s.svnr, s.kindoftransport, s.notes \
-		// FROM sickperson s \
-		// WHERE s.sickperson_ID = ?;
-		final PreparedStatement query = connection.prepareStatement(queries.getStatment("get.sickpersonByID"));
-		query.setInt(1, personID);
-		final ResultSet rs = query.executeQuery();
-		// assert we have a result
-		if (rs.next()) {
-			SickPerson person = new SickPerson();
-			person.setLastName(rs.getString("lastname"));
-			person.setFirstName(rs.getString("firstname"));
-			person.setMale(rs.getBoolean("sex"));
-			person.setCityname(rs.getString("city"));
-			person.setStreetname(rs.getString("street"));
-			person.setSVNR(rs.getString("svnr"));
-			person.setKindOfTransport(rs.getString("kindoftransport"));
-			person.setNotes(rs.getString("notes"));
-
-			return person;
-		}
-		// no result
-		return null;
-	}
 
 	@Override
 	public int addSickPerson(SickPerson person) throws SQLException {
@@ -62,10 +35,6 @@ public class SickPersonSqlService implements SickPersonService {
 			return -1;
 
 		int id = rs.getInt(1);
-
-		// INSERT INTO sickperson(sickperson_ID, lastname, firstname, sex,
-		// street, city, svnr, kindoftransport) \
-		// VALUES(?, ?, ?, ?, ?, ?, ?, ?);
 		final PreparedStatement query = connection.prepareStatement(queries.getStatment("insert.sickperson"));
 		query.setInt(1, id);
 		query.setString(2, person.getLastName());
@@ -84,35 +53,6 @@ public class SickPersonSqlService implements SickPersonService {
 	}
 
 	@Override
-	public List<SickPerson> getSickPersonList(String searchString) throws SQLException {
-		// SELECT s.sickperson_ID, s.lastname,
-		// s.firstname, s.sex, s.city, s.street, s.svnr, s.kindoftransport,
-		// s.notes \
-		// FROM sickperson s \
-		// WHERE s.lastname like ?;
-		final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.sickpersonsByLastNameSearchString"));
-		query.setString(1, "%" + searchString + "%");
-		final ResultSet rs = query.executeQuery();
-		// assert we have a result
-		List<SickPerson> sickPersons = new ArrayList<SickPerson>();
-		while (rs.next()) {
-			SickPerson person = new SickPerson();
-			person.setSickPersonId(rs.getInt("sickperson_ID"));
-			person.setLastName(rs.getString("lastname"));
-			person.setFirstName(rs.getString("firstname"));
-			person.setMale(rs.getBoolean("sex"));
-			person.setCityname(rs.getString("city"));
-			person.setStreetname(rs.getString("street"));
-			person.setSVNR(rs.getString("svnr"));
-			person.setKindOfTransport(rs.getString("kindoftransport"));
-			person.setNotes(rs.getString("notes"));
-
-			sickPersons.add(person);
-		}
-		return sickPersons;
-	}
-
-	@Override
 	public boolean removeSickPerson(int id) throws SQLException {
 		final PreparedStatement query = connection.prepareStatement(queries.getStatment("delete.sickperson"));
 		query.setInt(1, id);
@@ -124,10 +64,6 @@ public class SickPersonSqlService implements SickPersonService {
 
 	@Override
 	public boolean updateSickPerson(SickPerson person) throws SQLException {
-		// UPDATE sickperson SET firstname = ?, lastname = ?, sex = ?,
-		// street = ?,
-		// city = ?, svnr = ?, kindoftransport = ?, notes = ? WHERE
-		// sickperson_ID = ?;
 		final PreparedStatement query = connection.prepareStatement(queries.getStatment("update.sickperson"));
 		query.setString(1, person.getFirstName());
 		query.setString(2, person.getLastName());
@@ -142,5 +78,55 @@ public class SickPersonSqlService implements SickPersonService {
 		if (query.executeUpdate() == 0)
 			return false;
 		return true;
+	}
+
+	@Override
+	public SickPerson getSickPerson(int personID) throws SQLException {
+		final PreparedStatement query = connection.prepareStatement(queries.getStatment("get.sickpersonByID"));
+		query.setInt(1, personID);
+		final ResultSet rs = query.executeQuery();
+		// assert we have a result
+		if (rs.next()) {
+			return setupSickPerson(rs);
+		}
+		// no result
+		return null;
+	}
+
+	@Override
+	public List<SickPerson> getSickPersonList(String searchString) throws SQLException {
+		final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.sickpersonsByLastNameSearchString"));
+		query.setString(1, "%" + searchString + "%");
+		final ResultSet rs = query.executeQuery();
+		return setupSickPersonList(rs);
+	}
+
+	/**
+	 * Helper method to setup a list of sick persons
+	 */
+	private List<SickPerson> setupSickPersonList(ResultSet rs) throws SQLException {
+		List<SickPerson> personList = new ArrayList<SickPerson>();
+		while (rs.next()) {
+			SickPerson sickPerson = setupSickPerson(rs);
+			personList.add(sickPerson);
+		}
+		return personList;
+	}
+
+	/**
+	 * Helper method to setup a single sick person
+	 */
+	private SickPerson setupSickPerson(ResultSet rs) throws SQLException {
+		SickPerson person = new SickPerson();
+		person.setSickPersonId(rs.getInt("sickperson_ID"));
+		person.setLastName(rs.getString("lastname"));
+		person.setFirstName(rs.getString("firstname"));
+		person.setMale(rs.getBoolean("sex"));
+		person.setCityname(rs.getString("city"));
+		person.setStreetname(rs.getString("street"));
+		person.setSVNR(rs.getString("svnr"));
+		person.setKindOfTransport(rs.getString("kindoftransport"));
+		person.setNotes(rs.getString("notes"));
+		return person;
 	}
 }

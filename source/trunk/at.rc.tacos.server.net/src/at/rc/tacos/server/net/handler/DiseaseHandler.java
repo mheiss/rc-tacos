@@ -34,7 +34,7 @@ public class DiseaseHandler implements Handler<Disease> {
 			// set the generated id
 			disease.setId(id);
 		}
-		session.writeBrodcast(message, diseaseList);
+		session.writeResponseBrodcast(message, diseaseList);
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class DiseaseHandler implements Handler<Disease> {
 		}
 
 		// send the list back
-		session.write(message, diseaseList);
+		session.writeResponse(message, diseaseList);
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class DiseaseHandler implements Handler<Disease> {
 			// remove the lock
 			lockableService.removeLock(disease);
 		}
-		session.writeBrodcast(message, diseaseList);
+		session.writeResponseBrodcast(message, diseaseList);
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class DiseaseHandler implements Handler<Disease> {
 			// update the locks
 			lockableService.updateLock(disease);
 		}
-		session.writeBrodcast(message, diseaseList);
+		session.writeResponseBrodcast(message, diseaseList);
 	}
 
 	@Override

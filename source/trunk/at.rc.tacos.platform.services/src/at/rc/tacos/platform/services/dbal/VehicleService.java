@@ -47,9 +47,28 @@ public interface VehicleService {
 	public VehicleDetail getVehicleByName(String vehicleName) throws SQLException;
 
 	/**
+	 * Returns the vehicle accociated with the given staff member. The method
+	 * will return null if no vehicle was found.
+	 * 
+	 * @param staffMember
+	 *            the id of the staff member to get the vehicle
+	 * @return the vehicle or null if nothing was found
+	 */
+	public VehicleDetail getVehicleByStaffMember(int staffMemberId) throws SQLException;
+
+	/**
 	 * Returns a list of all vehicles
 	 * 
 	 * @return the list of all vehicles
 	 */
 	public List<VehicleDetail> listVehicles() throws SQLException;
+
+	/**
+	 * Returns a list of vehicles that are not
+	 * {@link VehicleDetail#isOutOfOrder()} and that are
+	 * {@link VehicleDetail#isReadyForAction()}.
+	 * 
+	 * @return the list of vehicles
+	 */
+	public List<VehicleDetail> listReadyVehicles() throws SQLException;
 }
