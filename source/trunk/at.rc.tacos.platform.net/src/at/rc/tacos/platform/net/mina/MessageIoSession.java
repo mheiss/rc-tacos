@@ -61,13 +61,13 @@ public class MessageIoSession implements IoSession {
 	/**
 	 * Wraper method to send a single object back to the client. This wrapper
 	 * will convert the object to a {@link List} and call
-	 * {@link MessageIoSession#write(Message, List)} to setup and send the
-	 * message.
+	 * {@link MessageIoSession#writeResponse(Message, List)} to setup and send
+	 * the message.
 	 * 
-	 * @see MessageIoSession#write(Message, List)
+	 * @see MessageIoSession#writeResponse(Message, List)
 	 */
-	public void write(Message<? extends Object> originalMessage, Object object) {
-		write(originalMessage, Arrays.asList(object));
+	public void writeResponse(Message<? extends Object> originalMessage, Object object) {
+		writeResponse(originalMessage, Arrays.asList(object));
 	}
 
 	/**
@@ -77,7 +77,7 @@ public class MessageIoSession implements IoSession {
 	 * sends the request.
 	 * <p>
 	 * To send a message to all connected clients use the
-	 * {@link MessageIoSession#writeBrodcast(Message, List)} method.
+	 * {@link MessageIoSession#writeResponseBrodcast(Message, List)} method.
 	 * </p>
 	 * 
 	 * @param originalMessage
@@ -85,7 +85,7 @@ public class MessageIoSession implements IoSession {
 	 * @param objects
 	 *            the list of objects to send the message object to send
 	 */
-	public void write(Message<? extends Object> originalMessage, List<? extends Object> objects) {
+	public void writeResponse(Message<? extends Object> originalMessage, List<? extends Object> objects) {
 		// setup a new message to send back to the client
 		AbstractMessage<Object> message = MessageBuilder.buildMessage(originalMessage, objects);
 		write(message);
@@ -94,13 +94,13 @@ public class MessageIoSession implements IoSession {
 	/**
 	 * Wraper method to brodcast a single object to all connected clients. This
 	 * wrapper will convert the object to a {@link List} and call
-	 * {@link MessageIoSession#writeBrodcast(Message, List)} to setup and send
-	 * the message.
+	 * {@link MessageIoSession#writeResponseBrodcast(Message, List)} to setup
+	 * and send the message.
 	 * 
-	 * @see MessageIoSession#writeBrodcast(Message, List)
+	 * @see MessageIoSession#writeResponseBrodcast(Message, List)
 	 */
-	public void writeBrodcast(Message<? extends Object> originalMessage, Object object) {
-		writeBrodcast(originalMessage, Arrays.asList(object));
+	public void writeResponseBrodcast(Message<? extends Object> originalMessage, Object object) {
+		writeResponseBrodcast(originalMessage, Arrays.asList(object));
 	}
 
 	/**
@@ -110,15 +110,15 @@ public class MessageIoSession implements IoSession {
 	 * connected an authenticated clients.
 	 * <p>
 	 * To send a only to the originator of the request use the
-	 * {@link MessageIoSession#write(Message, List)} method.
+	 * {@link MessageIoSession#writeResponse(Message, List)} method.
 	 * </p>
 	 * 
 	 * @param originalMessage
 	 *            the original received message from the client
 	 * @param objects
-	 *            the list of objects to send the message object to send
+	 *            the list of objects to brodcast
 	 */
-	public void writeBrodcast(Message<? extends Object> originalMessage, List<? extends Object> objects) {
+	public void writeResponseBrodcast(Message<? extends Object> originalMessage, List<? extends Object> objects) {
 		// setup a new message to send back to the client
 		AbstractMessage<Object> message = MessageBuilder.buildMessage(originalMessage, objects);
 
@@ -131,6 +131,19 @@ public class MessageIoSession implements IoSession {
 			// continue;
 			// }
 			// send the message
+			session.write(message);
+		}
+	}
+
+	/**
+	 * Brodcasts the message to all connected clients.
+	 * 
+	 * @param message
+	 *            the message to brodcast to all clients
+	 */
+	public void brodcastMessage(AbstractMessage<? extends Object> message) {
+		for (IoSession ioSession : wrappedSession.getService().getManagedSessions().values()) {
+			MessageIoSession session = new MessageIoSession(ioSession);
 			session.write(message);
 		}
 	}
@@ -712,14 +725,14 @@ public class MessageIoSession implements IoSession {
 	/**
 	 * This is the default implementation of the mina write method.
 	 * <p>
-	 * Use the specialized {@link MessageIoSession#write(Message, List)} and the
-	 * {@link MessageIoSession#writeBrodcast(Message, List)} to create and send
-	 * valid messages.
+	 * Use the specialized {@link MessageIoSession#writeResponse(Message, List)}
+	 * and the {@link MessageIoSession#writeResponseBrodcast(Message, List)} to
+	 * create and send valid messages.
 	 * </p>
 	 * 
 	 * @see IoSession#write(Object)
-	 * @see MessageIoSession#write(Message, List)
-	 * @see MessageIoSession#writeBrodcast(Message, List)
+	 * @see MessageIoSession#writeResponse(Message, List)
+	 * @see MessageIoSession#writeResponseBrodcast(Message, List)
 	 */
 	@Override
 	public WriteFuture write(Object message) {
@@ -729,14 +742,14 @@ public class MessageIoSession implements IoSession {
 	/**
 	 * This is the default implementation of the mina write method.
 	 * <p>
-	 * Use the specialized {@link MessageIoSession#write(Message, List)} and the
-	 * {@link MessageIoSession#writeBrodcast(Message, List)} to create and send
-	 * valid messages.
+	 * Use the specialized {@link MessageIoSession#writeResponse(Message, List)}
+	 * and the {@link MessageIoSession#writeResponseBrodcast(Message, List)} to
+	 * create and send valid messages.
 	 * </p>
 	 * 
 	 * @see IoSession#write(Object, SocketAddress)
-	 * @see MessageIoSession#write(Message, List)
-	 * @see MessageIoSession#writeBrodcast(Message, List)
+	 * @see MessageIoSession#writeResponse(Message, List)
+	 * @see MessageIoSession#writeResponseBrodcast(Message, List)
 	 */
 	@Override
 	public WriteFuture write(Object message, SocketAddress destination) {

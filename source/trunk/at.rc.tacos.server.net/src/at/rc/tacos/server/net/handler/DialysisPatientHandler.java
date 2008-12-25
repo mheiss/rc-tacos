@@ -36,7 +36,7 @@ public class DialysisPatientHandler implements Handler<DialysisPatient> {
 			patient.setId(id);
 		}
 		// send back the result
-		session.write(message, patientList);
+		session.writeResponse(message, patientList);
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class DialysisPatientHandler implements Handler<DialysisPatient> {
 				patient.setLockedBy(lockable.getLockedBy());
 			}
 
-			session.write(message, patient);
+			session.writeResponse(message, patient);
 			return;
 		}
 		// if there is no filter -> request all
@@ -77,7 +77,7 @@ public class DialysisPatientHandler implements Handler<DialysisPatient> {
 			patient.setLockedBy(lockable.getLockedBy());
 		}
 
-		session.write(message, patientList);
+		session.writeResponse(message, patientList);
 	}
 
 	@Override
@@ -90,7 +90,7 @@ public class DialysisPatientHandler implements Handler<DialysisPatient> {
 			// remove the lock
 			lockableService.removeLock(patient);
 		}
-		session.writeBrodcast(message, patientList);
+		session.writeResponseBrodcast(message, patientList);
 	}
 
 	@Override
@@ -103,7 +103,7 @@ public class DialysisPatientHandler implements Handler<DialysisPatient> {
 			// update the lock
 			lockableService.updateLock(patient);
 		}
-		session.writeBrodcast(message, patientList);
+		session.writeResponseBrodcast(message, patientList);
 	}
 
 	@Override

@@ -37,7 +37,7 @@ public class ServiceTypeHandler implements Handler<ServiceType> {
 			service.setId(id);
 		}
 		// brodcast the added service objects
-		session.writeBrodcast(message, serviceList);
+		session.writeResponseBrodcast(message, serviceList);
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class ServiceTypeHandler implements Handler<ServiceType> {
 				serviceType.setLockedBy(lockable.getLockedBy());
 			}
 			// send the result back
-			session.write(message, serviceList);
+			session.writeResponse(message, serviceList);
 			return;
 		}
 
@@ -75,7 +75,7 @@ public class ServiceTypeHandler implements Handler<ServiceType> {
 			serviceType.setLocked(lockable.isLocked());
 			serviceType.setLockedBy(lockable.getLockedBy());
 		}
-		session.write(message, serviceList);
+		session.writeResponse(message, serviceList);
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public class ServiceTypeHandler implements Handler<ServiceType> {
 			lockableService.removeLock(service);
 		}
 		// brodcast the removed services
-		session.writeBrodcast(message, serviceList);
+		session.writeResponseBrodcast(message, serviceList);
 	}
 
 	@Override
@@ -103,7 +103,7 @@ public class ServiceTypeHandler implements Handler<ServiceType> {
 			lockableService.updateLock(service);
 		}
 		// brodcast the updated services
-		session.writeBrodcast(message, serviceList);
+		session.writeResponseBrodcast(message, serviceList);
 	}
 
 	@Override

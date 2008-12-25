@@ -63,7 +63,7 @@ public class DayInfoHandler implements Handler<DayInfoMessage> {
 			}
 
 			// return the requested message
-			session.write(message, dayInfoMessage);
+			session.writeResponse(message, dayInfoMessage);
 			return;
 		}
 		throw new ServiceException("Failed to get the day info message, no request parameter provided");
@@ -91,7 +91,7 @@ public class DayInfoHandler implements Handler<DayInfoMessage> {
 			// update the locks
 			lockableService.updateLock(dayInfoMessage);
 		}
-		session.writeBrodcast(message, dayInfoList);
+		session.writeResponseBrodcast(message, dayInfoList);
 	}
 
 	@Override

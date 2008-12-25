@@ -17,7 +17,7 @@ import at.rc.tacos.server.dbal.SQLQueries;
  * @author Michael
  */
 public class CallerSqlService implements CallerService {
-	
+
 	@Resource(name = "sqlConnection")
 	protected Connection connection;
 

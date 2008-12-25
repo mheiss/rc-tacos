@@ -32,7 +32,7 @@ public class VehicleHandler implements Handler<VehicleDetail> {
 				throw new ServiceException("Failed to add the vehicle: " + vehicle);
 		}
 		// brodcast the added transports
-		session.writeBrodcast(message, vehicleList);
+		session.writeResponseBrodcast(message, vehicleList);
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class VehicleHandler implements Handler<VehicleDetail> {
 		}
 
 		// return the requested vehicles
-		session.write(message, list);
+		session.writeResponse(message, list);
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class VehicleHandler implements Handler<VehicleDetail> {
 			lockableService.removeLock(vehicle);
 		}
 		// brodcast the removed vehicles
-		session.writeBrodcast(message, vehicleList);
+		session.writeResponseBrodcast(message, vehicleList);
 	}
 
 	@Override
@@ -80,7 +80,7 @@ public class VehicleHandler implements Handler<VehicleDetail> {
 			lockableService.updateLock(vehicle);
 		}
 		// brodcast the updated vehicles
-		session.writeBrodcast(message, vehicleList);
+		session.writeResponseBrodcast(message, vehicleList);
 	}
 
 	@Override

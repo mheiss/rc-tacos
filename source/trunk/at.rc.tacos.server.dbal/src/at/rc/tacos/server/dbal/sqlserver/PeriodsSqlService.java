@@ -19,7 +19,7 @@ import at.rc.tacos.server.dbal.SQLQueries;
  * @author Michael
  */
 public class PeriodsSqlService implements PeriodsService {
-	
+
 	@Resource(name = "sqlConnection")
 	protected Connection connection;
 
@@ -28,20 +28,12 @@ public class PeriodsSqlService implements PeriodsService {
 
 	@Override
 	public Period getPeriod(int periodID) throws SQLException {
-		// SELECT p.period_ID, p.period, p.serviceTypeCompetence \
-		// FROM period p \
-		// WHERE p.period_ID = ?;
 		final PreparedStatement query = connection.prepareStatement(queries.getStatment("get.periodByID"));
 		query.setInt(1, periodID);
 		final ResultSet rs = query.executeQuery();
-		System.out.println("periods dao sql nach executeQuery");
 		// assert we have a result
 		if (rs.next()) {
-			Period period = new Period();
-			period.setPeriodName(rs.getString("period"));
-			period.setServiceTypeCompetence(rs.getString("serviceTypeCompetence"));
-
-			return period;
+			return setupPeriod(rs);
 		}
 		// no result
 		return null;
@@ -56,9 +48,6 @@ public class PeriodsSqlService implements PeriodsService {
 			return -1;
 
 		int id = rs.getInt(1);
-
-		// INSERT INTO period(period_ID, period, serviceTypeCompetence \
-		// VALUES(?, ?, ?);
 		final PreparedStatement query = connection.prepareStatement(queries.getStatment("insert.period"));
 		query.setInt(1, id);
 		query.setString(2, period.getPeriodName());
@@ -72,23 +61,10 @@ public class PeriodsSqlService implements PeriodsService {
 
 	@Override
 	public List<Period> getPeriodListByServiceTypeCompetence(String serviceTypeCompetence) throws SQLException {
-		// SELECT p.period_ID, p.period, p.serviceTypeCompetence \
-		// FROM period p where p.serviceTypeCompetence = ?;
 		final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.periods"));
 		query.setString(1, serviceTypeCompetence);
-
 		final ResultSet rs = query.executeQuery();
-		// assert we have a result
-		List<Period> periods = new ArrayList<Period>();
-		while (rs.next()) {
-			Period period = new Period();
-			period.setId(rs.getInt("period_ID"));
-			period.setPeriodName(rs.getString("period"));
-			period.setServiceTypeCompetence(rs.getString("serviceTypeCompetence"));
-
-			periods.add(period);
-		}
-		return periods;
+		return setupPeriodList(rs);
 	}
 
 	@Override
@@ -113,5 +89,28 @@ public class PeriodsSqlService implements PeriodsService {
 		if (query.executeUpdate() == 0)
 			return false;
 		return true;
+	}
+
+	/**
+	 * Helper method to setup a list of periods
+	 */
+	private List<Period> setupPeriodList(ResultSet rs) throws SQLException {
+		List<Period> periods = new ArrayList<Period>();
+		while (rs.next()) {
+			Period period = setupPeriod(rs);
+			periods.add(period);
+		}
+		return periods;
+	}
+
+	/**
+	 * Helper method to setup a single period
+	 */
+	private Period setupPeriod(ResultSet rs) throws SQLException {
+		Period period = new Period();
+		period.setId(rs.getInt("period_ID"));
+		period.setPeriodName(rs.getString("period"));
+		period.setServiceTypeCompetence(rs.getString("serviceTypeCompetence"));
+		return period;
 	}
 }

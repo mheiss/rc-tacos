@@ -35,7 +35,7 @@ public class CompetenceHandler implements Handler<Competence> {
 				throw new ServiceException("Failed to add the competence " + competence + " to the database");
 			competence.setId(id);
 		}
-		session.writeBrodcast(message, competenceList);
+		session.writeResponseBrodcast(message, competenceList);
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class CompetenceHandler implements Handler<Competence> {
 		}
 
 		// send the response back to the client
-		session.write(message, compList);
+		session.writeResponse(message, compList);
 	}
 
 	@Override
@@ -70,7 +70,7 @@ public class CompetenceHandler implements Handler<Competence> {
 			// remove the lockable
 			lockableService.removeLock(competence);
 		}
-		session.writeBrodcast(message, competenceList);
+		session.writeResponseBrodcast(message, competenceList);
 	}
 
 	@Override
@@ -83,7 +83,7 @@ public class CompetenceHandler implements Handler<Competence> {
 			// update the lockable
 			lockableService.updateLock(competence);
 		}
-		session.writeBrodcast(message, competenceList);
+		session.writeResponseBrodcast(message, competenceList);
 	}
 
 	@Override

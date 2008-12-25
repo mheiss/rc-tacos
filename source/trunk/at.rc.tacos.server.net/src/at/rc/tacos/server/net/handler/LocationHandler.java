@@ -36,7 +36,7 @@ public class LocationHandler implements Handler<Location> {
 			location.setId(id);
 		}
 		// brodcast the updated locations
-		session.writeBrodcast(message, locationList);
+		session.writeResponseBrodcast(message, locationList);
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public class LocationHandler implements Handler<Location> {
 		}
 
 		// send the locations back
-		session.write(message, locationList);
+		session.writeResponse(message, locationList);
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class LocationHandler implements Handler<Location> {
 			lockableService.removeLock(location);
 		}
 		// brodcast the removed locations
-		session.writeBrodcast(message, locationList);
+		session.writeResponseBrodcast(message, locationList);
 	}
 
 	@Override
@@ -85,7 +85,7 @@ public class LocationHandler implements Handler<Location> {
 			lockableService.updateLock(location);
 		}
 		// brodcast the updated locations
-		session.writeBrodcast(message, locationList);
+		session.writeResponseBrodcast(message, locationList);
 	}
 
 	@Override

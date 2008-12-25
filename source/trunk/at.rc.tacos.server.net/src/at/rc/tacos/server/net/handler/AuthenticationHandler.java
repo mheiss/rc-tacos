@@ -40,7 +40,7 @@ public class AuthenticationHandler implements Handler<Login> {
 				throw new ServiceException("Failed to add the login " + login + " to the database");
 			}
 		}
-		session.writeBrodcast(message, loginList);
+		session.writeResponseBrodcast(message, loginList);
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class AuthenticationHandler implements Handler<Login> {
 		}
 
 		// write back the result
-		session.write(message, loginList);
+		session.writeResponse(message, loginList);
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public class AuthenticationHandler implements Handler<Login> {
 			// remove the lockable object
 			lockableService.removeLock(login);
 		}
-		session.writeBrodcast(message, loginList);
+		session.writeResponseBrodcast(message, loginList);
 	}
 
 	@Override
@@ -107,7 +107,7 @@ public class AuthenticationHandler implements Handler<Login> {
 			// update the lockable object
 			lockableService.removeLock(login);
 		}
-		session.writeBrodcast(message, loginList);
+		session.writeResponseBrodcast(message, loginList);
 	}
 
 	@Override
@@ -188,7 +188,7 @@ public class AuthenticationHandler implements Handler<Login> {
 			throw new ServiceException("Failed to check the login for the username: " + username);
 		}
 		// send the login result back
-		session.write(message, login);
+		session.writeResponse(message, login);
 	}
 
 	/**
@@ -202,7 +202,7 @@ public class AuthenticationHandler implements Handler<Login> {
 		login.setLoggedIn(false);
 
 		// write the message back and reset the stat of the session
-		session.write(message, login);
+		session.writeResponse(message, login);
 		session.reinitialize();
 	}
 

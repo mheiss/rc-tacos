@@ -37,7 +37,7 @@ public class NotifyDetailHandler implements Handler<CallerDetail> {
 			detail.setId(id);
 		}
 		// brodcast the added callers
-		session.writeBrodcast(message, callerList);
+		session.writeResponseBrodcast(message, callerList);
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class NotifyDetailHandler implements Handler<CallerDetail> {
 			}
 
 			// send the result back
-			session.write(message, caller);
+			session.writeResponse(message, caller);
 		}
 
 		// listing of all callers is not allowed
@@ -87,7 +87,7 @@ public class NotifyDetailHandler implements Handler<CallerDetail> {
 			lockableService.updateLock(detail);
 		}
 		// brodcast the updated callers
-		session.writeBrodcast(message, callerList);
+		session.writeResponseBrodcast(message, callerList);
 	}
 
 	@Override

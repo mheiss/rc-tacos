@@ -19,7 +19,7 @@ import at.rc.tacos.server.dbal.SQLQueries;
  * @author Michael
  */
 public class MobilePhoneSqlService implements MobilePhoneService {
-	
+
 	@Resource(name = "sqlConnection")
 	protected Connection connection;
 
@@ -53,30 +53,10 @@ public class MobilePhoneSqlService implements MobilePhoneService {
 		final ResultSet rs = query.executeQuery();
 		// assert we have a result set
 		if (rs.next()) {
-			MobilePhoneDetail phone = new MobilePhoneDetail();
-			phone.setId(rs.getInt("phonenumber_ID"));
-			phone.setMobilePhoneNumber(rs.getString("phonenumber"));
-			phone.setMobilePhoneName(rs.getString("phonename"));
-			return phone;
+			return setupMobilePhone(rs);
 		}
 		// no result set
 		return null;
-	}
-
-	@Override
-	public List<MobilePhoneDetail> listMobilePhones() throws SQLException {
-		final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.phones"));
-		final ResultSet rs = query.executeQuery();
-		// create the result list and loop over the result
-		List<MobilePhoneDetail> phones = new ArrayList<MobilePhoneDetail>();
-		while (rs.next()) {
-			MobilePhoneDetail phone = new MobilePhoneDetail();
-			phone.setId(rs.getInt("phonenumber_ID"));
-			phone.setMobilePhoneNumber(rs.getString("phonenumber"));
-			phone.setMobilePhoneName(rs.getString("phonename"));
-			phones.add(phone);
-		}
-		return phones;
 	}
 
 	@Override
@@ -103,19 +83,40 @@ public class MobilePhoneSqlService implements MobilePhoneService {
 	}
 
 	@Override
+	public List<MobilePhoneDetail> listMobilePhones() throws SQLException {
+		final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.phones"));
+		final ResultSet rs = query.executeQuery();
+		return setupMobilePhoneList(rs);
+	}
+
+	@Override
 	public List<MobilePhoneDetail> listMobilePhonesOfStaffMember(int id) throws SQLException {
 		final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.PhonenumbersOfMemberID"));
 		query.setInt(1, id);
 		final ResultSet rs = query.executeQuery();
-		// create a list and loop over the result
-		List<MobilePhoneDetail> phones = new ArrayList<MobilePhoneDetail>();
+		return setupMobilePhoneList(rs);
+	}
+
+	/**
+	 * Helper method to setup a list of mobile phones
+	 */
+	private List<MobilePhoneDetail> setupMobilePhoneList(ResultSet rs) throws SQLException {
+		List<MobilePhoneDetail> phoneList = new ArrayList<MobilePhoneDetail>();
 		while (rs.next()) {
-			MobilePhoneDetail phone = new MobilePhoneDetail();
-			phone.setId(rs.getInt("phonenumber_ID"));
-			phone.setMobilePhoneNumber(rs.getString("phonenumber"));
-			phone.setMobilePhoneName(rs.getString("phonename"));
-			phones.add(phone);
+			MobilePhoneDetail phone = setupMobilePhone(rs);
+			phoneList.add(phone);
 		}
-		return phones;
+		return phoneList;
+	}
+
+	/**
+	 * Helper method to setup a single mobile phone
+	 */
+	private MobilePhoneDetail setupMobilePhone(ResultSet rs) throws SQLException {
+		MobilePhoneDetail phone = new MobilePhoneDetail();
+		phone.setId(rs.getInt("phonenumber_ID"));
+		phone.setMobilePhoneNumber(rs.getString("phonenumber"));
+		phone.setMobilePhoneName(rs.getString("phonename"));
+		return phone;
 	}
 }

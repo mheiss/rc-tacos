@@ -37,7 +37,7 @@ public class SickPersonHandler implements Handler<SickPerson> {
 			person.setSickPersonId(id);
 		}
 		// brodcast the added persons
-		session.writeBrodcast(message, sickPersons);
+		session.writeResponseBrodcast(message, sickPersons);
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class SickPersonHandler implements Handler<SickPerson> {
 			}
 
 			// send back the result
-			session.writeBrodcast(message, personList);
+			session.writeResponseBrodcast(message, personList);
 		}
 
 		// throw a exception because no params are passed
@@ -82,7 +82,7 @@ public class SickPersonHandler implements Handler<SickPerson> {
 			lockableService.removeLock(person);
 		}
 		// brodcast the removed persons
-		session.writeBrodcast(message, sickPersons);
+		session.writeResponseBrodcast(message, sickPersons);
 	}
 
 	@Override
@@ -96,7 +96,7 @@ public class SickPersonHandler implements Handler<SickPerson> {
 			lockableService.updateLock(person);
 		}
 		// brodcast the updated persons
-		session.writeBrodcast(message, sickPersons);
+		session.writeResponseBrodcast(message, sickPersons);
 	}
 
 	@Override

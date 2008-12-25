@@ -49,7 +49,7 @@ public class AddressHandler implements Handler<Address> {
 			adr.setAddressId(id);
 		}
 		// write the result back to the client
-		session.writeBrodcast(message, addressList);
+		session.writeResponseBrodcast(message, addressList);
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public class AddressHandler implements Handler<Address> {
 		}
 
 		// write the result back to the client
-		session.write(message, addressList);
+		session.writeResponse(message, addressList);
 	}
 
 	@Override
@@ -113,7 +113,7 @@ public class AddressHandler implements Handler<Address> {
 			lockableService.removeLock(adr);
 		}
 		// write the result back to the client
-		session.writeBrodcast(message, addressList);
+		session.writeResponseBrodcast(message, addressList);
 	}
 
 	@Override
@@ -127,7 +127,7 @@ public class AddressHandler implements Handler<Address> {
 			lockableService.updateLock(adr);
 		}
 		// write the result back to the client
-		session.writeBrodcast(message, addressList);
+		session.writeResponseBrodcast(message, addressList);
 	}
 
 	@Override
