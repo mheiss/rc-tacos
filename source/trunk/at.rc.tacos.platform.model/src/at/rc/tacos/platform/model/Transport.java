@@ -130,82 +130,140 @@ public class Transport extends Lockable implements ITransportPriority, IDirectne
 	}
 
 	/**
-	 * Returns a new (copied) transport
+	 * Creates a new transport instance and initializes with the values from the
+	 * specified source transport.
 	 * 
-	 * @param t1
+	 * @param sourceTransport
 	 *            the transport to copy
+	 * @param createdBy
+	 *            the name of the user who creates the copied transport
+	 * @return a new transport instance with the values from the source
+	 *         transport
 	 */
-	public static Transport copyTransport(Transport t1) {
+	public static Transport createTransport(Transport sourceTransport, String createdBy) {
 		// the new transport
-		Transport t2 = new Transport();
-
+		Transport newTransport = new Transport();
 		// copy the transport
-		// reset the values for the second transport
-		t2.setCreatedByUsername("user");
-		t2.setTransportId(0);
-		t2.setTransportNumber(0);
-		t2.clearVehicleDetail();
-		t2.setCreationTime(Calendar.getInstance().getTimeInMillis());
-		if (t1.getProgramStatus() == IProgramStatus.PROGRAM_STATUS_PREBOOKING)
-			t2.setProgramStatus(IProgramStatus.PROGRAM_STATUS_PREBOOKING);
-		if (t1.getProgramStatus() == IProgramStatus.PROGRAM_STATUS_OUTSTANDING || t1.getProgramStatus() == IProgramStatus.PROGRAM_STATUS_UNDERWAY)
-			t2.setProgramStatus(IProgramStatus.PROGRAM_STATUS_OUTSTANDING);
-		t2.setTransportPriority(t1.getTransportPriority());
-		t2.getStatusMessages().clear();
+		newTransport.setCreatedByUsername(createdBy);
+		newTransport.setTransportId(0);
+		newTransport.setTransportNumber(0);
+		newTransport.clearVehicleDetail();
+		newTransport.setCreationTime(Calendar.getInstance().getTimeInMillis());
+		if (sourceTransport.getProgramStatus() == IProgramStatus.PROGRAM_STATUS_PREBOOKING)
+			newTransport.setProgramStatus(IProgramStatus.PROGRAM_STATUS_PREBOOKING);
+		if (sourceTransport.getProgramStatus() == IProgramStatus.PROGRAM_STATUS_OUTSTANDING
+				|| sourceTransport.getProgramStatus() == IProgramStatus.PROGRAM_STATUS_UNDERWAY)
+			newTransport.setProgramStatus(IProgramStatus.PROGRAM_STATUS_OUTSTANDING);
+		newTransport.setTransportPriority(sourceTransport.getTransportPriority());
+		newTransport.getStatusMessages().clear();
 		// date and time
-		t2.setYear(Calendar.getInstance().get(Calendar.YEAR));
-		t2.setDateOfTransport(t1.getDateOfTransport());
-		t2.setAppointmentTimeAtDestination(t1.getAppointmentTimeAtDestination());
-		t2.setPlannedStartOfTransport(t1.getPlannedStartOfTransport());
-		t2.setPlannedTimeAtPatient(t1.getPlannedTimeAtPatient());
+		newTransport.setYear(Calendar.getInstance().get(Calendar.YEAR));
+		newTransport.setDateOfTransport(sourceTransport.getDateOfTransport());
+		newTransport.setAppointmentTimeAtDestination(sourceTransport.getAppointmentTimeAtDestination());
+		newTransport.setPlannedStartOfTransport(sourceTransport.getPlannedStartOfTransport());
+		newTransport.setPlannedTimeAtPatient(sourceTransport.getPlannedTimeAtPatient());
 		// alarming
-		t2.setHelicopterAlarming(t1.isHelicopterAlarming());
-		t2.setPoliceAlarming(t1.isPoliceAlarming());
-		t2.setAssistantPerson(t1.isAssistantPerson());
-		t2.setBackTransport(t1.isBackTransport());
-		t2.setBlueLightToGoal(t1.isBlueLightToGoal());
-		t2.setBrkdtAlarming(t1.isBrkdtAlarming());
-		t2.setFirebrigadeAlarming(t1.isFirebrigadeAlarming());
-		t2.setDfAlarming(t1.isDfAlarming());
-		t2.setEmergencyDoctorAlarming(t1.isEmergencyDoctorAlarming());
-		t2.setEmergencyPhone(t1.isEmergencyPhone());
-		t2.setLongDistanceTrip(t1.isLongDistanceTrip());
-		t2.setMountainRescueServiceAlarming(t1.isMountainRescueServiceAlarming());
-		// assert valid
-		if (t1.getKindOfIllness() != null)
-			t2.setKindOfIllness(t1.getKindOfIllness());
-		if (t1.getKindOfTransport() != null)
-			t2.setKindOfTransport(t1.getKindOfTransport());
-		if (t1.getCallerDetail() != null)
-			t2.setCallerDetail(t1.getCallerDetail());
-		if (t1.getFeedback() != null)
-			t2.setFeedback(t1.getFeedback());
-		// destination and target
-		if (t1.getPlanedLocation() != null)
-			t2.setPlanedLocation(t1.getPlanedLocation());
-		if (t1.getPatient() != null) {
-			t2.setPatient(t1.getPatient());
-		}
+		newTransport.setHelicopterAlarming(sourceTransport.isHelicopterAlarming());
+		newTransport.setPoliceAlarming(sourceTransport.isPoliceAlarming());
+		newTransport.setAssistantPerson(sourceTransport.isAssistantPerson());
+		newTransport.setBackTransport(sourceTransport.isBackTransport());
+		newTransport.setBlueLightToGoal(sourceTransport.isBlueLightToGoal());
+		newTransport.setBrkdtAlarming(sourceTransport.isBrkdtAlarming());
+		newTransport.setFirebrigadeAlarming(sourceTransport.isFirebrigadeAlarming());
+		newTransport.setDfAlarming(sourceTransport.isDfAlarming());
+		newTransport.setEmergencyDoctorAlarming(sourceTransport.isEmergencyDoctorAlarming());
+		newTransport.setEmergencyPhone(sourceTransport.isEmergencyPhone());
+		newTransport.setLongDistanceTrip(sourceTransport.isLongDistanceTrip());
+		newTransport.setMountainRescueServiceAlarming(sourceTransport.isMountainRescueServiceAlarming());
+		newTransport.setKindOfIllness(sourceTransport.getKindOfIllness());
+		newTransport.setKindOfTransport(sourceTransport.getKindOfTransport());
+		newTransport.setCallerDetail(sourceTransport.getCallerDetail());
+		newTransport.setFeedback(sourceTransport.getFeedback());
 
-		t2.setDirection(t1.getDirection());
-		t2.setFromCity(t1.getFromCity());
-		t2.setFromStreet(t1.getFromStreet());
-		t2.setToCity(t1.getToCity());
-		t2.setToStreet(t1.getToStreet());
+		// destination and target
+		newTransport.setPlanedLocation(sourceTransport.getPlanedLocation());
+		newTransport.setPatient(sourceTransport.getPatient());
+		newTransport.setDirection(sourceTransport.getDirection());
+		newTransport.setFromCity(sourceTransport.getFromCity());
+		newTransport.setFromStreet(sourceTransport.getFromStreet());
+		newTransport.setToCity(sourceTransport.getToCity());
+		newTransport.setToStreet(sourceTransport.getToStreet());
 
 		// return the new transport
-		return t2;
+		return newTransport;
 	}
 
 	/**
-	 * Helper method to create a new transport from an existing
-	 * {@link DialysisPatient}.
+	 * Creates a new <code>Transport</code> instance from an existing
+	 * <code>Transport</code> instance and switches the address fields, all
+	 * other fields are not changed.
+	 * 
+	 * @param sourceTransport
+	 *            the source transport
+	 * @param createdBy
+	 *            the name of the user who creates the backtransport
+	 * @return the new transport instance with switched address fields
+	 */
+	public static Transport createBackTransport(Transport sourceTransport, String createdBy) {
+		Transport newTransport = new Transport();
+
+		// reset the values for the second transport
+		newTransport.setCreatedByUsername(createdBy);
+		newTransport.setTransportId(0);
+		newTransport.setTransportNumber(0);
+		newTransport.clearVehicleDetail();
+		newTransport.setCreationTime(Calendar.getInstance().getTimeInMillis());
+		newTransport.setProgramStatus(IProgramStatus.PROGRAM_STATUS_OUTSTANDING);
+		newTransport.setTransportPriority("D");
+		newTransport.getStatusMessages().clear();
+		newTransport.setDirection(0);
+
+		// date and time
+		newTransport.setYear(Calendar.getInstance().get(Calendar.YEAR));
+		newTransport.setDateOfTransport(Calendar.getInstance().getTimeInMillis());
+		newTransport.setPlannedStartOfTransport(Calendar.getInstance().getTimeInMillis());
+
+		// alarming
+		newTransport.setAssistantPerson(sourceTransport.isAssistantPerson());
+		newTransport.setBackTransport(false);
+		newTransport.setEmergencyPhone(sourceTransport.isEmergencyPhone());
+		newTransport.setLongDistanceTrip(sourceTransport.isLongDistanceTrip());
+
+		// assert valid
+		newTransport.setKindOfIllness(sourceTransport.getKindOfIllness());
+		newTransport.setKindOfTransport(sourceTransport.getKindOfTransport());
+		newTransport.setFeedback(sourceTransport.getFeedback());
+
+		// destination and target
+		newTransport.setPlanedLocation(sourceTransport.getPlanedLocation());
+		newTransport.setPatient(sourceTransport.getPatient());
+
+		// switch the address for the back transport
+		if (sourceTransport.getToStreet() != null & !sourceTransport.getToStreet().trim().equalsIgnoreCase(""))
+			newTransport.setFromStreet(sourceTransport.getToStreet());
+		else
+			newTransport.setFromStreet("kein Eintrag");
+
+		if (sourceTransport.getToCity() != null & !sourceTransport.getToCity().trim().equalsIgnoreCase(""))
+			newTransport.setFromCity(sourceTransport.getToCity());
+		else
+			newTransport.setFromCity("-");
+
+		newTransport.setToStreet(sourceTransport.getFromStreet());
+		newTransport.setToCity(sourceTransport.getFromCity());
+		return newTransport;
+	}
+
+	/**
+	 * Creates a new transport instance from an existing {@link DialysisPatient}
 	 * 
 	 * @param patient
 	 *            the dialysis patient to get the needed information
+	 * @param createdBy
+	 *            the name of the user who creates the copied transport
 	 * @return the created transport
 	 */
-	public static Transport createFromDialysis(DialysisPatient patient) {
+	public static Transport createTransport(DialysisPatient patient, String createdBy) {
 		// the current date
 		Calendar now = Calendar.getInstance();
 
@@ -234,7 +292,7 @@ public class Transport extends Lockable implements ITransportPriority, IDirectne
 		// create a new transport
 		Transport newTransport = new Transport();
 		newTransport.setProgramStatus(IProgramStatus.PROGRAM_STATUS_OUTSTANDING);
-		newTransport.setCreatedByUsername("Administrator");
+		newTransport.setCreatedByUsername(createdBy);
 		newTransport.setNotes("*AUTOMATISCH GENERIERT*");
 
 		// the date time of the transport is the planed start of the transport
@@ -262,13 +320,17 @@ public class Transport extends Lockable implements ITransportPriority, IDirectne
 	}
 
 	/**
-	 * Creates a backtransport from an existing {@link DialysisPatient}
+	 * Creates a backtransport from an existing {@link DialysisPatient}. The
+	 * address fields are switched in the returned transport, all other field
+	 * are not changed.
 	 * 
 	 * @param patient
 	 *            the dialysis patient to get the needed information
+	 * @param createdBy
+	 *            the name of the user who creates the copied transport
 	 * @return the created transport
 	 */
-	public static Transport creatFromeBackDialysis(DialysisPatient patient) {
+	public static Transport createBackTransport(DialysisPatient patient, String createdBy) {
 		// the current date
 		Calendar now = Calendar.getInstance();
 
@@ -290,7 +352,7 @@ public class Transport extends Lockable implements ITransportPriority, IDirectne
 		// create a new transport
 		Transport newTransport = new Transport();
 		newTransport.setProgramStatus(IProgramStatus.PROGRAM_STATUS_OUTSTANDING);
-		newTransport.setCreatedByUsername("Administrator");
+		newTransport.setCreatedByUsername(createdBy);
 		newTransport.setNotes("*AUTOMATISCH GENERIERT*");
 
 		// the date time of the transport is the planed start of the transport

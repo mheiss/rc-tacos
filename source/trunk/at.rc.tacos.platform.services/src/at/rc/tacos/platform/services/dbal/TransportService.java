@@ -222,4 +222,14 @@ public interface TransportService {
 	 */
 	public List<Transport> listArchivedTransportsByVehicle(long startdate, long enddate, String vehicleName) throws SQLException;
 
+	/**
+	 * Returns a list of the transports with the program status 'journal' which
+	 * are assigned to this vehicle and have no set transport status S6 yet.
+	 * 
+	 * @param vehicleName
+	 *            the name of the vehicle to list the transports
+	 * @return transports filtered by vehicle, program status 'journal' and
+	 *         without transport status S6
+	 */
+	public List<Transport> listArchivedWithoutStatusSix(String vehicleName) throws SQLException;
 }

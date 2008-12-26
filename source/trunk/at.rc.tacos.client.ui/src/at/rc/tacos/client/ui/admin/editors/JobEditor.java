@@ -1,8 +1,5 @@
 package at.rc.tacos.client.ui.admin.editors;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -30,133 +27,125 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.EditorPart;
 
-import at.rc.tacos.client.controller.EditorCloseAction;
-import at.rc.tacos.client.controller.EditorSaveAction;
-import at.rc.tacos.client.net.NetActivator;
-import at.rc.tacos.client.ui.ImageFactory;
-import at.rc.tacos.client.ui.modelManager.ModelFactory;
+import at.rc.tacos.client.net.NetWrapper;
+import at.rc.tacos.client.ui.UiWrapper;
+import at.rc.tacos.client.ui.controller.EditorCloseAction;
+import at.rc.tacos.client.ui.controller.EditorSaveAction;
 import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.platform.model.Job;
+import at.rc.tacos.platform.net.Message;
+import at.rc.tacos.platform.net.listeners.DataChangeListener;
+import at.rc.tacos.platform.net.message.AddMessage;
+import at.rc.tacos.platform.net.message.RemoveMessage;
+import at.rc.tacos.platform.net.message.UpdateMessage;
+import at.rc.tacos.platform.net.mina.MessageIoSession;
 
-public class JobEditor extends EditorPart implements PropertyChangeListener
-{
+public class JobEditor extends EditorPart implements DataChangeListener<Job> {
+
 	public static final String ID = "at.rc.tacos.client.editors.jobEditor";
 
-	//properties
+	// properties
 	boolean isDirty;
 	private FormToolkit toolkit;
 	private ScrolledForm form;
 
 	private CLabel infoLabel;
-	private ImageHyperlink saveHyperlink,removeHyperlink;
-	private Text id,name;
+	private ImageHyperlink saveHyperlink, removeHyperlink;
+	private Text id, name;
 
-	//managed data
+	// managed data
 	private Job job;
 	private boolean isNew;
 
 	/**
-	 * Default class constructor
-	 */
-	public JobEditor()
-	{
-		ModelFactory.getInstance().getJobList().addPropertyChangeListener(this);
-	}
-
-	/**
-	 * Cleanup
+	 * This is a callback that will allow us to create the viewer and initialize
+	 * it.
 	 */
 	@Override
-	public void dispose()
-	{
-		ModelFactory.getInstance().getJobList().removePropertyChangeListener(this);
-	}
-
-	/**
-	 * This is a callback that will allow us to create the viewer and initialize it.
-	 */
-	@Override
-	public void createPartControl(final Composite parent) 
-	{	
-		job = ((JobEditorInput)getEditorInput()).getJob();
-		isNew = ((JobEditorInput)getEditorInput()).isNew();
+	public void createPartControl(final Composite parent) {
+		job = ((JobEditorInput) getEditorInput()).getJob();
+		isNew = ((JobEditorInput) getEditorInput()).isNew();
 		isDirty = false;
 
-		//Create the form
+		// Create the form
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
 		form = toolkit.createScrolledForm(parent);
 		toolkit.decorateFormHeading(form.getForm());
 		form.getBody().setLayout(new GridLayout());
 		form.getBody().setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		//create the content
+		// create the content
 		createManageSection(form.getBody());
 		createDetailSection(form.getBody());
 
-		//load the data
+		// load the data
 		loadData();
 
-		//disable editing of system jobs
-		if(job.getId() <= 11 && job.getId() > 0)
-		{
+		// disable editing of system jobs
+		if (job.getId() <= 11 && job.getId() > 0) {
 			form.setText("Vom System vorgegebene Verwendungen können nicht bearbeitet werden.");
 			form.setEnabled(false);
 		}
 
-		//force redraw
+		NetWrapper.registerListener(this, Job.class);
+
+		// force redraw
 		form.pack(true);
+	}
+
+	@Override
+	public void dispose() {
+		NetWrapper.removeListener(this, Job.class);
 	}
 
 	/**
 	 * Creates the section to manage the changes
 	 */
-	private void createManageSection(Composite parent)
-	{
+	private void createManageSection(Composite parent) {
 		Composite client = createSection(parent, "Verwendung verwalten");
 
-		//create info label and hyperlinks to save and revert the changes
-		infoLabel = new CLabel(client,SWT.NONE);
+		// create info label and hyperlinks to save and revert the changes
+		infoLabel = new CLabel(client, SWT.NONE);
 		infoLabel.setText("Hier können sie die aktuelle Verwendung verwalten und die Änderungen speichern.");
-		infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("admin.info"));
+		infoLabel.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.info"));
 
-		//Create the hyperlink to save the changes
+		// Create the hyperlink to save the changes
 		saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		saveHyperlink.setText("Änderungen speichern");
 		saveHyperlink.setEnabled(false);
 		saveHyperlink.setForeground(CustomColors.GREY_COLOR);
-		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.saveDisabled"));
-		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() 
-		{
+		saveHyperlink.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.saveDisabled"));
+		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() {
+
 			@Override
-			public void linkActivated(HyperlinkEvent e) 
-			{
+			public void linkActivated(HyperlinkEvent e) {
 				EditorSaveAction saveAction = new EditorSaveAction();
 				saveAction.run();
 			}
 		});
 
-		//Create the hyperlink to remove the competence
+		// Create the hyperlink to remove the competence
 		removeHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		removeHyperlink.setText("Verwendung löschen");
-		removeHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.jobRemove"));
-		removeHyperlink.addHyperlinkListener(new HyperlinkAdapter()
-		{
+		removeHyperlink.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.jobRemove"));
+		removeHyperlink.addHyperlinkListener(new HyperlinkAdapter() {
+
 			@Override
-			public void linkActivated(HyperlinkEvent e) 
-			{
-				boolean result = MessageDialog.openConfirm(getSite().getShell(), 
-						"Löschen der Verwendung bestätigen", 
-						"Möchten sie die Verwendung " +job.getJobName()+" wirklich löschen?");
-				if(!result)
+			public void linkActivated(HyperlinkEvent e) {
+				boolean result = MessageDialog.openConfirm(getSite().getShell(), "Löschen der Verwendung bestätigen", "Möchten sie die Verwendung "
+						+ job.getJobName() + " wirklich löschen?");
+				if (!result)
 					return;
-				//reset the dirty flag to prevent the 'save changes' to popup on a deleted item
+				// reset the dirty flag to prevent the 'save changes' to popup
+				// on a deleted item
 				isDirty = false;
-				//send the remove request
-				NetActivator.getDefault().sendRemoveMessage(Job.ID,job);
+				// send the remove request
+				RemoveMessage<Job> removeMessage = new RemoveMessage<Job>(job);
+				removeMessage.asnchronRequest(NetWrapper.getSession());
 			}
 		});
 
-		//info label should span over two
+		// info label should span over two
 		GridData data = new GridData(GridData.FILL_BOTH);
 		data.horizontalSpan = 2;
 		data.widthHint = 600;
@@ -165,13 +154,14 @@ public class JobEditor extends EditorPart implements PropertyChangeListener
 
 	/**
 	 * Creates the section containing the job details
-	 * @param parent the parent composite
+	 * 
+	 * @param parent
+	 *            the parent composite
 	 */
-	private void createDetailSection(Composite parent)
-	{
+	private void createDetailSection(Composite parent) {
 		Composite client = createSection(parent, "Verwendungs Details");
 
-		//label and the text field
+		// label and the text field
 		final Label labelId = toolkit.createLabel(client, "Verwendungs ID");
 		id = toolkit.createText(client, "");
 		id.setEditable(false);
@@ -180,178 +170,177 @@ public class JobEditor extends EditorPart implements PropertyChangeListener
 
 		final Label labelCompName = toolkit.createLabel(client, "Verwendungs Bezeichnung");
 		name = toolkit.createText(client, "");
-		name.addModifyListener(new ModifyListener() 
-		{ 
+		name.addModifyListener(new ModifyListener() {
+
 			@Override
 			public void modifyText(ModifyEvent me) {
 				inputChanged();
 			}
 		});
 
-		//set the layout for the composites
+		// set the layout for the composites
 		GridData data = new GridData();
 		data.widthHint = 150;
 		labelId.setLayoutData(data);
 		data = new GridData();
 		data.widthHint = 150;
 		labelCompName.setLayoutData(data);
-		//layout for the text fields
+		// layout for the text fields
 		GridData data2 = new GridData(GridData.FILL_HORIZONTAL);
 		id.setLayoutData(data2);
 		data2 = new GridData(GridData.FILL_HORIZONTAL);
-		name.setLayoutData(data2);	
+		name.setLayoutData(data2);
 	}
 
 	/**
 	 * Loads the data and shows them in the view
 	 */
-	private void loadData()
-	{
-		//init the editor
-		if(isNew)
-		{
+	private void loadData() {
+		// init the editor
+		if (isNew) {
 			form.setText("Neue Verwendung anlegen");
 			removeHyperlink.setVisible(false);
 			return;
 		}
-		
-		//enable the remove link
+
+		// enable the remove link
 		removeHyperlink.setVisible(true);
-		
-		//load the data
-		form.setText("Details der Verwendung "+job.getJobName());
+
+		// load the data
+		form.setText("Details der Verwendung " + job.getJobName());
 		id.setText(String.valueOf(job.getId()));
 		name.setText(job.getJobName());
 	}
 
 	@Override
-	public void doSave(IProgressMonitor monitor) 
-	{
-		//reset error message
+	public void doSave(IProgressMonitor monitor) {
+		// reset error message
 		form.setMessage(null, IMessageProvider.NONE);
 
-		//name must be provided
-		if(name.getText().length() >30 || name.getText().trim().isEmpty())
-		{
+		// name must be provided
+		if (name.getText().length() > 30 || name.getText().trim().isEmpty()) {
 			form.getDisplay().beep();
 			form.setMessage("Bitte geben sie eine gültige Bezeichnung für die Verwendung an(max. 30 Zeichen)", IMessageProvider.ERROR);
 			return;
 		}
 		job.setJobName(name.getText());
 
-		//add or update the job
-		if(isNew)
-			NetActivator.getDefault().sendAddMessage(Job.ID, job);
-		else
-			NetActivator.getDefault().sendUpdateMessage(Job.ID, job);
+		// add or update the job
+		if (isNew) {
+			AddMessage<Job> addMessage = new AddMessage<Job>(job);
+			addMessage.asnchronRequest(NetWrapper.getSession());
+		}
+		else {
+			UpdateMessage<Job> updateMessage = new UpdateMessage<Job>(job);
+			updateMessage.asnchronRequest(NetWrapper.getSession());
+		}
 	}
 
 	@Override
-	public void doSaveAs() 
-	{
-		//not supported
+	public void doSaveAs() {
+		// not supported
 	}
 
 	@Override
-	public void init(IEditorSite site, IEditorInput input) throws PartInitException 
-	{
+	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 		setSite(site);
 		setInput(input);
 		setPartName(input.getName());
 	}
 
 	@Override
-	public void setFocus() 
-	{
+	public void setFocus() {
 		form.setFocus();
 	}
 
 	@Override
-	public boolean isDirty() 
-	{
+	public boolean isDirty() {
 		return isDirty;
 	}
 
 	@Override
-	public boolean isSaveAsAllowed() 
-	{
-		//not supported
+	public boolean isSaveAsAllowed() {
+		// not supported
 		return false;
 	}
 
 	@Override
-	public void propertyChange(PropertyChangeEvent evt) 
-	{
-		if("JOB_UPDATE".equals(evt.getPropertyName()) || "JOB_ADD".equalsIgnoreCase(evt.getPropertyName()))
-		{
-			Job updateJob = null;
-			//get the new value
-			if(evt.getNewValue() instanceof Job)
-				updateJob = (Job)evt.getNewValue();
-
-			//assert we have a value
-			if(updateJob == null)
-				return;
-
-			//is this job the current -> update it
-			if(job.equals(updateJob) || job.getJobName().equals(updateJob.getJobName()))
-			{
-				//save the updated job
-				setInput(new JobEditorInput(updateJob,false));
-				setPartName(updateJob.getJobName());
-				job = updateJob;
-				isNew = false;
-				//update the editor
-				loadData();
-				//show the result
-				isDirty = false;
-				infoLabel.setText("Änderungen gespeichert");
-				infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.ok"));
-				Display.getCurrent().beep();
-			}
-		}
-		if("JOB_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
-		{
-			//get the removed job
-			Job removedJob = (Job)evt.getOldValue();
-			//current open
-			if(job.equals(removedJob))
-			{
-				MessageDialog.openInformation(getSite().getShell(), 
-						"Verwendung wurde gelöscht",
-				"Die Verwendung, welches Sie gerade editieren, wurde gelöscht");
-				EditorCloseAction closeAction = new EditorCloseAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-				closeAction.run();
-			}
+	public void dataChanged(Message<Job> message, MessageIoSession messageIoSession) {
+		switch (message.getMessageType()) {
+			case ADD:
+			case UPDATE:
+				addOrUpdate(message.getFirstElement());
+				break;
+			case REMOVE:
+				remove(message.getFirstElement());
+				break;
 		}
 	}
 
-	//Helper methods
+	/**
+	 * Helper method to add or update a job
+	 */
+	private void addOrUpdate(Job updatedJob) {
+		// is this job the current -> update it
+		if (!job.equals(updatedJob) | !job.getJobName().equals(updatedJob.getJobName())) {
+			return;
+		}
+		// save the updated job
+		setInput(new JobEditorInput(updatedJob, false));
+		setPartName(updatedJob.getJobName());
+		job = updatedJob;
+		isNew = false;
+		// update the editor
+		loadData();
+		// show the result
+		isDirty = false;
+		infoLabel.setText("Änderungen gespeichert");
+		infoLabel.setImage(UiWrapper.getDefault().getImageRegistry().get("info.ok"));
+		Display.getCurrent().beep();
+	}
+
+	/**
+	 * Helper method to remove a job
+	 */
+	private void remove(Job removedJob) {
+		if (!job.equals(removedJob)) {
+			return;
+		}
+		MessageDialog.openInformation(getSite().getShell(), "Verwendung wurde gelöscht",
+				"Die Verwendung, welches Sie gerade editieren, wurde gelöscht");
+		EditorCloseAction closeAction = new EditorCloseAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+		closeAction.run();
+	}
+
+	// Helper methods
 	/**
 	 * Creates and returns a section and a composite with two colums
-	 * @param parent the parent composite
-	 * @param sectionName the title of the section
+	 * 
+	 * @param parent
+	 *            the parent composite
+	 * @param sectionName
+	 *            the title of the section
 	 * @return the created composite to hold the other widgets
 	 */
-	private Composite createSection(Composite parent,String sectionName)
-	{
-		//create the section
-		Section section = toolkit.createSection(parent,ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+	private Composite createSection(Composite parent, String sectionName) {
+		// create the section
+		Section section = toolkit.createSection(parent, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		toolkit.createCompositeSeparator(section);
 		section.setText(sectionName);
 		section.setLayout(new GridLayout());
 		section.setLayoutData(new GridData(GridData.BEGINNING | GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING));
 		section.setExpanded(true);
-		//composite to add the client area
+		// composite to add the client area
 		Composite client = new Composite(section, SWT.NONE);
 		section.setClient(client);
 
-		//layout
+		// layout
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 2;
 		layout.makeColumnsEqualWidth = false;
 		client.setLayout(layout);
-		GridData clientDataLayout = new GridData(GridData.BEGINNING | GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING | GridData.FILL_BOTH);
+		GridData clientDataLayout = new GridData(GridData.BEGINNING | GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING
+				| GridData.FILL_BOTH);
 		client.setLayoutData(clientDataLayout);
 
 		return client;
@@ -360,35 +349,32 @@ public class JobEditor extends EditorPart implements PropertyChangeListener
 	/**
 	 * This is called when the input of a text box or a combo box was changes
 	 */
-	private void inputChanged()
-	{
-		//reset the flag		
+	private void inputChanged() {
+		// reset the flag
 		isDirty = false;
 
-		//get the current input
-		JobEditorInput jobInput = (JobEditorInput)getEditorInput();
+		// get the current input
+		JobEditorInput jobInput = (JobEditorInput) getEditorInput();
 		Job persistantJob = jobInput.getJob();
 
-		//check the first name
-		if(!name.getText().equalsIgnoreCase(persistantJob.getJobName()))
-		{
+		// check the first name
+		if (!name.getText().equalsIgnoreCase(persistantJob.getJobName())) {
 			isDirty = true;
 			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
-			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
+			infoLabel.setImage(UiWrapper.getDefault().getImageRegistry().get("info.warning"));
 			saveHyperlink.setEnabled(true);
-			saveHyperlink.setForeground(CustomColors.COLOR_LINK);
-			saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.save"));
+			saveHyperlink.setForeground(CustomColors.COLOR_BLUE);
+			saveHyperlink.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.save"));
 		}
-		else
-		{
+		else {
 			infoLabel.setText("Hier können sie die aktuelle Verwendung verwalten und die Änderungen speichern.");
-			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("admin.info"));
+			infoLabel.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.info"));
 			saveHyperlink.setEnabled(false);
 			saveHyperlink.setForeground(CustomColors.GREY_COLOR);
-			saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.saveDisabled"));
+			saveHyperlink.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.saveDisabled"));
 		}
 
-		//set the dirty flag
-		firePropertyChange(IWorkbenchPartConstants.PROP_DIRTY); 
+		// set the dirty flag
+		firePropertyChange(IWorkbenchPartConstants.PROP_DIRTY);
 	}
 }

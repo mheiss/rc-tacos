@@ -1,9 +1,30 @@
 package at.rc.tacos.client.ui;
 
+import java.util.Calendar;
+
 import org.eclipse.ui.application.IWorkbenchConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
+
+import at.rc.tacos.client.net.NetWrapper;
+import at.rc.tacos.platform.iface.IFilterTypes;
+import at.rc.tacos.platform.model.Competence;
+import at.rc.tacos.platform.model.DayInfoMessage;
+import at.rc.tacos.platform.model.DialysisPatient;
+import at.rc.tacos.platform.model.Disease;
+import at.rc.tacos.platform.model.Job;
+import at.rc.tacos.platform.model.Location;
+import at.rc.tacos.platform.model.Login;
+import at.rc.tacos.platform.model.MobilePhoneDetail;
+import at.rc.tacos.platform.model.RosterEntry;
+import at.rc.tacos.platform.model.ServiceType;
+import at.rc.tacos.platform.model.StaffMember;
+import at.rc.tacos.platform.model.Transport;
+import at.rc.tacos.platform.model.VehicleDetail;
+import at.rc.tacos.platform.net.message.GetMessage;
+import at.rc.tacos.platform.net.mina.MessageIoSession;
+import at.rc.tacos.platform.util.MyUtils;
 
 /**
  * This workbench advisor creates the window advisor, and specifies the
@@ -36,11 +57,57 @@ public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 	}
 
 	/**
-	 * Initializes the application and restores the previouse settings
+	 * Initializes the application and restores the previous settings
 	 */
 	@Override
 	public void initialize(IWorkbenchConfigurer configurer) {
 		super.initialize(configurer);
 		configurer.setSaveAndRestore(true);
+		initData();
+	}
+
+	/**
+	 * Helper method to request the initial data for the views
+	 */
+	private void initData() {
+		// the session for the request
+		MessageIoSession session = NetWrapper.getSession();
+		String currentDate = MyUtils.timestampToString(Calendar.getInstance().getTimeInMillis(), MyUtils.timeAndDateFormat);
+
+		// setup the request
+		GetMessage<Location> getLocation = new GetMessage<Location>(new Location());
+		GetMessage<Job> getJob = new GetMessage<Job>(new Job());
+		GetMessage<ServiceType> getService = new GetMessage<ServiceType>(new ServiceType());
+		GetMessage<Competence> getCompetence = new GetMessage<Competence>(new Competence());
+		GetMessage<MobilePhoneDetail> getPhones = new GetMessage<MobilePhoneDetail>(new MobilePhoneDetail());
+		GetMessage<RosterEntry> getRoster = new GetMessage<RosterEntry>(new RosterEntry());
+		GetMessage<DayInfoMessage> getInfo = new GetMessage<DayInfoMessage>(new DayInfoMessage());
+		GetMessage<VehicleDetail> getVehicle = new GetMessage<VehicleDetail>(new VehicleDetail());
+		GetMessage<Login> getLogin = new GetMessage<Login>(new Login());
+		GetMessage<Disease> getDisease = new GetMessage<Disease>(new Disease());
+		GetMessage<StaffMember> getStaff = new GetMessage<StaffMember>(new StaffMember());
+		GetMessage<Transport> getTransport = new GetMessage<Transport>(new Transport());
+		GetMessage<DialysisPatient> getDialysis = new GetMessage<DialysisPatient>(new DialysisPatient());
+
+		// initialize the requests
+		getRoster.addParameter(IFilterTypes.DATE_FILTER, currentDate);
+		getInfo.addParameter(IFilterTypes.DATE_FILTER, currentDate);
+		getTransport.addParameter(IFilterTypes.DATE_FILTER, currentDate);
+		getDialysis.addParameter(IFilterTypes.DATE_FILTER, currentDate);
+
+		// now send the requests
+		getLocation.asnchronRequest(session);
+		getJob.asnchronRequest(session);
+		getService.asnchronRequest(session);
+		getCompetence.asnchronRequest(session);
+		getPhones.asnchronRequest(session);
+		getRoster.asnchronRequest(session);
+		getInfo.asnchronRequest(session);
+		getVehicle.asnchronRequest(session);
+		getLogin.asnchronRequest(session);
+		getDisease.asnchronRequest(session);
+		getStaff.asnchronRequest(session);
+		getTransport.asnchronRequest(session);
+		getDialysis.asnchronRequest(session);
 	}
 }

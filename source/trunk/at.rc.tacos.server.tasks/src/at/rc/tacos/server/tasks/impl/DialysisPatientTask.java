@@ -129,7 +129,7 @@ public class DialysisPatientTask extends AbstractTask {
 			}
 
 			// create a new transport from this dialysis patient
-			Transport transport = Transport.createFromDialysis(patient);
+			Transport transport = Transport.createTransport(patient, "Administrator");
 			int id = transportService.addTransport(transport);
 			transport.setTransportId(id);
 			transportList.add(transport);
@@ -168,7 +168,7 @@ public class DialysisPatientTask extends AbstractTask {
 			}
 
 			// create a new transport from this dialysis patient
-			Transport transport = Transport.creatFromeBackDialysis(patient);
+			Transport transport = Transport.createBackTransport(patient, "Administrator");
 			int id = transportService.addTransport(transport);
 			transport.setTransportId(id);
 			transportList.add(transport);

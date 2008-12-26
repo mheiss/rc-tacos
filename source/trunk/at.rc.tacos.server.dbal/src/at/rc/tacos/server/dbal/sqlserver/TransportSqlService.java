@@ -52,7 +52,7 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 		query.setInt(1, id);
 		final ResultSet rs = query.executeQuery();
 		if (rs.next()) {
-			return setupTransport(rs);
+			return setupTransport(rs, true);
 		}
 		// nothing in the result set
 		return null;
@@ -149,7 +149,7 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 		query.setInt(1, IProgramStatus.PROGRAM_STATUS_OUTSTANDING);
 		query.setInt(2, IProgramStatus.PROGRAM_STATUS_UNDERWAY);
 		final ResultSet rs = query.executeQuery();
-		return setupTransportList(rs);
+		return setupTransportList(rs, true);
 	}
 
 	@Override
@@ -158,7 +158,7 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 		query.setInt(1, IProgramStatus.PROGRAM_STATUS_PREBOOKING);
 		query.setInt(2, IProgramStatus.PROGRAM_STATUS_OUTSTANDING);
 		final ResultSet rs = query.executeQuery();
-		return setupTransportList(rs);
+		return setupTransportList(rs, true);
 	}
 
 	@Override
@@ -166,7 +166,7 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 		final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.prebookedTransports"));
 		query.setInt(1, IProgramStatus.PROGRAM_STATUS_PREBOOKING);
 		final ResultSet rs = query.executeQuery();
-		return setupTransportList(rs);
+		return setupTransportList(rs, false);
 	}
 
 	@Override
@@ -176,7 +176,7 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 		query.setString(2, MyUtils.timestampToString(enddate, MyUtils.timeAndDateFormat));
 		query.setInt(3, PROGRAM_STATUS_JOURNAL);
 		final ResultSet rs = query.executeQuery();
-		return setupTransportList(rs);
+		return setupTransportList(rs, true);
 	}
 
 	@Override
@@ -187,7 +187,7 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 		query.setInt(3, PROGRAM_STATUS_JOURNAL);
 		query.setString(4, vehicleName);
 		final ResultSet rs = query.executeQuery();
-		return setupTransportList(rs);
+		return setupTransportList(rs, true);
 	}
 
 	@Override
@@ -198,7 +198,7 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 		query.setInt(3, PROGRAM_STATUS_JOURNAL);
 		query.setInt(4, locationId);
 		final ResultSet rs = query.executeQuery();
-		return setupTransportList(rs);
+		return setupTransportList(rs, true);
 	}
 
 	@Override
@@ -210,7 +210,7 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 		query.setInt(4, locationId);
 		query.setString(5, vehicleName);
 		final ResultSet rs = query.executeQuery();
-		return setupTransportList(rs);
+		return setupTransportList(rs, true);
 	}
 
 	@Override
@@ -221,7 +221,7 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 		query.setInt(3, PROGRAM_STATUS_JOURNAL);
 		query.setInt(4, locationId);
 		final ResultSet rs = query.executeQuery();
-		return setupTransportList(rs);
+		return setupTransportList(rs, true);
 	}
 
 	@Override
@@ -234,7 +234,7 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 		query.setInt(4, locationId);
 		query.setString(5, vehicleName);
 		final ResultSet rs = query.executeQuery();
-		return setupTransportList(rs);
+		return setupTransportList(rs, true);
 	}
 
 	@Override
@@ -242,7 +242,7 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 		final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.underwayTransports"));
 		query.setInt(1, IProgramStatus.PROGRAM_STATUS_UNDERWAY);
 		final ResultSet rs = query.executeQuery();
-		return setupTransportList(rs);
+		return setupTransportList(rs, true);
 	}
 
 	@Override
@@ -251,7 +251,20 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 		query.setInt(1, IProgramStatus.PROGRAM_STATUS_UNDERWAY);
 		query.setString(2, vehicleName);
 		final ResultSet rs = query.executeQuery();
-		return setupTransportList(rs);
+		return setupTransportList(rs, true);
+	}
+
+	@Override
+	public List<Transport> listArchivedWithoutStatusSix(String vehicleName) throws SQLException {
+		final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.archivedTransportsWithoutStatusSix"));
+		query.setString(1, vehicleName);
+		final ResultSet rs = query.executeQuery();
+		List<Transport> transportList = new ArrayList<Transport>();
+		while (rs.next()) {
+			Transport transport = getTransportById(rs.getInt("transport_ID"));
+			transportList.add(transport);
+		}
+		return transportList;
 	}
 
 	/**
@@ -730,7 +743,7 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 	 *            result set from the database
 	 * @return the transport instance
 	 */
-	private Transport setupTransport(ResultSet rs) throws SQLException {
+	private Transport setupTransport(ResultSet rs, boolean queryVehicle) throws SQLException {
 		// create the new transport
 		Transport transport = new Transport();
 		transport.setTransportId(rs.getInt("transport_ID"));
@@ -798,12 +811,13 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 		}
 
 		// The assigned vehicle of the transport
-		if (rs.getString("location_ID") != null) {
+		if (rs.getString("location_ID") != null && queryVehicle) {
 			// get the location
 			Location location = new Location();
 			location.setId(rs.getInt("location_ID"));
-			location.setLocationName(rs.getString("location_name"));
-			// get the vehicle
+			location.setLocationName(rs.getString("locationname"));
+
+			// query the vehicle
 			VehicleDetail vehicle = new VehicleDetail();
 			vehicle.setCurrentStation(location);
 			vehicle.setVehicleName(rs.getString("vehicle_ID"));
@@ -860,10 +874,10 @@ public class TransportSqlService implements TransportService, IProgramStatus {
 	 *            the unmodified result set from the query
 	 * @return the list of transports
 	 */
-	private List<Transport> setupTransportList(ResultSet rs) throws SQLException {
+	private List<Transport> setupTransportList(ResultSet rs, boolean queryVehicle) throws SQLException {
 		List<Transport> transports = new ArrayList<Transport>();
 		while (rs.next()) {
-			Transport transport = setupTransport(rs);
+			Transport transport = setupTransport(rs, queryVehicle);
 			transports.add(transport);
 		}
 		return transports;

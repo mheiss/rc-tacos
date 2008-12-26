@@ -10,11 +10,11 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.part.ViewPart;
 
-import at.rc.tacos.client.controller.OpenDialysisTransportAction;
-import at.rc.tacos.client.controller.OpenEmergencyTransportAction;
-import at.rc.tacos.client.controller.OpenTransportAction;
-import at.rc.tacos.client.controller.PersonalNewEntryAction;
 import at.rc.tacos.client.ui.UiWrapper;
+import at.rc.tacos.client.ui.controller.OpenDialysisTransportAction;
+import at.rc.tacos.client.ui.controller.OpenEmergencyTransportAction;
+import at.rc.tacos.client.ui.controller.OpenTransportAction;
+import at.rc.tacos.client.ui.controller.PersonalNewEntryAction;
 import at.rc.tacos.client.ui.custom.MyToolbarManager;
 import at.rc.tacos.client.ui.utils.CustomColors;
 

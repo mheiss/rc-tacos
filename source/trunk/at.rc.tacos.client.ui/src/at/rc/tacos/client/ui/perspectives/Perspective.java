@@ -21,7 +21,7 @@ import at.rc.tacos.client.ui.view.VehiclesViewTableDetailed;
  */
 public class Perspective implements IPerspectiveFactory {
 
-	public static final String ID = "at.rc.tacos.client.ui.perspectives.client";
+	public static final String ID = "at.rc.tacos.client.ui.perspectives.main";
 
 	/**
 	 * Set up the layout of the workbench

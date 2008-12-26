@@ -3,6 +3,8 @@ package at.rc.tacos.platform.services;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import at.rc.tacos.platform.config.DatabaseConfiguration;
+
 /**
  * The dbal interface defines methods to interact with the database
  * 
@@ -13,7 +15,7 @@ public interface DataSource {
 	/**
 	 * Opens a new connection to the database
 	 */
-	public void open() throws Exception;
+	public void open(DatabaseConfiguration dbConfiguration) throws Exception;
 
 	/**
 	 * Returns a new connection to interact with the database

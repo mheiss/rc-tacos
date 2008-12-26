@@ -287,9 +287,7 @@ public class LoginSplashHandler extends AbstractSplashHandler {
 	 *            the login object that was successfull
 	 */
 	private void loginSuccess(Login login) {
-		// fAuthenticated = true;
-		MessageUtils.showSyncErrorMessage("Anmeldung erfolgreich", login.getUsername());
-		NetWrapper.getSession().setLoggedIn(login);
+		fAuthenticated = true;
 	}
 
 	/**

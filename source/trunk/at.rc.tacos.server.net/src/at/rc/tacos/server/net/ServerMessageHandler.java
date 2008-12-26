@@ -112,10 +112,9 @@ public class ServerMessageHandler implements MessageHandler {
 				log.debug("Rollback the changes due to a service error");
 			}
 
-			// create and setup the message
+			// log the error message
 			String errorMessage = "Failed to handle the request: " + ioe.getMessage();
-			// log the error
-			log.error("errorMessage", ioe);
+			log.error(errorMessage, ioe);
 			// send back to the client
 			session.writeError(message, errorMessage);
 		}
