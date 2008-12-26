@@ -9,6 +9,7 @@
 	<!-- build server and client -->
 	<target name="buildAll" depends="init">
 		<antcall target="buildServer" />
+		<antcall target="buildClient" />
 	</target>
 	
 	<!-- build the server -->
@@ -20,6 +21,18 @@
 		<!-- start the build -->
 		<ant antfile="build.xml" dir="${build.workspace}" target="build">
 			<property name="component" value="server" />
+		</ant>
+	</target>
+	
+	<!-- build the client -->
+	<target name="buildClient" depends="init">
+		<!-- copy the sources from the workspace -->
+		<ant antfile="build.xml" dir="${build.workspace}" target="fetch-offline">
+			<property name="component" value="client" />
+		</ant>
+		<!-- start the build -->
+		<ant antfile="build.xml" dir="${build.workspace}" target="build">
+			<property name="component" value="client" />
 		</ant>
 	</target>
 	

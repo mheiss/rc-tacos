@@ -150,6 +150,7 @@ public class NetWrapper {
 
 	public static <T> Handler<T> getHandler(Class<T> modelClazz) {
 		ClientContext context = getInstance().getClientContext();
+		System.out.println("context");
 		HandlerFactory factory = context.getHandlerFactory();
 		return factory.getHandler(modelClazz.getName());
 	}

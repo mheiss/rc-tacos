@@ -9,6 +9,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import at.rc.tacos.client.net.NetWrapper;
+import at.rc.tacos.platform.model.RosterEntry;
 import at.rc.tacos.platform.model.StaffMember;
 import at.rc.tacos.platform.model.VehicleDetail;
 import at.rc.tacos.platform.net.Message;
@@ -99,69 +101,34 @@ public class StaffHandler implements Handler<StaffMember> {
 
 	/**
 	 * Returns a list of all staff members that are not assigned to a vehicle
-	 * 
-	 * @return list of staff members with no vehicle
-	 */
-	public List<StaffMember> getUnassignedStaffList() {
-		List<StaffMember> filteredList = new ArrayList<StaffMember>();
-		return filteredList;
-		// VehicleManager vehicleManager =
-		// ModelFactory.getInstance().getVehicleManager();
-		//		
-		// for(StaffMember member:objectList)
-		// {
-		// //check if a vehicle is assigned
-		// if(vehicleManager.getVehicleOfStaff(member.getStaffMemberId()) !=
-		// null)
-		// continue;
-		// filteredList.add(member);//add if the staffMember is not assigned to
-		// a vehicle
-		// }
-		// return filteredList;
-	}
-
-	/**
-	 * Returns a list of all staff members that are not assigned to a vehicle
 	 * and checked in by location
 	 * 
 	 * @return list of staff members with no vehicle
 	 */
 	public List<StaffMember> getFreeStaffMembers(VehicleDetail vehicleDetail) {
+		VehicleHandler vehicleHandler = (VehicleHandler) NetWrapper.getHandler(VehicleDetail.class);
+		RosterHandler rosterHandler = (RosterHandler) NetWrapper.getHandler(RosterEntry.class);
 		List<StaffMember> filteredList = new ArrayList<StaffMember>();
+		// list all cheked in memebrs
+		List<RosterEntry> checkdIn = rosterHandler.getCheckedInRosterEntriesByLocation(vehicleDetail.getCurrentStation());
+		for (RosterEntry entry : checkdIn) {
+			// this staff member is signed at the current location, so go on
+			StaffMember member = entry.getStaffMember();
+
+			// check the vehicle of the staff
+			VehicleDetail detail = vehicleHandler.getVehicleOfStaff(member.getStaffMemberId());
+
+			// this member is not assigend
+			if (detail == null) {
+				filteredList.add(member);
+				continue;
+			}
+
+			// this member is assigned so check if it is his vehicle
+			if (detail.equals(vehicleDetail))
+				filteredList.add(member);
+		}
 		return filteredList;
-		// //the manager
-		// VehicleManager vehicleManager =
-		// ModelFactory.getInstance().getVehicleManager();
-		// RosterEntryManager rosterManager =
-		// ModelFactory.getInstance().getRosterEntryManager();
-		//
-		// //the lists
-		//		
-		// List<RosterEntry> checkdIn =
-		// rosterManager.getCheckedInRosterEntriesByLocation(vehicleDetail.getCurrentStation());
-		//
-		// //loop over each checked in staff member
-		// for(RosterEntry entry : checkdIn)
-		// {
-		// //this staff member is signed at the current location, so go on
-		// StaffMember member = entry.getStaffMember();
-		//
-		// //check the vehicle of the staff
-		// VehicleDetail detail =
-		// vehicleManager.getVehicleOfStaff(member.getStaffMemberId());
-		//
-		// //this member is not assigend
-		// if(detail == null)
-		// {
-		// filteredList.add(member);
-		// continue;
-		// }
-		//
-		// //this member is assigned so check if it is his vehicle
-		// if(detail.equals(vehicleDetail))
-		// filteredList.add(member);
-		// }
-		// return filteredList;
 	}
 
 }
