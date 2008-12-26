@@ -8,6 +8,11 @@ import at.rc.tacos.client.ui.dialog.DialysisForm;
 
 public class OpenDialysisTransportAction extends Action {
 
+	@Override
+	public String getId() {
+		return "at.rc.tacos.client.ui.actions.OpenDialysisTransportAction";
+	}
+
 	/**
 	 * Returns the tool tip text for the action
 	 * 

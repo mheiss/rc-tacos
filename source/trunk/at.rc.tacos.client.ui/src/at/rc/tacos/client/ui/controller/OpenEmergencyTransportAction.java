@@ -17,6 +17,11 @@ import at.rc.tacos.client.ui.dialog.TransportForm;
  * @author b.thek
  */
 public class OpenEmergencyTransportAction extends Action {
+	
+	@Override
+	public String getId() {
+		return "at.rc.tacos.client.ui.actions.OpenEmergencyTransportAction";
+	}
 
 	/**
 	 * Returns the tool tip text for the action

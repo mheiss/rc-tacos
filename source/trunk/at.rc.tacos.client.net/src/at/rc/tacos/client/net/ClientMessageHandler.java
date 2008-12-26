@@ -1,6 +1,9 @@
 package at.rc.tacos.client.net;
 
+import java.util.Collection;
+
 import org.apache.mina.core.session.IdleStatus;
+import org.eclipse.swt.widgets.Display;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,6 +46,14 @@ public class ClientMessageHandler implements MessageHandler {
 		HandlerFactory handlerFactory = clientContext.getHandlerFactory();
 		DataChangeListenerFactory listenerFactory = clientContext.getDataChangeListenerFactory();
 
+		// print out trace information
+		if (log.isTraceEnabled()) {
+			log.trace("Handling new request from " + session.getUsername());
+			log.trace("RequestType:" + message.getFirstElement());
+			log.trace("Objects:" + message.getObjects());
+			log.trace("Params:" + message.getParams());
+		}
+
 		long startResolve = System.currentTimeMillis();
 		// try to get a handler for the object
 		Object firstElement = message.getFirstElement();
@@ -79,9 +90,8 @@ public class ClientMessageHandler implements MessageHandler {
 			}
 
 			// now inform the listeners about the new data
-			for (DataChangeListener<Object> listeners : listenerFactory.getListeners(message.getFirstElement().getClass())) {
-				listeners.dataChanged(message, session);
-			}
+			Collection<DataChangeListener<Object>> listeners = listenerFactory.getListeners(message.getFirstElement().getClass());
+			Display.getDefault().asyncExec(new UiInformRunnable(listeners, session, message));
 		}
 		catch (Exception e) {
 			String errorMessage = "Failed to handle the request: " + e.getMessage();
@@ -120,5 +130,42 @@ public class ClientMessageHandler implements MessageHandler {
 	@Override
 	public void sessionOpened(MessageIoSession session) throws Exception {
 		// do nothing
+	}
+
+	/**
+	 * Helper class to inform the listeners about the new data
+	 */
+	private class UiInformRunnable implements Runnable {
+
+		// the current data
+		private Message<Object> message;
+		private MessageIoSession session;
+
+		// the listeners to inform
+		private Collection<DataChangeListener<Object>> listeners;
+
+		/**
+		 * Default class constructor
+		 */
+		public UiInformRunnable(Collection<DataChangeListener<Object>> listeners, MessageIoSession session, Message<Object> message) {
+			this.listeners = listeners;
+			this.session = session;
+			this.message = message;
+		}
+
+		@Override
+		public void run() {
+			// assert valid listeners
+			if (listeners == null) {
+				return;
+			}
+			if (listeners.isEmpty()) {
+				return;
+			}
+			for (DataChangeListener<Object> listener : listeners) {
+				listener.dataChanged(message, session);
+			}
+		}
+
 	}
 }

@@ -44,6 +44,8 @@ public abstract class AbstractMessage<T> implements Message<T>, Request<T> {
 	public AbstractMessage(MessageType messageType) {
 		this.id = generateUniqueIdentifiere();
 		this.messageType = messageType;
+		this.objects = new ArrayList<T>();
+		this.params = new HashMap<String, String>();
 	}
 
 	/**
@@ -202,7 +204,10 @@ public abstract class AbstractMessage<T> implements Message<T>, Request<T> {
 
 	@Override
 	public T getFirstElement() {
-		return objects == null ? null : objects.get(0);
+		if (objects == null) {
+			return null;
+		}
+		return objects.isEmpty() ? null : objects.get(0);
 	}
 
 	/**

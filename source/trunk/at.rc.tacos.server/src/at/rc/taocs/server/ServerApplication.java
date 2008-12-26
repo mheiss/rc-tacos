@@ -58,7 +58,7 @@ public class ServerApplication implements IApplication {
 			// start the tasks that should be executed
 			taskFactory = new TaskFactory();
 			taskFactory.setupTasks(serverContext, messageServer.getAcceptor());
-			taskFactory.scheduleTasks();
+//			taskFactory.scheduleTasks();
 		}
 		catch (Exception e) {
 			log.error("Failed to read and setup the configuration", e);

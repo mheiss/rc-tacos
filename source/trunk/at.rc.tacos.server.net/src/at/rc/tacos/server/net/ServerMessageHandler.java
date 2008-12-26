@@ -48,6 +48,14 @@ public class ServerMessageHandler implements MessageHandler {
 		DbalServiceFactory serviceFactory = serverContext.getDbalServiceFactory();
 		DataSource dataSource = serverContext.getDataSource();
 
+		// print out trace information
+		if (log.isTraceEnabled()) {
+			log.trace("Handling new request from " + session.getUsername());
+			log.trace("RequestType:" + message.getFirstElement());
+			log.trace("Objects:" + message.getObjects());
+			log.trace("Params:" + message.getParams());
+		}
+
 		long startResolve = System.currentTimeMillis();
 
 		// assert we have a connection
