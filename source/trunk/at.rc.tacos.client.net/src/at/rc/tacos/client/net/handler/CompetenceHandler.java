@@ -46,7 +46,6 @@ public class CompetenceHandler implements Handler<Competence> {
 			competenceList.clear();
 			competenceList.addAll(message.getObjects());
 		}
-
 	}
 
 	@Override

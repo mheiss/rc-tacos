@@ -13,6 +13,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.Widget;
 
+import at.rc.tacos.client.net.NetWrapper;
+import at.rc.tacos.client.net.handler.VehicleHandler;
 import at.rc.tacos.platform.model.RosterEntry;
 import at.rc.tacos.platform.model.VehicleDetail;
 
@@ -24,6 +26,9 @@ import at.rc.tacos.platform.model.VehicleDetail;
 public class PersonalTooltip extends ToolTip {
 
 	private RosterEntry rosterEntry;
+
+	// the data source
+	VehicleHandler vehicleHandler = (VehicleHandler) NetWrapper.getHandler(VehicleDetail.class);
 
 	/**
 	 * Creates a new tooltip for the personal view
@@ -68,7 +73,7 @@ public class PersonalTooltip extends ToolTip {
 			text = rosterEntry.getRosterNotes();
 			addTitleAndLabel(composite, "Anmerkungen: ", text);
 		}
-		VehicleDetail assignedVehicle = null;// TODO: vehicleManager.getVehicleOfStaff(rosterEntry.getStaffMember().getStaffMemberId());
+		VehicleDetail assignedVehicle = vehicleHandler.getVehicleOfStaff(rosterEntry.getStaffMember().getStaffMemberId());
 		if (assignedVehicle != null) {
 			text = assignedVehicle.getVehicleName() + " als " + rosterEntry.getJob().getJobName();
 			addTitleAndLabel(composite, "Zugewiesenes Fahrzeug: ", text);

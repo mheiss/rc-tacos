@@ -16,6 +16,7 @@ import at.rc.tacos.client.net.handler.RosterHandler;
 import at.rc.tacos.client.net.handler.ServiceTypeHandler;
 import at.rc.tacos.client.net.handler.SickPersonHandler;
 import at.rc.tacos.client.net.handler.StaffHandler;
+import at.rc.tacos.client.net.handler.SystemMessageHandler;
 import at.rc.tacos.client.net.handler.TransportHandler;
 import at.rc.tacos.client.net.handler.VehicleHandler;
 import at.rc.tacos.platform.model.Address;
@@ -31,6 +32,7 @@ import at.rc.tacos.platform.model.RosterEntry;
 import at.rc.tacos.platform.model.ServiceType;
 import at.rc.tacos.platform.model.SickPerson;
 import at.rc.tacos.platform.model.StaffMember;
+import at.rc.tacos.platform.model.SystemMessage;
 import at.rc.tacos.platform.model.Transport;
 import at.rc.tacos.platform.model.VehicleDetail;
 import at.rc.tacos.platform.net.handler.Handler;
@@ -61,9 +63,10 @@ public class HandlerFactoryImpl implements HandlerFactory {
 		HANDLER_MAP.put(RosterEntry.class.getName(), new RosterHandler());
 		HANDLER_MAP.put(ServiceType.class.getName(), new ServiceTypeHandler());
 		HANDLER_MAP.put(SickPerson.class.getName(), new SickPersonHandler());
-		HANDLER_MAP.put(StaffMember.class.getName(), new StaffHandler());
 		HANDLER_MAP.put(Transport.class.getName(), new TransportHandler());
 		HANDLER_MAP.put(VehicleDetail.class.getName(), new VehicleHandler());
+		HANDLER_MAP.put(SystemMessage.class.getName(), new SystemMessageHandler());
+		HANDLER_MAP.put(StaffMember.class.getName(), new StaffHandler());
 	}
 
 	private Map<String, Handler<?>> handlerMap;

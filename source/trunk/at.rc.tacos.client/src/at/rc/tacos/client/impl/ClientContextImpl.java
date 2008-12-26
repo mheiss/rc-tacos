@@ -39,8 +39,8 @@ public class ClientContextImpl implements ClientContext {
 	 */
 	public ClientContextImpl(File configurationFile) {
 		this.configurationFile = configurationFile;
-		this.handlerFactory = new HandlerFactoryImpl();
 		this.dataChangeFactory = new DataChangeFactoryImpl();
+		this.handlerFactory = new HandlerFactoryImpl();
 		this.clientConfiguration = new ClientConfiguration();
 	}
 

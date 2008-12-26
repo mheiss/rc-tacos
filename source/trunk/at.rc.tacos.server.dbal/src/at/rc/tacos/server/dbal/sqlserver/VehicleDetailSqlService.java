@@ -69,11 +69,15 @@ public class VehicleDetailSqlService implements VehicleService {
 		// no result set
 		return null;
 	}
-	
+
 	@Override
 	public VehicleDetail getVehicleByStaffMember(int staffMemberId) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.vehicleFromStaff"));
+		query.setInt(1, staffMemberId);
+		query.setInt(2, staffMemberId);
+		query.setInt(3, staffMemberId);
+		final ResultSet rs = query.executeQuery();
+		return setupVehicle(rs);
 	}
 
 	@Override

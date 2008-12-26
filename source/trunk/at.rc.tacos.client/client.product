@@ -25,6 +25,8 @@ Developed by Birgit Thek and Heiß Michael.
 
    <windowImages i16="/at.rc.tacos.client.ui/icons/application/alt_window_16.gif" i32="/at.rc.tacos.client.ui/icons/application/alt_window_32.gif" i48="/at.rc.tacos.client.ui/icons/application/alt_window_48.gif" i64="/at.rc.tacos.client.ui/icons/application/alt_window_64.gif" i128="/at.rc.tacos.client.ui/icons/application/alt_window_128.gif"/>
 
+   <splash
+      location="at.rc.tacos.client.ui" />
    <launcher>
       <solaris/>
       <win useIco="false">
