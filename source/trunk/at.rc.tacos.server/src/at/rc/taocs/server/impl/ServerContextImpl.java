@@ -1,9 +1,19 @@
 package at.rc.taocs.server.impl;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import at.rc.tacos.platform.config.ServerConfiguration;
 import at.rc.tacos.platform.net.ServerContext;
 import at.rc.tacos.platform.net.handler.HandlerFactory;
 import at.rc.tacos.platform.services.DataSource;
 import at.rc.tacos.platform.services.DbalServiceFactory;
+import at.rc.tacos.platform.xstream.XStream2;
+import at.rc.tacos.server.dbal.DataSourceImpl;
 import at.rc.tacos.server.net.HandlerFactoryImpl;
 
 /**
@@ -13,27 +23,49 @@ import at.rc.tacos.server.net.HandlerFactoryImpl;
  */
 public class ServerContextImpl implements ServerContext {
 
+	private Logger log = LoggerFactory.getLogger(ServerContextImpl.class);
+
+	// the configuration file
+	private File configurationFile;
+	private ServerConfiguration serverConfiguration;
+
+	// the handlers
 	private HandlerFactory handlerFactory;
 	private DbalServiceFactory serviceFactory;
 	private DataSource dataSource;
-	private int serverPort;
+
+	// the xstream instance to load and persist
+	private XStream2 xStream = new XStream2();
 
 	/**
 	 * Default class constructor to create a new instance
 	 */
-	public ServerContextImpl(int serverPort) {
-		this.serverPort = serverPort;
-		init();
+	public ServerContextImpl(File configurationFile) {
+		this.configurationFile = configurationFile;
+		this.handlerFactory = new HandlerFactoryImpl();
+		this.serviceFactory = new ServiceFactoryImpl();
+		this.dataSource = new DataSourceImpl();
 	}
 
 	/**
-	 * Initialize and setup the server context
+	 * Loads the persistet configuration from the specified configuration file
 	 */
-	private void init() {
-		// create the default handler factory implementations
-		handlerFactory = new HandlerFactoryImpl();
-		serviceFactory = new ServiceFactoryImpl();
-		dataSource = new DataSourceImpl();
+	public void loadConfiguration() throws Exception {
+		// check the config file
+		if (configurationFile == null | !configurationFile.exists()) {
+			log.warn("The configuration file 'config.xml' cannot be found in the workspace");
+			return;
+		}
+		// load the configuration
+		serverConfiguration = xStream.extFromXML(new FileInputStream(configurationFile), ServerConfiguration.class);
+	}
+
+	/**
+	 * Persists the current configuration to the specified configuration file.
+	 */
+	public void storeConfiguration() throws Exception {
+		XStream2 xStream = new XStream2();
+		xStream.extToXML(serverConfiguration, new FileOutputStream(configurationFile));
 	}
 
 	/**
@@ -47,7 +79,8 @@ public class ServerContextImpl implements ServerContext {
 	}
 
 	/**
-	 * Returns the current implementation of the {@linkplain DbalServiceFactory}.
+	 * Returns the current implementation of the {@linkplain DbalServiceFactory}
+	 * .
 	 * 
 	 * @return the service factory implementation.
 	 */
@@ -66,13 +99,17 @@ public class ServerContextImpl implements ServerContext {
 		return dataSource;
 	}
 
-	/**
-	 * Returns the port where the server should listen to
-	 * 
-	 * @return the port number
-	 */
 	@Override
-	public int getServerPort() {
-		return serverPort;
+	public ServerConfiguration getServerConfiguration() {
+		return serverConfiguration;
+	}
+
+	public void setServerConfiguration(ServerConfiguration serverConfiguration) {
+		this.serverConfiguration = serverConfiguration;
+	}
+
+	@Override
+	public File getConfigurationFile() {
+		return configurationFile;
 	}
 }

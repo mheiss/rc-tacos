@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config.ServerConfiguration>
+	<serverPort>4711</serverPort>
+	<dbConfig>
+		<dbDriver> <!-- the database driver --> </dbDriver>
+		<dbHost> <!-- the host and connection param --> </dbHost>
+		<dbUsername> <!-- the username for the login --> </dbUsername>
+		<dbPassword> <!-- the password for the login --> </dbPassword>
+	</dbConfig>
+</config.ServerConfiguration>

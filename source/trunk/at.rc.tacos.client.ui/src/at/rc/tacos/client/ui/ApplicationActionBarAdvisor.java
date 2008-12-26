@@ -16,11 +16,11 @@ import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 
-import at.rc.tacos.client.controller.OpenDialysisTransportAction;
-import at.rc.tacos.client.controller.OpenEmergencyTransportAction;
-import at.rc.tacos.client.controller.OpenTransportAction;
-import at.rc.tacos.client.controller.PersonalNewEntryAction;
-import at.rc.tacos.client.ui.perspectives.SwitchToAdminPerspective;
+import at.rc.tacos.client.ui.admin.perspectives.SwitchToAdminPerspective;
+import at.rc.tacos.client.ui.controller.OpenDialysisTransportAction;
+import at.rc.tacos.client.ui.controller.OpenEmergencyTransportAction;
+import at.rc.tacos.client.ui.controller.OpenTransportAction;
+import at.rc.tacos.client.ui.controller.PersonalNewEntryAction;
 import at.rc.tacos.client.ui.perspectives.SwitchToClientPerspective;
 import at.rc.tacos.client.ui.perspectives.SwitchToLogPerspective;
 

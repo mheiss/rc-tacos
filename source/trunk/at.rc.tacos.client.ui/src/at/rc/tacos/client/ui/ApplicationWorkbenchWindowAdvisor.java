@@ -11,6 +11,10 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import at.rc.tacos.client.net.NetWrapper;
+import at.rc.tacos.platform.model.Login;
+import at.rc.tacos.platform.net.message.ExecMessage;
+
 /**
  * This class is used to control the status line, toolbar, title, window size,
  * and other things can be customize.
@@ -42,7 +46,11 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		if (!confirm)
 			return false;
 
-		// TODO: send logout request
+		// send the logout request
+		Login currentLogin = NetWrapper.getSession().getLogin();
+		ExecMessage<Login> execMessage = new ExecMessage<Login>("doLogout", currentLogin);
+		execMessage.asnchronRequest(NetWrapper.getSession());
+
 		log.debug("Sending logout message");
 		return true;
 	}

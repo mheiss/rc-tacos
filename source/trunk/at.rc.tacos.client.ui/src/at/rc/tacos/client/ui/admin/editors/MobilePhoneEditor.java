@@ -1,8 +1,5 @@
 package at.rc.tacos.client.ui.admin.editors;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -30,127 +27,122 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.EditorPart;
 
-import at.rc.tacos.client.controller.EditorCloseAction;
-import at.rc.tacos.client.controller.EditorSaveAction;
-import at.rc.tacos.client.net.NetActivator;
-import at.rc.tacos.client.ui.ImageFactory;
-import at.rc.tacos.client.ui.modelManager.ModelFactory;
+import at.rc.tacos.client.net.NetWrapper;
+import at.rc.tacos.client.ui.UiWrapper;
+import at.rc.tacos.client.ui.controller.EditorCloseAction;
+import at.rc.tacos.client.ui.controller.EditorSaveAction;
 import at.rc.tacos.client.ui.utils.CustomColors;
-import at.rc.tacos.client.ui.utils.PhoneNumberValidator;
+import at.rc.tacos.client.ui.validators.PhoneNumberValidator;
 import at.rc.tacos.platform.model.MobilePhoneDetail;
+import at.rc.tacos.platform.net.Message;
+import at.rc.tacos.platform.net.listeners.DataChangeListener;
+import at.rc.tacos.platform.net.message.AddMessage;
+import at.rc.tacos.platform.net.message.RemoveMessage;
+import at.rc.tacos.platform.net.message.UpdateMessage;
+import at.rc.tacos.platform.net.mina.MessageIoSession;
 
-public class MobilePhoneEditor extends EditorPart implements PropertyChangeListener
-{
+public class MobilePhoneEditor extends EditorPart implements DataChangeListener<MobilePhoneDetail> {
+
 	public static final String ID = "at.rc.tacos.client.editors.mobilePhoneEditor";
 
-	//properties
+	// properties
 	boolean isDirty;
 	private FormToolkit toolkit;
 	private ScrolledForm form;
 
 	private CLabel infoLabel;
-	private ImageHyperlink saveHyperlink,removeHyperlink;
-	private Text id,name,number;
+	private ImageHyperlink saveHyperlink, removeHyperlink;
+	private Text id, name, number;
 
-	//managed data
+	// managed data
 	private MobilePhoneDetail detail;
 	private boolean isNew;
 
 	/**
-	 * Default class constructor
-	 */
-	public MobilePhoneEditor()
-	{
-		ModelFactory.getInstance().getPhoneManager().addPropertyChangeListener(this);
-	}
-
-	/**
-	 * Cleanup
+	 * This is a callback that will allow us to create the viewer and initialize
+	 * it.
 	 */
 	@Override
-	public void dispose()
-	{
-		ModelFactory.getInstance().getPhoneManager().removePropertyChangeListener(this);
-	}
-
-	/**
-	 * This is a callback that will allow us to create the viewer and initialize it.
-	 */
-	@Override
-	public void createPartControl(final Composite parent) 
-	{	
-		detail = ((MobilePhoneEditorInput)getEditorInput()).getMobilePhone();
-		isNew = ((MobilePhoneEditorInput)getEditorInput()).isNew();
+	public void createPartControl(final Composite parent) {
+		detail = ((MobilePhoneEditorInput) getEditorInput()).getMobilePhone();
+		isNew = ((MobilePhoneEditorInput) getEditorInput()).isNew();
 		isDirty = false;
 
-		//Create the form
+		// Create the form
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
 		form = toolkit.createScrolledForm(parent);
 		toolkit.decorateFormHeading(form.getForm());
 		form.getBody().setLayout(new GridLayout());
 		form.getBody().setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		//create the content
+		// create the content
 		createManageSection(form.getBody());
 		createDetailSection(form.getBody());
 
-		//load the data
+		// load the data
 		loadData();
-		
-		//force redraw
+
+		// register the listener
+		NetWrapper.registerListener(this, MobilePhoneDetail.class);
+
+		// force redraw
 		form.pack(true);
+	}
+
+	@Override
+	public void dispose() {
+		NetWrapper.removeListener(this, MobilePhoneDetail.class);
 	}
 
 	/**
 	 * Creates the section to manage the changes
 	 */
-	private void createManageSection(Composite parent)
-	{
+	private void createManageSection(Composite parent) {
 		Composite client = createSection(parent, "Mobiltelefon verwalten");
 
-		//create info label and hyperlinks to save and revert the changes
-		infoLabel = new CLabel(client,SWT.NONE);
+		// create info label and hyperlinks to save and revert the changes
+		infoLabel = new CLabel(client, SWT.NONE);
 		infoLabel.setText("Hier können sie das aktuelle Mobiltelefon verwalten und die Änderungen speichern.");
-		infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("admin.info"));
+		infoLabel.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.info"));
 
-		//Create the hyperlink to save the changes
+		// Create the hyperlink to save the changes
 		saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		saveHyperlink.setText("Änderungen speichern");
 		saveHyperlink.setEnabled(false);
 		saveHyperlink.setForeground(CustomColors.GREY_COLOR);
-		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.saveDisabled"));
-		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() 
-		{
+		saveHyperlink.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.saveDisabled"));
+		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() {
+
 			@Override
-			public void linkActivated(HyperlinkEvent e) 
-			{
+			public void linkActivated(HyperlinkEvent e) {
 				EditorSaveAction saveAction = new EditorSaveAction();
 				saveAction.run();
 			}
 		});
 
-		//Create the hyperlink to remove the competence
+		// Create the hyperlink to remove the competence
 		removeHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		removeHyperlink.setText("Mobiltelefon löschen");
-		removeHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.mobilePhoneRemove"));
-		removeHyperlink.addHyperlinkListener(new HyperlinkAdapter()
-		{
+		removeHyperlink.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.mobilePhoneRemove"));
+		removeHyperlink.addHyperlinkListener(new HyperlinkAdapter() {
+
 			@Override
-			public void linkActivated(HyperlinkEvent e) 
-			{
-				boolean result = MessageDialog.openConfirm(getSite().getShell(), 
-						"Löschen des Mobiltelefons bestätigen", 
-						"Möchten sie das Mobiltelefon " +detail.getMobilePhoneName() + "-"+detail.getMobilePhoneNumber()+" wirklich löschen?");
-				if(!result)
+			public void linkActivated(HyperlinkEvent e) {
+				boolean result = MessageDialog.openConfirm(getSite().getShell(), "Löschen des Mobiltelefons bestätigen",
+						"Möchten sie das Mobiltelefon " + detail.getMobilePhoneName() + "-" + detail.getMobilePhoneNumber() + " wirklich löschen?");
+				if (!result)
 					return;
-				//reset the dirty flag to prevent the 'save changes' to popup on a deleted item
+				// reset the dirty flag to prevent the 'save changes' to popup
+				// on a deleted item
 				isDirty = false;
-				//send the remove request
-				NetActivator.getDefault().sendRemoveMessage(MobilePhoneDetail.ID,detail);
+
+				// send the remove request
+				RemoveMessage<MobilePhoneDetail> removeMessage = new RemoveMessage<MobilePhoneDetail>(detail);
+				removeMessage.asnchronRequest(NetWrapper.getSession());
 			}
 		});
 
-		//info label should span over two
+		// info label should span over two
 		GridData data = new GridData(GridData.FILL_BOTH);
 		data.horizontalSpan = 2;
 		data.widthHint = 600;
@@ -159,13 +151,14 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 
 	/**
 	 * Creates the section containing the competence details
-	 * @param parent the parent composite
+	 * 
+	 * @param parent
+	 *            the parent composite
 	 */
-	private void createDetailSection(Composite parent)
-	{
+	private void createDetailSection(Composite parent) {
 		Composite client = createSection(parent, "Mobiltelefon Details");
 
-		//label and the text field
+		// label and the text field
 		final Label labelId = toolkit.createLabel(client, "Mobiltelefon ID");
 		id = toolkit.createText(client, "");
 		id.setEditable(false);
@@ -174,7 +167,8 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 
 		final Label labelPhoneName = toolkit.createLabel(client, "Bezeichnung");
 		name = toolkit.createText(client, "");
-		name.addModifyListener(new ModifyListener() { 
+		name.addModifyListener(new ModifyListener() {
+
 			@Override
 			public void modifyText(ModifyEvent me) {
 				inputChanged();
@@ -183,14 +177,15 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 
 		final Label labelPhoneNumber = toolkit.createLabel(client, "Nummer");
 		number = toolkit.createText(client, "");
-		number.addModifyListener(new ModifyListener() { 
+		number.addModifyListener(new ModifyListener() {
+
 			@Override
 			public void modifyText(ModifyEvent me) {
 				inputChanged();
 			}
 		});
 
-		//set the layout for the composites
+		// set the layout for the composites
 		GridData data = new GridData();
 		data.widthHint = 150;
 		labelId.setLayoutData(data);
@@ -200,11 +195,11 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 		data = new GridData();
 		data.widthHint = 150;
 		labelPhoneNumber.setLayoutData(data);
-		//layout for the text fields
+		// layout for the text fields
 		GridData data2 = new GridData(GridData.FILL_HORIZONTAL);
 		id.setLayoutData(data2);
 		data2 = new GridData(GridData.FILL_HORIZONTAL);
-		name.setLayoutData(data2);	
+		name.setLayoutData(data2);
 		data2 = new GridData(GridData.FILL_HORIZONTAL);
 		number.setLayoutData(data2);
 	}
@@ -212,20 +207,18 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 	/**
 	 * Loads the data and shows them in the view
 	 */
-	private void loadData()
-	{
-		//init the editor
-		if(isNew)
-		{
+	private void loadData() {
+		// init the editor
+		if (isNew) {
 			form.setText("Neues Mobiltelefon anlegen");
 			removeHyperlink.setVisible(false);
 			return;
 		}
-		
-		//enable the remove link
+
+		// enable the remove link
 		removeHyperlink.setVisible(true);
-		
-		//load the data
+
+		// load the data
 		form.setText("Details des Mobiltelefons: " + detail.getMobilePhoneName() + " " + detail.getMobilePhoneNumber());
 		id.setText(String.valueOf(detail.getId()));
 		name.setText(detail.getMobilePhoneName());
@@ -233,153 +226,151 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 	}
 
 	@Override
-	public void doSave(IProgressMonitor monitor) 
-	{
-		//reset error message
+	public void doSave(IProgressMonitor monitor) {
+		// reset error message
 		form.setMessage(null, IMessageProvider.NONE);
 
-		//name must be provided
-		if(name.getText().length() >30 || name.getText().trim().isEmpty())
-		{
+		// name must be provided
+		if (name.getText().length() > 30 || name.getText().trim().isEmpty()) {
 			form.getDisplay().beep();
 			form.setMessage("Bitte geben sie eine gültige Bezeichnung für das Mobiltelefon ein(max. 30 Zeichen)", IMessageProvider.ERROR);
 			return;
 		}
 		detail.setMobilePhoneName(name.getText());
 
-		//number must be provided
-		if(number.getText().length() > 30 || number.getText().trim().isEmpty())
-		{
+		// number must be provided
+		if (number.getText().length() > 30 || number.getText().trim().isEmpty()) {
 			form.getDisplay().beep();
 			form.setMessage("Bitte geben sie eine gültige Nummer für das Mobiltelefon ein(max. 30 Zeichen)", IMessageProvider.ERROR);
 			return;
 		}
-		//validate the number
+		// validate the number
 		PhoneNumberValidator validator = new PhoneNumberValidator();
 		String validatorResult = validator.isValid(number.getText());
-		if(validatorResult != null)
-		{
+		if (validatorResult != null) {
 			form.getDisplay().beep();
 			form.setMessage(validatorResult, IMessageProvider.ERROR);
 			return;
 		}
 		detail.setMobilePhoneNumber(number.getText());
 
-		//add or update the phone
-		if(isNew)
-			NetActivator.getDefault().sendAddMessage(MobilePhoneDetail.ID, detail);
-		else
-			NetActivator.getDefault().sendUpdateMessage(MobilePhoneDetail.ID, detail);
+		// add or update the phone
+		if (isNew) {
+			AddMessage<MobilePhoneDetail> addMessage = new AddMessage<MobilePhoneDetail>(detail);
+			addMessage.asnchronRequest(NetWrapper.getSession());
+		}
+		else {
+			UpdateMessage<MobilePhoneDetail> updateMessage = new UpdateMessage<MobilePhoneDetail>(detail);
+			updateMessage.asnchronRequest(NetWrapper.getSession());
+		}
 	}
 
 	@Override
-	public void doSaveAs() 
-	{
-		//not supported
+	public void doSaveAs() {
+		// not supported
 	}
 
 	@Override
-	public void init(IEditorSite site, IEditorInput input) throws PartInitException 
-	{
+	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 		setSite(site);
 		setInput(input);
 		setPartName(input.getName());
 	}
 
 	@Override
-	public void setFocus() 
-	{
+	public void setFocus() {
 		form.setFocus();
 	}
 
 	@Override
-	public boolean isDirty() 
-	{
+	public boolean isDirty() {
 		return isDirty;
 	}
 
 	@Override
-	public boolean isSaveAsAllowed() 
-	{
-		//not supported
+	public boolean isSaveAsAllowed() {
+		// not supported
 		return false;
 	}
 
 	@Override
-	public void propertyChange(PropertyChangeEvent evt) 
-	{
-		if("PHONE_UPDATE".equals(evt.getPropertyName()) || "PHONE_ADD".equalsIgnoreCase(evt.getPropertyName()))
-		{
-			MobilePhoneDetail updatePhone = null;
-			//get the new value
-			if(evt.getNewValue() instanceof MobilePhoneDetail)
-				updatePhone = (MobilePhoneDetail)evt.getNewValue();
-
-			//assert we have a value
-			if(updatePhone == null)
-				return;
-
-			//is this mobile phone is the current one -> update it
-			if(detail.equals(updatePhone) 
-					|| (detail.getMobilePhoneName().equals(updatePhone.getMobilePhoneName())
-							&& detail.getMobilePhoneNumber().equals(updatePhone.getMobilePhoneNumber())))
-			{
-				//save the updated phone
-				setInput(new MobilePhoneEditorInput(updatePhone,false));
-				setPartName(updatePhone.getMobilePhoneName() + " "+ detail.getMobilePhoneNumber());
-				detail = updatePhone;
-				isNew = false;
-				//update the editor
-				loadData();
-				//show the result
-				isDirty = false;
-				infoLabel.setText("Änderungen gespeichert");
-				infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.ok"));
-				Display.getCurrent().beep();
-			}
-		}
-		if("PHONE_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
-		{
-			//get the removed phone
-			MobilePhoneDetail removedPhone = (MobilePhoneDetail)evt.getOldValue();
-			//current edited?
-			if(detail.equals(removedPhone))
-			{
-				MessageDialog.openInformation(getSite().getShell(), 
-						"Mobiletelefon wurde gelöscht",
-				"Das Mobiltelefon, welches Sie gerade editieren, wurde gelöscht");
-				EditorCloseAction closeAction = new EditorCloseAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-				closeAction.run();
-			}
+	public void dataChanged(Message<MobilePhoneDetail> message, MessageIoSession messageIoSession) {
+		switch (message.getMessageType()) {
+			case ADD:
+			case UPDATE:
+				addOrUpdate(message.getFirstElement());
+				break;
+			case REMOVE:
+				remove(message.getFirstElement());
+				break;
 		}
 	}
 
-	//Helper methods
+	/**
+	 * Helper method to add or update a mobil phone
+	 */
+	private void addOrUpdate(MobilePhoneDetail updatedPhone) {
+		if (!detail.equals(updatedPhone)
+				| !(detail.getMobilePhoneName().equals(updatedPhone.getMobilePhoneName()) & !detail.getMobilePhoneNumber().equals(
+						updatedPhone.getMobilePhoneNumber()))) {
+			return;
+		}
+		// save the updated phone
+		setInput(new MobilePhoneEditorInput(updatedPhone, false));
+		setPartName(updatedPhone.getMobilePhoneName() + " " + detail.getMobilePhoneNumber());
+		detail = updatedPhone;
+		isNew = false;
+		// update the editor
+		loadData();
+		// show the result
+		isDirty = false;
+		infoLabel.setText("Änderungen gespeichert");
+		infoLabel.setImage(UiWrapper.getDefault().getImageRegistry().get("info.ok"));
+		Display.getCurrent().beep();
+	}
+
+	/**
+	 * Helper method to remove a mobile phone
+	 */
+	private void remove(MobilePhoneDetail removedPhone) {
+		if (!detail.equals(removedPhone)) {
+			return;
+		}
+		MessageDialog.openInformation(getSite().getShell(), "Mobiletelefon wurde gelöscht",
+				"Das Mobiltelefon, welches Sie gerade editieren, wurde gelöscht");
+		EditorCloseAction closeAction = new EditorCloseAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+		closeAction.run();
+	}
+
+	// Helper methods
 	/**
 	 * Creates and returns a section and a composite with two colums
-	 * @param parent the parent composite
-	 * @param sectionName the title of the section
+	 * 
+	 * @param parent
+	 *            the parent composite
+	 * @param sectionName
+	 *            the title of the section
 	 * @return the created composite to hold the other widgets
 	 */
-	private Composite createSection(Composite parent,String sectionName)
-	{
-		//create the section
-		Section section = toolkit.createSection(parent,ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+	private Composite createSection(Composite parent, String sectionName) {
+		// create the section
+		Section section = toolkit.createSection(parent, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		toolkit.createCompositeSeparator(section);
 		section.setText(sectionName);
 		section.setLayout(new GridLayout());
 		section.setLayoutData(new GridData(GridData.BEGINNING | GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING));
 		section.setExpanded(true);
-		//composite to add the client area
+		// composite to add the client area
 		Composite client = new Composite(section, SWT.NONE);
 		section.setClient(client);
 
-		//layout
+		// layout
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 2;
 		layout.makeColumnsEqualWidth = false;
 		client.setLayout(layout);
-		GridData clientDataLayout = new GridData(GridData.BEGINNING | GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING | GridData.FILL_BOTH);
+		GridData clientDataLayout = new GridData(GridData.BEGINNING | GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING
+				| GridData.FILL_BOTH);
 		client.setLayoutData(clientDataLayout);
 
 		return client;
@@ -388,45 +379,40 @@ public class MobilePhoneEditor extends EditorPart implements PropertyChangeListe
 	/**
 	 * This is called when the input of a text box or a combo box was changes
 	 */
-	private void inputChanged()
-	{
-		//reset the flag
+	private void inputChanged() {
+		// reset the flag
 		isDirty = false;
 
-		//get the current input
-		MobilePhoneEditorInput phoneInput = (MobilePhoneEditorInput)getEditorInput();
+		// get the current input
+		MobilePhoneEditorInput phoneInput = (MobilePhoneEditorInput) getEditorInput();
 		MobilePhoneDetail persistantPhone = phoneInput.getMobilePhone();
 
-		//check the name of the phone
-		if(!name.getText().equalsIgnoreCase(persistantPhone.getMobilePhoneName()))
-		{
+		// check the name of the phone
+		if (!name.getText().equalsIgnoreCase(persistantPhone.getMobilePhoneName())) {
 			isDirty = true;
 		}
-		//check the number of the phone
-		if(!number.getText().equalsIgnoreCase(persistantPhone.getMobilePhoneNumber()))
-		{
+		// check the number of the phone
+		if (!number.getText().equalsIgnoreCase(persistantPhone.getMobilePhoneNumber())) {
 			isDirty = true;
 		}
 
-		//notify the user that the input has changes
-		if(isDirty)
-		{
+		// notify the user that the input has changes
+		if (isDirty) {
 			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
-			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
+			infoLabel.setImage(UiWrapper.getDefault().getImageRegistry().get("info.warning"));
 			saveHyperlink.setEnabled(true);
-			saveHyperlink.setForeground(CustomColors.COLOR_LINK);
-			saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.save"));
+			saveHyperlink.setForeground(CustomColors.COLOR_BLUE);
+			saveHyperlink.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.save"));
 		}
-		else
-		{
+		else {
 			infoLabel.setText("Hier können sie das aktuelle Mobiltelefon verwalten und die Änderungen speichern.");
-			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("admin.info"));
+			infoLabel.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.info"));
 			saveHyperlink.setEnabled(false);
 			saveHyperlink.setForeground(CustomColors.GREY_COLOR);
-			saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.saveDisabled"));
+			saveHyperlink.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.saveDisabled"));
 		}
 
-		//set the dirty flag
-		firePropertyChange(IWorkbenchPartConstants.PROP_DIRTY); 
+		// set the dirty flag
+		firePropertyChange(IWorkbenchPartConstants.PROP_DIRTY);
 	}
 }

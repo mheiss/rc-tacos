@@ -27,13 +27,13 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
-import at.rc.tacos.client.controller.VehicleTableAtStationAction;
-import at.rc.tacos.client.controller.VehicleTableDetachAllStaffMembersAction;
-import at.rc.tacos.client.controller.VehicleTableEditAction;
-import at.rc.tacos.client.controller.VehicleTableSetReadyAction;
-import at.rc.tacos.client.controller.VehicleTableSetRepairStatusAction;
 import at.rc.tacos.client.net.NetWrapper;
 import at.rc.tacos.client.net.handler.VehicleHandler;
+import at.rc.tacos.client.ui.controller.VehicleTableAtStationAction;
+import at.rc.tacos.client.ui.controller.VehicleTableDetachAllStaffMembersAction;
+import at.rc.tacos.client.ui.controller.VehicleTableEditAction;
+import at.rc.tacos.client.ui.controller.VehicleTableSetReadyAction;
+import at.rc.tacos.client.ui.controller.VehicleTableSetRepairStatusAction;
 import at.rc.tacos.client.ui.providers.VehicleViewTableLabelProvider;
 import at.rc.tacos.client.ui.sorterAndTooltip.VehicleTooltip;
 import at.rc.tacos.client.ui.sorterAndTooltip.VehicleViewTableSorter;

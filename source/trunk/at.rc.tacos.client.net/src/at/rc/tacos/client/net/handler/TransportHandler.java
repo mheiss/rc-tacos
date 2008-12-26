@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.rc.tacos.platform.iface.IProgramStatus;
-import at.rc.tacos.platform.iface.ITransportStatus;
 import at.rc.tacos.platform.model.Transport;
 import at.rc.tacos.platform.model.VehicleDetail;
 import at.rc.tacos.platform.net.Message;
@@ -89,35 +88,6 @@ public class TransportHandler implements Handler<Transport> {
 					continue;
 				// check the vehicle
 				if (assignedVehicle.getVehicleName().equals(vehicleName))
-					filteredList.add(transport);
-			}
-			return filteredList;
-		}
-	}
-
-	/**
-	 * Returns a list of the transports with the program status 'journal' which
-	 * are assigned to this vehicle and have no set transport status S6 yet.
-	 * 
-	 * @param vehicleName
-	 *            the name of the vehicle to list the transports
-	 * @return transort list filtered by vehicle, program status 'journal' and
-	 *         without transport status S6
-	 */
-	public List<Transport> getJournalTransportsByVehicleAndStatusSix(String vehicleName) {
-		synchronized (transportList) {
-			List<Transport> filteredList = new ArrayList<Transport>();
-			for (Transport transport : transportList) {
-				if (transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_CAR_IN_STATION))
-					continue;
-				// get the vehicle
-				VehicleDetail vehicle = transport.getVehicleDetail();
-				int programStatus = transport.getProgramStatus();
-				// assert valid
-				if (vehicle == null)
-					continue;
-				// check the vehicle
-				if (vehicle.getVehicleName().equalsIgnoreCase(vehicleName) && programStatus == IProgramStatus.PROGRAM_STATUS_JOURNAL)
 					filteredList.add(transport);
 			}
 			return filteredList;

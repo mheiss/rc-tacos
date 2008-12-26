@@ -24,12 +24,12 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
 
-import at.rc.tacos.client.controller.DialysisDeleteAction;
-import at.rc.tacos.client.controller.DialysisEditAction;
-import at.rc.tacos.client.controller.DialysisTransportNowAction;
-import at.rc.tacos.client.controller.RefreshViewAction;
 import at.rc.tacos.client.net.NetWrapper;
 import at.rc.tacos.client.net.handler.DialysisHandler;
+import at.rc.tacos.client.ui.controller.DialysisDeleteAction;
+import at.rc.tacos.client.ui.controller.DialysisEditAction;
+import at.rc.tacos.client.ui.controller.DialysisTransportNowAction;
+import at.rc.tacos.client.ui.controller.RefreshViewAction;
 import at.rc.tacos.client.ui.providers.DialysisTransportLabelProvider;
 import at.rc.tacos.client.ui.sorterAndTooltip.DialysisTransportSorter;
 import at.rc.tacos.client.ui.utils.CustomColors;

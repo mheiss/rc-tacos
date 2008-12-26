@@ -54,8 +54,6 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 
-import at.rc.tacos.client.controller.DuplicatePriorityATransportAction;
-import at.rc.tacos.client.controller.RemoveTransportFromMultiTransportList;
 import at.rc.tacos.client.net.NetWrapper;
 import at.rc.tacos.client.net.handler.AddressHandler;
 import at.rc.tacos.client.net.handler.DiseaseHandler;
@@ -63,6 +61,8 @@ import at.rc.tacos.client.net.handler.LocationHandler;
 import at.rc.tacos.client.net.handler.StaffHandler;
 import at.rc.tacos.client.net.handler.VehicleHandler;
 import at.rc.tacos.client.ui.UiWrapper;
+import at.rc.tacos.client.ui.controller.DuplicatePriorityATransportAction;
+import at.rc.tacos.client.ui.controller.RemoveTransportFromMultiTransportList;
 import at.rc.tacos.client.ui.jobs.FilterAddressJob;
 import at.rc.tacos.client.ui.providers.DiseaseLabelProvider;
 import at.rc.tacos.client.ui.providers.MultiTransportLabelProvider;
@@ -2320,8 +2320,7 @@ public class TransportForm extends TitleAreaDialog implements DataChangeListener
 					newCaller.setCallerName(transport.getCallerDetail().getCallerName());
 					newCaller.setCallerTelephoneNumber(transport.getCallerDetail().getCallerTelephoneNumber());
 				}
-				Transport newTransport = Transport.copyTransport(transport);
-				newTransport.setCreatedByUsername(username);
+				Transport newTransport = Transport.createTransport(transport, username);
 				newTransport.setPatient(newPatient);
 				newTransport.setCallerDetail(newCaller);
 				// add the created transport to the table object list

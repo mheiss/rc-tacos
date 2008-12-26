@@ -1,17 +1,22 @@
 package at.rc.tacos.server.net.handler;
 
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.List;
 
+import at.rc.tacos.platform.iface.ITransportStatus;
 import at.rc.tacos.platform.model.Lockable;
+import at.rc.tacos.platform.model.Transport;
 import at.rc.tacos.platform.model.VehicleDetail;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.exception.NoSuchCommandException;
 import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.message.AbstractMessage;
+import at.rc.tacos.platform.net.message.UpdateMessage;
 import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.LockableService;
+import at.rc.tacos.platform.services.dbal.TransportService;
 import at.rc.tacos.platform.services.dbal.VehicleService;
 import at.rc.tacos.platform.services.exception.ServiceException;
 
@@ -19,6 +24,9 @@ public class VehicleHandler implements Handler<VehicleDetail> {
 
 	@Service(clazz = VehicleService.class)
 	private VehicleService vehicleService;
+
+	@Service(clazz = TransportService.class)
+	private TransportService transportService;
 
 	@Service(clazz = LockableService.class)
 	private LockableService lockableService;
@@ -78,6 +86,9 @@ public class VehicleHandler implements Handler<VehicleDetail> {
 				throw new ServiceException("Failed to update the vehicle " + vehicle);
 			// update the lock
 			lockableService.updateLock(vehicle);
+
+			// check if the vehicle has a transport
+			updateUnderwayTransports(session, vehicle);
 		}
 		// brodcast the updated vehicles
 		session.writeResponseBrodcast(message, vehicleList);
@@ -97,6 +108,57 @@ public class VehicleHandler implements Handler<VehicleDetail> {
 			lockableService.removeAllLocks(message.getObjects());
 			return;
 		}
+		if ("setStatusSix".equalsIgnoreCase(command)) {
+			// get the vehicle to query the transports
+			VehicleDetail detail = message.getFirstElement();
+			updateArchivedTransports(session, detail);
+			return;
+		}
 		throw new NoSuchCommandException(handler, command);
+	}
+
+	/**
+	 * Helper method to update all underway transports that are assigned to this
+	 * vehicle.
+	 */
+	private void updateUnderwayTransports(MessageIoSession session, VehicleDetail vehicleDetail) throws SQLException {
+		List<Transport> transportList = transportService.listUnderwayTransportsByVehicle(vehicleDetail.getVehicleName());
+		if (transportList == null || transportList.isEmpty()) {
+			return;
+		}
+		// update each transport with the new vehicle
+		for (Transport transport : transportList) {
+			transport.setVehicleDetail(vehicleDetail);
+			transportService.updateTransport(transport);
+		}
+		// brodcast the updated transports
+		UpdateMessage<Transport> updateMessage = new UpdateMessage<Transport>(transportList);
+		session.write(updateMessage);
+	}
+
+	/**
+	 * Helper method to update the archived transports if the vehicle is at
+	 * home.
+	 */
+	private void updateArchivedTransports(MessageIoSession session, VehicleDetail vehicleDetail) throws SQLException, ServiceException {
+		List<Transport> transportList = transportService.listArchivedWithoutStatusSix(vehicleDetail.getVehicleName());
+		if (transportList == null || transportList.isEmpty()) {
+			// noting to do
+			return;
+		}
+
+		// the current time
+		long timestamp = Calendar.getInstance().getTimeInMillis();
+		// set the transport status S6
+		for (Transport transport : transportList) {
+			transport.addStatus(ITransportStatus.TRANSPORT_STATUS_CAR_IN_STATION, timestamp);
+			if (transportService.updateTransport(transport)) {
+				throw new ServiceException("Failed to set status at home for transport " + transport);
+			}
+		}
+
+		// brodcast the update to the clients
+		UpdateMessage<Transport> updateMessage = new UpdateMessage<Transport>(transportList);
+		session.brodcastMessage(updateMessage);
 	}
 }

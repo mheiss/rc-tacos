@@ -60,12 +60,13 @@ public class MinaMessageServer {
 			handler = new ServerMessageHandler(serverContext);
 			acceptor.setHandler(new MessageHandlerAdapter(handler));
 
+			int serverPort = serverContext.getServerConfiguration().getServerPort();
+
 			try {
-				acceptor.bind(new InetSocketAddress(serverContext.getServerPort()));
+				acceptor.bind(new InetSocketAddress(serverPort));
 			}
 			catch (IOException ioe) {
-				throw new ConfigurationException("Failed to listen on port " + serverContext.getServerPort() + ", check the configuration", ioe
-						.getCause());
+				throw new ConfigurationException("Failed to listen on port " + serverPort + ", check the configuration", ioe.getCause());
 			}
 
 			log.info("Listening to client connections on port " + acceptor.getLocalAddress().getPort());

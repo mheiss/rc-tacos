@@ -1,11 +1,9 @@
 package at.rc.tacos.client.ui.admin.editors;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -34,138 +32,137 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.EditorPart;
 
-import at.rc.tacos.client.controller.EditorCloseAction;
-import at.rc.tacos.client.controller.EditorSaveAction;
-import at.rc.tacos.client.net.NetActivator;
-import at.rc.tacos.client.providers.MobilePhoneContentProvider;
-import at.rc.tacos.client.providers.MobilePhoneLabelProvider;
-import at.rc.tacos.client.providers.StationContentProvider;
-import at.rc.tacos.client.providers.StationLabelProvider;
-import at.rc.tacos.client.ui.ImageFactory;
-import at.rc.tacos.client.ui.modelManager.ModelFactory;
+import at.rc.tacos.client.net.NetWrapper;
+import at.rc.tacos.client.net.handler.LocationHandler;
+import at.rc.tacos.client.net.handler.MobilePhoneHandler;
+import at.rc.tacos.client.ui.UiWrapper;
+import at.rc.tacos.client.ui.controller.EditorCloseAction;
+import at.rc.tacos.client.ui.controller.EditorSaveAction;
+import at.rc.tacos.client.ui.providers.MobilePhoneLabelProvider;
+import at.rc.tacos.client.ui.providers.StationLabelProvider;
 import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.platform.model.Location;
 import at.rc.tacos.platform.model.MobilePhoneDetail;
 import at.rc.tacos.platform.model.VehicleDetail;
+import at.rc.tacos.platform.net.Message;
+import at.rc.tacos.platform.net.listeners.DataChangeListener;
+import at.rc.tacos.platform.net.message.AddMessage;
+import at.rc.tacos.platform.net.message.RemoveMessage;
+import at.rc.tacos.platform.net.message.UpdateMessage;
+import at.rc.tacos.platform.net.mina.MessageIoSession;
 
-public class VehicleDetailEditor extends EditorPart implements PropertyChangeListener
-{
+public class VehicleDetailEditor extends EditorPart implements DataChangeListener<Object> {
+
 	public static final String ID = "at.rc.tacos.client.editors.vehicleDetailEditor";
 
-	//properties
+	// properties
 	boolean isDirty;
 	private FormToolkit toolkit;
 	private ScrolledForm form;
 
-	//changeable values
+	// changeable values
 	private CLabel infoLabel;
 	private ImageHyperlink saveHyperlink, removeHyperlink;
-	private Text vehicleType,vehicleName;
-	private ComboViewer basicLocationViewer, phoneViewer,currentLocationViewer;
+	private Text vehicleType, vehicleName;
+	private ComboViewer basicLocationViewer, phoneViewer, currentLocationViewer;
 
-	//managed data
+	// managed data
 	private VehicleDetail detail;
 	private boolean isNew;
 
-	/**
-	 * Default class constructor
-	 */
-	public VehicleDetailEditor()
-	{
-		ModelFactory.getInstance().getVehicleManager().addPropertyChangeListener(this);
-		ModelFactory.getInstance().getPhoneManager().addPropertyChangeListener(this);
-	}
+	// the data source
+	private LocationHandler locationHandler = (LocationHandler) NetWrapper.getHandler(Location.class);
+	private MobilePhoneHandler phoneHandler = (MobilePhoneHandler) NetWrapper.getHandler(MobilePhoneDetail.class);
 
 	/**
-	 * Cleanup
+	 * This is a callback that will allow us to create the viewer and initialize
+	 * it.
 	 */
 	@Override
-	public void dispose()
-	{
-		ModelFactory.getInstance().getVehicleManager().removePropertyChangeListener(this);
-		ModelFactory.getInstance().getPhoneManager().removePropertyChangeListener(this);
-	}
+	public void createPartControl(final Composite parent) {
+		detail = ((VehicleDetailEditorInput) getEditorInput()).getVehicle();
+		isNew = ((VehicleDetailEditorInput) getEditorInput()).isNew();
 
-	/**
-	 * This is a callback that will allow us to create the viewer and initialize it.
-	 */
-	@Override
-	public void createPartControl(final Composite parent) 
-	{	
-		detail = ((VehicleDetailEditorInput)getEditorInput()).getVehicle();
-		isNew = ((VehicleDetailEditorInput)getEditorInput()).isNew();
-
-		//Create the form
+		// Create the form
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
 		form = toolkit.createScrolledForm(parent);
 		toolkit.decorateFormHeading(form.getForm());
 		form.getBody().setLayout(new GridLayout());
 		form.getBody().setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		//create the content
+		// create the content
 		createManageSection(form.getBody());
 		createDetailSection(form.getBody());
 
-		//load the data
+		// load the data
 		loadData();
 
-		//reset the dirty flag
+		// register the listeners
+		NetWrapper.registerListener(this, VehicleDetail.class);
+		NetWrapper.registerListener(this, MobilePhoneDetail.class);
+
+		// reset the dirty flag
 		isDirty = false;
 
-		//force redraw
+		// force redraw
 		form.pack(true);
+	}
+
+	@Override
+	public void dispose() {
+		NetWrapper.removeListener(this, VehicleDetail.class);
+		NetWrapper.removeListener(this, MobilePhoneDetail.class);
 	}
 
 	/**
 	 * Creates the section to manage the changes
 	 */
-	private void createManageSection(Composite parent)
-	{
+	private void createManageSection(Composite parent) {
 		Composite client = createSection(parent, "Fahrzeuge verwalten");
 
-		//create info label and hyperlinks to save and revert the changes
-		infoLabel = new CLabel(client,SWT.NONE);
+		// create info label and hyperlinks to save and revert the changes
+		infoLabel = new CLabel(client, SWT.NONE);
 		infoLabel.setText("Hier können sie das aktuelle Fahrzeug verwalten und die Änderungen speichern.");
-		infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("admin.info"));
+		infoLabel.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.info"));
 
-		//Create the hyperlink to save the changes
+		// Create the hyperlink to save the changes
 		saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		saveHyperlink.setText("Änderungen speichern");
 		saveHyperlink.setEnabled(false);
 		saveHyperlink.setForeground(CustomColors.GREY_COLOR);
-		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.saveDisabled"));
-		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() 
-		{
+		saveHyperlink.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.saveDisabled"));
+		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() {
+
 			@Override
-			public void linkActivated(HyperlinkEvent e) 
-			{
+			public void linkActivated(HyperlinkEvent e) {
 				EditorSaveAction saveAction = new EditorSaveAction();
 				saveAction.run();
 			}
 		});
 
-		//Create the hyperlink to remove the competence
+		// Create the hyperlink to remove the competence
 		removeHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		removeHyperlink.setText("Fahrzeug löschen");
-		removeHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.vehicleRemove"));
-		removeHyperlink.addHyperlinkListener(new HyperlinkAdapter()
-		{
+		removeHyperlink.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.vehicleRemove"));
+		removeHyperlink.addHyperlinkListener(new HyperlinkAdapter() {
+
 			@Override
-			public void linkActivated(HyperlinkEvent e) 
-			{
-				boolean result = MessageDialog.openConfirm(getSite().getShell(), 
-						"Löschen des Fahrzeuges bestätigen", 
-						"Möchten sie das Fahrzeug "+detail.getVehicleType()+"-"+detail.getVehicleName()+" wirklich löschen?");
-				if(!result)
+			public void linkActivated(HyperlinkEvent e) {
+				boolean result = MessageDialog.openConfirm(getSite().getShell(), "Löschen des Fahrzeuges bestätigen", "Möchten sie das Fahrzeug "
+						+ detail.getVehicleType() + "-" + detail.getVehicleName() + " wirklich löschen?");
+				if (!result)
 					return;
-				//reset the dirty flag to prevent the 'save changes' to popup on a deleted item
+				// reset the dirty flag to prevent the 'save changes' to popup
+				// on a deleted item
 				isDirty = false;
-				//send the remove request
-				NetActivator.getDefault().sendRemoveMessage(VehicleDetail.ID,detail);
+
+				// send the remove request
+				RemoveMessage<VehicleDetail> removeMessage = new RemoveMessage<VehicleDetail>(detail);
+				removeMessage.asnchronRequest(NetWrapper.getSession());
 			}
 		});
 
-		//info label should span over two
+		// info label should span over two
 		GridData data = new GridData(GridData.FILL_BOTH);
 		data.horizontalSpan = 2;
 		data.widthHint = 600;
@@ -174,16 +171,18 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 
 	/**
 	 * Creates the section containing the competence details
-	 * @param parent the parent composite
+	 * 
+	 * @param parent
+	 *            the parent composite
 	 */
-	private void createDetailSection(Composite parent)
-	{
+	private void createDetailSection(Composite parent) {
 		Composite client = createSection(parent, "Fahrzeug Details");
 
-		//label and the text field
-		final Label labelVehicleType = toolkit.createLabel(client,"Fahrzeug Typ");
+		// label and the text field
+		final Label labelVehicleType = toolkit.createLabel(client, "Fahrzeug Typ");
 		vehicleType = toolkit.createText(client, "");
-		vehicleType.addModifyListener(new ModifyListener() { 
+		vehicleType.addModifyListener(new ModifyListener() {
+
 			@Override
 			public void modifyText(ModifyEvent me) {
 				inputChanged();
@@ -192,7 +191,8 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 
 		final Label labelVehicleName = toolkit.createLabel(client, "Fahrzeug Name");
 		vehicleName = toolkit.createText(client, "");
-		vehicleName.addModifyListener(new ModifyListener() { 
+		vehicleName.addModifyListener(new ModifyListener() {
+
 			@Override
 			public void modifyText(ModifyEvent me) {
 				inputChanged();
@@ -202,45 +202,48 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		final Label labelBasicLoaction = toolkit.createLabel(client, "Basis Dienststelle");
 		Combo stationCombo = new Combo(client, SWT.READ_ONLY);
 		basicLocationViewer = new ComboViewer(stationCombo);
-		basicLocationViewer.setContentProvider(new StationContentProvider());
+		basicLocationViewer.setContentProvider(new ArrayContentProvider());
 		basicLocationViewer.setLabelProvider(new StationLabelProvider());
-		basicLocationViewer.setInput(ModelFactory.getInstance().getLocationManager());
-		stationCombo.addModifyListener(new ModifyListener() { 
+		basicLocationViewer.setInput(locationHandler.toArray());
+		stationCombo.addModifyListener(new ModifyListener() {
+
 			@Override
 			public void modifyText(ModifyEvent me) {
 				inputChanged();
 			}
 		});
 
-		//mobile phone
+		// mobile phone
 		final Label labelPhone = toolkit.createLabel(client, "Mobiltelefon");
-		Combo phoneCombo = new Combo(client,SWT.READ_ONLY);
+		Combo phoneCombo = new Combo(client, SWT.READ_ONLY);
 		phoneViewer = new ComboViewer(phoneCombo);
-		phoneViewer.setContentProvider(new MobilePhoneContentProvider());
+		phoneViewer.setContentProvider(new ArrayContentProvider());
 		phoneViewer.setLabelProvider(new MobilePhoneLabelProvider());
-		phoneViewer.setInput(ModelFactory.getInstance().getPhoneManager().getMobilePhoneList());
-		phoneCombo.addModifyListener(new ModifyListener() { 
+		phoneViewer.setInput(phoneHandler.toArray());
+		phoneCombo.addModifyListener(new ModifyListener() {
+
 			@Override
 			public void modifyText(ModifyEvent me) {
 				inputChanged();
 			}
 		});
 
-		//current location
+		// current location
 		final Label locationLabel = toolkit.createLabel(client, "Aktuelle Ortsstelle");
 		Combo currentLocationCombo = new Combo(client, SWT.READ_ONLY);
 		currentLocationViewer = new ComboViewer(currentLocationCombo);
-		currentLocationViewer.setContentProvider(new StationContentProvider());
+		currentLocationViewer.setContentProvider(new ArrayContentProvider());
 		currentLocationViewer.setLabelProvider(new StationLabelProvider());
-		currentLocationViewer.setInput(ModelFactory.getInstance().getLocationManager());
-		currentLocationCombo.addModifyListener(new ModifyListener() { 
+		currentLocationViewer.setInput(locationHandler.toArray());
+		currentLocationCombo.addModifyListener(new ModifyListener() {
+
 			@Override
 			public void modifyText(ModifyEvent me) {
 				inputChanged();
 			}
 		});
 
-		//set the layout for the composites
+		// set the layout for the composites
 		GridData data = new GridData();
 		data.widthHint = 150;
 		labelVehicleType.setLayoutData(data);
@@ -257,11 +260,11 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		data.widthHint = 150;
 		locationLabel.setLayoutData(data);
 
-		//layout for the text fields
+		// layout for the text fields
 		GridData data2 = new GridData(GridData.FILL_HORIZONTAL);
 		vehicleName.setLayoutData(data2);
 		data2 = new GridData(GridData.FILL_HORIZONTAL);
-		vehicleType.setLayoutData(data2);	
+		vehicleType.setLayoutData(data2);
 		data2 = new GridData(GridData.FILL_HORIZONTAL);
 		basicLocationViewer.getCombo().setLayoutData(data2);
 		phoneViewer.getCombo().setLayoutData(data2);
@@ -271,293 +274,265 @@ public class VehicleDetailEditor extends EditorPart implements PropertyChangeLis
 		data2.heightHint = 100;
 	}
 
-
 	/**
 	 * Loads the data and shows them in the view
 	 */
-	private void loadData()
-	{
-		//init the editor
-		if(isNew)
-		{
+	private void loadData() {
+		// init the editor
+		if (isNew) {
 			removeHyperlink.setVisible(false);
 			form.setText("Neues Fahrzeug anlegen");
 			return;
 		}
-		
-		//enable the remove link
+
+		// enable the remove link
 		removeHyperlink.setVisible(true);
-		
-		//load all the data
+
+		// load all the data
 		form.setText("Details des Fahrzeugs: " + detail.getVehicleType() + " " + detail.getVehicleName());
 		vehicleName.setText(detail.getVehicleName());
 		vehicleType.setText(detail.getVehicleType());
-		if(detail.getBasicStation() != null)
+		if (detail.getBasicStation() != null)
 			basicLocationViewer.setSelection(new StructuredSelection(detail.getBasicStation()));
-		if(detail.getMobilePhone() != null)
+		if (detail.getMobilePhone() != null)
 			phoneViewer.setSelection(new StructuredSelection(detail.getMobilePhone()));
-		if(detail.getCurrentStation() != null)
-			currentLocationViewer.setSelection(new StructuredSelection(detail.getCurrentStation()));	
+		if (detail.getCurrentStation() != null)
+			currentLocationViewer.setSelection(new StructuredSelection(detail.getCurrentStation()));
 	}
 
 	@Override
-	public void doSave(IProgressMonitor monitor) 
-	{
-		//reset error message
+	public void doSave(IProgressMonitor monitor) {
+		// reset error message
 		form.setMessage(null, IMessageProvider.NONE);
 
-		//just set and validate the changeable values
-		if(vehicleType.getText().trim().isEmpty())
-		{
+		// just set and validate the changeable values
+		if (vehicleType.getText().trim().isEmpty()) {
 			form.getDisplay().beep();
 			form.setMessage("Bitte geben Sie den Fahrzeugtyp an", IMessageProvider.ERROR);
 			return;
 		}
 		detail.setVehicleType(vehicleType.getText());
 
-		//validate the name
-		if(vehicleName.getText().trim().isEmpty())
-		{
+		// validate the name
+		if (vehicleName.getText().trim().isEmpty()) {
 			form.getDisplay().beep();
 			form.setMessage("Bitte geben Sie einen Fahrzeugnamen ein", IMessageProvider.ERROR);
 			return;
 		}
 		detail.setVehicleName(vehicleName.getText());
 
-		//basic location
+		// basic location
 		int index = basicLocationViewer.getCombo().getSelectionIndex();
-		if(index == -1)
-		{
+		if (index == -1) {
 			form.getDisplay().beep();
 			form.setMessage("Bitte ordnen Sie diesem Fahrzeug eine Basis Ortsstelle zu", IMessageProvider.ERROR);
 			return;
 		}
-		detail.setBasicStation((Location)basicLocationViewer.getElementAt(index));
+		detail.setBasicStation((Location) basicLocationViewer.getElementAt(index));
 
-
-		//mobile phone
+		// mobile phone
 		int index2 = phoneViewer.getCombo().getSelectionIndex();
-		if(index2 == -1)
-		{
+		if (index2 == -1) {
 			form.getDisplay().beep();
 			form.setMessage("Bitte ordnen Sie diesem Fahrzeug eine Handynummer zu", IMessageProvider.ERROR);
 			return;
 		}
-		detail.setMobilPhone((MobilePhoneDetail)phoneViewer.getElementAt(index2));
+		detail.setMobilPhone((MobilePhoneDetail) phoneViewer.getElementAt(index2));
 
-
-		//current location
+		// current location
 		int index3 = currentLocationViewer.getCombo().getSelectionIndex();
-		if(index3 == -1)
-		{
+		if (index3 == -1) {
 			form.getDisplay().beep();
 			form.setMessage("Bitte ordnen Sie diesem Fahrzeug eine aktuelle Ortsstelle zu", IMessageProvider.ERROR);
 		}
-		detail.setCurrentStation((Location)currentLocationViewer.getElementAt(index3));
+		detail.setCurrentStation((Location) currentLocationViewer.getElementAt(index3));
 
-
-		//the other fields are read only and must not be set explicite
-		if(isNew)
-			NetActivator.getDefault().sendAddMessage(VehicleDetail.ID, detail);
-		else
-			NetActivator.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);
+		// the other fields are read only and must not be set explicite
+		if (isNew) {
+			AddMessage<VehicleDetail> addMessage = new AddMessage<VehicleDetail>(detail);
+			addMessage.asnchronRequest(NetWrapper.getSession());
+		}
+		else {
+			UpdateMessage<VehicleDetail> updateMessage = new UpdateMessage<VehicleDetail>(detail);
+			updateMessage.asnchronRequest(NetWrapper.getSession());
+		}
 	}
 
 	@Override
-	public void doSaveAs() 
-	{
-		//not supported
+	public void doSaveAs() {
+		// not supported
 	}
 
 	@Override
-	public void init(IEditorSite site, IEditorInput input) throws PartInitException 
-	{
+	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 		setSite(site);
 		setInput(input);
 		setPartName(input.getName());
 	}
 
 	@Override
-	public void setFocus() 
-	{
+	public void setFocus() {
 		form.setFocus();
 	}
 
 	@Override
-	public boolean isDirty() 
-	{
+	public boolean isDirty() {
 		return isDirty;
 	}
 
 	@Override
-	public boolean isSaveAsAllowed() 
-	{
-		//not supported
+	public boolean isSaveAsAllowed() {
+		// not supported
 		return false;
 	}
 
 	@Override
-	public void propertyChange(PropertyChangeEvent evt) 
-	{
-		if("VEHICLE_UPDATE".equals(evt.getPropertyName()) || "VEHICLE_ADD".equalsIgnoreCase(evt.getPropertyName()))
-		{
-			VehicleDetail updateVehicle = null;
-			//get the new value
-			if(evt.getNewValue() instanceof VehicleDetail)
-				updateVehicle = (VehicleDetail)evt.getNewValue();
-
-			//assert we have a value
-			if(updateVehicle == null)
-				return;
-
-			//is this vehicle is the current one -> update it
-			if(detail.equals(updateVehicle) || 
-					(detail.getVehicleName().equalsIgnoreCase(updateVehicle.getVehicleName())
-							&& detail.getVehicleType().equalsIgnoreCase(updateVehicle.getVehicleType())))
-			{
-				//save the updated competence
-				setInput(new VehicleDetailEditorInput(updateVehicle,false));
-				setPartName(updateVehicle.getVehicleType() +" "+updateVehicle.getVehicleName());
-				detail = updateVehicle;
-				isNew = false;
-				//update the editor
-				loadData();
-				//show the result
-				isDirty = false;
-				infoLabel.setText("Änderungen gespeichert");
-				infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.ok"));
-				Display.getCurrent().beep();
+	public void dataChanged(Message<Object> message, MessageIoSession messageIoSession) {
+		if (message.getFirstElement() instanceof VehicleDetail) {
+			VehicleDetail detail = (VehicleDetail) message.getFirstElement();
+			switch (message.getMessageType()) {
+				case ADD:
+				case UPDATE:
+					addOrUpdateVehicle(detail);
+					break;
+				case REMOVE:
+					removeVehicle(detail);
+					break;
 			}
 		}
-		if("VEHICLE_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
-		{
-			//the removed vehicle
-			VehicleDetail removedVehicle = (VehicleDetail)evt.getOldValue();
-			//the current edited
-			if(detail.equals(removedVehicle))
-			{
-				MessageDialog.openInformation(getSite().getShell(), 
-						"Fahrzeug wurde gelöscht",
-				"Das Fahrzeug welches Sie gerade editieren wurde gelöscht");
-				EditorCloseAction closeAction = new EditorCloseAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
-				closeAction.run();
-			}
+
+		// refresh the combos
+		phoneViewer.refresh(true);
+		basicLocationViewer.refresh(true);
+		currentLocationViewer.refresh(true);
+	}
+
+	/**
+	 * Helper method to add or update the vehicle
+	 */
+	private void addOrUpdateVehicle(VehicleDetail updatedVehicle) {
+		if (!detail.equals(updatedVehicle)
+				| !(detail.getVehicleName().equalsIgnoreCase(updatedVehicle.getVehicleName()) & !detail.getVehicleType().equalsIgnoreCase(
+						updatedVehicle.getVehicleType()))) {
+			return;
 		}
-		//keep on track on location changes
-		if("LOCATION_ADD".equalsIgnoreCase(evt.getPropertyName())
-				|| "LOCATION_REMOVE".equalsIgnoreCase(evt.getPropertyName())
-				|| "LOCATION_UPDATE".equalsIgnoreCase(evt.getPropertyName()))
-		{
-			//just refresh the combo so that the new data is loaded
-			basicLocationViewer.refresh(true);
-			currentLocationViewer.refresh(true);
+		// save the updated competence
+		setInput(new VehicleDetailEditorInput(updatedVehicle, false));
+		setPartName(updatedVehicle.getVehicleType() + " " + updatedVehicle.getVehicleName());
+		detail = updatedVehicle;
+		isNew = false;
+		// update the editor
+		loadData();
+		// show the result
+		isDirty = false;
+		infoLabel.setText("Änderungen gespeichert");
+		infoLabel.setImage(UiWrapper.getDefault().getImageRegistry().get("info.ok"));
+		Display.getCurrent().beep();
+	}
+
+	/**
+	 * Helper method to remove a vehicle
+	 */
+	private void removeVehicle(VehicleDetail removedVehicle) {
+		if (!detail.equals(removedVehicle)) {
+			return;
 		}
-		//keep on track on phone changes
-		if("PHONE_ADD".equalsIgnoreCase(evt.getPropertyName())
-				|| "PHONE_UPDATE".equalsIgnoreCase(evt.getPropertyName())
-				|| "PHONE_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
-		{
-			phoneViewer.refresh(true);
-		}
+		MessageDialog.openInformation(getSite().getShell(), "Fahrzeug wurde gelöscht", "Das Fahrzeug welches Sie gerade editieren wurde gelöscht");
+		EditorCloseAction closeAction = new EditorCloseAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+		closeAction.run();
 	}
 
 	/**
 	 * Creates and returns a section and a composite with two colums
-	 * @param parent the parent composite
-	 * @param sectionName the title of the section
+	 * 
+	 * @param parent
+	 *            the parent composite
+	 * @param sectionName
+	 *            the title of the section
 	 * @return the created composite to hold the other widgets
 	 */
-	private Composite createSection(Composite parent,String sectionName)
-	{
-		//create the section
-		Section section = toolkit.createSection(parent,ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+	private Composite createSection(Composite parent, String sectionName) {
+		// create the section
+		Section section = toolkit.createSection(parent, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		toolkit.createCompositeSeparator(section);
 		section.setText(sectionName);
 		section.setLayout(new GridLayout());
 		section.setLayoutData(new GridData(GridData.BEGINNING | GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING));
 		section.setExpanded(true);
-		//composite to add the client area
+		// composite to add the client area
 		Composite client = new Composite(section, SWT.NONE);
 		section.setClient(client);
 
-		//layout
+		// layout
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 2;
 		layout.makeColumnsEqualWidth = false;
 		client.setLayout(layout);
-		GridData clientDataLayout = new GridData(GridData.BEGINNING | GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING | GridData.FILL_BOTH);
+		GridData clientDataLayout = new GridData(GridData.BEGINNING | GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING
+				| GridData.FILL_BOTH);
 		client.setLayoutData(clientDataLayout);
 
 		return client;
 	}
 
-
 	/**
 	 * This is called when the input of a text box or a combo box was changes
 	 */
-	private void inputChanged()
-	{
-		//get the current input
-		VehicleDetailEditorInput vehicleInput = (VehicleDetailEditorInput)getEditorInput();
+	private void inputChanged() {
+		// get the current input
+		VehicleDetailEditorInput vehicleInput = (VehicleDetailEditorInput) getEditorInput();
 		VehicleDetail persistantVehicle = vehicleInput.getVehicle();
 
-		//reset the flag
+		// reset the flag
 		isDirty = false;
 
-		//check the vehicle name
-		if(!vehicleName.getText().equalsIgnoreCase(persistantVehicle.getVehicleName()))
-		{
+		// check the vehicle name
+		if (!vehicleName.getText().equalsIgnoreCase(persistantVehicle.getVehicleName())) {
 			isDirty = true;
 		}
-		//check the vehicle type
-		if(!vehicleType.getText().equalsIgnoreCase(persistantVehicle.getVehicleType()))
-		{
+		// check the vehicle type
+		if (!vehicleType.getText().equalsIgnoreCase(persistantVehicle.getVehicleType())) {
 			isDirty = true;
 		}
-		//check the basic location
-		if(!basicLocationViewer.getSelection().isEmpty())
-		{
-			IStructuredSelection structuredSelection = (IStructuredSelection)basicLocationViewer.getSelection();
-			Location selectedLocation = (Location)structuredSelection.getFirstElement();
-			if(!selectedLocation.equals(persistantVehicle.getBasicStation()))
+		// check the basic location
+		if (!basicLocationViewer.getSelection().isEmpty()) {
+			IStructuredSelection structuredSelection = (IStructuredSelection) basicLocationViewer.getSelection();
+			Location selectedLocation = (Location) structuredSelection.getFirstElement();
+			if (!selectedLocation.equals(persistantVehicle.getBasicStation()))
 				isDirty = true;
 		}
-		//check the current location
-		if(!currentLocationViewer.getSelection().isEmpty())
-		{
-			IStructuredSelection structuredSelection = (IStructuredSelection)currentLocationViewer.getSelection();
-			Location selectedLocation = (Location)structuredSelection.getFirstElement();
-			if(!selectedLocation.equals(persistantVehicle.getCurrentStation()))
+		// check the current location
+		if (!currentLocationViewer.getSelection().isEmpty()) {
+			IStructuredSelection structuredSelection = (IStructuredSelection) currentLocationViewer.getSelection();
+			Location selectedLocation = (Location) structuredSelection.getFirstElement();
+			if (!selectedLocation.equals(persistantVehicle.getCurrentStation()))
 				isDirty = true;
 		}
-		//check the phone
-		if(!phoneViewer.getSelection().isEmpty())
-		{
-			IStructuredSelection structuredSelection = (IStructuredSelection)phoneViewer.getSelection();
-			MobilePhoneDetail selectedPhone = (MobilePhoneDetail)structuredSelection.getFirstElement();
-			if(!selectedPhone.equals(persistantVehicle.getMobilePhone()))
+		// check the phone
+		if (!phoneViewer.getSelection().isEmpty()) {
+			IStructuredSelection structuredSelection = (IStructuredSelection) phoneViewer.getSelection();
+			MobilePhoneDetail selectedPhone = (MobilePhoneDetail) structuredSelection.getFirstElement();
+			if (!selectedPhone.equals(persistantVehicle.getMobilePhone()))
 				isDirty = true;
 		}
 
-		//notify the user that the input has changes
-		if(isDirty)
-		{
+		// notify the user that the input has changes
+		if (isDirty) {
 			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
-			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
+			infoLabel.setImage(UiWrapper.getDefault().getImageRegistry().get("info.warning"));
 			saveHyperlink.setEnabled(true);
-			saveHyperlink.setForeground(CustomColors.COLOR_LINK);
-			saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.save"));
+			saveHyperlink.setForeground(CustomColors.COLOR_BLUE);
+			saveHyperlink.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.save"));
 		}
-		else
-		{
+		else {
 			infoLabel.setText("Hier können sie das aktuelle Fahrzeug verwalten und die Änderungen speichern.");
-			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("admin.info"));
+			infoLabel.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.info"));
 			saveHyperlink.setEnabled(false);
 			saveHyperlink.setForeground(CustomColors.GREY_COLOR);
-			saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.saveDisabled"));
+			saveHyperlink.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.saveDisabled"));
 		}
 
-		//set the dirty flag
-		firePropertyChange(IWorkbenchPartConstants.PROP_DIRTY); 
+		// set the dirty flag
+		firePropertyChange(IWorkbenchPartConstants.PROP_DIRTY);
 	}
 }
