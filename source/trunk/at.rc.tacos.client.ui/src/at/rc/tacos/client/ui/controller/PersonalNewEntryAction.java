@@ -11,6 +11,11 @@ import at.rc.tacos.client.ui.dialog.RosterEntryForm;
 
 public class PersonalNewEntryAction extends Action {
 
+	@Override
+	public String getId() {
+		return "at.rc.tacos.client.ui.actions.PersonalNewEntryAction";
+	}
+
 	/**
 	 * Returns the tooltip text for the action
 	 * 

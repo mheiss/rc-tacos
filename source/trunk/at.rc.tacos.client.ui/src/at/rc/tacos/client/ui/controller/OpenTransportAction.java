@@ -18,6 +18,11 @@ import at.rc.tacos.client.ui.dialog.TransportForm;
  */
 public class OpenTransportAction extends Action {
 
+	@Override
+	public String getId() {
+		return "at.rc.tacos.client.ui.actions.OpenTransportAction";
+	}
+
 	/**
 	 * Returns the tool tip text for the action
 	 * 

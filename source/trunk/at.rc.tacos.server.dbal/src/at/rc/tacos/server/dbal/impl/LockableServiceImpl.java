@@ -44,7 +44,7 @@ public class LockableServiceImpl implements LockableService {
 	@Override
 	public Lockable getLock(Lockable lockable) {
 		// check if we have a object
-		if (locks.contains(lockable)) {
+		if (!locks.contains(lockable)) {
 			return null;
 		}
 		synchronized (locks) {
