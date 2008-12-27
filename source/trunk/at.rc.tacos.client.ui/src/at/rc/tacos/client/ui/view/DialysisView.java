@@ -21,8 +21,8 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.client.net.NetWrapper;
@@ -45,7 +45,7 @@ public class DialysisView extends ViewPart implements DataChangeListener<Dialysi
 
 	// the toolkit to use
 	private FormToolkit toolkit;
-	private ScrolledForm form;
+	private Form form;
 	private TableViewer viewer;
 
 	// the actions for the context menu
@@ -78,13 +78,13 @@ public class DialysisView extends ViewPart implements DataChangeListener<Dialysi
 	 */
 	@Override
 	public void createPartControl(final Composite parent) {
-		// Create the scrolled parent component
 		toolkit = new FormToolkit(Display.getDefault());
-		form = toolkit.createScrolledForm(parent);
-		toolkit.decorateFormHeading(form.getForm());
-		form.getBody().setLayout(new FillLayout());
+		form = toolkit.createForm(parent);
+		form.setText("Dialysetransporte");
+		toolkit.decorateFormHeading(form);
 
 		final Composite composite = form.getBody();
+		composite.setLayout(new FillLayout());
 
 		viewer = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
 		viewer.setContentProvider(new ArrayContentProvider());
@@ -93,91 +93,91 @@ public class DialysisView extends ViewPart implements DataChangeListener<Dialysi
 		viewer.getTable().setLinesVisible(true);
 		viewer.refresh();
 
-		final Table table_2 = viewer.getTable();
-		table_2.setLinesVisible(true);
-		table_2.setHeaderVisible(true);
+		final Table table = viewer.getTable();
+		table.setLinesVisible(true);
+		table.setHeaderVisible(true);
 
-		final TableColumn lockColumn = new TableColumn(table_2, SWT.NONE);
+		final TableColumn lockColumn = new TableColumn(table, SWT.NONE);
 		lockColumn.setToolTipText("Eintrag wird gerade bearbeitet");
 		lockColumn.setWidth(24);
 		lockColumn.setText("L");
 
-		final TableColumn newColumnTableColumnStationDialyse = new TableColumn(table_2, SWT.NONE);
+		final TableColumn newColumnTableColumnStationDialyse = new TableColumn(table, SWT.NONE);
 		newColumnTableColumnStationDialyse.setToolTipText("Zuständige Ortsstelle");
 		newColumnTableColumnStationDialyse.setWidth(200);
 		newColumnTableColumnStationDialyse.setText("OS");
 
-		final TableColumn newColumnTableColumnAbfDialyse = new TableColumn(table_2, SWT.NONE);
+		final TableColumn newColumnTableColumnAbfDialyse = new TableColumn(table, SWT.NONE);
 		newColumnTableColumnAbfDialyse.setToolTipText("Geplante Abfahrt an Ortsstelle");
 		newColumnTableColumnAbfDialyse.setWidth(68);
 		newColumnTableColumnAbfDialyse.setText("Abf");
 
-		final TableColumn newColumnTableColumnAnkDialyse = new TableColumn(table_2, SWT.NONE);
+		final TableColumn newColumnTableColumnAnkDialyse = new TableColumn(table, SWT.NONE);
 		newColumnTableColumnAnkDialyse.setToolTipText("Geplante Ankunft beim Patienten");
 		newColumnTableColumnAnkDialyse.setWidth(68);
 		newColumnTableColumnAnkDialyse.setText("Ank");
 
-		final TableColumn newColumnTableColumnTerminDialyse = new TableColumn(table_2, SWT.NONE);
+		final TableColumn newColumnTableColumnTerminDialyse = new TableColumn(table, SWT.NONE);
 		newColumnTableColumnTerminDialyse.setToolTipText("Termin auf der Dialyse");
 		newColumnTableColumnTerminDialyse.setWidth(68);
 		newColumnTableColumnTerminDialyse.setText("Termin");
 
-		final TableColumn newColumnTableColumnRTAbfahrtDialyse = new TableColumn(table_2, SWT.NONE);
+		final TableColumn newColumnTableColumnRTAbfahrtDialyse = new TableColumn(table, SWT.NONE);
 		newColumnTableColumnRTAbfahrtDialyse.setToolTipText("Abfahrt an der Ortsstelle");
 		newColumnTableColumnRTAbfahrtDialyse.setWidth(68);
 		newColumnTableColumnRTAbfahrtDialyse.setText("RT Abfahrt");
 
-		final TableColumn newColumnTableColumnAbholbereitDialyse = new TableColumn(table_2, SWT.NONE);
+		final TableColumn newColumnTableColumnAbholbereitDialyse = new TableColumn(table, SWT.NONE);
 		newColumnTableColumnAbholbereitDialyse.setToolTipText("Patient ist mit Dialyse fertig, abholbereit im LKH");
 		newColumnTableColumnAbholbereitDialyse.setWidth(68);
 		newColumnTableColumnAbholbereitDialyse.setText("Abholbereit");
 
-		final TableColumn newColumnTableColumnWohnortDialyse = new TableColumn(table_2, SWT.NONE);
+		final TableColumn newColumnTableColumnWohnortDialyse = new TableColumn(table, SWT.NONE);
 		newColumnTableColumnWohnortDialyse.setWidth(250);
 		newColumnTableColumnWohnortDialyse.setText("Wohnort");
 
-		final TableColumn newColumnTableColumnNameDialyse = new TableColumn(table_2, SWT.NONE);
+		final TableColumn newColumnTableColumnNameDialyse = new TableColumn(table, SWT.NONE);
 		newColumnTableColumnNameDialyse.setWidth(250);
 		newColumnTableColumnNameDialyse.setText("Name");
 
-		final TableColumn newColumnTableColumnDialyseort = new TableColumn(table_2, SWT.NONE);
+		final TableColumn newColumnTableColumnDialyseort = new TableColumn(table, SWT.NONE);
 		newColumnTableColumnDialyseort.setWidth(250);
 		newColumnTableColumnDialyseort.setText("Dialyseort");
 
-		final TableColumn newColumnTableColumnMontag = new TableColumn(table_2, SWT.NONE);
+		final TableColumn newColumnTableColumnMontag = new TableColumn(table, SWT.NONE);
 		newColumnTableColumnMontag.setData("newKey", null);
 		newColumnTableColumnMontag.setWidth(30);
 		newColumnTableColumnMontag.setText("Mo");
 
-		final TableColumn newColumnTableColumnDienstag = new TableColumn(table_2, SWT.NONE);
+		final TableColumn newColumnTableColumnDienstag = new TableColumn(table, SWT.NONE);
 		newColumnTableColumnDienstag.setWidth(30);
 		newColumnTableColumnDienstag.setText("Di");
 
-		final TableColumn newColumnTableColumnMittwoch = new TableColumn(table_2, SWT.NONE);
+		final TableColumn newColumnTableColumnMittwoch = new TableColumn(table, SWT.NONE);
 		newColumnTableColumnMittwoch.setWidth(30);
 		newColumnTableColumnMittwoch.setText("Mi");
 
-		final TableColumn newColumnTableColumnDonnerstag = new TableColumn(table_2, SWT.NONE);
+		final TableColumn newColumnTableColumnDonnerstag = new TableColumn(table, SWT.NONE);
 		newColumnTableColumnDonnerstag.setWidth(30);
 		newColumnTableColumnDonnerstag.setText("Do");
 
-		final TableColumn newColumnTableColumnFreitag = new TableColumn(table_2, SWT.NONE);
+		final TableColumn newColumnTableColumnFreitag = new TableColumn(table, SWT.NONE);
 		newColumnTableColumnFreitag.setWidth(30);
 		newColumnTableColumnFreitag.setText("Fr");
 
-		final TableColumn newColumnTableColumnSamstag = new TableColumn(table_2, SWT.NONE);
+		final TableColumn newColumnTableColumnSamstag = new TableColumn(table, SWT.NONE);
 		newColumnTableColumnSamstag.setWidth(30);
 		newColumnTableColumnSamstag.setText("Sa");
 
-		final TableColumn newColumnTableColumnSonntag = new TableColumn(table_2, SWT.NONE);
+		final TableColumn newColumnTableColumnSonntag = new TableColumn(table, SWT.NONE);
 		newColumnTableColumnSonntag.setWidth(30);
 		newColumnTableColumnSonntag.setText("So");
 
-		final TableColumn newColumnTableColumnTA = new TableColumn(table_2, SWT.NONE);
+		final TableColumn newColumnTableColumnTA = new TableColumn(table, SWT.NONE);
 		newColumnTableColumnTA.setWidth(90);
 		newColumnTableColumnTA.setText("TA");
 
-		final TableColumn newColumnTableColumnStationaer = new TableColumn(table_2, SWT.NONE);
+		final TableColumn newColumnTableColumnStationaer = new TableColumn(table, SWT.NONE);
 		newColumnTableColumnStationaer.setToolTipText("Patient wird derzeit nicht transportiert");
 		newColumnTableColumnStationaer.setWidth(40);
 		newColumnTableColumnStationaer.setText("Stat");

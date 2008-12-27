@@ -22,7 +22,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
@@ -40,6 +39,7 @@ import at.rc.tacos.client.ui.controller.RefreshViewAction;
 import at.rc.tacos.client.ui.jobs.FilterAddressJob;
 import at.rc.tacos.client.ui.jobs.FilterPatientJob;
 import at.rc.tacos.client.ui.providers.SickPersonAdminTableLabelProvider;
+import at.rc.tacos.client.ui.utils.CompositeHelper;
 import at.rc.tacos.platform.model.SickPerson;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.listeners.DataChangeListener;
@@ -80,16 +80,13 @@ public class SickPersonAdminView extends ViewPart implements DataChangeListener<
 		form = toolkit.createScrolledForm(parent);
 		form.setText("Liste der Patienten");
 		toolkit.decorateFormHeading(form.getForm());
-		GridLayout layout = new GridLayout();
-		layout.horizontalSpacing = 0;
-		layout.verticalSpacing = 0;
-		layout.marginHeight = 0;
-		layout.marginWidth = 0;
-		form.getBody().setLayout(layout);
-		form.getBody().setLayoutData(new GridData(GridData.FILL_BOTH));
+
+		Composite client = form.getBody();
+		client.setLayout(new GridLayout());
+		client.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		// create the section to hold the filter
-		Composite filter = createSection(form.getBody(), "Filter");
+		Composite filter = CompositeHelper.createSection(toolkit, client, "Filter");
 
 		// create the input fields
 		final Label labelLastname = toolkit.createLabel(filter, "Nachname");
@@ -127,7 +124,7 @@ public class SickPersonAdminView extends ViewPart implements DataChangeListener<
 		infoLabel.setImage(UiWrapper.getDefault().getImageRegistry().get("resource.info"));
 
 		// create the section to hold the table
-		Composite tableComp = createSection(form.getBody(), "Filter");
+		Composite tableComp = CompositeHelper.createSection(toolkit, client, "Filter");
 		Table table = new Table(tableComp, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
 		viewer = new TableViewer(table);
 		viewer.setUseHashlookup(true);
@@ -259,41 +256,6 @@ public class SickPersonAdminView extends ViewPart implements DataChangeListener<
 		form.getToolBarManager().add(addAction);
 		form.getToolBarManager().add(refreshAction);
 		form.getToolBarManager().update(true);
-	}
-
-	// Helper methods
-	/**
-	 * Creates and returns a section and a composite with two colums
-	 * 
-	 * @param parent
-	 *            the parent composite
-	 * @param sectionName
-	 *            the title of the section
-	 * @return the created composite to hold the other widgets
-	 */
-	private Composite createSection(Composite parent, String sectionName) {
-		// create the section
-		Section section = toolkit.createSection(parent, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
-		toolkit.createCompositeSeparator(section);
-		section.setText(sectionName);
-		section.setLayout(new GridLayout());
-		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.BEGINNING | GridData.HORIZONTAL_ALIGN_BEGINNING
-				| GridData.VERTICAL_ALIGN_BEGINNING));
-		section.setExpanded(true);
-		// composite to add the client area
-		Composite client = new Composite(section, SWT.NONE);
-		section.setClient(client);
-
-		// layout
-		GridLayout layout = new GridLayout();
-		layout.numColumns = 2;
-		layout.makeColumnsEqualWidth = false;
-		client.setLayout(layout);
-		GridData clientDataLayout = new GridData(GridData.BEGINNING | GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING
-				| GridData.FILL_BOTH);
-		client.setLayoutData(clientDataLayout);
-
-		return client;
 	}
 
 	/**

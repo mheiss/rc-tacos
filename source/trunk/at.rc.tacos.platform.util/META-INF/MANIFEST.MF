@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Uitl Plug-in
+Bundle-Name: Util Plug-in
 Bundle-SymbolicName: at.rc.tacos.platform.util
 Bundle-Version: 1.0.0
 Bundle-Activator: at.rc.tacos.platform.util.Activator

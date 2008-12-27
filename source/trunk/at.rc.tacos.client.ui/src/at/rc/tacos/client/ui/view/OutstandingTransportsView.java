@@ -91,7 +91,7 @@ public class OutstandingTransportsView extends ViewPart implements DataChangeLis
 	 */
 	@Override
 	public void createPartControl(final Composite parent) {
-		// Create the scrolled parent component
+		// Create the parent component
 		toolkit = new FormToolkit(Display.getDefault());
 		form = toolkit.createForm(parent);
 		form.setText("Offene Transporte");

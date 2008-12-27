@@ -14,28 +14,27 @@ import org.eclipse.swt.nebula.widgets.cdatetime.CDT;
 import org.eclipse.swt.nebula.widgets.cdatetime.CDateTime;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.events.HyperlinkAdapter;
 import org.eclipse.ui.forms.events.HyperlinkEvent;
-import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ImageHyperlink;
-import org.eclipse.ui.forms.widgets.ScrolledForm;
-import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.client.net.NetWrapper;
 import at.rc.tacos.client.ui.ListenerConstants;
 import at.rc.tacos.client.ui.UiWrapper;
 import at.rc.tacos.client.ui.filters.TransportViewFilter;
+import at.rc.tacos.client.ui.utils.CompositeHelper;
 import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.platform.iface.IFilterTypes;
 import at.rc.tacos.platform.model.Transport;
 import at.rc.tacos.platform.net.message.GetMessage;
 
 /**
- * A view showing custom informations
+ * The <code>FilterView</code> provides a date and other custom filters for the
+ * variouse transport perspectives and views.
  * 
  * @author b.thek
  */
@@ -44,15 +43,14 @@ public class FilterView extends ViewPart {
 	public static final String ID = "at.rc.tacos.client.view.filter";
 
 	// the components
-	private CDateTime dateTime;
 	private FormToolkit toolkit;
-	private ScrolledForm form;
+	private Form form;
 	private Composite calendar;
 	private Composite filter;
 
-	// text fields for the filter
+	// controls
+	private CDateTime dateTime;
 	private Text from, patient, to, location, transportNumber, priority, vehicle, disease;
-	// to apply the filter
 	private ImageHyperlink applyFilter, resetFilter;
 
 	// labels for the view
@@ -70,25 +68,17 @@ public class FilterView extends ViewPart {
 	public void createPartControl(Composite parent) {
 		// the scrolled form
 		toolkit = new FormToolkit(Display.getDefault());
-		form = toolkit.createScrolledForm(parent);
+		form = toolkit.createForm(parent);
 		form.setText("Filterfunktionen");
-		toolkit.decorateFormHeading(form.getForm());
-		GridLayout layout = new GridLayout();
-		layout.horizontalSpacing = 0;
-		layout.verticalSpacing = 0;
-		layout.marginHeight = 0;
-		layout.marginWidth = 0;
-		form.getBody().setLayout(layout);
-		GridData data = new GridData(GridData.FILL_HORIZONTAL);
-		form.getBody().setLayoutData(data);
+		toolkit.decorateFormHeading(form);
+
+		Composite client = form.getBody();
+		client.setLayout(new GridLayout(1, false));
+		client.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		// add the composites
-		createCalendarSection(form.getBody());
-		createFilterSection(form.getBody());
-
-		// reflow
-		form.reflow(true);
-		form.update();
+		createCalendarSection(client);
+		createFilterSection(client);
 	}
 
 	/**
@@ -100,37 +90,18 @@ public class FilterView extends ViewPart {
 	}
 
 	/**
-	 * Helper method to create a composite
-	 * 
-	 * @param parent
-	 *            the parent control
-	 * @param col
-	 *            the number of cols
-	 * @return the returned composite
-	 */
-	public Composite makeComposite(Composite parent, int col) {
-		Composite nameValueComp = toolkit.createComposite(parent);
-		GridLayout layout = new GridLayout(col, false);
-		layout.marginHeight = 3;
-		nameValueComp.setLayout(layout);
-		nameValueComp.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		return nameValueComp;
-	}
-
-	/**
 	 * Creates the calendar section of the view.
 	 * 
 	 * @param parent
 	 *            the parent view to integrate
 	 */
 	private void createCalendarSection(Composite parent) {
-		// create the section
-		calendar = createSection(parent, "Datum der Transporte");
+		calendar = CompositeHelper.createSection(toolkit, parent, "Datum der Transporte");
 
 		// Calendar field
 		dateTime = new CDateTime(calendar, CDT.SIMPLE);
 		dateTime.setLocale(Locale.GERMAN);
-		dateTime.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		dateTime.setLayoutData(new GridData(GridData.CENTER));
 		dateTime.setToolTipText("Datum der anzuzeigenden Transporte auswählen");
 		dateTime.addSelectionListener(new SelectionAdapter() {
 
@@ -167,39 +138,47 @@ public class FilterView extends ViewPart {
 	 * @param parent
 	 */
 	private void createFilterSection(Composite parent) {
-		filter = createSection(parent, "Filterfunktion");
+		filter = CompositeHelper.createSection(toolkit, parent, "Filterfunktion");
 
 		// create the input fields, from street
-		final Label labelTransportNumber = toolkit.createLabel(filter, "Transportnummer");
+		toolkit.createLabel(filter, "Transportnummer");
 		transportNumber = toolkit.createText(filter, "");
+		transportNumber.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		// create the input fields, from street
-		final Label labelFrom = toolkit.createLabel(filter, "von");
+		toolkit.createLabel(filter, "von");
 		from = toolkit.createText(filter, "");
+		from.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		// the patient
-		final Label labelPatient = toolkit.createLabel(filter, "Patient");
+		toolkit.createLabel(filter, "Patient");
 		patient = toolkit.createText(filter, "");
+		patient.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		// the to street
-		final Label labelTo = toolkit.createLabel(filter, "nach");
+		toolkit.createLabel(filter, "nach");
 		to = toolkit.createText(filter, "");
+		to.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		// the location
-		final Label labelLocation = toolkit.createLabel(filter, "Ortsstelle");
+		toolkit.createLabel(filter, "Ortsstelle");
 		location = toolkit.createText(filter, "");
+		location.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		// the priority
-		final Label labelPriority = toolkit.createLabel(filter, "Priorität");
+		toolkit.createLabel(filter, "Priorität");
 		priority = toolkit.createText(filter, "");
+		priority.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		// the vehicle
-		final Label labelVehicle = toolkit.createLabel(filter, "Fahrzeug");
+		toolkit.createLabel(filter, "Fahrzeug");
 		vehicle = toolkit.createText(filter, "");
+		vehicle.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		// the disease
-		final Label labelDisease = toolkit.createLabel(filter, "Erkrankung");
+		toolkit.createLabel(filter, "Erkrankung");
 		disease = toolkit.createText(filter, "");
+		disease.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		// Create the hyperlink to import the data
 		applyFilter = toolkit.createImageHyperlink(filter, SWT.NONE);
@@ -261,82 +240,5 @@ public class FilterView extends ViewPart {
 				UiWrapper.getDefault().firePropertyChangeEvent(event);
 			}
 		});
-
-		// set the layout for the composites
-		GridData data = new GridData();
-		data.widthHint = 90;
-		labelTransportNumber.setLayoutData(data);
-		data = new GridData();
-		data.widthHint = 50;
-		labelFrom.setLayoutData(data);
-		data.widthHint = 50;
-		labelPatient.setLayoutData(data);
-		data.widthHint = 50;
-		labelTo.setLayoutData(data);
-		labelPatient.setLayoutData(data);
-		data.widthHint = 70;
-		labelLocation.setLayoutData(data);
-		data.widthHint = 50;
-		labelPriority.setLayoutData(data);
-		data.widthHint = 50;
-		labelVehicle.setLayoutData(data);
-		data.widthHint = 90;
-		labelDisease.setLayoutData(data);
-		data.widthHint = 70;
-		// layout for the text fields
-		GridData data2 = new GridData();
-		data2.widthHint = 120;
-		transportNumber.setLayoutData(data2);
-		data2 = new GridData();
-		data2.widthHint = 120;
-		from.setLayoutData(data2);
-		data2 = new GridData();
-		data2.widthHint = 120;
-		patient.setLayoutData(data2);
-		data2 = new GridData();
-		data2.widthHint = 120;
-		to.setLayoutData(data2);
-		data2 = new GridData();
-		data2.widthHint = 120;
-		location.setLayoutData(data2);
-		data2 = new GridData();
-		data2.widthHint = 120;
-		priority.setLayoutData(data2);
-		data2 = new GridData();
-		data2.widthHint = 120;
-		vehicle.setLayoutData(data2);
-		data2 = new GridData();
-		data2.widthHint = 120;
-		disease.setLayoutData(data2);
-	}
-
-	// Helper methods
-	/**
-	 * Creates and returns a section and a composite with two colums
-	 * 
-	 * @param parent
-	 *            the parent composite
-	 * @param sectionName
-	 *            the title of the section
-	 * @return the created composite to hold the other widgets
-	 */
-	private Composite createSection(Composite parent, String sectionName) {
-		// create the section
-		Section section = toolkit.createSection(parent, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
-		toolkit.createCompositeSeparator(section);
-		section.setText(sectionName);
-		section.setLayout(new GridLayout());
-		section.setLayoutData(new GridData(GridData.BEGINNING | GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING));
-		section.setExpanded(true);
-		// composite to add the client area
-		Composite client = new Composite(section, SWT.NONE);
-		section.setClient(client);
-
-		// layout
-		client.setLayout(new GridLayout(1, false));
-		GridData clientDataLayout = new GridData(GridData.BEGINNING | GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING);
-		client.setLayoutData(clientDataLayout);
-
-		return client;
 	}
 }

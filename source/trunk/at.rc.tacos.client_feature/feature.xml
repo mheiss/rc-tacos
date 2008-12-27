@@ -473,7 +473,8 @@ Public License instead of this License.
 
    <includes
          id="at.rc.tacos.platform_feature"
-         version="0.0.0"/>
+         version="0.0.0"
+         name="Tacos Platform"/>
 
    <plugin
          id="at.rc.tacos.client"

@@ -24,11 +24,15 @@
          </property>
          <property
                name="aboutText"
-               value="Austrian Red Cross.&#x0A;Time and Coordination System - Client Software.&#x0A;Developed by Birgit Thek and Heiß Michael.&#x0A;(c) 2007-2008 FH-Joanneum / ITM">
+               value="Austrian Red Cross.&#x0D;&#x0A;Time and Coordination System - Client Software.&#x0D;&#x0A;Developed by Birgit Thek and Heiß Michael.&#x0D;&#x0A;(c) 2007-2009 FH-Joanneum / ITM">
          </property>
          <property
                name="windowImages"
                value="icons/application/alt_window_16.gif,icons/application/alt_window_32.gif,icons/application/alt_window_48.gif,icons/application/alt_window_64.gif,icons/application/alt_window_128.gif">
+         </property>
+         <property
+               name="aboutImage"
+               value="icons/logo_small.png">
          </property>
       </product>
    </extension>

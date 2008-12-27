@@ -24,9 +24,8 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.ViewPart;
 import org.slf4j.Logger;
@@ -42,6 +41,7 @@ import at.rc.tacos.client.ui.controller.ImportAddressAction;
 import at.rc.tacos.client.ui.jobs.FilterAddressJob;
 import at.rc.tacos.client.ui.providers.AddressLabelProvider;
 import at.rc.tacos.client.ui.sorterAndTooltip.AddressViewSorter;
+import at.rc.tacos.client.ui.utils.CompositeHelper;
 import at.rc.tacos.platform.model.Address;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.listeners.DataChangeListener;
@@ -56,7 +56,7 @@ public class AddressAdminView extends ViewPart implements DataChangeListener<Add
 	// properties
 	private TableViewer viewer;
 	private FormToolkit toolkit;
-	private ScrolledForm form;
+	private Form form;
 	// text fields for the filter
 	private Text zip, city, street;
 
@@ -78,19 +78,16 @@ public class AddressAdminView extends ViewPart implements DataChangeListener<Add
 	@Override
 	public void createPartControl(final Composite parent) {
 		toolkit = new FormToolkit(Display.getDefault());
-		form = toolkit.createScrolledForm(parent);
+		form = toolkit.createForm(parent);
 		form.setText("Liste der Adressen");
-		toolkit.decorateFormHeading(form.getForm());
-		GridLayout layout = new GridLayout();
-		layout.horizontalSpacing = 0;
-		layout.verticalSpacing = 0;
-		layout.marginHeight = 0;
-		layout.marginWidth = 0;
-		form.getBody().setLayout(layout);
-		form.getBody().setLayoutData(new GridData(GridData.FILL_BOTH));
+		toolkit.decorateFormHeading(form);
+
+		Composite client = form.getBody();
+		client.setLayout(new GridLayout());
+		client.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		// create the section to hold the filter
-		Composite filter = createSection(form.getBody(), "Filter");
+		Composite filter = CompositeHelper.createSection(toolkit, client, "Filter");
 
 		// create the input fields
 		final Label labelStreet = toolkit.createLabel(filter, "Straße");
@@ -128,7 +125,7 @@ public class AddressAdminView extends ViewPart implements DataChangeListener<Add
 		infoLabel.setImage(UiWrapper.getDefault().getImageRegistry().get("resource.info"));
 
 		// create the section to hold the table
-		Composite tableComp = createSection(form.getBody(), "Filter");
+		Composite tableComp = CompositeHelper.createSection(toolkit, client, "Filter");
 		Table table = new Table(tableComp, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
 		viewer = new TableViewer(table);
 		viewer.setUseHashlookup(true);
@@ -261,9 +258,6 @@ public class AddressAdminView extends ViewPart implements DataChangeListener<Add
 		String authorization = NetWrapper.getSession().getLogin().getAuthorization();
 		if (!authorization.equalsIgnoreCase("Administrator"))
 			form.setEnabled(false);
-
-		// reflow
-		form.reflow(true);
 	}
 
 	@Override
@@ -297,41 +291,6 @@ public class AddressAdminView extends ViewPart implements DataChangeListener<Add
 		form.getToolBarManager().add(addAction);
 		form.getToolBarManager().add(importAction);
 		form.getToolBarManager().update(true);
-	}
-
-	// Helper methods
-	/**
-	 * Creates and returns a section and a composite with two colums
-	 * 
-	 * @param parent
-	 *            the parent composite
-	 * @param sectionName
-	 *            the title of the section
-	 * @return the created composite to hold the other widgets
-	 */
-	private Composite createSection(Composite parent, String sectionName) {
-		// create the section
-		Section section = toolkit.createSection(parent, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
-		toolkit.createCompositeSeparator(section);
-		section.setText(sectionName);
-		section.setLayout(new GridLayout());
-		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.BEGINNING | GridData.HORIZONTAL_ALIGN_BEGINNING
-				| GridData.VERTICAL_ALIGN_BEGINNING));
-		section.setExpanded(true);
-		// composite to add the client area
-		Composite client = new Composite(section, SWT.NONE);
-		section.setClient(client);
-
-		// layout
-		GridLayout layout = new GridLayout();
-		layout.numColumns = 2;
-		layout.makeColumnsEqualWidth = false;
-		client.setLayout(layout);
-		GridData clientDataLayout = new GridData(GridData.BEGINNING | GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING
-				| GridData.FILL_BOTH);
-		client.setLayoutData(clientDataLayout);
-
-		return client;
 	}
 
 	/**

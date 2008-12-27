@@ -93,13 +93,14 @@ public class JournalView extends ViewPart implements DataChangeListener<Transpor
 	 */
 	@Override
 	public void createPartControl(final Composite parent) {
-		// Create the scrolled parent component
+		// Create the parent component
 		toolkit = new FormToolkit(Display.getDefault());
 		form = toolkit.createForm(parent);
+		form.setText("Transport Journal");
 		toolkit.decorateFormHeading(form);
-		form.getBody().setLayout(new FillLayout());
 
 		final Composite composite = form.getBody();
+		composite.setLayout(new FillLayout());
 
 		viewer = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
 		viewer.setContentProvider(new ArrayContentProvider());
