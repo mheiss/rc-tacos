@@ -29,6 +29,7 @@ import at.rc.tacos.client.net.NetWrapper;
 import at.rc.tacos.client.net.handler.TransportHandler;
 import at.rc.tacos.client.ui.ListenerConstants;
 import at.rc.tacos.client.ui.UiWrapper;
+import at.rc.tacos.client.ui.ViewerConstants;
 import at.rc.tacos.client.ui.controller.CancelTransportAction;
 import at.rc.tacos.client.ui.controller.CopyTransportAction;
 import at.rc.tacos.client.ui.controller.CopyTransportDetailsIntoClipboardAction;
@@ -157,7 +158,7 @@ public class UnderwayTransportsView extends AbstractView {
 		final TableColumn prioritaetDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		prioritaetDisponierteTransporte
 				.setToolTipText("1 (NEF), 2 (BD1), 3 (Transport), 4 (Rücktransport), 5 (Heimtransport), 6 (Sonstiges), 7 (NEF extern)");
-		prioritaetDisponierteTransporte.setWidth(26);
+		prioritaetDisponierteTransporte.setWidth(ViewerConstants.CHAR_WIDTH);
 		prioritaetDisponierteTransporte.setText("Pr");
 
 		final TableColumn transportNummerDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
@@ -169,46 +170,46 @@ public class UnderwayTransportsView extends AbstractView {
 		final TableColumn terminDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		terminDisponierteTransporte.setToolTipText("Termin am Zielort");
 		terminDisponierteTransporte.setMoveable(true);
-		terminDisponierteTransporte.setWidth(43);
+		terminDisponierteTransporte.setWidth(ViewerConstants.TIME_WIDTH);
 		terminDisponierteTransporte.setText("Termin");
 
 		final TableColumn transportVonDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		transportVonDisponierteTransporte.setMoveable(true);
-		transportVonDisponierteTransporte.setWidth(250);
+		transportVonDisponierteTransporte.setWidth(ViewerConstants.LONG_TEXT_WIDTH);
 		transportVonDisponierteTransporte.setText("Transport von");
 
 		final TableColumn patientDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		patientDisponierteTransporte.setMoveable(true);
-		patientDisponierteTransporte.setWidth(200);
+		patientDisponierteTransporte.setWidth(ViewerConstants.LONG_TEXT_WIDTH);
 		patientDisponierteTransporte.setText("Patient");
 
 		final TableColumn transportNachDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
-		transportNachDisponierteTransporte.setWidth(250);
+		transportNachDisponierteTransporte.setWidth(ViewerConstants.LONG_TEXT_WIDTH);
 		transportNachDisponierteTransporte.setText("Transport nach");
 
 		final TableColumn aeDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		aeDisponierteTransporte.setToolTipText("Auftrag erteilt");
-		aeDisponierteTransporte.setWidth(43);
+		aeDisponierteTransporte.setWidth(ViewerConstants.TIME_WIDTH);
 		aeDisponierteTransporte.setText("AE");
 
 		final TableColumn s1DisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		s1DisponierteTransporte.setToolTipText("Transportbeginn");
-		s1DisponierteTransporte.setWidth(43);
+		s1DisponierteTransporte.setWidth(ViewerConstants.TIME_WIDTH);
 		s1DisponierteTransporte.setText("S1");
 
 		final TableColumn s2DisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		s2DisponierteTransporte.setToolTipText("Ankunft bei Patient");
-		s2DisponierteTransporte.setWidth(43);
+		s2DisponierteTransporte.setWidth(ViewerConstants.TIME_WIDTH);
 		s2DisponierteTransporte.setText("S2");
 
 		final TableColumn s3DisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		s3DisponierteTransporte.setToolTipText("Abfahrt mit Patient");
-		s3DisponierteTransporte.setWidth(43);
+		s3DisponierteTransporte.setWidth(ViewerConstants.TIME_WIDTH);
 		s3DisponierteTransporte.setText("S3");
 
 		final TableColumn s4DisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		s4DisponierteTransporte.setToolTipText("Ankunft Ziel");
-		s4DisponierteTransporte.setWidth(43);
+		s4DisponierteTransporte.setWidth(ViewerConstants.TIME_WIDTH);
 		s4DisponierteTransporte.setText("S4");
 
 		final TableColumn fzgDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
@@ -218,15 +219,15 @@ public class UnderwayTransportsView extends AbstractView {
 
 		final TableColumn taDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		taDisponierteTransporte.setToolTipText("Transportart");
-		taDisponierteTransporte.setWidth(22);
+		taDisponierteTransporte.setWidth(ViewerConstants.CHAR_WIDTH);
 		taDisponierteTransporte.setText("T");
 
 		final TableColumn erkrankungVerletzungDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
-		erkrankungVerletzungDisponierteTransporte.setWidth(200);
+		erkrankungVerletzungDisponierteTransporte.setWidth(ViewerConstants.MEDIUM_TEXT_WIDTH);
 		erkrankungVerletzungDisponierteTransporte.setText("Erkrankung/Verletzung");
 
 		final TableColumn anmerkungUnderwayTransporte = new TableColumn(tableDisp, SWT.NONE);
-		anmerkungUnderwayTransporte.setWidth(312);
+		anmerkungUnderwayTransporte.setWidth(ViewerConstants.LONG_TEXT_WIDTH);
 		anmerkungUnderwayTransporte.setText("Anmerkung");
 
 		/** make columns sort able */
