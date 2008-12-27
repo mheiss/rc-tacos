@@ -115,7 +115,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 
 	// the currently filtered date
 	private TransportDateFilter transportDateFilter = new TransportDateFilter(Calendar.getInstance());
-	private TransportViewFilter transportViewFilter = null;
+	private TransportViewFilter transportViewFilter = new TransportViewFilter("", "", "", "", "", "", "", "");
 
 	// the model handlers
 	private TransportHandler transportHandler = (TransportHandler) NetWrapper.getHandler(Transport.class);

@@ -79,9 +79,7 @@ public class FilterView extends ViewPart {
 		layout.marginHeight = 0;
 		layout.marginWidth = 0;
 		form.getBody().setLayout(layout);
-		GridData data = new GridData();
-		data.widthHint = 250;
-		data.grabExcessHorizontalSpace = false;
+		GridData data = new GridData(GridData.FILL_HORIZONTAL);
 		form.getBody().setLayoutData(data);
 
 		// add the composites

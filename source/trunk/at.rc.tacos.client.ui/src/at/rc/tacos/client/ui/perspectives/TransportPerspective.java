@@ -30,7 +30,7 @@ public class TransportPerspective implements IPerspectiveFactory {
 		// the main components
 		layout.addStandaloneView(TransportMenuView.ID, false, IPageLayout.TOP, 0.10f, editorArea);
 		layout.addStandaloneView(FilterView.ID, false, IPageLayout.LEFT, 0.15f, editorArea);
-		layout.addStandaloneView(OutstandingTransportsView.ID, false, IPageLayout.BOTTOM, 0.75f, editorArea);
-		layout.addStandaloneView(UnderwayTransportsView.ID, false, IPageLayout.TOP, 0.75f, editorArea);
+		layout.addStandaloneView(OutstandingTransportsView.ID, false, IPageLayout.BOTTOM, 0.50f, editorArea);
+		layout.addStandaloneView(UnderwayTransportsView.ID, false, IPageLayout.TOP, 0.50f, editorArea);
 	}
 }
