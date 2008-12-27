@@ -8,37 +8,42 @@ import at.rc.tacos.platform.model.Transport;
 /**
  * Prebooking views directness filter for the tables <br>
  * The table shows only the transports that applied to the filter
+ * 
  * @author b.thek
  */
-public class TransportDirectnessFilter extends ViewerFilter
-{
-	//properties
+public class TransportDirectnessFilter extends ViewerFilter {
+
+	// properties
 	private int directness;
 
 	/**
 	 * Create a new ViewFilter object and pass the directness to filter
-	 * @param programStatus the programStatus to show
+	 * 
+	 * @param programStatus
+	 *            the programStatus to show
 	 */
-	public TransportDirectnessFilter(int directness)
-	{
+	public TransportDirectnessFilter(int directness) {
 		this.directness = directness;
 	}
 
 	/**
 	 * Returns whether or not the object should be filtered or not.
-	 * @param viewer the viewer
-	 * @param parentElement the parent element
-	 * @param element the element to check
+	 * 
+	 * @param viewer
+	 *            the viewer
+	 * @param parentElement
+	 *            the parent element
+	 * @param element
+	 *            the element to check
 	 */
 	@Override
-	public boolean select(Viewer arg0, Object parentElement, Object element) 
-	{
-		//cast the element
-		Transport transport = (Transport)element;
-		//check the transport
-		if(transport.getDirection() == directness)
+	public boolean select(Viewer arg0, Object parentElement, Object element) {
+		// cast the element
+		Transport transport = (Transport) element;
+		// check the transport
+		if (transport.getDirection() == directness)
 			return true;
-		//filter the element out
+		// filter the element out
 		return false;
 	}
 }

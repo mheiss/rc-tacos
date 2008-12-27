@@ -1,8 +1,11 @@
 package at.rc.tacos.platform.model;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
+import java.util.Calendar;
+import java.util.Date;
+
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.time.DateUtils;
 
 import at.rc.tacos.platform.util.MyUtils;
 
@@ -72,7 +75,7 @@ public class DayInfoMessage extends Lockable {
 	@Override
 	public int hashCode() {
 		HashCodeBuilder builder = new HashCodeBuilder(23, 43);
-		builder.append(timestamp);
+		builder.append(DateUtils.truncate(new Date(timestamp), Calendar.DAY_OF_MONTH));
 		return builder.toHashCode();
 	}
 
@@ -97,9 +100,10 @@ public class DayInfoMessage extends Lockable {
 			return false;
 		}
 		DayInfoMessage dayInfoMessage = (DayInfoMessage) obj;
-		EqualsBuilder builder = new EqualsBuilder();
-		builder.append(timestamp, dayInfoMessage.timestamp);
-		return builder.isEquals();
+		if (!DateUtils.isSameDay(new Date(timestamp), new Date(dayInfoMessage.timestamp))) {
+			return false;
+		}
+		return true;
 	}
 
 	// LOCKABLE IMPLEMENTATION

@@ -3,8 +3,10 @@ package at.rc.tacos.client.net.handler;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,10 +83,11 @@ public class DayInfoHandler implements Handler<DayInfoMessage> {
 	 *            the timestamp of the <code>DayInfoMessage</code> to search for
 	 * @return the matched object or null if nothing found
 	 */
-	public DayInfoMessage getMessageByDate(long date) {
+	public DayInfoMessage getMessageByDate(Date date) {
 		synchronized (infoList) {
 			for (DayInfoMessage message : infoList) {
-				if (message.getTimestamp() == date) {
+				Date messageDate = new Date(message.getTimestamp());
+				if (DateUtils.isSameDay(date, messageDate)) {
 					return message;
 				}
 			}

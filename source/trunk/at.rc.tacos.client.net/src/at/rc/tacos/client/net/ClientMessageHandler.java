@@ -48,6 +48,12 @@ public class ClientMessageHandler implements MessageHandler {
 
 		// try to get a handler for the object
 		Object firstElement = message.getFirstElement();
+		if (firstElement == null) {
+			log.warn("Ignoring empty " + message.getMessageType() + " request from the server");
+			return;
+		}
+
+		// get the handler
 		Handler<Object> handler = handlerFactory.getHandler(firstElement.getClass().getName());
 		if (handler == null) {
 			throw new NoSuchHandlerException(firstElement.getClass().getName());

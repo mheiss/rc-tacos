@@ -39,7 +39,6 @@ public class DayInfoHandler implements Handler<DayInfoMessage> {
 	public void get(MessageIoSession session, Message<DayInfoMessage> message) throws ServiceException, SQLException {
 		// get the params from the message
 		Map<String, String> params = message.getParams();
-
 		if (params.containsKey(IFilterTypes.DATE_FILTER)) {
 			// get the query filter
 			final String dateFilter = params.get(IFilterTypes.DATE_FILTER);
@@ -87,7 +86,6 @@ public class DayInfoHandler implements Handler<DayInfoMessage> {
 				throw new ServiceException("Failed to update the day info message: " + dayInfoMessage);
 			// reset the dirty flag
 			dayInfoMessage.setDirty(false);
-
 			// update the locks
 			lockableService.updateLock(dayInfoMessage);
 		}

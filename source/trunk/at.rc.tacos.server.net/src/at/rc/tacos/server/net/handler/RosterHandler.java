@@ -57,7 +57,6 @@ public class RosterHandler implements Handler<RosterEntry> {
 	public void get(MessageIoSession session, Message<RosterEntry> message) throws ServiceException, SQLException {
 		// get the params of the request
 		Map<String, String> params = message.getParams();
-
 		if (params.containsKey(IFilterTypes.DATE_FILTER) && params.containsKey(IFilterTypes.ROSTER_LOCATION_FILTER)) {
 			// get the query filter and parse it to a date time
 			final String dateFilter = params.get(IFilterTypes.DATE_FILTER);

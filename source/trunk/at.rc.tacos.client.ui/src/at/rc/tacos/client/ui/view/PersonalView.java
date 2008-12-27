@@ -112,27 +112,33 @@ public class PersonalView extends ViewPart implements PropertyChangeListener, Da
 		tabFolder.addSelectionListener(new SelectionAdapter() {
 
 			public void widgetSelected(SelectionEvent e) {
-				// assert valid
-				if (e.item.getData() == null)
+				int index = tabFolder.getSelectionIndex();
+				TabItem item = tabFolder.getItem(index);
+
+				/**
+				 * Selection event is fired when the tab is created.<br>
+				 * The data is not set at this time, so ignore the event
+				 */
+				if (item.getData() == null) {
 					return;
-				if (!(e.item.getData() instanceof Location))
-					return;
+				}
+				Location location = (Location) item.getData();
 
 				// remove all location filter
 				for (ViewerFilter filter : viewer.getFilters()) {
-					if (filter instanceof PersonalViewFilter)
+					if (filter instanceof PersonalViewFilter) {
 						viewer.removeFilter(filter);
+					}
 				}
-
-				// cast to a location and apply the new filter
-				Location location = (Location) e.item.getData();
 				viewer.addFilter(new PersonalViewFilter(location));
+				System.out.println("adding filter:" + location);
 			}
 		});
 
 		viewer = new TableViewer(tabFolder, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
 		viewer.setContentProvider(new HandlerContentProvider());
 		viewer.setLabelProvider(new PersonalViewLabelProvider());
+		viewer.setUseHashlookup(true);
 		viewer.setInput(rosterHandler);
 		viewer.getTable().setLinesVisible(true);
 
@@ -158,6 +164,7 @@ public class PersonalView extends ViewPart implements PropertyChangeListener, Da
 				}
 			}
 		});
+
 		// sort the table by default
 		viewer.setSorter(new PersonalViewSorter(PersonalViewSorter.NAME_SORTER, SWT.UP));
 		viewer.addFilter(new PersonalDateFilter(Calendar.getInstance()));
@@ -299,8 +306,18 @@ public class PersonalView extends ViewPart implements PropertyChangeListener, Da
 		for (Location location : locationHandler.toArray()) {
 			addLocation(location);
 		}
+		/**
+		 * The table remains white when we do not call the selection twice
+		 */
 		tabFolder.setSelection(1);
 		tabFolder.setSelection(0);
+
+		/**
+		 * Set the default filter to the first tab
+		 */
+		Location firstLocation = (Location) tabFolder.getItem(0).getData();
+		viewer.addFilter(new PersonalViewFilter(firstLocation));
+
 		// now update the viewer
 		viewer.refresh(true);
 	}
@@ -450,8 +467,6 @@ public class PersonalView extends ViewPart implements PropertyChangeListener, Da
 		// Store the location
 		tabItem.setData(addedLocation);
 		tabItem.setControl(viewer.getTable());
-		// set the default filter to the first location
-		viewer.addFilter(new PersonalViewFilter(addedLocation));
 	}
 
 	/**
