@@ -55,6 +55,12 @@ public class ServerMessageHandler implements MessageHandler {
 
 		// try to get a handler for the object
 		Object firstElement = message.getFirstElement();
+		if (firstElement == null) {
+			log.warn("Ignoring empty " + message.getMessageType() + " request from the client");
+			return;
+		}
+
+		// get the handler
 		Handler<Object> handler = handlerFactory.getHandler(firstElement.getClass().getName());
 		if (handler == null) {
 			throw new NoSuchHandlerException(firstElement.getClass().getName());
@@ -142,7 +148,15 @@ public class ServerMessageHandler implements MessageHandler {
 
 	@Override
 	public void messageSent(MessageIoSession session, Message<Object> message) throws Exception {
-		// do nothing
+		// print out debug information
+		if (log.isDebugEnabled()) {
+			StringBuilder builder = new StringBuilder();
+			builder.append("\nResponse message " + session.getUsername());
+			builder.append("\n\tRequestType: " + message.getMessageType());
+			builder.append("\n\tObjectCount: " + message.getObjects().size());
+			builder.append("\n\tParams: " + message.getParams());
+			log.debug(builder.toString());
+		}
 	}
 
 	@Override

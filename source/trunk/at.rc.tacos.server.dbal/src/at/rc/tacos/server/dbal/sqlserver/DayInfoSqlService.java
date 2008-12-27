@@ -18,7 +18,7 @@ import at.rc.tacos.server.dbal.SQLQueries;
  * @author Michael
  */
 public class DayInfoSqlService implements DayInfoService {
-	
+
 	@Resource(name = "sqlConnection")
 	protected Connection connection;
 
@@ -29,7 +29,7 @@ public class DayInfoSqlService implements DayInfoService {
 	public DayInfoMessage getDayInfoByDate(long date) throws SQLException {
 		// dayinfo_ID, username, date, message
 		final PreparedStatement query = connection.prepareStatement(queries.getStatment("get.dayInfoByDate"));
-		query.setString(1, MyUtils.timestampToString(date, MyUtils.timeAndDateFormat));
+		query.setString(1, MyUtils.timestampToString(date, MyUtils.dateFormat));
 		final ResultSet rs = query.executeQuery();
 		// assert we have a result set
 		if (rs.next()) {
@@ -48,12 +48,10 @@ public class DayInfoSqlService implements DayInfoService {
 		// if we have no day info message for this day -> add new
 		DayInfoMessage dayInfo = getDayInfoByDate(message.getTimestamp());
 		if (dayInfo != null) {
-			// update.dayInfo = UPDATE dayinfo SET username = ?, message = ?
-			// WHERE date = ?;
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("update.dayInfo"));
 			query.setString(1, message.getLastChangedBy());
 			query.setString(2, message.getMessage());
-			query.setString(3, MyUtils.timestampToString(message.getTimestamp(), MyUtils.timeAndDateFormat));
+			query.setString(3, MyUtils.timestampToString(message.getTimestamp(), MyUtils.dateFormat));
 			// check if the day info message was updated
 			if (query.executeUpdate() == 0)
 				return false;
@@ -63,7 +61,7 @@ public class DayInfoSqlService implements DayInfoService {
 			// username, date, message
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("insert.dayInfo"));
 			query.setString(1, message.getLastChangedBy());
-			query.setString(2, MyUtils.timestampToString(message.getTimestamp(), MyUtils.timeAndDateFormat));
+			query.setString(2, MyUtils.timestampToString(message.getTimestamp(), MyUtils.dateFormat));
 			query.setString(3, message.getMessage());
 			// assert the message was inserted
 			if (query.executeUpdate() == 0)

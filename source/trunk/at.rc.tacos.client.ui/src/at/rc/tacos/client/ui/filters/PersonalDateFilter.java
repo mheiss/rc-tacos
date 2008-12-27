@@ -9,11 +9,12 @@ import at.rc.tacos.platform.model.RosterEntry;
 
 /**
  * Filters out all transports that didnt't match the current date
+ * 
  * @author Birgit
  */
-public class PersonalDateFilter extends ViewerFilter
-{
-	//properties
+public class PersonalDateFilter extends ViewerFilter {
+
+	// properties
 	private int filterDay;
 	private int filterMonth;
 	private int filterYear;
@@ -21,62 +22,63 @@ public class PersonalDateFilter extends ViewerFilter
 	/**
 	 * Default class constructor specifying the date for the filter
 	 */
-	public PersonalDateFilter(Calendar filterCalendar)
-	{
+	public PersonalDateFilter(Calendar filterCalendar) {
 		this.filterDay = filterCalendar.get(Calendar.DAY_OF_MONTH);
 		this.filterMonth = filterCalendar.get(Calendar.MONTH);
 		this.filterYear = filterCalendar.get(Calendar.YEAR);
 	}
-	
+
 	/**
 	 * Returns whether or not the object should be filtered out.
-	 * @param viewer the viewer
-	 * @param parentElement the parent element
-	 * @param element the element to check
+	 * 
+	 * @param viewer
+	 *            the viewer
+	 * @param parentElement
+	 *            the parent element
+	 * @param element
+	 *            the element to check
 	 */
 	@Override
-	public boolean select(Viewer viewer, Object parentElement, Object element) 
-	{
-		//the values of the roster entry
-		int startDay,startMonth,startYear;
-		int endDay,endMonth, endYear;
-		
-		RosterEntry entry = (RosterEntry)element;
-		
-		//init the start values
+	public boolean select(Viewer viewer, Object parentElement, Object element) {
+		// the values of the roster entry
+		int startDay, startMonth, startYear;
+		int endDay, endMonth, endYear;
+
+		RosterEntry entry = (RosterEntry) element;
+
+		// init the start values
 		Calendar entryCal = Calendar.getInstance();
 		entryCal.setTimeInMillis(entry.getPlannedStartOfWork());
 		startDay = entryCal.get(Calendar.DAY_OF_MONTH);
 		startMonth = entryCal.get(Calendar.MONTH);
 		startYear = entryCal.get(Calendar.YEAR);
-		
-		//init the end values
+
+		// init the end values
 		entryCal.setTimeInMillis(entry.getPlannedEndOfWork());
 		endDay = entryCal.get(Calendar.DAY_OF_MONTH);
 		endMonth = entryCal.get(Calendar.MONTH);
 		endYear = entryCal.get(Calendar.YEAR);
-		
-		//if we do not have a split entry then the date must match
-		if(!entry.isSplitEntry())
-		{
-			if(startDay != filterDay)
+
+		// if we do not have a split entry then the date must match
+		if (!entry.isSplitEntry()) {
+			if (startDay != filterDay)
 				return false;
-			if(startMonth != filterMonth)
+			if (startMonth != filterMonth)
 				return false;
-			if(startYear != filterYear)
+			if (startYear != filterYear)
 				return false;
-			//the dates math so show the entry
+			// the dates math so show the entry
 			return true;
 		}
-		
-		//for a split entry the start and the end must match
-		if(filterDay != startDay && filterDay != endDay &! (filterDay > startDay && filterDay < endDay))
+
+		// for a split entry the start and the end must match
+		if (filterDay != startDay && filterDay != endDay & !(filterDay > startDay && filterDay < endDay))
 			return false;
-		if(filterMonth != startMonth && filterMonth != endMonth)
+		if (filterMonth != startMonth && filterMonth != endMonth)
 			return false;
-		if(filterYear != startYear && filterYear != endYear)
+		if (filterYear != startYear && filterYear != endYear)
 			return false;
-		
+
 		return true;
 	}
 }

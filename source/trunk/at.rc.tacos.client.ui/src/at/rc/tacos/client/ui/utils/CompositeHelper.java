@@ -42,4 +42,22 @@ public class CompositeHelper {
 		return client;
 	}
 
+	/**
+	 * Helper method to create a composite
+	 * 
+	 * @param parent
+	 *            the parent control
+	 * @param col
+	 *            the number of cols
+	 * @return the returned composite
+	 */
+	public static Composite makeComposite(FormToolkit toolkit, Composite parent, int col) {
+		Composite nameValueComp = toolkit.createComposite(parent);
+		GridLayout layout = new GridLayout(col, false);
+		layout.marginHeight = 3;
+		nameValueComp.setLayout(layout);
+		nameValueComp.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		return nameValueComp;
+	}
+
 }

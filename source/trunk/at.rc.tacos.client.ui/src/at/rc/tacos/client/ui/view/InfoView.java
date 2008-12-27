@@ -3,15 +3,16 @@ package at.rc.tacos.client.ui.view;
 import java.beans.PropertyChangeEvent;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.ITextListener;
 import org.eclipse.jface.text.TextEvent;
 import org.eclipse.jface.text.TextViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Font;
@@ -39,6 +40,7 @@ import at.rc.tacos.client.net.NetWrapper;
 import at.rc.tacos.client.net.handler.DayInfoHandler;
 import at.rc.tacos.client.ui.ListenerConstants;
 import at.rc.tacos.client.ui.UiWrapper;
+import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.platform.iface.IFilterTypes;
 import at.rc.tacos.platform.model.DayInfoMessage;
 import at.rc.tacos.platform.model.Login;
@@ -76,32 +78,19 @@ public class InfoView extends ViewPart implements DataChangeListener<Object> {
 	private Hyperlink logoutLink;
 	private Label date;
 	private ImageHyperlink saveDayInfoLink;
-	private CLabel dayInfoMessage;
 
 	// labels for the view
-	public final static String LABEL_NOTES = "Tagesinformationen";
-	public final static String LABEL_CALENDAR = "Kalender";
-	public final static String LABEL_INFO = "Informationen";
+	private final static String LABEL_NOTES = "Tagesinformationen";
+	private final static String LABEL_CALENDAR = "Kalender";
 	// infos to display
-	public final static String LABEL_NAME = "Angemeldet als: ";
-	public final static String LABEL_LOGOUT = "(Abmelden)";
-	public final static String LABEL_DATE = "Angemeldet seit: ";
-	public final static String LABEL_NOT_CONNECTED = "<Keine Serververbindung>";
+	private final static String LABEL_NAME = "Angemeldet als: ";
+	private final static String LABEL_LOGOUT = "(Abmelden)";
+	private final static String LABEL_DATE = "Angemeldet seit: ";
+	private final static String LABEL_NOT_CONNECTED = "<Keine Serververbindung>";
 
 	// the handler
 	private DayInfoHandler dayInfoHandler = (DayInfoHandler) NetWrapper.getHandler(DayInfoMessage.class);
 	private ImageRegistry imageRegistry = UiWrapper.getDefault().getImageRegistry();
-
-	/**
-	 * Cleanup the view
-	 */
-	@Override
-	public void dispose() {
-		NetWrapper.removeListener(this, Login.class);
-		NetWrapper.removeListener(this, StaffMember.class);
-		NetWrapper.removeListener(this, DayInfoMessage.class);
-		super.dispose();
-	}
 
 	/**
 	 * Creates and initializes the view.
@@ -134,11 +123,23 @@ public class InfoView extends ViewPart implements DataChangeListener<Object> {
 		initView();
 	}
 
+	@Override
+	public void dispose() {
+		NetWrapper.removeListener(this, Login.class);
+		NetWrapper.removeListener(this, StaffMember.class);
+		NetWrapper.removeListener(this, DayInfoMessage.class);
+		super.dispose();
+	}
+
 	/**
 	 * Helper method to initialize the view
 	 */
 	private void initView() {
+		// the current date
+		Calendar date = DateUtils.truncate(Calendar.getInstance(), Calendar.DAY_OF_MONTH);
+		// update the view
 		updateInfoSection(NetWrapper.getSession());
+		updateDayInfoSection(dayInfoHandler.getMessageByDate(date.getTime()));
 	}
 
 	/**
@@ -167,21 +168,22 @@ public class InfoView extends ViewPart implements DataChangeListener<Object> {
 	}
 
 	/**
-	 * Helper method to create a composite
-	 * 
-	 * @param parent
-	 *            the parent control
-	 * @param col
-	 *            the number of cols
-	 * @return the returned composite
+	 * Updates the DayInfoMessage
 	 */
-	public Composite makeComposite(Composite parent, int col) {
-		Composite nameValueComp = toolkit.createComposite(parent);
-		GridLayout layout = new GridLayout(col, false);
-		layout.marginHeight = 3;
-		nameValueComp.setLayout(layout);
-		nameValueComp.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		return nameValueComp;
+	private void updateDayInfoSection(DayInfoMessage message) {
+		// set the section header
+		dayInfoSection.setText("Tagesinformationen für den " + MyUtils.timestampToString(message.getTimestamp(), MyUtils.dateFormat));
+
+		// update the linkt to save
+		saveDayInfoLink.setEnabled(false);
+		saveDayInfoLink.setUnderlined(false);
+		saveDayInfoLink.setForeground(CustomColors.COLOR_GREY);
+		saveDayInfoLink.setImage(imageRegistry.get("info.ok"));
+		saveDayInfoLink.setText("Zuletzt geändert von " + message.getLastChangedBy());
+		saveDayInfoLink.layout(true);
+
+		// set the text
+		noteEditor.getTextWidget().setText(message.getMessage());
 	}
 
 	/**
@@ -329,11 +331,8 @@ public class InfoView extends ViewPart implements DataChangeListener<Object> {
 		notesData.grabExcessVerticalSpace = true;
 		notesField.setLayoutData(notesData);
 
-		// make a composite on the top of the input field
-		Composite controlls = makeComposite(notesField, 2);
-
 		// update button
-		saveDayInfoLink = toolkit.createImageHyperlink(controlls, SWT.NONE);
+		saveDayInfoLink = toolkit.createImageHyperlink(notesField, SWT.NONE);
 		saveDayInfoLink.setImage(imageRegistry.get("info.save.na"));
 		saveDayInfoLink.addHyperlinkListener(new HyperlinkAdapter() {
 
@@ -350,10 +349,7 @@ public class InfoView extends ViewPart implements DataChangeListener<Object> {
 			}
 		});
 
-		dayInfoMessage = new CLabel(controlls, SWT.LEFT);
-		dayInfoMessage.setText("Zuletzt geändert von <nicht verfügbar>");
-		dayInfoMessage.setImage(imageRegistry.get("info.warning"));
-
+		// the textviewer for the message
 		noteEditor = new TextViewer(notesField, SWT.BORDER | SWT.FLAT | SWT.MULTI | SWT.WRAP | SWT.V_SCROLL);
 		noteEditor.setDocument(new Document());
 		noteEditor.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -363,38 +359,39 @@ public class InfoView extends ViewPart implements DataChangeListener<Object> {
 
 			@Override
 			public void textChanged(TextEvent te) {
-				long selectedDate = dateTime.getSelection().getTime();
-				String user = NetWrapper.getSession().getUsername();
+				System.out.println("Changed");
+
+				Date selectedDate = DateUtils.truncate(dateTime.getSelection(), Calendar.DAY_OF_MONTH);
 
 				// get the currently cached message
-				DayInfoMessage message = dayInfoHandler.getMessageByDate(selectedDate);
-				if (message == null) {
-					message = new DayInfoMessage("", selectedDate, user);
-				}
-
-				// check for updates
-				String savedText = message.getMessage();
-				String changedText = te.getText();
-
-				// compare with the current text
-				if (!savedText.equalsIgnoreCase(changedText)) {
-					saveDayInfoLink.setEnabled(true);
-					saveDayInfoLink.setImage(imageRegistry.get("info.save"));
-					dayInfoMessage.setImage(imageRegistry.get("info.warning"));
-					dayInfoMessage.setText("Bitte speichern sie ihre lokalen Änderungen");
+				DayInfoMessage savedDayInfoMessage = dayInfoHandler.getMessageByDate(selectedDate);
+				if (savedDayInfoMessage == null) {
 					return;
 				}
 
-				saveDayInfoLink.setEnabled(false);
-				saveDayInfoLink.setImage(imageRegistry.get("info.save.na"));
-				dayInfoMessage.setImage(imageRegistry.get("info.ok"));
-				dayInfoMessage.setText("Zuletzt geändert von " + message.getLastChangedBy());
+				// get the current text and the saved text
+				String savedText = savedDayInfoMessage.getMessage();
+				String changedText = noteEditor.getTextWidget().getText();
+
+				// compare with the current text
+				if (!savedText.equalsIgnoreCase(changedText)) {
+					// update the link
+					saveDayInfoLink.setText("Änderungen speichern");
+					saveDayInfoLink.setEnabled(true);
+					saveDayInfoLink.setUnderlined(true);
+					saveDayInfoLink.setForeground(CustomColors.COLOR_BLUE);
+					saveDayInfoLink.setImage(imageRegistry.get("info.warning"));
+				}
+				else {
+					// update the linkt to save
+					saveDayInfoLink.setEnabled(false);
+					saveDayInfoLink.setUnderlined(false);
+					saveDayInfoLink.setForeground(CustomColors.COLOR_GREY);
+					saveDayInfoLink.setImage(imageRegistry.get("info.ok"));
+					saveDayInfoLink.setText("Zuletzt geändert von " + savedDayInfoMessage.getLastChangedBy());
+				}
 			}
 		});
-
-		// set the width
-		GridData data = new GridData(GridData.FILL_HORIZONTAL);
-		dayInfoMessage.setLayoutData(data);
 	}
 
 	@Override
@@ -408,14 +405,7 @@ public class InfoView extends ViewPart implements DataChangeListener<Object> {
 		}
 		if (object instanceof DayInfoMessage) {
 			DayInfoMessage dayInfoMessage = (DayInfoMessage) object;
-			noteEditor.getTextWidget().setText(dayInfoMessage.getMessage());
-			// update the labels
-			saveDayInfoLink.setEnabled(false);
-			saveDayInfoLink.setImage(imageRegistry.get("info.save.na"));
-			saveDayInfoLink.setImage(imageRegistry.get("info.ok"));
-			saveDayInfoLink.setText("Zuletzt geändert von " + dayInfoMessage.getLastChangedBy());
-			dayInfoSection.setText("Tagesinformationen für den " + MyUtils.timestampToString(dayInfoMessage.getTimestamp(), MyUtils.dateFormat));
-			dayInfoSection.layout(true);
+			updateDayInfoSection(dayInfoMessage);
 		}
 	}
 }
