@@ -202,8 +202,10 @@ public class AuthenticationHandler implements Handler<Login> {
 		login.setLoggedIn(false);
 
 		// write the message back and reset the stat of the session
+		logger.info("Logout request from " + session.getUsername() + ": closing session");
 		session.writeResponse(message, login);
 		session.reinitialize();
+		session.close();
 	}
 
 	@Override

@@ -42,7 +42,7 @@ public class LoginHandler implements Handler<Login> {
 		String command = params.get(AbstractMessage.ATTRIBUTE_COMMAND);
 
 		// check what command was send
-		if ("login".equalsIgnoreCase(command)) {
+		if ("dologin".equalsIgnoreCase(command)) {
 			// get the message
 			Login login = message.getObjects().get(0);
 			if (login == null) {
@@ -55,10 +55,11 @@ public class LoginHandler implements Handler<Login> {
 			session.setLoggedIn(login);
 			return;
 		}
-		if ("logout".equalsIgnoreCase(command)) {
+		if ("doLogout".equalsIgnoreCase(command)) {
 			session.reinitialize();
+			log.info("Closing session");
 		}
-		log.debug(MessageType.EXEC + " called but currently not implemented");
+		log.debug(MessageType.EXEC + " called with command '" + command + "' but currently not implemented");
 	}
 
 	@Override

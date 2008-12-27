@@ -37,6 +37,7 @@ import at.rc.tacos.client.net.handler.TransportHandler;
 import at.rc.tacos.client.net.handler.VehicleHandler;
 import at.rc.tacos.client.ui.ListenerConstants;
 import at.rc.tacos.client.ui.UiWrapper;
+import at.rc.tacos.client.ui.ViewerConstants;
 import at.rc.tacos.client.ui.controller.AssignCarAction;
 import at.rc.tacos.client.ui.controller.CancelTransportAction;
 import at.rc.tacos.client.ui.controller.CopyTransportAction;
@@ -206,63 +207,63 @@ public class OutstandingTransportsView extends ViewPart implements DataChangeLis
 
 		final TableColumn lockColumn = new TableColumn(tableOff, SWT.NONE);
 		lockColumn.setToolTipText("Eintrag wird gerade bearbeitet");
-		lockColumn.setWidth(24);
+		lockColumn.setWidth(ViewerConstants.ICON_WIDTH);
 		lockColumn.setText("L");
 
 		final TableColumn prioritaetOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
 		prioritaetOffeneTransporte
 				.setToolTipText("A (NEF), B (BD1), C (Transport), D (Rücktransport), E (Heimtransport), F (Sonstiges), E (NEF extern)");
-		prioritaetOffeneTransporte.setWidth(26);
+		prioritaetOffeneTransporte.setWidth(ViewerConstants.CHAR_WIDTH);
 		prioritaetOffeneTransporte.setText("Pr");
 
 		final TableColumn respOSOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
 		respOSOffeneTransporte.setToolTipText("Zuständige Ortsstelle");
-		respOSOffeneTransporte.setWidth(30);
+		respOSOffeneTransporte.setWidth(ViewerConstants.CHAR_WIDTH);
 		respOSOffeneTransporte.setText("OS");
 
 		final TableColumn abfOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
 		abfOffeneTransporte.setToolTipText("Abfahrt auf der Dienststelle");
-		abfOffeneTransporte.setWidth(43);
+		abfOffeneTransporte.setWidth(ViewerConstants.TIME_WIDTH);
 		abfOffeneTransporte.setText("Abf");
 
 		final TableColumn ankOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
 		ankOffeneTransporte.setToolTipText("Ankunft beim Patienten");
-		ankOffeneTransporte.setWidth(43);
+		ankOffeneTransporte.setWidth(ViewerConstants.TIME_WIDTH);
 		ankOffeneTransporte.setText("Ank.");
 
 		final TableColumn terminOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
 		terminOffeneTransporte.setToolTipText("Terminzeit am Zielort");
-		terminOffeneTransporte.setWidth(43);
+		terminOffeneTransporte.setWidth(ViewerConstants.TIME_WIDTH);
 		terminOffeneTransporte.setText("Termin");
 
 		final TableColumn transportVonOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
-		transportVonOffeneTransporte.setWidth(250);
+		transportVonOffeneTransporte.setWidth(ViewerConstants.LONG_TEXT_WIDTH);
 		transportVonOffeneTransporte.setText("Transport von");
 
 		final TableColumn patientOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
-		patientOffeneTransporte.setWidth(200);
+		patientOffeneTransporte.setWidth(ViewerConstants.LONG_TEXT_WIDTH);
 		patientOffeneTransporte.setText("Patient");
 
 		final TableColumn transportNachOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
-		transportNachOffeneTransporte.setWidth(250);
+		transportNachOffeneTransporte.setWidth(ViewerConstants.LONG_TEXT_WIDTH);
 		transportNachOffeneTransporte.setText("Transport nach");
 
 		final TableColumn aufgOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
 		aufgOffeneTransporte.setToolTipText("Zeit zu der der Transport aufgenommen wurde");
-		aufgOffeneTransporte.setWidth(43);
+		aufgOffeneTransporte.setWidth(ViewerConstants.TIME_WIDTH);
 		aufgOffeneTransporte.setText("Aufg");
 
 		final TableColumn tOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
 		tOffeneTransporte.setToolTipText("Transportart");
-		tOffeneTransporte.setWidth(22);
+		tOffeneTransporte.setWidth(ViewerConstants.CHAR_WIDTH);
 		tOffeneTransporte.setText("T");
 
 		final TableColumn erkrankungVerletzungOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
-		erkrankungVerletzungOffeneTransporte.setWidth(150);
+		erkrankungVerletzungOffeneTransporte.setWidth(ViewerConstants.MEDIUM_TEXT_WIDTH);
 		erkrankungVerletzungOffeneTransporte.setText("Erkrankung/Verletzung");
 
 		final TableColumn anmerkungOffeneTransporte = new TableColumn(tableOff, SWT.NONE);
-		anmerkungOffeneTransporte.setWidth(542);
+		anmerkungOffeneTransporte.setWidth(ViewerConstants.LONG_TEXT_WIDTH);
 		anmerkungOffeneTransporte.setText("Anmerkung");
 
 		// make the columns sortable
