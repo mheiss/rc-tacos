@@ -46,29 +46,24 @@ public class ClientMessageHandler implements MessageHandler {
 		HandlerFactory handlerFactory = clientContext.getHandlerFactory();
 		DataChangeListenerFactory listenerFactory = clientContext.getDataChangeListenerFactory();
 
-		// print out trace information
-		if (log.isTraceEnabled()) {
-			log.trace("Handling new request from " + session.getUsername());
-			log.trace("RequestType:" + message.getFirstElement());
-			log.trace("Objects:" + message.getObjects());
-			log.trace("Params:" + message.getParams());
-		}
-
-		long startResolve = System.currentTimeMillis();
 		// try to get a handler for the object
 		Object firstElement = message.getFirstElement();
 		Handler<Object> handler = handlerFactory.getHandler(firstElement.getClass().getName());
 		if (handler == null) {
 			throw new NoSuchHandlerException(firstElement.getClass().getName());
 		}
-		long endResolve = System.currentTimeMillis();
 
-		// log the results
+		// print out debug information
 		if (log.isDebugEnabled()) {
-			log.debug("Resolving the request agains " + handler.getClass().getSimpleName() + " took " + (endResolve - startResolve) + " ms");
+			StringBuilder builder = new StringBuilder();
+			builder.append("\nHandling request from " + session.getUsername());
+			builder.append("\n\tHandler: " + handler);
+			builder.append("\n\tRequestType: " + message.getMessageType());
+			builder.append("\n\tObjectCount: " + message.getObjects().size());
+			builder.append("\n\tParams: " + message.getParams());
+			log.debug(builder.toString());
 		}
 
-		long startHandle = System.currentTimeMillis();
 		try {
 			// now handle the request
 			switch (message.getMessageType()) {
@@ -96,10 +91,6 @@ public class ClientMessageHandler implements MessageHandler {
 		catch (Exception e) {
 			String errorMessage = "Failed to handle the request: " + e.getMessage();
 			log.error(errorMessage, e);
-		}
-		long endHandle = System.currentTimeMillis();
-		if (log.isDebugEnabled()) {
-			log.debug("Handling the request agains " + handler.getClass().getSimpleName() + " took " + (endHandle - startHandle) + " ms");
 		}
 	}
 

@@ -1,5 +1,7 @@
 package at.rc.tacos.client.ui.view;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -40,6 +42,8 @@ import org.eclipse.ui.part.ViewPart;
 import at.rc.tacos.client.net.NetWrapper;
 import at.rc.tacos.client.net.handler.LocationHandler;
 import at.rc.tacos.client.net.handler.RosterHandler;
+import at.rc.tacos.client.ui.ListenerConstants;
+import at.rc.tacos.client.ui.UiWrapper;
 import at.rc.tacos.client.ui.controller.PersonalCancelSignInAction;
 import at.rc.tacos.client.ui.controller.PersonalCancelSignOutAction;
 import at.rc.tacos.client.ui.controller.PersonalDeleteEntryAction;
@@ -63,7 +67,7 @@ import at.rc.tacos.platform.net.handler.MessageType;
 import at.rc.tacos.platform.net.listeners.DataChangeListener;
 import at.rc.tacos.platform.net.mina.MessageIoSession;
 
-public class PersonalView extends ViewPart implements DataChangeListener<Object> {
+public class PersonalView extends ViewPart implements PropertyChangeListener, DataChangeListener<Object> {
 
 	public static final String ID = "at.rc.tacos.client.view.personal_view";
 
@@ -86,19 +90,6 @@ public class PersonalView extends ViewPart implements DataChangeListener<Object>
 	// the model handlers
 	private RosterHandler rosterHandler = (RosterHandler) NetWrapper.getHandler(RosterEntry.class);
 	private LocationHandler locationHandler = (LocationHandler) NetWrapper.getHandler(Location.class);
-
-	/**
-	 * Cleanup the view and remove the listeners
-	 */
-	@Override
-	public void dispose() {
-		NetWrapper.removeListener(this, RosterEntry.class);
-		NetWrapper.removeListener(this, Location.class);
-		NetWrapper.removeListener(this, VehicleDetail.class);
-		NetWrapper.removeListener(this, StaffMember.class);
-		NetWrapper.removeListener(this, ServiceType.class);
-		NetWrapper.removeListener(this, Job.class);
-	}
 
 	/**
 	 * Callback method to create the control and initalize them.
@@ -277,6 +268,7 @@ public class PersonalView extends ViewPart implements DataChangeListener<Object>
 		hookContextMenu();
 
 		// register the listeners
+		UiWrapper.getDefault().registerListener(this);
 		NetWrapper.registerListener(this, RosterEntry.class);
 		NetWrapper.registerListener(this, Location.class);
 		NetWrapper.registerListener(this, VehicleDetail.class);
@@ -286,6 +278,17 @@ public class PersonalView extends ViewPart implements DataChangeListener<Object>
 
 		// initialize the view with current data
 		initView();
+	}
+
+	@Override
+	public void dispose() {
+		UiWrapper.getDefault().removeListener(this);
+		NetWrapper.removeListener(this, RosterEntry.class);
+		NetWrapper.removeListener(this, Location.class);
+		NetWrapper.removeListener(this, VehicleDetail.class);
+		NetWrapper.removeListener(this, StaffMember.class);
+		NetWrapper.removeListener(this, ServiceType.class);
+		NetWrapper.removeListener(this, Job.class);
 	}
 
 	/**
@@ -503,6 +506,26 @@ public class PersonalView extends ViewPart implements DataChangeListener<Object>
 			// check if we have the tab and dispose it
 			if (tabLocation.equals(removedLocation))
 				tabItem.dispose();
+		}
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		final String event = evt.getPropertyName();
+		final Object newValue = evt.getNewValue();
+
+		// filter out unwanted elements
+		if (ListenerConstants.ROSTER_DATE_CHANGED.equalsIgnoreCase(event)) {
+			// remove all filters and apply the new
+			for (ViewerFilter filter : viewer.getFilters()) {
+				if (filter instanceof PersonalDateFilter) {
+					viewer.removeFilter(filter);
+				}
+			}
+			// apply the new date filter
+			Calendar filterDate = (Calendar) newValue;
+			viewer.addFilter(new PersonalDateFilter(filterDate));
+			viewer.refresh();
 		}
 	}
 }
