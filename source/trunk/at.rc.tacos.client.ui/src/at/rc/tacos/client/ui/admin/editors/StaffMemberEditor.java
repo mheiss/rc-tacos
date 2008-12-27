@@ -116,7 +116,7 @@ public class StaffMemberEditor extends EditorPart implements DataChangeListener<
 		isDirty = false;
 
 		// Create the form
-		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
+		toolkit = new FormToolkit(Display.getDefault());
 		form = toolkit.createScrolledForm(parent);
 		toolkit.decorateFormHeading(form.getForm());
 

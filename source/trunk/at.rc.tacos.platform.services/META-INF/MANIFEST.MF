@@ -11,3 +11,4 @@ Export-Package: at.rc.tacos.platform.services,
  at.rc.tacos.platform.services.dbal,
  at.rc.tacos.platform.services.exception,
  at.rc.tacos.platform.services.utils
+Bundle-Vendor: FH-Joanneum / ITM

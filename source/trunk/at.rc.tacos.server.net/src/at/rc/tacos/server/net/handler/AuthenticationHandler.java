@@ -117,11 +117,11 @@ public class AuthenticationHandler implements Handler<Login> {
 		String command = params.get(AbstractMessage.ATTRIBUTE_COMMAND);
 
 		// check what command was send
-		if ("login".equalsIgnoreCase(command)) {
+		if ("doLogin".equalsIgnoreCase(command)) {
 			doLogin(session, message);
 			return;
 		}
-		if ("logout".equalsIgnoreCase(command)) {
+		if ("doLogout".equalsIgnoreCase(command)) {
 			doLogout(session, message);
 			return;
 		}

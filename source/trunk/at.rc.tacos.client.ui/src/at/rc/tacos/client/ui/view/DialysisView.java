@@ -14,6 +14,7 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
@@ -32,7 +33,6 @@ import at.rc.tacos.client.ui.controller.DialysisTransportNowAction;
 import at.rc.tacos.client.ui.controller.RefreshViewAction;
 import at.rc.tacos.client.ui.providers.DialysisTransportLabelProvider;
 import at.rc.tacos.client.ui.sorterAndTooltip.DialysisTransportSorter;
-import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.platform.model.DialysisPatient;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.listeners.DataChangeListener;
@@ -79,7 +79,7 @@ public class DialysisView extends ViewPart implements DataChangeListener<Dialysi
 	@Override
 	public void createPartControl(final Composite parent) {
 		// Create the scrolled parent component
-		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
+		toolkit = new FormToolkit(Display.getDefault());
 		form = toolkit.createScrolledForm(parent);
 		toolkit.decorateFormHeading(form.getForm());
 		form.getBody().setLayout(new FillLayout());

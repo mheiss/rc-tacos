@@ -23,6 +23,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Listener;
@@ -137,7 +138,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 	@Override
 	public void createPartControl(final Composite parent) {
 		// Create the scrolled parent component
-		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
+		toolkit = new FormToolkit(Display.getDefault());
 		form = toolkit.createForm(parent);
 		toolkit.decorateFormHeading(form);
 		form.getBody().setLayout(new FillLayout());

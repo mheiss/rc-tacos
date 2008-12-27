@@ -15,11 +15,13 @@ import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.nebula.widgets.cdatetime.CDT;
 import org.eclipse.swt.nebula.widgets.cdatetime.CDateTime;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.PlatformUI;
@@ -37,7 +39,6 @@ import at.rc.tacos.client.net.NetWrapper;
 import at.rc.tacos.client.net.handler.DayInfoHandler;
 import at.rc.tacos.client.ui.ListenerConstants;
 import at.rc.tacos.client.ui.UiWrapper;
-import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.platform.iface.IFilterTypes;
 import at.rc.tacos.platform.model.DayInfoMessage;
 import at.rc.tacos.platform.model.Login;
@@ -66,7 +67,7 @@ public class InfoView extends ViewPart implements DataChangeListener<Object> {
 	private ScrolledForm form;
 	private TextViewer noteEditor;
 	// the main components
-	private Composite info;
+	private Section generalSection;
 	private Section calendarSection;
 	private Section dayInfoSection;
 
@@ -111,7 +112,7 @@ public class InfoView extends ViewPart implements DataChangeListener<Object> {
 	@Override
 	public void createPartControl(Composite parent) {
 		// setup the form
-		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
+		toolkit = new FormToolkit(Display.getDefault());
 		form = toolkit.createScrolledForm(parent);
 		form.setText("Allgemeine Informationen");
 		toolkit.decorateFormHeading(form.getForm());
@@ -120,14 +121,9 @@ public class InfoView extends ViewPart implements DataChangeListener<Object> {
 		form.getBody().setLayout(gridLayout);
 
 		// add the composites
-		createInfoSection(form.getBody());
+		createGeneralSection(form.getBody());
 		createCalendarSection(form.getBody());
 		createNotesSection(form.getBody());
-
-		// info should span over two
-		GridData data = new GridData(GridData.FILL_HORIZONTAL);
-		data.horizontalSpan = 2;
-		info.setLayoutData(data);
 
 		// add listeners to keep in track
 		NetWrapper.registerListener(this, Login.class);
@@ -157,7 +153,7 @@ public class InfoView extends ViewPart implements DataChangeListener<Object> {
 			date.setText("-");
 		}
 		// redraw
-		info.layout(true);
+		generalSection.layout(true);
 	}
 
 	/**
@@ -184,26 +180,37 @@ public class InfoView extends ViewPart implements DataChangeListener<Object> {
 	 * @param parent
 	 *            the parent view to integrate
 	 */
-	private void createInfoSection(Composite parent) {
-		// create the container for the notes
-		info = toolkit.createComposite(parent);
-		GridLayout layout = new GridLayout();
-		layout.numColumns = 3;
-		info.setLayout(layout);
-		GridData calData = new GridData(GridData.FILL_BOTH | GridData.VERTICAL_ALIGN_BEGINNING);
-		calData.grabExcessVerticalSpace = true;
-		info.setLayoutData(calData);
+	private void createGeneralSection(Composite parent) {
+		// create the section
+		generalSection = toolkit.createSection(parent, ExpandableComposite.NO_TITLE);
+		generalSection.setExpanded(true);
+		generalSection.setLayout(new GridLayout());
+		GridData data = new GridData(GridData.FILL_HORIZONTAL);
+		data.horizontalSpan = 2;
+		generalSection.setLayoutData(data);
+
+		// create the container for the general section
+		Composite generalComposite = toolkit.createComposite(generalSection);
+		generalSection.setClient(generalComposite);
+		generalComposite.setLayout(new GridLayout(2, false));
 
 		Font userFont = new Font(null, "Arial", 12, SWT.BOLD);
 
-		// the labels
-		Label userLabel = toolkit.createLabel(info, LABEL_NAME);
+		// the label for the user
+		Label userLabel = toolkit.createLabel(generalComposite, LABEL_NAME);
+		data = new GridData();
+		data.widthHint = 185;
+		userLabel.setLayoutData(data);
 		userLabel.setFont(userFont);
-		user = toolkit.createLabel(info, LABEL_NOT_CONNECTED);
+
+		// create a subcomposite for the username and the logout link
+		Composite userControlComposite = toolkit.createComposite(generalComposite);
+		userControlComposite.setLayout(new FillLayout());
+		user = toolkit.createLabel(userControlComposite, LABEL_NOT_CONNECTED);
 		user.setFont(userFont);
 
 		// logout link
-		logoutLink = toolkit.createHyperlink(info, LABEL_LOGOUT, SWT.LEFT);
+		logoutLink = toolkit.createHyperlink(userControlComposite, LABEL_LOGOUT, SWT.LEFT);
 		logoutLink.setFont(userFont);
 		logoutLink.addHyperlinkListener(new HyperlinkAdapter() {
 
@@ -220,26 +227,12 @@ public class InfoView extends ViewPart implements DataChangeListener<Object> {
 		});
 
 		// info about the login time
-		Label dateLabel = toolkit.createLabel(info, LABEL_DATE);
-		date = toolkit.createLabel(info, LABEL_NOT_CONNECTED);
-
-		// layout
-		GridData data = new GridData();
-		data.widthHint = 150;
-		userLabel.setLayoutData(data);
+		Label dateLabel = toolkit.createLabel(generalComposite, LABEL_DATE);
 		data = new GridData();
-		data.widthHint = 150;
+		data.widthHint = 185;
 		dateLabel.setLayoutData(data);
-		data = new GridData();
-		data.widthHint = 150;
-		logoutLink.setLayoutData(data);
-		// layout for the dynamic fields
-		GridData data2 = new GridData();
-		data2.widthHint = 150;
-		user.setLayoutData(data2);
-		data2 = new GridData();
-		data2.widthHint = 150;
-		date.setLayoutData(data2);
+		date = toolkit.createLabel(generalComposite, LABEL_NOT_CONNECTED);
+		date.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 	}
 
 	/**
@@ -257,7 +250,7 @@ public class InfoView extends ViewPart implements DataChangeListener<Object> {
 		calendarSection.setLayout(new GridLayout());
 		calendarSection.setLayoutData(new GridData(GridData.BEGINNING | GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING));
 
-		// create the container for the notes
+		// create the container for the calendar
 		Composite calendar = toolkit.createComposite(calendarSection);
 		calendarSection.setClient(calendar);
 		calendar.setLayout(new GridLayout());

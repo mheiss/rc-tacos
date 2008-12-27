@@ -2,6 +2,8 @@ package at.rc.tacos.client.ui;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.ui.IPerspectiveDescriptor;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.ActionBarAdvisor;
@@ -12,6 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.rc.tacos.client.net.NetWrapper;
+import at.rc.tacos.client.ui.perspectives.ResourcePerspective;
+import at.rc.tacos.client.ui.perspectives.TransportPerspective;
 import at.rc.tacos.platform.model.Login;
 import at.rc.tacos.platform.net.message.ExecMessage;
 
@@ -45,6 +49,17 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 				"Wollen Sie das Leitstellenprogramm wirklich beenden?");
 		if (!confirm)
 			return false;
+
+		// the current active window
+		IWorkbenchWindow activeWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+
+		// loop and close all open windows
+		for (IWorkbenchWindow window : PlatformUI.getWorkbench().getWorkbenchWindows()) {
+			if (window.equals(activeWindow)) {
+				continue;
+			}
+			window.close();
+		}
 
 		// send the logout request
 		Login currentLogin = NetWrapper.getSession().getLogin();
@@ -91,5 +106,35 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
 		IWorkbenchWindow window = configurer.getWindow();
 		window.getShell().setMaximized(true);
+	}
+
+	@Override
+	public void postWindowOpen() {
+		// prevent opening a third window
+		if (PlatformUI.getWorkbench().getWorkbenchWindowCount() > 1) {
+			return;
+		}
+
+		// setup the two workbench windows
+		IWorkbenchWindow window = getWindowConfigurer().getWindow();
+
+		// the descriptor for the two perspectives
+		IPerspectiveDescriptor primaryDescriptor = PlatformUI.getWorkbench().getPerspectiveRegistry().findPerspectiveWithId(ResourcePerspective.ID);
+		IPerspectiveDescriptor secondDescriptor = PlatformUI.getWorkbench().getPerspectiveRegistry().findPerspectiveWithId(TransportPerspective.ID);
+
+		// create the two pages and initialize
+		try {
+			IWorkbenchPage primaryPage = window.getActivePage();
+			IWorkbenchPage secondPage = window.openPage(null);
+
+			// set the perspective
+			primaryPage.setPerspective(primaryDescriptor);
+			secondPage.setPerspective(secondDescriptor);
+
+			window.setActivePage(primaryPage);
+		}
+		catch (Exception ex) {
+			log.error("Failed to setup and initialie the workbench windows", ex);
+		}
 	}
 }

@@ -22,6 +22,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
@@ -48,7 +49,6 @@ import at.rc.tacos.client.ui.filters.TransportViewFilter;
 import at.rc.tacos.client.ui.providers.JournalViewLabelProvider;
 import at.rc.tacos.client.ui.sorterAndTooltip.JournalViewTooltip;
 import at.rc.tacos.client.ui.sorterAndTooltip.TransportSorter;
-import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.platform.iface.IProgramStatus;
 import at.rc.tacos.platform.model.Transport;
 import at.rc.tacos.platform.net.Message;
@@ -94,7 +94,7 @@ public class JournalView extends ViewPart implements DataChangeListener<Transpor
 	@Override
 	public void createPartControl(final Composite parent) {
 		// Create the scrolled parent component
-		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
+		toolkit = new FormToolkit(Display.getDefault());
 		form = toolkit.createForm(parent);
 		toolkit.decorateFormHeading(form);
 		form.getBody().setLayout(new FillLayout());

@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Xstream Plug-in
+Bundle-Name: xStream Plug-in
 Bundle-SymbolicName: at.rc.tacos.platform.xstream
 Bundle-Version: 1.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
@@ -12,3 +12,5 @@ Export-Package: at.rc.tacos.platform.xstream,
  com.thoughtworks.xstream.io,
  com.thoughtworks.xstream.io.xml
 Eclipse-BuddyPolicy: registered
+Bundle-Vendor: FH-Joanneum / ITM
+Bundle-ActivationPolicy: lazy
