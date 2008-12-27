@@ -312,14 +312,6 @@ public class TransportForm extends TitleAreaDialog implements DataChangeListener
 
 	@Override
 	public boolean close() {
-		// remove the lock again, only if the transport is existing
-		if (!createNew) {
-			transport.setLocked(false);
-			transport.setLockedBy(null);
-			// remove the lock
-			ExecMessage<Transport> execMessage = new ExecMessage<Transport>("doUnlock", transport);
-			execMessage.asnchronRequest(NetWrapper.getSession());
-		}
 		NetWrapper.removeListener(this, StaffMember.class);
 		NetWrapper.removeListener(this, Disease.class);
 		NetWrapper.removeListener(this, Address.class);

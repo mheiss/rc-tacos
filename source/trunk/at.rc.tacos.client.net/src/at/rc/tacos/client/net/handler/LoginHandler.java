@@ -58,6 +58,7 @@ public class LoginHandler implements Handler<Login> {
 		if ("doLogout".equalsIgnoreCase(command)) {
 			session.reinitialize();
 			log.info("Closing session");
+			return;
 		}
 		log.debug(MessageType.EXEC + " called with command '" + command + "' but currently not implemented");
 	}
