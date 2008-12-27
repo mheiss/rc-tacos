@@ -60,9 +60,11 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 		}
 
 		// send the logout request
-		Login currentLogin = NetWrapper.getSession().getLogin();
-		ExecMessage<Login> execMessage = new ExecMessage<Login>("doLogout", currentLogin);
-		execMessage.asnchronRequest(NetWrapper.getSession());
+		if (NetWrapper.getSession() != null) {
+			Login currentLogin = NetWrapper.getSession().getLogin();
+			ExecMessage<Login> execMessage = new ExecMessage<Login>("doLogout", currentLogin);
+			execMessage.asnchronRequest(NetWrapper.getSession());
+		}
 
 		log.debug("Sending logout message");
 		return true;

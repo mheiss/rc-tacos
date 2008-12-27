@@ -137,13 +137,14 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 	 */
 	@Override
 	public void createPartControl(final Composite parent) {
-		// Create the scrolled parent component
+		// Create the parent component
 		toolkit = new FormToolkit(Display.getDefault());
 		form = toolkit.createForm(parent);
+		form.setText("Vormerkungen");
 		toolkit.decorateFormHeading(form);
-		form.getBody().setLayout(new FillLayout());
 
 		final Composite composite = form.getBody();
+		composite.setLayout(new FillLayout());
 
 		SashForm sash_prebooking = new SashForm(composite, SWT.HORIZONTAL);
 

@@ -4,11 +4,12 @@
 <product name="Client Product" id="at.rc.tacos.client.ui.product" application="at.rc.tacos.client.clientApp" version="1.0.0" useFeatures="true">
 
    <aboutInfo>
+      <image path="/at.rc.tacos.client.ui/icons/logo_small.png"/>
       <text>
          Austrian Red Cross.
 Time and Coordination System - Client Software.
 Developed by Birgit Thek and Heiß Michael.
-(c) 2007-2008 FH-Joanneum / ITM
+(c) 2007-2009 FH-Joanneum / ITM
       </text>
    </aboutInfo>
 
