@@ -50,4 +50,9 @@ public class SystemMessageHandler implements Handler<SystemMessage> {
 	public void update(MessageIoSession session, Message<SystemMessage> message) throws SQLException, ServiceException {
 		log.debug(MessageType.UPDATE + " called but currently not implemented");
 	}
+
+	@Override
+	public SystemMessage[] toArray() {
+		return null;
+	}
 }

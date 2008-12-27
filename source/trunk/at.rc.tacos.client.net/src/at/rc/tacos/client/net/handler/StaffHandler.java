@@ -3,7 +3,6 @@ package at.rc.tacos.client.net.handler;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -27,7 +26,7 @@ import at.rc.tacos.platform.services.exception.ServiceException;
  */
 public class StaffHandler implements Handler<StaffMember> {
 
-	private List<StaffMember> staffList = Collections.synchronizedList(new LinkedList<StaffMember>());
+	private List<StaffMember> staffList = Collections.synchronizedList(new ArrayList<StaffMember>());
 	private Logger log = LoggerFactory.getLogger(StaffHandler.class);
 
 	@Override
@@ -45,8 +44,16 @@ public class StaffHandler implements Handler<StaffMember> {
 	@Override
 	public void get(MessageIoSession session, Message<StaffMember> message) throws SQLException, ServiceException {
 		synchronized (staffList) {
-			staffList.clear();
-			staffList.addAll(message.getObjects());
+			// add or update the staff
+			for (StaffMember member : message.getObjects()) {
+				int index = staffList.indexOf(member);
+				if (index == -1) {
+					staffList.add(member);
+				}
+				else {
+					staffList.set(index, member);
+				}
+			}
 		}
 	}
 
@@ -95,6 +102,7 @@ public class StaffHandler implements Handler<StaffMember> {
 	 * 
 	 * @return an array containing the <code>StaffMember</code> instances.
 	 */
+	@Override
 	public StaffMember[] toArray() {
 		return staffList.toArray(new StaffMember[staffList.size()]);
 	}

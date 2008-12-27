@@ -1,6 +1,5 @@
 package at.rc.tacos.client.ui.admin.view;
 
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -26,6 +25,7 @@ import at.rc.tacos.client.ui.admin.editors.JobEditor;
 import at.rc.tacos.client.ui.admin.editors.JobEditorInput;
 import at.rc.tacos.client.ui.controller.EditorNewJobAction;
 import at.rc.tacos.client.ui.controller.RefreshViewAction;
+import at.rc.tacos.client.ui.providers.HandlerContentProvider;
 import at.rc.tacos.client.ui.providers.JobLabelProvider;
 import at.rc.tacos.platform.model.Job;
 import at.rc.tacos.platform.net.Message;
@@ -87,9 +87,9 @@ public class JobAdminView extends ViewPart implements DataChangeListener<Job> {
 				}
 			}
 		});
-		viewer.setContentProvider(new ArrayContentProvider());
+		viewer.setContentProvider(new HandlerContentProvider());
 		viewer.setLabelProvider(new JobLabelProvider());
-		viewer.setInput(jobHandler.toArray());
+		viewer.setInput(jobHandler);
 		getViewSite().setSelectionProvider(viewer);
 
 		// add actions to the toolbar

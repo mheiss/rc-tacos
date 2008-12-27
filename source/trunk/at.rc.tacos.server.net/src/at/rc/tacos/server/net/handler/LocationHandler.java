@@ -104,4 +104,9 @@ public class LocationHandler implements Handler<Location> {
 		}
 		throw new NoSuchCommandException(handler, command);
 	}
+
+	@Override
+	public Location[] toArray() {
+		return null;
+	}
 }

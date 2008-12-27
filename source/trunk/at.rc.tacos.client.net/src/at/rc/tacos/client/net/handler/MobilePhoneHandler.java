@@ -1,8 +1,8 @@
 package at.rc.tacos.client.net.handler;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -23,7 +23,7 @@ import at.rc.tacos.platform.services.exception.ServiceException;
  */
 public class MobilePhoneHandler implements Handler<MobilePhoneDetail> {
 
-	private List<MobilePhoneDetail> phoneList = Collections.synchronizedList(new LinkedList<MobilePhoneDetail>());
+	private List<MobilePhoneDetail> phoneList = Collections.synchronizedList(new ArrayList<MobilePhoneDetail>());
 	private Logger log = LoggerFactory.getLogger(MobilePhoneHandler.class);
 
 	@Override
@@ -41,8 +41,16 @@ public class MobilePhoneHandler implements Handler<MobilePhoneDetail> {
 	@Override
 	public void get(MessageIoSession session, Message<MobilePhoneDetail> message) throws SQLException, ServiceException {
 		synchronized (phoneList) {
-			phoneList.clear();
-			phoneList.addAll(message.getObjects());
+			// add or update the mobile phone
+			for (MobilePhoneDetail mobilePhoneDetail : message.getObjects()) {
+				int index = phoneList.indexOf(mobilePhoneDetail);
+				if (index == -1) {
+					phoneList.add(mobilePhoneDetail);
+				}
+				else {
+					phoneList.add(mobilePhoneDetail);
+				}
+			}
 		}
 	}
 
@@ -72,6 +80,7 @@ public class MobilePhoneHandler implements Handler<MobilePhoneDetail> {
 	 * 
 	 * @return an array containing the <code>MobilePhoneDetail</code> instances.
 	 */
+	@Override
 	public MobilePhoneDetail[] toArray() {
 		return phoneList.toArray(new MobilePhoneDetail[phoneList.size()]);
 	}

@@ -1,13 +1,16 @@
 package at.rc.tacos.client.ui.view;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -27,11 +30,15 @@ import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.client.net.NetWrapper;
 import at.rc.tacos.client.net.handler.DialysisHandler;
+import at.rc.tacos.client.ui.ListenerConstants;
+import at.rc.tacos.client.ui.UiWrapper;
 import at.rc.tacos.client.ui.controller.DialysisDeleteAction;
 import at.rc.tacos.client.ui.controller.DialysisEditAction;
 import at.rc.tacos.client.ui.controller.DialysisTransportNowAction;
 import at.rc.tacos.client.ui.controller.RefreshViewAction;
+import at.rc.tacos.client.ui.filters.TransportViewFilter;
 import at.rc.tacos.client.ui.providers.DialysisTransportLabelProvider;
+import at.rc.tacos.client.ui.providers.HandlerContentProvider;
 import at.rc.tacos.client.ui.sorterAndTooltip.DialysisTransportSorter;
 import at.rc.tacos.platform.model.DialysisPatient;
 import at.rc.tacos.platform.net.Message;
@@ -39,7 +46,7 @@ import at.rc.tacos.platform.net.listeners.DataChangeListener;
 import at.rc.tacos.platform.net.message.GetMessage;
 import at.rc.tacos.platform.net.mina.MessageIoSession;
 
-public class DialysisView extends ViewPart implements DataChangeListener<DialysisPatient> {
+public class DialysisView extends ViewPart implements PropertyChangeListener, DataChangeListener<DialysisPatient> {
 
 	public static final String ID = "at.rc.tacos.client.view.dialysis_view";
 
@@ -55,20 +62,6 @@ public class DialysisView extends ViewPart implements DataChangeListener<Dialysi
 
 	// the lock manager
 	private DialysisHandler dialysisHandler = (DialysisHandler) NetWrapper.getHandler(DialysisPatient.class);
-
-	/**
-	 * Constructs a new outstanding transports view adds listeners.
-	 */
-	public DialysisView() {
-	}
-
-	/**
-	 * Cleanup the view and remove the listeners
-	 */
-	@Override
-	public void dispose() {
-		NetWrapper.removeListener(this, DialysisPatient.class);
-	}
 
 	/**
 	 * Call back method to create the control and initialize them.
@@ -87,11 +80,10 @@ public class DialysisView extends ViewPart implements DataChangeListener<Dialysi
 		composite.setLayout(new FillLayout());
 
 		viewer = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
-		viewer.setContentProvider(new ArrayContentProvider());
+		viewer.setContentProvider(new HandlerContentProvider());
 		viewer.setLabelProvider(new DialysisTransportLabelProvider());
-		viewer.setInput(dialysisHandler.toArray());
-		viewer.getTable().setLinesVisible(true);
-		viewer.refresh();
+		viewer.setUseHashlookup(true);
+		viewer.setInput(dialysisHandler);
 
 		final Table table = viewer.getTable();
 		table.setLinesVisible(true);
@@ -256,7 +248,24 @@ public class DialysisView extends ViewPart implements DataChangeListener<Dialysi
 		createToolBarActions();
 
 		// add the listeners to keep in track of updates
+		UiWrapper.getDefault().registerListener(this);
 		NetWrapper.registerListener(this, DialysisPatient.class);
+
+		// initialize the view with current data
+		initView();
+	}
+
+	@Override
+	public void dispose() {
+		UiWrapper.getDefault().removeListener(this);
+		NetWrapper.removeListener(this, DialysisPatient.class);
+	}
+
+	/**
+	 * Helper method to initialize the view
+	 */
+	private void initView() {
+		viewer.refresh(true);
 	}
 
 	/**
@@ -336,5 +345,26 @@ public class DialysisView extends ViewPart implements DataChangeListener<Dialysi
 	@Override
 	public void dataChanged(Message<DialysisPatient> message, MessageIoSession messageIoSession) {
 		viewer.refresh();
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		String event = evt.getPropertyName();
+		Object newValue = evt.getNewValue();
+
+		// filter out unwanted elements
+		if (ListenerConstants.TRANSPORT_FILTER_CHANGED.equalsIgnoreCase(event)) {
+			TransportViewFilter transportViewFilter = (TransportViewFilter) newValue;
+			// remove all filters and apply the new
+			for (ViewerFilter filter : viewer.getFilters()) {
+				if (!(filter instanceof TransportViewFilter))
+					continue;
+				viewer.removeFilter(filter);
+
+			}
+			if (transportViewFilter != null) {
+				viewer.addFilter(transportViewFilter);
+			}
+		}
 	}
 }

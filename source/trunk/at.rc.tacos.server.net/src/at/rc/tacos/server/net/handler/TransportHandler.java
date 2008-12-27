@@ -478,4 +478,9 @@ public class TransportHandler implements Handler<Transport> {
 		if (detail.isOutOfOrder() | !detail.isReadyForAction() || detail.getDriver() == null)
 			detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
 	}
+
+	@Override
+	public Transport[] toArray() {
+		return null;
+	}
 }

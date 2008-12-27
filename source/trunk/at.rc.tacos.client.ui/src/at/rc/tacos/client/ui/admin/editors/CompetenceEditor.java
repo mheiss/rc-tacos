@@ -114,7 +114,7 @@ public class CompetenceEditor extends EditorPart implements DataChangeListener<C
 		saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		saveHyperlink.setText("Änderungen speichern");
 		saveHyperlink.setEnabled(false);
-		saveHyperlink.setForeground(CustomColors.GREY_COLOR);
+		saveHyperlink.setForeground(CustomColors.COLOR_GREY);
 		saveHyperlink.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.saveDisabled"));
 		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() {
 
@@ -166,7 +166,7 @@ public class CompetenceEditor extends EditorPart implements DataChangeListener<C
 		final Label labelId = toolkit.createLabel(client, "Kompetenz ID");
 		id = toolkit.createText(client, "");
 		id.setEditable(false);
-		id.setBackground(CustomColors.GREY_COLOR);
+		id.setBackground(CustomColors.COLOR_GREY);
 		id.setToolTipText("Die ID wird automatisch generiert");
 
 		final Label labelCompName = toolkit.createLabel(client, "Kompetenz Bezeichnung");
@@ -364,7 +364,7 @@ public class CompetenceEditor extends EditorPart implements DataChangeListener<C
 			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
 			infoLabel.setImage(UiWrapper.getDefault().getImageRegistry().get("info.warning"));
 			saveHyperlink.setEnabled(false);
-			saveHyperlink.setForeground(CustomColors.GREY_COLOR);
+			saveHyperlink.setForeground(CustomColors.COLOR_GREY);
 			saveHyperlink.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.saveDisabled"));
 		}
 		else {

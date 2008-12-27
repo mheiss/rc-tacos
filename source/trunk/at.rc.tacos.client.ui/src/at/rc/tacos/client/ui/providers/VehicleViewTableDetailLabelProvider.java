@@ -117,12 +117,12 @@ public class VehicleViewTableDetailLabelProvider extends BaseLabelProvider imple
 	public Color getForeground(Object element, int columnIndex) {
 		VehicleDetail detail = (VehicleDetail) element;
 		if (detail.isOutOfOrder())
-			return CustomColors.GREY_COLOR;
+			return CustomColors.COLOR_GREY;
 		return null;
 	}
 
 	@Override
 	public Font getFont(Object element, int columnIndex) {
-		return CustomColors.VEHICLE_TABLE;
+		return CustomColors.APPLICATION_DATA_FONT;
 	}
 }

@@ -1,6 +1,5 @@
 package at.rc.tacos.client.ui.admin.view;
 
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -27,6 +26,7 @@ import at.rc.tacos.client.ui.admin.editors.CompetenceEditorInput;
 import at.rc.tacos.client.ui.controller.EditorNewCompetenceAction;
 import at.rc.tacos.client.ui.controller.RefreshViewAction;
 import at.rc.tacos.client.ui.providers.CompetenceLabelProvider;
+import at.rc.tacos.client.ui.providers.HandlerContentProvider;
 import at.rc.tacos.platform.model.Competence;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.listeners.DataChangeListener;
@@ -87,9 +87,9 @@ public class CompetenceAdminView extends ViewPart implements DataChangeListener<
 				}
 			}
 		});
-		viewer.setContentProvider(new ArrayContentProvider());
+		viewer.setContentProvider(new HandlerContentProvider());
 		viewer.setLabelProvider(new CompetenceLabelProvider());
-		viewer.setInput(competenceHandler.toArray());
+		viewer.setInput(competenceHandler);
 		getViewSite().setSelectionProvider(viewer);
 
 		// add actions to the toolbar

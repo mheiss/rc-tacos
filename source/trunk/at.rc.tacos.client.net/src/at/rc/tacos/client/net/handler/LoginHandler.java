@@ -1,8 +1,8 @@
 package at.rc.tacos.client.net.handler;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +25,7 @@ import at.rc.tacos.platform.services.exception.ServiceException;
  */
 public class LoginHandler implements Handler<Login> {
 
-	private List<Login> loginList = Collections.synchronizedList(new LinkedList<Login>());
+	private List<Login> loginList = Collections.synchronizedList(new ArrayList<Login>());
 	private Logger log = LoggerFactory.getLogger(LoginHandler.class);
 
 	@Override
@@ -64,8 +64,16 @@ public class LoginHandler implements Handler<Login> {
 	@Override
 	public void get(MessageIoSession session, Message<Login> message) throws SQLException, ServiceException {
 		synchronized (loginList) {
-			loginList.clear();
-			loginList.addAll(message.getObjects());
+			// add or update the logins
+			for (Login login : message.getObjects()) {
+				int index = loginList.indexOf(login);
+				if (index == -1) {
+					loginList.add(login);
+				}
+				else {
+					loginList.set(index, login);
+				}
+			}
 		}
 	}
 
@@ -113,6 +121,7 @@ public class LoginHandler implements Handler<Login> {
 	 * 
 	 * @return an array containing the <code>Login</code> instances.
 	 */
+	@Override
 	public Login[] toArray() {
 		return loginList.toArray(new Login[loginList.size()]);
 	}

@@ -8,7 +8,6 @@ import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -39,6 +38,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.client.net.NetWrapper;
+import at.rc.tacos.client.net.handler.LocationHandler;
 import at.rc.tacos.client.net.handler.RosterHandler;
 import at.rc.tacos.client.ui.controller.PersonalCancelSignInAction;
 import at.rc.tacos.client.ui.controller.PersonalCancelSignOutAction;
@@ -48,6 +48,7 @@ import at.rc.tacos.client.ui.controller.PersonalSignInAction;
 import at.rc.tacos.client.ui.controller.PersonalSignOutAction;
 import at.rc.tacos.client.ui.filters.PersonalDateFilter;
 import at.rc.tacos.client.ui.filters.PersonalViewFilter;
+import at.rc.tacos.client.ui.providers.HandlerContentProvider;
 import at.rc.tacos.client.ui.providers.PersonalViewLabelProvider;
 import at.rc.tacos.client.ui.sorterAndTooltip.PersonalTooltip;
 import at.rc.tacos.client.ui.sorterAndTooltip.PersonalViewSorter;
@@ -84,6 +85,7 @@ public class PersonalView extends ViewPart implements DataChangeListener<Object>
 
 	// the model handlers
 	private RosterHandler rosterHandler = (RosterHandler) NetWrapper.getHandler(RosterEntry.class);
+	private LocationHandler locationHandler = (LocationHandler) NetWrapper.getHandler(Location.class);
 
 	/**
 	 * Cleanup the view and remove the listeners
@@ -110,9 +112,9 @@ public class PersonalView extends ViewPart implements DataChangeListener<Object>
 		toolkit = new FormToolkit(Display.getDefault());
 		form = toolkit.createForm(parent);
 		toolkit.decorateFormHeading(form);
-		form.getBody().setLayout(new FillLayout());
 
 		final Composite composite = form.getBody();
+		composite.setLayout(new FillLayout());
 
 		// tab folder
 		tabFolder = new TabFolder(composite, SWT.NONE);
@@ -138,9 +140,9 @@ public class PersonalView extends ViewPart implements DataChangeListener<Object>
 		});
 
 		viewer = new TableViewer(tabFolder, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
-		viewer.setContentProvider(new ArrayContentProvider());
+		viewer.setContentProvider(new HandlerContentProvider());
 		viewer.setLabelProvider(new PersonalViewLabelProvider());
-		viewer.setInput(rosterHandler.toArray());
+		viewer.setInput(rosterHandler);
 		viewer.getTable().setLinesVisible(true);
 
 		// set the tooltip
@@ -281,6 +283,23 @@ public class PersonalView extends ViewPart implements DataChangeListener<Object>
 		NetWrapper.registerListener(this, StaffMember.class);
 		NetWrapper.registerListener(this, ServiceType.class);
 		NetWrapper.registerListener(this, Job.class);
+
+		// initialize the view with current data
+		initView();
+	}
+
+	/**
+	 * Helper method to initialize the view
+	 */
+	private void initView() {
+		// create the new tabs
+		for (Location location : locationHandler.toArray()) {
+			addLocation(location);
+		}
+		tabFolder.setSelection(1);
+		tabFolder.setSelection(0);
+		// now update the viewer
+		viewer.refresh(true);
 	}
 
 	/**
@@ -395,46 +414,95 @@ public class PersonalView extends ViewPart implements DataChangeListener<Object>
 	private void locationChanged(List<Location> locations, MessageType messageType) {
 		switch (messageType) {
 			case ADD:
-			case GET:
 				for (Location location : locations) {
-					// create a new tab item
-					TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
-					tabItem.setText(location.getLocationName());
-					// Store the location
-					tabItem.setData(location);
-					tabItem.setControl(viewer.getTable());
-					// set the default filter to the first location
-					viewer.addFilter(new PersonalViewFilter(location));
+					addLocation(location);
 				}
 				break;
 			case UPDATE:
 				for (Location location : locations) {
-					// loop and update the location in the tab folder
-					for (TabItem tabItem : tabFolder.getItems()) {
-						// get the location out of the tab
-						Location tabLocation = (Location) tabItem.getData();
-						// check if we have the location
-						if (!tabLocation.equals(location)) {
-							continue;
-						}
-						// store the new location in the data and update the tab
-						tabItem.setData(location);
-						tabItem.setText(location.getLocationName());
-					}
+					updateLocation(location);
 				}
 				break;
 			case REMOVE:
 				for (Location location : locations) {
-					// loop and remove the location
-					for (TabItem tabItem : tabFolder.getItems()) {
-						// get the location out of the tab
-						Location tabLocation = (Location) tabItem.getData();
-						// check if we have the tab and dispose it
-						if (tabLocation.equals(location))
-							tabItem.dispose();
-					}
+					removeLocation(location);
 				}
 				break;
+			case GET:
+				for (Location location : locations) {
+					addOrUpdate(location);
+				}
+				break;
+		}
+	}
+
+	/**
+	 * Helper method to add a new location and create the corresponding
+	 * {@link TabItem}
+	 */
+	private void addLocation(Location addedLocation) {
+		// create a new tab item
+		TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
+		tabItem.setText(addedLocation.getLocationName());
+		// Store the location
+		tabItem.setData(addedLocation);
+		tabItem.setControl(viewer.getTable());
+		// set the default filter to the first location
+		viewer.addFilter(new PersonalViewFilter(addedLocation));
+	}
+
+	/**
+	 * Helper method to update an existing {@link TabItem} for a given
+	 * {@link Location}.
+	 */
+	private void updateLocation(Location updatedLocation) {
+		for (TabItem tabItem : tabFolder.getItems()) {
+			// get the location out of the tab
+			Location tabLocation = (Location) tabItem.getData();
+			// check if we have the location
+			if (!tabLocation.equals(updatedLocation)) {
+				continue;
+			}
+			// store the new location in the data and update the tab
+			tabItem.setData(updatedLocation);
+			tabItem.setText(updatedLocation.getLocationName());
+		}
+	}
+
+	/**
+	 * Helper method to add a new tab or update an existing
+	 */
+	private void addOrUpdate(Location location) {
+		boolean existing = false;
+		// check each tab
+		for (TabItem tabItem : tabFolder.getItems()) {
+			Location existingTab = (Location) tabItem.getData();
+			if (existingTab.equals(location)) {
+				existing = true;
+				break;
+			}
+		}
+		// now add or update
+		if (existing) {
+			updateLocation(location);
+		}
+		else {
+			addLocation(location);
+		}
+	}
+
+	/**
+	 * Helper method to remove an existing {@link TabItem} because the
+	 * {@link Location} instance has been removed.
+	 */
+	private void removeLocation(Location removedLocation) {
+		// loop and remove the location
+		for (TabItem tabItem : tabFolder.getItems()) {
+			// get the location out of the tab
+			Location tabLocation = (Location) tabItem.getData();
+			// check if we have the tab and dispose it
+			if (tabLocation.equals(removedLocation))
+				tabItem.dispose();
 		}
 	}
 }

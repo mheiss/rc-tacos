@@ -7,7 +7,6 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.fieldassist.FieldDecoration;
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
@@ -25,11 +24,13 @@ import org.eclipse.swt.widgets.TableColumn;
 
 import at.rc.tacos.client.net.NetWrapper;
 import at.rc.tacos.client.net.handler.VehicleHandler;
+import at.rc.tacos.client.ui.controller.RefreshViewAction;
 import at.rc.tacos.client.ui.controller.VehicleTableAtStationAction;
 import at.rc.tacos.client.ui.controller.VehicleTableDetachAllStaffMembersAction;
 import at.rc.tacos.client.ui.controller.VehicleTableEditAction;
 import at.rc.tacos.client.ui.controller.VehicleTableSetReadyAction;
 import at.rc.tacos.client.ui.controller.VehicleTableSetRepairStatusAction;
+import at.rc.tacos.client.ui.providers.HandlerContentProvider;
 import at.rc.tacos.client.ui.providers.VehicleViewTableDetailLabelProvider;
 import at.rc.tacos.client.ui.sorterAndTooltip.VehicleViewTableSorter;
 import at.rc.tacos.platform.model.Job;
@@ -38,6 +39,7 @@ import at.rc.tacos.platform.model.ServiceType;
 import at.rc.tacos.platform.model.StaffMember;
 import at.rc.tacos.platform.model.VehicleDetail;
 import at.rc.tacos.platform.net.Message;
+import at.rc.tacos.platform.net.message.GetMessage;
 import at.rc.tacos.platform.net.mina.MessageIoSession;
 
 public class VehiclesViewTableDetailed extends AbstractView {
@@ -82,9 +84,9 @@ public class VehiclesViewTableDetailed extends AbstractView {
 		// setup the layout and initialize the controls
 		body.setLayout(new FillLayout());
 		viewer = new TableViewer(body, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
-		viewer.setContentProvider(new ArrayContentProvider());
+		viewer.setContentProvider(new HandlerContentProvider());
 		viewer.setLabelProvider(new VehicleViewTableDetailLabelProvider());
-		viewer.setInput(vehicleHandler.toArray());
+		viewer.setInput(vehicleHandler);
 		viewer.getTable().setLinesVisible(true);
 		viewer.getTable().addMouseListener(new MouseAdapter() {
 
@@ -210,6 +212,17 @@ public class VehiclesViewTableDetailed extends AbstractView {
 		// create the actions
 		makeActions();
 		hookContextMenu();
+		createToolBarActions();
+
+		// initialize the view with current data
+		initView();
+	}
+
+	/**
+	 * Helper method to initialize the view
+	 */
+	private void initView() {
+		viewer.refresh(true);
 	}
 
 	/**
@@ -292,6 +305,18 @@ public class VehiclesViewTableDetailed extends AbstractView {
 			readyStatus.setEnabled(false);
 			repairStatus.setEnabled(false);
 		}
+	}
+
+	/**
+	 * Creates and adds the actions for the toolbar
+	 */
+	private void createToolBarActions() {
+		// create the action
+		GetMessage<VehicleDetail> getMessage = new GetMessage<VehicleDetail>(new VehicleDetail());
+
+		// add to the toolbar
+		form.getToolBarManager().add(new RefreshViewAction<VehicleDetail>(getMessage));
+		form.getToolBarManager().update(true);
 	}
 
 	/**

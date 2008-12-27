@@ -10,7 +10,6 @@ package at.rc.tacos.client.ui.dialog;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -36,6 +35,7 @@ import at.rc.tacos.client.net.handler.AddressHandler;
 import at.rc.tacos.client.ui.UiWrapper;
 import at.rc.tacos.client.ui.jobs.FilterAddressJob;
 import at.rc.tacos.client.ui.providers.AddressLabelProvider;
+import at.rc.tacos.client.ui.providers.HandlerContentProvider;
 import at.rc.tacos.platform.model.Address;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.listeners.DataChangeListener;
@@ -115,9 +115,9 @@ public class AddressSelectionDialog extends SelectionStatusDialog implements Dat
 		control.setLayoutData(gd);
 
 		viewer.setLabelProvider(new AddressLabelProvider());
-		viewer.setContentProvider(new ArrayContentProvider());
+		viewer.setContentProvider(new HandlerContentProvider());
 		viewer.setUseHashlookup(true);
-		viewer.setInput(addressHandler.toArray());
+		viewer.setInput(addressHandler);
 
 		//setup the underlying table
 		Table table = viewer.getTable();

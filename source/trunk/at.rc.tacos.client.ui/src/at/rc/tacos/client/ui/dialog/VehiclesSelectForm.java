@@ -2,7 +2,6 @@ package at.rc.tacos.client.ui.dialog;
 
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
@@ -17,6 +16,7 @@ import at.rc.tacos.client.net.NetWrapper;
 import at.rc.tacos.client.net.handler.VehicleHandler;
 import at.rc.tacos.client.ui.UiWrapper;
 import at.rc.tacos.client.ui.controller.VehicleEditAction;
+import at.rc.tacos.client.ui.providers.HandlerContentProvider;
 import at.rc.tacos.client.ui.providers.VehicleLabelProvider;
 import at.rc.tacos.platform.model.VehicleDetail;
 
@@ -79,9 +79,9 @@ public class VehiclesSelectForm extends TitleAreaDialog {
 	private void createTableSection(Composite parent) {
 		// create the table, set the providers and the input
 		viewer = new TableViewer(parent, SWT.SINGLE | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-		viewer.setContentProvider(new ArrayContentProvider());
+		viewer.setContentProvider(new HandlerContentProvider());
 		viewer.setLabelProvider(new VehicleLabelProvider());
-		viewer.setInput(vehicleHandler.toArray());
+		viewer.setInput(vehicleHandler);
 		viewer.getTable().setLayout(new GridLayout());
 		viewer.getTable().setLayoutData(new GridData(GridData.FILL_BOTH));
 	}

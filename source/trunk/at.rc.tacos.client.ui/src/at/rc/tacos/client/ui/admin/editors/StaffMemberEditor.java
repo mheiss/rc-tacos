@@ -47,6 +47,7 @@ import at.rc.tacos.client.net.handler.LocationHandler;
 import at.rc.tacos.client.ui.UiWrapper;
 import at.rc.tacos.client.ui.controller.EditorSaveAction;
 import at.rc.tacos.client.ui.providers.CompetenceLabelProvider;
+import at.rc.tacos.client.ui.providers.HandlerContentProvider;
 import at.rc.tacos.client.ui.providers.StationLabelProvider;
 import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.platform.model.Competence;
@@ -206,10 +207,10 @@ public class StaffMemberEditor extends EditorPart implements DataChangeListener<
 
 		// personal numer is not changeable
 		staffId.setEditable(false);
-		staffId.setBackground(CustomColors.GREY_COLOR);
+		staffId.setBackground(CustomColors.COLOR_GREY);
 		// username is not editable
 		uName.setEditable(false);
-		uName.setBackground(CustomColors.GREY_COLOR);
+		uName.setBackground(CustomColors.COLOR_GREY);
 		uName.setToolTipText("Der Benutzername kann nicht verändert werden");
 
 		// validate
@@ -390,7 +391,7 @@ public class StaffMemberEditor extends EditorPart implements DataChangeListener<
 		saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		saveHyperlink.setText("Änderungen speichern");
 		saveHyperlink.setEnabled(false);
-		saveHyperlink.setForeground(CustomColors.GREY_COLOR);
+		saveHyperlink.setForeground(CustomColors.COLOR_GREY);
 		saveHyperlink.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.saveDisabled"));
 		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() {
 
@@ -563,9 +564,9 @@ public class StaffMemberEditor extends EditorPart implements DataChangeListener<
 
 		Combo stationCombo = new Combo(client, SWT.READ_ONLY);
 		primaryLocationComboViewer = new ComboViewer(stationCombo);
-		primaryLocationComboViewer.setContentProvider(new ArrayContentProvider());
+		primaryLocationComboViewer.setContentProvider(new HandlerContentProvider());
 		primaryLocationComboViewer.setLabelProvider(new StationLabelProvider());
-		primaryLocationComboViewer.setInput(locationHandler.toArray());
+		primaryLocationComboViewer.setInput(locationHandler);
 		stationCombo.addModifyListener(new ModifyListener() {
 
 			@Override
@@ -1009,7 +1010,7 @@ public class StaffMemberEditor extends EditorPart implements DataChangeListener<
 			infoLabel.setText("Hier können sie den aktuellen Mitarbeiter verwalten und die Änderungen speichern.");
 			infoLabel.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.info"));
 			saveHyperlink.setEnabled(false);
-			saveHyperlink.setForeground(CustomColors.GREY_COLOR);
+			saveHyperlink.setForeground(CustomColors.COLOR_GREY);
 			saveHyperlink.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.saveDisabled"));
 		}
 

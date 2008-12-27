@@ -168,9 +168,9 @@ public class PersonalViewLabelProvider extends BaseLabelProvider implements Prop
 				&& vehicleHandler.getVehicleOfStaff(entry.getStaffMember().getStaffMemberId()) == null)
 			return null;// black
 		if (entry.getRealStartOfWork() == 0 && entry.getRealEndOfWork() == 0)
-			return CustomColors.DARK_GREY_COLOR;
+			return CustomColors.COLOR_GREY;
 		if (entry.getRealStartOfWork() != 0 && entry.getRealEndOfWork() != 0)
-			return CustomColors.DARK_GREY_COLOR;
+			return CustomColors.COLOR_GREY;
 		if (entry.getRealStartOfWork() != 0 && entry.getRealEndOfWork() == 0
 				&& vehicleHandler.getVehicleOfStaff(entry.getStaffMember().getStaffMemberId()) != null)
 			return CustomColors.BACKGROUND_BLUE;
@@ -179,7 +179,7 @@ public class PersonalViewLabelProvider extends BaseLabelProvider implements Prop
 
 	@Override
 	public Font getFont(Object element, int columnIndex) {
-		return CustomColors.VEHICLE_TABLE;
+		return CustomColors.APPLICATION_DATA_FONT;
 	}
 
 	@Override

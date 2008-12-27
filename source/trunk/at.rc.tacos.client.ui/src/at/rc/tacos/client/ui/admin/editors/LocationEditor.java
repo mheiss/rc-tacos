@@ -7,7 +7,6 @@ import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.ITextListener;
 import org.eclipse.jface.text.TextEvent;
 import org.eclipse.jface.text.TextViewer;
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
@@ -40,6 +39,7 @@ import at.rc.tacos.client.net.handler.MobilePhoneHandler;
 import at.rc.tacos.client.ui.UiWrapper;
 import at.rc.tacos.client.ui.controller.EditorCloseAction;
 import at.rc.tacos.client.ui.controller.EditorSaveAction;
+import at.rc.tacos.client.ui.providers.HandlerContentProvider;
 import at.rc.tacos.client.ui.providers.MobilePhoneLabelProvider;
 import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.platform.model.Location;
@@ -124,7 +124,7 @@ public class LocationEditor extends EditorPart implements DataChangeListener<Obj
 		saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		saveHyperlink.setText("Änderungen speichern");
 		saveHyperlink.setEnabled(false);
-		saveHyperlink.setForeground(CustomColors.GREY_COLOR);
+		saveHyperlink.setForeground(CustomColors.COLOR_GREY);
 		saveHyperlink.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.saveDisabled"));
 		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() {
 
@@ -203,9 +203,9 @@ public class LocationEditor extends EditorPart implements DataChangeListener<Obj
 		final Label labelPhone = toolkit.createLabel(client, "Telefon der Ortstelle");
 		Combo comboPhone = new Combo(client, SWT.READ_ONLY);
 		phoneViewer = new ComboViewer(comboPhone);
-		phoneViewer.setContentProvider(new ArrayContentProvider());
+		phoneViewer.setContentProvider(new HandlerContentProvider());
 		phoneViewer.setLabelProvider(new MobilePhoneLabelProvider());
-		phoneViewer.setInput(phoneHandler.toArray());
+		phoneViewer.setInput(phoneHandler);
 		phoneViewer.getCombo().addModifyListener(new ModifyListener() {
 
 			@Override
@@ -545,7 +545,7 @@ public class LocationEditor extends EditorPart implements DataChangeListener<Obj
 			infoLabel.setText("Zum anlegen einer neuen Ortsstelle bitte die Systemadministratoren informieren");
 			infoLabel.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.info"));
 			saveHyperlink.setEnabled(false);
-			saveHyperlink.setForeground(CustomColors.GREY_COLOR);
+			saveHyperlink.setForeground(CustomColors.COLOR_GREY);
 			saveHyperlink.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.saveDisabled"));
 		}
 

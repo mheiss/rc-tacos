@@ -1,8 +1,8 @@
 package at.rc.tacos.client.net.handler;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -23,7 +23,7 @@ import at.rc.tacos.platform.services.exception.ServiceException;
  */
 public class JobHandler implements Handler<Job> {
 
-	private List<Job> jobList = Collections.synchronizedList(new LinkedList<Job>());
+	private List<Job> jobList = Collections.synchronizedList(new ArrayList<Job>());
 	private Logger log = LoggerFactory.getLogger(JobHandler.class);
 
 	@Override
@@ -41,8 +41,16 @@ public class JobHandler implements Handler<Job> {
 	@Override
 	public void get(MessageIoSession session, Message<Job> message) throws SQLException, ServiceException {
 		synchronized (jobList) {
-			jobList.clear();
-			jobList.addAll(jobList);
+			// add or update the job
+			for (Job job : message.getObjects()) {
+				int index = jobList.indexOf(job);
+				if (index == -1) {
+					jobList.add(job);
+				}
+				else {
+					jobList.set(index, job);
+				}
+			}
 		}
 	}
 
@@ -90,6 +98,7 @@ public class JobHandler implements Handler<Job> {
 	 * 
 	 * @return an array containing the <code>Job</code> instances.
 	 */
+	@Override
 	public Job[] toArray() {
 		return jobList.toArray(new Job[jobList.size()]);
 	}

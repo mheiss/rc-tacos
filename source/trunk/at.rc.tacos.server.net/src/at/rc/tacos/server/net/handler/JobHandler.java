@@ -99,4 +99,9 @@ public class JobHandler implements Handler<Job> {
 		}
 		throw new NoSuchCommandException(handler, command);
 	}
+
+	@Override
+	public Job[] toArray() {
+		return null;
+	}
 }

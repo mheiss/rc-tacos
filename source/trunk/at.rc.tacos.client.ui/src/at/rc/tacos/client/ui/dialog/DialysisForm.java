@@ -7,7 +7,6 @@ import java.util.regex.Pattern;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.fieldassist.AutoCompleteField;
 import org.eclipse.jface.fieldassist.TextContentAdapter;
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
@@ -40,6 +39,7 @@ import at.rc.tacos.client.net.handler.AddressHandler;
 import at.rc.tacos.client.net.handler.LocationHandler;
 import at.rc.tacos.client.ui.UiWrapper;
 import at.rc.tacos.client.ui.jobs.FilterAddressJob;
+import at.rc.tacos.client.ui.providers.HandlerContentProvider;
 import at.rc.tacos.client.ui.providers.StationLabelProvider;
 import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.platform.iface.IFilterTypes;
@@ -476,9 +476,9 @@ public class DialysisForm implements IKindOfTransport, DataChangeListener<Addres
 
 		Combo comboZustaendigeOrtsstelle = new Combo(transportdatenGroup, SWT.READ_ONLY);
 		zustaendigeOrtsstelle = new ComboViewer(comboZustaendigeOrtsstelle);
-		zustaendigeOrtsstelle.setContentProvider(new ArrayContentProvider());
+		zustaendigeOrtsstelle.setContentProvider(new HandlerContentProvider());
 		zustaendigeOrtsstelle.setLabelProvider(new StationLabelProvider());
-		zustaendigeOrtsstelle.setInput(locationHandler.toArray());
+		zustaendigeOrtsstelle.setInput(locationHandler);
 		comboZustaendigeOrtsstelle.setBounds(322, 113, 112, 21);
 
 		button_stationary = new Button(transportdatenGroup, SWT.CHECK);

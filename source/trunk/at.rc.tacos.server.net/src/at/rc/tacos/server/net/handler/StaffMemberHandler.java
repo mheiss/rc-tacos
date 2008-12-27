@@ -197,4 +197,9 @@ public class StaffMemberHandler implements Handler<StaffMember> {
 			staffMember.setLockedBy(lockable.getLockedBy());
 		}
 	}
+
+	@Override
+	public StaffMember[] toArray() {
+		return null;
+	}
 }

@@ -1,6 +1,5 @@
 package at.rc.tacos.client.ui.admin.view;
 
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -26,6 +25,7 @@ import at.rc.tacos.client.ui.admin.editors.VehicleDetailEditor;
 import at.rc.tacos.client.ui.admin.editors.VehicleDetailEditorInput;
 import at.rc.tacos.client.ui.controller.EditorNewVehicleAction;
 import at.rc.tacos.client.ui.controller.RefreshViewAction;
+import at.rc.tacos.client.ui.providers.HandlerContentProvider;
 import at.rc.tacos.client.ui.providers.VehicleLabelProvider;
 import at.rc.tacos.platform.model.VehicleDetail;
 import at.rc.tacos.platform.net.Message;
@@ -85,9 +85,9 @@ public class VehicleAdminView extends ViewPart implements DataChangeListener<Veh
 				}
 			}
 		});
-		viewer.setContentProvider(new ArrayContentProvider());
+		viewer.setContentProvider(new HandlerContentProvider());
 		viewer.setLabelProvider(new VehicleLabelProvider());
-		viewer.setInput(vehicleHandler.toArray());
+		viewer.setInput(vehicleHandler);
 		getViewSite().setSelectionProvider(viewer);
 
 		// add actions to the toolbar

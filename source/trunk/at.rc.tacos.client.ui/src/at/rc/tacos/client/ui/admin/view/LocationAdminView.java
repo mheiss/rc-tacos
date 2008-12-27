@@ -1,6 +1,5 @@
 package at.rc.tacos.client.ui.admin.view;
 
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -26,6 +25,7 @@ import at.rc.tacos.client.ui.admin.editors.LocationEditor;
 import at.rc.tacos.client.ui.admin.editors.LocationEditorInput;
 import at.rc.tacos.client.ui.controller.EditorNewLocationAction;
 import at.rc.tacos.client.ui.controller.RefreshViewAction;
+import at.rc.tacos.client.ui.providers.HandlerContentProvider;
 import at.rc.tacos.client.ui.providers.StationLabelProvider;
 import at.rc.tacos.platform.model.Location;
 import at.rc.tacos.platform.net.Message;
@@ -87,9 +87,9 @@ public class LocationAdminView extends ViewPart implements DataChangeListener<Lo
 				}
 			}
 		});
-		viewer.setContentProvider(new ArrayContentProvider());
+		viewer.setContentProvider(new HandlerContentProvider());
 		viewer.setLabelProvider(new StationLabelProvider());
-		viewer.setInput(locationHandler.toArray());
+		viewer.setInput(locationHandler);
 		getViewSite().setSelectionProvider(viewer);
 
 		// add actions to the toolbar

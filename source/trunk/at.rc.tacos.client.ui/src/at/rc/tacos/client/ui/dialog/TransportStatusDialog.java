@@ -106,7 +106,7 @@ public class TransportStatusDialog extends TitleAreaDialog {
 		layout.horizontalSpacing = 30;
 		layout.verticalSpacing = 10;
 		composite.setLayout(layout);
-		composite.setBackground(CustomColors.SECTION_BACKGROUND);
+		composite.setBackground(CustomColors.COLOR_WHITE);
 
 		// the decorator to show in case of an error
 		FieldDecoration decError = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_ERROR);

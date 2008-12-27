@@ -65,6 +65,7 @@ import at.rc.tacos.client.ui.controller.DuplicatePriorityATransportAction;
 import at.rc.tacos.client.ui.controller.RemoveTransportFromMultiTransportList;
 import at.rc.tacos.client.ui.jobs.FilterAddressJob;
 import at.rc.tacos.client.ui.providers.DiseaseLabelProvider;
+import at.rc.tacos.client.ui.providers.HandlerContentProvider;
 import at.rc.tacos.client.ui.providers.MultiTransportLabelProvider;
 import at.rc.tacos.client.ui.providers.StaffMemberLabelProvider;
 import at.rc.tacos.client.ui.providers.StationLabelProvider;
@@ -660,7 +661,7 @@ public class TransportForm extends TitleAreaDialog implements DataChangeListener
 		transportdatenGroup.setText("Transportdaten");
 
 		final Label vonLabel = new Label(transportdatenGroup, SWT.NONE);
-		vonLabel.setFont(CustomColors.SUBHEADER_FONT);
+		vonLabel.setFont(CustomColors.APPLICATION_ITALIC_FONT);
 		final FormData fd_vonLabel = new FormData();
 		fd_vonLabel.bottom = new FormAttachment(0, 42);
 		fd_vonLabel.top = new FormAttachment(0, 29);
@@ -1099,7 +1100,7 @@ public class TransportForm extends TitleAreaDialog implements DataChangeListener
 		rufhilfepatientButton.setText("Rufhilfepatient");
 
 		final Label label_6 = new Label(transportdatenGroup, SWT.NONE);
-		label_6.setFont(CustomColors.SUBHEADER_FONT);
+		label_6.setFont(CustomColors.APPLICATION_ITALIC_FONT);
 		final FormData fd_label_6 = new FormData();
 		fd_label_6.bottom = new FormAttachment(0, 122);
 		fd_label_6.top = new FormAttachment(0, 105);
@@ -1111,9 +1112,9 @@ public class TransportForm extends TitleAreaDialog implements DataChangeListener
 
 		Combo comboZustaendigeOrtsstelle = new Combo(transportdatenGroup, SWT.READ_ONLY);
 		zustaendigeOrtsstelle = new ComboViewer(comboZustaendigeOrtsstelle);
-		zustaendigeOrtsstelle.setContentProvider(new ArrayContentProvider());
+		zustaendigeOrtsstelle.setContentProvider(new HandlerContentProvider());
 		zustaendigeOrtsstelle.setLabelProvider(new StationLabelProvider());
-		zustaendigeOrtsstelle.setInput(locationHandler.toArray());
+		zustaendigeOrtsstelle.setInput(locationHandler);
 
 		final FormData fd_comboZustaendigeOrtsstelle = new FormData();
 		fd_comboZustaendigeOrtsstelle.bottom = new FormAttachment(0, 121);
@@ -1138,7 +1139,7 @@ public class TransportForm extends TitleAreaDialog implements DataChangeListener
 
 		// group 'Zeiten/Richtung'
 		final Label abfLabel = new Label(planungGroup, SWT.NONE);
-		abfLabel.setFont(CustomColors.SUBHEADER_FONT);
+		abfLabel.setFont(CustomColors.APPLICATION_ITALIC_FONT);
 		final FormData fd_abfLabel = new FormData();
 		fd_abfLabel.bottom = new FormAttachment(0, 37);
 		fd_abfLabel.top = new FormAttachment(0, 24);
@@ -1406,7 +1407,7 @@ public class TransportForm extends TitleAreaDialog implements DataChangeListener
 		});
 
 		final Label label_4 = new Label(patientenzustandGroup, SWT.NONE);
-		label_4.setFont(CustomColors.SUBHEADER_FONT);
+		label_4.setFont(CustomColors.APPLICATION_ITALIC_FONT);
 		final FormData fd_label_4 = new FormData();
 		fd_label_4.left = new FormAttachment(0, 135);
 		fd_label_4.bottom = new FormAttachment(0, 69);

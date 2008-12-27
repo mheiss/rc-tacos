@@ -123,7 +123,7 @@ public class SickPersonEditor extends EditorPart implements DataChangeListener<S
 		saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		saveHyperlink.setText("Änderungen speichern");
 		saveHyperlink.setEnabled(false);
-		saveHyperlink.setForeground(CustomColors.GREY_COLOR);
+		saveHyperlink.setForeground(CustomColors.COLOR_GREY);
 		saveHyperlink.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.saveDisabled"));
 		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() {
 
@@ -616,7 +616,7 @@ public class SickPersonEditor extends EditorPart implements DataChangeListener<S
 			infoLabel.setText("Hier können sie den aktuellen Patienten verwalten und die Änderungen speichern.");
 			infoLabel.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.info"));
 			saveHyperlink.setEnabled(false);
-			saveHyperlink.setForeground(CustomColors.GREY_COLOR);
+			saveHyperlink.setForeground(CustomColors.COLOR_GREY);
 			saveHyperlink.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.saveDisabled"));
 		}
 

@@ -189,6 +189,6 @@ public class UnderwayTransportsViewLabelProvider extends BaseLabelProvider imple
 
 	@Override
 	public Font getFont(Object element, int columnIndex) {
-		return CustomColors.VEHICLE_TABLE;
+		return CustomColors.APPLICATION_DATA_FONT;
 	}
 }

@@ -146,4 +146,9 @@ public class AddressHandler implements Handler<Address> {
 		// throw an execption because the 'exec' command is not implemented
 		throw new NoSuchCommandException(handler, command);
 	}
+
+	@Override
+	public Address[] toArray() {
+		return null;
+	}
 }

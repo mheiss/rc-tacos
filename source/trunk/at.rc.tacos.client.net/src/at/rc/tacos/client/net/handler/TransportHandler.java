@@ -3,7 +3,6 @@ package at.rc.tacos.client.net.handler;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -26,7 +25,7 @@ import at.rc.tacos.platform.services.exception.ServiceException;
  */
 public class TransportHandler implements Handler<Transport> {
 
-	private List<Transport> transportList = Collections.synchronizedList(new LinkedList<Transport>());
+	private List<Transport> transportList = Collections.synchronizedList(new ArrayList<Transport>());
 	private Logger log = LoggerFactory.getLogger(TransportHandler.class);
 
 	@Override
@@ -44,8 +43,16 @@ public class TransportHandler implements Handler<Transport> {
 	@Override
 	public void get(MessageIoSession session, Message<Transport> message) throws SQLException, ServiceException {
 		synchronized (transportList) {
-			transportList.clear();
-			transportList.addAll(message.getObjects());
+			// add or update the element in the list
+			for (Transport transport : message.getObjects()) {
+				int index = transportList.indexOf(transport);
+				if (index == -1) {
+					transportList.add(transport);
+				}
+				else {
+					transportList.set(index, transport);
+				}
+			}
 		}
 	}
 
@@ -100,6 +107,7 @@ public class TransportHandler implements Handler<Transport> {
 	 * 
 	 * @return an array containing the <code>Transport</code> instances.
 	 */
+	@Override
 	public Transport[] toArray() {
 		return transportList.toArray(new Transport[transportList.size()]);
 	}

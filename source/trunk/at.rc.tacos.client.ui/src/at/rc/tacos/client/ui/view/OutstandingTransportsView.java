@@ -9,7 +9,6 @@ import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -43,15 +42,19 @@ import at.rc.tacos.client.ui.controller.CancelTransportAction;
 import at.rc.tacos.client.ui.controller.CopyTransportAction;
 import at.rc.tacos.client.ui.controller.EditTransportAction;
 import at.rc.tacos.client.ui.controller.ForwardTransportAction;
+import at.rc.tacos.client.ui.controller.RefreshViewAction;
 import at.rc.tacos.client.ui.filters.TransportStateViewFilter;
 import at.rc.tacos.client.ui.filters.TransportViewFilter;
+import at.rc.tacos.client.ui.providers.HandlerContentProvider;
 import at.rc.tacos.client.ui.providers.OutstandingTransportsViewLabelProvider;
 import at.rc.tacos.client.ui.sorterAndTooltip.TransportSorter;
+import at.rc.tacos.platform.iface.IFilterTypes;
 import at.rc.tacos.platform.iface.IProgramStatus;
 import at.rc.tacos.platform.model.Transport;
 import at.rc.tacos.platform.model.VehicleDetail;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.listeners.DataChangeListener;
+import at.rc.tacos.platform.net.message.GetMessage;
 import at.rc.tacos.platform.net.mina.MessageIoSession;
 
 public class OutstandingTransportsView extends ViewPart implements DataChangeListener<Transport>, PropertyChangeListener {
@@ -101,9 +104,9 @@ public class OutstandingTransportsView extends ViewPart implements DataChangeLis
 		composite.setLayout(new FillLayout());
 
 		viewer = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
-		viewer.setContentProvider(new ArrayContentProvider());
+		viewer.setContentProvider(new HandlerContentProvider());
 		viewer.setLabelProvider(new OutstandingTransportsViewLabelProvider());
-		viewer.setInput(transportHandler.toArray());
+		viewer.setInput(transportHandler);
 		viewer.getTable().setLinesVisible(true);
 		viewer.getTable().addMouseListener(new MouseAdapter() {
 
@@ -328,13 +331,24 @@ public class OutstandingTransportsView extends ViewPart implements DataChangeLis
 		erkrankungVerletzungOffeneTransporte.addListener(SWT.Selection, sortListener);
 		anmerkungOffeneTransporte.addListener(SWT.Selection, sortListener);
 
+		// add the form actions
+		createToolBarActions();
+
 		// apply the filter to show only outstanding transports
 		viewer.addFilter(new TransportStateViewFilter(IProgramStatus.PROGRAM_STATUS_OUTSTANDING));
-		viewer.refresh();
 
 		// register as transport date and view listener
 		UiWrapper.getDefault().registerListener(this);
 		NetWrapper.registerListener(this, Transport.class);
+		// initialize the view with current data
+		initView();
+	}
+
+	/**
+	 * Helper method to initialize the view
+	 */
+	private void initView() {
+		viewer.refresh(true);
 	}
 
 	/**
@@ -342,6 +356,19 @@ public class OutstandingTransportsView extends ViewPart implements DataChangeLis
 	 */
 	@Override
 	public void setFocus() {
+	}
+
+	/**
+	 * Creates and adds the actions for the toolbar
+	 */
+	private void createToolBarActions() {
+		// create the action
+		GetMessage<Transport> getMessage = new GetMessage<Transport>(new Transport());
+		getMessage.addParameter(IFilterTypes.TRANSPORT_TODO_FILTER, "");
+
+		// add to the toolbar
+		form.getToolBarManager().add(new RefreshViewAction<Transport>(getMessage));
+		form.getToolBarManager().update(true);
 	}
 
 	@Override

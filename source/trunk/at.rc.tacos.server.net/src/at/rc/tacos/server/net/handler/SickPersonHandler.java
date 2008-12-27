@@ -115,4 +115,9 @@ public class SickPersonHandler implements Handler<SickPerson> {
 		}
 		throw new NoSuchCommandException(handler, command);
 	}
+
+	@Override
+	public SickPerson[] toArray() {
+		return null;
+	}
 }

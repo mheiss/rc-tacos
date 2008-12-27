@@ -1,7 +1,6 @@
 package at.rc.tacos.client.ui.admin.view;
 
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -38,6 +37,7 @@ import at.rc.tacos.client.ui.controller.EditorNewSickPersonAction;
 import at.rc.tacos.client.ui.controller.RefreshViewAction;
 import at.rc.tacos.client.ui.jobs.FilterAddressJob;
 import at.rc.tacos.client.ui.jobs.FilterPatientJob;
+import at.rc.tacos.client.ui.providers.HandlerContentProvider;
 import at.rc.tacos.client.ui.providers.SickPersonAdminTableLabelProvider;
 import at.rc.tacos.client.ui.utils.CompositeHelper;
 import at.rc.tacos.platform.model.SickPerson;
@@ -149,9 +149,9 @@ public class SickPersonAdminView extends ViewPart implements DataChangeListener<
 				}
 			}
 		});
-		viewer.setContentProvider(new ArrayContentProvider());
+		viewer.setContentProvider(new HandlerContentProvider());
 		viewer.setLabelProvider(new SickPersonAdminTableLabelProvider());
-		viewer.setInput(personHandler.toArray());
+		viewer.setInput(personHandler);
 		viewer.getTable().setLinesVisible(true);
 		viewer.getTable().setHeaderVisible(true);
 		getViewSite().setSelectionProvider(viewer);
