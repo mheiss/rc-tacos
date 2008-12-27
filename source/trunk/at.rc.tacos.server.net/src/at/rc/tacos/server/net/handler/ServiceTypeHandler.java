@@ -122,4 +122,9 @@ public class ServiceTypeHandler implements Handler<ServiceType> {
 		}
 		throw new NoSuchCommandException(handler, command);
 	}
+
+	@Override
+	public ServiceType[] toArray() {
+		return null;
+	}
 }

@@ -135,6 +135,6 @@ public class PrebookingViewLabelProvider extends BaseLabelProvider implements IT
 
 	@Override
 	public Font getFont(Object element, int columnIndex) {
-		return CustomColors.VEHICLE_TABLE;
+		return CustomColors.APPLICATION_DATA_FONT;
 	}
 }

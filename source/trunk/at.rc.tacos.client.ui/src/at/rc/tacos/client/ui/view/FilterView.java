@@ -229,8 +229,8 @@ public class FilterView extends ViewPart {
 				vehicle.setText("");
 				disease.setText("");
 				// reset the background color
-				applyFilter.setBackground(CustomColors.SECTION_BACKGROUND);
-				calendar.setBackground(CustomColors.SECTION_BACKGROUND);
+				applyFilter.setBackground(CustomColors.COLOR_WHITE);
+				calendar.setBackground(CustomColors.COLOR_WHITE);
 				// apply the filter
 				Object source = this;
 				String propertyName = ListenerConstants.TRANSPORT_FILTER_CHANGED;

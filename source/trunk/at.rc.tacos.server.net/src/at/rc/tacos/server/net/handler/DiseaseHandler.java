@@ -101,4 +101,9 @@ public class DiseaseHandler implements Handler<Disease> {
 		}
 		throw new NoSuchCommandException(handler, command);
 	}
+
+	@Override
+	public Disease[] toArray() {
+		return null;
+	}
 }

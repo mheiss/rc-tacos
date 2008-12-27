@@ -111,4 +111,9 @@ public class DayInfoHandler implements Handler<DayInfoMessage> {
 		throw new NoSuchCommandException(handler, command);
 	}
 
+	@Override
+	public DayInfoMessage[] toArray() {
+		return null;
+	}
+
 }

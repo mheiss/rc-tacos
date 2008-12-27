@@ -206,4 +206,9 @@ public class AuthenticationHandler implements Handler<Login> {
 		session.reinitialize();
 	}
 
+	@Override
+	public Login[] toArray() {
+		return null;
+	}
+
 }

@@ -122,4 +122,9 @@ public class DialysisPatientHandler implements Handler<DialysisPatient> {
 		}
 		throw new NoSuchCommandException(handler, command);
 	}
+
+	@Override
+	public DialysisPatient[] toArray() {
+		return null;
+	}
 }

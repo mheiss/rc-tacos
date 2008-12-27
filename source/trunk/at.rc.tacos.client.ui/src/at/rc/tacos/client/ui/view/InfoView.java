@@ -129,6 +129,16 @@ public class InfoView extends ViewPart implements DataChangeListener<Object> {
 		NetWrapper.registerListener(this, Login.class);
 		NetWrapper.registerListener(this, StaffMember.class);
 		NetWrapper.registerListener(this, DayInfoMessage.class);
+
+		// initialize the view with current data
+		initView();
+	}
+
+	/**
+	 * Helper method to initialize the view
+	 */
+	private void initView() {
+		updateInfoSection(NetWrapper.getSession());
 	}
 
 	/**
@@ -142,7 +152,7 @@ public class InfoView extends ViewPart implements DataChangeListener<Object> {
 	 * Updates the info section
 	 */
 	private void updateInfoSection(MessageIoSession session) {
-		if (session.isLoggedIn()) {
+		if (session != null && session.isLoggedIn()) {
 			Login login = session.getLogin();
 			StaffMember userInformation = login.getUserInformation();
 			user.setText(userInformation.getFirstName() + " " + userInformation.getLastName());

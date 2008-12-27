@@ -109,7 +109,7 @@ public class MobilePhoneEditor extends EditorPart implements DataChangeListener<
 		saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		saveHyperlink.setText("Änderungen speichern");
 		saveHyperlink.setEnabled(false);
-		saveHyperlink.setForeground(CustomColors.GREY_COLOR);
+		saveHyperlink.setForeground(CustomColors.COLOR_GREY);
 		saveHyperlink.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.saveDisabled"));
 		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() {
 
@@ -162,7 +162,7 @@ public class MobilePhoneEditor extends EditorPart implements DataChangeListener<
 		final Label labelId = toolkit.createLabel(client, "Mobiltelefon ID");
 		id = toolkit.createText(client, "");
 		id.setEditable(false);
-		id.setBackground(CustomColors.GREY_COLOR);
+		id.setBackground(CustomColors.COLOR_GREY);
 		id.setToolTipText("Die ID wird automatisch generiert");
 
 		final Label labelPhoneName = toolkit.createLabel(client, "Bezeichnung");
@@ -408,7 +408,7 @@ public class MobilePhoneEditor extends EditorPart implements DataChangeListener<
 			infoLabel.setText("Hier können sie das aktuelle Mobiltelefon verwalten und die Änderungen speichern.");
 			infoLabel.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.info"));
 			saveHyperlink.setEnabled(false);
-			saveHyperlink.setForeground(CustomColors.GREY_COLOR);
+			saveHyperlink.setForeground(CustomColors.COLOR_GREY);
 			saveHyperlink.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.saveDisabled"));
 		}
 

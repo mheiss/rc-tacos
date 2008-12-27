@@ -56,8 +56,6 @@ public class OutstandingTransportsViewLabelProvider extends BaseLabelProvider im
 		Transport transport = (Transport) element;
 		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 		switch (columnIndex) {
-			case COLUMN_LOCK:
-				return null;
 			case COLUMN_PRIORITY:
 				// setup the priority string
 				String beforePriority = transport.isBlueLight1() ? "!" : "";
@@ -167,6 +165,6 @@ public class OutstandingTransportsViewLabelProvider extends BaseLabelProvider im
 
 	@Override
 	public Font getFont(Object element, int columnIndex) {
-		return CustomColors.VEHICLE_TABLE;
+		return CustomColors.APPLICATION_DATA_FONT;
 	}
 }

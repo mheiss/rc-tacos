@@ -101,4 +101,9 @@ public class MobilePhoneHandler implements Handler<MobilePhoneDetail> {
 		}
 		throw new NoSuchCommandException(handler, command);
 	}
+
+	@Override
+	public MobilePhoneDetail[] toArray() {
+		return null;
+	}
 }

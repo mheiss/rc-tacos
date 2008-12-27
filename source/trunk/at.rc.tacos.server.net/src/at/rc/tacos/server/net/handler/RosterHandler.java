@@ -304,4 +304,9 @@ public class RosterHandler implements Handler<RosterEntry> {
 		ExecMessage<SystemMessage> execMessage = new ExecMessage<SystemMessage>("info", message);
 		session.write(execMessage);
 	}
+
+	@Override
+	public RosterEntry[] toArray() {
+		return null;
+	}
 }

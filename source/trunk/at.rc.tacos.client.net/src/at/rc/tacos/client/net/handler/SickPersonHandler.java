@@ -1,8 +1,8 @@
 package at.rc.tacos.client.net.handler;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -23,7 +23,7 @@ import at.rc.tacos.platform.services.exception.ServiceException;
  */
 public class SickPersonHandler implements Handler<SickPerson> {
 
-	private List<SickPerson> personList = Collections.synchronizedList(new LinkedList<SickPerson>());
+	private List<SickPerson> personList = Collections.synchronizedList(new ArrayList<SickPerson>());
 	private Logger log = LoggerFactory.getLogger(SickPersonHandler.class);
 
 	@Override
@@ -41,10 +41,17 @@ public class SickPersonHandler implements Handler<SickPerson> {
 	@Override
 	public void get(MessageIoSession session, Message<SickPerson> message) throws SQLException, ServiceException {
 		synchronized (personList) {
-			personList.clear();
-			personList.addAll(message.getObjects());
+			// add or update the sick persons
+			for (SickPerson person : message.getObjects()) {
+				int index = personList.indexOf(person);
+				if (index == -1) {
+					personList.add(person);
+				}
+				else {
+					personList.set(index, person);
+				}
+			}
 		}
-
 	}
 
 	@Override
@@ -91,6 +98,7 @@ public class SickPersonHandler implements Handler<SickPerson> {
 	 * 
 	 * @return an array containing the <code>ServiceType</code> instances.
 	 */
+	@Override
 	public SickPerson[] toArray() {
 		return personList.toArray(new SickPerson[personList.size()]);
 	}

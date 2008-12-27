@@ -123,4 +123,9 @@ public class LinkHandler implements Handler<Link> {
 		}
 		throw new NoSuchCommandException(handler, command);
 	}
+
+	@Override
+	public Link[] toArray() {
+		return null;
+	}
 }

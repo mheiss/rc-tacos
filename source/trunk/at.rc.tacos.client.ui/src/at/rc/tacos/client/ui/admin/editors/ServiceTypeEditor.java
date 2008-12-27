@@ -114,7 +114,7 @@ public class ServiceTypeEditor extends EditorPart implements DataChangeListener<
 		saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		saveHyperlink.setText("Änderungen speichern");
 		saveHyperlink.setEnabled(false);
-		saveHyperlink.setForeground(CustomColors.GREY_COLOR);
+		saveHyperlink.setForeground(CustomColors.COLOR_GREY);
 		saveHyperlink.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.saveDisabled"));
 		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() {
 
@@ -166,7 +166,7 @@ public class ServiceTypeEditor extends EditorPart implements DataChangeListener<
 		final Label labelId = toolkit.createLabel(client, "Dienstverhältnis ID");
 		id = toolkit.createText(client, "");
 		id.setEditable(false);
-		id.setBackground(CustomColors.GREY_COLOR);
+		id.setBackground(CustomColors.COLOR_GREY);
 		id.setToolTipText("Die ID wird automatisch generiert");
 
 		final Label labelCompName = toolkit.createLabel(client, "Dienstverhältnis");
@@ -370,7 +370,7 @@ public class ServiceTypeEditor extends EditorPart implements DataChangeListener<
 			infoLabel.setText("Hier können sie das aktuelle Dienstverhältnis verwalten und die Änderungen speichern.");
 			infoLabel.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.info"));
 			saveHyperlink.setEnabled(false);
-			saveHyperlink.setForeground(CustomColors.GREY_COLOR);
+			saveHyperlink.setForeground(CustomColors.COLOR_GREY);
 			saveHyperlink.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.saveDisabled"));
 		}
 

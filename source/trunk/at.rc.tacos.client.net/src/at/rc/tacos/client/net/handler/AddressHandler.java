@@ -3,7 +3,6 @@ package at.rc.tacos.client.net.handler;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -25,7 +24,7 @@ import at.rc.tacos.platform.services.exception.ServiceException;
 public class AddressHandler implements Handler<Address> {
 
 	// the chached objects
-	private List<Address> addressList = Collections.synchronizedList(new LinkedList<Address>());
+	private List<Address> addressList = Collections.synchronizedList(new ArrayList<Address>());
 	private Logger log = LoggerFactory.getLogger(AddressHandler.class);
 
 	@Override
@@ -43,8 +42,15 @@ public class AddressHandler implements Handler<Address> {
 	@Override
 	public void get(MessageIoSession session, Message<Address> message) throws SQLException, ServiceException {
 		synchronized (addressList) {
-			addressList.clear();
-			addressList.addAll(message.getObjects());
+			for (Address address : message.getObjects()) {
+				int index = addressList.indexOf(address);
+				if (index == -1) {
+					addressList.add(address);
+				}
+				else {
+					addressList.set(index, address);
+				}
+			}
 		}
 
 	}
@@ -74,6 +80,7 @@ public class AddressHandler implements Handler<Address> {
 	 * 
 	 * @return an array containing the <code>Address</code> instances.
 	 */
+	@Override
 	public Address[] toArray() {
 		return addressList.toArray(new Address[addressList.size()]);
 	}

@@ -1,6 +1,5 @@
 package at.rc.tacos.client.ui.admin.view;
 
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -26,6 +25,7 @@ import at.rc.tacos.client.ui.admin.editors.ServiceTypeEditor;
 import at.rc.tacos.client.ui.admin.editors.ServiceTypeEditorInput;
 import at.rc.tacos.client.ui.controller.EditorNewServiceTypeAction;
 import at.rc.tacos.client.ui.controller.RefreshViewAction;
+import at.rc.tacos.client.ui.providers.HandlerContentProvider;
 import at.rc.tacos.client.ui.providers.ServiceTypeLabelProvider;
 import at.rc.tacos.platform.model.ServiceType;
 import at.rc.tacos.platform.net.Message;
@@ -87,9 +87,9 @@ public class ServiceTypeAdminView extends ViewPart implements DataChangeListener
 				}
 			}
 		});
-		viewer.setContentProvider(new ArrayContentProvider());
+		viewer.setContentProvider(new HandlerContentProvider());
 		viewer.setLabelProvider(new ServiceTypeLabelProvider());
-		viewer.setInput(serviceHandler.toArray());
+		viewer.setInput(serviceHandler);
 		getViewSite().setSelectionProvider(viewer);
 
 		// add actions to the toolbar

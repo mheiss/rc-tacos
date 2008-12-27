@@ -1,8 +1,8 @@
 package at.rc.tacos.client.net.handler;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -23,7 +23,7 @@ import at.rc.tacos.platform.services.exception.ServiceException;
  */
 public class LocationHandler implements Handler<Location> {
 
-	private List<Location> locationList = Collections.synchronizedList(new LinkedList<Location>());
+	private List<Location> locationList = Collections.synchronizedList(new ArrayList<Location>());
 	private Logger log = LoggerFactory.getLogger(LocationHandler.class);
 
 	@Override
@@ -41,8 +41,16 @@ public class LocationHandler implements Handler<Location> {
 	@Override
 	public void get(MessageIoSession session, Message<Location> message) throws SQLException, ServiceException {
 		synchronized (locationList) {
-			locationList.clear();
-			locationList.addAll(message.getObjects());
+			// add or update the location
+			for (Location location : message.getObjects()) {
+				int index = locationList.indexOf(location);
+				if (index == -1) {
+					locationList.add(location);
+				}
+				else {
+					locationList.set(index, location);
+				}
+			}
 		}
 	}
 
@@ -89,6 +97,7 @@ public class LocationHandler implements Handler<Location> {
 	 * 
 	 * @return an array containing the <code>Location</code> instances.
 	 */
+	@Override
 	public Location[] toArray() {
 		return locationList.toArray(new Location[locationList.size()]);
 	}

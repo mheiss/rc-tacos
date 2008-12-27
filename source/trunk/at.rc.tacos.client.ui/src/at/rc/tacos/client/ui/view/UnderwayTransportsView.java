@@ -7,7 +7,6 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.fieldassist.FieldDecoration;
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
@@ -29,6 +28,7 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import at.rc.tacos.client.net.NetWrapper;
 import at.rc.tacos.client.net.handler.TransportHandler;
 import at.rc.tacos.client.ui.ListenerConstants;
+import at.rc.tacos.client.ui.UiWrapper;
 import at.rc.tacos.client.ui.controller.CancelTransportAction;
 import at.rc.tacos.client.ui.controller.CopyTransportAction;
 import at.rc.tacos.client.ui.controller.CopyTransportDetailsIntoClipboardAction;
@@ -37,6 +37,7 @@ import at.rc.tacos.client.ui.controller.DetachCarAction;
 import at.rc.tacos.client.ui.controller.EditTransportAction;
 import at.rc.tacos.client.ui.controller.EditTransportStatusAction;
 import at.rc.tacos.client.ui.controller.EmptyTransportAction;
+import at.rc.tacos.client.ui.controller.RefreshViewAction;
 import at.rc.tacos.client.ui.controller.SetAccompanyingPersonAction;
 import at.rc.tacos.client.ui.controller.SetAlarmingAction;
 import at.rc.tacos.client.ui.controller.SetBD1Action;
@@ -45,12 +46,15 @@ import at.rc.tacos.client.ui.controller.SetBackTransportPossibleAction;
 import at.rc.tacos.client.ui.controller.SetTransportStatusAction;
 import at.rc.tacos.client.ui.filters.TransportStateViewFilter;
 import at.rc.tacos.client.ui.filters.TransportViewFilter;
+import at.rc.tacos.client.ui.providers.HandlerContentProvider;
 import at.rc.tacos.client.ui.providers.UnderwayTransportsViewLabelProvider;
 import at.rc.tacos.client.ui.sorterAndTooltip.TransportSorter;
+import at.rc.tacos.platform.iface.IFilterTypes;
 import at.rc.tacos.platform.iface.IProgramStatus;
 import at.rc.tacos.platform.iface.ITransportStatus;
 import at.rc.tacos.platform.model.Transport;
 import at.rc.tacos.platform.net.Message;
+import at.rc.tacos.platform.net.message.GetMessage;
 import at.rc.tacos.platform.net.mina.MessageIoSession;
 
 /**
@@ -99,6 +103,7 @@ public class UnderwayTransportsView extends AbstractView {
 	 */
 	@Override
 	public void addListeners() {
+		UiWrapper.getDefault().registerListener(this);
 		NetWrapper.registerListener(this, Transport.class);
 	}
 
@@ -107,6 +112,7 @@ public class UnderwayTransportsView extends AbstractView {
 	 */
 	@Override
 	public void removeListeners() {
+		UiWrapper.getDefault().removeListener(this);
 		NetWrapper.removeListener(this, Transport.class);
 	}
 
@@ -123,9 +129,9 @@ public class UnderwayTransportsView extends AbstractView {
 		SashForm sashForm = new SashForm(body, SWT.VERTICAL);
 
 		viewer = new TableViewer(sashForm, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
-		viewer.setContentProvider(new ArrayContentProvider());
+		viewer.setContentProvider(new HandlerContentProvider());
 		viewer.setLabelProvider(new UnderwayTransportsViewLabelProvider());
-		viewer.setInput(transportHandler.toArray());
+		viewer.setInput(transportHandler);
 		viewer.getTable().setLinesVisible(true);
 		viewer.getTable().addMouseListener(new MouseAdapter() {
 
@@ -289,9 +295,19 @@ public class UnderwayTransportsView extends AbstractView {
 		// create the actions
 		makeActions();
 		hookContextMenu();
+		createToolBarActions();
 
 		// filter out unwandted transports
 		viewer.addFilter(new TransportStateViewFilter(IProgramStatus.PROGRAM_STATUS_UNDERWAY));
+		// initialize the view with current data
+		initView();
+	}
+
+	/**
+	 * Helper method to initialize the view
+	 */
+	private void initView() {
+		viewer.refresh(true);
 	}
 
 	/**
@@ -454,6 +470,19 @@ public class UnderwayTransportsView extends AbstractView {
 			setAlarmingActionBR.setEnabled(true);
 			setAlarmingActionKIT.setEnabled(true);
 		}
+	}
+
+	/**
+	 * Creates and adds the actions for the toolbar
+	 */
+	private void createToolBarActions() {
+		// create the action
+		GetMessage<Transport> getMessage = new GetMessage<Transport>(new Transport());
+		getMessage.addParameter(IFilterTypes.TRANSPORT_UNDERWAY_FILTER, "");
+
+		// add to the toolbar
+		form.getToolBarManager().add(new RefreshViewAction<Transport>(getMessage));
+		form.getToolBarManager().update(true);
 	}
 
 	/**

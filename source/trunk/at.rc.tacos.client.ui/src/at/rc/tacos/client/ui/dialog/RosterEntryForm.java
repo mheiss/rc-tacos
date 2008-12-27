@@ -31,6 +31,7 @@ import at.rc.tacos.client.net.handler.ServiceTypeHandler;
 import at.rc.tacos.client.net.handler.StaffHandler;
 import at.rc.tacos.client.ui.UiWrapper;
 import at.rc.tacos.client.ui.custom.DatePicker;
+import at.rc.tacos.client.ui.providers.HandlerContentProvider;
 import at.rc.tacos.client.ui.providers.JobLabelProvider;
 import at.rc.tacos.client.ui.providers.ServiceTypeLabelProvider;
 import at.rc.tacos.client.ui.providers.StaffMemberLabelProvider;
@@ -159,7 +160,7 @@ public class RosterEntryForm extends TitleAreaDialog implements DataChangeListen
 		layout.horizontalSpacing = 30;
 		layout.verticalSpacing = 10;
 		composite.setLayout(layout);
-		composite.setBackground(CustomColors.SECTION_BACKGROUND);
+		composite.setBackground(CustomColors.COLOR_WHITE);
 		toolkit = new FormToolkit(Display.getCurrent());
 
 		// create the content of the dialog
@@ -276,11 +277,11 @@ public class RosterEntryForm extends TitleAreaDialog implements DataChangeListen
 		Group group = new Group(parent, SWT.NONE);
 		group.setText("Allgemeine Daten");
 		group.setLayout(new GridLayout());
-		group.setBackground(CustomColors.SECTION_BACKGROUND);
+		group.setBackground(CustomColors.COLOR_WHITE);
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		Composite client = new Composite(group, SWT.NONE);
-		client.setBackground(CustomColors.SECTION_BACKGROUND);
+		client.setBackground(CustomColors.COLOR_WHITE);
 		// layout
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
@@ -290,27 +291,27 @@ public class RosterEntryForm extends TitleAreaDialog implements DataChangeListen
 
 		final Label labelStaff = new Label(client, SWT.NONE);
 		labelStaff.setText("Mitarbeiter:");
-		labelStaff.setBackground(CustomColors.SECTION_BACKGROUND);
+		labelStaff.setBackground(CustomColors.COLOR_WHITE);
 
 		Combo combo = new Combo(client, SWT.READ_ONLY);
 		employeenameCombo = new ComboViewer(combo);
-		employeenameCombo.setContentProvider(new ArrayContentProvider());
+		employeenameCombo.setContentProvider(new HandlerContentProvider());
 		employeenameCombo.setLabelProvider(new StaffMemberLabelProvider());
-		employeenameCombo.setInput(staffHandler.toArray());
+		employeenameCombo.setInput(staffHandler);
 
 		final Label labelStation = new Label(client, SWT.NONE);
 		labelStation.setText("Ortsstelle:");
-		labelStation.setBackground(CustomColors.SECTION_BACKGROUND);
+		labelStation.setBackground(CustomColors.COLOR_WHITE);
 
 		Combo comboOrts = new Combo(client, SWT.READ_ONLY);
 		comboOrtsstelle = new ComboViewer(comboOrts);
-		comboOrtsstelle.setContentProvider(new ArrayContentProvider());
+		comboOrtsstelle.setContentProvider(new HandlerContentProvider());
 		comboOrtsstelle.setLabelProvider(new StationLabelProvider());
-		comboOrtsstelle.setInput(locationHandler.toArray());
+		comboOrtsstelle.setInput(locationHandler);
 
 		bereitschaftButton = new Button(client, SWT.CHECK);
 		bereitschaftButton.setText("Bereitschaft");
-		bereitschaftButton.setBackground(CustomColors.SECTION_BACKGROUND);
+		bereitschaftButton.setBackground(CustomColors.COLOR_WHITE);
 		// should span over two
 		GridData data = new GridData(GridData.FILL_HORIZONTAL);
 		data.horizontalSpan = 2;
@@ -318,7 +319,7 @@ public class RosterEntryForm extends TitleAreaDialog implements DataChangeListen
 
 		final Label labelJob = new Label(client, SWT.NONE);
 		labelJob.setText("Verwendung:");
-		labelJob.setBackground(CustomColors.SECTION_BACKGROUND);
+		labelJob.setBackground(CustomColors.COLOR_WHITE);
 
 		Combo comboVerw = new Combo(client, SWT.READ_ONLY);
 		comboVerwendung = new ComboViewer(comboVerw);
@@ -328,7 +329,7 @@ public class RosterEntryForm extends TitleAreaDialog implements DataChangeListen
 
 		final Label labelService = new Label(client, SWT.NONE);
 		labelService.setText("Dienstverhältnis:");
-		labelService.setBackground(CustomColors.SECTION_BACKGROUND);
+		labelService.setBackground(CustomColors.COLOR_WHITE);
 
 		Combo comboDienstv = new Combo(client, SWT.READ_ONLY);
 		comboDienstverhaeltnis = new ComboViewer(comboDienstv);
@@ -340,7 +341,7 @@ public class RosterEntryForm extends TitleAreaDialog implements DataChangeListen
 		Group dayInfoGroup = new Group(client, SWT.NONE);
 		dayInfoGroup.setText("Anmerkungen");
 		dayInfoGroup.setLayout(new GridLayout());
-		dayInfoGroup.setBackground(CustomColors.SECTION_BACKGROUND);
+		dayInfoGroup.setBackground(CustomColors.COLOR_WHITE);
 		// info should span over two
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		data.horizontalSpan = 2;
@@ -348,7 +349,7 @@ public class RosterEntryForm extends TitleAreaDialog implements DataChangeListen
 
 		// create the container for the notes
 		Composite notesField = toolkit.createComposite(dayInfoGroup);
-		notesField.setBackground(CustomColors.SECTION_BACKGROUND);
+		notesField.setBackground(CustomColors.COLOR_WHITE);
 		notesField.setLayout(new GridLayout());
 		GridData notesData = new GridData(GridData.FILL_BOTH);
 		notesData.heightHint = 80;
@@ -395,10 +396,10 @@ public class RosterEntryForm extends TitleAreaDialog implements DataChangeListen
 		group.setText("Dienstzeiten");
 		group.setLayout(new GridLayout());
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		group.setBackground(CustomColors.SECTION_BACKGROUND);
+		group.setBackground(CustomColors.COLOR_WHITE);
 		// composite to add the client area
 		Composite client = new Composite(group, SWT.NONE);
-		client.setBackground(CustomColors.SECTION_BACKGROUND);
+		client.setBackground(CustomColors.COLOR_WHITE);
 
 		// layout
 		GridLayout layout = new GridLayout();
@@ -413,17 +414,17 @@ public class RosterEntryForm extends TitleAreaDialog implements DataChangeListen
 		Composite valueComp = makeComposite(client, 2);
 		final Label vonLabel = new Label(valueComp, SWT.NONE);
 		vonLabel.setText("Dienst von:");
-		vonLabel.setBackground(CustomColors.SECTION_BACKGROUND);
+		vonLabel.setBackground(CustomColors.COLOR_WHITE);
 		dienstVon = new DatePicker(valueComp, SWT.FLAT, DatePicker.LABEL_CHOOSE);
-		dienstVon.setBackground(CustomColors.GREY_COLOR2);
+		dienstVon.setBackground(CustomColors.COLOR_GREY_2);
 
 		// end time
 		valueComp = makeComposite(client, 2);
 		final Label bisLabel = new Label(valueComp, SWT.NONE);
 		bisLabel.setText(" bis: ");
-		bisLabel.setBackground(CustomColors.SECTION_BACKGROUND);
+		bisLabel.setBackground(CustomColors.COLOR_WHITE);
 		dienstBis = new DatePicker(valueComp, SWT.FLAT, DatePicker.LABEL_CHOOSE);
-		dienstBis.setBackground(CustomColors.GREY_COLOR2);
+		dienstBis.setBackground(CustomColors.COLOR_GREY_2);
 
 		// some layout options
 		GridData data = new GridData();
@@ -448,14 +449,14 @@ public class RosterEntryForm extends TitleAreaDialog implements DataChangeListen
 	private void createSignSection(Composite parent) {
 		// create the section
 		Group group = new Group(parent, SWT.NONE);
-		group.setBackground(CustomColors.SECTION_BACKGROUND);
+		group.setBackground(CustomColors.COLOR_WHITE);
 		group.setText("Anmeldung zum Dienst / Abmeldung vom Dienst");
 		group.setLayout(new GridLayout());
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		// composite to add the client area
 		Composite client = new Composite(group, SWT.NONE);
-		client.setBackground(CustomColors.SECTION_BACKGROUND);
+		client.setBackground(CustomColors.COLOR_WHITE);
 
 		// layout
 		GridLayout layout = new GridLayout();
@@ -470,17 +471,17 @@ public class RosterEntryForm extends TitleAreaDialog implements DataChangeListen
 		Composite valueComp = makeComposite(client, 2);
 		Label anmeldungLabel = new Label(valueComp, SWT.NONE);
 		anmeldungLabel.setText("Anmeldung:");
-		anmeldungLabel.setBackground(CustomColors.SECTION_BACKGROUND);
+		anmeldungLabel.setBackground(CustomColors.COLOR_WHITE);
 		anmeldung = new DatePicker(valueComp, SWT.FLAT, DatePicker.LABEL_CHOOSE);
-		anmeldung.setBackground(CustomColors.GREY_COLOR2);
+		anmeldung.setBackground(CustomColors.COLOR_GREY_2);
 
 		// label
 		valueComp = makeComposite(client, 2);
 		Label abmeldungLabel = new Label(valueComp, SWT.NONE);
 		abmeldungLabel.setText("Abmeldung:");
-		abmeldungLabel.setBackground(CustomColors.SECTION_BACKGROUND);
+		abmeldungLabel.setBackground(CustomColors.COLOR_WHITE);
 		abmeldung = new DatePicker(valueComp, SWT.FLAT, DatePicker.LABEL_CHOOSE);
-		abmeldung.setBackground(CustomColors.GREY_COLOR2);
+		abmeldung.setBackground(CustomColors.COLOR_GREY_2);
 
 		// some layout options
 		GridData data = new GridData();

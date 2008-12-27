@@ -1,8 +1,8 @@
 package at.rc.tacos.client.net.handler;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -23,7 +23,7 @@ import at.rc.tacos.platform.services.exception.ServiceException;
  */
 public class ServiceTypeHandler implements Handler<ServiceType> {
 
-	private List<ServiceType> serviceList = Collections.synchronizedList(new LinkedList<ServiceType>());
+	private List<ServiceType> serviceList = Collections.synchronizedList(new ArrayList<ServiceType>());
 	private Logger log = LoggerFactory.getLogger(ServiceTypeHandler.class);
 
 	@Override
@@ -41,8 +41,16 @@ public class ServiceTypeHandler implements Handler<ServiceType> {
 	@Override
 	public void get(MessageIoSession session, Message<ServiceType> message) throws SQLException, ServiceException {
 		synchronized (serviceList) {
-			serviceList.clear();
-			serviceList.addAll(message.getObjects());
+			// add or update the service types
+			for (ServiceType serviceType : message.getObjects()) {
+				int index = serviceList.indexOf(serviceType);
+				if (index == -1) {
+					serviceList.add(serviceType);
+				}
+				else {
+					serviceList.set(index, serviceType);
+				}
+			}
 		}
 	}
 
@@ -91,6 +99,7 @@ public class ServiceTypeHandler implements Handler<ServiceType> {
 	 * 
 	 * @return an array containing the <code>ServiceType</code> instances.
 	 */
+	@Override
 	public ServiceType[] toArray() {
 		return serviceList.toArray(new ServiceType[serviceList.size()]);
 	}

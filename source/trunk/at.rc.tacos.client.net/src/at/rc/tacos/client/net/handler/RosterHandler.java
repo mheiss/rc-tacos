@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -27,7 +26,7 @@ import at.rc.tacos.platform.services.exception.ServiceException;
  */
 public class RosterHandler implements Handler<RosterEntry> {
 
-	private List<RosterEntry> rosterList = Collections.synchronizedList(new LinkedList<RosterEntry>());
+	private List<RosterEntry> rosterList = Collections.synchronizedList(new ArrayList<RosterEntry>());
 	private Logger log = LoggerFactory.getLogger(RosterHandler.class);
 
 	@Override
@@ -45,8 +44,16 @@ public class RosterHandler implements Handler<RosterEntry> {
 	@Override
 	public void get(MessageIoSession session, Message<RosterEntry> message) throws SQLException, ServiceException {
 		synchronized (rosterList) {
-			rosterList.clear();
-			rosterList.addAll(message.getObjects());
+			// add or update the roster list
+			for (RosterEntry entry : message.getObjects()) {
+				int index = rosterList.indexOf(entry);
+				if (index == -1) {
+					rosterList.add(entry);
+				}
+				else {
+					rosterList.set(index, entry);
+				}
+			}
 		}
 	}
 
@@ -139,6 +146,7 @@ public class RosterHandler implements Handler<RosterEntry> {
 	 * 
 	 * @return an array containing the <code>RosterEntry</code> instances.
 	 */
+	@Override
 	public RosterEntry[] toArray() {
 		return rosterList.toArray(new RosterEntry[rosterList.size()]);
 	}

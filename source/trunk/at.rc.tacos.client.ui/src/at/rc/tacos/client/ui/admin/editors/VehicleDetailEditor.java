@@ -38,6 +38,7 @@ import at.rc.tacos.client.net.handler.MobilePhoneHandler;
 import at.rc.tacos.client.ui.UiWrapper;
 import at.rc.tacos.client.ui.controller.EditorCloseAction;
 import at.rc.tacos.client.ui.controller.EditorSaveAction;
+import at.rc.tacos.client.ui.providers.HandlerContentProvider;
 import at.rc.tacos.client.ui.providers.MobilePhoneLabelProvider;
 import at.rc.tacos.client.ui.providers.StationLabelProvider;
 import at.rc.tacos.client.ui.utils.CustomColors;
@@ -129,7 +130,7 @@ public class VehicleDetailEditor extends EditorPart implements DataChangeListene
 		saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		saveHyperlink.setText("Änderungen speichern");
 		saveHyperlink.setEnabled(false);
-		saveHyperlink.setForeground(CustomColors.GREY_COLOR);
+		saveHyperlink.setForeground(CustomColors.COLOR_GREY);
 		saveHyperlink.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.saveDisabled"));
 		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() {
 
@@ -202,9 +203,9 @@ public class VehicleDetailEditor extends EditorPart implements DataChangeListene
 		final Label labelBasicLoaction = toolkit.createLabel(client, "Basis Dienststelle");
 		Combo stationCombo = new Combo(client, SWT.READ_ONLY);
 		basicLocationViewer = new ComboViewer(stationCombo);
-		basicLocationViewer.setContentProvider(new ArrayContentProvider());
+		basicLocationViewer.setContentProvider(new HandlerContentProvider());
 		basicLocationViewer.setLabelProvider(new StationLabelProvider());
-		basicLocationViewer.setInput(locationHandler.toArray());
+		basicLocationViewer.setInput(locationHandler);
 		stationCombo.addModifyListener(new ModifyListener() {
 
 			@Override
@@ -528,7 +529,7 @@ public class VehicleDetailEditor extends EditorPart implements DataChangeListene
 			infoLabel.setText("Hier können sie das aktuelle Fahrzeug verwalten und die Änderungen speichern.");
 			infoLabel.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.info"));
 			saveHyperlink.setEnabled(false);
-			saveHyperlink.setForeground(CustomColors.GREY_COLOR);
+			saveHyperlink.setForeground(CustomColors.COLOR_GREY);
 			saveHyperlink.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.saveDisabled"));
 		}
 

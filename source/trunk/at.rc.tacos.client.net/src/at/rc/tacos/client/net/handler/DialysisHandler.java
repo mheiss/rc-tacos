@@ -1,8 +1,8 @@
 package at.rc.tacos.client.net.handler;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -23,7 +23,7 @@ import at.rc.tacos.platform.services.exception.ServiceException;
  */
 public class DialysisHandler implements Handler<DialysisPatient> {
 
-	private List<DialysisPatient> dialysisList = Collections.synchronizedList(new LinkedList<DialysisPatient>());
+	private List<DialysisPatient> dialysisList = Collections.synchronizedList(new ArrayList<DialysisPatient>());
 	private Logger log = LoggerFactory.getLogger(DialysisHandler.class);
 
 	@Override
@@ -41,8 +41,16 @@ public class DialysisHandler implements Handler<DialysisPatient> {
 	@Override
 	public void get(MessageIoSession session, Message<DialysisPatient> message) throws SQLException, ServiceException {
 		synchronized (dialysisList) {
-			dialysisList.clear();
-			dialysisList.addAll(message.getObjects());
+			// add or update the disease
+			for (DialysisPatient patient : message.getObjects()) {
+				int index = dialysisList.indexOf(patient);
+				if (index == -1) {
+					dialysisList.add(patient);
+				}
+				else {
+					dialysisList.set(index, patient);
+				}
+			}
 		}
 	}
 
@@ -71,6 +79,7 @@ public class DialysisHandler implements Handler<DialysisPatient> {
 	 * 
 	 * @return an array containing the <code>DialysisPatient</code> instances.
 	 */
+	@Override
 	public DialysisPatient[] toArray() {
 		return dialysisList.toArray(new DialysisPatient[dialysisList.size()]);
 	}

@@ -71,4 +71,10 @@ public interface Handler<M> {
 	 */
 	public void execute(MessageIoSession session, Message<M> message) throws SQLException, ServiceException;
 
+	/**
+	 * Returns the content of the current handler as an array.
+	 * 
+	 * @return
+	 */
+	public M[] toArray();
 }

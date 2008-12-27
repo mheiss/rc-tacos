@@ -35,18 +35,18 @@ public class ResourceMenuView extends ViewPart {
 	public void createPartControl(Composite parent) {
 		GridLayout layout = new GridLayout(5, false);
 		parent.setLayout(layout);
-		parent.setBackground(CustomColors.SECTION_BACKGROUND);
+		parent.setBackground(CustomColors.COLOR_WHITE);
 
 		// create a group for the perspective switch
 		final Group createGroup = new Group(parent, SWT.NONE);
 		createGroup.setLayout(new GridLayout());
 		createGroup.setLayoutData(new GridData());
-		createGroup.setBackground(CustomColors.SECTION_BACKGROUND);
+		createGroup.setBackground(CustomColors.COLOR_WHITE);
 		createGroup.setText("Neue Einträge");
 
 		// Create the toolbar
 		final MyToolbarManager tbmCreate = new MyToolbarManager(new ToolBar(createGroup, SWT.FLAT));
-		tbmCreate.getControl().setBackground(CustomColors.SECTION_BACKGROUND);
+		tbmCreate.getControl().setBackground(CustomColors.COLOR_WHITE);
 		tbmCreate.getControl().setLayout(new GridLayout());
 		tbmCreate.getControl().setLayoutData(new GridData());
 		tbmCreate.add(new PersonalNewEntryAction());
@@ -56,7 +56,7 @@ public class ResourceMenuView extends ViewPart {
 		tbmCreate.update(true);
 
 		Composite comp1 = new Composite(parent, SWT.NONE);
-		comp1.setBackground(CustomColors.SECTION_BACKGROUND);
+		comp1.setBackground(CustomColors.COLOR_WHITE);
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		comp1.setLayoutData(gd);
 

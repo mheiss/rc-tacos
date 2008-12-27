@@ -1,8 +1,8 @@
 package at.rc.tacos.client.net.handler;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -23,7 +23,7 @@ import at.rc.tacos.platform.services.exception.ServiceException;
  */
 public class DayInfoHandler implements Handler<DayInfoMessage> {
 
-	private List<DayInfoMessage> infoList = Collections.synchronizedList(new LinkedList<DayInfoMessage>());
+	private List<DayInfoMessage> infoList = Collections.synchronizedList(new ArrayList<DayInfoMessage>());
 	private Logger log = LoggerFactory.getLogger(DayInfoHandler.class);
 
 	@Override
@@ -39,8 +39,16 @@ public class DayInfoHandler implements Handler<DayInfoMessage> {
 	@Override
 	public void get(MessageIoSession session, Message<DayInfoMessage> message) throws SQLException, ServiceException {
 		synchronized (infoList) {
-			infoList.clear();
-			infoList.addAll(message.getObjects());
+			// add or update the day info message
+			for (DayInfoMessage dayInfoMessage : message.getObjects()) {
+				int index = infoList.indexOf(dayInfoMessage);
+				if (index == -1) {
+					infoList.add(dayInfoMessage);
+				}
+				else {
+					infoList.set(index, dayInfoMessage);
+				}
+			}
 		}
 	}
 
@@ -83,5 +91,10 @@ public class DayInfoHandler implements Handler<DayInfoMessage> {
 			// nothing found
 			return null;
 		}
+	}
+
+	@Override
+	public DayInfoMessage[] toArray() {
+		return infoList.toArray(new DayInfoMessage[infoList.size()]);
 	}
 }

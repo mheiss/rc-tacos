@@ -1,6 +1,5 @@
 package at.rc.tacos.client.ui.admin.view;
 
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -26,6 +25,7 @@ import at.rc.tacos.client.ui.admin.editors.MobilePhoneEditor;
 import at.rc.tacos.client.ui.admin.editors.MobilePhoneEditorInput;
 import at.rc.tacos.client.ui.controller.EditorNewMobilePhoneAction;
 import at.rc.tacos.client.ui.controller.RefreshViewAction;
+import at.rc.tacos.client.ui.providers.HandlerContentProvider;
 import at.rc.tacos.client.ui.providers.MobilePhoneLabelProvider;
 import at.rc.tacos.platform.model.MobilePhoneDetail;
 import at.rc.tacos.platform.net.Message;
@@ -87,9 +87,9 @@ public class PhoneAdminView extends ViewPart implements DataChangeListener<Mobil
 				}
 			}
 		});
-		viewer.setContentProvider(new ArrayContentProvider());
+		viewer.setContentProvider(new HandlerContentProvider());
 		viewer.setLabelProvider(new MobilePhoneLabelProvider());
-		viewer.setInput(phoneHandler.toArray());
+		viewer.setInput(phoneHandler);
 		getViewSite().setSelectionProvider(viewer);
 
 		// add actions to the toolbar

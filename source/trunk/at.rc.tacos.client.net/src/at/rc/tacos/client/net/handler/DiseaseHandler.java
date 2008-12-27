@@ -1,8 +1,8 @@
 package at.rc.tacos.client.net.handler;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -23,7 +23,7 @@ import at.rc.tacos.platform.services.exception.ServiceException;
  */
 public class DiseaseHandler implements Handler<Disease> {
 
-	private List<Disease> diseaseList = Collections.synchronizedList(new LinkedList<Disease>());
+	private List<Disease> diseaseList = Collections.synchronizedList(new ArrayList<Disease>());
 	private Logger log = LoggerFactory.getLogger(DialysisHandler.class);
 
 	@Override
@@ -41,8 +41,16 @@ public class DiseaseHandler implements Handler<Disease> {
 	@Override
 	public void get(MessageIoSession session, Message<Disease> message) throws SQLException, ServiceException {
 		synchronized (diseaseList) {
-			diseaseList.clear();
-			diseaseList.addAll(message.getObjects());
+			// add or update the disease
+			for (Disease disease : message.getObjects()) {
+				int index = diseaseList.indexOf(disease);
+				if (index == -1) {
+					diseaseList.add(disease);
+				}
+				else {
+					diseaseList.set(index, disease);
+				}
+			}
 		}
 	}
 
@@ -91,6 +99,7 @@ public class DiseaseHandler implements Handler<Disease> {
 	 * 
 	 * @return an array containing the <code>Disease</code> instances.
 	 */
+	@Override
 	public Disease[] toArray() {
 		return diseaseList.toArray(new Disease[diseaseList.size()]);
 	}

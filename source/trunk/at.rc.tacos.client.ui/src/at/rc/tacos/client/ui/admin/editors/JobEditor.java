@@ -113,7 +113,7 @@ public class JobEditor extends EditorPart implements DataChangeListener<Job> {
 		saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		saveHyperlink.setText("Änderungen speichern");
 		saveHyperlink.setEnabled(false);
-		saveHyperlink.setForeground(CustomColors.GREY_COLOR);
+		saveHyperlink.setForeground(CustomColors.COLOR_GREY);
 		saveHyperlink.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.saveDisabled"));
 		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() {
 
@@ -165,7 +165,7 @@ public class JobEditor extends EditorPart implements DataChangeListener<Job> {
 		final Label labelId = toolkit.createLabel(client, "Verwendungs ID");
 		id = toolkit.createText(client, "");
 		id.setEditable(false);
-		id.setBackground(CustomColors.GREY_COLOR);
+		id.setBackground(CustomColors.COLOR_GREY);
 		id.setToolTipText("Die ID wird automatisch generiert");
 
 		final Label labelCompName = toolkit.createLabel(client, "Verwendungs Bezeichnung");
@@ -370,7 +370,7 @@ public class JobEditor extends EditorPart implements DataChangeListener<Job> {
 			infoLabel.setText("Hier können sie die aktuelle Verwendung verwalten und die Änderungen speichern.");
 			infoLabel.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.info"));
 			saveHyperlink.setEnabled(false);
-			saveHyperlink.setForeground(CustomColors.GREY_COLOR);
+			saveHyperlink.setForeground(CustomColors.COLOR_GREY);
 			saveHyperlink.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.saveDisabled"));
 		}
 

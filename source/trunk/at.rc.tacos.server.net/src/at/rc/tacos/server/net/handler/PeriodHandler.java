@@ -110,4 +110,9 @@ public class PeriodHandler implements Handler<Period> {
 		}
 		throw new NoSuchCommandException(handler, command);
 	}
+
+	@Override
+	public Period[] toArray() {
+		return null;
+	}
 }

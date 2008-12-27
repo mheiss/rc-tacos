@@ -8,7 +8,6 @@ import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -46,19 +45,23 @@ import at.rc.tacos.client.ui.controller.CancelTransportAction;
 import at.rc.tacos.client.ui.controller.CopyTransportAction;
 import at.rc.tacos.client.ui.controller.EditTransportAction;
 import at.rc.tacos.client.ui.controller.MoveToOutstandingTransportsAction;
+import at.rc.tacos.client.ui.controller.RefreshViewAction;
 import at.rc.tacos.client.ui.filters.TransportDateFilter;
 import at.rc.tacos.client.ui.filters.TransportDirectnessFilter;
 import at.rc.tacos.client.ui.filters.TransportStateViewFilter;
 import at.rc.tacos.client.ui.filters.TransportViewFilter;
+import at.rc.tacos.client.ui.providers.HandlerContentProvider;
 import at.rc.tacos.client.ui.providers.PrebookingViewLabelProvider;
 import at.rc.tacos.client.ui.sorterAndTooltip.JournalViewTooltip;
 import at.rc.tacos.client.ui.sorterAndTooltip.TransportSorter;
 import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.platform.iface.IDirectness;
+import at.rc.tacos.platform.iface.IFilterTypes;
 import at.rc.tacos.platform.iface.IProgramStatus;
 import at.rc.tacos.platform.model.Transport;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.listeners.DataChangeListener;
+import at.rc.tacos.platform.net.message.GetMessage;
 import at.rc.tacos.platform.net.mina.MessageIoSession;
 
 public class PrebookingView extends ViewPart implements PropertyChangeListener, DataChangeListener<Transport> {
@@ -153,7 +156,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 
 		final Group richtungBruckGroup = new Group(sashForm_8, SWT.NONE);
 		richtungBruckGroup.setLayout(new FillLayout());
-		richtungBruckGroup.setForeground(CustomColors.RED_COLOR);
+		richtungBruckGroup.setForeground(CustomColors.COLOR_RED);
 		richtungBruckGroup.setText("Richtung Bruck");
 
 		final SashForm sashForm_7 = new SashForm(sashForm_8, SWT.VERTICAL);
@@ -229,12 +232,30 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		hookContextMenuBruck(viewerBruck);
 		hookContextMenuKapfenberg(viewerKapfenberg);
 
+		// add the form actions
+		createToolBarActions();
+
 		// apply the filters
 		applyFilters();
 
 		// register listeners to keep in track
 		NetWrapper.registerListener(this, Transport.class);
 		UiWrapper.getDefault().registerListener(this);
+
+		// initialize the view with current data
+		initView();
+	}
+
+	/**
+	 * Helper method to initialize the view
+	 */
+	private void initView() {
+		viewerGraz.refresh(true);
+		viewerGraz.refresh(true);
+		viewerKapfenberg.refresh(true);
+		viewerLeoben.refresh(true);
+		viewerMariazell.refresh(true);
+		viewerWien.refresh(true);
 	}
 
 	/**
@@ -570,9 +591,9 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 	 */
 	private TableViewer createTableViewer(Composite parent) {
 		final TableViewer viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
-		viewer.setContentProvider(new ArrayContentProvider());
+		viewer.setContentProvider(new HandlerContentProvider());
 		viewer.setLabelProvider(new PrebookingViewLabelProvider());
-		viewer.setInput(transportHandler.toArray());
+		viewer.setInput(transportHandler);
 		viewer.getTable().setLinesVisible(true);
 		viewer.getTable().addMouseListener(new MouseAdapter() {
 
@@ -752,6 +773,19 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		viewerMariazell.resetFilters();
 		viewerKapfenberg.resetFilters();
 		viewerLeoben.resetFilters();
+	}
+
+	/**
+	 * Creates and adds the actions for the toolbar
+	 */
+	private void createToolBarActions() {
+		// create the action
+		GetMessage<Transport> getMessage = new GetMessage<Transport>(new Transport());
+		getMessage.addParameter(IFilterTypes.TRANSPORT_TODO_FILTER, "");
+
+		// add to the toolbar
+		form.getToolBarManager().add(new RefreshViewAction<Transport>(getMessage));
+		form.getToolBarManager().update(true);
 	}
 
 	/***********************************

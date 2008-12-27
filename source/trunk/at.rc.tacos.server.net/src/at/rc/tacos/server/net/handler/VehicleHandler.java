@@ -161,4 +161,9 @@ public class VehicleHandler implements Handler<VehicleDetail> {
 		UpdateMessage<Transport> updateMessage = new UpdateMessage<Transport>(transportList);
 		session.brodcastMessage(updateMessage);
 	}
+
+	@Override
+	public VehicleDetail[] toArray() {
+		return null;
+	}
 }

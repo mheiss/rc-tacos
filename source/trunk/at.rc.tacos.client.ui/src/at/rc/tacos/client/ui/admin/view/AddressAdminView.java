@@ -1,7 +1,6 @@
 package at.rc.tacos.client.ui.admin.view;
 
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -40,6 +39,7 @@ import at.rc.tacos.client.ui.controller.EditorNewAddressAction;
 import at.rc.tacos.client.ui.controller.ImportAddressAction;
 import at.rc.tacos.client.ui.jobs.FilterAddressJob;
 import at.rc.tacos.client.ui.providers.AddressLabelProvider;
+import at.rc.tacos.client.ui.providers.HandlerContentProvider;
 import at.rc.tacos.client.ui.sorterAndTooltip.AddressViewSorter;
 import at.rc.tacos.client.ui.utils.CompositeHelper;
 import at.rc.tacos.platform.model.Address;
@@ -150,9 +150,9 @@ public class AddressAdminView extends ViewPart implements DataChangeListener<Add
 				}
 			}
 		});
-		viewer.setContentProvider(new ArrayContentProvider());
+		viewer.setContentProvider(new HandlerContentProvider());
 		viewer.setLabelProvider(new AddressLabelProvider());
-		viewer.setInput(addressHandler.toArray());
+		viewer.setInput(addressHandler);
 		viewer.getTable().setLinesVisible(true);
 		viewer.getTable().setHeaderVisible(true);
 		getViewSite().setSelectionProvider(viewer);

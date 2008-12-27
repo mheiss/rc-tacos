@@ -8,7 +8,6 @@ import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -46,6 +45,7 @@ import at.rc.tacos.client.ui.controller.MoveToOutstandingTransportsAction;
 import at.rc.tacos.client.ui.filters.TransportDateFilter;
 import at.rc.tacos.client.ui.filters.TransportStateViewFilter;
 import at.rc.tacos.client.ui.filters.TransportViewFilter;
+import at.rc.tacos.client.ui.providers.HandlerContentProvider;
 import at.rc.tacos.client.ui.providers.JournalViewLabelProvider;
 import at.rc.tacos.client.ui.sorterAndTooltip.JournalViewTooltip;
 import at.rc.tacos.client.ui.sorterAndTooltip.TransportSorter;
@@ -103,9 +103,9 @@ public class JournalView extends ViewPart implements DataChangeListener<Transpor
 		composite.setLayout(new FillLayout());
 
 		viewer = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
-		viewer.setContentProvider(new ArrayContentProvider());
+		viewer.setContentProvider(new HandlerContentProvider());
 		viewer.setLabelProvider(new JournalViewLabelProvider());
-		viewer.setInput(transportHandler.toArray());
+		viewer.setInput(transportHandler);
 		viewer.getTable().setLinesVisible(true);
 
 		// set the tooltip
@@ -323,6 +323,15 @@ public class JournalView extends ViewPart implements DataChangeListener<Transpor
 		// register as transport date and view listener
 		UiWrapper.getDefault().registerListener(this);
 		NetWrapper.registerListener(this, Transport.class);
+		// initialize the view with current data
+		initView();
+	}
+
+	/**
+	 * Helper method to initialize the view
+	 */
+	private void initView() {
+		viewer.refresh(true);
 	}
 
 	/**
@@ -406,6 +415,7 @@ public class JournalView extends ViewPart implements DataChangeListener<Transpor
 			if (!(newValue instanceof Calendar)) {
 				log.error("Expected 'Calendar' but was " + newValue == null ? "null" : newValue.getClass().getName());
 			}
+
 			// apply the filter
 			viewer.resetFilters();
 			viewer.addFilter(new TransportStateViewFilter(IProgramStatus.PROGRAM_STATUS_JOURNAL));

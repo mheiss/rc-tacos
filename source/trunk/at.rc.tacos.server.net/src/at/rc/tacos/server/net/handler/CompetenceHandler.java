@@ -102,4 +102,9 @@ public class CompetenceHandler implements Handler<Competence> {
 		}
 		throw new NoSuchCommandException(handler, command);
 	}
+
+	@Override
+	public Competence[] toArray() {
+		return null;
+	}
 }

@@ -106,4 +106,9 @@ public class NotifyDetailHandler implements Handler<CallerDetail> {
 		}
 		throw new NoSuchCommandException(handler, command);
 	}
+
+	@Override
+	public CallerDetail[] toArray() {
+		return null;
+	}
 }

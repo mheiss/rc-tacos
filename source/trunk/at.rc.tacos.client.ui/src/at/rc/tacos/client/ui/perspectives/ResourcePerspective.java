@@ -29,8 +29,8 @@ public class ResourcePerspective implements IPerspectiveFactory {
 		layout.setFixed(true);
 
 		layout.addStandaloneView(ResourceMenuView.ID, false, IPageLayout.TOP, 0.10f, editorArea);
-		layout.addStandaloneView(VehiclesViewTableDetailed.ID, false, IPageLayout.LEFT, 0.3f, editorArea);
-		layout.addStandaloneView(PersonalView.ID, false, IPageLayout.LEFT, 0.243f, editorArea);
+		layout.addStandaloneView(VehiclesViewTableDetailed.ID, false, IPageLayout.LEFT, 0.5f, editorArea);
+		layout.addStandaloneView(PersonalView.ID, false, IPageLayout.LEFT, 0.5f, editorArea);
 		layout.addStandaloneView(InfoView.ID, false, IPageLayout.TOP, 0.35f, PersonalView.ID);
 	}
 }
