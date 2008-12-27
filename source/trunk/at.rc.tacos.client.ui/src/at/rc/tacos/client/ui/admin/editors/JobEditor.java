@@ -68,7 +68,7 @@ public class JobEditor extends EditorPart implements DataChangeListener<Job> {
 		isDirty = false;
 
 		// Create the form
-		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
+		toolkit = new FormToolkit(Display.getDefault());
 		form = toolkit.createScrolledForm(parent);
 		toolkit.decorateFormHeading(form.getForm());
 		form.getBody().setLayout(new GridLayout());

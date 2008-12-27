@@ -42,7 +42,6 @@ import at.rc.tacos.client.ui.controller.ImportAddressAction;
 import at.rc.tacos.client.ui.jobs.FilterAddressJob;
 import at.rc.tacos.client.ui.providers.AddressLabelProvider;
 import at.rc.tacos.client.ui.sorterAndTooltip.AddressViewSorter;
-import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.platform.model.Address;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.listeners.DataChangeListener;
@@ -78,9 +77,7 @@ public class AddressAdminView extends ViewPart implements DataChangeListener<Add
 	 */
 	@Override
 	public void createPartControl(final Composite parent) {
-
-		// the scrolled form
-		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
+		toolkit = new FormToolkit(Display.getDefault());
 		form = toolkit.createScrolledForm(parent);
 		form.setText("Liste der Adressen");
 		toolkit.decorateFormHeading(form.getForm());

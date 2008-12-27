@@ -13,6 +13,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.nebula.widgets.cdatetime.CDT;
 import org.eclipse.swt.nebula.widgets.cdatetime.CDateTime;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.events.HyperlinkAdapter;
@@ -68,7 +69,7 @@ public class FilterView extends ViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		// the scrolled form
-		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
+		toolkit = new FormToolkit(Display.getDefault());
 		form = toolkit.createScrolledForm(parent);
 		form.setText("Filterfunktionen");
 		toolkit.decorateFormHeading(form.getForm());

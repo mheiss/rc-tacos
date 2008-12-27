@@ -84,7 +84,7 @@ public class VehicleDetailEditor extends EditorPart implements DataChangeListene
 		isNew = ((VehicleDetailEditorInput) getEditorInput()).isNew();
 
 		// Create the form
-		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
+		toolkit = new FormToolkit(Display.getDefault());
 		form = toolkit.createScrolledForm(parent);
 		toolkit.decorateFormHeading(form.getForm());
 		form.getBody().setLayout(new GridLayout());

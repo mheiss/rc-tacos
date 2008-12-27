@@ -11,6 +11,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -28,7 +29,6 @@ import at.rc.tacos.client.ui.admin.editors.StaffMemberEditorInput;
 import at.rc.tacos.client.ui.controller.EditorNewStaffAction;
 import at.rc.tacos.client.ui.controller.RefreshViewAction;
 import at.rc.tacos.client.ui.providers.StaffMemberLabelProvider;
-import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.platform.model.Login;
 import at.rc.tacos.platform.model.StaffMember;
 import at.rc.tacos.platform.net.Message;
@@ -57,8 +57,7 @@ public class StaffMemberAdminView extends ViewPart implements DataChangeListener
 	 */
 	@Override
 	public void createPartControl(final Composite parent) {
-		// the scrolled form
-		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
+		toolkit = new FormToolkit(Display.getDefault());
 		form = toolkit.createScrolledForm(parent);
 		form.setText("Liste der Mitarbeiter");
 		toolkit.decorateFormHeading(form.getForm());

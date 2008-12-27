@@ -24,6 +24,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
@@ -50,7 +51,6 @@ import at.rc.tacos.client.ui.filters.PersonalViewFilter;
 import at.rc.tacos.client.ui.providers.PersonalViewLabelProvider;
 import at.rc.tacos.client.ui.sorterAndTooltip.PersonalTooltip;
 import at.rc.tacos.client.ui.sorterAndTooltip.PersonalViewSorter;
-import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.platform.model.Job;
 import at.rc.tacos.platform.model.Location;
 import at.rc.tacos.platform.model.RosterEntry;
@@ -107,7 +107,7 @@ public class PersonalView extends ViewPart implements DataChangeListener<Object>
 	@Override
 	public void createPartControl(final Composite parent) {
 		// Create the scrolled parent component
-		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
+		toolkit = new FormToolkit(Display.getDefault());
 		form = toolkit.createForm(parent);
 		toolkit.decorateFormHeading(form);
 		form.getBody().setLayout(new FillLayout());
@@ -378,13 +378,14 @@ public class PersonalView extends ViewPart implements DataChangeListener<Object>
 	@Override
 	public void dataChanged(Message<Object> message, MessageIoSession messageIoSession) {
 		Object object = message.getFirstElement();
+		System.out.println("message received");
+		System.out.println("first:" + object);
 		if (object instanceof Location) {
 			List<Location> locations = new ArrayList<Location>();
 			for (Object locationObject : message.getObjects()) {
 				locations.add((Location) locationObject);
 			}
 			locationChanged(locations, message.getMessageType());
-			return;
 		}
 		// add the viewer in the other cases
 		viewer.refresh();
@@ -394,8 +395,11 @@ public class PersonalView extends ViewPart implements DataChangeListener<Object>
 	 * Helper method to update the location
 	 */
 	private void locationChanged(List<Location> locations, MessageType messageType) {
+		System.out.println("location");
 		switch (messageType) {
 			case ADD:
+			case GET:
+				System.out.println("add");
 				for (Location location : locations) {
 					// create a new tab item
 					TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
@@ -403,12 +407,8 @@ public class PersonalView extends ViewPart implements DataChangeListener<Object>
 					// Store the location
 					tabItem.setData(location);
 					tabItem.setControl(viewer.getTable());
-					tabFolder.setSelection(1);
-					tabFolder.setSelection(0);
 					// set the default filter to the first location
-					if (location.getId() == 1) {
-						viewer.addFilter(new PersonalViewFilter(location));
-					}
+					viewer.addFilter(new PersonalViewFilter(location));
 				}
 				break;
 			case UPDATE:

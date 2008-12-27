@@ -40,7 +40,6 @@ import at.rc.tacos.client.ui.controller.RefreshViewAction;
 import at.rc.tacos.client.ui.jobs.FilterAddressJob;
 import at.rc.tacos.client.ui.jobs.FilterPatientJob;
 import at.rc.tacos.client.ui.providers.SickPersonAdminTableLabelProvider;
-import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.platform.model.SickPerson;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.listeners.DataChangeListener;
@@ -77,8 +76,7 @@ public class SickPersonAdminView extends ViewPart implements DataChangeListener<
 	 */
 	@Override
 	public void createPartControl(final Composite parent) {
-		// the scrolled form
-		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
+		toolkit = new FormToolkit(Display.getDefault());
 		form = toolkit.createScrolledForm(parent);
 		form.setText("Liste der Patienten");
 		toolkit.decorateFormHeading(form.getForm());

@@ -22,7 +22,7 @@ import at.rc.tacos.client.ui.controller.OpenEmergencyTransportAction;
 import at.rc.tacos.client.ui.controller.OpenTransportAction;
 import at.rc.tacos.client.ui.controller.PersonalNewEntryAction;
 import at.rc.tacos.client.ui.perspectives.SwitchToClientPerspective;
-import at.rc.tacos.client.ui.perspectives.SwitchToLogPerspective;
+import at.rc.tacos.client.ui.perspectives.SwitchToTransportPerspective;
 
 /**
  * An action bar advisor is responsible for creating, adding, and disposing of
@@ -34,9 +34,9 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	// Actions - allocated in the make actions method
 	private IWorkbenchAction exitAction;
 	private IWorkbenchAction aboutAction;
-	private SwitchToClientPerspective switchToClient;
+	private SwitchToClientPerspective switchToResource;
 	private SwitchToAdminPerspective switchToAdmin;
-	private SwitchToLogPerspective switchToLog;
+	private SwitchToTransportPerspective switchToTransport;
 	private IContributionItem viewList;
 	private PersonalNewEntryAction personalNewEntryAction;
 	private OpenEmergencyTransportAction openEmergencyTransportAction;
@@ -62,10 +62,10 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		exitAction = ActionFactory.QUIT.create(window);
 		exitAction.setAccelerator(SWT.CTRL + 'I');
 		aboutAction = ActionFactory.ABOUT.create(window);
-		switchToClient = new SwitchToClientPerspective();
-		switchToClient.setAccelerator(SWT.CTRL + 'R');
+		switchToResource = new SwitchToClientPerspective();
+		switchToResource.setAccelerator(SWT.CTRL + 'R');
+		switchToTransport = new SwitchToTransportPerspective();
 		switchToAdmin = new SwitchToAdminPerspective();
-		switchToLog = new SwitchToLogPerspective();
 		viewList = ContributionItemFactory.VIEWS_SHORTLIST.create(window);
 		personalNewEntryAction = new PersonalNewEntryAction();
 		personalNewEntryAction.setAccelerator(SWT.CTRL + 'D');
@@ -80,7 +80,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		register(openEmergencyTransportAction);
 		register(openTransportAction);
 		register(openDialysisTransportAction);
-		register(switchToClient);
+		register(switchToResource);
+		register(switchToTransport);
 		register(switchToAdmin);
 		register(aboutAction);
 		register(exitAction);
@@ -103,14 +104,14 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
 		// the admin sub menu
 		MenuManager adminMenu = new MenuManager("&Administation");
-		adminMenu.add(switchToLog);
 		adminMenu.add(switchToAdmin);
 
 		// window menu
 		MenuManager windowMenu = new MenuManager("&Fenster", "viewsShortlist");
 		windowMenu.add(adminMenu);
 		windowMenu.add(new Separator());
-		windowMenu.add(switchToClient);
+		windowMenu.add(switchToResource);
+		windowMenu.add(switchToTransport);
 		windowMenu.add(viewList);
 
 		// help menu

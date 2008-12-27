@@ -12,7 +12,7 @@ import at.rc.tacos.client.ui.UiWrapper;
 public class SwitchToClientPerspective extends AbstractPerspectiveSwitcher {
 
 	public SwitchToClientPerspective() {
-		super(Perspective.ID);
+		super(ResourcePerspective.ID);
 	}
 
 	/**

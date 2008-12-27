@@ -288,6 +288,8 @@ public class LoginSplashHandler extends AbstractSplashHandler {
 	 */
 	private void loginSuccess(Login login) {
 		fAuthenticated = true;
+		// save the user in the current session
+		NetWrapper.getSession().setLoggedIn(login);
 	}
 
 	/**
@@ -458,7 +460,7 @@ public class LoginSplashHandler extends AbstractSplashHandler {
 			// create a new login object
 			Login login = new Login(name, pwd, false);
 			// send the login request
-			ExecMessage<Login> loginMessage = new ExecMessage<Login>("login", login);
+			ExecMessage<Login> loginMessage = new ExecMessage<Login>("doLogin", login);
 			Message<Login> loginResult = loginMessage.synchronRequest(NetWrapper.getSession());
 			return loginResult.getFirstElement();
 		}

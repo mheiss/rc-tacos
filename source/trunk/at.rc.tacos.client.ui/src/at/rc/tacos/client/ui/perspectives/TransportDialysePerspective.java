@@ -4,7 +4,8 @@ import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 
 import at.rc.tacos.client.ui.view.DialysisView;
-import at.rc.tacos.client.ui.view.NavigationView;
+import at.rc.tacos.client.ui.view.FilterView;
+import at.rc.tacos.client.ui.view.TransportMenuView;
 
 /**
  * This is the perspective to show the dialyse transports
@@ -26,7 +27,8 @@ public class TransportDialysePerspective implements IPerspectiveFactory {
 		layout.setEditorAreaVisible(false);
 		layout.setFixed(true);
 		// the main components
-		layout.addStandaloneView(NavigationView.ID, true, IPageLayout.TOP, 0.10f, editorArea);
-		layout.addStandaloneView(DialysisView.ID, true, IPageLayout.RIGHT, 0.90f, editorArea);
+		layout.addStandaloneView(TransportMenuView.ID, false, IPageLayout.TOP, 0.10f, editorArea);
+		layout.addStandaloneView(FilterView.ID, false, IPageLayout.LEFT, 0.15f, editorArea);
+		layout.addStandaloneView(DialysisView.ID, false, IPageLayout.RIGHT, 0.75f, editorArea);
 	}
 }

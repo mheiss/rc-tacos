@@ -4,13 +4,13 @@ import java.beans.PropertyChangeListener;
 
 import org.eclipse.jface.fieldassist.FieldDecoration;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.part.ViewPart;
 
-import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.platform.net.listeners.DataChangeListener;
 
 /**
@@ -34,7 +34,7 @@ public abstract class AbstractView extends ViewPart implements PropertyChangeLis
 	@Override
 	public final void createPartControl(Composite parent) {
 		// prepare the parent form
-		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
+		toolkit = new FormToolkit(Display.getDefault());
 		form = toolkit.createForm(parent);
 		toolkit.decorateFormHeading(form);
 		Composite client = form.getBody();

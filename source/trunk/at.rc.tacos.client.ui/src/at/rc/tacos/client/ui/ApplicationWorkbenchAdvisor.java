@@ -8,7 +8,7 @@ import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
 import at.rc.tacos.client.net.NetWrapper;
-import at.rc.tacos.client.ui.perspectives.Perspective;
+import at.rc.tacos.client.ui.perspectives.ResourcePerspective;
 import at.rc.tacos.platform.iface.IFilterTypes;
 import at.rc.tacos.platform.model.Competence;
 import at.rc.tacos.platform.model.DayInfoMessage;
@@ -33,7 +33,7 @@ import at.rc.tacos.platform.util.MyUtils;
  */
 public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 
-	private static final String PERSPECTIVE_ID = Perspective.ID;
+	private static final String PERSPECTIVE_ID = ResourcePerspective.ID;
 
 	/**
 	 * Creates the application workbench advisor.

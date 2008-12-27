@@ -35,7 +35,7 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            class="at.rc.tacos.client.ui.perspectives.Perspective"
+            class="at.rc.tacos.client.ui.perspectives.ResourcePerspective"
             id="at.rc.tacos.client.ui.perspectives.main"
             name="Resourcen">
       </perspective>
@@ -58,11 +58,6 @@
             class="at.rc.tacos.client.ui.perspectives.TransportJournalPerspective"
             id="at.rc.tacos.client.ui.perspectives.transportJournal"
             name="JournalBlatt">
-      </perspective>
-      <perspective
-            class="at.rc.tacos.client.ui.perspectives.LogPerspective"
-            id="at.rc.tacos.client.ui.perspectives.log"
-            name="LogPerspective">
       </perspective>
       <perspective
             class="at.rc.tacos.client.ui.admin.perspectives.AdminPerspective"
@@ -220,9 +215,16 @@
       </view>
       <view
             allowMultiple="false"
-            class="at.rc.tacos.client.ui.view.NavigationView"
-            id="at.rc.tacos.client.view.navigation"
-            name="Navigation">
+            class="at.rc.tacos.client.ui.view.ResourceMenuView"
+            id="at.rc.tacos.client.view.resourceMenu"
+            name="Resource Menü">
+      </view>
+      <view
+            allowMultiple="false"
+            class="at.rc.tacos.client.ui.view.TransportMenuView"
+            id="at.rc.tacos.client.view.transportMenu"
+            name="Transport Menü"
+            restorable="true">
       </view>
    </extension>
 

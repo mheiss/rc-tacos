@@ -11,21 +11,22 @@ import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.part.ViewPart;
 
 import at.rc.tacos.client.ui.UiWrapper;
-import at.rc.tacos.client.ui.controller.OpenDialysisTransportAction;
-import at.rc.tacos.client.ui.controller.OpenEmergencyTransportAction;
-import at.rc.tacos.client.ui.controller.OpenTransportAction;
-import at.rc.tacos.client.ui.controller.PersonalNewEntryAction;
 import at.rc.tacos.client.ui.custom.MyToolbarManager;
+import at.rc.tacos.client.ui.perspectives.SwitchToTransportDialysePerspective;
+import at.rc.tacos.client.ui.perspectives.SwitchToTransportJournalPerspective;
+import at.rc.tacos.client.ui.perspectives.SwitchToTransportPerspective;
+import at.rc.tacos.client.ui.perspectives.SwitchToTransportPrebookingPerspective;
+import at.rc.tacos.client.ui.perspectives.TransportPerspective;
 import at.rc.tacos.client.ui.utils.CustomColors;
 
 /**
- * The navigation on the top including the toolbar.
+ * The top navigation for the {@link TransportPerspective}
  * 
  * @author Michael
  */
-public class NavigationView extends ViewPart {
+public class TransportMenuView extends ViewPart {
 
-	public static final String ID = "at.rc.tacos.client.view.navigation";
+	public static final String ID = "at.rc.tacos.client.view.transportMenu";
 
 	// properties
 	private ImageRegistry imageRegistry = UiWrapper.getDefault().getImageRegistry();
@@ -41,17 +42,17 @@ public class NavigationView extends ViewPart {
 		createGroup.setLayout(new GridLayout());
 		createGroup.setLayoutData(new GridData());
 		createGroup.setBackground(CustomColors.SECTION_BACKGROUND);
-		createGroup.setText("Neue Einträge");
+		createGroup.setText("Transportübersicht");
 
 		// Create the toolbar
 		final MyToolbarManager tbmCreate = new MyToolbarManager(new ToolBar(createGroup, SWT.FLAT));
 		tbmCreate.getControl().setBackground(CustomColors.SECTION_BACKGROUND);
 		tbmCreate.getControl().setLayout(new GridLayout());
 		tbmCreate.getControl().setLayoutData(new GridData());
-		tbmCreate.add(new PersonalNewEntryAction());
-		tbmCreate.add(new OpenEmergencyTransportAction());
-		tbmCreate.add(new OpenTransportAction());
-		tbmCreate.add(new OpenDialysisTransportAction());
+		tbmCreate.add(new SwitchToTransportPerspective());
+		tbmCreate.add(new SwitchToTransportPrebookingPerspective());
+		tbmCreate.add(new SwitchToTransportDialysePerspective());
+		tbmCreate.add(new SwitchToTransportJournalPerspective());
 		tbmCreate.update(true);
 
 		Composite comp1 = new Composite(parent, SWT.NONE);
