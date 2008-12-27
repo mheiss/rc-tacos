@@ -184,6 +184,8 @@ public class InfoView extends ViewPart implements DataChangeListener<Object> {
 
 		// set the text
 		noteEditor.getTextWidget().setText(message.getMessage());
+
+		dayInfoSection.layout(true);
 	}
 
 	/**
@@ -359,8 +361,6 @@ public class InfoView extends ViewPart implements DataChangeListener<Object> {
 
 			@Override
 			public void textChanged(TextEvent te) {
-				System.out.println("Changed");
-
 				Date selectedDate = DateUtils.truncate(dateTime.getSelection(), Calendar.DAY_OF_MONTH);
 
 				// get the currently cached message

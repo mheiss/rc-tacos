@@ -5,6 +5,8 @@ The following file describes the needed steps to setup and build the TACOS Serve
 1. Make sure you checked out all the needed source files from the repository.
    https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/source/trunk
    https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/build-mgmt
+   
+   See https://rc-tacos.svn.sourceforge.net/svnroot/rc-tacos/team for TeamProject set to use with eclipse.
 
 2. Download the 'Eclipse-SDK' and the 'Delta Pack' from http://update.eclipse.org
    

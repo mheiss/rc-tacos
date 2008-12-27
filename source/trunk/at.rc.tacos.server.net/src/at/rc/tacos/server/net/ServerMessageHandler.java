@@ -117,7 +117,7 @@ public class ServerMessageHandler implements MessageHandler {
 		// print out debug information
 		if (log.isDebugEnabled()) {
 			StringBuilder builder = new StringBuilder();
-			builder.append("\nHandled request from " + session.getUsername());
+			builder.append("\nRequest from " + session.getUsername());
 			builder.append("\n\tHandler: " + handler);
 			builder.append("\n\tRequestType: " + message.getMessageType());
 			builder.append("\n\tObjectCount: " + message.getObjects().size());
@@ -151,8 +151,8 @@ public class ServerMessageHandler implements MessageHandler {
 		// print out debug information
 		if (log.isDebugEnabled()) {
 			StringBuilder builder = new StringBuilder();
-			builder.append("\nResponse message " + session.getUsername());
-			builder.append("\n\tRequestType: " + message.getMessageType());
+			builder.append("\nResponse to " + session.getUsername());
+			builder.append("\n\tResponseType: " + message.getMessageType());
 			builder.append("\n\tObjectCount: " + message.getObjects().size());
 			builder.append("\n\tParams: " + message.getParams());
 			log.debug(builder.toString());
