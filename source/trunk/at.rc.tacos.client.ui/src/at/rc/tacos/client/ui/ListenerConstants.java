@@ -42,6 +42,6 @@ public interface ListenerConstants {
 	 * ViewerFilter} or {@code null} if the filter should be removed.
 	 * </p>
 	 */
-	public final static String TRANSPORT_FILTER_CHANGED = "TransportFilter.SelectedDate";
+	public final static String TRANSPORT_FILTER_CHANGED = "TransportFilter.Viewer";
 
 }

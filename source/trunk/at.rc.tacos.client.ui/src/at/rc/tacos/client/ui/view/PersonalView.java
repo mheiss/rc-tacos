@@ -378,8 +378,6 @@ public class PersonalView extends ViewPart implements DataChangeListener<Object>
 	@Override
 	public void dataChanged(Message<Object> message, MessageIoSession messageIoSession) {
 		Object object = message.getFirstElement();
-		System.out.println("message received");
-		System.out.println("first:" + object);
 		if (object instanceof Location) {
 			List<Location> locations = new ArrayList<Location>();
 			for (Object locationObject : message.getObjects()) {
@@ -395,11 +393,9 @@ public class PersonalView extends ViewPart implements DataChangeListener<Object>
 	 * Helper method to update the location
 	 */
 	private void locationChanged(List<Location> locations, MessageType messageType) {
-		System.out.println("location");
 		switch (messageType) {
 			case ADD:
 			case GET:
-				System.out.println("add");
 				for (Location location : locations) {
 					// create a new tab item
 					TabItem tabItem = new TabItem(tabFolder, SWT.NONE);
