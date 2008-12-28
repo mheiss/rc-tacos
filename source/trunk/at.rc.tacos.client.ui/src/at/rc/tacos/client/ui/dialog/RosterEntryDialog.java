@@ -96,7 +96,7 @@ public class RosterEntryDialog extends AbstractLockableDialog<RosterEntry> imple
 	}
 
 	@Override
-	public void registerListeners() {
+	protected void registerListeners() {
 		NetWrapper.registerListener(this, StaffMember.class);
 		NetWrapper.registerListener(this, Location.class);
 		NetWrapper.registerListener(this, Job.class);
@@ -104,7 +104,7 @@ public class RosterEntryDialog extends AbstractLockableDialog<RosterEntry> imple
 	}
 
 	@Override
-	public void removeListeners() {
+	protected void removeListeners() {
 		NetWrapper.removeListener(this, StaffMember.class);
 		NetWrapper.removeListener(this, Location.class);
 		NetWrapper.removeListener(this, Job.class);

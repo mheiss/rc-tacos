@@ -125,7 +125,7 @@ public class TransportViewFilter extends ViewerFilter {
 			return "MA";
 		else if (location.equalsIgnoreCase("Breitenau"))
 			return "BR";
-		else if (location.equalsIgnoreCase("Thörl") || location.equalsIgnoreCase("Th?rl"))
+		else if (location.equalsIgnoreCase("Thörl"))
 			return "TH";
 		else if (location.equalsIgnoreCase("Turnau"))
 			return "TU";

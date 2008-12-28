@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.TableColumn;
 
 import at.rc.tacos.client.net.NetWrapper;
 import at.rc.tacos.client.net.handler.VehicleHandler;
+import at.rc.tacos.client.ui.ViewerConstants;
 import at.rc.tacos.client.ui.controller.RefreshViewAction;
 import at.rc.tacos.client.ui.controller.VehicleTableAtStationAction;
 import at.rc.tacos.client.ui.controller.VehicleTableDetachAllStaffMembersAction;
@@ -106,56 +107,56 @@ public class VehiclesViewTableDetailed extends AbstractView {
 
 		final TableColumn columnLock = new TableColumn(table, SWT.NONE);
 		columnLock.setToolTipText("Gesperrt");
-		columnLock.setWidth(24);
+		columnLock.setWidth(ViewerConstants.CHAR_WIDTH);
 		columnLock.setText("L");
 
 		final TableColumn columnReady = new TableColumn(table, SWT.NONE);
 		columnReady.setToolTipText("Einsatzbereit");
-		columnReady.setWidth(20);
+		columnReady.setWidth(ViewerConstants.ICON_WIDTH);
 		columnReady.setText("EB");
 
 		final TableColumn columnVehicleName = new TableColumn(table, SWT.NONE);
 		columnVehicleName.setToolTipText("Fahrzeugname");
-		columnVehicleName.setWidth(45);
+		columnVehicleName.setWidth(ViewerConstants.SHORT_TEXT_WIDTH);
 
 		final TableColumn columnVehicleStatus = new TableColumn(table, SWT.NONE);
 		columnVehicleStatus.setToolTipText("Verfügbarkeit des Fahrzeuges");
-		columnVehicleStatus.setWidth(20);
+		columnVehicleStatus.setWidth(ViewerConstants.ICON_WIDTH);
 
 		final TableColumn columnDriver = new TableColumn(table, SWT.NONE);
 		columnDriver.setToolTipText("Fahrer");
-		columnDriver.setWidth(100);
+		columnDriver.setWidth(ViewerConstants.MEDIUM_TEXT_WIDTH);
 		columnDriver.setText("Fahrer");
 
 		final TableColumn columnMedicI = new TableColumn(table, SWT.NONE);
 		columnMedicI.setToolTipText("Sanitäter I");
-		columnMedicI.setWidth(100);
+		columnMedicI.setWidth(ViewerConstants.MEDIUM_TEXT_WIDTH);
 		columnMedicI.setText("Sanitäter I");
 
 		final TableColumn columnMedicII = new TableColumn(table, SWT.NONE);
 		columnMedicII.setToolTipText("Sanitäter");
-		columnMedicII.setWidth(100);
+		columnMedicII.setWidth(ViewerConstants.MEDIUM_TEXT_WIDTH);
 		columnMedicII.setText("Sanitäter II");
 
 		final TableColumn columnPhone = new TableColumn(table, SWT.NONE);
 		columnPhone.setToolTipText("Anderes als primäres Handy");
-		columnPhone.setWidth(18);
+		columnPhone.setWidth(ViewerConstants.ICON_WIDTH);
 
 		final TableColumn columnStation = new TableColumn(table, SWT.NONE);
 		columnStation.setToolTipText("Andere als primäres Ortsstelle");
-		columnStation.setWidth(18);
+		columnStation.setWidth(ViewerConstants.ICON_WIDTH);
 
 		final TableColumn columnOutOfOrder = new TableColumn(table, SWT.NONE);
 		columnOutOfOrder.setToolTipText("Fahrzeug ist außer Dienst");
-		columnOutOfOrder.setWidth(18);
+		columnOutOfOrder.setWidth(ViewerConstants.ICON_WIDTH);
 
 		final TableColumn columnNotes = new TableColumn(table, SWT.NONE);
 		columnNotes.setToolTipText("Notizen zum Fahrzeug vorhanden");
-		columnNotes.setWidth(18);
+		columnNotes.setWidth(ViewerConstants.ICON_WIDTH);
 
 		final TableColumn columnLastDestinationFree = new TableColumn(table, SWT.NONE);
 		columnLastDestinationFree.setToolTipText("Zeigt den Standort der letzten Meldung \"Ziel frei\" (S6)an");
-		columnLastDestinationFree.setWidth(226);
+		columnLastDestinationFree.setWidth(ViewerConstants.LONG_TEXT_WIDTH);
 		columnLastDestinationFree.setText("Letzter Status S5");
 
 		// make the columns sortable
@@ -276,27 +277,26 @@ public class VehiclesViewTableDetailed extends AbstractView {
 		manager.add(readyStatus);
 		manager.add(repairStatus);
 
+		//the staff of the vehicle
+		boolean hasDriver = vehicle.getDriver() == null ? false : true;
+		boolean hasMedic1 = vehicle.getFirstParamedic() == null ? false : true;
+		boolean hasMedic2 = vehicle.getSecondParamedic() == null ? false : true;
+
 		// default
-		detachAction.setEnabled(true);
+		detachAction.setEnabled(hasDriver || hasMedic1 || hasMedic2);
 		vehicleAtStationAction.setEnabled(true);
-		readyStatus.setEnabled(true);
+		readyStatus.setEnabled(hasDriver);
 		repairStatus.setEnabled(true);
 
 		// ready for action
 		if (vehicle.isReadyForAction()) {
 			readyStatus.setEnabled(false);
 		}
-		else {
-			readyStatus.setEnabled(true);
-		}
 
 		// out of order actions
 		if (vehicle.isOutOfOrder()) {
 			readyStatus.setEnabled(false);
 			repairStatus.setEnabled(false);
-		}
-		else {
-			repairStatus.setEnabled(true);
 		}
 
 		if (vehicle.isLocked()) {

@@ -23,7 +23,7 @@ import at.rc.tacos.platform.net.message.UpdateMessage;
  * callbacks to ensure that an {@link Lockable} instance that is currently
  * edited is locked and unlocked when the dialog is openend and closed.
  * <p>
- * The newly opened dialog will be centered in the current {@link Display}
+ * The newly opened dialog will be centered in the current {@link Display}.
  * </p>
  * 
  * @author Michael
@@ -140,9 +140,11 @@ public abstract class AbstractLockableDialog<T extends Lockable> extends TitleAr
 	protected final void okPressed() {
 		// validate the input
 		if (!validateInput()) {
+			Display.getCurrent().beep();
 			return;
 		}
 
+		// syncronize the object with the values from the dialog
 		persistObject(lockable);
 
 		// create a new entry or update an existing
@@ -219,20 +221,24 @@ public abstract class AbstractLockableDialog<T extends Lockable> extends TitleAr
 	public abstract void loadObject(T lockable);
 
 	/**
-	 * This callback will be invoked when the input is valid to setup the object
-	 * instance with the current values from the dialog
+	 * Syncronizes the values from the dialog with the current edited or added
+	 * object.
 	 */
 	public abstract void persistObject(T lockable);
 
 	/**
 	 * This callback allows us to register the needed listeners.
 	 */
-	public abstract void registerListeners();
+	protected void registerListeners() {
+		// default do nothing
+	}
 
 	/**
 	 * This callback allows us to remove the registered listeners.
 	 */
-	public abstract void removeListeners();
+	protected void removeListeners() {
+		// default do nothing
+	}
 
 	/**
 	 * Setup and initialize the dialog image and text
@@ -249,7 +255,7 @@ public abstract class AbstractLockableDialog<T extends Lockable> extends TitleAr
 		return createNew;
 	}
 
-	public T getLockable() {
+	public T getObject() {
 		return lockable;
 	}
 }
