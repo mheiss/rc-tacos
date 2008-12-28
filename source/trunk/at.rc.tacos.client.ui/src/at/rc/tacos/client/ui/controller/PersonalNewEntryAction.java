@@ -2,12 +2,11 @@ package at.rc.tacos.client.ui.controller;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
 import at.rc.tacos.client.ui.UiWrapper;
-import at.rc.tacos.client.ui.dialog.RosterEntryForm;
+import at.rc.tacos.client.ui.dialog.RosterEntryDialog;
 
 public class PersonalNewEntryAction extends Action {
 
@@ -55,23 +54,7 @@ public class PersonalNewEntryAction extends Action {
 		Shell parent = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 
 		// get the parent and the window shell
-		RosterEntryForm window = new RosterEntryForm(parent);
-		window.create();
-
-		// get the shell and resize
-		Shell myShell = window.getShell();
-		myShell.setSize(540, 620);
-
-		// calculate and draw centered
-		Rectangle workbenchSize = parent.getBounds();
-		Rectangle mySize = myShell.getBounds();
-		int locationX, locationY;
-		locationX = (workbenchSize.width - mySize.width) / 2 + workbenchSize.x;
-		locationY = (workbenchSize.height - mySize.height) / 2 + workbenchSize.y;
-		myShell.setLocation(locationX, locationY);
-
-		// now open the window
-		myShell.open();
-		myShell.setVisible(true);
+		RosterEntryDialog window = new RosterEntryDialog(parent);
+		window.open();
 	}
 }

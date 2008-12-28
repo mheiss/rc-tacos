@@ -2,13 +2,15 @@ package at.rc.tacos.client.ui.dialog;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.forms.widgets.FormToolkit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import at.rc.tacos.client.net.NetWrapper;
 import at.rc.tacos.platform.model.Lockable;
@@ -17,7 +19,7 @@ import at.rc.tacos.platform.net.message.ExecMessage;
 import at.rc.tacos.platform.net.message.UpdateMessage;
 
 /**
- * The <code>AbstractLockableDialog</code> provides the needed methods an
+ * The <code>AbstractLockableDialog</code> provides the needed methods and
  * callbacks to ensure that an {@link Lockable} instance that is currently
  * edited is locked and unlocked when the dialog is openend and closed.
  * <p>
@@ -28,34 +30,31 @@ import at.rc.tacos.platform.net.message.UpdateMessage;
  */
 public abstract class AbstractLockableDialog<T extends Lockable> extends TitleAreaDialog {
 
+	private Logger log = LoggerFactory.getLogger(AbstractLockableDialog.class);
+
 	// the lockable object
 	private T lockable;
 
-	/**
-	 * Creates a new dialog instance without requesting and releasing the lock.
-	 * This implementation should be used to create a new object instance.
-	 * 
-	 * @param shell
-	 *            the parent shell instance
-	 */
-	public AbstractLockableDialog(Shell shell) {
-		super(shell);
-		setShellStyle(getShellStyle() | SWT.RESIZE);
-		this.lockable = null;
-	}
+	protected FormToolkit toolkit;
+
+	// flag to indicate a new entry
+	private final boolean createNew;
 
 	/**
-	 * Creates a new dialog instance and ensures that the element is locked and
-	 * unlocked properly.
+	 * Default class constructor to setup a new dialog instance.
 	 * 
 	 * @param shell
 	 *            the parent shell instance
 	 * @param lockable
 	 *            the current edited object instance
+	 * @param createNew
+	 *            a flag to indicat whether if the entry should be created or
+	 *            updated
 	 */
-	public AbstractLockableDialog(Shell shell, T lockable) {
+	public AbstractLockableDialog(Shell shell, T lockable, boolean createNew) {
 		super(shell);
 		this.lockable = lockable;
+		this.createNew = createNew;
 	}
 
 	/**
@@ -78,15 +77,26 @@ public abstract class AbstractLockableDialog<T extends Lockable> extends TitleAr
 	 */
 	@Override
 	public final int open() {
-		// check if we should send a lock request
-		if (lockable != null) {
-			// set the lock
-			lockable.setLocked(true);
-			lockable.setLockedBy(NetWrapper.getSession().getUsername());
-			// send lock request
-			ExecMessage<T> execMessage = new ExecMessage<T>("doLock", lockable);
-			execMessage.asnchronRequest(NetWrapper.getSession());
+		// check if the object is currenlty locked
+		if (lockable.isLocked()) {
+			boolean forceEdit = MessageDialog.openQuestion(Display.getCurrent().getActiveShell(), "Information: Eintrag wird bearbeitet",
+					"Der Eintrag den Sie bearbeiten möchten wird bereits von " + lockable.getLockedBy() + " bearbeitet\n"
+							+ "Ein gleichzeitiges Bearbeiten kann zu unerwarteten Fehlern führen!\n\n"
+							+ "Möchten Sie den Eintrag trotzdem bearbeiten?");
+			if (!forceEdit)
+				return CANCEL;
+
+			// logg the override of the lock
+			String username = NetWrapper.getSession().getUsername();
+			log.warn("Der Eintrag " + lockable + " wird trotz Sperrung durch " + lockable.getLockedBy() + " von " + username + " bearbeitet");
 		}
+
+		// set the lock
+		lockable.setLocked(true);
+		lockable.setLockedBy(NetWrapper.getSession().getUsername());
+		// send lock request
+		ExecMessage<T> execMessage = new ExecMessage<T>("doLock", lockable);
+		execMessage.asnchronRequest(NetWrapper.getSession());
 
 		// add the listeners
 		registerListeners();
@@ -98,10 +108,11 @@ public abstract class AbstractLockableDialog<T extends Lockable> extends TitleAr
 	@Override
 	public final boolean close() {
 		// check if the user wants to close the dialog
-		if (getReturnCode() == CANCEL
-				& !MessageDialog.openQuestion(getShell(), "Abbrechen",
-						"Wollen Sie wirklich abbrechen?\nAlle ungespeicherten Änderungen gehen verloren!")) {
-			return false;
+		if (getReturnCode() == CANCEL) {
+			if (!MessageDialog.openQuestion(getShell(), "Abbrechen",
+					"Wollen Sie wirklich abbrechen?\nAlle ungespeicherten Änderungen gehen verloren!")) {
+				return false;
+			}
 		}
 
 		// check if we should send a lock request
@@ -130,6 +141,16 @@ public abstract class AbstractLockableDialog<T extends Lockable> extends TitleAr
 		// validate the input
 		if (!validateInput()) {
 			return;
+		}
+
+		persistObject(lockable);
+
+		// create a new entry or update an existing
+		if (createNew) {
+			addRequest();
+		}
+		else {
+			updateRequest();
 		}
 
 		// set the return code and go on
@@ -174,9 +195,13 @@ public abstract class AbstractLockableDialog<T extends Lockable> extends TitleAr
 	}
 
 	@Override
-	protected Control createDialogArea(Composite parent) {
+	protected final Control createDialogArea(Composite parent) {
 		Composite composite = (Composite) super.createDialogArea(parent);
+		toolkit = new FormToolkit(Display.getCurrent());
 		createDialogContent(composite);
+		if (!createNew) {
+			loadObject(lockable);
+		}
 		return composite;
 	}
 
@@ -186,6 +211,18 @@ public abstract class AbstractLockableDialog<T extends Lockable> extends TitleAr
 	 * @return true if the dialog content is valid otherwise false
 	 */
 	public abstract boolean validateInput();
+
+	/**
+	 * This callback will be invoked after the dialog has been created to
+	 * initialize the controls with the values from the object.
+	 */
+	public abstract void loadObject(T lockable);
+
+	/**
+	 * This callback will be invoked when the input is valid to setup the object
+	 * instance with the current values from the dialog
+	 */
+	public abstract void persistObject(T lockable);
 
 	/**
 	 * This callback allows us to register the needed listeners.
@@ -207,4 +244,12 @@ public abstract class AbstractLockableDialog<T extends Lockable> extends TitleAr
 	 */
 	public abstract void createDialogContent(Composite parent);
 
+	// GETTERS AND SETTERS
+	public boolean isCreateNew() {
+		return createNew;
+	}
+
+	public T getLockable() {
+		return lockable;
+	}
 }

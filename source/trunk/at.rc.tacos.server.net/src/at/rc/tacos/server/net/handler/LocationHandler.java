@@ -9,6 +9,7 @@ import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.exception.NoSuchCommandException;
 import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.message.AbstractMessage;
+import at.rc.tacos.platform.net.message.UpdateMessage;
 import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.LocationService;
@@ -96,10 +97,16 @@ public class LocationHandler implements Handler<Location> {
 		// update the locks
 		if ("doLock".equalsIgnoreCase(command)) {
 			lockableService.addAllLocks(message.getObjects());
+			// brodcast the lock
+			UpdateMessage<Location> updateMessage = new UpdateMessage<Location>(message.getObjects());
+			session.brodcastMessage(updateMessage);
 			return;
 		}
 		if ("doUnlock".equalsIgnoreCase(command)) {
 			lockableService.removeAllLocks(message.getObjects());
+			// brodcast the lock
+			UpdateMessage<Location> updateMessage = new UpdateMessage<Location>(message.getObjects());
+			session.brodcastMessage(updateMessage);
 			return;
 		}
 		throw new NoSuchCommandException(handler, command);

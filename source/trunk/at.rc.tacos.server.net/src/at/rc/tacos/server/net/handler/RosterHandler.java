@@ -227,10 +227,14 @@ public class RosterHandler implements Handler<RosterEntry> {
 		// update the locks
 		if ("doLock".equalsIgnoreCase(command)) {
 			lockableService.addAllLocks(message.getObjects());
+			UpdateMessage<RosterEntry> updateMessage = new UpdateMessage<RosterEntry>(message.getObjects());
+			session.brodcastMessage(updateMessage);
 			return;
 		}
 		if ("doUnlock".equalsIgnoreCase(command)) {
 			lockableService.removeAllLocks(message.getObjects());
+			UpdateMessage<RosterEntry> updateMessage = new UpdateMessage<RosterEntry>(message.getObjects());
+			session.brodcastMessage(updateMessage);
 			return;
 		}
 		throw new NoSuchCommandException(handler, command);

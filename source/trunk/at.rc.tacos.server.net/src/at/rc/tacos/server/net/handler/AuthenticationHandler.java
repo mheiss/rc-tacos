@@ -15,6 +15,7 @@ import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.exception.NoSuchCommandException;
 import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.message.AbstractMessage;
+import at.rc.tacos.platform.net.message.UpdateMessage;
 import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.AuthenticationService;
@@ -128,10 +129,16 @@ public class AuthenticationHandler implements Handler<Login> {
 		// update the locks
 		if ("doLock".equalsIgnoreCase(command)) {
 			lockableService.addAllLocks(message.getObjects());
+			// brodcast the added lock
+			UpdateMessage<Login> updateMessage = new UpdateMessage<Login>(message.getObjects());
+			session.brodcastMessage(updateMessage);
 			return;
 		}
 		if ("doUnlock".equalsIgnoreCase(command)) {
 			lockableService.removeAllLocks(message.getObjects());
+			// brodcast the removedlock
+			UpdateMessage<Login> updateMessage = new UpdateMessage<Login>(message.getObjects());
+			session.brodcastMessage(updateMessage);
 			return;
 		}
 

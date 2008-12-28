@@ -417,10 +417,16 @@ public class TransportHandler implements Handler<Transport> {
 		// update the locks
 		if ("doLock".equalsIgnoreCase(command)) {
 			lockableService.addAllLocks(message.getObjects());
+			//brodcast the lock
+			UpdateMessage<Transport> updateMessage = new UpdateMessage<Transport>(message.getObjects());
+			session.brodcastMessage(updateMessage);
 			return;
 		}
 		if ("doUnlock".equalsIgnoreCase(command)) {
 			lockableService.removeAllLocks(message.getObjects());
+			//brodcast the lock
+			UpdateMessage<Transport> updateMessage = new UpdateMessage<Transport>(message.getObjects());
+			session.brodcastMessage(updateMessage);
 			return;
 		}
 		throw new NoSuchCommandException(handler, command);
