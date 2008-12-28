@@ -28,7 +28,7 @@ Developed by Birgit Thek and Heiß Michael.
 
    <splash
       location="at.rc.tacos.client.ui" />
-   <launcher>
+   <launcher name="tacosClient">
       <solaris/>
       <win useIco="false">
          <bmp
@@ -37,7 +37,6 @@ Developed by Birgit Thek and Heiß Michael.
             winLargeHigh="/at.rc.tacos.client.ui/icons/launcher/launcher_48.bmp"/>
       </win>
    </launcher>
-
 
    <vm>
    </vm>
@@ -48,6 +47,7 @@ Developed by Birgit Thek and Heiß Michael.
    <features>
       <feature id="at.rc.tacos.client_feature" version="1.0.0"/>
       <feature id="org.eclipse.rcp" version="3.4.100.r341_v20080814-989JESIEdAciFYfkZZsBfSwQ2341"/>
+      <feature id="org.eclipse.platform" version="3.4.1.r341_v20080731-9I96EiDElYevwz-p1bP5z-NlAaP7vtX6Utotqsu"/>
    </features>
 
 </product>

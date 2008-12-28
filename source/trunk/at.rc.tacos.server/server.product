@@ -16,8 +16,7 @@ Developed by Birgit Thek and Heiß Michael.
    </configIni>
 
    <launcherArgs>
-      <programArgs>-Dat.rc.tacos.server.port=4711
--console</programArgs>
+      <programArgs>-console</programArgs>
       <vmArgs>-Xms256m
 -Xmx512m
 -XX:PermSize=128m
