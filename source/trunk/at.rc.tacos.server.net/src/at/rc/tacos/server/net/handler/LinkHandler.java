@@ -11,6 +11,7 @@ import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.exception.NoSuchCommandException;
 import at.rc.tacos.platform.net.handler.Handler;
 import at.rc.tacos.platform.net.message.AbstractMessage;
+import at.rc.tacos.platform.net.message.UpdateMessage;
 import at.rc.tacos.platform.net.mina.MessageIoSession;
 import at.rc.tacos.platform.services.Service;
 import at.rc.tacos.platform.services.dbal.LinkService;
@@ -115,10 +116,16 @@ public class LinkHandler implements Handler<Link> {
 		// update the locks
 		if ("doLock".equalsIgnoreCase(command)) {
 			lockableService.addAllLocks(message.getObjects());
+			//brodcast the lock
+			UpdateMessage<Link> updateMessage = new UpdateMessage<Link>(message.getObjects());
+			session.brodcastMessage(updateMessage);
 			return;
 		}
 		if ("doUnlock".equalsIgnoreCase(command)) {
 			lockableService.removeAllLocks(message.getObjects());
+			//brodcast the lock
+			UpdateMessage<Link> updateMessage = new UpdateMessage<Link>(message.getObjects());
+			session.brodcastMessage(updateMessage);
 			return;
 		}
 		throw new NoSuchCommandException(handler, command);

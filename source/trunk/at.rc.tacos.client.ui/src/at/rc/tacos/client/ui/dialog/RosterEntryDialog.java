@@ -3,8 +3,6 @@ package at.rc.tacos.client.ui.dialog;
 import java.util.Calendar;
 
 import org.eclipse.jface.dialogs.IMessageProvider;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.TextViewer;
@@ -17,8 +15,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
@@ -36,6 +32,7 @@ import at.rc.tacos.client.ui.providers.JobLabelProvider;
 import at.rc.tacos.client.ui.providers.ServiceTypeLabelProvider;
 import at.rc.tacos.client.ui.providers.StaffMemberLabelProvider;
 import at.rc.tacos.client.ui.providers.StationLabelProvider;
+import at.rc.tacos.client.ui.utils.CompositeHelper;
 import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.platform.model.Job;
 import at.rc.tacos.platform.model.Location;
@@ -44,19 +41,17 @@ import at.rc.tacos.platform.model.ServiceType;
 import at.rc.tacos.platform.model.StaffMember;
 import at.rc.tacos.platform.net.Message;
 import at.rc.tacos.platform.net.listeners.DataChangeListener;
-import at.rc.tacos.platform.net.message.AddMessage;
-import at.rc.tacos.platform.net.message.ExecMessage;
-import at.rc.tacos.platform.net.message.UpdateMessage;
 import at.rc.tacos.platform.net.mina.MessageIoSession;
 
 /**
- * GUI (form) to manage a roster entry
+ * The <code>RosterEntryDialog</code> is the gui form to add or update an
+ * {@link RosterEntry} instance.
  * 
  * @author b.thek
+ * @author Michael
  */
-public class RosterEntryForm extends TitleAreaDialog implements DataChangeListener<Object> {
+public class RosterEntryDialog extends AbstractLockableDialog<RosterEntry> implements DataChangeListener<Object> {
 
-	private FormToolkit toolkit;
 	private TextViewer noteEditor;
 	private ComboViewer comboDienstverhaeltnis;
 	private ComboViewer comboVerwendung;
@@ -70,12 +65,7 @@ public class RosterEntryForm extends TitleAreaDialog implements DataChangeListen
 	private DatePicker anmeldung;
 	private DatePicker abmeldung;
 
-	// the roster entry
-	private RosterEntry rosterEntry;
-	private boolean createNew;
-
 	// the model handlers
-	private MessageIoSession session = NetWrapper.getSession();
 	private ImageRegistry imageRegistry = UiWrapper.getDefault().getImageRegistry();
 
 	private JobHandler jobHandler = (JobHandler) NetWrapper.getHandler(Job.class);
@@ -89,10 +79,8 @@ public class RosterEntryForm extends TitleAreaDialog implements DataChangeListen
 	 * @param parentShell
 	 *            the parent shell
 	 */
-	public RosterEntryForm(Shell parentShell) {
-		super(parentShell);
-		createNew = true;
-		this.rosterEntry = new RosterEntry();
+	public RosterEntryDialog(Shell parentShell) {
+		super(parentShell, new RosterEntry(), true);
 	}
 
 	/**
@@ -103,175 +91,177 @@ public class RosterEntryForm extends TitleAreaDialog implements DataChangeListen
 	 * @param rosterEntry
 	 *            the roster entry to edit
 	 */
-	public RosterEntryForm(Shell parentShell, RosterEntry rosterEntry) {
-		super(parentShell);
-		this.createNew = false;
-		this.rosterEntry = rosterEntry;
+	public RosterEntryDialog(Shell parentShell, RosterEntry rosterEntry) {
+		super(parentShell, rosterEntry, false);
 	}
 
 	@Override
-	public boolean close() {
-		// check if the user wants to close the window
-		if (getReturnCode() == CANCEL) {
-			boolean exit = MessageDialog.openQuestion(getShell(), "Abbrechen", "Wollen Sie wirklich abbrechen?");
-			if (!exit)
-				return false;
-		}
-		// remove the lock from the object
-		if (!createNew) {
-			rosterEntry.setLocked(false);
-			rosterEntry.setLockedBy(null);
-			// send the request
-			ExecMessage<RosterEntry> execMessage = new ExecMessage<RosterEntry>("doUnlock", rosterEntry);
-			execMessage.asnchronRequest(NetWrapper.getSession());
-		}
-		// cleanup the listeners
+	public void registerListeners() {
+		NetWrapper.registerListener(this, StaffMember.class);
+		NetWrapper.registerListener(this, Location.class);
+		NetWrapper.registerListener(this, Job.class);
+		NetWrapper.registerListener(this, ServiceType.class);
+	}
+
+	@Override
+	public void removeListeners() {
 		NetWrapper.removeListener(this, StaffMember.class);
 		NetWrapper.removeListener(this, Location.class);
 		NetWrapper.removeListener(this, Job.class);
 		NetWrapper.removeListener(this, ServiceType.class);
-		return super.close();
+	}
+
+	@Override
+	public void dataChanged(Message<Object> message, MessageIoSession messageIoSession) {
+		employeenameCombo.refresh();
+		comboVerwendung.refresh();
+		comboOrtsstelle.refresh();
+		comboDienstverhaeltnis.refresh();
 	}
 
 	/**
-	 * Creates the dialog's contents
-	 * 
-	 * @param parent
-	 *            the parent composite
-	 * @return Control
+	 * Setup the header of the dialog
 	 */
 	@Override
-	protected Control createContents(Composite parent) {
-		Control contents = super.createContents(parent);
+	public void createDialogHeader() {
 		setTitle("Dienstplaneintrag");
 		setMessage("Hier können Sie einen neuen Dienstplaneintrag anlegen", IMessageProvider.INFORMATION);
 		setTitleImage(imageRegistry.get("application.logo"));
-		return contents;
 	}
 
 	/**
 	 * Create contents of the window
 	 */
 	@Override
-	protected Control createDialogArea(Composite parent) {
+	public void createDialogContent(Composite parent) {
+		Composite composite = new Composite(parent, SWT.NONE);
+
 		// setup the composite
-		Composite composite = (Composite) super.createDialogArea(parent);
 		GridLayout layout = new GridLayout();
 		layout.horizontalSpacing = 30;
 		layout.verticalSpacing = 10;
 		composite.setLayout(layout);
 		composite.setBackground(CustomColors.COLOR_WHITE);
-		toolkit = new FormToolkit(Display.getCurrent());
 
 		// create the content of the dialog
 		createGeneralSection(composite);
 		createPlaningSection(composite);
 		createSignSection(composite);
-
-		// init data
-		if (!createNew) {
-			Calendar cal = Calendar.getInstance();
-			// check in
-			if (rosterEntry.getRealStartOfWork() != 0) {
-				cal.setTimeInMillis(rosterEntry.getRealStartOfWork());
-				anmeldung.setDate(cal);
-			}
-
-			// check out
-			if (rosterEntry.getRealEndOfWork() != 0) {
-				cal = Calendar.getInstance();
-				cal.setTimeInMillis(rosterEntry.getRealEndOfWork());
-				abmeldung.setDate(cal);
-			}
-
-			// planned start of work
-			cal = Calendar.getInstance();
-			cal.setTimeInMillis(rosterEntry.getPlannedStartOfWork());
-			dienstVon.setDate(cal);
-
-			// planned end of work
-			cal = Calendar.getInstance();
-			cal.setTimeInMillis(rosterEntry.getPlannedEndOfWork());
-			dienstBis.setDate(cal);
-
-			// other fields
-			if (rosterEntry.getRosterNotes() != null)
-				noteEditor.getDocument().set(rosterEntry.getRosterNotes());
-			this.comboDienstverhaeltnis.setSelection(new StructuredSelection(rosterEntry.getServicetype()));
-			this.comboVerwendung.setSelection(new StructuredSelection(rosterEntry.getJob()));
-			this.comboOrtsstelle.setSelection(new StructuredSelection(rosterEntry.getStation()));
-			this.bereitschaftButton.setSelection(rosterEntry.getStandby());
-			this.employeenameCombo.setSelection(new StructuredSelection(rosterEntry.getStaffMember()));
-		}
-		// add the listeners
-		NetWrapper.registerListener(this, StaffMember.class);
-		NetWrapper.registerListener(this, Location.class);
-		NetWrapper.registerListener(this, Job.class);
-		NetWrapper.registerListener(this, ServiceType.class);
-
-		return composite;
 	}
 
-	/**
-	 * The user pressed the ok button
-	 */
 	@Override
-	protected void okPressed() {
-		// check the required fileds
-		if (checkRequiredFields()) {
-			// get all values and create the roster entry
-			rosterEntry.setPlannedStartOfWork(dienstVon.getDate().getTimeInMillis());
-			rosterEntry.setPlannedEndOfWork(dienstBis.getDate().getTimeInMillis());
-			if (anmeldung.getDate() != null && abmeldung.getDate() != null) {
-				rosterEntry.setRealStartOfWork(anmeldung.getDate().getTimeInMillis());
-				rosterEntry.setRealEndOfWork(abmeldung.getDate().getTimeInMillis());
-			}
-			// set the needed values
-			int index = employeenameCombo.getCombo().getSelectionIndex();
-			rosterEntry.setStaffMember((StaffMember) employeenameCombo.getElementAt(index));
-
-			int index3 = comboDienstverhaeltnis.getCombo().getSelectionIndex();
-			rosterEntry.setServicetype((ServiceType) comboDienstverhaeltnis.getElementAt(index3));
-
-			int index1 = comboVerwendung.getCombo().getSelectionIndex();
-			rosterEntry.setJob((Job) comboVerwendung.getElementAt(index1));
-
-			int index2 = comboOrtsstelle.getCombo().getSelectionIndex();
-			rosterEntry.setStation((Location) comboOrtsstelle.getElementAt(index2));
-
-			if (noteEditor.getTextWidget().getText().length() > 400) {
-				getShell().getDisplay().beep();
-				setErrorMessage("Die Anmerkungen dürfen nicht länger als 400 Zeichen sein.");
-				return;
-			}
-
-			rosterEntry.setRosterNotes(noteEditor.getTextWidget().getText());
-			rosterEntry.setStandby(bereitschaftButton.getSelection());
-
-			// remove the lock
-			rosterEntry.setLocked(false);
-			rosterEntry.setLockedBy(null);
-
-			// create or update the roster entry
-			if (createNew) {
-				rosterEntry.setCreatedByUsername(session.getUsername());
-				AddMessage<RosterEntry> addMessage = new AddMessage<RosterEntry>(rosterEntry);
-				addMessage.asnchronRequest(NetWrapper.getSession());
-			}
-			else {
-				UpdateMessage<RosterEntry> updateMessage = new UpdateMessage<RosterEntry>(rosterEntry);
-				updateMessage.asnchronRequest(NetWrapper.getSession());
-			}
-
-			// closes the sehll
-			super.okPressed();
-			return;
+	public void loadObject(RosterEntry rosterEntry) {
+		Calendar cal = Calendar.getInstance();
+		// check in
+		if (rosterEntry.getRealStartOfWork() != 0) {
+			cal.setTimeInMillis(rosterEntry.getRealStartOfWork());
+			anmeldung.setDate(cal);
 		}
-		getShell().getDisplay().beep();
+
+		// check out
+		if (rosterEntry.getRealEndOfWork() != 0) {
+			cal = Calendar.getInstance();
+			cal.setTimeInMillis(rosterEntry.getRealEndOfWork());
+			abmeldung.setDate(cal);
+		}
+
+		// planned start of work
+		cal = Calendar.getInstance();
+		cal.setTimeInMillis(rosterEntry.getPlannedStartOfWork());
+		dienstVon.setDate(cal);
+
+		// planned end of work
+		cal = Calendar.getInstance();
+		cal.setTimeInMillis(rosterEntry.getPlannedEndOfWork());
+		dienstBis.setDate(cal);
+
+		// other fields
+		if (rosterEntry.getRosterNotes() != null)
+			noteEditor.getDocument().set(rosterEntry.getRosterNotes());
+		this.comboDienstverhaeltnis.setSelection(new StructuredSelection(rosterEntry.getServicetype()));
+		this.comboVerwendung.setSelection(new StructuredSelection(rosterEntry.getJob()));
+		this.comboOrtsstelle.setSelection(new StructuredSelection(rosterEntry.getStation()));
+		this.bereitschaftButton.setSelection(rosterEntry.getStandby());
+		this.employeenameCombo.setSelection(new StructuredSelection(rosterEntry.getStaffMember()));
+	}
+
+	@Override
+	public boolean validateInput() {
+		setErrorMessage(null);
+		// check the required fields
+		if (employeenameCombo.getCombo().getSelectionIndex() == -1) {
+			setErrorMessage("Bitte wählen Sie einen Mitarbeiter aus");
+			return false;
+		}
+		if (comboOrtsstelle.getCombo().getSelectionIndex() == -1) {
+			setErrorMessage("Bitte geben Sie eine Ortsstelle an");
+			return false;
+		}
+		if (comboVerwendung.getCombo().getSelectionIndex() == -1) {
+			setErrorMessage("Bitte geben Sie eine Verwendung an");
+			return false;
+		}
+		if (comboDienstverhaeltnis.getCombo().getSelectionIndex() == -1) {
+			setErrorMessage("Bitte geben Sie ein Dienstverhältnis an");
+			return false;
+		}
+		if (dienstVon.getDate() == null) {
+			setErrorMessage("Bitte geben Sie einen Dienstbeginn an");
+			return false;
+		}
+		if (dienstBis.getDate() == null) {
+			setErrorMessage("Bitte geben Sie ein Dienstende an");
+			return false;
+		}
+		// validate start before end
+		if (dienstVon.getDate().getTimeInMillis() > dienstBis.getDate().getTimeInMillis()) {
+			setErrorMessage("Dienstende liegt vor dem Dienstbeginn");
+			return false;
+		}
+		// validate start before end
+		if (anmeldung.getDate() != null && abmeldung.getDate() != null) {
+			if (anmeldung.getDate().getTimeInMillis() > abmeldung.getDate().getTimeInMillis()) {
+				setErrorMessage("Die Anmeldung liegt vor der Abmeldung");
+				return false;
+			}
+		}
+		// validate notes
+		if (noteEditor.getTextWidget().getText().length() > 400) {
+			getShell().getDisplay().beep();
+			setErrorMessage("Die Anmerkungen dürfen nicht länger als 400 Zeichen sein.");
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public void persistObject(RosterEntry rosterEntry) {
+		// get all values and create the roster entry
+		rosterEntry.setPlannedStartOfWork(dienstVon.getDate().getTimeInMillis());
+		rosterEntry.setPlannedEndOfWork(dienstBis.getDate().getTimeInMillis());
+		if (anmeldung.getDate() != null && abmeldung.getDate() != null) {
+			rosterEntry.setRealStartOfWork(anmeldung.getDate().getTimeInMillis());
+			rosterEntry.setRealEndOfWork(abmeldung.getDate().getTimeInMillis());
+		}
+		// set the needed values
+		int index = employeenameCombo.getCombo().getSelectionIndex();
+		rosterEntry.setStaffMember((StaffMember) employeenameCombo.getElementAt(index));
+
+		int index3 = comboDienstverhaeltnis.getCombo().getSelectionIndex();
+		rosterEntry.setServicetype((ServiceType) comboDienstverhaeltnis.getElementAt(index3));
+
+		int index1 = comboVerwendung.getCombo().getSelectionIndex();
+		rosterEntry.setJob((Job) comboVerwendung.getElementAt(index1));
+
+		int index2 = comboOrtsstelle.getCombo().getSelectionIndex();
+		rosterEntry.setStation((Location) comboOrtsstelle.getElementAt(index2));
+
+		rosterEntry.setRosterNotes(noteEditor.getTextWidget().getText());
+		rosterEntry.setStandby(bereitschaftButton.getSelection());
 	}
 
 	/**
-	 * Creates the planing section
+	 * Creates the general section
 	 */
 	private void createGeneralSection(Composite parent) {
 		Group group = new Group(parent, SWT.NONE);
@@ -411,36 +401,28 @@ public class RosterEntryForm extends TitleAreaDialog implements DataChangeListen
 		client.setLayoutData(clientDataLayout);
 
 		// start time
-		Composite valueComp = makeComposite(client, 2);
-		final Label vonLabel = new Label(valueComp, SWT.NONE);
+		Composite valueCompFrom = CompositeHelper.makeComposite(toolkit, client, 2);
+		final Label vonLabel = new Label(valueCompFrom, SWT.NONE);
 		vonLabel.setText("Dienst von:");
 		vonLabel.setBackground(CustomColors.COLOR_WHITE);
-		dienstVon = new DatePicker(valueComp, SWT.FLAT, DatePicker.LABEL_CHOOSE);
-		dienstVon.setBackground(CustomColors.COLOR_GREY_2);
-
-		// end time
-		valueComp = makeComposite(client, 2);
-		final Label bisLabel = new Label(valueComp, SWT.NONE);
-		bisLabel.setText(" bis: ");
-		bisLabel.setBackground(CustomColors.COLOR_WHITE);
-		dienstBis = new DatePicker(valueComp, SWT.FLAT, DatePicker.LABEL_CHOOSE);
-		dienstBis.setBackground(CustomColors.COLOR_GREY_2);
-
-		// some layout options
 		GridData data = new GridData();
 		data.widthHint = 70;
 		vonLabel.setLayoutData(data);
+
+		dienstVon = new DatePicker(valueCompFrom, SWT.FLAT, DatePicker.LABEL_CHOOSE);
+		dienstVon.setBackground(CustomColors.COLOR_GREY_2);
+
+		// end time
+		Composite valueCompTo = CompositeHelper.makeComposite(toolkit, client, 2);
+		final Label bisLabel = new Label(valueCompTo, SWT.NONE);
+		bisLabel.setText(" bis: ");
+		bisLabel.setBackground(CustomColors.COLOR_WHITE);
 		data = new GridData();
 		data.widthHint = 70;
 		bisLabel.setLayoutData(data);
-	}
 
-	private Composite makeComposite(Composite parent, int col) {
-		Composite nameValueComp = toolkit.createComposite(parent);
-		GridLayout layout = new GridLayout(col, false);
-		layout.marginHeight = 3;
-		nameValueComp.setLayout(layout);
-		return nameValueComp;
+		dienstBis = new DatePicker(valueCompTo, SWT.FLAT, DatePicker.LABEL_CHOOSE);
+		dienstBis.setBackground(CustomColors.COLOR_GREY_2);
 	}
 
 	/**
@@ -468,81 +450,25 @@ public class RosterEntryForm extends TitleAreaDialog implements DataChangeListen
 		client.setLayoutData(clientDataLayout);
 
 		// real start of work and real end of work
-		Composite valueComp = makeComposite(client, 2);
-		Label anmeldungLabel = new Label(valueComp, SWT.NONE);
-		anmeldungLabel.setText("Anmeldung:");
-		anmeldungLabel.setBackground(CustomColors.COLOR_WHITE);
-		anmeldung = new DatePicker(valueComp, SWT.FLAT, DatePicker.LABEL_CHOOSE);
-		anmeldung.setBackground(CustomColors.COLOR_GREY_2);
-
-		// label
-		valueComp = makeComposite(client, 2);
-		Label abmeldungLabel = new Label(valueComp, SWT.NONE);
-		abmeldungLabel.setText("Abmeldung:");
-		abmeldungLabel.setBackground(CustomColors.COLOR_WHITE);
-		abmeldung = new DatePicker(valueComp, SWT.FLAT, DatePicker.LABEL_CHOOSE);
-		abmeldung.setBackground(CustomColors.COLOR_GREY_2);
-
-		// some layout options
+		Composite valueCompIn = CompositeHelper.makeComposite(toolkit, client, 2);
+		Label anmeldungLabel = new Label(valueCompIn, SWT.NONE);
 		GridData data = new GridData();
 		data.widthHint = 70;
 		anmeldungLabel.setLayoutData(data);
+		anmeldungLabel.setText("Anmeldung:");
+		anmeldungLabel.setBackground(CustomColors.COLOR_WHITE);
+		anmeldung = new DatePicker(valueCompIn, SWT.FLAT, DatePicker.LABEL_CHOOSE);
+		anmeldung.setBackground(CustomColors.COLOR_GREY_2);
+
+		// label
+		Composite valueCompOut = CompositeHelper.makeComposite(toolkit, client, 2);
+		Label abmeldungLabel = new Label(valueCompOut, SWT.NONE);
 		data = new GridData();
 		data.widthHint = 70;
 		abmeldungLabel.setLayoutData(data);
-	}
-
-	/**
-	 * Helper method to determine wheter all fields are valid
-	 * 
-	 * @return true if all fields are valid, otherwise false
-	 */
-	private boolean checkRequiredFields() {
-		// check the required fields
-		if (employeenameCombo.getCombo().getSelectionIndex() == -1) {
-			setErrorMessage("Bitte wählen Sie einen Mitarbeiter aus");
-			return false;
-		}
-		if (comboOrtsstelle.getCombo().getSelectionIndex() == -1) {
-			setErrorMessage("Bitte geben Sie eine Ortsstelle an");
-			return false;
-		}
-		if (comboVerwendung.getCombo().getSelectionIndex() == -1) {
-			setErrorMessage("Bitte geben Sie eine Verwendung an");
-			return false;
-		}
-		if (comboDienstverhaeltnis.getCombo().getSelectionIndex() == -1) {
-			setErrorMessage("Bitte geben Sie ein Dienstverhältnis an");
-			return false;
-		}
-		if (dienstVon.getDate() == null) {
-			setErrorMessage("Bitte geben Sie einen Dienstbeginn an");
-			return false;
-		}
-		if (dienstBis.getDate() == null) {
-			setErrorMessage("Bitte geben Sie ein Dienstende an");
-			return false;
-		}
-		// validate start before end
-		if (dienstVon.getDate().getTimeInMillis() > dienstBis.getDate().getTimeInMillis()) {
-			setErrorMessage("Dienstende liegt vor dem Dienstbeginn");
-			return false;
-		}
-		// validate start before end
-		if (anmeldung.getDate() != null && abmeldung.getDate() != null) {
-			if (anmeldung.getDate().getTimeInMillis() > abmeldung.getDate().getTimeInMillis()) {
-				setErrorMessage("Die Anmeldung liegt vor der Abmeldung");
-				return false;
-			}
-		}
-		return true;
-	}
-
-	@Override
-	public void dataChanged(Message<Object> message, MessageIoSession messageIoSession) {
-		employeenameCombo.refresh();
-		comboVerwendung.refresh();
-		comboOrtsstelle.refresh();
-		comboDienstverhaeltnis.refresh();
+		abmeldungLabel.setText("Abmeldung:");
+		abmeldungLabel.setBackground(CustomColors.COLOR_WHITE);
+		abmeldung = new DatePicker(valueCompOut, SWT.FLAT, DatePicker.LABEL_CHOOSE);
+		abmeldung.setBackground(CustomColors.COLOR_GREY_2);
 	}
 }

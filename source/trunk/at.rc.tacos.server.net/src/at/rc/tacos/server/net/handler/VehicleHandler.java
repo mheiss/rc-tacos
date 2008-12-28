@@ -102,10 +102,16 @@ public class VehicleHandler implements Handler<VehicleDetail> {
 		// update the locks
 		if ("doLock".equalsIgnoreCase(command)) {
 			lockableService.addAllLocks(message.getObjects());
+			//brodcast the lock
+			UpdateMessage<VehicleDetail> updateMessage = new UpdateMessage<VehicleDetail>(message.getObjects());
+			session.brodcastMessage(updateMessage);
 			return;
 		}
 		if ("doUnlock".equalsIgnoreCase(command)) {
 			lockableService.removeAllLocks(message.getObjects());
+			//brodcast the lock
+			UpdateMessage<VehicleDetail> updateMessage = new UpdateMessage<VehicleDetail>(message.getObjects());
+			session.brodcastMessage(updateMessage);
 			return;
 		}
 		if ("setStatusSix".equalsIgnoreCase(command)) {
