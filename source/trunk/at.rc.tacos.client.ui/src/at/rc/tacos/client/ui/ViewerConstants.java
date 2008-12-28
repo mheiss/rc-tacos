@@ -12,6 +12,8 @@ public interface ViewerConstants {
 
 	public final static int TIME_WIDTH = 50;
 	
+	public final static int SHORT_TEXT_WIDTH = 50;
+	
 	public final static int MEDIUM_TEXT_WIDTH = 100;
 	
 	public final static int LONG_TEXT_WIDTH = 250;

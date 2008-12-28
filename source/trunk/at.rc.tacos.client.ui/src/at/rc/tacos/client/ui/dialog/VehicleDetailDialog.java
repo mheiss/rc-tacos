@@ -1,7 +1,6 @@
 package at.rc.tacos.client.ui.dialog;
 
 import org.eclipse.jface.dialogs.IMessageProvider;
-import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.TextViewer;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -18,11 +17,8 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.forms.events.HyperlinkAdapter;
 import org.eclipse.ui.forms.events.HyperlinkEvent;
@@ -40,23 +36,21 @@ import at.rc.tacos.client.ui.providers.MobilePhoneLabelProvider;
 import at.rc.tacos.client.ui.providers.StaffMemberVehicleLabelProvider;
 import at.rc.tacos.client.ui.providers.StationLabelProvider;
 import at.rc.tacos.client.ui.providers.VehicleLabelProvider;
+import at.rc.tacos.client.ui.utils.CompositeHelper;
 import at.rc.tacos.client.ui.utils.CustomColors;
 import at.rc.tacos.platform.model.Location;
 import at.rc.tacos.platform.model.MobilePhoneDetail;
 import at.rc.tacos.platform.model.StaffMember;
 import at.rc.tacos.platform.model.VehicleDetail;
-import at.rc.tacos.platform.net.message.ExecMessage;
-import at.rc.tacos.platform.net.message.UpdateMessage;
 
 /**
  * The gui to manage a vehicle
  * 
  * @author Michael
  */
-public class VehicleForm extends TitleAreaDialog {
+public class VehicleDetailDialog extends AbstractLockableDialog<VehicleDetail> {
 
 	// properties
-	private FormToolkit toolkit;
 	private ComboViewer vehicleComboViewer;
 	private ComboViewer mobilePhoneComboViewer;
 	private Button readyButton;
@@ -73,11 +67,8 @@ public class VehicleForm extends TitleAreaDialog {
 	private LocationHandler locationHandler = (LocationHandler) NetWrapper.getHandler(Location.class);
 	private StaffHandler staffHandler = (StaffHandler) NetWrapper.getHandler(StaffMember.class);
 
-	// the vehicle
-	private VehicleDetail vehicleDetail;
-
 	// description text
-	public final static String FORM_DESCRIPTION = "Hier können Sie Fahrzeug und dessen Besatzung verwalten";
+	public final static String FORM_DESCRIPTION = "Hier können Sie ein Fahrzeug und dessen Besatzung verwalten";
 
 	/**
 	 * Default class constructor for the vehicle form
@@ -85,8 +76,8 @@ public class VehicleForm extends TitleAreaDialog {
 	 * @param parentShell
 	 *            the parent shell
 	 */
-	public VehicleForm(Shell parentShell) {
-		super(parentShell);
+	public VehicleDetailDialog(Shell parentShell) {
+		super(parentShell, new VehicleDetail(), true);
 	}
 
 	/**
@@ -94,96 +85,55 @@ public class VehicleForm extends TitleAreaDialog {
 	 * 
 	 * @param parentShell
 	 *            the parent shell
+	 * @param vehicle
+	 *            the vehicle that should be edited
 	 */
-	public VehicleForm(Shell parentShell, VehicleDetail vehicle) {
-		super(parentShell);
-		this.vehicleDetail = vehicle;
+	public VehicleDetailDialog(Shell parentShell, VehicleDetail vehicle) {
+		super(parentShell, vehicle, false);
 	}
 
-	/**
-	 * Creates the dialog's contents
-	 * 
-	 * @param parent
-	 *            the parent composite
-	 * @return Control
-	 */
 	@Override
-	protected Control createContents(Composite parent) {
-		Control contents = super.createContents(parent);
+	public void createDialogHeader() {
 		setTitle("Fahrzeugverwaltung");
 		setMessage(FORM_DESCRIPTION, IMessageProvider.INFORMATION);
 		setTitleImage(UiWrapper.getDefault().getImageRegistry().get("application.logo"));
-		return contents;
 	}
 
-	/**
-	 * Create contents of the window
-	 */
 	@Override
-	protected Control createDialogArea(Composite parent) {
-		// setup the composite
-		Composite composite = (Composite) super.createDialogArea(parent);
+	public void createDialogContent(Composite parent) {
+		Composite composite = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout();
 		layout.horizontalSpacing = 30;
 		layout.verticalSpacing = 10;
 		composite.setLayout(layout);
 		composite.setBackground(CustomColors.COLOR_WHITE);
-		toolkit = new FormToolkit(Display.getCurrent());
+		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		// create the sections
 		createDetailSection(composite);
 		createStatusSection(composite);
 		createCrewSection(composite);
 		createNotesSection(composite);
-
-		// init if we have a vehicle
-		if (vehicleDetail != null) {
-			vehicleComboViewer.setSelection(new StructuredSelection(vehicleDetail));
-			mobilePhoneComboViewer.setSelection(new StructuredSelection(vehicleDetail.getMobilePhone()));
-			stationComboViewer.setSelection(new StructuredSelection(vehicleDetail.getCurrentStation()));
-			if (vehicleDetail.getDriver() != null)
-				driverComboViewer.setSelection(new StructuredSelection(vehicleDetail.getDriver()));
-			if (vehicleDetail.getFirstParamedic() != null)
-				medic1ComboViewer.setSelection(new StructuredSelection(vehicleDetail.getFirstParamedic()));
-			if (vehicleDetail.getSecondParamedic() != null)
-				medic2ComboViewer.setSelection(new StructuredSelection(vehicleDetail.getSecondParamedic()));
-			readyButton.setSelection(vehicleDetail.isReadyForAction());
-			outOfOrder.setSelection(vehicleDetail.isOutOfOrder());
-			noteEditor.getDocument().set(vehicleDetail.getVehicleNotes());
-		}
-		checkRequiredFields();
-		return composite;
 	}
 
 	@Override
-	public boolean close() {
-		// remove the lock from the object
-		vehicleDetail.setLocked(false);
-		vehicleDetail.setLockedBy(null);
-		ExecMessage<VehicleDetail> execMessage = new ExecMessage<VehicleDetail>("doUnlock", vehicleDetail);
-		execMessage.asnchronRequest(NetWrapper.getSession());
-		return super.close();
+	public void loadObject(VehicleDetail vehicleDetail) {
+		vehicleComboViewer.setSelection(new StructuredSelection(vehicleDetail));
+		mobilePhoneComboViewer.setSelection(new StructuredSelection(vehicleDetail.getMobilePhone()));
+		stationComboViewer.setSelection(new StructuredSelection(vehicleDetail.getCurrentStation()));
+		if (vehicleDetail.getDriver() != null)
+			driverComboViewer.setSelection(new StructuredSelection(vehicleDetail.getDriver()));
+		if (vehicleDetail.getFirstParamedic() != null)
+			medic1ComboViewer.setSelection(new StructuredSelection(vehicleDetail.getFirstParamedic()));
+		if (vehicleDetail.getSecondParamedic() != null)
+			medic2ComboViewer.setSelection(new StructuredSelection(vehicleDetail.getSecondParamedic()));
+		readyButton.setSelection(vehicleDetail.isReadyForAction());
+		outOfOrder.setSelection(vehicleDetail.isOutOfOrder());
+		noteEditor.getDocument().set(vehicleDetail.getVehicleNotes());
 	}
 
-	/**
-	 * The user pressed the cancel button
-	 */
 	@Override
-	protected void cancelPressed() {
-		MessageBox dialog = new MessageBox(getShell(), SWT.YES | SWT.NO | SWT.ICON_QUESTION);
-		dialog.setText("Abbrechen");
-		dialog.setMessage("Wollen Sie wirklich abbrechen?");
-		// check the result
-		if (dialog.open() != SWT.NO) {
-			getShell().close();
-		}
-	}
-
-	/**
-	 * The user pressed the ok button
-	 */
-	@Override
-	protected void okPressed() {
+	public void persistObject(VehicleDetail vehicleDetail) {
 		// driver
 		int index = driverComboViewer.getCombo().getSelectionIndex();
 		vehicleDetail.setDriver((StaffMember) driverComboViewer.getElementAt(index));
@@ -234,11 +184,30 @@ public class VehicleForm extends TitleAreaDialog {
 
 		if (!readyButton.getSelection())
 			vehicleDetail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_NA);
+	}
 
-		// Send the update message
-		UpdateMessage<VehicleDetail> updateVeMessage = new UpdateMessage<VehicleDetail>(vehicleDetail);
-		updateVeMessage.asnchronRequest(NetWrapper.getSession());
-		getShell().close();
+	@Override
+	public boolean validateInput() {
+		// reset the fields
+		setErrorMessage(null);
+		setMessage(FORM_DESCRIPTION, IMessageProvider.INFORMATION);
+		// Check the crew
+		if (!outOfOrder.getSelection()) {
+			if (driverComboViewer.getSelection().isEmpty()) {
+				setErrorMessage("Dem Fahrzeug wurde noch kein Fahrer zugewiesen.");
+				readyButton.setSelection(false);
+				return false;
+			}
+			if (medic1ComboViewer.getSelection().isEmpty()) {
+				setMessage("Dem Fahrzeug wurde noch kein Sanitäter zugewiesen oder es fehlt ein Sanitäter.", IMessageProvider.WARNING);
+				return true;
+			}
+			if (medic2ComboViewer.getSelection().isEmpty()) {
+				setMessage("Dem Fahrzeug wurde noch kein Sanitäter zugewiesen oder es fehlt ein Sanitäter.", IMessageProvider.WARNING);
+				return true;
+			}
+		}
+		return true;
 	}
 
 	/**
@@ -302,7 +271,7 @@ public class VehicleForm extends TitleAreaDialog {
 				int index = stationComboViewer.getCombo().getSelectionIndex();
 				Location location = (Location) stationComboViewer.getElementAt(index);
 				// update the crew based on the current location
-				vehicleDetail.setCurrentStation(location);
+				getObject().setCurrentStation(location);
 				driverComboViewer.refresh();
 				medic1ComboViewer.refresh();
 				medic2ComboViewer.refresh();
@@ -374,8 +343,9 @@ public class VehicleForm extends TitleAreaDialog {
 					setMessage("Das Fahrzeug kann keinem Transport zugeordnet werden da es außer Dienst ist.", IMessageProvider.WARNING);
 					return;
 				}
-				else
-					checkRequiredFields();
+				else {
+					validateInput();
+				}
 			}
 		};
 
@@ -398,8 +368,9 @@ public class VehicleForm extends TitleAreaDialog {
 					setMessage("Das Fahrzeug kann keinem Transport zugeordnet werden da es nicht Einsatzbereit ist", IMessageProvider.WARNING);
 					return;
 				}
-				else
-					checkRequiredFields();
+				else {
+					validateInput();
+				}
 			}
 		});
 		readyButton.setText("Einsatzbereit");
@@ -443,7 +414,7 @@ public class VehicleForm extends TitleAreaDialog {
 		labelDriver.setBackground(CustomColors.COLOR_WHITE);
 
 		// create composite for the combo and the image
-		Composite comp = makeComposite(client, 2);
+		Composite comp = CompositeHelper.makeComposite(toolkit, client, 2);
 		comp.setBackground(CustomColors.COLOR_WHITE);
 
 		Combo driverCombo = new Combo(comp, SWT.READ_ONLY);
@@ -452,12 +423,12 @@ public class VehicleForm extends TitleAreaDialog {
 
 			@Override
 			public void selectionChanged(SelectionChangedEvent arg0) {
-				checkRequiredFields();
+				validateInput();
 			}
 		});
 		driverComboViewer.setContentProvider(new ArrayContentProvider());
 		driverComboViewer.setLabelProvider(new StaffMemberVehicleLabelProvider());
-		driverComboViewer.setInput(staffHandler.getFreeStaffMembers(vehicleDetail));
+		driverComboViewer.setInput(staffHandler.getFreeStaffMembers(getObject()));
 
 		// create the hyperlink
 		ImageHyperlink removeDriver = toolkit.createImageHyperlink(comp, SWT.NONE);
@@ -478,22 +449,22 @@ public class VehicleForm extends TitleAreaDialog {
 		labelMedic1.setBackground(CustomColors.COLOR_WHITE);
 
 		// create composite for the combo and the image
-		comp = makeComposite(client, 2);
+		Composite compMedic = CompositeHelper.makeComposite(toolkit, client, 2);
 
-		Combo medic1Combo = new Combo(comp, SWT.READ_ONLY);
+		Combo medic1Combo = new Combo(compMedic, SWT.READ_ONLY);
 		medic1ComboViewer = new ComboViewer(medic1Combo);
 		medic1ComboViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
 			@Override
 			public void selectionChanged(SelectionChangedEvent arg0) {
-				checkRequiredFields();
+				validateInput();
 			}
 		});
 		medic1ComboViewer.setContentProvider(new ArrayContentProvider());
 		medic1ComboViewer.setLabelProvider(new StaffMemberVehicleLabelProvider());
-		medic1ComboViewer.setInput(staffHandler.getFreeStaffMembers(vehicleDetail));
+		medic1ComboViewer.setInput(staffHandler.getFreeStaffMembers(getObject()));
 		// create the hyperlink
-		ImageHyperlink removeMedic = toolkit.createImageHyperlink(comp, SWT.NONE);
+		ImageHyperlink removeMedic = toolkit.createImageHyperlink(compMedic, SWT.NONE);
 		removeMedic.setBackground(CustomColors.COLOR_WHITE);
 		removeMedic.setToolTipText("Zieht den aktuell zugewiesenen Sanitäter vom Fahrzeug ab");
 		removeMedic.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.remove"));
@@ -511,24 +482,24 @@ public class VehicleForm extends TitleAreaDialog {
 		labelMedic2.setBackground(CustomColors.COLOR_WHITE);
 
 		// create composite for the combo and the image
-		comp = makeComposite(client, 2);
+		Composite compMedic2 = CompositeHelper.makeComposite(toolkit, client, 2);
 		comp.setBackground(CustomColors.COLOR_WHITE);
 
-		Combo medic2Combo = new Combo(comp, SWT.READ_ONLY);
+		Combo medic2Combo = new Combo(compMedic2, SWT.READ_ONLY);
 		medic2ComboViewer = new ComboViewer(medic2Combo);
 		medic2ComboViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
 			@Override
 			public void selectionChanged(SelectionChangedEvent arg0) {
-				checkRequiredFields();
+				validateInput();
 			}
 		});
 		medic2ComboViewer.setContentProvider(new ArrayContentProvider());
 		medic2ComboViewer.setLabelProvider(new StaffMemberVehicleLabelProvider());
-		medic2ComboViewer.setInput(staffHandler.getFreeStaffMembers(vehicleDetail));
+		medic2ComboViewer.setInput(staffHandler.getFreeStaffMembers(getObject()));
 
 		// create the hyperlink
-		ImageHyperlink removeMedic2 = toolkit.createImageHyperlink(comp, SWT.NONE);
+		ImageHyperlink removeMedic2 = toolkit.createImageHyperlink(compMedic2, SWT.NONE);
 		removeMedic2.setBackground(CustomColors.COLOR_WHITE);
 		removeMedic2.setToolTipText("Zieht den aktuell zugewiesenen Sanitäter vom Fahrzeug ab");
 		removeMedic2.setImage(UiWrapper.getDefault().getImageRegistry().get("admin.remove"));
@@ -587,50 +558,5 @@ public class VehicleForm extends TitleAreaDialog {
 		noteEditor.getControl().setLayoutData(notesData);
 		noteEditor.getControl().setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
 		noteEditor.setEditable(true);
-	}
-
-	/**
-	 * Helper method to create a composite
-	 * 
-	 * @param parent
-	 *            the parent control
-	 * @param col
-	 *            the number of cols
-	 * @return the returned composite
-	 */
-	public Composite makeComposite(Composite parent, int col) {
-		Composite nameValueComp = toolkit.createComposite(parent);
-		GridLayout layout = new GridLayout(col, false);
-		layout.marginHeight = 3;
-		nameValueComp.setLayout(layout);
-		nameValueComp.setLayoutData(new GridData(GridData.FILL_BOTH));
-		nameValueComp.setBackground(CustomColors.COLOR_WHITE);
-		return nameValueComp;
-	}
-
-	/**
-	 * Helper method to determine wheter all fields are valid
-	 * 
-	 * @returns true if we have all required fields
-	 */
-	private boolean checkRequiredFields() {
-		// reset the fields
-		setErrorMessage(null);
-		setMessage(FORM_DESCRIPTION, IMessageProvider.INFORMATION);
-		// Check the crew
-		if (driverComboViewer.getSelection().isEmpty()) {
-			setErrorMessage("Dem Fahrzeug wurde noch kein Fahrer zugewiesen.");
-			readyButton.setSelection(false);
-			return false;
-		}
-		if (medic1ComboViewer.getSelection().isEmpty()) {
-			setMessage("Dem Fahrzeug wurde noch kein Sanitäter zugewiesen oder es fehlt ein Sanitäter.", IMessageProvider.WARNING);
-			return false;
-		}
-		if (medic2ComboViewer.getSelection().isEmpty()) {
-			setMessage("Dem Fahrzeug wurde noch kein Sanitäter zugewiesen oder es fehlt ein Sanitäter.", IMessageProvider.WARNING);
-			return false;
-		}
-		return true;
 	}
 }
