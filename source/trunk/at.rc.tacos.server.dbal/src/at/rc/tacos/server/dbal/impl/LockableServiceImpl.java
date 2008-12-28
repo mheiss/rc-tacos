@@ -24,7 +24,7 @@ public class LockableServiceImpl implements LockableService {
 
 	@Override
 	public boolean addLock(Lockable lockable) {
-		logger.debug("Adding new lock " + lockable);
+		logger.debug("Adding new lock for " + lockable.getLockedClass() + ":" + lockable.getLockedId());
 		synchronized (locks) {
 			if (locks.contains(lockable)) {
 				return true;
@@ -55,7 +55,7 @@ public class LockableServiceImpl implements LockableService {
 
 	@Override
 	public boolean removeLock(Lockable lockable) {
-		logger.debug("Removing existing lock " + lockable);
+		logger.debug("Removing existing lock for " + lockable.getLockedClass() + ":" + lockable.getLockedId());
 		synchronized (locks) {
 			return locks.remove(lockable);
 		}
@@ -65,7 +65,7 @@ public class LockableServiceImpl implements LockableService {
 	public void updateLock(Lockable lockable) {
 		// check if the object is locked and we alread have the lock
 		if (lockable.isLocked() && locks.contains(lockable)) {
-			logger.debug("Updating existing lock object " + lockable);
+			logger.debug("Updating existing lock object " + lockable.getLockedClass() + ":" + lockable.getLockedId());
 			return;
 		}
 		// if the object is locked but we do not have the object
@@ -83,7 +83,7 @@ public class LockableServiceImpl implements LockableService {
 	// BULK OPERATION IMPLEMENTATION
 	@Override
 	public void addAllLocks(List<? extends Lockable> lockables) {
-		logger.debug("Adding new locks " + lockables);
+		logger.debug("Adding " + lockables.size() + " new locks");
 		synchronized (locks) {
 			locks.addAll(lockables);
 		}
@@ -91,7 +91,7 @@ public class LockableServiceImpl implements LockableService {
 
 	@Override
 	public void removeAllLocks(List<? extends Lockable> lockables) {
-		logger.debug("Removing existing locks " + lockables);
+		logger.debug("Removing " + lockables.size() + " existing locks");
 		synchronized (locks) {
 			locks.removeAll(lockables);
 		}
