@@ -78,5 +78,4 @@
 			<fileset dir="${build.source}" includes="**/*"/>
 		</delete>
 	</target>
-	
 </project>

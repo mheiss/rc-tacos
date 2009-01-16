@@ -9,6 +9,7 @@
 	<!-- build server and client -->
 	<target name="buildAll" depends="init">
 		<antcall target="buildServer" />
+		<antcall target="clean" />
 		<antcall target="buildClient" />
 	</target>
 	
@@ -40,6 +41,9 @@
 	<target name="clean" depends="init">
 		<ant antfile="build.xml" dir="${build.workspace}" target="clean">
 			<property name="component" value="server" />
+		</ant>
+		<ant antfile="build.xml" dir="${build.workspace}" target="clean">
+			<property name="component" value="client" />
 		</ant>
 	</target>
 </project>
