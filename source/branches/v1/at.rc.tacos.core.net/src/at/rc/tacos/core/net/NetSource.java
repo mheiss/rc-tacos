@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Internettechnik, FH JOANNEUM
+ * http://www.fh-joanneum.at/itm
+ * 
+ * 	Licenced under the GNU GENERAL PUBLIC LICENSE Version 2;
+ * 	You may obtain a copy of the License at
+ * 	http://www.gnu.org/licenses/gpl-2.0.txt
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *******************************************************************************/
 package at.rc.tacos.core.net;
 
 import java.io.BufferedReader;
@@ -14,40 +27,40 @@ import at.rc.tacos.core.net.internal.MySocket;
 import at.rc.tacos.core.net.internal.ServerInfo;
 
 /**
- * This class is responsible for loading the server configuration
- * and managing the connection.
+ * This class is responsible for loading the server configuration and managing
+ * the connection.
+ * 
  * @author Michael
  */
-public class NetSource
-{    
-	//config file
+public class NetSource {
+
+	// config file
 	public static final String NET_SETTINGS_BUNDLE_PATH = "at.rc.tacos.core.net.config.server";
 
-	//the connected socket
+	// the connected socket
 	private MySocket client;
 
-	//the server pool
+	// the server pool
 	private static NetSource instance;
 	private ArrayList<ServerInfo> serverPool;
 
 	/**
 	 * Default class constructor
 	 */
-	private NetSource() 
-	{ 
-		//create the server list
+	private NetSource() {
+		// create the server list
 		serverPool = new ArrayList<ServerInfo>();
 
-		//init the network and load the data
+		// init the network and load the data
 		loadServerList();
 	}
 
 	/**
 	 * Returns the instance of the network source
+	 * 
 	 * @return the shared instance
 	 */
-	public static NetSource getInstance()
-	{
+	public static NetSource getInstance() {
 		if (instance == null)
 			instance = new NetSource();
 		return instance;
@@ -55,38 +68,34 @@ public class NetSource
 
 	/**
 	 * Loads the configuration for the servers from the config file
+	 * 
 	 * @return true if the initialisation was successfully
 	 */
-	protected void loadServerList()
-	{    
-		try
-		{
+	protected void loadServerList() {
+		try {
 			ResourceBundle bundle = ResourceBundle.getBundle(NetSource.NET_SETTINGS_BUNDLE_PATH);
-			//primary server         
+			// primary server
 			String primHost = bundle.getString("server.host");
 			int primPort = Integer.parseInt(bundle.getString("server.port"));
 			String primDesc = bundle.getString("server.description");
-			//failover
+			// failover
 			String failHost = bundle.getString("failover.host");
 			int failPort = Integer.parseInt(bundle.getString("failover.port"));
 			String failDesc = bundle.getString("failover.description");
 
-			//add servers
-			serverPool.add(new ServerInfo(IServerInfo.PRIMARY_SERVER,primHost,primPort,primDesc));
-			serverPool.add(new ServerInfo(IServerInfo.FAILOVER_SERVER,failHost,failPort,failDesc));
+			// add servers
+			serverPool.add(new ServerInfo(IServerInfo.PRIMARY_SERVER, primHost, primPort, primDesc));
+			serverPool.add(new ServerInfo(IServerInfo.FAILOVER_SERVER, failHost, failPort, failDesc));
 		}
-		catch(MissingResourceException mre)
-		{
+		catch (MissingResourceException mre) {
 			System.out.println("Missing resource, cannot init network");
 			System.out.println(mre.getMessage());
 		}
-		catch(NumberFormatException nfe)
-		{
+		catch (NumberFormatException nfe) {
 			System.out.println("Port number must be a integer");
 			System.out.println(nfe.getMessage());
 		}
-		catch(NullPointerException npe)
-		{
+		catch (NullPointerException npe) {
 			System.out.println("Configuration file for the server is missing");
 			System.out.println(npe.getMessage());
 		}
@@ -94,53 +103,52 @@ public class NetSource
 
 	/**
 	 * Returns the currently established connection to the server
-	 * @param the opened connection or null in case of an error
+	 * 
+	 * @param the
+	 *            opened connection or null in case of an error
 	 */
-	public MySocket getConnection()
-	{
+	public MySocket getConnection() {
 		return client;
 	}
 
 	/**
 	 * Opens or reuses the existing connection to the server.<br>
 	 * When the connection cannot be established this method will return null.
-	 * @param connectionName the name of the connection to use
-	 * @param forceNew a flag to indicate whether a new connection should be established or a old one can be used
+	 * 
+	 * @param connectionName
+	 *            the name of the connection to use
+	 * @param forceNew
+	 *            a flag to indicate whether a new connection should be
+	 *            established or a old one can be used
 	 * @return the connection or null if it can't be established
 	 */
-	public MySocket openConnection(ServerInfo info)
-	{  	
-		//try to open a socket to the server
-		try
-		{
-			System.out.println("Open a new connection to: "+info.getHostName()+":"+info.getPort());
-			client = new MySocket(info.getHostName(),info.getPort());
+	public MySocket openConnection(ServerInfo info) {
+		// try to open a socket to the server
+		try {
+			System.out.println("Open a new connection to: " + info.getHostName() + ":" + info.getPort());
+			client = new MySocket(info.getHostName(), info.getPort());
 			client.setSoTimeout(1000);
 			return client;
 		}
-		catch(UnknownHostException uhe)
-		{
-			System.out.println("Failed to open a connection to the host: "+info.getHostName());
+		catch (UnknownHostException uhe) {
+			System.out.println("Failed to open a connection to the host: " + info.getHostName());
 			System.out.println("The hostname is unknown");
 		}
-		catch(IOException ioe)
-		{
+		catch (IOException ioe) {
 			System.out.println("IO-Error during the socket creation");
 			ioe.printStackTrace();
 		}
 
-		//cannot establish a connection
+		// cannot establish a connection
 		return null;
 	}
 
 	/**
 	 * Closes the current connection
 	 */
-	public void closeConnection() throws IOException
-	{
-		//assert valid
-		if(client != null)
-		{
+	public void closeConnection() throws IOException {
+		// assert valid
+		if (client != null) {
 			client.cleanup();
 			client = null;
 		}
@@ -148,58 +156,60 @@ public class NetSource
 
 	/**
 	 * Returns the output stream to write data to the server
+	 * 
 	 * @return the print writer to write to the server
-	 * @throws IOException if a communication (TCP) error occurs
-	 * @throws IllegalStateException if the socket is not connected or the output stream of the socket is invalid
+	 * @throws IOException
+	 *             if a communication (TCP) error occurs
+	 * @throws IllegalStateException
+	 *             if the socket is not connected or the output stream of the
+	 *             socket is invalid
 	 */
-	public PrintWriter getOutputStream() throws IOException,IllegalStateException
-	{
-		//assert valid
-		if(client == null)
+	public PrintWriter getOutputStream() throws IOException, IllegalStateException {
+		// assert valid
+		if (client == null)
 			throw new IllegalStateException("The socket is not connected to a server. Open a connection to the server first");
-		if(client.getBufferedOutputStream() == null)
+		if (client.getBufferedOutputStream() == null)
 			throw new IllegalStateException("Failed to get the output stream to the server");
-		//return the writer
+		// return the writer
 		return client.getBufferedOutputStream();
 	}
 
 	/**
 	 * Returns the input stream to read data from the server
+	 * 
 	 * @return the buffered reader to read data
-	 * @throws 
+	 * @throws
 	 */
-	public BufferedReader getInputStream() throws IOException,IllegalStateException
-	{
-		//assert valid
-		if(client == null)
+	public BufferedReader getInputStream() throws IOException, IllegalStateException {
+		// assert valid
+		if (client == null)
 			throw new IllegalStateException("The socket is not connected to a server. Open a connection to the server first");
-		if(client.getBufferedInputStream() == null)
+		if (client.getBufferedInputStream() == null)
 			throw new IllegalStateException("This socket has no connected input stream");
-		//return the reader
+		// return the reader
 		return client.getBufferedInputStream();
 	}
 
 	/**
-	 *  Returns a list of all server informations entries
-	 *  @return the server list
+	 * Returns a list of all server informations entries
+	 * 
+	 * @return the server list
 	 */
-	public List<ServerInfo> getServerList()
-	{
+	public List<ServerInfo> getServerList() {
 		return serverPool;
 	}
 
 	/**
 	 * Helper method to get the server info by the id.
+	 * 
 	 * @return the server information entry found or null
 	 */
-	public ServerInfo getServerInfoById(String id)
-	{
-		for(ServerInfo info:serverPool)
-		{
-			if(info.getId().equalsIgnoreCase(id))
+	public ServerInfo getServerInfoById(String id) {
+		for (ServerInfo info : serverPool) {
+			if (info.getId().equalsIgnoreCase(id))
 				return info;
 		}
-		//nothing found
+		// nothing found
 		return null;
 	}
 }
