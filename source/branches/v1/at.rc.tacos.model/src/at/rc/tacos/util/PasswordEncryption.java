@@ -4,7 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import sun.misc.BASE64Encoder;
+import org.apache.commons.codec.binary.Base64;;
 
 /**
  * Provides methods to generate a hash value out of a given string.
@@ -47,9 +47,9 @@ public class PasswordEncryption
             //encrypt the password
             byte raw[] = md.digest();
             //create a string out of the byte array
-            String hash = (new BASE64Encoder()).encode(raw); 
-            //return the hash value of the password
-            return hash;
+			byte[] hash = (new Base64()).encode(raw);
+			// return the hash value of the password
+			return new String(hash);
         }
         catch(NoSuchAlgorithmException e)
         {
