@@ -1,125 +1,137 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Internettechnik, FH JOANNEUM
+ * http://www.fh-joanneum.at/itm
+ * 
+ * 	Licenced under the GNU GENERAL PUBLIC LICENSE Version 2;
+ * 	You may obtain a copy of the License at
+ * 	http://www.gnu.org/licenses/gpl-2.0.txt
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *******************************************************************************/
 package at.rc.tacos.model;
 
 import at.rc.tacos.common.AbstractMessage;
 
 /**
- * The available jobs 
+ * The available jobs
+ * 
  * @author Michael
  */
-public class Job extends AbstractMessage
-{
-    //unique identification string
-    public final static String ID = "jobs";
-    
-    public static final String JOB_LEITSTELLENDISPONENT = "Leitstellendisponent";
-    public static final String JOB_FAHRER = "Fahrer";
-    public static final String JOB_SANITAETER = "Sanitäter";
-    
-    //properties   
-    private int id;
-    private String jobName;
-    
-    /**
-     * Default class constructor
-     */
-    public Job()
-    {
-        super(ID);
-        //set default values
-        id = -1;
-        jobName = "";
-    }
-    
-    /**
-     * Default class constructor for a job
-     */
-    public Job(String jobName)
-    {
-        this();
-        this.jobName = jobName;
-    }
-    
-    
-    //METHODS
-    /**
-     * Returns the string based description
-     * @return the string description
-     */
-    @Override
-    public String toString()
-    {
-        return "id: "+id + "; jobName: "+jobName;
-    }
-    
-    /**
-     * Returns the calculated hash code based on the job id.<br>
-     * Two jobs have the same hash code if the id is the same.
-     * @return the calculated hash code
-     */
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + id;
-        return result;
-    }
+public class Job extends AbstractMessage {
 
+	// unique identification string
+	public final static String ID = "jobs";
 
-    /**
-     * Returns whether the objects are equal or not.<br>
-     * Two jobs are equal if, and only if, the job id is the same.
-     * @return true if the id is the same otherwise false.
-     */
-    @Override
-    public boolean equals(Object obj)
-    {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        final Job other = (Job) obj;
-        if (id != other.id)
-            return false;
-        return true;
-    }
+	public static final String JOB_LEITSTELLENDISPONENT = "Leitstellendisponent";
+	public static final String JOB_FAHRER = "Fahrer";
+	public static final String JOB_SANITAETER = "Sanitäter";
 
-    //GETTERS AND SETTERS
-    /**
-     * Returns the internal unique id of the job.
-     * @return the id the id of the database
-     */
-    public int getId()
-    {
-        return id;
-    }
+	// properties
+	private int id;
+	private String jobName;
 
-    /**
-     * Returns the name of the job
-     * @return the name of the job
-     */
-    public String getJobName()
-    {
-        return jobName;
-    }
+	/**
+	 * Default class constructor
+	 */
+	public Job() {
+		super(ID);
+		// set default values
+		id = -1;
+		jobName = "";
+	}
 
-    /**
-     * Sets the unique number of the job.
-     * @param id the unique id for the job
-     */
-    public void setId(int id)
-    {
-        this.id = id;
-    }
+	/**
+	 * Default class constructor for a job
+	 */
+	public Job(String jobName) {
+		this();
+		this.jobName = jobName;
+	}
 
-    /**
-     * Sets the name of the job
-     * @param jobName the jobName to set
-     */
-    public void setJobName(String jobName)
-    {
-        this.jobName = jobName;
-    }
+	// METHODS
+	/**
+	 * Returns the string based description
+	 * 
+	 * @return the string description
+	 */
+	@Override
+	public String toString() {
+		return "id: " + id + "; jobName: " + jobName;
+	}
+
+	/**
+	 * Returns the calculated hash code based on the job id.<br>
+	 * Two jobs have the same hash code if the id is the same.
+	 * 
+	 * @return the calculated hash code
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
+	}
+
+	/**
+	 * Returns whether the objects are equal or not.<br>
+	 * Two jobs are equal if, and only if, the job id is the same.
+	 * 
+	 * @return true if the id is the same otherwise false.
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final Job other = (Job) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+
+	// GETTERS AND SETTERS
+	/**
+	 * Returns the internal unique id of the job.
+	 * 
+	 * @return the id the id of the database
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * Returns the name of the job
+	 * 
+	 * @return the name of the job
+	 */
+	public String getJobName() {
+		return jobName;
+	}
+
+	/**
+	 * Sets the unique number of the job.
+	 * 
+	 * @param id
+	 *            the unique id for the job
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	/**
+	 * Sets the name of the job
+	 * 
+	 * @param jobName
+	 *            the jobName to set
+	 */
+	public void setJobName(String jobName) {
+		this.jobName = jobName;
+	}
 }

@@ -1,127 +1,138 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Internettechnik, FH JOANNEUM
+ * http://www.fh-joanneum.at/itm
+ * 
+ * 	Licenced under the GNU GENERAL PUBLIC LICENSE Version 2;
+ * 	You may obtain a copy of the License at
+ * 	http://www.gnu.org/licenses/gpl-2.0.txt
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *******************************************************************************/
 package at.rc.tacos.model;
 
 import at.rc.tacos.common.AbstractMessage;
 
 /**
  * The available competences for the staff members
+ * 
  * @author Michael
  */
-public class Competence extends AbstractMessage
-{
-	
-    //unique identification string
-    public final static String ID = "competence";
-    
+public class Competence extends AbstractMessage {
+
+	// unique identification string
+	public final static String ID = "competence";
+
 	public static final String FUNCTION_HA = "_HA";
 	public static final String FUNCTION_ZD = "_ZD";
 	public static final String FUNCTION_LS = "_LS";
-    
-    public static final String COMPETENCE_NAME_VOLUNTEER = "Volontär";
-    
-    //properties   
-    private int id;
-    private String competenceName;
-    
-    /**
-     * Default class constructor
-     */
-    public Competence()
-    {
-        super(ID);
-        //set default values
-        competenceName = "";
-    }
-    
-    /**
-     * Default class constructor for a competence
-     */
-    public Competence(String competenceName)
-    {
-        this();
-        this.competenceName = competenceName;
-    }
-    
-    
-    //METHODS
-    /**
-     * Returns the string based description
-     * @return the string description
-     */
-    @Override
-    public String toString()
-    {
-        return "id: " +id +"; "+ "competenceName: "+competenceName;
-    }
-    
-    /**
-     * Returns the calculated hash code based on the competence id.<br>
-     * Two competences have the same hash code if the id is the same.
-     * @return the calculated hash code
-     */
-    @Override
-    public int hashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + id;
-        return result;
-    }
 
+	public static final String COMPETENCE_NAME_VOLUNTEER = "Volontär";
 
-    /**
-     * Returns whether the objects are equal or not.<br>
-     * Two competences are equal if, and only if, the competence id is the same.
-     * @return true if the id is the same otherwise false.
-     */
-    @Override
-    public boolean equals(Object obj)
-    {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        final Competence other = (Competence) obj;
-        if (id != other.id)
-            return false;
-        return true;
-    }
+	// properties
+	private int id;
+	private String competenceName;
 
-    //GETTERS AND SETTERS
-    /**
-     * Returns the internal unique id of the competence.
-     * @return the id the id of the database
-     */
-    public int getId()
-    {
-        return id;
-    }
+	/**
+	 * Default class constructor
+	 */
+	public Competence() {
+		super(ID);
+		// set default values
+		competenceName = "";
+	}
 
-    /**
-     * Returns the name of the competence
-     * @return the name of the competence
-     */
-    public String getCompetenceName()
-    {
-        return competenceName;
-    }
+	/**
+	 * Default class constructor for a competence
+	 */
+	public Competence(String competenceName) {
+		this();
+		this.competenceName = competenceName;
+	}
 
-    /**
-     * Sets the unique number of the job.
-     * @param id the unique id for the job
-     */
-    public void setId(int id)
-    {
-        this.id = id;
-    }
+	// METHODS
+	/**
+	 * Returns the string based description
+	 * 
+	 * @return the string description
+	 */
+	@Override
+	public String toString() {
+		return "id: " + id + "; " + "competenceName: " + competenceName;
+	}
 
-    /**
-     * Sets the name of the competence
-     * @param competenceName the competenceName to set
-     */
-    public void setCompetenceName(String competenceName)
-    {
-        this.competenceName = competenceName;
-    }
+	/**
+	 * Returns the calculated hash code based on the competence id.<br>
+	 * Two competences have the same hash code if the id is the same.
+	 * 
+	 * @return the calculated hash code
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
+	}
+
+	/**
+	 * Returns whether the objects are equal or not.<br>
+	 * Two competences are equal if, and only if, the competence id is the same.
+	 * 
+	 * @return true if the id is the same otherwise false.
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final Competence other = (Competence) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+
+	// GETTERS AND SETTERS
+	/**
+	 * Returns the internal unique id of the competence.
+	 * 
+	 * @return the id the id of the database
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * Returns the name of the competence
+	 * 
+	 * @return the name of the competence
+	 */
+	public String getCompetenceName() {
+		return competenceName;
+	}
+
+	/**
+	 * Sets the unique number of the job.
+	 * 
+	 * @param id
+	 *            the unique id for the job
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	/**
+	 * Sets the name of the competence
+	 * 
+	 * @param competenceName
+	 *            the competenceName to set
+	 */
+	public void setCompetenceName(String competenceName) {
+		this.competenceName = competenceName;
+	}
 }

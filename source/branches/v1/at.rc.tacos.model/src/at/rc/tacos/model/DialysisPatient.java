@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Internettechnik, FH JOANNEUM
+ * http://www.fh-joanneum.at/itm
+ * 
+ * 	Licenced under the GNU GENERAL PUBLIC LICENSE Version 2;
+ * 	You may obtain a copy of the License at
+ * 	http://www.gnu.org/licenses/gpl-2.0.txt
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *******************************************************************************/
 package at.rc.tacos.model;
 
 import at.rc.tacos.common.AbstractMessage;
@@ -6,11 +19,12 @@ import at.rc.tacos.util.MyUtils;
 
 /**
  * Contains the data of the dialysis patient.
+ * 
  * @author b.thek
  */
-public class DialysisPatient extends AbstractMessage
-{
-	//unique identification string
+public class DialysisPatient extends AbstractMessage {
+
+	// unique identification string
 	public final static String ID = "dialysisPatient";
 
 	private int id;
@@ -29,7 +43,7 @@ public class DialysisPatient extends AbstractMessage
 	private boolean stationary;
 	private String kindOfTransport;
 	private boolean assistantPerson;
-	//flags when the transport is repeated
+	// flags when the transport is repeated
 	private boolean monday;
 	private boolean tuesday;
 	private boolean wednesday;
@@ -37,34 +51,39 @@ public class DialysisPatient extends AbstractMessage
 	private boolean friday;
 	private boolean saturday;
 	private boolean sunday;
-	//this values are needed to automatically generated transports for dialysis patients
-	//they store the last automatically generated transport date so that for one
-	//day only one transport is generated (per direction)
+	// this values are needed to automatically generated transports for dialysis
+	// patients
+	// they store the last automatically generated transport date so that for
+	// one
+	// day only one transport is generated (per direction)
 	private long lastTransportDate;
 	private long lastBackTransportDate;
 
 	/**
 	 * Default class constructor
 	 */
-	public DialysisPatient()
-	{
+	public DialysisPatient() {
 		super(ID);
-		//set default values
+		// set default values
 		id = -1;
 		insurance = "Versicherung unbekannt";
 	}
 
 	/**
 	 * Default class constructor for a dialysis patient object.
-	 * @param patient the patient for this transport
-	 * @param location the location who is responsible the transport
-	 * @param plannedStartOfTransport the start time
-	 * @param plannedTimeAtPatient the meeting time with the patient
-	 * @param appointmentTimeAtDialysis the time at the target location
+	 * 
+	 * @param patient
+	 *            the patient for this transport
+	 * @param location
+	 *            the location who is responsible the transport
+	 * @param plannedStartOfTransport
+	 *            the start time
+	 * @param plannedTimeAtPatient
+	 *            the meeting time with the patient
+	 * @param appointmentTimeAtDialysis
+	 *            the time at the target location
 	 */
-	public DialysisPatient(Patient patient, Location location, long plannedStartOfTransport,
-			long plannedTimeAtPatient, long appointmentTimeAtDialysis) 
-	{
+	public DialysisPatient(Patient patient, Location location, long plannedStartOfTransport, long plannedTimeAtPatient, long appointmentTimeAtDialysis) {
 		this();
 		this.patient = patient;
 		this.location = location;
@@ -72,73 +91,73 @@ public class DialysisPatient extends AbstractMessage
 		this.plannedTimeAtPatient = plannedTimeAtPatient;
 		this.appointmentTimeAtDialysis = appointmentTimeAtDialysis;
 	}
-	
+
 	/**
 	 * Returns a string based description of the object.<br>
 	 * The returned values are patientId,firstname,lastname.
+	 * 
 	 * @return the description of the object
 	 */
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		String dia = null;
-		if(patient != null)
-			dia = patient.getLastname() +" " +patient.getFirstname() +";";
-		if(location != null)
-			dia = dia +"OS: " +location.getLocationName() +";";
-		if(plannedStartOfTransport != 0)
-			dia = dia +"Abf: " + MyUtils.timestampToString(plannedStartOfTransport, MyUtils.timeFormat) +";";
-		if(plannedTimeAtPatient != 0)
-			dia = dia +"BeiPat: " +MyUtils.timestampToString(plannedTimeAtPatient, MyUtils.timeFormat) +";";
-		if(appointmentTimeAtDialysis != 0)
-			dia = dia +"Termin: " +MyUtils.timestampToString(appointmentTimeAtDialysis, MyUtils.timeFormat) +";";
-		if(plannedStartForBackTransport != 0)
-			dia = dia +"RT: " +MyUtils.timestampToString(plannedStartForBackTransport, MyUtils.timeFormat) +";";
-		if(readyTime != 0)
-			dia = dia +"fertig: " +MyUtils.timestampToString(readyTime, MyUtils.timeFormat) +";";
-		dia = dia +"von: " +fromStreet +"/" +fromCity +";";
-		dia = dia +"nach: " +toStreet +"/" +toCity +";";
-		if(kindOfTransport != null)
-			dia = dia +"TA: " +kindOfTransport +";";
-		if(assistantPerson)
-			dia = dia +"BeglPers" +";";
-		if(monday)
-			dia = dia +"Mo" +";";
-		if(tuesday)
-			dia = dia +"Di" +";";
-		if(wednesday)
-			dia = dia +"Mi" +";";
-		if(thursday)
-			dia = dia +"Do" +";";
-		if(friday)
-			dia = dia +"Fr" +";";
-		if(saturday)
-			dia = dia +"Sa" +";";
-		if(sunday)
-			dia = dia +"So" +";";
-		
+		if (patient != null)
+			dia = patient.getLastname() + " " + patient.getFirstname() + ";";
+		if (location != null)
+			dia = dia + "OS: " + location.getLocationName() + ";";
+		if (plannedStartOfTransport != 0)
+			dia = dia + "Abf: " + MyUtils.timestampToString(plannedStartOfTransport, MyUtils.timeFormat) + ";";
+		if (plannedTimeAtPatient != 0)
+			dia = dia + "BeiPat: " + MyUtils.timestampToString(plannedTimeAtPatient, MyUtils.timeFormat) + ";";
+		if (appointmentTimeAtDialysis != 0)
+			dia = dia + "Termin: " + MyUtils.timestampToString(appointmentTimeAtDialysis, MyUtils.timeFormat) + ";";
+		if (plannedStartForBackTransport != 0)
+			dia = dia + "RT: " + MyUtils.timestampToString(plannedStartForBackTransport, MyUtils.timeFormat) + ";";
+		if (readyTime != 0)
+			dia = dia + "fertig: " + MyUtils.timestampToString(readyTime, MyUtils.timeFormat) + ";";
+		dia = dia + "von: " + fromStreet + "/" + fromCity + ";";
+		dia = dia + "nach: " + toStreet + "/" + toCity + ";";
+		if (kindOfTransport != null)
+			dia = dia + "TA: " + kindOfTransport + ";";
+		if (assistantPerson)
+			dia = dia + "BeglPers" + ";";
+		if (monday)
+			dia = dia + "Mo" + ";";
+		if (tuesday)
+			dia = dia + "Di" + ";";
+		if (wednesday)
+			dia = dia + "Mi" + ";";
+		if (thursday)
+			dia = dia + "Do" + ";";
+		if (friday)
+			dia = dia + "Fr" + ";";
+		if (saturday)
+			dia = dia + "Sa" + ";";
+		if (sunday)
+			dia = dia + "So" + ";";
+
 		return dia;
 	}
 
 	/**
 	 * Returns the calculated hash code based on the patient id.<br>
 	 * Two patients have the same hash code if the id is the same.
+	 * 
 	 * @return the calculated hash code
 	 */
 	@Override
-	public int hashCode()
-	{
-		return 31  + id;
-	}   
+	public int hashCode() {
+		return 31 + id;
+	}
 
 	/**
 	 * Returns whether the objects are equal or not.<br>
 	 * Two patients are equal if, and only if, the patient id is the same.
+	 * 
 	 * @return true if the id is the same otherwise false.
 	 */
 	@Override
-	public boolean equals(Object obj)
-	{
+	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -151,485 +170,512 @@ public class DialysisPatient extends AbstractMessage
 		return true;
 	}
 
-
-	//GETTERS AND SETTERS
+	// GETTERS AND SETTERS
 	/**
 	 * Returns the internal transport number for this dialyse transport
+	 * 
 	 * @return the unique id of the transport
 	 */
-	public int getId()
-	{
+	public int getId() {
 		return id;
 	}
 
 	/**
 	 * Returns the patient informations about this transport
+	 * 
 	 * @return the patient
 	 */
-	public Patient getPatient() 
-	{
+	public Patient getPatient() {
 		return patient;
 	}
 
 	/**
 	 * Returns the responsible location for the transport.
+	 * 
 	 * @return the responsible location
 	 */
-	public Location getLocation()
-	{
+	public Location getLocation() {
 		return location;
 	}
 
-
 	/**
 	 * Returns the planned start time of the dialysis transport
+	 * 
 	 * @return the plannedStartOfTransport
 	 */
-	public long getPlannedStartOfTransport() 
-	{
+	public long getPlannedStartOfTransport() {
 		return plannedStartOfTransport;
 	}
 
 	/**
 	 * @return the plannedTimeAtPatient
 	 */
-	public long getPlannedTimeAtPatient() 
-	{
+	public long getPlannedTimeAtPatient() {
 		return plannedTimeAtPatient;
 	}
 
 	/**
 	 * @return the appointmentTimeAtDialysis
 	 */
-	public long getAppointmentTimeAtDialysis() 
-	{
+	public long getAppointmentTimeAtDialysis() {
 		return appointmentTimeAtDialysis;
 	}
 
 	/**
 	 * Returns the planed time for the back transport
+	 * 
 	 * @return the plannedStartForBackTransport
 	 */
-	public long getPlannedStartForBackTransport() 
-	{
+	public long getPlannedStartForBackTransport() {
 		return plannedStartForBackTransport;
 	}
 
 	/**
 	 * Returns the time when the dialyse is finished
-	 * @return the readyTime 
+	 * 
+	 * @return the readyTime
 	 */
-	public long getReadyTime() 
-	{
+	public long getReadyTime() {
 		return readyTime;
 	}
 
 	/**
 	 * Returns the starting street, in most cases the adress of the patient.
+	 * 
 	 * @return the fromStreet
 	 */
-	public String getFromStreet() 
-	{
+	public String getFromStreet() {
 		return fromStreet;
 	}
 
 	/**
 	 * Returns the starting city, in most cases the home town of the patient.
+	 * 
 	 * @return the fromCity
 	 */
-	public String getFromCity() 
-	{
+	public String getFromCity() {
 		return fromCity;
 	}
 
 	/**
 	 * Returns the destination streeet
+	 * 
 	 * @return the destination street
 	 */
-	public String getToStreet() 
-	{
+	public String getToStreet() {
 		return toStreet;
 	}
 
 	/**
 	 * Returns the destination city
+	 * 
 	 * @return the city
 	 */
-	public String getToCity() 
-	{
+	public String getToCity() {
 		return toCity;
 	}
 
 	/**
 	 * Returns the name of the insurance for the given patient.
+	 * 
 	 * @return the name of the insurance
 	 */
-	public String getInsurance() 
-	{
+	public String getInsurance() {
 		return insurance;
 	}
 
 	/**
-	 * Returns the transport type for the given patient.
-	 * The different types are defined in the <code>IKindOfTransport</code> inteface.
+	 * Returns the transport type for the given patient. The different types are
+	 * defined in the <code>IKindOfTransport</code> inteface.
+	 * 
 	 * @see IKindOfTransport
 	 * @return the transport type
 	 */
-	public String getKindOfTransport() 
-	{
+	public String getKindOfTransport() {
 		return kindOfTransport;
 	}
 
 	/**
 	 * Returns wheter or not this patient is staying in the hospital
+	 * 
 	 * @return the stationary
 	 */
-	public boolean isStationary() 
-	{
+	public boolean isStationary() {
 		return stationary;
 	}
 
 	/**
 	 * Returns whether or not this transport has a assistant Person.
+	 * 
 	 * @return true if the transport has a additonal assistant person.
 	 */
-	public boolean isAssistantPerson()
-	{
+	public boolean isAssistantPerson() {
 		return assistantPerson;
 	}
 
 	/**
 	 * Returns whether this transport should be sheduled for monday
+	 * 
 	 * @return true if the transport should be sheduled
 	 */
-	public boolean isMonday() 
-	{
+	public boolean isMonday() {
 		return monday;
 	}
 
 	/**
 	 * Returns whether this transport should be sheduled for monday
+	 * 
 	 * @return true if the transport should be sheduled
 	 */
-	public boolean isTuesday() 
-	{
+	public boolean isTuesday() {
 		return tuesday;
 	}
 
 	/**
 	 * Returns whether this transport should be sheduled for monday
+	 * 
 	 * @return true if the transport should be sheduled
 	 */
-	public boolean isWednesday() 
-	{
+	public boolean isWednesday() {
 		return wednesday;
 	}
 
 	/**
 	 * Returns whether this transport should be sheduled for monday
+	 * 
 	 * @return true if the transport should be sheduled
 	 */
-	public boolean isThursday() 
-	{
+	public boolean isThursday() {
 		return thursday;
 	}
 
 	/**
 	 * Returns whether this transport should be sheduled for monday
+	 * 
 	 * @return true if the transport should be sheduled
 	 */
-	public boolean isFriday() 
-	{
+	public boolean isFriday() {
 		return friday;
 	}
 
 	/**
 	 * Returns whether this transport should be sheduled for monday
+	 * 
 	 * @return true if the transport should be sheduled
 	 */
-	public boolean isSaturday() 
-	{
+	public boolean isSaturday() {
 		return saturday;
 	}
 
 	/**
 	 * Returns whether this transport should be sheduled for monday
+	 * 
 	 * @return true if the transport should be sheduled
 	 */
-	public boolean isSunday() 
-	{
+	public boolean isSunday() {
 		return sunday;
 	}
-	
+
 	/**
 	 * Returns the date when the last transport was generated for this patient.
+	 * 
 	 * @return the date of the last transport
 	 */
-	public long getLastTransportDate()
-	{
+	public long getLastTransportDate() {
 		return lastTransportDate;
 	}
-	
+
 	/**
-	 * Returns the date when the last backtransport was generated for this patient.
+	 * Returns the date when the last backtransport was generated for this
+	 * patient.
+	 * 
 	 * @return the date of the last backtransport
 	 */
-	public long getLastBackTransporDate()
-	{
+	public long getLastBackTransporDate() {
 		return lastBackTransportDate;
 	}
 
 	/**
 	 * Sets the internal unique number for the dialyse patient transport.<br>
-	 * This value is out of the database and reflects the primary key of the table.
-	 * @param id the id to set
+	 * This value is out of the database and reflects the primary key of the
+	 * table.
+	 * 
+	 * @param id
+	 *            the id to set
 	 */
-	public void setId(int id)
-	{
+	public void setId(int id) {
 		this.id = id;
 	}
 
 	/**
 	 * Sets the patient information for the dialyse transport.
-	 * @param patient the patient information
+	 * 
+	 * @param patient
+	 *            the patient information
 	 */
-	public void setPatient(Patient patient)
-	{
+	public void setPatient(Patient patient) {
 		this.patient = patient;
 	}
 
 	/**
 	 * Sets the location who is responsible for the dialyse transport.
-	 * @param location the responsible station
+	 * 
+	 * @param location
+	 *            the responsible station
 	 */
-	public void setLocation(Location location)
-	{
+	public void setLocation(Location location) {
 		this.location = location;
 	}
 
 	/**
 	 * Sets the planned start time for the dialysis transport
-	 * @param plannedStartOfTransport the plannedStartOfTransport to set
-	 * @throws IllegalArgumentException if the planned start time is null or empty
+	 * 
+	 * @param plannedStartOfTransport
+	 *            the plannedStartOfTransport to set
+	 * @throws IllegalArgumentException
+	 *             if the planned start time is null or empty
 	 */
-	public void setPlannedStartOfTransport(long plannedStartOfTransport) 
-	{
-//		if(plannedStartOfTransport < 0)
-//			throw new IllegalArgumentException("Date cannot be negative");
-		if(!MyUtils.isValidDate(plannedStartOfTransport))
+	public void setPlannedStartOfTransport(long plannedStartOfTransport) {
+		// if(plannedStartOfTransport < 0)
+		// throw new IllegalArgumentException("Date cannot be negative");
+		if (!MyUtils.isValidDate(plannedStartOfTransport))
 			throw new IllegalArgumentException("Date is out of range");
 		this.plannedStartOfTransport = plannedStartOfTransport;
 	}
 
 	/**
-	 * @param plannedTimeAtPatient the plannedTimeAtPatient to set
+	 * @param plannedTimeAtPatient
+	 *            the plannedTimeAtPatient to set
 	 */
-	public void setPlannedTimeAtPatient(long plannedTimeAtPatient) 
-	{
-//		if(plannedTimeAtPatient < 0)
-//			throw new IllegalArgumentException("Date cannot be negative");
-		if(!MyUtils.isValidDate(plannedTimeAtPatient))
+	public void setPlannedTimeAtPatient(long plannedTimeAtPatient) {
+		// if(plannedTimeAtPatient < 0)
+		// throw new IllegalArgumentException("Date cannot be negative");
+		if (!MyUtils.isValidDate(plannedTimeAtPatient))
 			throw new IllegalArgumentException("Date is out of range");
 		this.plannedTimeAtPatient = plannedTimeAtPatient;
 	}
 
 	/**
 	 * Sets the time when the patient should be picked up.
-	 * @param appointmentTimeAtDialysis the pickup time
+	 * 
+	 * @param appointmentTimeAtDialysis
+	 *            the pickup time
 	 */
-	public void setAppointmentTimeAtDialysis(long appointmentTimeAtDialysis) 
-	{
-		if(!MyUtils.isValidDate(appointmentTimeAtDialysis))
+	public void setAppointmentTimeAtDialysis(long appointmentTimeAtDialysis) {
+		if (!MyUtils.isValidDate(appointmentTimeAtDialysis))
 			throw new IllegalArgumentException("Date is out of range");
 		this.appointmentTimeAtDialysis = appointmentTimeAtDialysis;
 	}
 
 	/**
 	 * Sets the planned time when the patient should be transported back home.
-	 * @param plannedStartForBackTransport the time for the backtransport
+	 * 
+	 * @param plannedStartForBackTransport
+	 *            the time for the backtransport
 	 */
-	public void setPlannedStartForBackTransport(long plannedStartForBackTransport) 
-	{
-//		if(plannedStartForBackTransport < 0)
-//			throw new IllegalArgumentException("Date cannot be negative");
-		if(!MyUtils.isValidDate(plannedStartForBackTransport))
+	public void setPlannedStartForBackTransport(long plannedStartForBackTransport) {
+		// if(plannedStartForBackTransport < 0)
+		// throw new IllegalArgumentException("Date cannot be negative");
+		if (!MyUtils.isValidDate(plannedStartForBackTransport))
 			throw new IllegalArgumentException("Date is out of range");
 		this.plannedStartForBackTransport = plannedStartForBackTransport;
 	}
 
 	/**
 	 * Sets the time when the patient is ready.
-	 * @param readyTime the time when the patient is ready.
+	 * 
+	 * @param readyTime
+	 *            the time when the patient is ready.
 	 */
-	public void setReadyTime(long readyTime) 
-	{
-//		if(readyTime < 0)
-//			throw new IllegalArgumentException("Date cannot be negative");
-		if(!MyUtils.isValidDate(readyTime))
+	public void setReadyTime(long readyTime) {
+		// if(readyTime < 0)
+		// throw new IllegalArgumentException("Date cannot be negative");
+		if (!MyUtils.isValidDate(readyTime))
 			throw new IllegalArgumentException("Date is out of range");
 		this.readyTime = readyTime;
 	}
 
 	/**
 	 * Sets the name of the street where the patient should be picked up
-	 * @param fromStreet name of the street
+	 * 
+	 * @param fromStreet
+	 *            name of the street
 	 */
-	public void setFromStreet(String fromStreet) 
-	{
-		if(fromStreet == null || fromStreet.trim().isEmpty())
+	public void setFromStreet(String fromStreet) {
+		if (fromStreet == null || fromStreet.trim().isEmpty())
 			throw new IllegalArgumentException("The fromStreet cannot be null or empty");
 		this.fromStreet = fromStreet;
 	}
 
 	/**
 	 * Sets the name of the city where the patient should be picked up
-	 * @param fromCity the name of the street
+	 * 
+	 * @param fromCity
+	 *            the name of the street
 	 */
-	public void setFromCity(String fromCity) 
-	{
-		if(fromCity == null)
+	public void setFromCity(String fromCity) {
+		if (fromCity == null)
 			throw new IllegalArgumentException("fromCity cannot be null");
 		this.fromCity = fromCity;
 	}
 
 	/**
 	 * Sets the name of the street where tha patient should be carried to.
-	 * @param the name of the street
+	 * 
+	 * @param the
+	 *            name of the street
 	 */
-	public void setToStreet(String toStreet) 
-	{
+	public void setToStreet(String toStreet) {
 		this.toStreet = toStreet;
 	}
 
 	/**
 	 * Sets the name of the city where the patient should be carried to.
-	 * @param toCity the name of the city
+	 * 
+	 * @param toCity
+	 *            the name of the city
 	 */
-	public void setToCity(String toCity) 
-	{
+	public void setToCity(String toCity) {
 		this.toCity = toCity;
 	}
 
 	/**
 	 * Sets the insurance of the given patient.
-	 * @param insurance the name of the insurance
+	 * 
+	 * @param insurance
+	 *            the name of the insurance
 	 */
-	public void setInsurance(String insurance) 
-	{
-		if(insurance == null)
+	public void setInsurance(String insurance) {
+		if (insurance == null)
 			throw new IllegalArgumentException("insurance cannot be null");
 		this.insurance = insurance;
 	}
 
 	/**
 	 * Sets the kind of the transport for the given patient
-	 * @param kindOfTransport the kind of the transport type.
+	 * 
+	 * @param kindOfTransport
+	 *            the kind of the transport type.
 	 */
-	public void setKindOfTransport(String kindOfTransport) 
-	{
-		if(kindOfTransport == null)
+	public void setKindOfTransport(String kindOfTransport) {
+		if (kindOfTransport == null)
 			throw new IllegalArgumentException("The kind of transport cannot be null");
 		this.kindOfTransport = kindOfTransport;
 	}
 
 	/**
-	 * Sets the flag to indicate whether the patient will stay longer at the hospital
-	 * @param stationary the stationary to set
+	 * Sets the flag to indicate whether the patient will stay longer at the
+	 * hospital
+	 * 
+	 * @param stationary
+	 *            the stationary to set
 	 */
-	public void setStationary(boolean stationary) 
-	{
+	public void setStationary(boolean stationary) {
 		this.stationary = stationary;
 	}
 
 	/**
 	 * Sets the flag to indicate that this transport has a assistant person
-	 * @param assistanPerson true if the transport has one
+	 * 
+	 * @param assistanPerson
+	 *            true if the transport has one
 	 */
-	public void setAssistantPerson(boolean assistantPerson)
-	{
+	public void setAssistantPerson(boolean assistantPerson) {
 		this.assistantPerson = assistantPerson;
 	}
 
 	/**
 	 * Shedules the transport of the dialyse patient for monday
-	 * @param monday true if the transport should be sheduled for the day
+	 * 
+	 * @param monday
+	 *            true if the transport should be sheduled for the day
 	 */
-	public void setMonday(boolean monday) 
-	{
+	public void setMonday(boolean monday) {
 		this.monday = monday;
 	}
 
 	/**
 	 * Shedules the transport of the dialyse patient for Tuesday
-	 * @param monday true if the transport should be sheduled for the day
+	 * 
+	 * @param monday
+	 *            true if the transport should be sheduled for the day
 	 */
-	public void setTuesday(boolean tuesday) 
-	{
+	public void setTuesday(boolean tuesday) {
 		this.tuesday = tuesday;
 	}
 
 	/**
 	 * Shedules the transport of the dialyse patient for Wednesday
-	 * @param monday true if the transport should be sheduled for the day
+	 * 
+	 * @param monday
+	 *            true if the transport should be sheduled for the day
 	 */
-	public void setWednesday(boolean wednesday) 
-	{
+	public void setWednesday(boolean wednesday) {
 		this.wednesday = wednesday;
 	}
 
 	/**
 	 * Shedules the transport of the dialyse patient for Thursday
-	 * @param monday true if the transport should be sheduled for the day
+	 * 
+	 * @param monday
+	 *            true if the transport should be sheduled for the day
 	 */
-	public void setThursday(boolean thursday) 
-	{
+	public void setThursday(boolean thursday) {
 		this.thursday = thursday;
 	}
 
 	/**
 	 * Shedules the transport of the dialyse patient for Friday
-	 * @param monday true if the transport should be sheduled for the day
+	 * 
+	 * @param monday
+	 *            true if the transport should be sheduled for the day
 	 */
-	public void setFriday(boolean friday) 
-	{
+	public void setFriday(boolean friday) {
 		this.friday = friday;
 	}
 
 	/**
 	 * Shedules the transport of the dialyse patient for Saturday
-	 * @param monday true if the transport should be sheduled for the day
+	 * 
+	 * @param monday
+	 *            true if the transport should be sheduled for the day
 	 */
-	public void setSaturday(boolean saturday) 
-	{
+	public void setSaturday(boolean saturday) {
 		this.saturday = saturday;
 	}
 
 	/**
 	 * Shedules the transport of the dialyse patient for Sunday
-	 * @param monday true if the transport should be sheduled for the day
+	 * 
+	 * @param monday
+	 *            true if the transport should be sheduled for the day
 	 */
-	public void setSunday(boolean sunday) 
-	{
+	public void setSunday(boolean sunday) {
 		this.sunday = sunday;
 	}
-	
+
 	/**
-	 * Sets the date when the last transport was generated for this dialyse patient.<br>
+	 * Sets the date when the last transport was generated for this dialyse
+	 * patient.<br>
 	 * This date is important so that only one transport per day is generated.
-	 * @param lastTransportDate the date of the last transport
+	 * 
+	 * @param lastTransportDate
+	 *            the date of the last transport
 	 */
-	public void setLastTransportDate(long lastTransportDate)
-	{
+	public void setLastTransportDate(long lastTransportDate) {
 		this.lastTransportDate = lastTransportDate;
 	}
-	
+
 	/**
-	 * Sets the date when the last backtransport was generated for this dialyse patient.<br>
-	 * This date is important so that only one backtransport per day is generated.
-	 * @param lastBackTransportDate the date of the last backtransport
+	 * Sets the date when the last backtransport was generated for this dialyse
+	 * patient.<br>
+	 * This date is important so that only one backtransport per day is
+	 * generated.
+	 * 
+	 * @param lastBackTransportDate
+	 *            the date of the last backtransport
 	 */
-	public void setLastBackTransportDate(long lastBackTransportDate)
-	{
+	public void setLastBackTransportDate(long lastBackTransportDate) {
 		this.lastBackTransportDate = lastBackTransportDate;
 	}
 }
