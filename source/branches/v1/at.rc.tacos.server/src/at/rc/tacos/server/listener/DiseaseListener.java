@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Internettechnik, FH JOANNEUM
+ * http://www.fh-joanneum.at/itm
+ * 
+ * 	Licenced under the GNU GENERAL PUBLIC LICENSE Version 2;
+ * 	You may obtain a copy of the License at
+ * 	http://www.gnu.org/licenses/gpl-2.0.txt
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *******************************************************************************/
 package at.rc.tacos.server.listener;
 
 import java.sql.SQLException;
@@ -15,55 +28,52 @@ import at.rc.tacos.model.QueryFilter;
 
 /**
  * Listens to request form clients to manage the disease
+ * 
  * @author Michael
  */
-public class DiseaseListener extends ServerListenerAdapter 
-{
+public class DiseaseListener extends ServerListenerAdapter {
+
 	private DiseaseDAO diseaseDAO = DaoFactory.SQL.createDiseaseDAO();
-	//the logger
+	// the logger
 	private static Logger logger = Logger.getLogger(DiseaseListener.class);
 
 	@Override
-	public AbstractMessage handleAddRequest(AbstractMessage addObject, String username) throws DAOException, SQLException 
-	{
-		Disease addDisease = (Disease)addObject;
+	public AbstractMessage handleAddRequest(AbstractMessage addObject, String username) throws DAOException, SQLException {
+		Disease addDisease = (Disease) addObject;
 		int id = diseaseDAO.addDisease(addDisease);
-		if(id == -1)
-			throw new DAOException("DiseaseListener","Failed to add the disease "+addDisease);
-		//set the generated id
+		if (id == -1)
+			throw new DAOException("DiseaseListener", "Failed to add the disease " + addDisease);
+		// set the generated id
 		addDisease.setId(id);
-		logger.info("added by:" +username +";" +addDisease);
+		logger.info("added by:" + username + ";" + addDisease);
 		return addDisease;
 	}
 
 	@Override
-	public List<AbstractMessage> handleListingRequest(QueryFilter queryFilter) throws DAOException, SQLException 
-	{
+	public List<AbstractMessage> handleListingRequest(QueryFilter queryFilter) throws DAOException, SQLException {
 		ArrayList<AbstractMessage> list = new ArrayList<AbstractMessage>();
 		List<Disease> diseaseList = diseaseDAO.getDiseaseList();
-		//assert valid
-		if(diseaseList == null)
-			throw new DAOException("DiseaseListener","Failed to list the diseases");
+		// assert valid
+		if (diseaseList == null)
+			throw new DAOException("DiseaseListener", "Failed to list the diseases");
 		list.addAll(diseaseList);
 		return list;
 	}
 
 	@Override
-	public AbstractMessage handleRemoveRequest(AbstractMessage removeObject) throws DAOException, SQLException 
-	{
-		Disease removeDisease = (Disease)removeObject;
-		if(!diseaseDAO.removeDisease(removeDisease.getId()))
-			throw new DAOException("DiseaseListener","Failed to remove the disease: "+removeDisease);
+	public AbstractMessage handleRemoveRequest(AbstractMessage removeObject) throws DAOException, SQLException {
+		Disease removeDisease = (Disease) removeObject;
+		if (!diseaseDAO.removeDisease(removeDisease.getId()))
+			throw new DAOException("DiseaseListener", "Failed to remove the disease: " + removeDisease);
 		return removeDisease;
 	}
 
 	@Override
-	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject, String username) throws DAOException, SQLException 
-	{
-		Disease updateDisease = (Disease)updateObject;
-		if(!diseaseDAO.updateDisease(updateDisease))
-			throw new DAOException("DiseaseListener","Failed to update the disease: "+updateDisease);
-		logger.info("updated by: " +username +";" +updateDisease);
+	public AbstractMessage handleUpdateRequest(AbstractMessage updateObject, String username) throws DAOException, SQLException {
+		Disease updateDisease = (Disease) updateObject;
+		if (!diseaseDAO.updateDisease(updateDisease))
+			throw new DAOException("DiseaseListener", "Failed to update the disease: " + updateDisease);
+		logger.info("updated by: " + username + ";" + updateDisease);
 		return updateDisease;
 	}
 }
