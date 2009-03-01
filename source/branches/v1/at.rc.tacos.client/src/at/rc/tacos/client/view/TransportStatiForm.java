@@ -1,7 +1,21 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Internettechnik, FH JOANNEUM
+ * http://www.fh-joanneum.at/itm
+ * 
+ * 	Licenced under the GNU GENERAL PUBLIC LICENSE Version 2;
+ * 	You may obtain a copy of the License at
+ * 	http://www.gnu.org/licenses/gpl-2.0.txt
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *******************************************************************************/
 package at.rc.tacos.client.view;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
@@ -16,8 +30,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 
-import com.swtdesigner.SWTResourceManager;
-
 import at.rc.tacos.client.modelManager.LockManager;
 import at.rc.tacos.client.util.TimeValidator;
 import at.rc.tacos.client.util.TransformTimeToLong;
@@ -26,8 +38,10 @@ import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.Transport;
 
-public class TransportStatiForm implements ITransportStatus
-{
+import com.swtdesigner.SWTResourceManager;
+
+public class TransportStatiForm implements ITransportStatus {
+
 	protected Shell shell;
 	Transport transport = new Transport();
 	private Text aufgenommen;
@@ -36,30 +50,28 @@ public class TransportStatiForm implements ITransportStatus
 	private Text textS2;
 	private Text textS3;
 	private Text textS4;
-	
+
 	private Listener exitListener;
-	
+
 	/**
-     * Open the window
-     */
-    public void open() 
-    {
-    	//get the active shell
+	 * Open the window
+	 */
+	public void open() {
+		// get the active shell
 		Shell parent = PlatformUI.getWorkbench().getDisplay().getActiveShell();
-		
-    	//calculate and draw centered
+
+		// calculate and draw centered
 		Rectangle workbenchSize = parent.getBounds();
 		Rectangle mySize = shell.getBounds();
 		int locationX, locationY;
-		locationX = (workbenchSize.width - mySize.width)/2+workbenchSize.x;
-		locationY = (workbenchSize.height - mySize.height)/2+workbenchSize.y;
-		shell.setLocation(locationX,locationY);
-		
-        shell.open();
-    }
-	
-	public TransportStatiForm(Transport transport)
-	{
+		locationX = (workbenchSize.width - mySize.width) / 2 + workbenchSize.x;
+		locationY = (workbenchSize.height - mySize.height) / 2 + workbenchSize.y;
+		shell.setLocation(locationX, locationY);
+
+		shell.open();
+	}
+
+	public TransportStatiForm(Transport transport) {
 		this.createContents();
 		this.transport = transport;
 		this.setContent();
@@ -68,29 +80,28 @@ public class TransportStatiForm implements ITransportStatus
 	/**
 	 * Create contents of the window
 	 */
-	protected void createContents() 
-	{
+	protected void createContents() {
 		shell = new Shell();
 		shell.addShellListener(new ShellAdapter() {
-			public void shellClosed(final ShellEvent e) 
-			{
+
+			public void shellClosed(final ShellEvent e) {
 				LockManager.removeLock(Transport.ID, transport.getTransportId());
 			}
 		});
 		shell.setSize(288, 334);
 		shell.setText("Transportstati bearbeiten");
-		
-		//listener
+
+		// listener
 		exitListener = new Listener() {
-			public void handleEvent(Event e) 
-			{
+
+			public void handleEvent(Event e) {
 				LockManager.removeLock(Transport.ID, transport.getTransportId());
 				shell.dispose();
 			}
 		};
 
 		shell.setImage(ImageFactory.getInstance().getRegisteredImage("application.logo"));
-		
+
 		aufgenommen = new Text(shell, SWT.BORDER);
 		aufgenommen.setEditable(false);
 		aufgenommen.setEnabled(false);
@@ -161,135 +172,123 @@ public class TransportStatiForm implements ITransportStatus
 		final Button okButton = new Button(shell, SWT.NONE);
 		okButton.setText("OK");
 		okButton.setBounds(86, 267, 89, 23);
-		
-		okButton.addListener(SWT.Selection, new Listener()
-		{
+
+		okButton.addListener(SWT.Selection, new Listener() {
+
 			String s1;
 			String s2;
 			String s3;
 			String s4;
-			
+
 			long s1Long;
 			long s2Long;
 			long s3Long;
 			long s4Long;
-			
+
 			String formatOfTime;
-			String formatOfTransportStati = "";	
+			String formatOfTransportStati = "";
 
 			@Override
-			public void handleEvent(Event event) 
-			{
+			public void handleEvent(Event event) {
 				formatOfTime = "";
-				
-				//get content of all fields
+
+				// get content of all fields
 				this.getContentOfAllFields();
-				
-				//validating
-				if(!this.checkFormatOfTransportStatusTimeFields().trim().equalsIgnoreCase(""))
-				{
-					this.displayMessageBox(event,formatOfTime, "Format von Statuszeiten falsch: ");	
+
+				// validating
+				if (!this.checkFormatOfTransportStatusTimeFields().trim().equalsIgnoreCase("")) {
+					this.displayMessageBox(event, formatOfTime, "Format von Statuszeiten falsch: ");
 					return;
 				}
-				
+
 				this.transformTransportStatiToLong();
-				
-            	if(!s1.equalsIgnoreCase(""))
-            		transport.addStatus(TRANSPORT_STATUS_ON_THE_WAY, s1Long);
-            	else
-            		transport.removeStatus(TRANSPORT_STATUS_ON_THE_WAY);
-            	if(!s2.equalsIgnoreCase(""))
-            		transport.addStatus(TRANSPORT_STATUS_AT_PATIENT, s2Long);
-            	else
-            		transport.removeStatus(TRANSPORT_STATUS_AT_PATIENT);
-            	if(!s3.equalsIgnoreCase(""))
-            		transport.addStatus(TRANSPORT_STATUS_START_WITH_PATIENT,s3Long);
-            	else
-            		transport.removeStatus(TRANSPORT_STATUS_START_WITH_PATIENT);
-            	if(!s4.equalsIgnoreCase(""))
-            		transport.addStatus(TRANSPORT_STATUS_AT_DESTINATION, s4Long);
-            	else
-            		transport.removeStatus(TRANSPORT_STATUS_AT_DESTINATION);
-        
-            	NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
-            	    
-            	LockManager.removeLock(Transport.ID, transport.getTransportId());
-                shell.close();
+
+				if (!s1.equalsIgnoreCase(""))
+					transport.addStatus(TRANSPORT_STATUS_ON_THE_WAY, s1Long);
+				else
+					transport.removeStatus(TRANSPORT_STATUS_ON_THE_WAY);
+				if (!s2.equalsIgnoreCase(""))
+					transport.addStatus(TRANSPORT_STATUS_AT_PATIENT, s2Long);
+				else
+					transport.removeStatus(TRANSPORT_STATUS_AT_PATIENT);
+				if (!s3.equalsIgnoreCase(""))
+					transport.addStatus(TRANSPORT_STATUS_START_WITH_PATIENT, s3Long);
+				else
+					transport.removeStatus(TRANSPORT_STATUS_START_WITH_PATIENT);
+				if (!s4.equalsIgnoreCase(""))
+					transport.addStatus(TRANSPORT_STATUS_AT_DESTINATION, s4Long);
+				else
+					transport.removeStatus(TRANSPORT_STATUS_AT_DESTINATION);
+
+				NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
+
+				LockManager.removeLock(Transport.ID, transport.getTransportId());
+				shell.close();
 			}
-			
-			private void getContentOfAllFields()
-			{
+
+			private void getContentOfAllFields() {
 				s1 = textS1.getText();
 				s2 = textS2.getText();
 				s3 = textS3.getText();
 				s4 = textS4.getText();
 			}
-			
-			//checks the time against a valid format, returns a String with the not valid times and the ":" if needed (1234 --> 12:34)
-			private String checkFormatOfTransportStatusTimeFields()
-			{
+
+			// checks the time against a valid format, returns a String with the
+			// not valid times and the ":" if needed (1234 --> 12:34)
+			private String checkFormatOfTransportStatusTimeFields() {
 				TimeValidator tv = new TimeValidator();
-				
-				if(s1 != null)
-				{
-					tv.checkTime(s1,"S1");
+
+				if (s1 != null) {
+					tv.checkTime(s1, "S1");
 					formatOfTransportStati = tv.getCheckStatus();
 					s1 = tv.getTime();
 				}
-				
-				if(s2 != null)
-				{
-					tv.checkTime(s2,"S2");
-					formatOfTransportStati = formatOfTransportStati + " " +tv.getCheckStatus();
+
+				if (s2 != null) {
+					tv.checkTime(s2, "S2");
+					formatOfTransportStati = formatOfTransportStati + " " + tv.getCheckStatus();
 					s2 = tv.getTime();
 				}
-				
-				if(s3 != null)
-				{
-					tv.checkTime(s3,"S3");
-					formatOfTransportStati = formatOfTransportStati + " " +tv.getCheckStatus();
+
+				if (s3 != null) {
+					tv.checkTime(s3, "S3");
+					formatOfTransportStati = formatOfTransportStati + " " + tv.getCheckStatus();
 					s3 = tv.getTime();
 				}
-				
-				if(s4 != null)
-				{
-					tv.checkTime(s4,"S4");
-					formatOfTransportStati = formatOfTransportStati + " " +tv.getCheckStatus();
+
+				if (s4 != null) {
+					tv.checkTime(s4, "S4");
+					formatOfTransportStati = formatOfTransportStati + " " + tv.getCheckStatus();
 					s4 = tv.getTime();
-				}	
+				}
 				return formatOfTransportStati;
 			}
-			
-			private void transformTransportStatiToLong()
-			{
+
+			private void transformTransportStatiToLong() {
 				TransformTimeToLong tttl = new TransformTimeToLong();
-				
-				if(s1 != null)
-				{
+
+				if (s1 != null) {
 					s1Long = tttl.transform(s1);
 				}
-				if(s2 != null)
-				{
+				if (s2 != null) {
 					s2Long = tttl.transform(s2);
 				}
-				if(s3 != null)
-				{
+				if (s3 != null) {
 					s3Long = tttl.transform(s3);
 				}
-				if(s4 != null)
-				{
+				if (s4 != null) {
 					s4Long = tttl.transform(s4);
 				}
 			}
-			
-			private void displayMessageBox(Event event, String fields, String message)
-			{
-				 MessageBox mb = new MessageBox(shell, 0);
-			     mb.setText(message);
-			     mb.setMessage(fields);
-			     mb.open();
-			     if(event.type == SWT.Close) event.doit = false;
-			}	
+
+			private void displayMessageBox(Event event, String fields, String message) {
+				MessageBox mb = new MessageBox(shell, 0);
+				mb.setText(message);
+				mb.setMessage(fields);
+				mb.open();
+				if (event.type == SWT.Close)
+					event.doit = false;
+			}
 		});
 
 		final Composite composite = new Composite(shell, SWT.NONE);
@@ -308,46 +307,40 @@ public class TransportStatiForm implements ITransportStatus
 		transportstatiBearbeitenLabel.setBounds(10, 36, 140, 13);
 
 		final Label label = new Label(composite, SWT.NONE);
-		label.setBounds(207, 0,73, 64);
+		label.setBounds(207, 0, 73, 64);
 		label.setBackgroundImage(ImageFactory.getInstance().getRegisteredImage("application.logo"));
 	}
-	
-	public void setContent()
-	{
-        //formatter for the date and time
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-        Calendar cal = Calendar.getInstance();
-		
-		//receive time
-        cal.setTimeInMillis(transport.getCreationTime());
+
+	public void setContent() {
+		// formatter for the date and time
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+		Calendar cal = Calendar.getInstance();
+
+		// receive time
+		cal.setTimeInMillis(transport.getCreationTime());
 		aufgenommen.setText(sdf.format(cal.getTime()));
-		
-    	if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED))
-		{
+
+		if (transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED)) {
 			cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED));
 			auftragErteilt.setText(sdf.format(cal.getTime()));
 		}
-		//Status 0 
-		if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY))
-		{
+		// Status 0
+		if (transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY)) {
 			cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY));
 			textS1.setText(sdf.format(cal.getTime()));
 		}
-		//Status 2
-		if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_AT_PATIENT))
-		{
+		// Status 2
+		if (transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_AT_PATIENT)) {
 			cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_AT_PATIENT));
 			textS2.setText(sdf.format(cal.getTime()));
-		}       
-		//Status 3
-		if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT))
-		{
+		}
+		// Status 3
+		if (transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT)) {
 			cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT));
 			textS3.setText(sdf.format(cal.getTime()));
 		}
-		//Status 4 
-		if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION))
-		{
+		// Status 4
+		if (transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION)) {
 			cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION));
 			textS4.setText(sdf.format(cal.getTime()));
 		}

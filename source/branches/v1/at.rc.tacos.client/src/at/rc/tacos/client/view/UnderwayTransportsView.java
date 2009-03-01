@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Internettechnik, FH JOANNEUM
+ * http://www.fh-joanneum.at/itm
+ * 
+ * 	Licenced under the GNU GENERAL PUBLIC LICENSE Version 2;
+ * 	You may obtain a copy of the License at
+ * 	http://www.gnu.org/licenses/gpl-2.0.txt
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *******************************************************************************/
 package at.rc.tacos.client.view;
 
 import java.beans.PropertyChangeEvent;
@@ -27,6 +40,7 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.forms.widgets.Form;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.part.ViewPart;
+
 import at.rc.tacos.client.controller.CancelTransportAction;
 import at.rc.tacos.client.controller.CopyTransportAction;
 import at.rc.tacos.client.controller.CopyTransportDetailsIntoClipboardAction;
@@ -49,24 +63,24 @@ import at.rc.tacos.client.providers.UnderwayTransportsViewContentProvider;
 import at.rc.tacos.client.providers.UnderwayTransportsViewLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.view.sorterAndTooltip.TransportSorter;
-//import at.rc.tacos.client.view.sorterAndTooltip.UnderwayTransportsTooltip;
 import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.model.Transport;
 
 /**
  * Main view, provides an overview about the transports
+ * 
  * @author b.thek
  */
-public class UnderwayTransportsView extends ViewPart implements PropertyChangeListener, ITransportStatus, IProgramStatus
-{
+public class UnderwayTransportsView extends ViewPart implements PropertyChangeListener, ITransportStatus, IProgramStatus {
+
 	public static final String ID = "at.rc.tacos.client.view.disposition_view";
-	
+
 	private FormToolkit toolkit;
 	private Form formDisp;
 	private TableViewer viewer;
-	
-	//the actions for the context menu
+
+	// the actions for the context menu
 	private SetTransportStatusAction setTransportStatusS1Action;
 	private SetTransportStatusAction setTransportStatusS2Action;
 	private SetTransportStatusAction setTransportStatusS3Action;
@@ -92,38 +106,35 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 	private SetAlarmingAction setAlarmingActionPO;
 	private SetAlarmingAction setAlarmingActionBR;
 	private SetAlarmingAction setAlarmingActionKIT;
-	
-	//the lock manager
+
+	// the lock manager
 	private LockManager lockManager = ModelFactory.getInstance().getLockManager();
 
 	/**
 	 * Defaul class constructor
 	 */
-	public UnderwayTransportsView()
-	{
-		//add listener to model to keep on track
+	public UnderwayTransportsView() {
+		// add listener to model to keep on track
 		ModelFactory.getInstance().getTransportManager().addPropertyChangeListener(this);
 		ModelFactory.getInstance().getLockManager().addPropertyChangeListener(this);
 	}
-	
+
 	/**
 	 * Cleanup the view
 	 */
 	@Override
-	public void dispose() 
-	{
+	public void dispose() {
 		ModelFactory.getInstance().getTransportManager().removePropertyChangeListener(this);
 		ModelFactory.getInstance().getLockManager().removePropertyChangeListener(this);
 	}
-	
+
 	/**
-	 * Call back method to create the control and initialize them
-	 * Create contents of the window
+	 * Call back method to create the control and initialize them Create
+	 * contents of the window
 	 */
 	@Override
-	public void createPartControl(final Composite parent) 
-	{
-		//Create the scrolled parent component
+	public void createPartControl(final Composite parent) {
+		// Create the scrolled parent component
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
 		formDisp = toolkit.createForm(parent);
 		formDisp.setText("Disponierte Transporte");
@@ -131,46 +142,45 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		formDisp.getBody().setLayout(new FillLayout());
 
 		final Composite composite = formDisp.getBody();
-		
+
 		SashForm sashForm = new SashForm(composite, SWT.VERTICAL);
-		
-		viewer = new TableViewer(sashForm, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
+
+		viewer = new TableViewer(sashForm, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
 		viewer.setContentProvider(new UnderwayTransportsViewContentProvider());
 		viewer.setLabelProvider(new UnderwayTransportsViewLabelProvider());
 		viewer.setInput(ModelFactory.getInstance().getTransportManager().toArray());
 		viewer.getTable().setLinesVisible(true);
-		
-		//integrate the outstandings transports view
+
+		// integrate the outstandings transports view
 		OutstandingTransportsView outstandingView = new OutstandingTransportsView();
 		outstandingView.createPartControl(sashForm);
-		
+
 		viewer.refresh();
-		
-		viewer.getTable().addMouseListener(new MouseAdapter() 
-		{
-			public void mouseDown(MouseEvent e) 
-			{
-				if( viewer.getTable().getItem(new Point(e.x,e.y))==null ) 
-				{
+
+		viewer.getTable().addMouseListener(new MouseAdapter() {
+
+			public void mouseDown(MouseEvent e) {
+				if (viewer.getTable().getItem(new Point(e.x, e.y)) == null) {
 					viewer.setSelection(new StructuredSelection());
 				}
 			}
 		});
-		//set a default sorter
-		viewer.setSorter(new TransportSorter(TransportSorter.PRIORITY_SORTER,SWT.UP));
-		
+		// set a default sorter
+		viewer.setSorter(new TransportSorter(TransportSorter.PRIORITY_SORTER, SWT.UP));
+
 		final Table tableDisp = viewer.getTable();
 		tableDisp.setLinesVisible(true);
 		tableDisp.setHeaderVisible(true);
-			
+
 		final TableColumn lockColumn = new TableColumn(tableDisp, SWT.NONE);
 		lockColumn.setToolTipText("Eintrag wird gerade bearbeitet");
 		lockColumn.setWidth(24);
 		lockColumn.setText("L");
-	
-		//create the tab items for the disposition view
+
+		// create the tab items for the disposition view
 		final TableColumn prioritaetDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
-		prioritaetDisponierteTransporte.setToolTipText("1 (NEF), 2 (BD1), 3 (Transport), 4 (Rücktransport), 5 (Heimtransport), 6 (Sonstiges), 7 (NEF extern)");
+		prioritaetDisponierteTransporte
+				.setToolTipText("1 (NEF), 2 (BD1), 3 (Transport), 4 (Rücktransport), 5 (Heimtransport), 6 (Sonstiges), 7 (NEF extern)");
 		prioritaetDisponierteTransporte.setWidth(26);
 		prioritaetDisponierteTransporte.setText("Pr");
 
@@ -234,77 +244,74 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		taDisponierteTransporte.setToolTipText("Transportart");
 		taDisponierteTransporte.setWidth(22);
 		taDisponierteTransporte.setText("T");
-		
+
 		final TableColumn erkrankungVerletzungDisponierteTransporte = new TableColumn(tableDisp, SWT.NONE);
 		erkrankungVerletzungDisponierteTransporte.setWidth(200);
 		erkrankungVerletzungDisponierteTransporte.setText("Erkrankung/Verletzung");
-		
+
 		final TableColumn anmerkungUnderwayTransporte = new TableColumn(tableDisp, SWT.NONE);
 		anmerkungUnderwayTransporte.setWidth(312);
 		anmerkungUnderwayTransporte.setText("Anmerkung");
-		
-		/** make columns sort able*/
-		Listener sortListener = new Listener() 
-		{
-			public void handleEvent(Event e) 
-			{
+
+		/** make columns sort able */
+		Listener sortListener = new Listener() {
+
+			public void handleEvent(Event e) {
 				// determine new sort column and direction
 				TableColumn sortColumn = viewer.getTable().getSortColumn();
 				TableColumn currentColumn = (TableColumn) e.widget;
 				int dir = viewer.getTable().getSortDirection();
-				//revert the sort order if the column is the same
-				if (sortColumn == currentColumn) 
-				{
-					if(dir == SWT.UP)
+				// revert the sort order if the column is the same
+				if (sortColumn == currentColumn) {
+					if (dir == SWT.UP)
 						dir = SWT.DOWN;
 					else
 						dir = SWT.UP;
-				} 
-				else 
-				{
+				}
+				else {
 					viewer.getTable().setSortColumn(currentColumn);
 					dir = SWT.UP;
 				}
 				// sort the data based on column and direction
-				String sortIdentifier = null; 
-				if (currentColumn == prioritaetDisponierteTransporte) 
+				String sortIdentifier = null;
+				if (currentColumn == prioritaetDisponierteTransporte)
 					sortIdentifier = TransportSorter.PRIORITY_SORTER;
-				if (currentColumn == transportNummerDisponierteTransporte) 
+				if (currentColumn == transportNummerDisponierteTransporte)
 					sortIdentifier = TransportSorter.TNR_SORTER;
-				if (currentColumn == fzgDisponierteTransporte) 
+				if (currentColumn == fzgDisponierteTransporte)
 					sortIdentifier = TransportSorter.VEHICLE_SORTER;
 				if (currentColumn == terminDisponierteTransporte)
 					sortIdentifier = TransportSorter.TERM_SORTER;
 				if (currentColumn == transportVonDisponierteTransporte)
 					sortIdentifier = TransportSorter.TRANSPORT_FROM_SORTER;
-				if(currentColumn == patientDisponierteTransporte)
+				if (currentColumn == patientDisponierteTransporte)
 					sortIdentifier = TransportSorter.PATIENT_SORTER;
-				if(currentColumn == transportNachDisponierteTransporte)
+				if (currentColumn == transportNachDisponierteTransporte)
 					sortIdentifier = TransportSorter.TRANSPORT_TO_SORTER;
-				if(currentColumn == taDisponierteTransporte)
+				if (currentColumn == taDisponierteTransporte)
 					sortIdentifier = TransportSorter.TA_SORTER;
-				if(currentColumn == aeDisponierteTransporte)
+				if (currentColumn == aeDisponierteTransporte)
 					sortIdentifier = TransportSorter.AE_SORTER;
-				if(currentColumn == s1DisponierteTransporte)
+				if (currentColumn == s1DisponierteTransporte)
 					sortIdentifier = TransportSorter.S1_SORTER;
-				if(currentColumn == s2DisponierteTransporte)
+				if (currentColumn == s2DisponierteTransporte)
 					sortIdentifier = TransportSorter.S2_SORTER;
-				if(currentColumn == s3DisponierteTransporte)
+				if (currentColumn == s3DisponierteTransporte)
 					sortIdentifier = TransportSorter.S3_SORTER;
-				if(currentColumn == s4DisponierteTransporte)
+				if (currentColumn == s4DisponierteTransporte)
 					sortIdentifier = TransportSorter.S4_SORTER;
-				if(currentColumn == erkrankungVerletzungDisponierteTransporte)
+				if (currentColumn == erkrankungVerletzungDisponierteTransporte)
 					sortIdentifier = TransportSorter.KIND_OF_ILLNESS_SORTER;
-				if(currentColumn == anmerkungUnderwayTransporte)
+				if (currentColumn == anmerkungUnderwayTransporte)
 					sortIdentifier = TransportSorter.NOTES_SORTER;
-				
-				//apply the filter
+
+				// apply the filter
 				viewer.getTable().setSortDirection(dir);
-				viewer.setSorter(new TransportSorter(sortIdentifier,dir));
+				viewer.setSorter(new TransportSorter(sortIdentifier, dir));
 			}
 		};
-		
-		//attach the listener
+
+		// attach the listener
 		prioritaetDisponierteTransporte.addListener(SWT.Selection, sortListener);
 		transportNummerDisponierteTransporte.addListener(SWT.Selection, sortListener);
 		fzgDisponierteTransporte.addListener(SWT.Selection, sortListener);
@@ -320,86 +327,81 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		s4DisponierteTransporte.addListener(SWT.Selection, sortListener);
 		erkrankungVerletzungDisponierteTransporte.addListener(SWT.Selection, sortListener);
 		anmerkungUnderwayTransporte.addListener(SWT.Selection, sortListener);
-		
-		//create the actions
+
+		// create the actions
 		makeActions();
 		hookContextMenu();
-		
+
 		viewer.addFilter(new TransportStateViewFilter(PROGRAM_STATUS_UNDERWAY));
-		
+
 		viewer.refresh();
 	}
-	
-	
+
 	/**
 	 * Creates the needed actions
 	 */
-	private void makeActions()
-	{
-		setTransportStatusS1Action = new SetTransportStatusAction(this.viewer,TRANSPORT_STATUS_ON_THE_WAY, "S1 Transportbeginn");
-		setTransportStatusS2Action = new SetTransportStatusAction(this.viewer,TRANSPORT_STATUS_AT_PATIENT, "S2 Bei Patient");
-		setTransportStatusS3Action = new SetTransportStatusAction(this.viewer,TRANSPORT_STATUS_START_WITH_PATIENT, "S3 Abfahrt mit Patient");
-		setTransportStatusS4Action = new SetTransportStatusAction(this.viewer,TRANSPORT_STATUS_AT_DESTINATION, "S4 Ankunft am Ziel");
-		setTransportStatusS5Action = new SetTransportStatusAction(this.viewer,TRANSPORT_STATUS_DESTINATION_FREE, "S5 Ziel frei");
+	private void makeActions() {
+		setTransportStatusS1Action = new SetTransportStatusAction(this.viewer, TRANSPORT_STATUS_ON_THE_WAY, "S1 Transportbeginn");
+		setTransportStatusS2Action = new SetTransportStatusAction(this.viewer, TRANSPORT_STATUS_AT_PATIENT, "S2 Bei Patient");
+		setTransportStatusS3Action = new SetTransportStatusAction(this.viewer, TRANSPORT_STATUS_START_WITH_PATIENT, "S3 Abfahrt mit Patient");
+		setTransportStatusS4Action = new SetTransportStatusAction(this.viewer, TRANSPORT_STATUS_AT_DESTINATION, "S4 Ankunft am Ziel");
+		setTransportStatusS5Action = new SetTransportStatusAction(this.viewer, TRANSPORT_STATUS_DESTINATION_FREE, "S5 Ziel frei");
 		editTransportStatusAction = new EditTransportStatusAction(this.viewer);
-		
+
 		setAccompanyingPersonAction = new SetAccompanyingPersonAction(this.viewer);
 		setBD1Action = new SetBD1Action(this.viewer);
 		setBD2Action = new SetBD2Action(this.viewer);
 		setBackTransportPossibleAction = new SetBackTransportPossibleAction(this.viewer);
 		createBackTransportAction = new CreateBackTransportAction(this.viewer);
-		editTransportAction = new EditTransportAction(this.viewer,"underway");
+		editTransportAction = new EditTransportAction(this.viewer, "underway");
 		detachCarAction = new DetachCarAction(this.viewer);
 		emptyTransportAction = new EmptyTransportAction(this.viewer);
 		cancelTransportAction = new CancelTransportAction(this.viewer);
 		copyTransportAction = new CopyTransportAction(this.viewer);
 		copyTransportDetailsIntoClipboardAction = new CopyTransportDetailsIntoClipboardAction(this.viewer);
-		setAlarmingActionNA = new SetAlarmingAction(this.viewer,"NA extern");
-		setAlarmingActionRTH = new SetAlarmingAction(this.viewer,"RTH");
-		setAlarmingActionDF = new SetAlarmingAction(this.viewer,"DF/Inspektion");
-		setAlarmingActionBRKDT = new SetAlarmingAction(this.viewer,"BRKDT");
-		setAlarmingActionFW = new SetAlarmingAction(this.viewer,"FW");
-		setAlarmingActionPO = new SetAlarmingAction(this.viewer,"Polizei");
-		setAlarmingActionBR = new SetAlarmingAction(this.viewer,"Bergrettung");
-		setAlarmingActionKIT = new SetAlarmingAction(this.viewer,"KIT");
+		setAlarmingActionNA = new SetAlarmingAction(this.viewer, "NA extern");
+		setAlarmingActionRTH = new SetAlarmingAction(this.viewer, "RTH");
+		setAlarmingActionDF = new SetAlarmingAction(this.viewer, "DF/Inspektion");
+		setAlarmingActionBRKDT = new SetAlarmingAction(this.viewer, "BRKDT");
+		setAlarmingActionFW = new SetAlarmingAction(this.viewer, "FW");
+		setAlarmingActionPO = new SetAlarmingAction(this.viewer, "Polizei");
+		setAlarmingActionBR = new SetAlarmingAction(this.viewer, "Bergrettung");
+		setAlarmingActionKIT = new SetAlarmingAction(this.viewer, "KIT");
 	}
-	
+
 	/**
-	 * Creates the context menu 
+	 * Creates the context menu
 	 */
-	private void hookContextMenu() 
-	{
+	private void hookContextMenu() {
 		MenuManager menuManager = new MenuManager("#DispositionPopupMenu");
 		menuManager.setRemoveAllWhenShown(true);
-		menuManager.addMenuListener(new IMenuListener() 
-		{
-			public void menuAboutToShow(IMenuManager manager) 
-			{
+		menuManager.addMenuListener(new IMenuListener() {
+
+			public void menuAboutToShow(IMenuManager manager) {
 				fillContextMenu(manager);
 			}
 		});
 		Menu menu = menuManager.createContextMenu(viewer.getControl());
 		viewer.getControl().setMenu(menu);
 	}
-	
+
 	/**
 	 * Fills the context menu with the actions
 	 */
-	private void fillContextMenu(IMenuManager manager)
-	{
+	private void fillContextMenu(IMenuManager manager) {
 		makeActions();
-		//get the selected object
+		// get the selected object
 		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
-			
-		//cast to a transport
-		Transport transport = (Transport)firstSelectedObject;
-		
-		if(transport == null)
+
+		// cast to a transport
+		Transport transport = (Transport) firstSelectedObject;
+
+		if (transport == null)
 			return;
-		
-		//submenu for the details
+
+		// submenu for the details
 		MenuManager menuManagerSub = new MenuManager("Details");
-		//submenu for the alarmings
+		// submenu for the alarmings
 		MenuManager menuManagerAlarming = new MenuManager("Alarmierung setzen");
 		menuManagerAlarming.add(setAlarmingActionNA);
 		menuManagerAlarming.add(setAlarmingActionRTH);
@@ -410,7 +412,7 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		menuManagerAlarming.add(setAlarmingActionBR);
 		menuManagerAlarming.add(setAlarmingActionKIT);
 
-		//add the actions
+		// add the actions
 		menuManagerSub.add(setAccompanyingPersonAction);
 		menuManagerSub.add(new Separator());
 		menuManagerSub.add(setBD1Action);
@@ -420,8 +422,8 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		menuManagerSub.add(createBackTransportAction);
 		menuManagerSub.add(new Separator());
 		menuManagerSub.add(menuManagerAlarming);
-		
-		//add the actions
+
+		// add the actions
 		manager.add(setTransportStatusS1Action);
 		manager.add(setTransportStatusS2Action);
 		manager.add(setTransportStatusS3Action);
@@ -439,26 +441,25 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 		manager.add(new Separator());
 		manager.add(copyTransportAction);
 		manager.add(copyTransportDetailsIntoClipboardAction);
-		
-		//disable the selection if the transport is locked
-		if(lockManager.containsLock(Transport.ID, transport.getTransportId()))
-		{
-			//transport detail actions
+
+		// disable the selection if the transport is locked
+		if (lockManager.containsLock(Transport.ID, transport.getTransportId())) {
+			// transport detail actions
 			setAccompanyingPersonAction.setEnabled(false);
 			setBD1Action.setEnabled(false);
 			setBD2Action.setEnabled(false);
 			setBackTransportPossibleAction.setEnabled(false);
 			createBackTransportAction.setEnabled(false);
 			copyTransportAction.setEnabled(false);
-			
-			//transport stati
+
+			// transport stati
 			setTransportStatusS1Action.setEnabled(false);
 			setTransportStatusS2Action.setEnabled(false);
 			setTransportStatusS3Action.setEnabled(false);
 			setTransportStatusS4Action.setEnabled(false);
 			setTransportStatusS5Action.setEnabled(false);
-			
-			//alarmings
+
+			// alarmings
 			setAlarmingActionNA.setEnabled(false);
 			setAlarmingActionRTH.setEnabled(false);
 			setAlarmingActionDF.setEnabled(false);
@@ -468,25 +469,24 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 			setAlarmingActionBR.setEnabled(false);
 			setAlarmingActionKIT.setEnabled(false);
 		}
-		else
-		{
-			//default action = true
-			//transport detail actions
+		else {
+			// default action = true
+			// transport detail actions
 			setAccompanyingPersonAction.setEnabled(true);
 			setBD1Action.setEnabled(true);
 			setBD2Action.setEnabled(true);
 			setBackTransportPossibleAction.setEnabled(true);
 			createBackTransportAction.setEnabled(true);
 			copyTransportAction.setEnabled(true);
-			
-			//transport stati
+
+			// transport stati
 			setTransportStatusS1Action.setEnabled(true);
 			setTransportStatusS2Action.setEnabled(true);
 			setTransportStatusS3Action.setEnabled(true);
 			setTransportStatusS4Action.setEnabled(true);
 			setTransportStatusS5Action.setEnabled(true);
-			
-			//alarmings
+
+			// alarmings
 			setAlarmingActionNA.setEnabled(true);
 			setAlarmingActionRTH.setEnabled(true);
 			setAlarmingActionDF.setEnabled(true);
@@ -497,45 +497,38 @@ public class UnderwayTransportsView extends ViewPart implements PropertyChangeLi
 			setAlarmingActionKIT.setEnabled(true);
 		}
 	}
-	
+
 	/**
 	 * Passing the focus request to the viewer's control.
 	 */
 	@Override
-	public void setFocus()  { }
+	public void setFocus() {
+	}
 
-	public void propertyChange(PropertyChangeEvent evt) 
-	{
+	public void propertyChange(PropertyChangeEvent evt) {
 		// the viewer represents simple model. refresh should be enough.
-		if ("TRANSPORT_ADD".equals(evt.getPropertyName())
-				|| "TRANSPORT_REMOVE".equals(evt.getPropertyName())
-				|| "TRANSPORT_UPDATE".equals(evt.getPropertyName())
-				|| "TRANSPORT_CLEARED".equals(evt.getPropertyName())) 
-		{ 
+		if ("TRANSPORT_ADD".equals(evt.getPropertyName()) || "TRANSPORT_REMOVE".equals(evt.getPropertyName())
+				|| "TRANSPORT_UPDATE".equals(evt.getPropertyName()) || "TRANSPORT_CLEARED".equals(evt.getPropertyName())) {
 			this.viewer.refresh();
 		}
-		//listen to filter events
-		if("TRANSPORT_FILTER_CHANGED".equalsIgnoreCase(evt.getPropertyName()))
-		{
-			//get the new filter
-			TransportViewFilter searchFilter = (TransportViewFilter)evt.getNewValue();
-			//remove all filters and apply the new
-			for(ViewerFilter filter:viewer.getFilters())
-			{
-				if(!(filter instanceof TransportViewFilter))
+		// listen to filter events
+		if ("TRANSPORT_FILTER_CHANGED".equalsIgnoreCase(evt.getPropertyName())) {
+			// get the new filter
+			TransportViewFilter searchFilter = (TransportViewFilter) evt.getNewValue();
+			// remove all filters and apply the new
+			for (ViewerFilter filter : viewer.getFilters()) {
+				if (!(filter instanceof TransportViewFilter))
 					continue;
 				viewer.removeFilter(filter);
-					
+
 			}
-			if(searchFilter != null)
-			{
+			if (searchFilter != null) {
 				viewer.addFilter(searchFilter);
-			}	
+			}
 		}
-		
-		//listen to lock changes
-		if("LOCK_ADD".equalsIgnoreCase(evt.getPropertyName()) || "LOCK_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
-		{
+
+		// listen to lock changes
+		if ("LOCK_ADD".equalsIgnoreCase(evt.getPropertyName()) || "LOCK_REMOVE".equalsIgnoreCase(evt.getPropertyName())) {
 			viewer.refresh();
 		}
 	}

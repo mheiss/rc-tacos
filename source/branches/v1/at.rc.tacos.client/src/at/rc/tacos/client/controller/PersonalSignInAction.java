@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Internettechnik, FH JOANNEUM
+ * http://www.fh-joanneum.at/itm
+ * 
+ * 	Licenced under the GNU GENERAL PUBLIC LICENSE Version 2;
+ * 	You may obtain a copy of the License at
+ * 	http://www.gnu.org/licenses/gpl-2.0.txt
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *******************************************************************************/
 package at.rc.tacos.client.controller;
 
 import java.util.Calendar;
@@ -16,52 +29,47 @@ import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.util.MyUtils;
 
-public class PersonalSignInAction extends Action
-{
-	//properties
+public class PersonalSignInAction extends Action {
+
+	// properties
 	private TableViewer viewer;
 
 	/**
 	 * Default class constructor.
-	 * @param viewer the table viewer
+	 * 
+	 * @param viewer
+	 *            the table viewer
 	 */
-	public PersonalSignInAction(TableViewer viewer)
-	{
+	public PersonalSignInAction(TableViewer viewer) {
 		this.viewer = viewer;
 		setText("Anmelden");
 		setToolTipText("Meldet eine Person zum Dienst an");
 	}
 
 	@Override
-	public void run()
-	{
-		//the selection
+	public void run() {
+		// the selection
 		ISelection selection = viewer.getSelection();
-		//get the selected entry
-		RosterEntry entry = (RosterEntry)((IStructuredSelection)selection).getFirstElement();
-		//confirm the cancel
-		InputDialog dlg = new InputDialog(
-				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-				"Anmeldezeit", 
-				"Bitte geben Sie die Anmeldezeit ein", 
-				MyUtils.timestampToString(new Date().getTime(),MyUtils.timeFormat), 
-				new DateValidator());
-		if (dlg.open() == Window.OK) 
-		{
-		    //get the hour and the minutes
-		    long time = MyUtils.stringToTimestamp(dlg.getValue(),MyUtils.timeFormat);
+		// get the selected entry
+		RosterEntry entry = (RosterEntry) ((IStructuredSelection) selection).getFirstElement();
+		// confirm the cancel
+		InputDialog dlg = new InputDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), "Anmeldezeit",
+				"Bitte geben Sie die Anmeldezeit ein", MyUtils.timestampToString(new Date().getTime(), MyUtils.timeFormat), new DateValidator());
+		if (dlg.open() == Window.OK) {
+			// get the hour and the minutes
+			long time = MyUtils.stringToTimestamp(dlg.getValue(), MyUtils.timeFormat);
 			Calendar cal = Calendar.getInstance();
 			cal.setTimeInMillis(time);
-			//the hour and the minutes
+			// the hour and the minutes
 			int hour = cal.get(Calendar.HOUR_OF_DAY);
 			int minutes = cal.get(Calendar.MINUTE);
-			
-			//now set up a new calendar with the current time and overwrite the 
-			//minutes and the hours
+
+			// now set up a new calendar with the current time and overwrite the
+			// minutes and the hours
 			cal = Calendar.getInstance();
 			cal.set(Calendar.HOUR_OF_DAY, hour);
-			cal.set(Calendar.MINUTE,minutes);
-			//send the update message
+			cal.set(Calendar.MINUTE, minutes);
+			// send the update message
 			entry.setRealStartOfWork(cal.getTimeInMillis());
 			NetWrapper.getDefault().sendUpdateMessage(RosterEntry.ID, entry);
 		}

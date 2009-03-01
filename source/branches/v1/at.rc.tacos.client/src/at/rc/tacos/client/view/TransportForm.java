@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Internettechnik, FH JOANNEUM
+ * http://www.fh-joanneum.at/itm
+ * 
+ * 	Licenced under the GNU GENERAL PUBLIC LICENSE Version 2;
+ * 	You may obtain a copy of the License at
+ * 	http://www.gnu.org/licenses/gpl-2.0.txt
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *******************************************************************************/
 package at.rc.tacos.client.view;
 
 import java.beans.PropertyChangeEvent;
@@ -95,18 +108,18 @@ import at.rc.tacos.model.VehicleDetail;
 import at.rc.tacos.util.MyUtils;
 
 /**
- * GUI (form) to manage the transport details
- * one form for all kinds of transports (not necessary groups are blanked out)
- * function is implemented (assign vehicle, multi transport)
+ * GUI (form) to manage the transport details one form for all kinds of
+ * transports (not necessary groups are blanked out) function is implemented
+ * (assign vehicle, multi transport)
+ * 
  * @author b.thek
- *
  */
-public class TransportForm extends TitleAreaDialog implements IDirectness, IKindOfTransport, ITransportStatus,IProgramStatus,PropertyChangeListener
-{
-	//The managed streets
+public class TransportForm extends TitleAreaDialog implements IDirectness, IKindOfTransport, ITransportStatus, IProgramStatus, PropertyChangeListener {
+
+	// The managed streets
 	private DiseaseManager diseaseManager = ModelFactory.getInstance().getDiseaseManager();
 
-	//text
+	// text
 	private Text textRueckmeldung;
 	private Text textAnmerkungen;
 	private Text textFahrzeug;
@@ -128,17 +141,17 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 	private Text timestampBergrettung;
 	private Text timestampKIT;
 
-	private Text patientLastName,patientFirstName;
+	private Text patientLastName, patientFirstName;
 
 	private Text textTelefonAnrufer;
 	private Text textAnrufer;
 
-	//combo
+	// combo
 	private Combo comboPrioritaet;
 	private Combo comboErkrankungVerletzung;
 	private Combo combokindOfTransport;
 
-	//buttons
+	// buttons
 	private Button buttonVormerkung;
 	private Button buttonNotfall;
 	private Button buttonDialyse;
@@ -166,7 +179,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 	private Button buttonADDMehrfachtransport;
 	private Button buttonAssignCar;
 
-	//groups
+	// groups
 	private Group formGroup;
 	private Group statusmeldungenGroup;
 	private Group personalAmFahrzeugGroup;
@@ -185,18 +198,18 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 	private MultiTransportContentProvider multiTransportProvider;
 	private AssignVehicleContentProvider assignVehicleContentProvider;
 
-	//the stati
-	private Text textS1,textS2,textS3,textS4,textS5,textS6;
+	// the stati
+	private Text textS1, textS2, textS3, textS4, textS5, textS6;
 
 	private Transport transport;
 
-	private Text textFromStreet,textToStreet,textFromCity,textToCity;
-	private AutoCompleteField acFromStreet,acToStreet,acFromCity,acToCity;
-	private ComboViewer setTextFahrer,setTextSaniI,setTextSaniII;
+	private Text textFromStreet, textToStreet, textFromCity, textToCity;
+	private AutoCompleteField acFromStreet, acToStreet, acFromCity, acToCity;
+	private ComboViewer setTextFahrer, setTextSaniI, setTextSaniII;
 	private ComboViewer setErkrVerl;
 
-	private String[] prebookingPriorities = {"2 Transport", "3 Terminfahrt","4 RT", "5 HT", "6 Sonstiges", "7 NEF extern"};
-	private String[] emergencyAndTransportPriorities = {"1 NEF", "2 Transport", "3 Terminfahrt", "4 RT", "5 HT", "6 Sonstiges", "7 NEF extern"};
+	private String[] prebookingPriorities = { "2 Transport", "3 Terminfahrt", "4 RT", "5 HT", "6 Sonstiges", "7 NEF extern" };
+	private String[] emergencyAndTransportPriorities = { "1 NEF", "2 Transport", "3 Terminfahrt", "4 RT", "5 HT", "6 Sonstiges", "7 NEF extern" };
 
 	private boolean mehrfachtransport;
 	private boolean finalMultiTransportKlick;
@@ -206,26 +219,32 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 	private RemoveTransportFromMultiTransportList removeAction;
 	ArrayList<AssignCarAction> actionList = new ArrayList<AssignCarAction>();
 
-
-	/**if the old priority is not A but the new is A-> DuplicatePriorityATransportAction necessary**/
+	/**
+	 * if the old priority is not A but the new is A->
+	 * DuplicatePriorityATransportAction necessary
+	 **/
 	private String oldPriority;
-	private String tmpPriority = "";//save the priority when the type of transport is switched (e.g. from prebooking to emergency)
+	private String tmpPriority = "";// save the priority when the type of
+									// transport is switched (e.g. from
+									// prebooking to emergency)
 
-	//determine whether to update or to create a new entry
+	// determine whether to update or to create a new entry
 	private boolean createNew;
 	/**
-	 * possible editingTypes: journal (the "AllesButton" should be visible), prebooking, outstanding, underway
+	 * possible editingTypes: journal (the "AllesButton" should be visible),
+	 * prebooking, outstanding, underway
 	 */
 	private String editingType;
 
 	/**
 	 * transport type used to differ between a normal and an emergency transport
-	 * possible values: prebooking, emergencyTransport, ?wholeTransportDetails?- possible?
+	 * possible values: prebooking, emergencyTransport, ?wholeTransportDetails?-
+	 * possible?
 	 */
 	private String transportType;
 
 	private String authorization;
-	
+
 	/**
 	 * The scheduler job to start the filter
 	 */
@@ -233,85 +252,89 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 
 	/**
 	 * Default class constructor used to create a new Transport.
-	 * @param parentShell the parent shell
+	 * 
+	 * @param parentShell
+	 *            the parent shell
 	 */
-	public TransportForm(Shell parentShell)
-	{
+	public TransportForm(Shell parentShell) {
 		super(parentShell);
 		createNew = true;
 		transport = new Transport();
-		
-		//the authorization status of the authenticated person (admin or user)
+
+		// the authorization status of the authenticated person (admin or user)
 		authorization = SessionManager.getInstance().getLoginInformation().getAuthorization();
 	}
 
 	/**
 	 * Default class constructor to create a new transport and set the layout.
-	 * @param parentShell the parent shell
-	 * @param transportType the type of the transport
+	 * 
+	 * @param parentShell
+	 *            the parent shell
+	 * @param transportType
+	 *            the type of the transport
 	 */
-	public TransportForm(Shell parentShell,String transportType)
-	{
+	public TransportForm(Shell parentShell, String transportType) {
 		super(parentShell);
 		createNew = true;
 		this.transportType = transportType;
 		this.transport = new Transport();
-		
-		//the authorization status of the authenticated person (admin or user)
+
+		// the authorization status of the authenticated person (admin or user)
 		authorization = SessionManager.getInstance().getLoginInformation().getAuthorization();
 	}
 
 	/**
 	 * Default class constructor to edit an existing transport
-	 * @param parentShell the parent shell
-	 * @param transport the transport to edit
-	 * @param editingType the layout of the form to show
+	 * 
+	 * @param parentShell
+	 *            the parent shell
+	 * @param transport
+	 *            the transport to edit
+	 * @param editingType
+	 *            the layout of the form to show
 	 */
-	public TransportForm(Shell parentShell,Transport transport, String editingType)
-	{
+	public TransportForm(Shell parentShell, Transport transport, String editingType) {
 		super(parentShell);
-		//update an entry
+		// update an entry
 		createNew = false;
 		this.transport = transport;
 		this.editingType = editingType;
-		transportType = "both";	
-		
-		//the authorization status of the authenticated person (admin or user)
+		transportType = "both";
+
+		// the authorization status of the authenticated person (admin or user)
 		authorization = SessionManager.getInstance().getLoginInformation().getAuthorization();
 	}
 
 	/**
 	 * Creates the dialog's contents
-	 * @param parent the parent composite
+	 * 
+	 * @param parent
+	 *            the parent composite
 	 * @return Control
 	 */
-	protected Control createContents(Composite parent) 
-	{
+	protected Control createContents(Composite parent) {
 		multiTransportProvider = new MultiTransportContentProvider();
 		Control contents = super.createContents(parent);
 		setTitle("Transport");
 		setMessage("Hier können Sie einen neuen Transport anlegen", IMessageProvider.INFORMATION);
 		setTitleImage(ImageFactory.getInstance().getRegisteredImage("application.logo"));
-		//force redraw
+		// force redraw
 		getShell().pack(true);
 		setShellStyle(SWT.SYSTEM_MODAL);
 
-		//add some listeners to this view
+		// add some listeners to this view
 		ModelFactory.getInstance().getStaffManager().addPropertyChangeListener(this);
 		ModelFactory.getInstance().getDiseaseManager().addPropertyChangeListener(this);
 		ModelFactory.getInstance().getAddressManager().addPropertyChangeListener(this);
 		ModelFactory.getInstance().getVehicleManager().addPropertyChangeListener(this);
-		
+
 		return contents;
 	}
 
-
 	@Override
-	public boolean close()
-	{
-		//remove the lock again, only if the transport is existing
-		if(!createNew)
-		{
+	public boolean close() {
+		// remove the lock again, only if the transport is existing
+		if (!createNew) {
 			LockManager.removeLock(Transport.ID, transport.getTransportId());
 		}
 		return super.close();
@@ -321,43 +344,38 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 	 * Create contents of the window
 	 */
 	@Override
-	protected Control createDialogArea(Composite parent)
-	{
-		//setup the composite
+	protected Control createDialogArea(Composite parent) {
+		// setup the composite
 		Composite composite = (Composite) super.createDialogArea(parent);
 		setShellStyle(SWT.SYSTEM_MODAL);
-		//Create the content of the dialog
+		// Create the content of the dialog
 		createTransportSection(composite);
-		//disable some buttons
-		if(transportType.equalsIgnoreCase("emergencyTransport"))
-		{
+		// disable some buttons
+		if (transportType.equalsIgnoreCase("emergencyTransport")) {
 			buttonMehrfachtransport.setEnabled(false);
 			buttonAssignCar.setEnabled(true);
 		}
-		if(transportType.equalsIgnoreCase("prebooking"))
+		if (transportType.equalsIgnoreCase("prebooking"))
 			buttonAssignCar.setEnabled(false);
 
-		//do not allow editing longer than 4 days after the transport
-		if(transportType.equalsIgnoreCase("both"))
-		{
+		// do not allow editing longer than 4 days after the transport
+		if (transportType.equalsIgnoreCase("both")) {
 			Calendar fourDaysAgo = Calendar.getInstance();
-			fourDaysAgo.set(Calendar.DAY_OF_YEAR, fourDaysAgo.get(Calendar.DAY_OF_YEAR) -4);
+			fourDaysAgo.set(Calendar.DAY_OF_YEAR, fourDaysAgo.get(Calendar.DAY_OF_YEAR) - 4);
 
 			Calendar transportDate = Calendar.getInstance();
 			transportDate.setTimeInMillis(transport.getDateOfTransport());
-			if(transportDate.getTimeInMillis() < fourDaysAgo.getTimeInMillis())
-			{
+			if (transportDate.getTimeInMillis() < fourDaysAgo.getTimeInMillis()) {
 				composite.setEnabled(false);
-			}	
+			}
 		}
 
-		//Simple date format for the alarming timestamps
+		// Simple date format for the alarming timestamps
 		SimpleDateFormat sdf_dateTime = new SimpleDateFormat("dd.MM.yy HH:mm");
 
-		//init data
-		if(!createNew)
-		{
-			//changing transport type only possible for a new transport
+		// init data
+		if (!createNew) {
+			// changing transport type only possible for a new transport
 			buttonVormerkung.setEnabled(false);
 			buttonNotfall.setEnabled(false);
 			buttonDialyse.setEnabled(false);
@@ -365,181 +383,162 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 			buttonADDMehrfachtransport.setVisible(false);
 			buttonAssignCar.setVisible(false);
 
-
-			//set field contents
+			// set field contents
 			GregorianCalendar gcal = new GregorianCalendar();
 			gcal.setTimeZone(TimeZone.getDefault());
-			//formatter for the date and time
+			// formatter for the date and time
 			SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 			Calendar cal = Calendar.getInstance();
 
-			//date of transport
+			// date of transport
 			gcal.setTimeInMillis(transport.getDateOfTransport());
 			this.dateTime.setDay(gcal.get(GregorianCalendar.DATE));
 			this.dateTime.setMonth(gcal.get(GregorianCalendar.MONTH));
 			this.dateTime.setYear(gcal.get(GregorianCalendar.YEAR));
 
-			//planned start of transport
-			if(transport.getPlannedStartOfTransport() != 0)
-			{
+			// planned start of transport
+			if (transport.getPlannedStartOfTransport() != 0) {
 				gcal.setTimeInMillis(transport.getPlannedStartOfTransport());
-				String abfahrtTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
+				String abfahrtTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <= 9 ? "0" : "") + gcal.get(GregorianCalendar.HOUR_OF_DAY) + ":"
+						+ ((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") + gcal.get(GregorianCalendar.MINUTE));
 				this.textAbf.setText(abfahrtTime);
 			}
 
-			//time at patient
-			if (transport.getPlannedTimeAtPatient() != 0)
-			{
+			// time at patient
+			if (transport.getPlannedTimeAtPatient() != 0) {
 				gcal.setTimeInMillis(transport.getPlannedTimeAtPatient());
-				String beiPatientTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
+				String beiPatientTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <= 9 ? "0" : "") + gcal.get(GregorianCalendar.HOUR_OF_DAY) + ":"
+						+ ((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") + gcal.get(GregorianCalendar.MINUTE));
 				this.textBeiPat.setText(beiPatientTime);
 			}
 
-			//time at destination
-			if (transport.getAppointmentTimeAtDestination() != 0)
-			{
+			// time at destination
+			if (transport.getAppointmentTimeAtDestination() != 0) {
 				gcal.setTimeInMillis(transport.getAppointmentTimeAtDestination());
-				String terminTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
+				String terminTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <= 9 ? "0" : "") + gcal.get(GregorianCalendar.HOUR_OF_DAY) + ":"
+						+ ((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") + gcal.get(GregorianCalendar.MINUTE));
 				this.textTermin.setText(terminTime);
-			}  
+			}
 
-			//transport stati
-			if(transport.getStatusMessages() != null)
-			{
-				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED))
-				{
+			// transport stati
+			if (transport.getStatusMessages() != null) {
+				if (transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED)) {
 					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED));
 					this.textAE.setText(sdf.format(cal.getTime()));
 				}
-				//Status 0 
-				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY))
-				{
+				// Status 0
+				if (transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY)) {
 					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY));
 					textS1.setText(sdf.format(cal.getTime()));
 				}
-				//Status 2
-				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_AT_PATIENT))
-				{
+				// Status 2
+				if (transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_AT_PATIENT)) {
 					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_AT_PATIENT));
 					textS2.setText(sdf.format(cal.getTime()));
-				}       
-				//Status 3
-				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT))
-				{
+				}
+				// Status 3
+				if (transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT)) {
 					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT));
 					textS3.setText(sdf.format(cal.getTime()));
 				}
-				//Status 4 
-				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION))
-				{
+				// Status 4
+				if (transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION)) {
 					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION));
 					textS4.setText(sdf.format(cal.getTime()));
 				}
-				//Status 5
-				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE))
-				{
+				// Status 5
+				if (transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE)) {
 					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE));
 					textS5.setText(sdf.format(cal.getTime()));
 				}
-				//Status 6
-				if(transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_CAR_IN_STATION))
-				{
+				// Status 6
+				if (transport.getStatusMessages().containsKey(ITransportStatus.TRANSPORT_STATUS_CAR_IN_STATION)) {
 					cal.setTimeInMillis(transport.getStatusMessages().get(ITransportStatus.TRANSPORT_STATUS_CAR_IN_STATION));
 					textS6.setText(sdf.format(cal.getTime()));
 				}
 			}
 
-			if(transport.getCreationTime() != 0)
-			{
+			if (transport.getCreationTime() != 0) {
 				cal.setTimeInMillis(transport.getCreationTime());
 				textAufgen.setText(sdf.format(cal.getTime()));
 			}
 
-			//alarming timestamps
-			if(transport.getTimestampNA() != 0)
-			{
+			// alarming timestamps
+			if (transport.getTimestampNA() != 0) {
 				cal.setTimeInMillis(transport.getTimestampNA());
 				timestampNA.setText(sdf_dateTime.format(cal.getTime()));
 			}
-			if(transport.getTimestampRTH() != 0)
-			{
+			if (transport.getTimestampRTH() != 0) {
 				cal.setTimeInMillis(transport.getTimestampRTH());
 				timestampRTH.setText(sdf_dateTime.format(cal.getTime()));
 			}
-			if(transport.getTimestampDF() != 0)
-			{
+			if (transport.getTimestampDF() != 0) {
 				cal.setTimeInMillis(transport.getTimestampDF());
 				timestampDF.setText(sdf_dateTime.format(cal.getTime()));
 			}
-			if(transport.getTimestampBRKDT() != 0)
-			{
+			if (transport.getTimestampBRKDT() != 0) {
 				cal.setTimeInMillis(transport.getTimestampBRKDT());
 				timestampBRKDT.setText(sdf_dateTime.format(cal.getTime()));
 			}
-			if(transport.getTimestampFW() != 0)
-			{
+			if (transport.getTimestampFW() != 0) {
 				cal.setTimeInMillis(transport.getTimestampFW());
 				timestampFW.setText(sdf_dateTime.format(cal.getTime()));
 			}
-			if(transport.getTimestampPolizei() != 0)
-			{
+			if (transport.getTimestampPolizei() != 0) {
 				cal.setTimeInMillis(transport.getTimestampPolizei());
 				timestampPolizei.setText(sdf_dateTime.format(cal.getTime()));
 			}
-			if(transport.getTimestampBergrettung() != 0)
-			{
+			if (transport.getTimestampBergrettung() != 0) {
 				cal.setTimeInMillis(transport.getTimestampBergrettung());
 				timestampBergrettung.setText(sdf_dateTime.format(cal.getTime()));
 			}
-			if(transport.getTimestampKIT() != 0)
-			{
+			if (transport.getTimestampKIT() != 0) {
 				cal.setTimeInMillis(transport.getTimestampKIT());
 				timestampKIT.setText(sdf_dateTime.format(cal.getTime()));
 			}
 
-			//other fields
+			// other fields
 			this.begleitpersonButton.setSelection(transport.isAssistantPerson());
 			this.bergrettungButton.setSelection(transport.isMountainRescueServiceAlarming());
 			this.brkdtButton.setSelection(transport.isBrkdtAlarming());
 
-			//the disease
-			if(transport.getKindOfIllness() != null)
-			{
-				//the returned disease has no id so we query the managed diseases and try to get the complete object :)
+			// the disease
+			if (transport.getKindOfIllness() != null) {
+				// the returned disease has no id so we query the managed
+				// diseases and try to get the complete object :)
 				String name = transport.getKindOfIllness().getDiseaseName();
 				Disease disease = diseaseManager.getDiseaseByName(name);
-				if(disease != null)
-				{
+				if (disease != null) {
 					transport.setKindOfIllness(disease);
 					setErkrVerl.setSelection(new StructuredSelection(disease));
 				}
 			}
 
-			if(transport.getPatient() != null)
-			{
+			if (transport.getPatient() != null) {
 				this.patientLastName.setText(transport.getPatient().getLastname());
 				this.patientFirstName.setText(transport.getPatient().getFirstname());
 			}
 
-			if(transport.getToCity() != null)
+			if (transport.getToCity() != null)
 				textToCity.setText(transport.getToCity());
 
-			if(transport.getToStreet() != null)
+			if (transport.getToStreet() != null)
 				textToStreet.setText(transport.getToStreet());
 
-			//mandatory fields
-			if(transport.getTransportPriority() != null)
-			{
+			// mandatory fields
+			if (transport.getTransportPriority() != null) {
 				oldPriority = transport.getTransportPriority();
 				comboPrioritaet.setText(this.priorityToString(transport.getTransportPriority()));
 			}
 
 			textFromStreet.setText(transport.getFromStreet());
 
-			if(transport.getPlanedLocation() != null)
-				this.zustaendigeOrtsstelle.setSelection(new StructuredSelection(transport.getPlanedLocation()));//mandatory!! default: Bezirk
+			if (transport.getPlanedLocation() != null)
+				this.zustaendigeOrtsstelle.setSelection(new StructuredSelection(transport.getPlanedLocation()));// mandatory!!
+																												// default:
+																												// Bezirk
 
-			if(transport.getFromCity() != null)
+			if (transport.getFromCity() != null)
 				textFromCity.setText(transport.getFromCity());
 
 			this.dfButton.setSelection(transport.isDfAlarming());
@@ -554,87 +553,73 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 			this.bd2Button.setSelection(transport.isBlueLightToGoal());
 			this.bd1Button.setSelection(transport.isBlueLight1());
 
-
 			this.createdBy.setText(transport.getCreatedByUsername());
-			if(transport.getDisposedByUsername() != null)
+			if (transport.getDisposedByUsername() != null)
 				disposedBy.setText(transport.getDisposedByUsername());
 
-			if(transport.getNotes() != null)
-			{
+			if (transport.getNotes() != null) {
 				this.textAnmerkungen.setText(transport.getNotes());
 			}
 
-			if(transport.getCallerDetail() != null)
-			{
-				if(transport.getCallerDetail().getCallerName() != null)
+			if (transport.getCallerDetail() != null) {
+				if (transport.getCallerDetail().getCallerName() != null)
 					this.textAnrufer.setText(transport.getCallerDetail().getCallerName());
-				if(transport.getCallerDetail().getCallerTelephoneNumber() != null)
+				if (transport.getCallerDetail().getCallerTelephoneNumber() != null)
 					this.textTelefonAnrufer.setText(transport.getCallerDetail().getCallerTelephoneNumber());
 			}
 
-			//the real station which did the transport
-			if(transport.getVehicleDetail() != null)
-			{
+			// the real station which did the transport
+			if (transport.getVehicleDetail() != null) {
 
 				this.textOrtsstelle.setText(transport.getVehicleDetail().getCurrentStation().getLocationName());
 			}
 
-			if(transport.getFeedback() != null)
+			if (transport.getFeedback() != null)
 				this.textRueckmeldung.setText(transport.getFeedback());
 
-			if(transport.getTransportNumber() != 0)
-				if(transport.getTransportNumber() == -1)
+			if (transport.getTransportNumber() != 0)
+				if (transport.getTransportNumber() == -1)
 					this.textTransportNummer.setText("STORNO");
-				else if(transport.getTransportNumber() == -2)
+				else if (transport.getTransportNumber() == -2)
 					this.textTransportNummer.setText("WTGL");
-				else if(transport.getTransportNumber() == -4)
+				else if (transport.getTransportNumber() == -4)
 					this.textTransportNummer.setText("NEF");
-				else if(transport.getTransportNumber() != 0)
+				else if (transport.getTransportNumber() != 0)
 					this.textTransportNummer.setText(String.valueOf(transport.getTransportNumber()));
 
-			//kind of transport
-			if(transport.getKindOfTransport() != null)
+			// kind of transport
+			if (transport.getKindOfTransport() != null)
 				combokindOfTransport.setText(transport.getKindOfTransport());
 
-			//directness
+			// directness
 			int direction = transport.getDirection();
-			if (TOWARDS_BRUCK == direction)
-			{
+			if (TOWARDS_BRUCK == direction) {
 				this.bruckButton.setSelection(true);
 			}
-			if (TOWARDS_GRAZ == direction)
-			{
+			if (TOWARDS_GRAZ == direction) {
 				this.grazButton.setSelection(true);
 			}
-			if (TOWARDS_LEOBEN == direction)
-			{
+			if (TOWARDS_LEOBEN == direction) {
 				this.leobenButton.setSelection(true);
 			}
-			if (TOWARDS_MARIAZELL== direction)
-			{
+			if (TOWARDS_MARIAZELL == direction) {
 				this.mariazellButton.setSelection(true);
 			}
-			if (TOWARDS_VIENNA == direction)
-			{
+			if (TOWARDS_VIENNA == direction) {
 				this.wienButton.setSelection(true);
 			}
-			if (TOWARDS_KAPFENBERG == direction)
-			{
+			if (TOWARDS_KAPFENBERG == direction) {
 				this.kapfenbergButton.setSelection(true);
 			}
 
-			if(transport.getVehicleDetail() != null)
-			{
-				if(transport.getVehicleDetail().getDriver() != null)
-				{
+			if (transport.getVehicleDetail() != null) {
+				if (transport.getVehicleDetail().getDriver() != null) {
 					this.setTextFahrer.setSelection(new StructuredSelection(transport.getVehicleDetail().getDriver()));
 				}
-				if(transport.getVehicleDetail().getFirstParamedic() != null)
-				{
+				if (transport.getVehicleDetail().getFirstParamedic() != null) {
 					this.setTextSaniI.setSelection(new StructuredSelection(transport.getVehicleDetail().getFirstParamedic()));
 				}
-				if(transport.getVehicleDetail().getSecondParamedic() != null)
-				{
+				if (transport.getVehicleDetail().getSecondParamedic() != null) {
 					this.setTextSaniII.setSelection(new StructuredSelection(transport.getVehicleDetail().getSecondParamedic()));
 				}
 
@@ -648,8 +633,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 	 * The user pressed the ok button
 	 */
 	@Override
-	protected void okPressed()
-	{
+	protected void okPressed() {
 		handleOK();
 	}
 
@@ -657,11 +641,10 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 	 * Cleanup the dialog
 	 */
 	@Override
-	protected void handleShellCloseEvent()
-	{
+	protected void handleShellCloseEvent() {
 		ModelFactory.getInstance().getStaffManager().removePropertyChangeListener(this);
 		ModelFactory.getInstance().getAddressManager().removePropertyChangeListener(this);
-		ModelFactory.getInstance().getDiseaseManager().removePropertyChangeListener(this); 
+		ModelFactory.getInstance().getDiseaseManager().removePropertyChangeListener(this);
 		ModelFactory.getInstance().getJobList().removePropertyChangeListener(this);
 		ModelFactory.getInstance().getServiceManager().removePropertyChangeListener(this);
 		super.handleShellCloseEvent();
@@ -671,12 +654,10 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 	 * The user pressed the cancel button
 	 */
 	@Override
-	protected void cancelPressed()
-	{
-		boolean result = MessageDialog.openConfirm(getShell(), "Abbrechen", "Wollen Sie wirklich abbrechen?"); 
-		//check the result
-		if(result)
-		{
+	protected void cancelPressed() {
+		boolean result = MessageDialog.openConfirm(getShell(), "Abbrechen", "Wollen Sie wirklich abbrechen?");
+		// check the result
+		if (result) {
 			LockManager.removeLock(Transport.ID, transport.getTransportId());
 			getShell().close();
 		}
@@ -685,11 +666,10 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 	/**
 	 * Creates the planing section
 	 */
-	private void createTransportSection(Composite parent)
-	{
-		client = new Composite(parent,SWT.NONE);
+	private void createTransportSection(Composite parent) {
+		client = new Composite(parent, SWT.NONE);
 		client.setLayout(new FormLayout());
-		//calendar
+		// calendar
 		dateTime = new DateTime(client, SWT.CALENDAR);
 		final FormData fd_dateTime = new FormData();
 		fd_dateTime.bottom = new FormAttachment(0, 160);
@@ -698,7 +678,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		fd_dateTime.left = new FormAttachment(0, 10);
 		dateTime.setLayoutData(fd_dateTime);
 
-		//group 'Transportdaten'
+		// group 'Transportdaten'
 		transportdatenGroup = new Group(client, SWT.NONE);
 		transportdatenGroup.setLayout(new FormLayout());
 		final FormData fd_transportdatenGroup = new FormData();
@@ -719,7 +699,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		fd_vonLabel.left = new FormAttachment(0, 7);
 
 		vonLabel.setLayoutData(fd_vonLabel);
-		vonLabel.setForeground(Util.getColor(0,0,255));
+		vonLabel.setForeground(Util.getColor(0, 0, 255));
 		vonLabel.setText("von:");
 
 		textToStreet = new Text(transportdatenGroup, SWT.WRAP | SWT.MULTI | SWT.BORDER);
@@ -729,29 +709,26 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		fd_comboNachStrasse.top = new FormAttachment(0, 53);
 		fd_comboNachStrasse.left = new FormAttachment(0, 38);
 		textToStreet.setLayoutData(fd_comboNachStrasse);
-		textToStreet.addKeyListener(new KeyAdapter()
-		{
+		textToStreet.addKeyListener(new KeyAdapter() {
+
 			@Override
-			public void keyPressed(KeyEvent e) 
-			{
-				//no action when the enter key is pressed
-				if(e.keyCode == 13)
-				{
+			public void keyPressed(KeyEvent e) {
+				// no action when the enter key is pressed
+				if (e.keyCode == 13) {
 					e.doit = false;
 					return;
 				}
-				//go to the next field when the tab is pressed
-				if(e.keyCode == 9)
-				{
+				// go to the next field when the tab is pressed
+				if (e.keyCode == 9) {
 					textToCity.setFocus();
 					e.doit = false;
 					return;
 				}
-				inputChanged(textToStreet.getText(),IFilterTypes.SEARCH_STRING_STREET);
+				inputChanged(textToStreet.getText(), IFilterTypes.SEARCH_STRING_STREET);
 			}
 		});
-		acToStreet = new AutoCompleteField(textToStreet, new TextContentAdapter(), new String[] {} );
-		
+		acToStreet = new AutoCompleteField(textToStreet, new TextContentAdapter(), new String[] {});
+
 		final Button buttonAddressFrom = new Button(transportdatenGroup, SWT.NONE);
 		final FormData fd_buttonAddressFrom = new FormData();
 		fd_buttonAddressFrom.bottom = new FormAttachment(0, 47);
@@ -760,31 +737,30 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		fd_buttonAddressFrom.left = new FormAttachment(0, 422);
 		buttonAddressFrom.setLayoutData(fd_buttonAddressFrom);
 		buttonAddressFrom.setText("...");
-		buttonAddressFrom.addSelectionListener(new SelectionAdapter() 
-		{		
-			public void widgetSelected(final SelectionEvent e) 
-			{
-				//setup and prepare the initial value
+		buttonAddressFrom.addSelectionListener(new SelectionAdapter() {
+
+			public void widgetSelected(final SelectionEvent e) {
+				// setup and prepare the initial value
 				String initStreetValue = textFromStreet.getText();
 				String initCityValue = textFromCity.getText();
-				
-				//open the selection dialog to choose a address
-				AddressSelectionDialog selectionDialog = new AddressSelectionDialog(initStreetValue,initCityValue,getShell());
-				selectionDialog.open();
-				Address selectedAddress = (Address)selectionDialog.getResult()[0];
 
-				//assert valid
-				if(selectedAddress == null)
+				// open the selection dialog to choose a address
+				AddressSelectionDialog selectionDialog = new AddressSelectionDialog(initStreetValue, initCityValue, getShell());
+				selectionDialog.open();
+				Address selectedAddress = (Address) selectionDialog.getResult()[0];
+
+				// assert valid
+				if (selectedAddress == null)
 					return;
-				
-				//fill in the form fields
-				if(selectedAddress.getStreet() != null)
+
+				// fill in the form fields
+				if (selectedAddress.getStreet() != null)
 					textFromStreet.setText(selectedAddress.getStreet());
-				if(selectedAddress.getCity() != null)
+				if (selectedAddress.getCity() != null)
 					textFromCity.setText(selectedAddress.getCity());
 			}
 		});
-		
+
 		final Button buttonAddressTo = new Button(transportdatenGroup, SWT.NONE);
 		final FormData fd_buttonAddressTo = new FormData();
 		fd_buttonAddressTo.bottom = new FormAttachment(0, 74);
@@ -793,27 +769,26 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		fd_buttonAddressTo.left = new FormAttachment(0, 422);
 		buttonAddressTo.setLayoutData(fd_buttonAddressTo);
 		buttonAddressTo.setText("...");
-		buttonAddressTo.addSelectionListener(new SelectionAdapter() 
-		{		
-			public void widgetSelected(final SelectionEvent e) 
-			{
-				//setup and prepare the initial value
+		buttonAddressTo.addSelectionListener(new SelectionAdapter() {
+
+			public void widgetSelected(final SelectionEvent e) {
+				// setup and prepare the initial value
 				String initStreetValue = textToStreet.getText();
 				String initCityValue = textToCity.getText();
-				
-				//open the selection dialog to choose a address
-				AddressSelectionDialog selectionDialog = new AddressSelectionDialog(initStreetValue,initCityValue,getShell());
-				selectionDialog.open();
-				Address selectedAddress = (Address)selectionDialog.getResult()[0];
 
-				//assert valid
-				if(selectedAddress == null)
+				// open the selection dialog to choose a address
+				AddressSelectionDialog selectionDialog = new AddressSelectionDialog(initStreetValue, initCityValue, getShell());
+				selectionDialog.open();
+				Address selectedAddress = (Address) selectionDialog.getResult()[0];
+
+				// assert valid
+				if (selectedAddress == null)
 					return;
-				
-				//fill in the form fields
-				if(selectedAddress.getStreet() != null)
+
+				// fill in the form fields
+				if (selectedAddress.getStreet() != null)
 					textToStreet.setText(selectedAddress.getStreet());
-				if(selectedAddress.getCity() != null)
+				if (selectedAddress.getCity() != null)
 					textToCity.setText(selectedAddress.getCity());
 			}
 		});
@@ -825,29 +800,25 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		fd_comboVonStrasse.top = new FormAttachment(0, 26);
 		fd_comboVonStrasse.left = new FormAttachment(0, 38);
 		textFromStreet.setLayoutData(fd_comboVonStrasse);
-		textFromStreet.addKeyListener(new KeyAdapter()
-		{
+		textFromStreet.addKeyListener(new KeyAdapter() {
+
 			@Override
-			public void keyPressed(KeyEvent e) 
-			{
-				//no action when the enter key is pressed
-				if(e.keyCode == 13)
-				{
+			public void keyPressed(KeyEvent e) {
+				// no action when the enter key is pressed
+				if (e.keyCode == 13) {
 					e.doit = false;
 					return;
 				}
-				//go to the next field when the tab is pressed
-				if(e.keyCode == 9)
-				{
+				// go to the next field when the tab is pressed
+				if (e.keyCode == 9) {
 					textFromCity.setFocus();
 					e.doit = false;
 					return;
 				}
-				inputChanged(textFromStreet.getText(),IFilterTypes.SEARCH_STRING_STREET);
+				inputChanged(textFromStreet.getText(), IFilterTypes.SEARCH_STRING_STREET);
 			}
 		});
-		acFromStreet = new AutoCompleteField(textFromStreet,new TextContentAdapter(), new String[] {} );
-		
+		acFromStreet = new AutoCompleteField(textFromStreet, new TextContentAdapter(), new String[] {});
 
 		final Label nachLabel = new Label(transportdatenGroup, SWT.NONE);
 		final FormData fd_nachLabel = new FormData();
@@ -876,28 +847,25 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		fd_comboVonOrt.top = new FormAttachment(0, 26);
 		fd_comboVonOrt.right = new FormAttachment(0, 420);
 		textFromCity.setLayoutData(fd_comboVonOrt);
-		textFromCity.addKeyListener(new KeyAdapter()
-		{
+		textFromCity.addKeyListener(new KeyAdapter() {
+
 			@Override
-			public void keyPressed(KeyEvent e) 
-			{
-				//no action when the enter key is pressed
-				if(e.keyCode == 13)
-				{
+			public void keyPressed(KeyEvent e) {
+				// no action when the enter key is pressed
+				if (e.keyCode == 13) {
 					e.doit = false;
 					return;
 				}
-				//go to the next field when the tab is pressed
-				if(e.keyCode == 9)
-				{
+				// go to the next field when the tab is pressed
+				if (e.keyCode == 9) {
 					patientLastName.setFocus();
 					e.doit = false;
 					return;
 				}
-				inputChanged(textFromCity.getText(),IFilterTypes.SEARCH_STRING_CITY);
+				inputChanged(textFromCity.getText(), IFilterTypes.SEARCH_STRING_CITY);
 			}
 		});
-		acFromCity = new AutoCompleteField(textFromCity, new TextContentAdapter(), new String[] {} );
+		acFromCity = new AutoCompleteField(textFromCity, new TextContentAdapter(), new String[] {});
 
 		textToCity = new Text(transportdatenGroup, SWT.WRAP | SWT.MULTI | SWT.BORDER);
 		final FormData fd_comboNachOrt = new FormData();
@@ -906,28 +874,25 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		fd_comboNachOrt.top = new FormAttachment(0, 53);
 		fd_comboNachOrt.right = new FormAttachment(0, 420);
 		textToCity.setLayoutData(fd_comboNachOrt);
-		textToCity.addKeyListener(new KeyAdapter()
-		{
+		textToCity.addKeyListener(new KeyAdapter() {
+
 			@Override
-			public void keyPressed(KeyEvent e) 
-			{
-				//no action when the enter key is pressed
-				if(e.keyCode == 13)
-				{
+			public void keyPressed(KeyEvent e) {
+				// no action when the enter key is pressed
+				if (e.keyCode == 13) {
 					e.doit = false;
 					return;
 				}
-				//go to the next field when the tab is pressed
-				if(e.keyCode == 9)
-				{
+				// go to the next field when the tab is pressed
+				if (e.keyCode == 9) {
 					ruecktransportMoeglichButton.setFocus();
 					e.doit = false;
 					return;
 				}
-				inputChanged(textToCity.getText(),IFilterTypes.SEARCH_STRING_CITY);
+				inputChanged(textToCity.getText(), IFilterTypes.SEARCH_STRING_CITY);
 			}
 		});
-		acToCity = new AutoCompleteField(textToCity, new TextContentAdapter(), new String[] {} );
+		acToCity = new AutoCompleteField(textToCity, new TextContentAdapter(), new String[] {});
 
 		final Label ortLabel = new Label(transportdatenGroup, SWT.NONE);
 		final FormData fd_ortLabel = new FormData();
@@ -946,20 +911,17 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		fd_comboNachname.right = new FormAttachment(0, 635);
 		fd_comboNachname.left = new FormAttachment(0, 464);
 		patientLastName.setLayoutData(fd_comboNachname);
-		patientLastName.addKeyListener(new KeyAdapter()
-		{
+		patientLastName.addKeyListener(new KeyAdapter() {
+
 			@Override
-			public void keyPressed(KeyEvent e) 
-			{
-				//no action when the enter key is pressed
-				if(e.keyCode == 13)
-				{
+			public void keyPressed(KeyEvent e) {
+				// no action when the enter key is pressed
+				if (e.keyCode == 13) {
 					e.doit = false;
 					return;
 				}
-				//go to the next field when the tab is pressed
-				if(e.keyCode == 9)
-				{
+				// go to the next field when the tab is pressed
+				if (e.keyCode == 9) {
 					patientFirstName.setFocus();
 					e.doit = false;
 					return;
@@ -984,20 +946,17 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		fd_vornameVorname.right = new FormAttachment(0, 812);
 		fd_vornameVorname.left = new FormAttachment(0, 641);
 		patientFirstName.setLayoutData(fd_vornameVorname);
-		patientFirstName.addKeyListener(new KeyAdapter()
-		{
+		patientFirstName.addKeyListener(new KeyAdapter() {
+
 			@Override
-			public void keyPressed(KeyEvent e) 
-			{
-				//no action when the enter key is pressed
-				if(e.keyCode == 13)
-				{
+			public void keyPressed(KeyEvent e) {
+				// no action when the enter key is pressed
+				if (e.keyCode == 13) {
 					e.doit = false;
 					return;
 				}
-				//go to the next field when the tab is pressed
-				if(e.keyCode == 9)
-				{
+				// go to the next field when the tab is pressed
+				if (e.keyCode == 9) {
 					combokindOfTransport.setFocus();
 					e.doit = false;
 					return;
@@ -1013,71 +972,67 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		fd_buttonPatientendatenPruefen.left = new FormAttachment(0, 818);
 		buttonPatientendatenPruefen.setLayoutData(fd_buttonPatientendatenPruefen);
 		buttonPatientendatenPruefen.setText("...");
-		buttonPatientendatenPruefen.addSelectionListener(new SelectionAdapter() 
-		{		
-			public void widgetSelected(final SelectionEvent e) 
-			{
-				if(Login.AUTH_ADMIN.equalsIgnoreCase(authorization) && "journal".equalsIgnoreCase(editingType))
-				{
-					if(patientLastName.getText() == null || patientLastName.getText().trim().isEmpty())
-					{
-//						getShell().getDisplay().beep();
+		buttonPatientendatenPruefen.addSelectionListener(new SelectionAdapter() {
+
+			public void widgetSelected(final SelectionEvent e) {
+				if (Login.AUTH_ADMIN.equalsIgnoreCase(authorization) && "journal".equalsIgnoreCase(editingType)) {
+					if (patientLastName.getText() == null || patientLastName.getText().trim().isEmpty()) {
+						// getShell().getDisplay().beep();
 						setErrorMessage("Der Nachname kann beim Anlegen eines Patienten in der Patientendatenbank nicht leer gelassen werden.");
 						return;
 					}
-					
-					//confirm the cancel
-					boolean cancelConfirmed = MessageDialog.openQuestion(
-							PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), 
+
+					// confirm the cancel
+					boolean cancelConfirmed = MessageDialog.openQuestion(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
 							"Patient hinzufügen", "Möchten Sie diesen Patienten zur Patientendatenbank hinzufügen?");
-					if (!cancelConfirmed) 
+					if (!cancelConfirmed)
 						return;
-					
-					//TODO: add the patient data as new sick person, but check before!!
+
+					// TODO: add the patient data as new sick person, but check
+					// before!!
 					SickPerson person = new SickPerson();
 					person.setLastName(patientLastName.getText());
 					person.setFirstName(patientFirstName.getText());
 					person.setCityname(textFromCity.getText());
 					person.setStreetname(textFromStreet.getText());
-					person.setKindOfTransport(combokindOfTransport.getText());					
+					person.setKindOfTransport(combokindOfTransport.getText());
 
 					NetWrapper.getDefault().sendAddMessage(SickPerson.ID, person);
 				}
-				else
-				{
-					//open the selection dialog to choose a patient
-					PatientSelectionDialog selectionDialog = new PatientSelectionDialog(patientLastName.getText(),getShell());
+				else {
+					// open the selection dialog to choose a patient
+					PatientSelectionDialog selectionDialog = new PatientSelectionDialog(patientLastName.getText(), getShell());
 					selectionDialog.open();
-					SickPerson selectedPerson = (SickPerson)selectionDialog.getResult()[0];
+					SickPerson selectedPerson = (SickPerson) selectionDialog.getResult()[0];
 
-					//assert valid
-					if(selectedPerson == null)
+					// assert valid
+					if (selectedPerson == null)
 						return;
 
-					if(selectedPerson.getFirstName() != null)
+					if (selectedPerson.getFirstName() != null)
 						patientFirstName.setText(selectedPerson.getFirstName());
-					if(selectedPerson.getLastName() != null)
+					if (selectedPerson.getLastName() != null)
 						patientLastName.setText(selectedPerson.getLastName());
-					if(selectedPerson.getStreetname() != null)
+					if (selectedPerson.getStreetname() != null)
 						textFromStreet.setText(selectedPerson.getStreetname());
-					if(selectedPerson.getCityname() != null)
+					if (selectedPerson.getCityname() != null)
 						textFromCity.setText(selectedPerson.getCityname());
-					if(selectedPerson.getKindOfTransport() != null)
+					if (selectedPerson.getKindOfTransport() != null)
 						combokindOfTransport.setText(selectedPerson.getKindOfTransport());
-					if(selectedPerson.getNotes() != null)
+					if (selectedPerson.getNotes() != null)
 						textAnmerkungen.setText(selectedPerson.getNotes());
 				}
 			}
 		});
 
-		//no sick person editing from the journal transport form if the user is a normal user
-		if("journal".equalsIgnoreCase(editingType))
+		// no sick person editing from the journal transport form if the user is
+		// a normal user
+		if ("journal".equalsIgnoreCase(editingType))
 			buttonPatientendatenPruefen.setEnabled(false);
-		
-		if(Login.AUTH_ADMIN.equalsIgnoreCase(authorization) && "journal".equalsIgnoreCase(editingType))
-		{
-				buttonPatientendatenPruefen.setImage(ImageFactory.getInstance().getRegisteredImage("admin.patientAdd"));
-				buttonPatientendatenPruefen.setEnabled(true);
+
+		if (Login.AUTH_ADMIN.equalsIgnoreCase(authorization) && "journal".equalsIgnoreCase(editingType)) {
+			buttonPatientendatenPruefen.setImage(ImageFactory.getInstance().getRegisteredImage("admin.patientAdd"));
+			buttonPatientendatenPruefen.setEnabled(true);
 		}
 
 		final Label nachnameLabel_1 = new Label(transportdatenGroup, SWT.NONE);
@@ -1100,8 +1055,8 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		label_kind.setText("Transportart:");
 
 		combokindOfTransport = new Combo(transportdatenGroup, SWT.READ_ONLY);
-		//set possible priorities
-		String[] kindsOfTransport = {TRANSPORT_KIND_GEHEND, TRANSPORT_KIND_TRAGSESSEL, TRANSPORT_KIND_KRANKENTRAGE, TRANSPORT_KIND_ROLLSTUHL};
+		// set possible priorities
+		String[] kindsOfTransport = { TRANSPORT_KIND_GEHEND, TRANSPORT_KIND_TRAGSESSEL, TRANSPORT_KIND_KRANKENTRAGE, TRANSPORT_KIND_ROLLSTUHL };
 		combokindOfTransport.setItems(kindsOfTransport);
 
 		final FormData fd_comboTransportKind = new FormData();
@@ -1175,7 +1130,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		rufhilfepatientButton.setLayoutData(fd_rufhilfepatientButton);
 		rufhilfepatientButton.setText("Rufhilfepatient");
 
-
 		final Label label_6 = new Label(transportdatenGroup, SWT.NONE);
 		label_6.setFont(CustomColors.SUBHEADER_FONT);
 		final FormData fd_label_6 = new FormData();
@@ -1200,9 +1154,9 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		fd_comboZustaendigeOrtsstelle.left = new FormAttachment(0, 319);
 		comboZustaendigeOrtsstelle.setLayoutData(fd_comboZustaendigeOrtsstelle);
 
-		transportdatenGroup.setTabList(new Control[] {textFromStreet, textFromCity, patientLastName, patientFirstName, combokindOfTransport, 
-				textToStreet, textToCity, ruecktransportMoeglichButton, rufhilfepatientButton,  begleitpersonButton, 
-				textAnrufer, textTelefonAnrufer,comboZustaendigeOrtsstelle});
+		transportdatenGroup.setTabList(new Control[] { textFromStreet, textFromCity, patientLastName, patientFirstName, combokindOfTransport,
+				textToStreet, textToCity, ruecktransportMoeglichButton, rufhilfepatientButton, begleitpersonButton, textAnrufer, textTelefonAnrufer,
+				comboZustaendigeOrtsstelle });
 
 		planungGroup = new Group(client, SWT.NONE);
 		planungGroup.setLayout(new FormLayout());
@@ -1214,7 +1168,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		planungGroup.setLayoutData(fd_planungGroup);
 		planungGroup.setText("Zeiten/Richtung");
 
-		//group 'Zeiten/Richtung' 
+		// group 'Zeiten/Richtung'
 		final Label abfLabel = new Label(planungGroup, SWT.NONE);
 		abfLabel.setFont(CustomColors.SUBHEADER_FONT);
 		final FormData fd_abfLabel = new FormData();
@@ -1223,7 +1177,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		fd_abfLabel.right = new FormAttachment(0, 32);
 		fd_abfLabel.left = new FormAttachment(0, 7);
 		abfLabel.setLayoutData(fd_abfLabel);
-		abfLabel.setForeground(Util.getColor(0,0,255));
+		abfLabel.setForeground(Util.getColor(0, 0, 255));
 		abfLabel.setText("Abf:");
 
 		final Label beiPatLabel = new Label(planungGroup, SWT.NONE);
@@ -1273,7 +1227,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		textAbf.setLayoutData(fd_textAbf);
 		textAbf.setToolTipText("Abfahrt des Fahrzeuges von der Ortsstelle");
 
-		//'Richtung'
+		// 'Richtung'
 		mariazellButton = new Button(planungGroup, SWT.RADIO);
 		final FormData fd_mariazellButton = new FormData();
 		mariazellButton.setLayoutData(fd_mariazellButton);
@@ -1351,9 +1305,10 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		fernfahrtButton.setLayoutData(fd_fernfahrtButton);
 		fernfahrtButton.setText("Fernfahrt");
 		fernfahrtButton.setToolTipText("Fernfahrten sind lt. RKT deklariert");
-		planungGroup.setTabList(new Control[] {textAbf, textBeiPat, textTermin, fernfahrtButton, bruckButton, kapfenbergButton, grazButton, leobenButton, wienButton, mariazellButton});
+		planungGroup.setTabList(new Control[] { textAbf, textBeiPat, textTermin, fernfahrtButton, bruckButton, kapfenbergButton, grazButton,
+				leobenButton, wienButton, mariazellButton });
 
-		//group 'Patientenzustand'
+		// group 'Patientenzustand'
 		patientenzustandGroup = new Group(client, SWT.NONE);
 		patientenzustandGroup.setLayout(new FormLayout());
 		final FormData fd_patientenzustandGroup = new FormData();
@@ -1443,12 +1398,13 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		bd1Button.setText("BD 1");
 
 		comboPrioritaet = new Combo(patientenzustandGroup, SWT.READ_ONLY);
-		comboPrioritaet.setToolTipText("1 (NEF), 2 (Transport), 3 (Terminfahrt), 4 (Rücktransport), 5 (Heimtransport), 6 (Sonstiges), 7 (NEF extern)");
+		comboPrioritaet
+				.setToolTipText("1 (NEF), 2 (Transport), 3 (Terminfahrt), 4 (Rücktransport), 5 (Heimtransport), 6 (Sonstiges), 7 (NEF extern)");
 
-		//set possible priorities
-		if(transportType.equalsIgnoreCase("prebooking"))
+		// set possible priorities
+		if (transportType.equalsIgnoreCase("prebooking"))
 			comboPrioritaet.setItems(prebookingPriorities);
-		if(transportType.equalsIgnoreCase("emergencyTransport") || transportType.equalsIgnoreCase("both"))
+		if (transportType.equalsIgnoreCase("emergencyTransport") || transportType.equalsIgnoreCase("both"))
 			comboPrioritaet.setItems(emergencyAndTransportPriorities);
 		final FormData fd_comboPrioritaet = new FormData();
 		fd_comboPrioritaet.bottom = new FormAttachment(0, 73);
@@ -1457,27 +1413,26 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		fd_comboPrioritaet.left = new FormAttachment(0, 193);
 		comboPrioritaet.setLayoutData(fd_comboPrioritaet);
 
-		comboPrioritaet.addSelectionListener(new SelectionAdapter() 
-		{
-			int index;
-			public void widgetSelected(final SelectionEvent e) 
-			{
-				//set possible priorities
-				index = comboPrioritaet.getSelectionIndex();
-				if(index != -1)
-					tmpPriority = comboPrioritaet.getItem(index);
-				//automatically set bd1 and bd2 if the priority 1 NEF (A) is choosen
+		comboPrioritaet.addSelectionListener(new SelectionAdapter() {
 
-				if(tmpPriority.equalsIgnoreCase("1 NEF"))
-				{
+			int index;
+
+			public void widgetSelected(final SelectionEvent e) {
+				// set possible priorities
+				index = comboPrioritaet.getSelectionIndex();
+				if (index != -1)
+					tmpPriority = comboPrioritaet.getItem(index);
+				// automatically set bd1 and bd2 if the priority 1 NEF (A) is
+				// choosen
+
+				if (tmpPriority.equalsIgnoreCase("1 NEF")) {
 					bd1Button.setSelection(true);
 					bd2Button.setSelection(true);
 				}
-				else
-				{
+				else {
 					bd1Button.setSelection(false);
 					bd2Button.setSelection(false);
-				}            	
+				}
 			}
 		});
 
@@ -1491,9 +1446,11 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		label_4.setLayoutData(fd_label_4);
 		label_4.setForeground(Util.getColor(0, 0, 255));
 		label_4.setText("Priorität:");
-		patientenzustandGroup.setTabList(new Control[] {setErkrVerl.getControl(), bd1Button, comboPrioritaet, textAnmerkungen, textRueckmeldung, bd2Button});
+		patientenzustandGroup.setTabList(new Control[] { setErkrVerl.getControl(), bd1Button, comboPrioritaet, textAnmerkungen, textRueckmeldung,
+				bd2Button });
 
-		//group multi transport (only visible if the multi transport button was pressed
+		// group multi transport (only visible if the multi transport button was
+		// pressed
 		multiTransportGroup = new Group(client, SWT.NONE);
 		multiTransportGroup.setLayout(new FormLayout());
 		final FormData fd_multitransportGroup = new FormData();
@@ -1504,9 +1461,9 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		multiTransportGroup.setLayoutData(fd_multitransportGroup);
 		multiTransportGroup.setText("Mehrfachtransport");
 		multiTransportGroup.setVisible(false);
-		createMultiTransportTable();  
+		createMultiTransportTable();
 
-		//assign car group
+		// assign car group
 		assignCarGroup = new Group(client, SWT.NONE);
 		assignCarGroup.setLayout(new FormLayout());
 		final FormData fd_assignCarGroup = new FormData();
@@ -1519,7 +1476,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		assignCarGroup.setVisible(false);
 		createAssignCarTable();
 
-		//group 'Alarmierung'
+		// group 'Alarmierung'
 		planungGroup_1 = new Group(client, SWT.NONE);
 		planungGroup_1.setLayout(new FormLayout());
 		final FormData fd_planungGroup_1 = new FormData();
@@ -1539,17 +1496,16 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		notarztButton.setLayoutData(fd_notarztButton);
 		notarztButton.setText("NA extern");
 		notarztButton.setToolTipText("Externer! Notarzt für diesen Transport alarmiert");
-		notarztButton.addSelectionListener(new SelectionAdapter() 
-		{
-			public void widgetSelected(final SelectionEvent e) 
-			{
+		notarztButton.addSelectionListener(new SelectionAdapter() {
+
+			public void widgetSelected(final SelectionEvent e) {
 				SimpleDateFormat sdf_dateTime = new SimpleDateFormat("dd.MM.yy HH:mm");
 				Calendar cal = Calendar.getInstance();
-				if(notarztButton.getSelection())
+				if (notarztButton.getSelection())
 					timestampNA.setText(sdf_dateTime.format(cal.getTime()));
 				else
 					timestampNA.setText("");
-			} 
+			}
 		});
 
 		rthButton = new Button(planungGroup_1, SWT.CHECK);
@@ -1561,17 +1517,16 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		rthButton.setLayoutData(fd_rthButton);
 		rthButton.setToolTipText("Hubschrauber");
 		rthButton.setText("RTH");
-		rthButton.addSelectionListener(new SelectionAdapter() 
-		{
-			public void widgetSelected(final SelectionEvent e) 
-			{
+		rthButton.addSelectionListener(new SelectionAdapter() {
+
+			public void widgetSelected(final SelectionEvent e) {
 				SimpleDateFormat sdf_dateTime = new SimpleDateFormat("dd.MM.yy HH:mm");
 				Calendar cal = Calendar.getInstance();
-				if(rthButton.getSelection())
+				if (rthButton.getSelection())
 					timestampRTH.setText(sdf_dateTime.format(cal.getTime()));
 				else
 					timestampRTH.setText("");
-			} 
+			}
 		});
 
 		dfButton = new Button(planungGroup_1, SWT.CHECK);
@@ -1583,17 +1538,16 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		dfButton.setLayoutData(fd_dfButton);
 		dfButton.setText("DF/Inspektion");
 		dfButton.setToolTipText("DF/Inspektionsdienst");
-		dfButton.addSelectionListener(new SelectionAdapter() 
-		{
-			public void widgetSelected(final SelectionEvent e) 
-			{
+		dfButton.addSelectionListener(new SelectionAdapter() {
+
+			public void widgetSelected(final SelectionEvent e) {
 				SimpleDateFormat sdf_dateTime = new SimpleDateFormat("dd.MM.yy HH:mm");
 				Calendar cal = Calendar.getInstance();
-				if(dfButton.getSelection())
+				if (dfButton.getSelection())
 					timestampDF.setText(sdf_dateTime.format(cal.getTime()));
 				else
 					timestampDF.setText("");
-			} 
+			}
 		});
 
 		brkdtButton = new Button(planungGroup_1, SWT.CHECK);
@@ -1605,17 +1559,16 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		brkdtButton.setLayoutData(fd_brkdtButton);
 		brkdtButton.setToolTipText("Bezirksrettungskommandant");
 		brkdtButton.setText("BRKDT");
-		brkdtButton.addSelectionListener(new SelectionAdapter() 
-		{
-			public void widgetSelected(final SelectionEvent e) 
-			{
+		brkdtButton.addSelectionListener(new SelectionAdapter() {
+
+			public void widgetSelected(final SelectionEvent e) {
 				SimpleDateFormat sdf_dateTime = new SimpleDateFormat("dd.MM.yy HH:mm");
 				Calendar cal = Calendar.getInstance();
-				if(brkdtButton.getSelection())
+				if (brkdtButton.getSelection())
 					timestampBRKDT.setText(sdf_dateTime.format(cal.getTime()));
 				else
 					timestampBRKDT.setText("");
-			} 
+			}
 		});
 
 		feuerwehrButton = new Button(planungGroup_1, SWT.CHECK);
@@ -1627,17 +1580,16 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		feuerwehrButton.setLayoutData(fd_feuerwehrButton);
 		feuerwehrButton.setToolTipText("Feuerwehr");
 		feuerwehrButton.setText("FW");
-		feuerwehrButton.addSelectionListener(new SelectionAdapter() 
-		{
-			public void widgetSelected(final SelectionEvent e) 
-			{
+		feuerwehrButton.addSelectionListener(new SelectionAdapter() {
+
+			public void widgetSelected(final SelectionEvent e) {
 				SimpleDateFormat sdf_dateTime = new SimpleDateFormat("dd.MM.yy HH:mm");
 				Calendar cal = Calendar.getInstance();
-				if(feuerwehrButton.getSelection())
+				if (feuerwehrButton.getSelection())
 					timestampFW.setText(sdf_dateTime.format(cal.getTime()));
 				else
 					timestampFW.setText("");
-			} 
+			}
 		});
 
 		polizeiButton = new Button(planungGroup_1, SWT.CHECK);
@@ -1649,17 +1601,16 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		polizeiButton.setLayoutData(fd_polizeiButton);
 		polizeiButton.setToolTipText("Polizei");
 		polizeiButton.setText("Polizei");
-		polizeiButton.addSelectionListener(new SelectionAdapter() 
-		{
-			public void widgetSelected(final SelectionEvent e) 
-			{
+		polizeiButton.addSelectionListener(new SelectionAdapter() {
+
+			public void widgetSelected(final SelectionEvent e) {
 				SimpleDateFormat sdf_dateTime = new SimpleDateFormat("dd.MM.yy HH:mm");
 				Calendar cal = Calendar.getInstance();
-				if(polizeiButton.getSelection())
+				if (polizeiButton.getSelection())
 					timestampPolizei.setText(sdf_dateTime.format(cal.getTime()));
 				else
 					timestampPolizei.setText("");
-			} 
+			}
 		});
 
 		KITButton = new Button(planungGroup_1, SWT.CHECK);
@@ -1671,17 +1622,16 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		KITButton.setLayoutData(fd_KITButton);
 		KITButton.setToolTipText("Kriseninterventionsteam");
 		KITButton.setText("KIT");
-		KITButton.addSelectionListener(new SelectionAdapter() 
-		{
-			public void widgetSelected(final SelectionEvent e) 
-			{
+		KITButton.addSelectionListener(new SelectionAdapter() {
+
+			public void widgetSelected(final SelectionEvent e) {
 				SimpleDateFormat sdf_dateTime = new SimpleDateFormat("dd.MM.yy HH:mm");
 				Calendar cal = Calendar.getInstance();
-				if(KITButton.getSelection())
+				if (KITButton.getSelection())
 					timestampKIT.setText(sdf_dateTime.format(cal.getTime()));
 				else
 					timestampKIT.setText("");
-			} 
+			}
 		});
 
 		bergrettungButton = new Button(planungGroup_1, SWT.CHECK);
@@ -1693,17 +1643,16 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		bergrettungButton.setLayoutData(fd_bergrettungButton);
 		bergrettungButton.setText("Bergrettung");
 		bergrettungButton.setToolTipText("Bergrettung");
-		bergrettungButton.addSelectionListener(new SelectionAdapter() 
-		{
-			public void widgetSelected(final SelectionEvent e) 
-			{
+		bergrettungButton.addSelectionListener(new SelectionAdapter() {
+
+			public void widgetSelected(final SelectionEvent e) {
 				SimpleDateFormat sdf_dateTime = new SimpleDateFormat("dd.MM.yy HH:mm");
 				Calendar cal = Calendar.getInstance();
-				if(bergrettungButton.getSelection())
+				if (bergrettungButton.getSelection())
 					timestampBergrettung.setText(sdf_dateTime.format(cal.getTime()));
 				else
 					timestampBergrettung.setText("");
-			} 
+			}
 		});
 
 		timestampNA = new Text(planungGroup_1, SWT.BORDER);
@@ -1787,7 +1736,8 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		timestampBergrettung.setEditable(false);
 		timestampKIT.setEditable(false);
 
-		planungGroup_1.setTabList(new Control[] {notarztButton, rthButton, dfButton, brkdtButton, feuerwehrButton, polizeiButton, bergrettungButton, KITButton});
+		planungGroup_1.setTabList(new Control[] { notarztButton, rthButton, dfButton, brkdtButton, feuerwehrButton, polizeiButton, bergrettungButton,
+				KITButton });
 
 		final Label label_5 = new Label(client, SWT.SEPARATOR | SWT.HORIZONTAL);
 		final FormData fd_label_5 = new FormData();
@@ -1797,7 +1747,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		fd_label_5.left = new FormAttachment(0, 10);
 		label_5.setLayoutData(fd_label_5);
 
-		//group 'Transportdetails'
+		// group 'Transportdetails'
 		transportdetailsGroup = new Group(client, SWT.NONE);
 		transportdetailsGroup.setLayout(new FormLayout());
 		final FormData fd_transportdetailsGroup = new FormData();
@@ -1864,10 +1814,9 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		farzeugLabel.setLayoutData(fd_farzeugLabel);
 		farzeugLabel.setForeground(Util.getColor(128, 128, 128));
 		farzeugLabel.setText("Fahrzeug:");
-		transportdetailsGroup.setTabList(new Control[] {textTransportNummer, textOrtsstelle, textFahrzeug});
+		transportdetailsGroup.setTabList(new Control[] { textTransportNummer, textOrtsstelle, textFahrzeug });
 
-
-		//group 'Personal am Fahrzeug'
+		// group 'Personal am Fahrzeug'
 		personalAmFahrzeugGroup = new Group(client, SWT.NONE);
 		personalAmFahrzeugGroup.setLayout(new FormLayout());
 		final FormData fd_personalAmFahrzeugGroup = new FormData();
@@ -1943,10 +1892,9 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		paramedicIILabel.setLayoutData(fd_paramedicIILabel);
 		paramedicIILabel.setForeground(Util.getColor(128, 128, 128));
 		paramedicIILabel.setText("Sanitäter II:");
-		personalAmFahrzeugGroup.setTabList(new Control[] {textFahrer, textSaniI, textSaniII});
+		personalAmFahrzeugGroup.setTabList(new Control[] { textFahrer, textSaniI, textSaniII });
 
-
-		//group 'Statusmeldungen'
+		// group 'Statusmeldungen'
 		statusmeldungenGroup = new Group(client, SWT.NONE);
 		statusmeldungenGroup.setLayout(new FormLayout());
 		final FormData fd_statusmeldungenGroup = new FormData();
@@ -1977,7 +1925,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		aufgLabel.setForeground(Util.getColor(128, 128, 128));
 		aufgLabel.setText("Aufg.:");
 
-
 		textAE = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textAE = new FormData();
 		fd_textAE.bottom = new FormAttachment(0, 59);
@@ -1995,7 +1942,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		aeLabel.setLayoutData(fd_aeLabel);
 		aeLabel.setForeground(Util.getColor(128, 128, 128));
 		aeLabel.setText("AE:");
-
 
 		textS1 = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textS1 = new FormData();
@@ -2015,7 +1961,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		ts1Label.setForeground(Util.getColor(128, 128, 128));
 		ts1Label.setText("S1:");
 
-
 		textS2 = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textS2 = new FormData();
 		fd_textS2.bottom = new FormAttachment(0, 59);
@@ -2033,7 +1978,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		ts2Label.setLayoutData(fd_ts2Label);
 		ts2Label.setForeground(Util.getColor(128, 128, 128));
 		ts2Label.setText("S2:");
-
 
 		textS3 = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textS3 = new FormData();
@@ -2053,7 +1997,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		ts3Label.setForeground(Util.getColor(128, 128, 128));
 		ts3Label.setText("S3:");
 
-
 		textS4 = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textS4 = new FormData();
 		fd_textS4.bottom = new FormAttachment(0, 32);
@@ -2071,7 +2014,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		ts4Label.setLayoutData(fd_ts4Label);
 		ts4Label.setForeground(Util.getColor(128, 128, 128));
 		ts4Label.setText("S4:");
-
 
 		textS5 = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textS5 = new FormData();
@@ -2091,7 +2033,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		ts5Label.setForeground(Util.getColor(128, 128, 128));
 		ts5Label.setText("S5:");
 
-
 		textS6 = new Text(statusmeldungenGroup, SWT.BORDER);
 		final FormData fd_textS6 = new FormData();
 		fd_textS6.bottom = new FormAttachment(0, 86);
@@ -2110,23 +2051,20 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		ts6Label.setForeground(Util.getColor(128, 128, 128));
 		ts6Label.setText("S6:");
 
-
-		//set uninteresting groups invisible
-		if ("prebooking".equalsIgnoreCase(transportType))
-		{
+		// set uninteresting groups invisible
+		if ("prebooking".equalsIgnoreCase(transportType)) {
 			transportdetailsGroup.setVisible(false);
 			statusmeldungenGroup.setVisible(false);
 			personalAmFahrzeugGroup.setVisible(false);
 			planungGroup_1.setVisible(false);
 		}
 
-		if ("emergencyTransport".equalsIgnoreCase(transportType))
-		{
+		if ("emergencyTransport".equalsIgnoreCase(transportType)) {
 			transportdetailsGroup.setVisible(false);
 			statusmeldungenGroup.setVisible(false);
 			personalAmFahrzeugGroup.setVisible(false);
 			planungGroup.setVisible(false);
-			//set dateTime to default and disable editing
+			// set dateTime to default and disable editing
 			GregorianCalendar gcal = new GregorianCalendar();
 			dateTime.setDay(gcal.get(GregorianCalendar.DATE));
 			dateTime.setMonth(gcal.get(GregorianCalendar.MONTH));
@@ -2134,13 +2072,18 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 			dateTime.setEnabled(false);
 		}
 
-		if("journal".equalsIgnoreCase(editingType))
-		{
+		if ("journal".equalsIgnoreCase(editingType)) {
 			transportdetailsGroup.setVisible(true);
 			statusmeldungenGroup.setVisible(true);
 			personalAmFahrzeugGroup.setVisible(true);
 		}
-		else if ("both".equalsIgnoreCase(transportType))//in the case of editing a transport from the following views: UnderwayTransportsView, OutstandingTransportsView, PrebookingView
+		else if ("both".equalsIgnoreCase(transportType))// in the case of
+														// editing a transport
+														// from the following
+														// views:
+														// UnderwayTransportsView,
+														// OutstandingTransportsView,
+														// PrebookingView
 		{
 			transportdetailsGroup.setVisible(false);
 			statusmeldungenGroup.setVisible(false);
@@ -2149,14 +2092,13 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 			planungGroup.setVisible(true);
 			planungGroup_1.setVisible(true);
 		}
-		else
-		{
+		else {
 			transportdetailsGroup.setVisible(false);
 			statusmeldungenGroup.setVisible(false);
 			personalAmFahrzeugGroup.setVisible(false);
 		}
 
-		//transport type selection buttons
+		// transport type selection buttons
 		formGroup = new Group(client, SWT.NONE);
 		formGroup.setLayout(new FormLayout());
 		final FormData fd_group = new FormData();
@@ -2175,11 +2117,11 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		fd_buttonNotfall.left = new FormAttachment(0, 104);
 		buttonNotfall.setLayoutData(fd_buttonNotfall);
 		buttonNotfall.setToolTipText("Blendet alle für einen Notfall nicht relevanten Felder aus");
-		buttonNotfall.addSelectionListener(new SelectionAdapter()
-		{
+		buttonNotfall.addSelectionListener(new SelectionAdapter() {
+
 			int index;
-			public void widgetSelected(final SelectionEvent e) 
-			{
+
+			public void widgetSelected(final SelectionEvent e) {
 				planungGroup.setVisible(false);
 				planungGroup_1.setVisible(true);
 				transportdetailsGroup.setVisible(false);
@@ -2190,7 +2132,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 				buttonMehrfachtransport.setEnabled(false);
 				buttonADDMehrfachtransport.setEnabled(false);
 				buttonAssignCar.setEnabled(true);
-				//set dateTime to default and disable editing
+				// set dateTime to default and disable editing
 				GregorianCalendar gcal = new GregorianCalendar();
 				dateTime.setDay(gcal.get(GregorianCalendar.DATE));
 				dateTime.setMonth(gcal.get(GregorianCalendar.MONTH));
@@ -2199,23 +2141,21 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 
 				transportType = "emergencyTransport";
 
-				//set possible priorities
+				// set possible priorities
 				index = comboPrioritaet.getSelectionIndex();
-				if(index != -1)
+				if (index != -1)
 					tmpPriority = comboPrioritaet.getItem(index);
 
-				if(transportType.equalsIgnoreCase("prebooking"))
-				{
+				if (transportType.equalsIgnoreCase("prebooking")) {
 					comboPrioritaet.setItems(prebookingPriorities);
 					comboPrioritaet.setText(tmpPriority);
 				}
-				if(transportType.equalsIgnoreCase("emergencyTransport"))
-				{
+				if (transportType.equalsIgnoreCase("emergencyTransport")) {
 					comboPrioritaet.setItems(emergencyAndTransportPriorities);
 					comboPrioritaet.setText(tmpPriority);
 				}
-				
-				//remove all transports from the multi transport list
+
+				// remove all transports from the multi transport list
 				multiTransportProvider.removeAllTransports();
 				viewer.refresh();
 			}
@@ -2231,36 +2171,34 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		buttonVormerkung.setLayoutData(fd_buttonVormerkung);
 		buttonVormerkung.setToolTipText("Blendet alle für eine Vormerkung nicht relevanten Felder aus");
 		buttonVormerkung.setText("Transport");
-		buttonVormerkung.addSelectionListener(new SelectionAdapter() 
-		{
+		buttonVormerkung.addSelectionListener(new SelectionAdapter() {
+
 			int index;
-			public void widgetSelected(final SelectionEvent e) 
-			{
+
+			public void widgetSelected(final SelectionEvent e) {
 				planungGroup_1.setVisible(false);
 				planungGroup.setVisible(true);
 				transportdetailsGroup.setVisible(false);
 				statusmeldungenGroup.setVisible(false);
 				personalAmFahrzeugGroup.setVisible(false);
 				dateTime.setEnabled(true);
-				viewerAssign.getTable().setSelection(-1);//deselect 
+				viewerAssign.getTable().setSelection(-1);// deselect
 				assignCarGroup.setVisible(false);
 				buttonMehrfachtransport.setEnabled(true);
 				buttonADDMehrfachtransport.setEnabled(true);
 
 				transportType = "prebooking";
 
-				//set possible priorities
+				// set possible priorities
 				index = comboPrioritaet.getSelectionIndex();
-				if(index != -1)
+				if (index != -1)
 					tmpPriority = comboPrioritaet.getItem(index);
 
-				if(transportType.equalsIgnoreCase("prebooking"))
-				{
+				if (transportType.equalsIgnoreCase("prebooking")) {
 					comboPrioritaet.setItems(prebookingPriorities);
 					comboPrioritaet.setText(tmpPriority);
 				}
-				if(transportType.equalsIgnoreCase("emergencyTransport"))
-				{
+				if (transportType.equalsIgnoreCase("emergencyTransport")) {
 					comboPrioritaet.setItems(emergencyAndTransportPriorities);
 					comboPrioritaet.setText(tmpPriority);
 				}
@@ -2296,17 +2234,16 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		buttonDialyse.setLayoutData(fd_buttonDialye);
 		buttonDialyse.setToolTipText("Erstellt einen Dialysetransport");
 		buttonDialyse.setText("Dialyse");
-		buttonDialyse.addSelectionListener(new SelectionAdapter() 
-		{
-			public void widgetSelected(final SelectionEvent e) 
-			{
+		buttonDialyse.addSelectionListener(new SelectionAdapter() {
+
+			public void widgetSelected(final SelectionEvent e) {
 				DialysisPatient dia = new DialysisPatient();
-				if(!textFromStreet.getText().equalsIgnoreCase(""))
+				if (!textFromStreet.getText().equalsIgnoreCase(""))
 					dia.setFromStreet(textFromStreet.getText());
 				else
 					dia.setFromStreet("<bitte ausfüllen>");
 
-				if(!textFromCity.getText().equalsIgnoreCase(""))
+				if (!textFromCity.getText().equalsIgnoreCase(""))
 					dia.setFromCity(textFromCity.getText());
 				else
 					dia.setFromCity("<bitte ausfüllen>");
@@ -2315,12 +2252,11 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 
 				dia.setToCity(textToCity.getText());
 				int index = zustaendigeOrtsstelle.getCombo().getSelectionIndex();
-				if(index != -1)
-					dia.setLocation((Location)zustaendigeOrtsstelle.getElementAt(index));
+				if (index != -1)
+					dia.setLocation((Location) zustaendigeOrtsstelle.getElementAt(index));
 
 				Calendar startTime = convertStringToDate(textAbf.getText());
-				if(startTime != null)
-				{
+				if (startTime != null) {
 					startTime.set(Calendar.YEAR, dateTime.getYear());
 					startTime.set(Calendar.MONTH, dateTime.getMonth());
 					startTime.set(Calendar.DAY_OF_MONTH, dateTime.getDay());
@@ -2331,8 +2267,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 					dia.setPlannedStartOfTransport(0);
 
 				Calendar patientTime = convertStringToDate(textBeiPat.getText());
-				if(patientTime != null)
-				{
+				if (patientTime != null) {
 					patientTime.set(Calendar.YEAR, dateTime.getYear());
 					patientTime.set(Calendar.MONTH, dateTime.getMonth());
 					patientTime.set(Calendar.DAY_OF_MONTH, dateTime.getDay());
@@ -2342,8 +2277,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 					dia.setPlannedTimeAtPatient(0);
 
 				Calendar appointmentTime = convertStringToDate(textTermin.getText());
-				if(appointmentTime != null)
-				{
+				if (appointmentTime != null) {
 					appointmentTime.set(Calendar.YEAR, dateTime.getYear());
 					appointmentTime.set(Calendar.MONTH, dateTime.getMonth());
 					appointmentTime.set(Calendar.DAY_OF_MONTH, dateTime.getDay());
@@ -2352,12 +2286,12 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 				else
 					dia.setAppointmentTimeAtDialysis(0);
 
-				//the kind of transport
+				// the kind of transport
 				index = combokindOfTransport.getSelectionIndex();
 				if (index != -1)
 					dia.setKindOfTransport(combokindOfTransport.getItem(index));
 
-				Patient patient = new Patient(patientFirstName.getText(),patientLastName.getText());
+				Patient patient = new Patient(patientFirstName.getText(), patientLastName.getText());
 				dia.setPatient(patient);
 
 				DialysisForm form = new DialysisForm(dia, true);
@@ -2376,10 +2310,9 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		buttonMehrfachtransport.setLayoutData(fd_buttonMehrfachtransport);
 		buttonMehrfachtransport.setToolTipText("Mehrfachtransportfenster öffnen");
 		buttonMehrfachtransport.setText("Mehrfachtransport");
-		buttonMehrfachtransport.addSelectionListener(new SelectionAdapter() 
-		{
-			public void widgetSelected(final SelectionEvent e) 
-			{
+		buttonMehrfachtransport.addSelectionListener(new SelectionAdapter() {
+
+			public void widgetSelected(final SelectionEvent e) {
 				hookContextMenu();
 				mehrfachtransport = true;
 				buttonMehrfachtransport.setEnabled(false);
@@ -2388,7 +2321,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 				assignCarGroup.setVisible(false);
 				buttonAssignCar.setEnabled(false);
 
-				//remove all transports from the multi transport list
+				// remove all transports from the multi transport list
 				multiTransportProvider.removeAllTransports();
 				viewer.refresh();
 			}
@@ -2404,37 +2337,35 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		buttonADDMehrfachtransport.setToolTipText("Mehrfachtransport hinzufügen");
 		buttonADDMehrfachtransport.setText("hinzufügen");
 		buttonADDMehrfachtransport.setEnabled(false);
-		buttonADDMehrfachtransport.addSelectionListener(new SelectionAdapter() 
-		{
-			public void widgetSelected(final SelectionEvent e) 
-			{
-				//make a difference between immediate and final transports
-				finalMultiTransportKlick = false;
-				//check the fields
-				if(!handleOK())
-					return ;
+		buttonADDMehrfachtransport.addSelectionListener(new SelectionAdapter() {
 
-				//copy the transport (don't use the same objects (transport, patient, caller)!!
+			public void widgetSelected(final SelectionEvent e) {
+				// make a difference between immediate and final transports
+				finalMultiTransportKlick = false;
+				// check the fields
+				if (!handleOK())
+					return;
+
+				// copy the transport (don't use the same objects (transport,
+				// patient, caller)!!
 				Patient newPatient = new Patient();
 				CallerDetail newCaller = new CallerDetail();
-				if(transport.getPatient() != null)
-				{
+				if (transport.getPatient() != null) {
 					newPatient.setLastname(transport.getPatient().getLastname());
 					newPatient.setFirstname(transport.getPatient().getFirstname());
 				}
-				if(transport.getCallerDetail() != null)
-				{
+				if (transport.getCallerDetail() != null) {
 					newCaller.setCallerName(transport.getCallerDetail().getCallerName());
 					newCaller.setCallerTelephoneNumber(transport.getCallerDetail().getCallerTelephoneNumber());
 				}
 				Transport newTransport = Util.copyTransport(transport);
 				newTransport.setPatient(newPatient);
 				newTransport.setCallerDetail(newCaller);
-				//add the created transport to the table object list
+				// add the created transport to the table object list
 				multiTransportProvider.addTransport(newTransport);
 
-				//refresh the viewer
-				viewer.refresh();	
+				// refresh the viewer
+				viewer.refresh();
 			}
 		});
 
@@ -2448,16 +2379,15 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		buttonAssignCar.setToolTipText("Fahrzeug zuweisen");
 		buttonAssignCar.setText("Fahrzeug zuweisen");
 		buttonAssignCar.setEnabled(false);
-		buttonAssignCar.addSelectionListener(new SelectionAdapter() 
-		{
-			public void widgetSelected(final SelectionEvent e) 
-			{
+		buttonAssignCar.addSelectionListener(new SelectionAdapter() {
+
+			public void widgetSelected(final SelectionEvent e) {
 				mehrfachtransport = false;
 				buttonMehrfachtransport.setEnabled(false);
 				buttonADDMehrfachtransport.setEnabled(false);
-				multiTransportGroup.setVisible(false); 
+				multiTransportGroup.setVisible(false);
 
-				//remove all transports from the multi transport list
+				// remove all transports from the multi transport list
 				multiTransportProvider.removeAllTransports();
 				viewer.refresh();
 
@@ -2468,48 +2398,34 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 	}
 
 	@Override
-	public void propertyChange(PropertyChangeEvent evt)
-	{
+	public void propertyChange(PropertyChangeEvent evt) {
 		String event = evt.getPropertyName();
 		// the viewer represents simple model. refresh should be enough.
-		if ("STAFF_ADD".equals(evt.getPropertyName())
-				|| "STAFF_REMOVE".equals(evt.getPropertyName())
-				|| "STAFF_UPDATE".equals(evt.getPropertyName())
-				|| "STAFF_CLEARED".equals(evt.getPropertyName()))
-		{ 
+		if ("STAFF_ADD".equals(evt.getPropertyName()) || "STAFF_REMOVE".equals(evt.getPropertyName()) || "STAFF_UPDATE".equals(evt.getPropertyName())
+				|| "STAFF_CLEARED".equals(evt.getPropertyName())) {
 			setTextFahrer.refresh();
 			setTextSaniI.refresh();
 			setTextSaniII.refresh();
 		}
 		// update the viewer when a disease has changed
-		if ("DISEASE_ADD".equals(evt.getPropertyName())
-				|| "DISEASE_REMOVE".equalsIgnoreCase(evt.getPropertyName())
-				|| "DISEASE_UPDATE".equalsIgnoreCase(evt.getPropertyName())
-				|| "DISEASE_CLEARED".equalsIgnoreCase(evt.getPropertyName()))
-		{ 
+		if ("DISEASE_ADD".equals(evt.getPropertyName()) || "DISEASE_REMOVE".equalsIgnoreCase(evt.getPropertyName())
+				|| "DISEASE_UPDATE".equalsIgnoreCase(evt.getPropertyName()) || "DISEASE_CLEARED".equalsIgnoreCase(evt.getPropertyName())) {
 			setErkrVerl.refresh();
 		}
 		// update the viewer when a roster entry has changed
-		if ("DISEASE_ADD".equals(evt.getPropertyName())
-				|| "DISEASE_REMOVE".equalsIgnoreCase(evt.getPropertyName())
-				|| "DISEASE_UPDATE".equalsIgnoreCase(evt.getPropertyName())
-				|| "DISEASE_CLEARED".equalsIgnoreCase(evt.getPropertyName()))
-		{ 
+		if ("DISEASE_ADD".equals(evt.getPropertyName()) || "DISEASE_REMOVE".equalsIgnoreCase(evt.getPropertyName())
+				|| "DISEASE_UPDATE".equalsIgnoreCase(evt.getPropertyName()) || "DISEASE_CLEARED".equalsIgnoreCase(evt.getPropertyName())) {
 			setErkrVerl.refresh();
 		}
-		//update the vehicle table
-		if("VEHICLE_ADD".equalsIgnoreCase(evt.getPropertyName())
-				|| "VEHICLE_UPDATE".equalsIgnoreCase(evt.getPropertyName())
-				|| "VEHICLE_CLEAR".equalsIgnoreCase(evt.getPropertyName())
-				|| "VEHICLE_REMOVE".equalsIgnoreCase(evt.getPropertyName())
-				|| "VEHICLE_ADD_ALL".equalsIgnoreCase(evt.getPropertyName()))
-		{
-			if(!viewerAssign.getTable().isDisposed())
+		// update the vehicle table
+		if ("VEHICLE_ADD".equalsIgnoreCase(evt.getPropertyName()) || "VEHICLE_UPDATE".equalsIgnoreCase(evt.getPropertyName())
+				|| "VEHICLE_CLEAR".equalsIgnoreCase(evt.getPropertyName()) || "VEHICLE_REMOVE".equalsIgnoreCase(evt.getPropertyName())
+				|| "VEHICLE_ADD_ALL".equalsIgnoreCase(evt.getPropertyName())) {
+			if (!viewerAssign.getTable().isDisposed())
 				viewerAssign.refresh();
 		}
-		if("ADDRESS_ADD".equalsIgnoreCase(event) || "ADDRESS_ADD_ALL".equalsIgnoreCase(event))
-		{
-			//update the proposal listeners
+		if ("ADDRESS_ADD".equalsIgnoreCase(event) || "ADDRESS_ADD_ALL".equalsIgnoreCase(event)) {
+			// update the proposal listeners
 			acFromStreet.setProposals(ModelFactory.getInstance().getAddressManager().toStreetArray());
 			acFromCity.setProposals(ModelFactory.getInstance().getAddressManager().toCityArray());
 			acToStreet.setProposals(ModelFactory.getInstance().getAddressManager().toStreetArray());
@@ -2520,175 +2436,165 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 	/**
 	 * Converts and returns the given time string to a calendar.<br>
 	 * The provided time string must have either the format HHmm or HH:mm.
+	 * 
 	 * @return the date entered or null if the time is not valid
 	 */
-	private Calendar convertStringToDate(final String dateString)
-	{
-		//the date formatter
+	private Calendar convertStringToDate(final String dateString) {
+		// the date formatter
 		DateFormat formatter;
 
-		//the types of the accepted strings
-		if(dateString.contains(":"))
+		// the types of the accepted strings
+		if (dateString.contains(":"))
 			formatter = new SimpleDateFormat("HH:mm");
 		else
 			formatter = new SimpleDateFormat("HHmm");
 
-		//try and parse the string
-		try
-		{
+		// try and parse the string
+		try {
 			formatter.setLenient(false);
 			long timestamp = formatter.parse(dateString).getTime();
 			Calendar cal = Calendar.getInstance();
 			cal.setTimeInMillis(timestamp);
-			
-			//set the date for the timestamps to get a correct sort order
+
+			// set the date for the timestamps to get a correct sort order
 			Calendar calDateOfTransport = Calendar.getInstance();
 			calDateOfTransport.setTimeInMillis(transport.getDateOfTransport());
 			cal.set(Calendar.YEAR, calDateOfTransport.get(Calendar.YEAR));
 			cal.set(Calendar.MONTH, calDateOfTransport.get(Calendar.MONTH));
 			cal.set(Calendar.DAY_OF_MONTH, calDateOfTransport.get(Calendar.DAY_OF_MONTH));
-			
+
 			return cal;
 		}
-		catch(ParseException pe)
-		{
+		catch (ParseException pe) {
 			return null;
 		}
 	}
 
-	/** 
+	/**
 	 * returns the priority to set
-	 * @param the priority string
+	 * 
+	 * @param the
+	 *            priority string
 	 */
-	private String stringToPriority(String priorityString)
-	{
+	private String stringToPriority(String priorityString) {
 		if (priorityString.equalsIgnoreCase("1 NEF"))
 			return "A";
 		else if (priorityString.equalsIgnoreCase("2 Transport"))
 			return "B";
-		else if(priorityString.equalsIgnoreCase("3 Terminfahrt"))
+		else if (priorityString.equalsIgnoreCase("3 Terminfahrt"))
 			return "C";
-		else if(priorityString.equalsIgnoreCase("4 RT"))
+		else if (priorityString.equalsIgnoreCase("4 RT"))
 			return "D";
-		else if(priorityString.equalsIgnoreCase("5 HT"))
+		else if (priorityString.equalsIgnoreCase("5 HT"))
 			return "E";
-		else if(priorityString.equalsIgnoreCase("6 Sonstiges"))
+		else if (priorityString.equalsIgnoreCase("6 Sonstiges"))
 			return "F";
-		else if(priorityString.equalsIgnoreCase("7 NEF extern"))
+		else if (priorityString.equalsIgnoreCase("7 NEF extern"))
 			return "G";
-		else return "F";//default in case of a problem
+		else
+			return "F";// default in case of a problem
 	}
 
 	/**
 	 * returns the priority string to display
-	 * @param  the priority
+	 * 
+	 * @param the
+	 *            priority
 	 */
-	private String priorityToString(String priority)
-	{
+	private String priorityToString(String priority) {
 		if (priority.equalsIgnoreCase("A"))
 			return "1 NEF";
 		else if (priority.equalsIgnoreCase("B"))
 			return "2 Transport";
-		else if(priority.equalsIgnoreCase("C"))
+		else if (priority.equalsIgnoreCase("C"))
 			return "3 Terminfahrt";
-		else if(priority.equalsIgnoreCase("D"))
+		else if (priority.equalsIgnoreCase("D"))
 			return "4 RT";
-		else if(priority.equalsIgnoreCase("E"))
+		else if (priority.equalsIgnoreCase("E"))
 			return "5 HT";
-		else if(priority.equalsIgnoreCase("F"))
+		else if (priority.equalsIgnoreCase("F"))
 			return "6 Sonstiges";
-		else if(priority.equalsIgnoreCase("G"))
+		else if (priority.equalsIgnoreCase("G"))
 			return "7 NEF extern";
-		else return null;
+		else
+			return null;
 	}
 
-	private boolean handleOK()
-	{
-		//reset the error messages
+	private boolean handleOK() {
+		// reset the error messages
 		setMessage("Hier können Sie einen neuen Transport anlegen");
 
-		//the street
-		if (textFromStreet.getText().length() > 100)
-		{
-//			getShell().getDisplay().beep();
+		// the street
+		if (textFromStreet.getText().length() > 100) {
+			// getShell().getDisplay().beep();
 			setErrorMessage("Der Straßenname (von)darf höchstens 100 Zeichen lang sein");
 			return false;
 		}
 
-
-		if (textFromStreet.getText().trim().isEmpty())
-		{
-//			getShell().getDisplay().beep();
+		if (textFromStreet.getText().trim().isEmpty()) {
+			// getShell().getDisplay().beep();
 			setErrorMessage("Bitte geben Sie die Straße ein, von der der Transport gestartet wird");
 			return false;
 		}
 
 		transport.setFromStreet(textFromStreet.getText());
 
-		//the from city
-		if(textFromCity.getText().length() > 50 )
-		{
-//			getShell().getDisplay().beep();
+		// the from city
+		if (textFromCity.getText().length() > 50) {
+			// getShell().getDisplay().beep();
 			setErrorMessage("Der Stadtname (von)darf höchstens 50 Zeichen lang sein");
 			return false;
 		}
 
-		//the city--> can be empty if the street is LKH or PH
-		if (textFromCity.getText().trim().isEmpty() &!
-				(transport.getFromStreet().contains("LKH") || transport.getFromStreet().startsWith("LKH")
-						|| transport.getFromStreet().contains("PH") || transport.getFromStreet().startsWith("PH") ))
-		{
-//			getShell().getDisplay().beep();
+		// the city--> can be empty if the street is LKH or PH
+		if (textFromCity.getText().trim().isEmpty()
+				& !(transport.getFromStreet().contains("LKH") || transport.getFromStreet().startsWith("LKH")
+						|| transport.getFromStreet().contains("PH") || transport.getFromStreet().startsWith("PH"))) {
+			// getShell().getDisplay().beep();
 			setErrorMessage("Bitte geben Sie die Stadt ein, von der der Transport gestartet wird");
 			return false;
 		}
 
 		transport.setFromCity(textFromCity.getText());
 
-		if (textToStreet.getText().length() > 100)
-		{
-//			getShell().getDisplay().beep();
+		if (textToStreet.getText().length() > 100) {
+			// getShell().getDisplay().beep();
 			setErrorMessage("Der Straßenname (nach) darf höchstens 100 Zeichen lang sein");
 			return false;
 		}
 
-		if (textToCity.getText().length() > 50)
-		{
-//			getShell().getDisplay().beep();
+		if (textToCity.getText().length() > 50) {
+			// getShell().getDisplay().beep();
 			setErrorMessage("Der Stadtname (nach) darf höchstens 50 Zeichen lang sein");
 			return false;
 		}
 
-		//the planned location
+		// the planned location
 		int index = zustaendigeOrtsstelle.getCombo().getSelectionIndex();
-		if (index == -1)
-		{
-//			getShell().getDisplay().beep();
+		if (index == -1) {
+			// getShell().getDisplay().beep();
 			setErrorMessage("Bitte geben sie die zuständige Ortsstelle ein");
 			return false;
 		}
-		transport.setPlanedLocation((Location)zustaendigeOrtsstelle.getElementAt(index));
+		transport.setPlanedLocation((Location) zustaendigeOrtsstelle.getElementAt(index));
 
-		//the transport priority
+		// the transport priority
 		index = comboPrioritaet.getSelectionIndex();
-		if (index == -1)
-		{
-//			getShell().getDisplay().beep();
+		if (index == -1) {
+			// getShell().getDisplay().beep();
 			setErrorMessage("Bitte geben sie die Priorität des Transports ein");
 			return false;
 		}
 		transport.setTransportPriority(this.stringToPriority(comboPrioritaet.getItem(index)));
 
-		//convert the start time --> no validation when an emergency transport
+		// convert the start time --> no validation when an emergency transport
 		Calendar startTime = convertStringToDate(textAbf.getText());
-		if(startTime == null &! transportType.equalsIgnoreCase("emergencyTransport") && createNew)
-		{
-//			getShell().getDisplay().beep();
+		if (startTime == null & !transportType.equalsIgnoreCase("emergencyTransport") && createNew) {
+			// getShell().getDisplay().beep();
 			setErrorMessage("Bitte geben Sie eine gültige Abfahrtszeit in der Form HH:mm oder HHmm ein");
 			return false;
 		}
-		if(startTime != null)
-		{
+		if (startTime != null) {
 			startTime.set(Calendar.YEAR, dateTime.getYear());
 			startTime.set(Calendar.MONTH, dateTime.getMonth());
 			startTime.set(Calendar.DAY_OF_MONTH, dateTime.getDay());
@@ -2698,16 +2604,14 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		else
 			transport.setPlannedStartOfTransport(0);
 
-		//time at patient  --> validation if the field is not empty 
+		// time at patient --> validation if the field is not empty
 		Calendar patientTime = convertStringToDate(textBeiPat.getText());
-		if(!textBeiPat.getText().trim().isEmpty() && patientTime == null)
-		{
-//			getShell().getDisplay().beep();
+		if (!textBeiPat.getText().trim().isEmpty() && patientTime == null) {
+			// getShell().getDisplay().beep();
 			setErrorMessage("Bitte geben Sie eine gültige Zeit (bei Patient) in der Form HH:mm oder HHmm ein");
 			return false;
 		}
-		if(patientTime != null)
-		{
+		if (patientTime != null) {
 			patientTime.set(Calendar.YEAR, dateTime.getYear());
 			patientTime.set(Calendar.MONTH, dateTime.getMonth());
 			patientTime.set(Calendar.DAY_OF_MONTH, dateTime.getDay());
@@ -2716,16 +2620,14 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		else
 			transport.setPlannedTimeAtPatient(0);
 
-		//check the time  --> validation if the field is not empty
+		// check the time --> validation if the field is not empty
 		Calendar appointmentTime = convertStringToDate(textTermin.getText());
-		if(!textTermin.getText().trim().isEmpty() && appointmentTime == null)
-		{
-//			getShell().getDisplay().beep();
+		if (!textTermin.getText().trim().isEmpty() && appointmentTime == null) {
+			// getShell().getDisplay().beep();
 			setErrorMessage("Bitte geben Sie eine gültige Zeit für den Termin in der Form HH:mm oder HHmm ein");
 			return false;
 		}
-		if(appointmentTime != null)
-		{
+		if (appointmentTime != null) {
 			appointmentTime.set(Calendar.YEAR, dateTime.getYear());
 			appointmentTime.set(Calendar.MONTH, dateTime.getMonth());
 			appointmentTime.set(Calendar.DAY_OF_MONTH, dateTime.getDay());
@@ -2734,140 +2636,123 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		else
 			transport.setAppointmentTimeAtDestination(0);
 
-		//calendar to allow transport times around midnight
+		// calendar to allow transport times around midnight
 		Calendar calMid = Calendar.getInstance();
 		calMid.setTimeInMillis(transport.getPlannedStartOfTransport());
 		int hour = calMid.get(Calendar.HOUR_OF_DAY);
 
-		//validate: start before atPatient
-		if(transport.getPlannedTimeAtPatient() < transport.getPlannedStartOfTransport() &!(transport.getPlannedTimeAtPatient()==0))
-		{
-			if(hour < 22)
-			{
-//				getShell().getDisplay().beep();
+		// validate: start before atPatient
+		if (transport.getPlannedTimeAtPatient() < transport.getPlannedStartOfTransport() & !(transport.getPlannedTimeAtPatient() == 0)) {
+			if (hour < 22) {
+				// getShell().getDisplay().beep();
 				setErrorMessage("Ankunft bei Patient kann nicht vor Abfahrtszeit des Fahrzeuges liegen.");
 				return false;
 			}
-		}				
+		}
 
-		//validate: atPatient before term
-		if(transport.getAppointmentTimeAtDestination() < transport.getPlannedTimeAtPatient() &!(transport.getAppointmentTimeAtDestination()==0)&!(transport.getPlannedTimeAtPatient()==0))
-		{
-			if(hour < 22)
-			{
-//				getShell().getDisplay().beep();
+		// validate: atPatient before term
+		if (transport.getAppointmentTimeAtDestination() < transport.getPlannedTimeAtPatient() & !(transport.getAppointmentTimeAtDestination() == 0)
+				& !(transport.getPlannedTimeAtPatient() == 0)) {
+			if (hour < 22) {
+				// getShell().getDisplay().beep();
 				setErrorMessage("Termin kann nicht vor Ankunft bei Patient sein");
 				return false;
 			}
 		}
 
-		//validate: start before term
-		if(transport.getAppointmentTimeAtDestination() < transport.getPlannedStartOfTransport() &!(transport.getAppointmentTimeAtDestination() ==0))
-		{
-			if(hour < 22)
-			{
-//				getShell().getDisplay().beep();
+		// validate: start before term
+		if (transport.getAppointmentTimeAtDestination() < transport.getPlannedStartOfTransport()
+				& !(transport.getAppointmentTimeAtDestination() == 0)) {
+			if (hour < 22) {
+				// getShell().getDisplay().beep();
 				setErrorMessage("Termin kann nicht vor Abfahrtszeit des Fahrzeuges liegen");
 				return false;
 			}
 		}
 
-		//kind of illness
+		// kind of illness
 		index = setErkrVerl.getCombo().getSelectionIndex();
-		if(index != -1)
-		{
-			transport.setKindOfIllness((Disease)setErkrVerl.getElementAt(index));
+		if (index != -1) {
+			transport.setKindOfIllness((Disease) setErkrVerl.getElementAt(index));
 		}
 
-		//set the fields that do not have to be validated
+		// set the fields that do not have to be validated
 		transport.setBackTransport(ruecktransportMoeglichButton.getSelection());
 
-		//the disposed by user
-		if(!disposedBy.getText().trim().isEmpty())
+		// the disposed by user
+		if (!disposedBy.getText().trim().isEmpty())
 			transport.setDisposedByUsername(disposedBy.getText());
-		//the kind of transport
+		// the kind of transport
 		index = combokindOfTransport.getSelectionIndex();
 		if (index != -1)
 			transport.setKindOfTransport(combokindOfTransport.getItem(index));
 
-		if (patientFirstName.getText().length() > 30)
-		{
-//			getShell().getDisplay().beep();
+		if (patientFirstName.getText().length() > 30) {
+			// getShell().getDisplay().beep();
 			setErrorMessage("Bitte geben Sie einen Vornamen, der kürzer als 30 Zeichen ist ein");
 			return false;
 		}
 
-		if (patientLastName.getText().length() > 30)
-		{
-//			getShell().getDisplay().beep();
+		if (patientLastName.getText().length() > 30) {
+			// getShell().getDisplay().beep();
 			setErrorMessage("Bitte geben Sie einen Nachnamen, der kürzer als 30 Zeichen ist ein");
 			return false;
 		}
 
-		//if we have a patient just update it 
-		if(transport.getPatient() == null)
-		{
-			Patient patient = new Patient(patientFirstName.getText(),patientLastName.getText());
+		// if we have a patient just update it
+		if (transport.getPatient() == null) {
+			Patient patient = new Patient(patientFirstName.getText(), patientLastName.getText());
 			transport.setPatient(patient);
 		}
-		else
-		{
+		else {
 			transport.getPatient().setFirstname(patientFirstName.getText());
 			transport.getPatient().setLastname(patientLastName.getText());
 		}
 
-
-		//validate caller
-		if (textAnrufer.getText().length() > 30)
-		{
-//			getShell().getDisplay().beep();
+		// validate caller
+		if (textAnrufer.getText().length() > 30) {
+			// getShell().getDisplay().beep();
 			setErrorMessage("Bitte geben Sie einen Anrufer kürzer 30 Zeichen ein.");
 			return false;
 		}
-		if (textTelefonAnrufer.getText().length() > 30)
-		{
-//			getShell().getDisplay().beep();
+		if (textTelefonAnrufer.getText().length() > 30) {
+			// getShell().getDisplay().beep();
 			setErrorMessage("Bitte geben Sie eine Telefonnummer kürzer 30 ein!");
 			return false;
 		}
 
-		//if we have a caller, just update it
-		if(transport.getCallerDetail() == null)
-		{
-			CallerDetail caller = new CallerDetail(textAnrufer.getText(),textTelefonAnrufer.getText());
+		// if we have a caller, just update it
+		if (transport.getCallerDetail() == null) {
+			CallerDetail caller = new CallerDetail(textAnrufer.getText(), textTelefonAnrufer.getText());
 			transport.setCallerDetail(caller);
 		}
-		else
-		{
+		else {
 			transport.getCallerDetail().setCallerName(textAnrufer.getText());
 			transport.getCallerDetail().setCallerTelephoneNumber(textTelefonAnrufer.getText());
 		}
 
-		//notes and feedback
-		if (textAnmerkungen.getText().length() > 2000)
-		{
-//			getShell().getDisplay().beep();
+		// notes and feedback
+		if (textAnmerkungen.getText().length() > 2000) {
+			// getShell().getDisplay().beep();
 			setErrorMessage("Die Anmerkung muss kürzer als 2000 Zeichen sein");
 			return false;
 		}
 
 		transport.setNotes(textAnmerkungen.getText());
 
-
-		if (textRueckmeldung.getText().length() > 2000)
-		{
-//			getShell().getDisplay().beep();
+		if (textRueckmeldung.getText().length() > 2000) {
+			// getShell().getDisplay().beep();
 			setErrorMessage("Die Rückmeldung muss kürzer als 2000 Zeichen sein");
 			return false;
 		}
 
 		transport.setFeedback(textRueckmeldung.getText());
 
-		//the destination
+		// the destination
 		transport.setToStreet(textToStreet.getText());
 		transport.setToCity(textToCity.getText());
 
-		//the boolean values
+		// the boolean values
 		transport.setAssistantPerson(begleitpersonButton.getSelection());
 		transport.setBlueLightToGoal(bd2Button.getSelection());
 		transport.setBlueLight1(bd1Button.getSelection());
@@ -2882,29 +2767,28 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		transport.setPoliceAlarming(polizeiButton.getSelection());
 		transport.setKITAlarming(KITButton.getSelection());
 
-		//the timestamps for the alarming fields
-		if(!timestampNA.getText().equalsIgnoreCase(""))
+		// the timestamps for the alarming fields
+		if (!timestampNA.getText().equalsIgnoreCase(""))
 			transport.settimestampNA(MyUtils.stringToTimestamp(timestampNA.getText(), MyUtils.timeAndDateFormatShort));
-		if(!timestampRTH.getText().equalsIgnoreCase(""))
+		if (!timestampRTH.getText().equalsIgnoreCase(""))
 			transport.settimestampRTH(MyUtils.stringToTimestamp(timestampRTH.getText(), MyUtils.timeAndDateFormatShort));
-		if(!timestampDF.getText().equalsIgnoreCase(""))
+		if (!timestampDF.getText().equalsIgnoreCase(""))
 			transport.settimestampDF(MyUtils.stringToTimestamp(timestampDF.getText(), MyUtils.timeAndDateFormatShort));
-		if(!timestampBRKDT.getText().equalsIgnoreCase(""))
+		if (!timestampBRKDT.getText().equalsIgnoreCase(""))
 			transport.settimestampBRKDT(MyUtils.stringToTimestamp(timestampBRKDT.getText(), MyUtils.timeAndDateFormatShort));
-		if(!timestampFW.getText().equalsIgnoreCase(""))
+		if (!timestampFW.getText().equalsIgnoreCase(""))
 			transport.settimestampFW(MyUtils.stringToTimestamp(timestampFW.getText(), MyUtils.timeAndDateFormatShort));
-		if(!timestampPolizei.getText().equalsIgnoreCase(""))
+		if (!timestampPolizei.getText().equalsIgnoreCase(""))
 			transport.settimestampPolizei(MyUtils.stringToTimestamp(timestampPolizei.getText(), MyUtils.timeAndDateFormatShort));
-		if(!timestampBergrettung.getText().equalsIgnoreCase(""))
-			transport.settimestampBergrettung(MyUtils.stringToTimestamp(timestampBergrettung.getText(), MyUtils.timeAndDateFormatShort));        
-		if(!timestampKIT.getText().equalsIgnoreCase(""))
+		if (!timestampBergrettung.getText().equalsIgnoreCase(""))
+			transport.settimestampBergrettung(MyUtils.stringToTimestamp(timestampBergrettung.getText(), MyUtils.timeAndDateFormatShort));
+		if (!timestampKIT.getText().equalsIgnoreCase(""))
 			transport.settimestampKIT(MyUtils.stringToTimestamp(timestampKIT.getText(), MyUtils.timeAndDateFormatShort));
 
-
-		//set the type of the transport
-		if(transportType.equalsIgnoreCase("prebooking"))
+		// set the type of the transport
+		if (transportType.equalsIgnoreCase("prebooking"))
 			transport.setProgramStatus(PROGRAM_STATUS_PREBOOKING);
-		if(transportType.equalsIgnoreCase("emergencyTransport"))
+		if (transportType.equalsIgnoreCase("emergencyTransport"))
 			transport.setProgramStatus(PROGRAM_STATUS_OUTSTANDING);
 
 		if (mariazellButton.getSelection())
@@ -2920,29 +2804,26 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		else
 			transport.setDirection(TOWARDS_BRUCK);
 
-		//transport date 
+		// transport date
 		Calendar transportDate = Calendar.getInstance();
 		transportDate.set(Calendar.YEAR, dateTime.getYear());
 		transportDate.set(Calendar.MONTH, dateTime.getMonth());
 		transportDate.set(Calendar.DAY_OF_MONTH, dateTime.getDay());
 		transport.setDateOfTransport(transportDate.getTimeInMillis());
 
-		if(createNew)
-		{
-			//created time
+		if (createNew) {
+			// created time
 			transport.setCreationTime(Calendar.getInstance().getTimeInMillis());
-			//created by user
+			// created by user
 			transport.setCreatedByUsername(SessionManager.getInstance().getLoginInformation().getUsername());
-			if(!mehrfachtransport)
-			{
-				//assign the vehicle if one is selected	
-				if(viewerAssign.getTable().getSelectionIndex() != -1)
-				{
-					//the selection
+			if (!mehrfachtransport) {
+				// assign the vehicle if one is selected
+				if (viewerAssign.getTable().getSelectionIndex() != -1) {
+					// the selection
 					ISelection selection = viewerAssign.getSelection();
-					//get the selected transport
-					VehicleDetail vehicle = (VehicleDetail)((IStructuredSelection)selection).getFirstElement();
-					//set the details
+					// get the selected transport
+					VehicleDetail vehicle = (VehicleDetail) ((IStructuredSelection) selection).getFirstElement();
+					// set the details
 					transport.setVehicleDetail(vehicle);
 					transport.setDisposedByUsername(SessionManager.getInstance().getLoginInformation().getUsername());
 					GregorianCalendar cal = new GregorianCalendar();
@@ -2951,147 +2832,132 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 					transport.setProgramStatus(PROGRAM_STATUS_UNDERWAY);
 				}
 
-				//create and run the add action
+				// create and run the add action
 				NetWrapper.getDefault().sendAddMessage(Transport.ID, transport);
 
-				if(transport.getTransportPriority().equalsIgnoreCase("A"))
-				{
+				if (transport.getTransportPriority().equalsIgnoreCase("A")) {
 					DuplicatePriorityATransportAction duplicateAction = new DuplicatePriorityATransportAction(transport);
 					duplicateAction.run();
 				}
 			}
-			else
-			{
-				if(finalMultiTransportKlick)
-				{
+			else {
+				if (finalMultiTransportKlick) {
 					List<Transport> objectList = new ArrayList<Transport>();
 					objectList = multiTransportProvider.getObjectList();
-					for(Transport transport : objectList)
-					{
+					for (Transport transport : objectList) {
 						NetWrapper.getDefault().sendAddMessage(Transport.ID, transport);
 					}
 				}
-			}       
+			}
 		}
-		else
-		{
-			//staff
+		else {
+			// staff
 			index = setTextFahrer.getCombo().getSelectionIndex();
-			if(index != -1)
-				transport.getVehicleDetail().setDriver((StaffMember)setTextFahrer.getElementAt(index));
+			if (index != -1)
+				transport.getVehicleDetail().setDriver((StaffMember) setTextFahrer.getElementAt(index));
 
 			index = setTextSaniI.getCombo().getSelectionIndex();
-			if(index != -1)
-				transport.getVehicleDetail().setFirstParamedic((StaffMember)setTextSaniI.getElementAt(index));
+			if (index != -1)
+				transport.getVehicleDetail().setFirstParamedic((StaffMember) setTextSaniI.getElementAt(index));
 
 			index = setTextSaniII.getCombo().getSelectionIndex();
-			if(index != -1)
-				transport.getVehicleDetail().setSecondParamedic((StaffMember)setTextSaniII.getElementAt(index));
+			if (index != -1)
+				transport.getVehicleDetail().setSecondParamedic((StaffMember) setTextSaniII.getElementAt(index));
 
-			//transport stati
-			//S0
+			// transport stati
+			// S0
 			Calendar s0 = convertStringToDate(textAE.getText());
-			if(!textAE.getText().trim().isEmpty() && s0 == null)
-			{
-//				getShell().getDisplay().beep();
+			if (!textAE.getText().trim().isEmpty() && s0 == null) {
+				// getShell().getDisplay().beep();
 				setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status AE (Auftrag erteilt) in der Form HHmm oder HH:mm ein");
-				return false;	           
+				return false;
 			}
-			if(s0 != null)
+			if (s0 != null)
 				transport.addStatus(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED, s0.getTimeInMillis());
 			else
 				transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_ORDER_PLACED);
 
-
-			//S1
+			// S1
 			Calendar s1 = convertStringToDate(textS1.getText());
-			if(!textS1.getText().trim().isEmpty() && s1 == null)
-			{
-//				getShell().getDisplay().beep();
+			if (!textS1.getText().trim().isEmpty() && s1 == null) {
+				// getShell().getDisplay().beep();
 				setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S1 in der Form HHmm oder HH:mm ein");
-				return false;	  
+				return false;
 			}
-			if(s1 != null)
+			if (s1 != null)
 				transport.addStatus(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY, s1.getTimeInMillis());
 			else
 				transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_ON_THE_WAY);
 
-
-			//S2
+			// S2
 			Calendar s2 = convertStringToDate(textS2.getText());
-			if(!textS2.getText().trim().isEmpty() && s2 == null)
-			{
-//				getShell().getDisplay().beep();
+			if (!textS2.getText().trim().isEmpty() && s2 == null) {
+				// getShell().getDisplay().beep();
 				setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S2 in der Form HHmm oder HH:mm ein");
-				return false;	 
+				return false;
 			}
-			if(s2 != null)
+			if (s2 != null)
 				transport.addStatus(ITransportStatus.TRANSPORT_STATUS_AT_PATIENT, s2.getTimeInMillis());
 			else
 				transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_AT_PATIENT);
 
-			//S3
+			// S3
 			Calendar s3 = convertStringToDate(textS3.getText());
-			if(!textS3.getText().trim().isEmpty() && s3 == null)
-			{
-//				getShell().getDisplay().beep();
+			if (!textS3.getText().trim().isEmpty() && s3 == null) {
+				// getShell().getDisplay().beep();
 				setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S3 in der Form HHmm oder HH:mm ein");
-				return false;	 
+				return false;
 			}
-			if(s3 != null)
+			if (s3 != null)
 				transport.addStatus(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT, s3.getTimeInMillis());
 			else
 				transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_START_WITH_PATIENT);
-			//S4
+			// S4
 			Calendar s4 = convertStringToDate(textS4.getText());
-			if(!textS4.getText().trim().isEmpty() && s4 == null)
-			{
-//				getShell().getDisplay().beep();
+			if (!textS4.getText().trim().isEmpty() && s4 == null) {
+				// getShell().getDisplay().beep();
 				setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S4 in der Form HHmm oder HH:mm ein");
-				return false;	 
+				return false;
 			}
-			if(s4 != null)
+			if (s4 != null)
 				transport.addStatus(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION, s4.getTimeInMillis());
 			else
 				transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_AT_DESTINATION);
-			//S5
+			// S5
 			Calendar s5 = convertStringToDate(textS5.getText());
-			if(!textS5.getText().trim().isEmpty() && s5 == null)
-			{
-//				getShell().getDisplay().beep();
+			if (!textS5.getText().trim().isEmpty() && s5 == null) {
+				// getShell().getDisplay().beep();
 				setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S5 in der Form HHmm oder HH:mm ein");
 				return false;
 			}
-			if(s5 != null)
+			if (s5 != null)
 				transport.addStatus(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE, s5.getTimeInMillis());
 			else
 				transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_DESTINATION_FREE);
-			//S6
+			// S6
 			Calendar s6 = convertStringToDate(textS6.getText());
-			if(!textS6.getText().trim().isEmpty() && s6 == null)
-			{
-//				getShell().getDisplay().beep();
+			if (!textS6.getText().trim().isEmpty() && s6 == null) {
+				// getShell().getDisplay().beep();
 				setErrorMessage("Bitte geben Sie eine gültige Zeit für den Status S6 in der Form HHmm oder HH:mm ein");
-				return false;	 
+				return false;
 			}
-			if(s6 != null)
+			if (s6 != null)
 				transport.addStatus(ITransportStatus.TRANSPORT_STATUS_CAR_IN_STATION, s6.getTimeInMillis());
 			else
 				transport.removeStatus(ITransportStatus.TRANSPORT_STATUS_CAR_IN_STATION);
 
-
-			/**duplicate the transport if the priority is changed to A*/
-			if(!oldPriority.equalsIgnoreCase("A") && transport.getTransportPriority().equalsIgnoreCase("A") &! editingType.equalsIgnoreCase("journal"))
-			{
+			/** duplicate the transport if the priority is changed to A */
+			if (!oldPriority.equalsIgnoreCase("A") && transport.getTransportPriority().equalsIgnoreCase("A")
+					& !editingType.equalsIgnoreCase("journal")) {
 				DuplicatePriorityATransportAction duplicateAction = new DuplicatePriorityATransportAction(transport);
 				duplicateAction.run();
 			}
 
 			NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 		}
-		if(!mehrfachtransport) 
+		if (!mehrfachtransport)
 			getShell().close();
-		if(finalMultiTransportKlick)
+		if (finalMultiTransportKlick)
 			getShell().close();
 		finalMultiTransportKlick = true;
 
@@ -3099,8 +2965,7 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		return true;
 	}
 
-	private void createAssignCarTable()
-	{
+	private void createAssignCarTable() {
 		viewerAssign = new TableViewer(assignCarGroup, SWT.VIRTUAL | SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION);
 		assignVehicleContentProvider = new AssignVehicleContentProvider();
 		viewerAssign.setContentProvider(assignVehicleContentProvider);
@@ -3114,12 +2979,10 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		fd_table_1.bottom = new FormAttachment(0, 122);
 		table_1.setLayoutData(fd_table_1);
 
-		viewerAssign.getTable().addMouseListener(new MouseAdapter() 
-		{
-			public void mouseDown(MouseEvent e) 
-			{
-				if( viewerAssign.getTable().getItem(new Point(e.x,e.y))==null ) 
-				{
+		viewerAssign.getTable().addMouseListener(new MouseAdapter() {
+
+			public void mouseDown(MouseEvent e) {
+				if (viewerAssign.getTable().getItem(new Point(e.x, e.y)) == null) {
 					viewerAssign.setSelection(new StructuredSelection());
 				}
 			}
@@ -3158,61 +3021,57 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		medicIIColumn.setWidth(100);
 		medicIIColumn.setText("Sanitäter II");
 
-		Listener sortListener = new Listener() 
-		{
-			public void handleEvent(Event e) 
-			{
+		Listener sortListener = new Listener() {
+
+			public void handleEvent(Event e) {
 				// determine new sort column and direction
 				TableColumn sortColumn = viewerAssign.getTable().getSortColumn();
 				TableColumn currentColumn = (TableColumn) e.widget;
 				int dir = viewerAssign.getTable().getSortDirection();
-				//revert the sort order if the column is the same
-				if (sortColumn == currentColumn) 
-				{
-					if(dir == SWT.UP)
+				// revert the sort order if the column is the same
+				if (sortColumn == currentColumn) {
+					if (dir == SWT.UP)
 						dir = SWT.DOWN;
 					else
 						dir = SWT.UP;
-				} 
-				else 
-				{
+				}
+				else {
 					viewerAssign.getTable().setSortColumn(currentColumn);
 					dir = SWT.UP;
 				}
 				// sort the data based on column and direction
 				String sortIdentifier = null;
-				if (currentColumn == stationColumn) 
+				if (currentColumn == stationColumn)
 					sortIdentifier = VehicleSorter.CURRENT_STATION_SORTER;
-				if (currentColumn == nameColumn) 
+				if (currentColumn == nameColumn)
 					sortIdentifier = VehicleSorter.VEHICLE_SORTER;
-				if (currentColumn == typeColumn) 
+				if (currentColumn == typeColumn)
 					sortIdentifier = VehicleSorter.VEHICLE_TYPE_SORTER;
 				if (currentColumn == driverColumn)
 					sortIdentifier = VehicleSorter.DRIVER_SORTER;
 				if (currentColumn == medicIColumn)
 					sortIdentifier = VehicleSorter.PARAMEDIC_I_SORTER;
-				if(currentColumn == medicIIColumn)
+				if (currentColumn == medicIIColumn)
 					sortIdentifier = VehicleSorter.PARAMEDIC_II_SORTER;
-				//apply the filter
+				// apply the filter
 				viewerAssign.getTable().setSortDirection(dir);
-				viewerAssign.setSorter(new VehicleSorter(sortIdentifier,dir));
+				viewerAssign.setSorter(new VehicleSorter(sortIdentifier, dir));
 				viewerAssign.refresh();
 			}
 		};
 
-		//attach the listener
+		// attach the listener
 		stationColumn.addListener(SWT.Selection, sortListener);
 		nameColumn.addListener(SWT.Selection, sortListener);
 		typeColumn.addListener(SWT.Selection, sortListener);
 		driverColumn.addListener(SWT.Selection, sortListener);
 		medicIColumn.addListener(SWT.Selection, sortListener);
-		medicIIColumn.addListener(SWT.Selection, sortListener);		
+		medicIIColumn.addListener(SWT.Selection, sortListener);
 
 		viewerAssign.refresh();
 	}
 
-	private void createMultiTransportTable()
-	{
+	private void createMultiTransportTable() {
 		viewer = new TableViewer(multiTransportGroup, SWT.VIRTUAL | SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION);
 		final Table table_1 = viewer.getTable();
 		final FormData fd_table_1 = new FormData();
@@ -3226,12 +3085,10 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		viewer.setInput(ModelFactory.getInstance().getTransportManager().toArray());
 		viewer.refresh();
 
-		viewer.getTable().addMouseListener(new MouseAdapter() 
-		{
-			public void mouseDown(MouseEvent e) 
-			{
-				if( viewer.getTable().getItem(new Point(e.x,e.y))==null ) 
-				{
+		viewer.getTable().addMouseListener(new MouseAdapter() {
+
+			public void mouseDown(MouseEvent e) {
+				if (viewer.getTable().getItem(new Point(e.x, e.y)) == null) {
 					viewer.setSelection(new StructuredSelection());
 				}
 			}
@@ -3282,53 +3139,50 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		bTableColumnTA.setWidth(20);
 		bTableColumnTA.setText("T");
 
-		Listener sortListener = new Listener() 
-		{
-			public void handleEvent(Event e) 
-			{
+		Listener sortListener = new Listener() {
+
+			public void handleEvent(Event e) {
 				// determine new sort column and direction
 				TableColumn sortColumn = viewer.getTable().getSortColumn();
 				TableColumn currentColumn = (TableColumn) e.widget;
 				int dir = viewer.getTable().getSortDirection();
-				//revert the sort order if the column is the same
-				if (sortColumn == currentColumn) 
-				{
-					if(dir == SWT.UP)
+				// revert the sort order if the column is the same
+				if (sortColumn == currentColumn) {
+					if (dir == SWT.UP)
 						dir = SWT.DOWN;
 					else
 						dir = SWT.UP;
-				} 
-				else 
-				{
+				}
+				else {
 					viewer.getTable().setSortColumn(currentColumn);
 					dir = SWT.UP;
 				}
 				// sort the data based on column and direction
 				String sortIdentifier = null;
-				if (currentColumn == bTableColumnOrtsstelle) 
+				if (currentColumn == bTableColumnOrtsstelle)
 					sortIdentifier = TransportSorter.RESP_STATION_SORTER;
-				if (currentColumn == bTableColumnAbfahrt) 
+				if (currentColumn == bTableColumnAbfahrt)
 					sortIdentifier = TransportSorter.ABF_SORTER;
-				if (currentColumn == bTableColumnAnkunft) 
+				if (currentColumn == bTableColumnAnkunft)
 					sortIdentifier = TransportSorter.AT_PATIENT_SORTER;
 				if (currentColumn == bTableColumnTermin)
 					sortIdentifier = TransportSorter.TERM_SORTER;
 				if (currentColumn == bTableColumnTransportVon)
 					sortIdentifier = TransportSorter.TRANSPORT_FROM_SORTER;
-				if(currentColumn == bTtableColumnPatient)
+				if (currentColumn == bTtableColumnPatient)
 					sortIdentifier = TransportSorter.PATIENT_SORTER;
-				if(currentColumn == bTableColumnTransportNach)
+				if (currentColumn == bTableColumnTransportNach)
 					sortIdentifier = TransportSorter.TRANSPORT_TO_SORTER;
-				if(currentColumn == bTableColumnTA)
+				if (currentColumn == bTableColumnTA)
 					sortIdentifier = TransportSorter.TA_SORTER;
-				//apply the filter
+				// apply the filter
 				viewer.getTable().setSortDirection(dir);
-				viewer.setSorter(new TransportSorter(sortIdentifier,dir));
+				viewer.setSorter(new TransportSorter(sortIdentifier, dir));
 				viewer.refresh();
 			}
 		};
 
-		//attach the listener
+		// attach the listener
 		bTableColumnOrtsstelle.addListener(SWT.Selection, sortListener);
 		bTableColumnAbfahrt.addListener(SWT.Selection, sortListener);
 		bTableColumnAnkunft.addListener(SWT.Selection, sortListener);
@@ -3346,11 +3200,11 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 	/**
 	 * Creates the context menu
 	 */
-	private void hookContextMenu() 
-	{
+	private void hookContextMenu() {
 		MenuManager menuManager = new MenuManager("#JournalPopupMenu");
 		menuManager.setRemoveAllWhenShown(true);
 		menuManager.addMenuListener(new IMenuListener() {
+
 			public void menuAboutToShow(IMenuManager manager) {
 				fillContextMenu(manager);
 			}
@@ -3362,70 +3216,66 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 	/**
 	 * Fills the context menu with the actions
 	 */
-	private void fillContextMenu(IMenuManager manager)
-	{
-		//get the selected object
+	private void fillContextMenu(IMenuManager manager) {
+		// get the selected object
 		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
 
-		//cast to a RosterEntry
-		Transport transport = (Transport)firstSelectedObject;
+		// cast to a RosterEntry
+		Transport transport = (Transport) firstSelectedObject;
 
-		if(transport == null)
+		if (transport == null)
 			return;
 
-		//get the index
+		// get the index
 		int index = viewer.getTable().getSelectionIndex();
-		//create the menu		
+		// create the menu
 		removeAction = new RemoveTransportFromMultiTransportList(multiTransportProvider, viewer, index);
-		
-		//add the actions			
+
+		// add the actions
 		manager.add(removeAction);
 	}
-	
-	//PRIVATE METHODS
+
+	// PRIVATE METHODS
 	/**
 	 * Called when the input text of a filter is changes
 	 */
-	private void inputChanged(String changedText,String filterType)
-	{
-		//assert valid
-		if(changedText == null)
+	private void inputChanged(String changedText, String filterType) {
+		// assert valid
+		if (changedText == null)
 			return;
-		
-		//get the entered text
-		if(changedText.trim().length() < 1)
-		{
+
+		// get the entered text
+		if (changedText.trim().length() < 1) {
 			setErrorMessage("Bitte geben sie mindestens drei Zeichen ein, um die Autovervollständigung zu nutzen");
 			return;
 		}
 		setErrorMessage(null);
-		
-		if(filterJob == null)
+
+		if (filterJob == null)
 			filterJob = new FilterAddressJob(null);
-		
-		//check the state
-		if(filterJob.getState() == Job.RUNNING)
-		{
+
+		// check the state
+		if (filterJob.getState() == Job.RUNNING) {
 			return;
 		}
-		
-		//check if the filter should return streets
-		if(filterType.equalsIgnoreCase(IFilterTypes.SEARCH_STRING_STREET))
+
+		// check if the filter should return streets
+		if (filterType.equalsIgnoreCase(IFilterTypes.SEARCH_STRING_STREET))
 			filterJob.setStrStreet(changedText);
 		else
 			filterJob.setStrStreet("");
-		//check if the filter should return cities
-		if(filterType.equalsIgnoreCase(IFilterTypes.SEARCH_STRING_CITY))
+		// check if the filter should return cities
+		if (filterType.equalsIgnoreCase(IFilterTypes.SEARCH_STRING_CITY))
 			filterJob.setStrCity(changedText);
 		else
 			filterJob.setStrCity("");
-		//check if the filter should return zip codes
-		if(filterType.equalsIgnoreCase(IFilterTypes.SEARCH_STRING_ZIP))
+		// check if the filter should return zip codes
+		if (filterType.equalsIgnoreCase(IFilterTypes.SEARCH_STRING_ZIP))
 			filterJob.setStrZip(changedText);
 		else
 			filterJob.setStrZip("");
-		
-		//schedule the thread to run now
+
+		// schedule the thread to run now
 		filterJob.schedule(0);
 	}
 }

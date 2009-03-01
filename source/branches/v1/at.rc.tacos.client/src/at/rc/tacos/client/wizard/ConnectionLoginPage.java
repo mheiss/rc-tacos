@@ -1,27 +1,38 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Internettechnik, FH JOANNEUM
+ * http://www.fh-joanneum.at/itm
+ * 
+ * 	Licenced under the GNU GENERAL PUBLIC LICENSE Version 2;
+ * 	You may obtain a copy of the License at
+ * 	http://www.gnu.org/licenses/gpl-2.0.txt
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *******************************************************************************/
 package at.rc.tacos.client.wizard;
 
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.jface.wizard.WizardPage;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-public class ConnectionLoginPage extends WizardPage
-{
-	//properties
+public class ConnectionLoginPage extends WizardPage {
+
+	// properties
 	private Composite container;
 	private ConnectionWizard wizard;
-	//the components
+	// the components
 	private StringFieldEditor username;
 	private StringFieldEditor password;
-	
+
 	/**
 	 * Default class construcotr
 	 */
-	public ConnectionLoginPage(ConnectionWizard wizard)
-	{
+	public ConnectionLoginPage(ConnectionWizard wizard) {
 		super("");
 		setWizard(wizard);
 		setTitle("Anmelden");
@@ -33,26 +44,23 @@ public class ConnectionLoginPage extends WizardPage
 	 * Callback method to create the page content and initialize it
 	 */
 	@Override
-	public void createControl(Composite parent) 
-	{
-		//the parent
+	public void createControl(Composite parent) {
+		// the parent
 		container = new Composite(parent, SWT.NULL);
-		//the layout
+		// the layout
 		GridLayout layout = new GridLayout(2, false);
 		container.setLayout(layout);
 
 		// the label and the input field for the username
-		username = new StringFieldEditor("username", "Benutzername: ",60, container) 
-		{			
+		username = new StringFieldEditor("username", "Benutzername: ", 60, container) {
+
 			@Override
-			protected boolean doCheckState() 
-			{
+			protected boolean doCheckState() {
 				return true;
 			}
-			
+
 			@Override
-			protected void valueChanged() 
-			{
+			protected void valueChanged() {
 				super.valueChanged();
 				isPageComplete();
 				if (getWizard() != null) {
@@ -61,18 +69,16 @@ public class ConnectionLoginPage extends WizardPage
 			}
 		};
 		username.setEmptyStringAllowed(false);
-		//the password field
-		password = new StringFieldEditor("password", "Passwort: ",60, container)
-		{
+		// the password field
+		password = new StringFieldEditor("password", "Passwort: ", 60, container) {
+
 			@Override
-			protected boolean doCheckState() 
-			{
+			protected boolean doCheckState() {
 				return true;
 			}
-			
+
 			@Override
-			protected void valueChanged() 
-			{
+			protected void valueChanged() {
 				super.valueChanged();
 				isPageComplete();
 				if (getWizard() != null) {
@@ -82,65 +88,63 @@ public class ConnectionLoginPage extends WizardPage
 		};
 		password.getTextControl(container).setEchoChar('*');
 		password.setEmptyStringAllowed(false);
-		
+
 		// Required to avoid an error in the system
 		setControl(container);
 		setPageComplete(false);
 	}
-	
+
 	/**
 	 * Returns the top widget of the application.
+	 * 
 	 * @return the top widget
 	 */
 	@Override
-	public Control getControl() 
-	{
+	public Control getControl() {
 		return container;
 	}
-	
+
 	/**
-	 * Returns wheter or not the page is completed.
-	 * This method checks all needed values and returns the status.
+	 * Returns wheter or not the page is completed. This method checks all
+	 * needed values and returns the status.
+	 * 
 	 * @return true if the page is completed
 	 */
 	@Override
-	public boolean isPageComplete() 
-	{
+	public boolean isPageComplete() {
 		String username = getUsername();
 		String password = getPassword();
-		//check username
-		if (username.trim().isEmpty())
-		{
+		// check username
+		if (username.trim().isEmpty()) {
 			setErrorMessage("Bitte geben sie einen Benutzernamen ein.");
 			return false;
 		}
-		if (password.trim().isEmpty()) 
-		{
+		if (password.trim().isEmpty()) {
 			setErrorMessage("Bitte geben sie ein Passwort ein");
 			return false;
 		}
 		setErrorMessage(null);
-		//save the data
+		// save the data
 		wizard.setLoginData(username, password);
-		//we have eyerything
+		// we have eyerything
 		return true;
 	}
-	
+
 	/**
 	 * Returns the entered username from the editor.
+	 * 
 	 * @return the username
 	 */
-	public String getUsername()
-	{
+	public String getUsername() {
 		return username.getStringValue();
 	}
-	
+
 	/**
 	 * Returns the entered password from the editor.
+	 * 
 	 * @return the password
 	 */
-	public String getPassword()
-	{
+	public String getPassword() {
 		return password.getStringValue();
 	}
 }

@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Internettechnik, FH JOANNEUM
+ * http://www.fh-joanneum.at/itm
+ * 
+ * 	Licenced under the GNU GENERAL PUBLIC LICENSE Version 2;
+ * 	You may obtain a copy of the License at
+ * 	http://www.gnu.org/licenses/gpl-2.0.txt
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *******************************************************************************/
 package at.rc.tacos.client.controller;
 
 import org.eclipse.core.runtime.IStatus;
@@ -15,69 +28,66 @@ import at.rc.tacos.model.Location;
 
 /**
  * Opens an empty editor to create a new location
+ * 
  * @author Michael
  */
-public class EditorNewLocationAction extends Action
-{
+public class EditorNewLocationAction extends Action {
+
 	private IWorkbenchWindow window;
-	
+
 	/**
-     * Default class constructor for creating the editor
-     */
-    public EditorNewLocationAction(IWorkbenchWindow window)
-	{
+	 * Default class constructor for creating the editor
+	 */
+	public EditorNewLocationAction(IWorkbenchWindow window) {
 		this.window = window;
 	}
 
-    /**
-     * Returns the tooltip text for the action
-     * @return the tooltip text
-     */
-    @Override
-    public String getToolTipText() 
-    {
-        return "Öffnen ein neues Fenster um eine Dienststelle anzulegen.";
-    }
+	/**
+	 * Returns the tooltip text for the action
+	 * 
+	 * @return the tooltip text
+	 */
+	@Override
+	public String getToolTipText() {
+		return "Öffnen ein neues Fenster um eine Dienststelle anzulegen.";
+	}
 
-    /**
-     * Returns the text to show in the toolbar
-     * @return the text to render
-     */
-    @Override
-    public String getText()
-    {
-        return "Dienststelle hinzufügen";
-    }
+	/**
+	 * Returns the text to show in the toolbar
+	 * 
+	 * @return the text to render
+	 */
+	@Override
+	public String getText() {
+		return "Dienststelle hinzufügen";
+	}
 
-    /**
-     * Returns the image to use for this action.
-     * @return the image to use
-     */
-    @Override
-    public ImageDescriptor getImageDescriptor() 
-    {
-        return ImageFactory.getInstance().getRegisteredImageDescriptor("admin.locationAdd");
-    }
+	/**
+	 * Returns the image to use for this action.
+	 * 
+	 * @return the image to use
+	 */
+	@Override
+	public ImageDescriptor getImageDescriptor() {
+		return ImageFactory.getInstance().getRegisteredImageDescriptor("admin.locationAdd");
+	}
 
-    /**
-     * Opens the editor to create the location
-     */
-    @Override
-    public void run()
-    {
-    	IWorkbenchPage page = window.getActivePage();
-        try 
-        {
-        	//create a new location
-        	Location newLocation = new Location();
-        	//create the editor input
-        	LocationEditorInput input = new LocationEditorInput(newLocation,true);
-        	//try to open the editor
-            page.openEditor(input, LocationEditor.ID);
-        } 
-        catch (PartInitException e) 
-        {
-            Activator.getDefault().log("Failed to create a new location editor", IStatus.ERROR);
-        }
-    }
+	/**
+	 * Opens the editor to create the location
+	 */
+	@Override
+	public void run() {
+		IWorkbenchPage page = window.getActivePage();
+		try {
+			// create a new location
+			Location newLocation = new Location();
+			// create the editor input
+			LocationEditorInput input = new LocationEditorInput(newLocation, true);
+			// try to open the editor
+			page.openEditor(input, LocationEditor.ID);
+		}
+		catch (PartInitException e) {
+			Activator.getDefault().log("Failed to create a new location editor", IStatus.ERROR);
+		}
+	}
 }

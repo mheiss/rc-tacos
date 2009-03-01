@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Internettechnik, FH JOANNEUM
+ * http://www.fh-joanneum.at/itm
+ * 
+ * 	Licenced under the GNU GENERAL PUBLIC LICENSE Version 2;
+ * 	You may obtain a copy of the License at
+ * 	http://www.gnu.org/licenses/gpl-2.0.txt
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *******************************************************************************/
 package at.rc.tacos.client.controller;
 
 import org.eclipse.jface.action.Action;
@@ -12,39 +25,42 @@ import at.rc.tacos.model.Transport;
 
 /**
  * Moves the given transport to the outstanding transports
+ * 
  * @author b.thek
  */
-public class MoveToOutstandingTransportsAction extends Action implements ITransportStatus, IProgramStatus
-{
-	//properties
+public class MoveToOutstandingTransportsAction extends Action implements ITransportStatus, IProgramStatus {
+
+	// properties
 	private TableViewer viewer;
-	
+
 	/**
 	 * Default class constructor.
-	 * @param viewer the table viewer
+	 * 
+	 * @param viewer
+	 *            the table viewer
 	 */
-	public MoveToOutstandingTransportsAction(TableViewer viewer)
-	{
+	public MoveToOutstandingTransportsAction(TableViewer viewer) {
 		this.viewer = viewer;
 		setText("Nach offene Transporte verschieben");
 		setToolTipText("Verschiebt den Transport zu den offenen Transporten");
 	}
-	
+
 	@Override
-	public void run()
-	{
-		//the selection
+	public void run() {
+		// the selection
 		ISelection selection = viewer.getSelection();
-		//get the selected transport
-		Transport transport = (Transport)((IStructuredSelection)selection).getFirstElement();
-		//change transport program status to 'outstanding'
+		// get the selected transport
+		Transport transport = (Transport) ((IStructuredSelection) selection).getFirstElement();
+		// change transport program status to 'outstanding'
 		transport.getStatusMessages().clear();
 		transport.setProgramStatus(PROGRAM_STATUS_OUTSTANDING);
-		//set the transport number to 0 - then the server will write the transport number into the 
-		//tmptransports table and the number will be assigned to the next transport of the same location
-		if(transport.getTransportNumber() <0 )
+		// set the transport number to 0 - then the server will write the
+		// transport number into the
+		// tmptransports table and the number will be assigned to the next
+		// transport of the same location
+		if (transport.getTransportNumber() < 0)
 			transport.setTransportNumber(0);
-		//remove the vehicle to release the transport number
+		// remove the vehicle to release the transport number
 		transport.clearVehicleDetail();
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 	}

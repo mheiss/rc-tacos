@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Internettechnik, FH JOANNEUM
+ * http://www.fh-joanneum.at/itm
+ * 
+ * 	Licenced under the GNU GENERAL PUBLIC LICENSE Version 2;
+ * 	You may obtain a copy of the License at
+ * 	http://www.gnu.org/licenses/gpl-2.0.txt
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *******************************************************************************/
 package at.rc.tacos.client.controller;
 
 import org.eclipse.jface.action.Action;
@@ -11,75 +24,74 @@ import at.rc.tacos.model.VehicleDetail;
 
 /**
  * Sets the status of this vehicle to ready for action
+ * 
  * @author Michael
  */
-public class VehicleSetReadyAction extends Action
-{
-    //properties
-    private VehicleDetail detail;
-    private IWorkbenchWindow window;
-    
-    /**
-     * Default class constructor specifying the vehicle
-     * @param window the active workbench window
-     * @param vehicle the vehicle to update
-     */
-    public VehicleSetReadyAction(IWorkbenchWindow window,VehicleDetail detail)
-    {
-        this.detail = detail;
-        this.window = window;
-    }
-    
-    /**
-     * Checks the vehicle and runs the action
-     */
-    @Override 
-    public void run()
-    {
-        //first check if we have at least a driver
-        if(detail.getDriver() == null)
-        {
-            MessageDialog.openError(window.getShell(),
-                    "Fehler beim setzen des Status 'Einsatzbereit'",
-                    "Dem Fahrzeug "+detail.getVehicleName()+" kann nicht der Status 'Einsatzbereit' gegeben werden.\n" +
-                    "Bitte weisen Sie dem Fahrzeug zuerst einen Fahrer zu.");
-            return;
-        }
-        //reset the status
-        detail.setOutOfOrder(false);
-        detail.setReadyForAction(true);
-        if(detail.getTransportStatus() == VehicleDetail.TRANSPORT_STATUS_NA)
-            detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
-        NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);
-    }
-    
-    /**
-     * Returns the tooltip text for the action
-     * @return the tooltip text
-     */
-    @Override
-    public String getToolTipText() 
-    {
-        return "Setzt den Status 'Einsatzbereit'";
-    }
+public class VehicleSetReadyAction extends Action {
 
-    /**
-     * Returns the text for the context menu item
-     * @return the text to render
-     */
-    @Override
-    public String getText()
-    {
-        return "Status Einsatzbereit";
-    }
+	// properties
+	private VehicleDetail detail;
+	private IWorkbenchWindow window;
 
-    /**
-     * Returns the image to use for this action.
-     * @return the image to use
-     */
-    @Override
-    public ImageDescriptor getImageDescriptor() 
-    {
-        return ImageFactory.getInstance().getRegisteredImageDescriptor("resource.vehicleReady");
-    }
+	/**
+	 * Default class constructor specifying the vehicle
+	 * 
+	 * @param window
+	 *            the active workbench window
+	 * @param vehicle
+	 *            the vehicle to update
+	 */
+	public VehicleSetReadyAction(IWorkbenchWindow window, VehicleDetail detail) {
+		this.detail = detail;
+		this.window = window;
+	}
+
+	/**
+	 * Checks the vehicle and runs the action
+	 */
+	@Override
+	public void run() {
+		// first check if we have at least a driver
+		if (detail.getDriver() == null) {
+			MessageDialog.openError(window.getShell(), "Fehler beim setzen des Status 'Einsatzbereit'", "Dem Fahrzeug " + detail.getVehicleName()
+					+ " kann nicht der Status 'Einsatzbereit' gegeben werden.\n" + "Bitte weisen Sie dem Fahrzeug zuerst einen Fahrer zu.");
+			return;
+		}
+		// reset the status
+		detail.setOutOfOrder(false);
+		detail.setReadyForAction(true);
+		if (detail.getTransportStatus() == VehicleDetail.TRANSPORT_STATUS_NA)
+			detail.setTransportStatus(VehicleDetail.TRANSPORT_STATUS_GREEN);
+		NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, detail);
+	}
+
+	/**
+	 * Returns the tooltip text for the action
+	 * 
+	 * @return the tooltip text
+	 */
+	@Override
+	public String getToolTipText() {
+		return "Setzt den Status 'Einsatzbereit'";
+	}
+
+	/**
+	 * Returns the text for the context menu item
+	 * 
+	 * @return the text to render
+	 */
+	@Override
+	public String getText() {
+		return "Status Einsatzbereit";
+	}
+
+	/**
+	 * Returns the image to use for this action.
+	 * 
+	 * @return the image to use
+	 */
+	@Override
+	public ImageDescriptor getImageDescriptor() {
+		return ImageFactory.getInstance().getRegisteredImageDescriptor("resource.vehicleReady");
+	}
 }

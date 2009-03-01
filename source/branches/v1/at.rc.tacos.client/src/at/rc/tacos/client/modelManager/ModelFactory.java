@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Internettechnik, FH JOANNEUM
+ * http://www.fh-joanneum.at/itm
+ * 
+ * 	Licenced under the GNU GENERAL PUBLIC LICENSE Version 2;
+ * 	You may obtain a copy of the License at
+ * 	http://www.gnu.org/licenses/gpl-2.0.txt
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *******************************************************************************/
 package at.rc.tacos.client.modelManager;
 
 import java.util.Calendar;
@@ -22,16 +35,17 @@ import at.rc.tacos.model.VehicleDetail;
 import at.rc.tacos.util.MyUtils;
 
 /**
- * The model factory manages the lifecyle of all model managers.
- * Furthermore it provides methods to query the data from the server.
+ * The model factory manages the lifecyle of all model managers. Furthermore it
+ * provides methods to query the data from the server.
+ * 
  * @author Michael
  */
-public class ModelFactory
-{
-	//the shared instance
+public class ModelFactory {
+
+	// the shared instance
 	private static ModelFactory instance;
 
-	//the model manager to handle
+	// the model manager to handle
 	private final VehicleManager vehicleManager = new VehicleManager();
 	private final StaffManager staffManager = new StaffManager();
 	private final RosterEntryManager rosterEntryManager = new RosterEntryManager();
@@ -51,31 +65,31 @@ public class ModelFactory
 	/**
 	 * Private class constructor.
 	 */
-	private ModelFactory() { }
+	private ModelFactory() {
+	}
 
 	/**
 	 * Returns the shared instance
+	 * 
 	 * @return the shared instance
 	 */
-	public static ModelFactory getInstance()
-	{
-		if(instance == null)
+	public static ModelFactory getInstance() {
+		if (instance == null)
 			instance = new ModelFactory();
 		return instance;
 	}
 
 	/**
-	 *  Queries the server sequentially for all needed data.
+	 * Queries the server sequentially for all needed data.
 	 */
-	public void initalizeModel()
-	{
-		//add the listeners
+	public void initalizeModel() {
+		// add the listeners
 		vehicleManager.init();
 		transportManager.init();
-		//request the data from the server
+		// request the data from the server
 		NetWrapper net = NetWrapper.getDefault();
-		String now = MyUtils.timestampToString(Calendar.getInstance().getTimeInMillis(),MyUtils.timeAndDateFormat);
-		//Set up a filter for the current day
+		String now = MyUtils.timestampToString(Calendar.getInstance().getTimeInMillis(), MyUtils.timeAndDateFormat);
+		// Set up a filter for the current day
 		QueryFilter dateFilter = new QueryFilter();
 		dateFilter.add(IFilterTypes.DATE_FILTER, now);
 		net.requestListing(Location.ID, null);
@@ -94,79 +108,64 @@ public class ModelFactory
 		net.requestListing(Lock.ID, null);
 	}
 
-	//GETTERS FOR THE MANAGER
-	public final RosterEntryManager getRosterEntryManager()
-	{
+	// GETTERS FOR THE MANAGER
+	public final RosterEntryManager getRosterEntryManager() {
 		return rosterEntryManager;
 	}
 
-	public final VehicleManager getVehicleManager()
-	{
+	public final VehicleManager getVehicleManager() {
 		return vehicleManager;
 	}
 
-	public final StaffManager getStaffManager()
-	{
+	public final StaffManager getStaffManager() {
 		return staffManager;
 	}
 
-	public final LoginManager getLoginManager()
-	{
+	public final LoginManager getLoginManager() {
 		return loginManager;
 	}
 
-	public final TransportManager getTransportManager()
-	{
+	public final TransportManager getTransportManager() {
 		return transportManager;
 	}
 
-	public final DialysisTransportManager getDialyseManager()
-	{
+	public final DialysisTransportManager getDialyseManager() {
 		return dialyseManager;
 	}
 
-	public final MobilePhoneManager getPhoneManager()
-	{
+	public final MobilePhoneManager getPhoneManager() {
 		return phoneManager;
 	}
 
-	public final JobManager getJobList()
-	{
+	public final JobManager getJobList() {
 		return jobManager;
 	}
 
-	public final CompetenceManager getCompetenceManager()
-	{
+	public final CompetenceManager getCompetenceManager() {
 		return competenceManager;
 	}
 
-	public final LocationManager getLocationManager()
-	{
+	public final LocationManager getLocationManager() {
 		return locationManager;
 	}
 
-	public final ServiceTypeManager getServiceManager()
-	{
+	public final ServiceTypeManager getServiceManager() {
 		return serviceManager;
 	}
 
-	public final DiseaseManager getDiseaseManager()
-	{
+	public final DiseaseManager getDiseaseManager() {
 		return diseaseManager;
 	}
 
-	public final AddressManager getAddressManager()
-	{
+	public final AddressManager getAddressManager() {
 		return addressManager;
 	}
-	
-	public final LockManager getLockManager()
-	{
+
+	public final LockManager getLockManager() {
 		return lockManager;
 	}
-	
-	public final SickPersonManager getSickPersonManager()
-	{
+
+	public final SickPersonManager getSickPersonManager() {
 		return sickPersonManager;
 	}
 }

@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Internettechnik, FH JOANNEUM
+ * http://www.fh-joanneum.at/itm
+ * 
+ * 	Licenced under the GNU GENERAL PUBLIC LICENSE Version 2;
+ * 	You may obtain a copy of the License at
+ * 	http://www.gnu.org/licenses/gpl-2.0.txt
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *******************************************************************************/
 package at.rc.tacos.client.controller;
 
 import java.util.Calendar;
@@ -21,64 +34,65 @@ import at.rc.tacos.util.MyUtils;
 
 /**
  * Sets the given transport status
+ * 
  * @author b.thek
  */
-public class SetTransportStatusAction extends Action implements ITransportStatus, IProgramStatus
-{
-	//properties
+public class SetTransportStatusAction extends Action implements ITransportStatus, IProgramStatus {
+
+	// properties
 	private TableViewer viewer;
 	private int status;
 	private Transport transport;
-	/** 
+
+	/**
 	 * Constructor to set the given transport status
-	 * @param viewer the table viewer
-	 * @param status the transport status to set
+	 * 
+	 * @param viewer
+	 *            the table viewer
+	 * @param status
+	 *            the transport status to set
 	 */
-	public SetTransportStatusAction(TableViewer viewer, int status, String shownAs)
-	{
+	public SetTransportStatusAction(TableViewer viewer, int status, String shownAs) {
 		this.viewer = viewer;
 		this.status = status;
 		setText(shownAs);
-		setToolTipText("Setzt den Transportstatus " +" " +shownAs);
+		setToolTipText("Setzt den Transportstatus " + " " + shownAs);
 	}
-	
+
 	@Override
-	public void run()
-	{
-		//the selection
+	public void run() {
+		// the selection
 		ISelection selection = viewer.getSelection();
-		//get the selected transport
-		transport = (Transport)((IStructuredSelection)selection).getFirstElement();
-		//create the time stamp
+		// get the selected transport
+		transport = (Transport) ((IStructuredSelection) selection).getFirstElement();
+		// create the time stamp
 		GregorianCalendar gcal = new GregorianCalendar();
 		long timestamp = gcal.getTimeInMillis();
-		//set the status 
+		// set the status
 		transport.addStatus(status, timestamp);
-		
-		if(status == TRANSPORT_STATUS_DESTINATION_FREE)
-		{
+
+		if (status == TRANSPORT_STATUS_DESTINATION_FREE) {
 			Calendar cal = Calendar.getInstance();
 			String now = MyUtils.timestampToString(cal.getTimeInMillis(), MyUtils.timeFormat);
 			VehicleManager manager = ModelFactory.getInstance().getVehicleManager();
 			VehicleDetail vehicle = manager.getVehicleByName(transport.getVehicleDetail().getVehicleName());
 			transport.setProgramStatus(PROGRAM_STATUS_JOURNAL);
-			vehicle.setLastDestinationFree(now + " " +transport.getToStreet() +"/" +transport.getToCity());
+			vehicle.setLastDestinationFree(now + " " + transport.getToStreet() + "/" + transport.getToCity());
 			NetWrapper.getDefault().sendUpdateMessage(VehicleDetail.ID, vehicle);
 		}
 		NetWrapper.getDefault().sendUpdateMessage(Transport.ID, transport);
 	}
-	
+
 	@Override
-    public ImageDescriptor getImageDescriptor() 
-    {
-		//the selection
+	public ImageDescriptor getImageDescriptor() {
+		// the selection
 		ISelection selection = viewer.getSelection();
-		//get the selected transport
-		transport = (Transport)((IStructuredSelection)selection).getFirstElement();
-		if(transport.getStatusMessages().containsKey(status))
-		{
-				return ImageFactory.getInstance().getRegisteredImageDescriptor("vehicle.ready");
+		// get the selected transport
+		transport = (Transport) ((IStructuredSelection) selection).getFirstElement();
+		if (transport.getStatusMessages().containsKey(status)) {
+			return ImageFactory.getInstance().getRegisteredImageDescriptor("vehicle.ready");
 		}
-		else return null;
-    }
+		else
+			return null;
+	}
 }

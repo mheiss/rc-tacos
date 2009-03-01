@@ -1,7 +1,21 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Internettechnik, FH JOANNEUM
+ * http://www.fh-joanneum.at/itm
+ * 
+ * 	Licenced under the GNU GENERAL PUBLIC LICENSE Version 2;
+ * 	You may obtain a copy of the License at
+ * 	http://www.gnu.org/licenses/gpl-2.0.txt
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *******************************************************************************/
 package at.rc.tacos.client.view;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
@@ -31,57 +45,54 @@ import at.rc.tacos.client.controller.DialysisTransportNowAction;
 import at.rc.tacos.client.controller.RefreshViewAction;
 import at.rc.tacos.client.modelManager.LockManager;
 import at.rc.tacos.client.modelManager.ModelFactory;
-
 import at.rc.tacos.client.providers.DialysisTransportContentProvider;
 import at.rc.tacos.client.providers.DialysisTransportLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.view.sorterAndTooltip.DialysisTransportSorter;
 import at.rc.tacos.model.DialysisPatient;
 
-public class DialysisView extends ViewPart implements PropertyChangeListener
-{
+public class DialysisView extends ViewPart implements PropertyChangeListener {
+
 	public static final String ID = "at.rc.tacos.client.view.dialysis_view";
-	
-	//the toolkit to use
+
+	// the toolkit to use
 	private FormToolkit toolkit;
 	private ScrolledForm form;
 	private TableViewer viewer;
-	
-	//the actions for the context menu
+
+	// the actions for the context menu
 	private DialysisEditAction dialysisEditAction;
 	private DialysisDeleteAction dialysisDeleteAction;
 	private DialysisTransportNowAction dialysisTransportNowAction;
-	
-	//the lock manager
-	private LockManager lockManager = ModelFactory.getInstance().getLockManager();
 
+	// the lock manager
+	private LockManager lockManager = ModelFactory.getInstance().getLockManager();
 
 	/**
 	 * Constructs a new outstanding transports view adds listeners.
 	 */
-	public DialysisView()
-	{
+	public DialysisView() {
 		ModelFactory.getInstance().getDialyseManager().addPropertyChangeListener(this);
 		ModelFactory.getInstance().getLockManager().addPropertyChangeListener(this);
 	}
-	
+
 	/**
 	 * Cleanup the view
 	 */
 	@Override
-	public void dispose() 
-	{
+	public void dispose() {
 		ModelFactory.getInstance().getDialyseManager().removePropertyChangeListener(this);
 		ModelFactory.getInstance().getLockManager().removePropertyChangeListener(this);
 	}
-	
+
 	/**
 	 * Call back method to create the control and initialize them.
-	 * @param parent the parent composite to add
+	 * 
+	 * @param parent
+	 *            the parent composite to add
 	 */
 	@Override
-	public void createPartControl(final Composite parent) 
-	{
+	public void createPartControl(final Composite parent) {
 		// Create the scrolled parent component
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
 		form = toolkit.createScrolledForm(parent);
@@ -90,7 +101,7 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 
 		final Composite composite = form.getBody();
 
-		viewer= new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
+		viewer = new TableViewer(composite, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
 		viewer.setContentProvider(new DialysisTransportContentProvider());
 		viewer.setLabelProvider(new DialysisTransportLabelProvider());
 		viewer.setInput(ModelFactory.getInstance().getDialyseManager());
@@ -100,17 +111,17 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 		final Table table_2 = viewer.getTable();
 		table_2.setLinesVisible(true);
 		table_2.setHeaderVisible(true);
-	
+
 		final TableColumn lockColumn = new TableColumn(table_2, SWT.NONE);
 		lockColumn.setToolTipText("Eintrag wird gerade bearbeitet");
 		lockColumn.setWidth(24);
 		lockColumn.setText("L");
-		
+
 		final TableColumn newColumnTableColumnStationDialyse = new TableColumn(table_2, SWT.NONE);
 		newColumnTableColumnStationDialyse.setToolTipText("Zuständige Ortsstelle");
 		newColumnTableColumnStationDialyse.setWidth(200);
 		newColumnTableColumnStationDialyse.setText("OS");
-	
+
 		final TableColumn newColumnTableColumnAbfDialyse = new TableColumn(table_2, SWT.NONE);
 		newColumnTableColumnAbfDialyse.setToolTipText("Geplante Abfahrt an Ortsstelle");
 		newColumnTableColumnAbfDialyse.setWidth(68);
@@ -143,7 +154,7 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 		final TableColumn newColumnTableColumnNameDialyse = new TableColumn(table_2, SWT.NONE);
 		newColumnTableColumnNameDialyse.setWidth(250);
 		newColumnTableColumnNameDialyse.setText("Name");
-		
+
 		final TableColumn newColumnTableColumnDialyseort = new TableColumn(table_2, SWT.NONE);
 		newColumnTableColumnDialyseort.setWidth(250);
 		newColumnTableColumnDialyseort.setText("Dialyseort");
@@ -176,7 +187,7 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 		final TableColumn newColumnTableColumnSonntag = new TableColumn(table_2, SWT.NONE);
 		newColumnTableColumnSonntag.setWidth(30);
 		newColumnTableColumnSonntag.setText("So");
-		
+
 		final TableColumn newColumnTableColumnTA = new TableColumn(table_2, SWT.NONE);
 		newColumnTableColumnTA.setWidth(90);
 		newColumnTableColumnTA.setText("TA");
@@ -185,70 +196,65 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 		newColumnTableColumnStationaer.setToolTipText("Patient wird derzeit nicht transportiert");
 		newColumnTableColumnStationaer.setWidth(40);
 		newColumnTableColumnStationaer.setText("Stat");
-		
-		viewer.getTable().addMouseListener(new MouseAdapter() 
-		{
-			public void mouseDown(MouseEvent e) 
-			{
-				if( viewer.getTable().getItem(new Point(e.x,e.y))==null ) 
-				{
+
+		viewer.getTable().addMouseListener(new MouseAdapter() {
+
+			public void mouseDown(MouseEvent e) {
+				if (viewer.getTable().getItem(new Point(e.x, e.y)) == null) {
 					viewer.setSelection(new StructuredSelection());
 				}
 			}
 		});
-	
-		/** make the columns sort able*/
-		Listener sortListener = new Listener() 
-		{
-			public void handleEvent(Event e) 
-			{
+
+		/** make the columns sort able */
+		Listener sortListener = new Listener() {
+
+			public void handleEvent(Event e) {
 				// determine new sort column and direction
 				TableColumn sortColumn = viewer.getTable().getSortColumn();
 				TableColumn currentColumn = (TableColumn) e.widget;
 				int dir = viewer.getTable().getSortDirection();
-				//revert the sort order if the column is the same
-				if (sortColumn == currentColumn) 
-				{
-					if(dir == SWT.UP)
+				// revert the sort order if the column is the same
+				if (sortColumn == currentColumn) {
+					if (dir == SWT.UP)
 						dir = SWT.DOWN;
 					else
 						dir = SWT.UP;
-				} 
-				else 
-				{
+				}
+				else {
 					viewer.getTable().setSortColumn(currentColumn);
 					dir = SWT.UP;
 				}
 				// sort the data based on column and direction
 				String sortIdentifier = null;
-				
-				if (currentColumn == newColumnTableColumnStationDialyse) 
+
+				if (currentColumn == newColumnTableColumnStationDialyse)
 					sortIdentifier = DialysisTransportSorter.RESP_STATION_SORTER;
-				if (currentColumn == newColumnTableColumnAbfDialyse) 
+				if (currentColumn == newColumnTableColumnAbfDialyse)
 					sortIdentifier = DialysisTransportSorter.ABF_SORTER;
-				if (currentColumn == newColumnTableColumnAnkDialyse) 
+				if (currentColumn == newColumnTableColumnAnkDialyse)
 					sortIdentifier = DialysisTransportSorter.AT_PATIENT_SORTER;
 				if (currentColumn == newColumnTableColumnTerminDialyse)
 					sortIdentifier = DialysisTransportSorter.TERM_SORTER;
 				if (currentColumn == newColumnTableColumnWohnortDialyse)
 					sortIdentifier = DialysisTransportSorter.TRANSPORT_FROM_SORTER;
-				if(currentColumn == newColumnTableColumnNameDialyse)
+				if (currentColumn == newColumnTableColumnNameDialyse)
 					sortIdentifier = DialysisTransportSorter.PATIENT_SORTER;
 				if (currentColumn == newColumnTableColumnDialyseort)
 					sortIdentifier = DialysisTransportSorter.TRANSPORT_TO_SORTER;
-				if(currentColumn == newColumnTableColumnRTAbfahrtDialyse)
+				if (currentColumn == newColumnTableColumnRTAbfahrtDialyse)
 					sortIdentifier = DialysisTransportSorter.RT_SORTER;
-				if(currentColumn == newColumnTableColumnAbholbereitDialyse)
+				if (currentColumn == newColumnTableColumnAbholbereitDialyse)
 					sortIdentifier = DialysisTransportSorter.READY_SORTER;
-				if(currentColumn == newColumnTableColumnTA)
+				if (currentColumn == newColumnTableColumnTA)
 					sortIdentifier = DialysisTransportSorter.TA_SORTER;
-				//apply the filter
+				// apply the filter
 				viewer.getTable().setSortDirection(dir);
-				viewer.setSorter(new DialysisTransportSorter(sortIdentifier,dir));
+				viewer.setSorter(new DialysisTransportSorter(sortIdentifier, dir));
 			}
 		};
-		
-		//attach the listener
+
+		// attach the listener
 		newColumnTableColumnStationDialyse.addListener(SWT.Selection, sortListener);
 		newColumnTableColumnAbfDialyse.addListener(SWT.Selection, sortListener);
 		newColumnTableColumnAnkDialyse.addListener(SWT.Selection, sortListener);
@@ -258,34 +264,32 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 		newColumnTableColumnRTAbfahrtDialyse.addListener(SWT.Selection, sortListener);
 		newColumnTableColumnAbholbereitDialyse.addListener(SWT.Selection, sortListener);
 		newColumnTableColumnTA.addListener(SWT.Selection, sortListener);
-		newColumnTableColumnDialyseort.addListener(SWT.Selection,sortListener);
-		
+		newColumnTableColumnDialyseort.addListener(SWT.Selection, sortListener);
+
 		makeActions();
 		hookContextMenu();
 		createToolBarActions();
-		
+
 		viewer.refresh();
 	}
 
-	
 	/**
 	 * Creates the needed actions
 	 */
-	private void makeActions()
-	{
+	private void makeActions() {
 		dialysisEditAction = new DialysisEditAction(viewer);
 		dialysisDeleteAction = new DialysisDeleteAction(viewer);
 		dialysisTransportNowAction = new DialysisTransportNowAction(viewer);
 	}
-	
+
 	/**
 	 * Creates the context menu
 	 */
-	private void hookContextMenu() 
-	{
+	private void hookContextMenu() {
 		MenuManager menuManager = new MenuManager("#DialysisPopupMenu");
 		menuManager.setRemoveAllWhenShown(true);
 		menuManager.addMenuListener(new IMenuListener() {
+
 			public void menuAboutToShow(IMenuManager manager) {
 				fillContextMenu(manager);
 			}
@@ -294,71 +298,64 @@ public class DialysisView extends ViewPart implements PropertyChangeListener
 		viewer.getControl().setMenu(menu);
 		getSite().registerContextMenu(menuManager, viewer);
 	}
-	
+
 	/**
 	 * Fills the context menu with the actions
 	 */
-	private void fillContextMenu(IMenuManager manager)
-	{
-		//get the selected object
+	private void fillContextMenu(IMenuManager manager) {
+		// get the selected object
 		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
-			
-		//cast to a dialysis transport
-		DialysisPatient dia = (DialysisPatient)firstSelectedObject;
-		
-		if(dia == null)
+
+		// cast to a dialysis transport
+		DialysisPatient dia = (DialysisPatient) firstSelectedObject;
+
+		if (dia == null)
 			return;
-		
-		//add the actions
+
+		// add the actions
 		manager.add(dialysisEditAction);
 		manager.add(new Separator());
 		manager.add(dialysisDeleteAction);
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 		manager.add(dialysisTransportNowAction);
-		
-		if(lockManager.containsLock(DialysisPatient.ID, dia.getId()))
-		{
+
+		if (lockManager.containsLock(DialysisPatient.ID, dia.getId())) {
 			dialysisDeleteAction.setEnabled(false);
 			dialysisTransportNowAction.setEnabled(false);
 		}
-		else
-		{
+		else {
 			dialysisDeleteAction.setEnabled(true);
 			dialysisTransportNowAction.setEnabled(true);
 		}
 	}
+
 	/**
 	 * Passing the focus request to the viewer's control.
 	 */
 	@Override
-	public void setFocus()  { }
-	
-	public void propertyChange(PropertyChangeEvent evt) 
-	{
+	public void setFocus() {
+	}
+
+	public void propertyChange(PropertyChangeEvent evt) {
 		// the viewer represents simple model. refresh should be enough.
-		if ("DIALYSISPATIENT_ADD".equals(evt.getPropertyName())
-		        || "DIALYSISPATIENT_REMOVE".equals(evt.getPropertyName()) 
-		        || "DIALYSISPATIENT_UPDATE".equals(evt.getPropertyName())
-		        || "DIALYSISPATIENT_CLEARED".equals(evt.getPropertyName()))
-		{ 
+		if ("DIALYSISPATIENT_ADD".equals(evt.getPropertyName()) || "DIALYSISPATIENT_REMOVE".equals(evt.getPropertyName())
+				|| "DIALYSISPATIENT_UPDATE".equals(evt.getPropertyName()) || "DIALYSISPATIENT_CLEARED".equals(evt.getPropertyName())) {
 			viewer.refresh();
 		}
-		
-		//listen to lock changes
-		if("LOCK_ADD".equalsIgnoreCase(evt.getPropertyName()) || "LOCK_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
-		{
+
+		// listen to lock changes
+		if ("LOCK_ADD".equalsIgnoreCase(evt.getPropertyName()) || "LOCK_REMOVE".equalsIgnoreCase(evt.getPropertyName())) {
 			viewer.refresh();
 		}
 	}
-	
+
 	/**
 	 * Creates and adds the actions for the toolbar
 	 */
-	private void createToolBarActions()
-	{
-		//create the action
+	private void createToolBarActions() {
+		// create the action
 		RefreshViewAction viewAction = new RefreshViewAction(DialysisPatient.ID);
-		//add to the toolbar
+		// add to the toolbar
 		form.getToolBarManager().add(viewAction);
 		form.getToolBarManager().update(true);
 	}

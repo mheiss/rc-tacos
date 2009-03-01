@@ -1,4 +1,16 @@
-
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Internettechnik, FH JOANNEUM
+ * http://www.fh-joanneum.at/itm
+ * 
+ * 	Licenced under the GNU GENERAL PUBLIC LICENSE Version 2;
+ * 	You may obtain a copy of the License at
+ * 	http://www.gnu.org/licenses/gpl-2.0.txt
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *******************************************************************************/
 package at.rc.tacos.client.view.sorterAndTooltip;
 
 import java.text.SimpleDateFormat;
@@ -21,62 +33,62 @@ import at.rc.tacos.model.Transport;
 
 /**
  * This shows the tool tip for journal transport.
+ * 
  * @author b.thek
  */
-public class JournalViewTooltip extends ToolTip implements ITransportStatus
-{	
-	//properties
+public class JournalViewTooltip extends ToolTip implements ITransportStatus {
+
+	// properties
 	private Transport transport;
-	
+
 	private String police = "";
 	private String firebrigade = "";
 	private String brkdt = "";
 	private String df = "";
 	private String emergencyDoctor = "";
-	private String helicopter= "";
+	private String helicopter = "";
 	private String mountainRescue = "";
-	
-	
+
 	/**
 	 * Creates a new tool tip for the journal transport
-	 * @param control the control for the tool tip to show
+	 * 
+	 * @param control
+	 *            the control for the tool tip to show
 	 */
-	public JournalViewTooltip(Control control) 
-	{
+	public JournalViewTooltip(Control control) {
 		super(control);
 		setShift(new Point(1, 1));
 	}
-	
+
 	/**
 	 * Returns whether or not the tooltip should be created.
-	 * @param event the triggered event
+	 * 
+	 * @param event
+	 *            the triggered event
 	 * @return true if the tooltip should be created
 	 */
 	@Override
-	protected boolean shouldCreateToolTip(Event event) 
-	{
-		//Get the element
+	protected boolean shouldCreateToolTip(Event event) {
+		// Get the element
 		Widget hoverWidget = getTipWidget(event);
 		transport = getTaskListElement(hoverWidget);
-		//assert valid
+		// assert valid
 		if (transport != null)
 			return true;
-		//no valid element selected
+		// no valid element selected
 		return false;
 	}
-	
 
 	@Override
-	protected Composite createToolTipContentArea(Event event, Composite parent) 
-	{		
-		//get the selected transport
-		Composite composite = createToolTipContentAreaComposite(parent);	
+	protected Composite createToolTipContentArea(Event event, Composite parent) {
+		// get the selected transport
+		Composite composite = createToolTipContentAreaComposite(parent);
 		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
 		String plannedStartTime;
 		String plannedTimeAtPatient;
 		String term;
-		
-		//notifying
+
+		// notifying
 		if (transport.isFirebrigadeAlarming())
 			firebrigade = "Bergrettung";
 		if (transport.isBrkdtAlarming())
@@ -89,105 +101,93 @@ public class JournalViewTooltip extends ToolTip implements ITransportStatus
 			helicopter = "Notarzthubschrauber";
 		if (transport.isPoliceAlarming())
 			police = "Polizei";
-        
-		String text = transport.getFromStreet() +"/" +transport.getFromCity() +" " 
-			+transport.getPatient().getLastname() +" " +transport.getPatient().getFirstname() +" "
-			+transport.getToStreet() +"/" +transport.getToCity();
+
+		String text = transport.getFromStreet() + "/" + transport.getFromCity() + " " + transport.getPatient().getLastname() + " "
+				+ transport.getPatient().getFirstname() + " " + transport.getToStreet() + "/" + transport.getToCity();
 		addTitleAndLabel(composite, "Transport: ", text);
-		
-		if(transport.getKindOfTransport() != null)
-		{
+
+		if (transport.getKindOfTransport() != null) {
 			text = transport.getKindOfTransport();
-			addTitleAndLabel(composite,"Transportart: ",text);
+			addTitleAndLabel(composite, "Transportart: ", text);
 		}
-		
-		//the notes
-		if(transport.hasNotes())
-		{
+
+		// the notes
+		if (transport.hasNotes()) {
 			text = transport.getNotes();
-			addTitleAndLabel(composite,"Anmerkungen: ",text);
-			
+			addTitleAndLabel(composite, "Anmerkungen: ", text);
+
 		}
-		
-		//real station
-		if(transport.getVehicleDetail() != null && transport.getVehicleDetail().getCurrentStation() != null)
-		{
+
+		// real station
+		if (transport.getVehicleDetail() != null && transport.getVehicleDetail().getCurrentStation() != null) {
 			text = transport.getVehicleDetail().getCurrentStation().getLocationName();
-			addTitleAndLabel(composite,"OS: ",text);
+			addTitleAndLabel(composite, "OS: ", text);
 		}
-		
-		//planned times
-		if(transport.getPlannedStartOfTransport()!= 0)
+
+		// planned times
+		if (transport.getPlannedStartOfTransport() != 0)
 			plannedStartTime = sdf.format(transport.getPlannedStartOfTransport());
-			else
-				plannedStartTime = "";
-		if(transport.getPlannedTimeAtPatient() != 0)
+		else
+			plannedStartTime = "";
+		if (transport.getPlannedTimeAtPatient() != 0)
 			plannedTimeAtPatient = sdf.format(transport.getPlannedTimeAtPatient());
-			else 
+		else
 			plannedTimeAtPatient = "";
-		if(transport.getAppointmentTimeAtDestination() != 0)
+		if (transport.getAppointmentTimeAtDestination() != 0)
 			term = sdf.format(transport.getAppointmentTimeAtDestination());
 		else
 			term = "";
-		if((!plannedStartTime.equalsIgnoreCase("") || !plannedTimeAtPatient.equalsIgnoreCase("") || !term.equalsIgnoreCase("")))
-		{
-			text = "Abfahrt: " +plannedStartTime
-			+" Bei Patient: " +plannedTimeAtPatient
-			+" Termin: " +term;
-			addTitleAndLabel(composite,"Zeiten: ",text);
-		}
-		
-		//feedback
-		if(transport.hasFeedback())
-		{
-			text = transport.getFeedback();
-			addTitleAndLabel(composite,"Rückmeldung: ",text);
+		if ((!plannedStartTime.equalsIgnoreCase("") || !plannedTimeAtPatient.equalsIgnoreCase("") || !term.equalsIgnoreCase(""))) {
+			text = "Abfahrt: " + plannedStartTime + " Bei Patient: " + plannedTimeAtPatient + " Termin: " + term;
+			addTitleAndLabel(composite, "Zeiten: ", text);
 		}
 
-		//caller detail
-		if (transport.getCallerDetail() != null)
-		{
-			text = transport.getCallerDetail().getCallerName() +" " +transport.getCallerDetail().getCallerTelephoneNumber();
-			addTitleAndLabel(composite,"Anrufer: ",text);
+		// feedback
+		if (transport.hasFeedback()) {
+			text = transport.getFeedback();
+			addTitleAndLabel(composite, "Rückmeldung: ", text);
 		}
-		
-		//notified
-		if (!(emergencyDoctor.equalsIgnoreCase("") || helicopter.equalsIgnoreCase("")|| police.equalsIgnoreCase("") || brkdt.equalsIgnoreCase("")|| df.equalsIgnoreCase("")
-				|| firebrigade.equalsIgnoreCase("")))
-		{
-			text = emergencyDoctor +" " +helicopter +" " +police +" " +brkdt +" " +df  +" "+firebrigade +mountainRescue;
-			addTitleAndLabel(composite,"Alarmierung: ",text);
+
+		// caller detail
+		if (transport.getCallerDetail() != null) {
+			text = transport.getCallerDetail().getCallerName() + " " + transport.getCallerDetail().getCallerTelephoneNumber();
+			addTitleAndLabel(composite, "Anrufer: ", text);
+		}
+
+		// notified
+		if (!(emergencyDoctor.equalsIgnoreCase("") || helicopter.equalsIgnoreCase("") || police.equalsIgnoreCase("") || brkdt.equalsIgnoreCase("")
+				|| df.equalsIgnoreCase("") || firebrigade.equalsIgnoreCase(""))) {
+			text = emergencyDoctor + " " + helicopter + " " + police + " " + brkdt + " " + df + " " + firebrigade + mountainRescue;
+			addTitleAndLabel(composite, "Alarmierung: ", text);
 		}
 
 		return composite;
-	}  
-	
-	protected void addTitleAndLabel(Composite parent, String titel, String text)
-	{
-		if(text.trim().isEmpty())
+	}
+
+	protected void addTitleAndLabel(Composite parent, String titel, String text) {
+		if (text.trim().isEmpty())
 			return;
-		
-		//Titel
+
+		// Titel
 		Label titelLabel = new Label(parent, SWT.NONE);
 		titelLabel.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_INFO_FOREGROUND));
 		titelLabel.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
 		titelLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_CENTER));
 		titelLabel.setText(titel);
-		
-		//Text
+
+		// Text
 		Label textLabel = new Label(parent, SWT.NONE);
 		textLabel.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_INFO_FOREGROUND));
 		textLabel.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
 		textLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_CENTER));
 		textLabel.setText(text);
 	}
-	
-	protected void addIconAndLabel(Composite parent, Image image, String text) 
-	{
-		//check if we have something to display
-		if(text.trim().isEmpty())
+
+	protected void addIconAndLabel(Composite parent, Image image, String text) {
+		// check if we have something to display
+		if (text.trim().isEmpty())
 			return;
-		
+
 		Label imageLabel = new Label(parent, SWT.NONE);
 		imageLabel.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_INFO_FOREGROUND));
 		imageLabel.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
@@ -200,14 +200,15 @@ public class JournalViewTooltip extends ToolTip implements ITransportStatus
 		textLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_CENTER));
 		textLabel.setText(text);
 	}
-	
+
 	/**
 	 * Creates the tooltip content area for the tooltip
-	 * @param parent the parent window
+	 * 
+	 * @param parent
+	 *            the parent window
 	 * @return the created composite
 	 */
-	protected Composite createToolTipContentAreaComposite(Composite parent) 
-	{
+	protected Composite createToolTipContentAreaComposite(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NONE);
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 2;
@@ -217,49 +218,47 @@ public class JournalViewTooltip extends ToolTip implements ITransportStatus
 		composite.setBackground(composite.getDisplay().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
 		return composite;
 	}
-	
+
 	/**
 	 * Returns the widget source for this tooltip
-	 * @param event the event triggered
+	 * 
+	 * @param event
+	 *            the event triggered
 	 * @return the source widget
 	 */
-	protected Widget getTipWidget(Event event) 
-	{
+	protected Widget getTipWidget(Event event) {
 		Point widgetPosition = new Point(event.x, event.y);
 		Widget widget = event.widget;
-		
-		if (widget instanceof Table) 
-		{
+
+		if (widget instanceof Table) {
 			Table w = (Table) widget;
 			return w.getItem(widgetPosition);
 		}
 
 		return widget;
 	}
-	
+
 	/**
 	 * Returns the element for this tool tip
-	 * @param hoverObject the object under hover
+	 * 
+	 * @param hoverObject
+	 *            the object under hover
 	 * @return the element under the hover
 	 */
-	private Transport getTaskListElement(Object hoverObject) 
-	{
-		if (hoverObject instanceof Widget) 
-		{
+	private Transport getTaskListElement(Object hoverObject) {
+		if (hoverObject instanceof Widget) {
 			Object data = ((Widget) hoverObject).getData();
-			if (data != null) 
-			{
-				return (Transport)data;
+			if (data != null) {
+				return (Transport) data;
 			}
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Hides the tool tip window
 	 */
-	public void dispose() 
-	{
+	public void dispose() {
 		hide();
 	}
 }

@@ -1,7 +1,21 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Internettechnik, FH JOANNEUM
+ * http://www.fh-joanneum.at/itm
+ * 
+ * 	Licenced under the GNU GENERAL PUBLIC LICENSE Version 2;
+ * 	You may obtain a copy of the License at
+ * 	http://www.gnu.org/licenses/gpl-2.0.txt
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *******************************************************************************/
 package at.rc.tacos.client.view.admin;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -29,6 +43,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.ViewPart;
+
 import at.rc.tacos.client.Activator;
 import at.rc.tacos.client.controller.EditorNewSickPersonAction;
 import at.rc.tacos.client.controller.RefreshViewAction;
@@ -44,20 +59,20 @@ import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.SickPerson;
 
-public class SickPersonAdminView  extends ViewPart implements PropertyChangeListener
-{
-	public static final String ID = "at.rc.tacos.client.view.admin.sickpersonAdminView";  
+public class SickPersonAdminView extends ViewPart implements PropertyChangeListener {
 
-	//properties
+	public static final String ID = "at.rc.tacos.client.view.admin.sickpersonAdminView";
+
+	// properties
 	private TableViewer viewer;
 	private FormToolkit toolkit;
 	private ScrolledForm form;
-	//text fields for the filter
+	// text fields for the filter
 	private Text lastname, firstname, svnr;
 
-	//to show some messages
+	// to show some messages
 	private CLabel infoLabel;
-	
+
 	/**
 	 * The scheduler job to start the filter
 	 */
@@ -66,8 +81,7 @@ public class SickPersonAdminView  extends ViewPart implements PropertyChangeList
 	/**
 	 * Default class constructor
 	 */
-	public SickPersonAdminView()
-	{
+	public SickPersonAdminView() {
 		ModelFactory.getInstance().getSickPersonManager().addPropertyChangeListener(this);
 	}
 
@@ -75,25 +89,24 @@ public class SickPersonAdminView  extends ViewPart implements PropertyChangeList
 	 * Cleanup the view
 	 */
 	@Override
-	public void dispose()
-	{
+	public void dispose() {
 		ModelFactory.getInstance().getSickPersonManager().removePropertyChangeListener(this);
 	}
 
 	/**
-	 * This is a callback that will allow us to create the viewer and initialize it.
+	 * This is a callback that will allow us to create the viewer and initialize
+	 * it.
 	 */
 	@Override
-	public void createPartControl(final Composite parent) 
-	{
+	public void createPartControl(final Composite parent) {
 		String authorization = SessionManager.getInstance().getLoginInformation().getAuthorization();
-		
-		//the scrolled form
+
+		// the scrolled form
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
 		form = toolkit.createScrolledForm(parent);
-		form.setText("Liste der Patienten"); 
-		
-		if(!authorization.equalsIgnoreCase("Administrator"))
+		form.setText("Liste der Patienten");
+
+		if (!authorization.equalsIgnoreCase("Administrator"))
 			form.setEnabled(false);
 		toolkit.decorateFormHeading(form.getForm());
 		GridLayout layout = new GridLayout();
@@ -104,73 +117,67 @@ public class SickPersonAdminView  extends ViewPart implements PropertyChangeList
 		form.getBody().setLayout(layout);
 		form.getBody().setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		//create the section to hold the filter
-		Composite filter = createSection(form.getBody(), "Filter") ;
+		// create the section to hold the filter
+		Composite filter = createSection(form.getBody(), "Filter");
 
-		//create the input fields
+		// create the input fields
 		final Label labelLastname = toolkit.createLabel(filter, "Nachname");
 		lastname = toolkit.createText(filter, "");
-		lastname.addModifyListener(new ModifyListener() 
-		{
-			public void modifyText(final ModifyEvent e) 
-			{
+		lastname.addModifyListener(new ModifyListener() {
+
+			public void modifyText(final ModifyEvent e) {
 				inputChanged();
 			}
 		});
 
-		//the firstname
+		// the firstname
 		final Label labelFirstname = toolkit.createLabel(filter, "Vorname");
 		firstname = toolkit.createText(filter, "");
-		firstname.addModifyListener(new ModifyListener() 
-		{
-			public void modifyText(final ModifyEvent e) 
-			{
+		firstname.addModifyListener(new ModifyListener() {
+
+			public void modifyText(final ModifyEvent e) {
 				inputChanged();
 			}
 		});
 
-		//the svnr
+		// the svnr
 		final Label labelSVNR = toolkit.createLabel(filter, "SVNR");
 		svnr = toolkit.createText(filter, "");
-		svnr.addModifyListener(new ModifyListener() 
-		{
-			public void modifyText(final ModifyEvent e) 
-			{
+		svnr.addModifyListener(new ModifyListener() {
+
+			public void modifyText(final ModifyEvent e) {
 				inputChanged();
 			}
 		});
 
-		//create the info label
-		infoLabel = new CLabel(filter,SWT.NONE);
+		// create the info label
+		infoLabel = new CLabel(filter, SWT.NONE);
 		infoLabel.setText("Bitte geben sie mindestens ein Zeichen des Nachnamens ein");
 		infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("resource.info"));
 
-		//create the section to hold the table
-		Composite tableComp = createSection(form.getBody(), "Filter") ;
+		// create the section to hold the table
+		Composite tableComp = createSection(form.getBody(), "Filter");
 		Table table = new Table(tableComp, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
 		viewer = new TableViewer(table);
 		viewer.setUseHashlookup(true);
 		viewer.getTable().setLayout(new GridLayout());
 		viewer.getTable().setLayoutData(new GridData(GridData.FILL_BOTH));
-		viewer.addDoubleClickListener(new IDoubleClickListener()
-		{
+		viewer.addDoubleClickListener(new IDoubleClickListener() {
+
 			@Override
-			public void doubleClick(DoubleClickEvent dce) 
-			{
-				//get the selected disease
+			public void doubleClick(DoubleClickEvent dce) {
+				// get the selected disease
 				ISelection selection = viewer.getSelection();
 				Object obj = ((IStructuredSelection) selection).getFirstElement();
-				SickPerson person = (SickPerson)obj;
-				//create the editor input and open
-				SickPersonEditorInput input = new SickPersonEditorInput(person,false);
+				SickPerson person = (SickPerson) obj;
+				// create the editor input and open
+				SickPersonEditorInput input = new SickPersonEditorInput(person, false);
 				IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-				try 
-				{
+				try {
 					page.openEditor(input, SickPersonEditor.ID);
-				} 
-				catch (PartInitException e) 
-				{
-					Activator.getDefault().log("Failed to open the editor for the sick person "+person, IStatus.ERROR);
+				}
+				catch (PartInitException e) {
+					Activator.getDefault().log("Failed to open the editor for the sick person " + person, IStatus.ERROR);
 				}
 			}
 		});
@@ -181,7 +188,7 @@ public class SickPersonAdminView  extends ViewPart implements PropertyChangeList
 		viewer.getTable().setHeaderVisible(true);
 		getViewSite().setSelectionProvider(viewer);
 
-		//create the columns
+		// create the columns
 		final TableColumn imageColumn = new TableColumn(table, SWT.NONE);
 		imageColumn.setToolTipText("");
 		imageColumn.setWidth(30);
@@ -202,13 +209,13 @@ public class SickPersonAdminView  extends ViewPart implements PropertyChangeList
 		streetColumn.setWidth(180);
 		streetColumn.setText("Vorname");
 
-		//add actions to the toolbar
+		// add actions to the toolbar
 		createToolBarActions();
 
-		//set this table as a selection provider
+		// set this table as a selection provider
 		getViewSite().setSelectionProvider(viewer);
 
-		//set the layout for the composites
+		// set the layout for the composites
 		GridData data = new GridData();
 		data.widthHint = 80;
 		labelLastname.setLayoutData(data);
@@ -219,25 +226,25 @@ public class SickPersonAdminView  extends ViewPart implements PropertyChangeList
 		labelSVNR.setLayoutData(data);
 		labelFirstname.setLayoutData(data);
 		data.widthHint = 80;
-		//layout for the text fields
+		// layout for the text fields
 		GridData data2 = new GridData(GridData.FILL_HORIZONTAL);
 		lastname.setLayoutData(data2);
 		data2 = new GridData(GridData.FILL_HORIZONTAL);
-		firstname.setLayoutData(data2);	
+		firstname.setLayoutData(data2);
 		data2 = new GridData(GridData.FILL_HORIZONTAL);
-		svnr.setLayoutData(data2);	
+		svnr.setLayoutData(data2);
 		data2 = new GridData(GridData.FILL_BOTH);
 		viewer.getTable().setLayoutData(data2);
-		//the section of the table
+		// the section of the table
 		data2 = new GridData(GridData.FILL_BOTH);
-		Section tableSection = (Section)tableComp.getParent();
+		Section tableSection = (Section) tableComp.getParent();
 		tableSection.setLayoutData(data2);
-		//the info label
+		// the info label
 		data2 = new GridData(GridData.FILL_BOTH);
 		data2.horizontalSpan = 2;
 		infoLabel.setLayoutData(data2);
-		
-		//reflow
+
+		// reflow
 		form.reflow(true);
 	}
 
@@ -245,23 +252,18 @@ public class SickPersonAdminView  extends ViewPart implements PropertyChangeList
 	 * Passes the focus to the view
 	 */
 	@Override
-	public void setFocus() 
-	{ 
+	public void setFocus() {
 		form.setFocus();
 	}
 
 	@Override
-	public void propertyChange(PropertyChangeEvent evt) 
-	{
+	public void propertyChange(PropertyChangeEvent evt) {
 		String event = evt.getPropertyName();
-		if("SICKPERSON_ADD".equalsIgnoreCase(event) ||
-				"SICKPERSON_REMOVE".equalsIgnoreCase(event) ||
-				"SICKPERSON_UPDATE".equalsIgnoreCase(event) ||
-				"SICKPERSON_CLEARED".equalsIgnoreCase(event))
-		{
-			//just refresh the viewer
+		if ("SICKPERSON_ADD".equalsIgnoreCase(event) || "SICKPERSON_REMOVE".equalsIgnoreCase(event) || "SICKPERSON_UPDATE".equalsIgnoreCase(event)
+				|| "SICKPERSON_CLEARED".equalsIgnoreCase(event)) {
+			// just refresh the viewer
 			viewer.refresh();
-			infoLabel.setText("Es wurden "+ ModelFactory.getInstance().getSickPersonManager().getSickPersons().size() +" Patienten gefunden");
+			infoLabel.setText("Es wurden " + ModelFactory.getInstance().getSickPersonManager().getSickPersons().size() + " Patienten gefunden");
 			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("resource.info"));
 		}
 	}
@@ -269,43 +271,46 @@ public class SickPersonAdminView  extends ViewPart implements PropertyChangeList
 	/**
 	 * Creates and adds the actions for the toolbar
 	 */
-	private void createToolBarActions()
-	{
-		//create the action
-		EditorNewSickPersonAction addAction = new EditorNewSickPersonAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());		
-		RefreshViewAction refreshAction = new RefreshViewAction(SickPerson.ID);	
-		//add to the toolbar
+	private void createToolBarActions() {
+		// create the action
+		EditorNewSickPersonAction addAction = new EditorNewSickPersonAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
+		RefreshViewAction refreshAction = new RefreshViewAction(SickPerson.ID);
+		// add to the toolbar
 		form.getToolBarManager().add(addAction);
 		form.getToolBarManager().add(refreshAction);
 		form.getToolBarManager().update(true);
 	}
 
-	//Helper methods
+	// Helper methods
 	/**
 	 * Creates and returns a section and a composite with two colums
-	 * @param parent the parent composite
-	 * @param sectionName the title of the section
+	 * 
+	 * @param parent
+	 *            the parent composite
+	 * @param sectionName
+	 *            the title of the section
 	 * @return the created composite to hold the other widgets
 	 */
-	private Composite createSection(Composite parent,String sectionName)
-	{
-		//create the section
-		Section section = toolkit.createSection(parent,ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+	private Composite createSection(Composite parent, String sectionName) {
+		// create the section
+		Section section = toolkit.createSection(parent, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		toolkit.createCompositeSeparator(section);
 		section.setText(sectionName);
 		section.setLayout(new GridLayout());
-		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.BEGINNING | GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING));
+		section.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.BEGINNING | GridData.HORIZONTAL_ALIGN_BEGINNING
+				| GridData.VERTICAL_ALIGN_BEGINNING));
 		section.setExpanded(true);
-		//composite to add the client area
+		// composite to add the client area
 		Composite client = new Composite(section, SWT.NONE);
 		section.setClient(client);
 
-		//layout
+		// layout
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 2;
 		layout.makeColumnsEqualWidth = false;
 		client.setLayout(layout);
-		GridData clientDataLayout = new GridData(GridData.BEGINNING | GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING | GridData.FILL_BOTH);
+		GridData clientDataLayout = new GridData(GridData.BEGINNING | GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING
+				| GridData.FILL_BOTH);
 		client.setLayoutData(clientDataLayout);
 
 		return client;
@@ -314,29 +319,26 @@ public class SickPersonAdminView  extends ViewPart implements PropertyChangeList
 	/**
 	 * Helper method to apply the filer
 	 */
-	public void inputChanged()
-	{
-		//get the values
+	public void inputChanged() {
+		// get the values
 		final String strLastname = lastname.getText().trim().toLowerCase();
-		
-		if(strLastname.length() < 1)
-		{
+
+		if (strLastname.length() < 1) {
 			infoLabel.setText("Bitte geben Sie mindestens ein Zeichen des Nachnamens ein.");
 			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("resource.error"));
 			Display.getCurrent().beep();
 			return;
 		}
 
-		if(filterJob == null)
+		if (filterJob == null)
 			filterJob = new FilterPatientJob(viewer);
-		
-		//check the state
-		if(filterJob.getState() == Job.RUNNING)
-		{
+
+		// check the state
+		if (filterJob.getState() == Job.RUNNING) {
 			return;
 		}
-		
-		//pass the entered text
+
+		// pass the entered text
 		filterJob.setSearchString(strLastname);
 		filterJob.schedule(FilterAddressJob.INTERVAL_KEY_PRESSED);
 	}
