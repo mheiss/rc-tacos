@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Internettechnik, FH JOANNEUM
+ * http://www.fh-joanneum.at/itm
+ * 
+ * 	Licenced under the GNU GENERAL PUBLIC LICENSE Version 2;
+ * 	You may obtain a copy of the License at
+ * 	http://www.gnu.org/licenses/gpl-2.0.txt
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *******************************************************************************/
 package at.rc.tacos.core.db.dao.mysql;
 
 import java.sql.SQLException;
@@ -20,36 +33,35 @@ import at.rc.tacos.model.MobilePhoneDetail;
 import at.rc.tacos.model.Patient;
 import at.rc.tacos.util.MyUtils;
 
-public class DialysePatientDAOMySQLTest extends DBTestBase
-{
-	//the needed dao classes
+public class DialysePatientDAOMySQLTest extends DBTestBase {
+
+	// the needed dao classes
 	private DialysisPatientDAO dialyseDAO = DaoFactory.MYSQL.createDialysisPatientDAO();
 	private LocationDAO locationDAO = DaoFactory.MYSQL.createLocationDAO();
-	private MobilePhoneDAO mobilePhoneDAO = DaoFactory.MYSQL.createMobilePhoneDAO(); 
-	
-	//test data
+	private MobilePhoneDAO mobilePhoneDAO = DaoFactory.MYSQL.createMobilePhoneDAO();
+
+	// test data
 	private Location location1;
 	private MobilePhoneDetail phone1;
-	private DialysisPatient patient1,patient2;
-	
+	private DialysisPatient patient1, patient2;
+
 	@Before
-	public void setUp() throws SQLException
-	{
-		 //test phone for the locations
-        phone1 = new MobilePhoneDetail("phone1","0664-123456789");
-        location1 = new Location("location1",phone1,"street1","number1",1,"city1","notes1");
-        //insert the test data and set the generated ids
-        int phoneId1 = mobilePhoneDAO.addMobilePhone(phone1);
-        phone1.setId(phoneId1);
-        //insert test data
-        int id1 = locationDAO.addLocation(location1);
-        location1.setId(id1);
-		
+	public void setUp() throws SQLException {
+		// test phone for the locations
+		phone1 = new MobilePhoneDetail("phone1", "0664-123456789");
+		location1 = new Location("location1", phone1, "street1", "number1", 1, "city1", "notes1");
+		// insert the test data and set the generated ids
+		int phoneId1 = mobilePhoneDAO.addMobilePhone(phone1);
+		phone1.setId(phoneId1);
+		// insert test data
+		int id1 = locationDAO.addLocation(location1);
+		location1.setId(id1);
+
 		Calendar cal = Calendar.getInstance();
-		//create the patient
+		// create the patient
 		patient1 = new DialysisPatient();
-		//the patient details
-		patient1.setPatient(new Patient("max","mustermann"));
+		// the patient details
+		patient1.setPatient(new Patient("max", "mustermann"));
 		patient1.setKindOfTransport("liegend");
 		patient1.setInsurance("keine");
 		patient1.setLocation(location1);
@@ -57,20 +69,20 @@ public class DialysePatientDAOMySQLTest extends DBTestBase
 		patient1.setFromCity("fromCitry");
 		patient1.setToStreet("toStreet");
 		patient1.setToCity("toCity");
-		//the time values
+		// the time values
 		patient1.setPlannedStartOfTransport(cal.getTimeInMillis());
 		patient1.setPlannedTimeAtPatient(cal.getTimeInMillis());
 		patient1.setAppointmentTimeAtDialysis(cal.getTimeInMillis());
 		patient1.setReadyTime(cal.getTimeInMillis());
 		patient1.setPlannedStartForBackTransport(cal.getTimeInMillis());
-		//insert the patient
+		// insert the patient
 		int id = dialyseDAO.addDialysisPatient(patient1);
 		patient1.setId(id);
-		
-		//second patient
+
+		// second patient
 		patient2 = new DialysisPatient();
-		//the patient details
-		patient2.setPatient(new Patient("max","mustermann"));
+		// the patient details
+		patient2.setPatient(new Patient("max", "mustermann"));
 		patient2.setKindOfTransport("gehend");
 		patient2.setInsurance("keine");
 		patient2.setLocation(location1);
@@ -78,38 +90,35 @@ public class DialysePatientDAOMySQLTest extends DBTestBase
 		patient2.setFromCity("fromCitry");
 		patient2.setToStreet("toStreet");
 		patient2.setToCity("toCity");
-		//the time values
+		// the time values
 		patient2.setPlannedStartOfTransport(cal.getTimeInMillis());
 		patient2.setPlannedTimeAtPatient(cal.getTimeInMillis());
 		patient2.setAppointmentTimeAtDialysis(cal.getTimeInMillis());
 		patient2.setReadyTime(cal.getTimeInMillis());
 		patient2.setPlannedStartForBackTransport(cal.getTimeInMillis());
-		//insert the patient
+		// insert the patient
 		id = dialyseDAO.addDialysisPatient(patient2);
 		patient2.setId(id);
 	}
-	
+
 	@After
-	public void tearDown() throws SQLException
-	{
+	public void tearDown() throws SQLException {
 		deleteTable(DialysisPatientDAO.TABLE_NAME);
 		deleteTable(DialysisPatientDAO.TABLE_DEPENDENT);
 		deleteTable(MobilePhoneDAO.TABLE_NAME);
 		deleteTable(LocationDAO.TABLE_NAME);
 	}
-	
+
 	@Test
-	public void testListPatients() throws SQLException
-	{
+	public void testListPatients() throws SQLException {
 		List<DialysisPatient> list = dialyseDAO.listDialysisPatient();
 		Assert.assertEquals(2, list.size());
 	}
-	
+
 	@Test
-	public void testUpdatePatient() throws SQLException
-	{
+	public void testUpdatePatient() throws SQLException {
 		{
-			//get the patient by id
+			// get the patient by id
 			DialysisPatient patient = dialyseDAO.getDialysisPatientById(patient1.getId());
 			patient.getPatient().setFirstname("newFirst");
 			patient.getPatient().setLastname("newLast");
@@ -127,10 +136,9 @@ public class DialysePatientDAOMySQLTest extends DBTestBase
 			Assert.assertTrue(patient.isMonday());
 		}
 	}
-	
+
 	@Test
-	public void testRemovePatient() throws SQLException
-	{
+	public void testRemovePatient() throws SQLException {
 		{
 			DialysisPatient patient = dialyseDAO.getDialysisPatientById(patient1.getId());
 			dialyseDAO.removeDialysisPatient(patient.getId());
@@ -140,18 +148,17 @@ public class DialysePatientDAOMySQLTest extends DBTestBase
 			Assert.assertEquals(1, list.size());
 		}
 	}
-	
+
 	@Test
-	public void testSetLastTransport() throws SQLException
-	{
+	public void testSetLastTransport() throws SQLException {
 		{
 			DialysisPatient patient = dialyseDAO.getDialysisPatientById(patient1.getId());
-			patient.setLastTransportDate(MyUtils.stringToTimestamp("22-02-2008",MyUtils.dateFormat));
+			patient.setLastTransportDate(MyUtils.stringToTimestamp("22-02-2008", MyUtils.dateFormat));
 			dialyseDAO.updateDialysisPatient(patient);
 		}
 		{
 			DialysisPatient patient = dialyseDAO.getDialysisPatientById(patient1.getId());
-			Assert.assertEquals(patient1.getId(),patient.getId());
+			Assert.assertEquals(patient1.getId(), patient.getId());
 			Assert.assertEquals("22-02-2008", MyUtils.timestampToString(patient.getLastTransportDate(), MyUtils.dateFormat));
 		}
 	}

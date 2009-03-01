@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Internettechnik, FH JOANNEUM
+ * http://www.fh-joanneum.at/itm
+ * 
+ * 	Licenced under the GNU GENERAL PUBLIC LICENSE Version 2;
+ * 	You may obtain a copy of the License at
+ * 	http://www.gnu.org/licenses/gpl-2.0.txt
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *******************************************************************************/
 package at.rc.tacos.core.db.dao.mysql;
 
 import java.sql.Connection;
@@ -6,6 +19,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 import at.rc.tacos.core.db.DataSource;
 import at.rc.tacos.core.db.Queries;
 import at.rc.tacos.core.db.dao.DialysisPatientDAO;
@@ -15,20 +29,18 @@ import at.rc.tacos.model.DialysisPatient;
 import at.rc.tacos.model.Patient;
 import at.rc.tacos.util.MyUtils;
 
-public class DialysisPatientDAOMySQL implements DialysisPatientDAO
-{
-	//The data source to get the connection and the queries file
+public class DialysisPatientDAOMySQL implements DialysisPatientDAO {
+
+	// The data source to get the connection and the queries file
 	private final DataSource source = DataSource.getInstance();
 	private final Queries queries = Queries.getInstance();
-	//the location DAO
+	// the location DAO
 	private final LocationDAO locationDAO = DaoFactory.MYSQL.createLocationDAO();
-	
+
 	@Override
-	public int addDialysisPatient(DialysisPatient patient) throws SQLException
-	{
+	public int addDialysisPatient(DialysisPatient patient) throws SQLException {
 		Connection connection = source.getConnection();
-		try
-		{	
+		try {
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("insert.dialysisPatient"));
 			query.setString(1, patient.getPatient().getFirstname());
 			query.setString(2, patient.getPatient().getLastname());
@@ -54,40 +66,37 @@ public class DialysisPatientDAOMySQL implements DialysisPatientDAO
 			query.setBoolean(22, patient.isSaturday());
 			query.setBoolean(23, patient.isSunday());
 			query.executeUpdate();
-			//get the last inserted id
+			// get the last inserted id
 			final ResultSet rs = query.getGeneratedKeys();
-		    if (!rs.next()) 
-		        return -1;
-		    //get the generated id
-		    int id = rs.getInt(1);
-		    //insert a row into the dialysis transport table to save the last generated transport for
-		    //this patient
-		    final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("insert.dialysisTransport"));
-		    stmt.setInt(1, id);
-		    stmt.setString(2, null);
-		    stmt.setString(3, null);
-		    if(stmt.executeUpdate() != 0)
-		    	return id;
-		 
-		    return -1;
+			if (!rs.next())
+				return -1;
+			// get the generated id
+			int id = rs.getInt(1);
+			// insert a row into the dialysis transport table to save the last
+			// generated transport for
+			// this patient
+			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("insert.dialysisTransport"));
+			stmt.setInt(1, id);
+			stmt.setString(2, null);
+			stmt.setString(3, null);
+			if (stmt.executeUpdate() != 0)
+				return id;
+
+			return -1;
 		}
-		finally
-		{
+		finally {
 			connection.close();
 		}
 	}
 
 	@Override
-	public DialysisPatient getDialysisPatientById(int id) throws SQLException
-	{
+	public DialysisPatient getDialysisPatientById(int id) throws SQLException {
 		Connection connection = source.getConnection();
-		try
-		{
+		try {
 			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("get.dialysisByID"));
 			stmt.setInt(1, id);
 			final ResultSet rs = stmt.executeQuery();
-			if(rs.first())
-			{
+			if (rs.first()) {
 				DialysisPatient dialysis = new DialysisPatient();
 				dialysis.setId(rs.getInt("d.dialysis_ID"));
 				dialysis.setAppointmentTimeAtDialysis(MyUtils.stringToTimestamp(rs.getString("d.appointmentTimeAtDialysis"), MyUtils.sqlTime));
@@ -110,44 +119,40 @@ public class DialysisPatientDAOMySQL implements DialysisPatientDAO
 				dialysis.setTuesday(rs.getBoolean("d.tuesday"));
 				dialysis.setWednesday(rs.getBoolean("d.wednesday"));
 				dialysis.setMonday(rs.getBoolean("d.monday"));
-				//the location
+				// the location
 				int locationId = rs.getInt("d.location");
 				dialysis.setLocation(locationDAO.getLocation(locationId));
-				//the patient for the dialysis
+				// the patient for the dialysis
 				Patient patient = new Patient();
 				patient.setFirstname(rs.getString("d.firstname"));
 				patient.setLastname(rs.getString("d.lastname"));
 				dialysis.setPatient(patient);
-				
-				//set the last generated transport dates
-				if(rs.getString("dt.transport_date") != null)
-					dialysis.setLastTransportDate(MyUtils.stringToTimestamp(rs.getString("dt.transport_date"),MyUtils.sqlDate));
-				if(rs.getString("dt.return_date") != null)
-					dialysis.setLastBackTransportDate(MyUtils.stringToTimestamp(rs.getString("dt.return_date"),MyUtils.sqlDate));
-				
-				//return the patient
+
+				// set the last generated transport dates
+				if (rs.getString("dt.transport_date") != null)
+					dialysis.setLastTransportDate(MyUtils.stringToTimestamp(rs.getString("dt.transport_date"), MyUtils.sqlDate));
+				if (rs.getString("dt.return_date") != null)
+					dialysis.setLastBackTransportDate(MyUtils.stringToTimestamp(rs.getString("dt.return_date"), MyUtils.sqlDate));
+
+				// return the patient
 				return dialysis;
 			}
-			//no result set
+			// no result set
 			return null;
 		}
-		finally
-		{
+		finally {
 			connection.close();
 		}
 	}
 
 	@Override
-	public List<DialysisPatient> listDialysisPatient() throws SQLException
-	{
+	public List<DialysisPatient> listDialysisPatient() throws SQLException {
 		Connection connection = source.getConnection();
-		try
-		{
+		try {
 			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("list.dialysisPatients"));
 			final ResultSet rs = stmt.executeQuery();
 			List<DialysisPatient> dialysises = new ArrayList<DialysisPatient>();
-			while(rs.next())
-			{
+			while (rs.next()) {
 				DialysisPatient dialysis = new DialysisPatient();
 				dialysis.setId(rs.getInt("dialysis_ID"));
 				System.out.println(rs.getString("appointmentTimeAtDialysis"));
@@ -171,66 +176,60 @@ public class DialysisPatientDAOMySQL implements DialysisPatientDAO
 				dialysis.setTuesday(rs.getBoolean("tuesday"));
 				dialysis.setWednesday(rs.getBoolean("wednesday"));
 				dialysis.setMonday(rs.getBoolean("monday"));
-				//the location
+				// the location
 				int locationId = rs.getInt("location");
 				dialysis.setLocation(locationDAO.getLocation(locationId));
-				//the patient for the dialysis
+				// the patient for the dialysis
 				Patient patient = new Patient();
 				patient.setFirstname(rs.getString("firstname"));
 				patient.setLastname(rs.getString("lastname"));
 				dialysis.setPatient(patient);
-				
-				//set the last generated transport dates
-				if(rs.getString("dt.transport_date") != null)
-					dialysis.setLastTransportDate(MyUtils.stringToTimestamp(rs.getString("dt.transport_date"),MyUtils.sqlDate));
-				if(rs.getString("dt.return_date") != null)
-					dialysis.setLastBackTransportDate(MyUtils.stringToTimestamp(rs.getString("dt.return_date"),MyUtils.sqlDate));
-				
-				//add to the list
+
+				// set the last generated transport dates
+				if (rs.getString("dt.transport_date") != null)
+					dialysis.setLastTransportDate(MyUtils.stringToTimestamp(rs.getString("dt.transport_date"), MyUtils.sqlDate));
+				if (rs.getString("dt.return_date") != null)
+					dialysis.setLastBackTransportDate(MyUtils.stringToTimestamp(rs.getString("dt.return_date"), MyUtils.sqlDate));
+
+				// add to the list
 				dialysises.add(dialysis);
 			}
-			//return the list
+			// return the list
 			return dialysises;
 		}
-		finally
-		{
+		finally {
 			connection.close();
 		}
 	}
 
 	@Override
-	public boolean removeDialysisPatient(int id) throws SQLException
-	{
+	public boolean removeDialysisPatient(int id) throws SQLException {
 		Connection connection = source.getConnection();
-		try
-		{
+		try {
 			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("remove.dialysis"));
 			stmt.setInt(1, id);
-			//assert the patient is removed
-			if(stmt.executeUpdate() == 0)
+			// assert the patient is removed
+			if (stmt.executeUpdate() == 0)
 				return false;
-			
-			//delete the dialyse transport entry
+
+			// delete the dialyse transport entry
 			final PreparedStatement stmtTrans = connection.prepareStatement(queries.getStatment("delete.dialsyisTransport"));
 			stmtTrans.setInt(1, id);
-			//assert the entry is removed
-			if(stmtTrans.executeUpdate() == 0)
+			// assert the entry is removed
+			if (stmtTrans.executeUpdate() == 0)
 				return false;
-			
+
 			return true;
 		}
-		finally
-		{
+		finally {
 			connection.close();
 		}
 	}
 
 	@Override
-	public boolean updateDialysisPatient(DialysisPatient patient) throws SQLException
-	{
+	public boolean updateDialysisPatient(DialysisPatient patient) throws SQLException {
 		Connection connection = source.getConnection();
-		try
-		{
+		try {
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("update.dialysis"));
 			query.setString(1, patient.getPatient().getFirstname());
 			query.setString(2, patient.getPatient().getLastname());
@@ -256,30 +255,29 @@ public class DialysisPatientDAOMySQL implements DialysisPatientDAO
 			query.setBoolean(22, patient.isSaturday());
 			query.setBoolean(23, patient.isSunday());
 			query.setInt(24, patient.getId());
-			//assert the update was successfully
-			if(query.executeUpdate() == 0)
+			// assert the update was successfully
+			if (query.executeUpdate() == 0)
 				return false;
 
-			//update the dialyse transport table
+			// update the dialyse transport table
 			final PreparedStatement stmtTran = connection.prepareStatement(queries.getStatment("update.dialysisTransport"));
-			//set the values if they are not 0
-			if(patient.getLastTransportDate() > 0)
+			// set the values if they are not 0
+			if (patient.getLastTransportDate() > 0)
 				stmtTran.setString(1, MyUtils.timestampToString(patient.getLastTransportDate(), MyUtils.sqlDate));
 			else
-				stmtTran.setString(1,null);
-			//set the value for the backtransport if it is not 0
-			if(patient.getLastBackTransporDate() > 0)
+				stmtTran.setString(1, null);
+			// set the value for the backtransport if it is not 0
+			if (patient.getLastBackTransporDate() > 0)
 				stmtTran.setString(2, MyUtils.timestampToString(patient.getLastBackTransporDate(), MyUtils.sqlDate));
 			else
-				stmtTran.setString(2,null);
+				stmtTran.setString(2, null);
 			stmtTran.setInt(3, patient.getId());
-			if(stmtTran.executeUpdate() == 0)
+			if (stmtTran.executeUpdate() == 0)
 				return false;
-			//everything is ok
+			// everything is ok
 			return true;
 		}
-		finally
-		{
+		finally {
 			connection.close();
 		}
 	}
