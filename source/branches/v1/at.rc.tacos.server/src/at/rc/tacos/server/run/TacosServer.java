@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Internettechnik, FH JOANNEUM
+ * http://www.fh-joanneum.at/itm
+ * 
+ * 	Licenced under the GNU GENERAL PUBLIC LICENSE Version 2;
+ * 	You may obtain a copy of the License at
+ * 	http://www.gnu.org/licenses/gpl-2.0.txt
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *******************************************************************************/
 package at.rc.tacos.server.run;
 
 import org.apache.log4j.Logger;
@@ -14,6 +27,7 @@ import at.rc.tacos.server.controller.ServerController;
  * @author Michael
  */
 public class TacosServer {
+
 	// the logging instance
 	private static Logger logger = Logger.getRootLogger();
 
@@ -39,8 +53,8 @@ public class TacosServer {
 	/**
 	 * The main method to read the configuration and start the server
 	 * 
-	 * @param args -
-	 *            not used
+	 * @param args
+	 *            - not used
 	 */
 	public static void main(String[] args) {
 		int port;
@@ -48,8 +62,7 @@ public class TacosServer {
 		try {
 			// the first command line argument is the port
 			if (args.length != 1) {
-				throw new IllegalArgumentException(
-						"The first argument must be the port where the server should listen to");
+				throw new IllegalArgumentException("The first argument must be the port where the server should listen to");
 			}
 			port = Integer.parseInt(args[0]);
 
@@ -66,7 +79,8 @@ public class TacosServer {
 			TacosServer server = new TacosServer(port);
 			server.startServer();
 
-		} catch (NumberFormatException nfe) {
+		}
+		catch (NumberFormatException nfe) {
 			logger.info("Port number must be a integer");
 			logger.info(nfe.getMessage());
 		}

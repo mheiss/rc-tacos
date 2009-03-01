@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Internettechnik, FH JOANNEUM
+ * http://www.fh-joanneum.at/itm
+ * 
+ * 	Licenced under the GNU GENERAL PUBLIC LICENSE Version 2;
+ * 	You may obtain a copy of the License at
+ * 	http://www.gnu.org/licenses/gpl-2.0.txt
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *******************************************************************************/
 package at.rc.tacos.server.listener;
 
 import java.sql.SQLException;
@@ -13,96 +26,85 @@ import at.rc.tacos.model.DAOException;
 import at.rc.tacos.model.Lock;
 import at.rc.tacos.model.QueryFilter;
 
-public class LockListener extends ServerListenerAdapter
-{
-	//the list of locked object
+public class LockListener extends ServerListenerAdapter {
+
+	// the list of locked object
 	private final static List<Lock> lockedList = Collections.synchronizedList(new ArrayList<Lock>());
-	
-	//the logger
+
+	// the logger
 	private static Logger logger = Logger.getLogger(LockListener.class);
 
 	/**
 	 * The request to add a new lock to the managed list of locks
 	 */
 	@Override
-	public AbstractMessage handleAddRequest(AbstractMessage addObject,String username) throws DAOException, SQLException 
-	{
-		Lock lock = (Lock)addObject;
-		logger.debug("New lock request: "+lock);
-		//check if the list already contains the lock 
-		if(lockedList.contains(lock))
-		{
+	public AbstractMessage handleAddRequest(AbstractMessage addObject, String username) throws DAOException, SQLException {
+		Lock lock = (Lock) addObject;
+		logger.debug("New lock request: " + lock);
+		// check if the list already contains the lock
+		if (lockedList.contains(lock)) {
 			int index = lockedList.indexOf(lock);
 			logger.debug("The lock is existing, editing is denied");
-			//set the username and return the message
+			// set the username and return the message
 			Lock existingLock = lockedList.get(index);
 			lock.setLockedBy(existingLock.getLockedBy());
 		}
-		else
-		{
+		else {
 			logger.debug("The lock is not in the list of objects, editing is granted");
-			//set the lock for this user
+			// set the lock for this user
 			lock.setHasLock(true);
-			synchronized (lockedList) 
-			{
+			synchronized (lockedList) {
 				lockedList.listIterator().add(lock);
 			}
 			return lock;
 		}
-		logger.debug("The lock was not allowed: "+lock);
-		//do not allow the user to have the lock
+		logger.debug("The lock was not allowed: " + lock);
+		// do not allow the user to have the lock
 		lock.setHasLock(false);
 		return lock;
 	}
 
 	@Override
-	public List<AbstractMessage> handleListingRequest(QueryFilter queryFilter) throws DAOException, SQLException 
-	{
-		//create a new list of abstract messages
+	public List<AbstractMessage> handleListingRequest(QueryFilter queryFilter) throws DAOException, SQLException {
+		// create a new list of abstract messages
 		List<AbstractMessage> abstractLockList = new ArrayList<AbstractMessage>();
-		synchronized (lockedList) 
-		{
+		synchronized (lockedList) {
 			ListIterator<Lock> iter = lockedList.listIterator();
-			while(iter.hasNext())
+			while (iter.hasNext())
 				abstractLockList.add(iter.next());
 		}
-		
-		//return the list of current locks
+
+		// return the list of current locks
 		return abstractLockList;
 	}
 
 	@Override
-	public AbstractMessage handleRemoveRequest(AbstractMessage removeObject) throws DAOException, SQLException 
-	{
-		Lock lock = (Lock)removeObject;
-		logger.debug("Request to remove the lock:"+lock);
-		//remove the lock from the list
-		synchronized(lockedList) 
-		{
+	public AbstractMessage handleRemoveRequest(AbstractMessage removeObject) throws DAOException, SQLException {
+		Lock lock = (Lock) removeObject;
+		logger.debug("Request to remove the lock:" + lock);
+		// remove the lock from the list
+		synchronized (lockedList) {
 			ListIterator<Lock> iter = lockedList.listIterator();
-			while(iter.hasNext())
-			{
+			while (iter.hasNext()) {
 				Lock listLock = iter.next();
-				//check the object and remove it from the list
-				if(listLock.equals(lock))
-				{
-					logger.debug("Removing lock:"+lock);
+				// check the object and remove it from the list
+				if (listLock.equals(lock)) {
+					logger.debug("Removing lock:" + lock);
 					iter.remove();
 					lock.setHasLock(false);
 					return lock;
 				}
 			}
 		}
-		//the lock has not been removed
+		// the lock has not been removed
 		lock.setHasLock(true);
 		return lock;
 	}
-	
+
 	/**
 	 * Returns the list of managed lock objects
 	 */
-	public List<Lock> getLockObjects()
-	{
+	public List<Lock> getLockObjects() {
 		return lockedList;
 	}
 }
