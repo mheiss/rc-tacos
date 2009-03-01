@@ -380,7 +380,6 @@ public class AddressAdminView  extends ViewPart implements PropertyChangeListene
 		//check the state
 		if(filterJob.getState() == Job.RUNNING)
 		{
-			System.out.println("Job is currently running");
 			return;
 		}
 		

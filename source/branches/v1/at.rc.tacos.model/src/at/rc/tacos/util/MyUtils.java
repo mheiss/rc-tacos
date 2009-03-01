@@ -59,7 +59,6 @@ public class MyUtils
     {
         //create a calendar entry
         Calendar cal = Calendar.getInstance();
-        System.out.println(cal.getMaximum(Calendar.YEAR));
         if( year > cal.getMaximum(Calendar.YEAR))
             return false;
         //date is valid
@@ -157,7 +156,6 @@ public class MyUtils
         }
         catch(ParseException pe)
         {
-            System.out.println("Failed to validate the given time: "+time);
             return -1;
         }
     }

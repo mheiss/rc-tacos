@@ -439,9 +439,6 @@ public class DialysisPatient extends AbstractMessage
 	 */
 	public void setAppointmentTimeAtDialysis(long appointmentTimeAtDialysis) 
 	{
-		System.out.println(appointmentTimeAtDialysis);
-//		if(appointmentTimeAtDialysis < 0)
-//			throw new IllegalArgumentException("Date cannot be negative");
 		if(!MyUtils.isValidDate(appointmentTimeAtDialysis))
 			throw new IllegalArgumentException("Date is out of range");
 		this.appointmentTimeAtDialysis = appointmentTimeAtDialysis;

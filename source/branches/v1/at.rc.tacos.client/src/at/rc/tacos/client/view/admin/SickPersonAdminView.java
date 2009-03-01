@@ -333,7 +333,6 @@ public class SickPersonAdminView  extends ViewPart implements PropertyChangeList
 		//check the state
 		if(filterJob.getState() == Job.RUNNING)
 		{
-			System.out.println("Job is currently running");
 			return;
 		}
 		

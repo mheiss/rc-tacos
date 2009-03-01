@@ -212,7 +212,6 @@ public class PatientSelectionDialog extends SelectionStatusDialog implements Pro
 		//check the state
 		if(filterJob.getState() == Job.RUNNING)
 		{
-			System.out.println("Job is currently running");
 			return;
 		}
 		

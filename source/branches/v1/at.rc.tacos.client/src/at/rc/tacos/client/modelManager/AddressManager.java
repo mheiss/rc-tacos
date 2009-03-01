@@ -139,7 +139,6 @@ public class AddressManager extends PropertyManager
 		//loop and add the streets
 		for(Address add:objectList)
 			streets.add(add.getStreet());
-		System.out.println("Streets: "+streets);
 		return streets.toArray(new String[0]);
 	}
 

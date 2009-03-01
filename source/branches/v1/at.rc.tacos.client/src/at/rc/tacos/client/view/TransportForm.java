@@ -3233,7 +3233,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 				if( viewer.getTable().getItem(new Point(e.x,e.y))==null ) 
 				{
 					viewer.setSelection(new StructuredSelection());
-					System.out.println("selection gesetzt: " +viewer.getSelection());
 				}
 			}
 		});
@@ -3393,13 +3392,10 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		if(changedText == null)
 			return;
 		
-		System.out.println("Input chagend to: "+changedText);
-		
 		//get the entered text
 		if(changedText.trim().length() < 1)
 		{
 			setErrorMessage("Bitte geben sie mindestens drei Zeichen ein, um die Autovervollständigung zu nutzen");
-//			Display.getCurrent().beep();
 			return;
 		}
 		setErrorMessage(null);
@@ -3410,7 +3406,6 @@ public class TransportForm extends TitleAreaDialog implements IDirectness, IKind
 		//check the state
 		if(filterJob.getState() == Job.RUNNING)
 		{
-			System.out.println("Job is currently running");
 			return;
 		}
 		

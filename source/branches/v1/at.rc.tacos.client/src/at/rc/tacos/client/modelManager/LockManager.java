@@ -168,7 +168,6 @@ public class LockManager extends PropertyManager
 				}
 				catch(Exception e)
 				{
-					System.out.println("Failed to wait for the server response for the lock object");
 					return Status.CANCEL_STATUS;
 				}
 				finally
