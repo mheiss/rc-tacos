@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Internettechnik, FH JOANNEUM
+ * http://www.fh-joanneum.at/itm
+ * 
+ * 	Licenced under the GNU GENERAL PUBLIC LICENSE Version 2;
+ * 	You may obtain a copy of the License at
+ * 	http://www.gnu.org/licenses/gpl-2.0.txt
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *******************************************************************************/
 package at.rc.tacos.core.db.dao.sqlserver;
 
 import java.sql.Connection;
@@ -6,32 +19,30 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 import at.rc.tacos.core.db.DataSource;
 import at.rc.tacos.core.db.SQLQueries;
 import at.rc.tacos.core.db.dao.AddressDAO;
-import at.rc.tacos.model.*;
+import at.rc.tacos.model.Address;
 
-public class AddressDAOSQL implements AddressDAO
-{
-	//The data source to get the connection and the queries file
+public class AddressDAOSQL implements AddressDAO {
+
+	// The data source to get the connection and the queries file
 	private final DataSource source = DataSource.getInstance();
 	private final SQLQueries queries = SQLQueries.getInstance();
 
 	@Override
-	public Address getAddress(int addressID) throws SQLException
-	{
+	public Address getAddress(int addressID) throws SQLException {
 		Connection connection = source.getConnection();
-		try
-		{
-			//SELECT a.address_ID, a.street, a.streetnumber, a.city, a.gkz \
-			//FROM address a \
-			//WHERE a.address_ID = ?;
+		try {
+			// SELECT a.address_ID, a.street, a.streetnumber, a.city, a.gkz \
+			// FROM address a \
+			// WHERE a.address_ID = ?;
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("get.addressByID"));
 			query.setInt(1, addressID);
 			final ResultSet rs = query.executeQuery();
-			//assert we have a result
-			if(rs.next())
-			{
+			// assert we have a result
+			if (rs.next()) {
 				Address address = new Address();
 				address.setStreet(rs.getString("street"));
 				address.setStreetNumber(rs.getString("streetnumber"));
@@ -40,33 +51,30 @@ public class AddressDAOSQL implements AddressDAO
 
 				return address;
 			}
-			//no result
+			// no result
 			return null;
 		}
-		finally
-		{
+		finally {
 			connection.close();
 		}
 	}
 
 	@Override
-	public int addAddress(Address address) throws SQLException
-	{
+	public int addAddress(Address address) throws SQLException {
 		Connection connection = source.getConnection();
-		try
-		{	
+		try {
 			int id = 0;
-			//get the next id
+			// get the next id
 			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("get.nextAddressID"));
 			final ResultSet rs = stmt.executeQuery();
-			if(!rs.next())
+			if (!rs.next())
 				return -1;
 
 			id = rs.getInt(1);
 
-
-			//INSERT INTO address(address_ID, street, streetnumber, city, gkz) \
-			//VALUES(?, ?, ?, ?, ?);
+			// INSERT INTO address(address_ID, street, streetnumber, city, gkz)
+			// \
+			// VALUES(?, ?, ?, ?, ?);
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("insert.address"));
 			query.setInt(1, id);
 			query.setString(2, address.getStreet());
@@ -74,26 +82,24 @@ public class AddressDAOSQL implements AddressDAO
 			query.setString(4, address.getCity());
 			query.setInt(5, address.getZip());
 
-			if(query.executeUpdate() == 0)
+			if (query.executeUpdate() == 0)
 				return -1;
 
 			return id;
 		}
-		finally
-		{
+		finally {
 			connection.close();
 		}
 	}
 
 	@Override
-	public List<Address> getAddressList(String streetFilter,String streetNumberFilter,String cityFilter, String plzFilter) throws SQLException
-	{
+	public List<Address> getAddressList(String streetFilter, String streetNumberFilter, String cityFilter, String plzFilter) throws SQLException {
 		Connection connection = source.getConnection();
-		try
-		{
-			//SELECT a.address_ID,a.street, a.streetnumber, a.city, a.gkz 
-			//FROM address a \
-			//WHERE a.street like ? or a.streetnumber like ? or a.city like ? or a.gkz like ?;
+		try {
+			// SELECT a.address_ID,a.street, a.streetnumber, a.city, a.gkz
+			// FROM address a \
+			// WHERE a.street like ? or a.streetnumber like ? or a.city like ?
+			// or a.gkz like ?;
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.addressesBySearchString"));
 			query.setString(1, streetFilter);
 			query.setString(2, streetNumberFilter);
@@ -101,10 +107,9 @@ public class AddressDAOSQL implements AddressDAO
 			query.setString(4, plzFilter);
 
 			final ResultSet rs = query.executeQuery();
-			//assert we have a result
+			// assert we have a result
 			List<Address> addresses = new ArrayList<Address>();
-			while(rs.next())
-			{
+			while (rs.next()) {
 				Address address = new Address();
 				address.setAddressId(rs.getInt("address_ID"));
 				address.setStreet(rs.getString("street"));
@@ -116,51 +121,45 @@ public class AddressDAOSQL implements AddressDAO
 			}
 			return addresses;
 		}
-		finally
-		{
+		finally {
 			connection.close();
 		}
 	}
 
 	@Override
-	public boolean removeAddress(int id) throws SQLException
-	{
+	public boolean removeAddress(int id) throws SQLException {
 		Connection connection = source.getConnection();
-		try
-		{
+		try {
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("delete.address"));
 			query.setInt(1, id);
-			//assert the location removed was successfully
-			if(query.executeUpdate() == 0)
+			// assert the location removed was successfully
+			if (query.executeUpdate() == 0)
 				return false;
 			return true;
 		}
-		finally
-		{
+		finally {
 			connection.close();
 		}
 	}
 
 	@Override
-	public boolean updateAddress(Address address) throws SQLException
-	{
+	public boolean updateAddress(Address address) throws SQLException {
 		Connection connection = source.getConnection();
-		try
-		{
-			//UPDATE address SET street = ?, streetnumber = ?, city = ?, gkz = ? WHERE address_ID = ?;
+		try {
+			// UPDATE address SET street = ?, streetnumber = ?, city = ?, gkz =
+			// ? WHERE address_ID = ?;
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("update.address"));
 			query.setString(1, address.getStreet());
 			query.setString(2, address.getStreetNumber());
 			query.setString(3, address.getCity());
 			query.setInt(4, address.getZip());
 			query.setInt(5, address.getAddressId());
-			//assert the update was successfully
-			if(query.executeUpdate() == 0)
+			// assert the update was successfully
+			if (query.executeUpdate() == 0)
 				return false;
 			return true;
 		}
-		finally
-		{
+		finally {
 			connection.close();
 		}
 	}

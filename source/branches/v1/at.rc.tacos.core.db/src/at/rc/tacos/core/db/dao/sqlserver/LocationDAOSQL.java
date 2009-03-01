@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Internettechnik, FH JOANNEUM
+ * http://www.fh-joanneum.at/itm
+ * 
+ * 	Licenced under the GNU GENERAL PUBLIC LICENSE Version 2;
+ * 	You may obtain a copy of the License at
+ * 	http://www.gnu.org/licenses/gpl-2.0.txt
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *******************************************************************************/
 package at.rc.tacos.core.db.dao.sqlserver;
 
 import java.sql.Connection;
@@ -6,30 +19,30 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 import at.rc.tacos.core.db.DataSource;
 import at.rc.tacos.core.db.SQLQueries;
 import at.rc.tacos.core.db.dao.LocationDAO;
-import at.rc.tacos.model.*;
+import at.rc.tacos.model.Location;
+import at.rc.tacos.model.MobilePhoneDetail;
 
-public class LocationDAOSQL implements LocationDAO
-{
-	//The data source to get the connection and the queries file
+public class LocationDAOSQL implements LocationDAO {
+
+	// The data source to get the connection and the queries file
 	private final DataSource source = DataSource.getInstance();
 	private final SQLQueries queries = SQLQueries.getInstance();
 
 	@Override
-	public Location getLocation(int locationID) throws SQLException
-	{
+	public Location getLocation(int locationID) throws SQLException {
 		Connection connection = source.getConnection();
-		try
-		{
-			//lo.location_ID, lo.locationname, lo.street, lo. streetnumber, lo.city, lo.zipcode, lo.phonenumber_ID, pn.phonenumber, lo.note
+		try {
+			// lo.location_ID, lo.locationname, lo.street, lo. streetnumber,
+			// lo.city, lo.zipcode, lo.phonenumber_ID, pn.phonenumber, lo.note
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("get.LocationByID"));
 			query.setInt(1, locationID);
 			final ResultSet rs = query.executeQuery();
-			//assert we have a result
-			if(rs.next())
-			{
+			// assert we have a result
+			if (rs.next()) {
 				Location location = new Location();
 				location.setCity(rs.getString("city"));
 				location.setId(rs.getInt("location_ID"));
@@ -39,7 +52,7 @@ public class LocationDAOSQL implements LocationDAO
 				location.setStreetNumber(rs.getString("streetnumber"));
 				location.setZipcode(rs.getInt("zipcode"));
 
-				//get the mobile phone
+				// get the mobile phone
 				MobilePhoneDetail phone = new MobilePhoneDetail();
 				phone.setMobilePhoneNumber(rs.getString("phonenumber"));
 				phone.setMobilePhoneName(rs.getString("phonename"));
@@ -48,35 +61,31 @@ public class LocationDAOSQL implements LocationDAO
 
 				return location;
 			}
-			//no result
+			// no result
 			return null;
 		}
-		finally
-		{
+		finally {
 			connection.close();
 		}
 	}
 
-
 	@Override
-	public List<Location> listLocations() throws SQLException
-	{
+	public List<Location> listLocations() throws SQLException {
 		Connection connection = source.getConnection();
-		try
-		{
-			//lo.location_ID, lo.locationname, lo.street, lo. streetnumber, lo.city, lo.zipcode, lo.phonenumber_ID, pn.phonenumber, lo.note
+		try {
+			// lo.location_ID, lo.locationname, lo.street, lo. streetnumber,
+			// lo.city, lo.zipcode, lo.phonenumber_ID, pn.phonenumber, lo.note
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("list.locations"));
 			final ResultSet rs = query.executeQuery();
-			//assert we have a result
+			// assert we have a result
 			List<Location> locations = new ArrayList<Location>();
-			while(rs.next())
-			{
+			while (rs.next()) {
 				Location location = new Location();
 				location.setCity(rs.getString("city"));
 				location.setId(rs.getInt("location_ID"));
 				location.setLocationName(rs.getString("locationname"));
 				location.setNotes(rs.getString("note"));
-				//set the mobile phone
+				// set the mobile phone
 				MobilePhoneDetail phone = new MobilePhoneDetail();
 				phone.setId(rs.getInt("phonenumber_ID"));
 				phone.setMobilePhoneNumber(rs.getString("phonenumber"));
@@ -91,29 +100,26 @@ public class LocationDAOSQL implements LocationDAO
 			}
 			return locations;
 		}
-		finally
-		{
+		finally {
 			connection.close();
 		}
 	}
 
-
 	@Override
-	public int addLocation(Location location) throws SQLException
-	{
+	public int addLocation(Location location) throws SQLException {
 		Connection connection = source.getConnection();
-		try
-		{	
+		try {
 			int id = 0;
-			//get the next id
+			// get the next id
 			final PreparedStatement stmt = connection.prepareStatement(queries.getStatment("get.nextLocationID"));
 			final ResultSet rs = stmt.executeQuery();
-			if(!rs.next())
+			if (!rs.next())
 				return -1;
-			
+
 			id = rs.getInt(1);
-			
-			// location_ID, locationname, street, streetnumber, zipcode, city, note, phonenumber_ID
+
+			// location_ID, locationname, street, streetnumber, zipcode, city,
+			// note, phonenumber_ID
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("insert.location"));
 			query.setInt(1, id);
 			query.setString(2, location.getLocationName());
@@ -123,44 +129,39 @@ public class LocationDAOSQL implements LocationDAO
 			query.setString(6, location.getCity());
 			query.setString(7, location.getNotes());
 			query.setInt(8, location.getPhone().getId());
-			
-			if(query.executeUpdate() == 0)
+
+			if (query.executeUpdate() == 0)
 				return -1;
-			
+
 			return id;
 		}
-		finally
-		{
+		finally {
 			connection.close();
 		}
 	}
 
 	@Override
-	public boolean removeLocation(int id) throws SQLException
-	{
+	public boolean removeLocation(int id) throws SQLException {
 		Connection connection = source.getConnection();
-		try
-		{
+		try {
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("delete.location"));
 			query.setInt(1, id);
-			//assert the location removed was successfully
-			if(query.executeUpdate() == 0)
+			// assert the location removed was successfully
+			if (query.executeUpdate() == 0)
 				return false;
 			return true;
 		}
-		finally
-		{
+		finally {
 			connection.close();
 		}
 	}
 
 	@Override
-	public boolean updateLocation(Location location) throws SQLException
-	{
+	public boolean updateLocation(Location location) throws SQLException {
 		Connection connection = source.getConnection();
-		try
-		{
-			// locationname, street, streetnumber, zipcode, city, note, phonenumber_ID, location_ID
+		try {
+			// locationname, street, streetnumber, zipcode, city, note,
+			// phonenumber_ID, location_ID
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("update.location"));
 			query.setString(1, location.getLocationName());
 			query.setString(2, location.getStreet());
@@ -170,36 +171,33 @@ public class LocationDAOSQL implements LocationDAO
 			query.setString(6, location.getNotes());
 			query.setInt(7, location.getPhone().getId());
 			query.setInt(8, location.getId());
-			//assert the update was successfully
-			if(query.executeUpdate() == 0)
+			// assert the update was successfully
+			if (query.executeUpdate() == 0)
 				return false;
 			return true;
 		}
-		finally
-		{
+		finally {
 			connection.close();
 		}
 	}
 
 	@Override
-	public Location getLocationByName(String locationname) throws SQLException
-	{
+	public Location getLocationByName(String locationname) throws SQLException {
 		Connection connection = source.getConnection();
-		try
-		{
-			//lo.location_ID, lo.locationname, lo.street, lo. streetnumber, lo.city, lo.zipcode, lo.phonenumber_ID, pn.phonenumber, lo.note
+		try {
+			// lo.location_ID, lo.locationname, lo.street, lo. streetnumber,
+			// lo.city, lo.zipcode, lo.phonenumber_ID, pn.phonenumber, lo.note
 			final PreparedStatement query = connection.prepareStatement(queries.getStatment("get.locationByName"));
 			query.setString(1, locationname);
 			final ResultSet rs = query.executeQuery();
-			//assert we have a result set
-			if(rs.next())
-			{
+			// assert we have a result set
+			if (rs.next()) {
 				Location location = new Location();
 				location.setCity(rs.getString("city"));
 				location.setId(rs.getInt("location_ID"));
 				location.setLocationName(rs.getString("locationname"));
 				location.setNotes(rs.getString("note"));
-				//get the phone
+				// get the phone
 				MobilePhoneDetail phone = new MobilePhoneDetail();
 				phone.setMobilePhoneNumber(rs.getString("phonenumber"));
 				phone.setMobilePhoneName(rs.getString("phonename"));
@@ -210,11 +208,10 @@ public class LocationDAOSQL implements LocationDAO
 				location.setZipcode(rs.getInt("zipcode"));
 				return location;
 			}
-			//no result set
+			// no result set
 			return null;
 		}
-		finally
-		{
+		finally {
 			connection.close();
 		}
 	}
