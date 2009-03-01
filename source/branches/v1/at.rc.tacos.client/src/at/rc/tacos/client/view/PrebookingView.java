@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Internettechnik, FH JOANNEUM
+ * http://www.fh-joanneum.at/itm
+ * 
+ * 	Licenced under the GNU GENERAL PUBLIC LICENSE Version 2;
+ * 	You may obtain a copy of the License at
+ * 	http://www.gnu.org/licenses/gpl-2.0.txt
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *******************************************************************************/
 package at.rc.tacos.client.view;
 
 import java.beans.PropertyChangeEvent;
@@ -37,7 +50,6 @@ import at.rc.tacos.client.controller.CancelTransportAction;
 import at.rc.tacos.client.controller.CopyTransportAction;
 import at.rc.tacos.client.controller.EditTransportAction;
 import at.rc.tacos.client.controller.MoveToOutstandingTransportsAction;
-
 import at.rc.tacos.client.modelManager.LockManager;
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.providers.PrebookingViewContentProvider;
@@ -51,14 +63,13 @@ import at.rc.tacos.client.view.sorterAndTooltip.JournalViewTooltip;
 import at.rc.tacos.client.view.sorterAndTooltip.TransportSorter;
 import at.rc.tacos.common.IDirectness;
 import at.rc.tacos.common.IProgramStatus;
-
 import at.rc.tacos.model.Transport;
 
-public class PrebookingView extends ViewPart implements PropertyChangeListener, IProgramStatus, IDirectness
-{
+public class PrebookingView extends ViewPart implements PropertyChangeListener, IProgramStatus, IDirectness {
+
 	public static final String ID = "at.rc.tacos.client.view.prebooking_view";
 
-	//the toolkit to use
+	// the toolkit to use
 	private FormToolkit toolkit;
 	private Form form;
 	private TableViewer viewerGraz;
@@ -74,49 +85,48 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 	private JournalViewTooltip tooltipWien;
 	private JournalViewTooltip tooltipKapfenberg;
 
-	//the actions for the context menu
+	// the actions for the context menu
 	private EditTransportAction editTransportActionKapfenberg;
-	private CancelTransportAction cancelTransportActionKapfenberg;//!!
+	private CancelTransportAction cancelTransportActionKapfenberg;// !!
 	private MoveToOutstandingTransportsAction moveToOutstandingTransportsActionKapfenberg;
 	private CopyTransportAction copyTransportActionKapfenberg;
 
 	private EditTransportAction editTransportActionBruck;
-	private CancelTransportAction cancelTransportActionBruck;//!!
+	private CancelTransportAction cancelTransportActionBruck;// !!
 	private MoveToOutstandingTransportsAction moveToOutstandingTransportsActionBruck;
 	private CopyTransportAction copyTransportActionBruck;
 
 	private EditTransportAction editTransportActionWien;
-	private CancelTransportAction cancelTransportActionWien;//!!
+	private CancelTransportAction cancelTransportActionWien;// !!
 	private MoveToOutstandingTransportsAction moveToOutstandingTransportsActionWien;
 	private CopyTransportAction copyTransportActionWien;
 
 	private EditTransportAction editTransportActionLeoben;
-	private CancelTransportAction cancelTransportActionLeoben;//!!
+	private CancelTransportAction cancelTransportActionLeoben;// !!
 	private MoveToOutstandingTransportsAction moveToOutstandingTransportsActionLeoben;
 	private CopyTransportAction copyTransportActionLeoben;
 
 	private EditTransportAction editTransportActionGraz;
-	private CancelTransportAction cancelTransportActionGraz;//!!
+	private CancelTransportAction cancelTransportActionGraz;// !!
 	private MoveToOutstandingTransportsAction moveToOutstandingTransportsActionGraz;
 	private CopyTransportAction copyTransportActionGraz;
 
 	private EditTransportAction editTransportActionMariazell;
-	private CancelTransportAction cancelTransportActionMariazell;//!!
+	private CancelTransportAction cancelTransportActionMariazell;// !!
 	private MoveToOutstandingTransportsAction moveToOutstandingTransportsActionMariazell;
 	private CopyTransportAction copyTransportActionMariazell;
 
-	//the currently filtered date
+	// the currently filtered date
 	private Calendar filteredDate = Calendar.getInstance();
-	
-	//the lock manager
+
+	// the lock manager
 	private LockManager lockManager = ModelFactory.getInstance().getLockManager();
 
 	/**
 	 * Constructs a new journal view.
 	 */
-	public PrebookingView()
-	{
-		// add listener to model to keep on track. 
+	public PrebookingView() {
+		// add listener to model to keep on track.
 		ModelFactory.getInstance().getTransportManager().addPropertyChangeListener(this);
 		ModelFactory.getInstance().getLockManager().addPropertyChangeListener(this);
 	}
@@ -125,19 +135,19 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 	 * Cleanup the view
 	 */
 	@Override
-	public void dispose() 
-	{
+	public void dispose() {
 		ModelFactory.getInstance().getTransportManager().removePropertyChangeListener(this);
 		ModelFactory.getInstance().getLockManager().removePropertyChangeListener(this);
 	}
 
 	/**
 	 * Callback method to create the control and initialize them.
-	 * @param parent the parent composite to add
+	 * 
+	 * @param parent
+	 *            the parent composite to add
 	 */
 	@Override
-	public void createPartControl(final Composite parent) 
-	{
+	public void createPartControl(final Composite parent) {
 		// Create the scrolled parent component
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
 		form = toolkit.createForm(parent);
@@ -145,12 +155,12 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		form.getBody().setLayout(new FillLayout());
 
 		final Composite composite = form.getBody();
-		
+
 		SashForm sash_prebooking = new SashForm(composite, SWT.HORIZONTAL);
 
-		//groups-----------------------------------
+		// groups-----------------------------------
 		final SashForm sashForm_8 = new SashForm(sash_prebooking, SWT.VERTICAL);
-		
+
 		final Group richtungBruckGroup = new Group(sashForm_8, SWT.NONE);
 		richtungBruckGroup.setLayout(new FillLayout());
 		richtungBruckGroup.setForeground(CustomColors.RED_COLOR);
@@ -166,7 +176,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		richtungMariazellGroup.setLayout(new FillLayout());
 		richtungMariazellGroup.setText("Richtung Mariazell");
 
-		//----------------------------------------------
+		// ----------------------------------------------
 		final SashForm sashForm_9 = new SashForm(sash_prebooking, SWT.VERTICAL);
 
 		final Group richtungGrazGroup = new Group(sashForm_9, SWT.NONE);
@@ -174,7 +184,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		richtungGrazGroup.setText("Richtung Graz");
 
 		final SashForm sashForm_1 = new SashForm(sashForm_9, SWT.VERTICAL);
-		
+
 		final Group richtungLeobenGroup = new Group(sashForm_1, SWT.NONE);
 		richtungLeobenGroup.setLayout(new FillLayout());
 		richtungLeobenGroup.setText("Richtung Leoben");
@@ -183,7 +193,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		richtungWienGroup.setLayout(new FillLayout());
 		richtungWienGroup.setText("Richtung Wien");
 
-		//viewers
+		// viewers
 		viewerLeoben = createTableViewer(richtungLeobenGroup);
 		viewerGraz = createTableViewer(richtungGrazGroup);
 		viewerKapfenberg = createTableViewer(richtungKapfenbergGroup);
@@ -191,7 +201,7 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		viewerWien = createTableViewer(richtungWienGroup);
 		viewerMariazell = createTableViewer(richtungMariazellGroup);
 
-		//create the tooltip
+		// create the tooltip
 		tooltipLeoben = new JournalViewTooltip(viewerLeoben.getControl());
 		tooltipGraz = new JournalViewTooltip(viewerGraz.getControl());
 		tooltipKapfenberg = new JournalViewTooltip(viewerKapfenberg.getControl());
@@ -199,21 +209,21 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		tooltipWien = new JournalViewTooltip(viewerWien.getControl());
 		tooltipMariazell = new JournalViewTooltip(viewerMariazell.getControl());
 
-		//show the tool tip when the selection has changed
-		viewerLeoben.addSelectionChangedListener(createTooltipListener(viewerLeoben, tooltipLeoben));     
+		// show the tool tip when the selection has changed
+		viewerLeoben.addSelectionChangedListener(createTooltipListener(viewerLeoben, tooltipLeoben));
 		viewerGraz.addSelectionChangedListener(createTooltipListener(viewerGraz, tooltipGraz));
 		viewerKapfenberg.addSelectionChangedListener(createTooltipListener(viewerKapfenberg, tooltipKapfenberg));
 		viewerBruck.addSelectionChangedListener(createTooltipListener(viewerBruck, tooltipBruck));
-		viewerWien.addSelectionChangedListener(createTooltipListener(viewerWien,tooltipWien));
+		viewerWien.addSelectionChangedListener(createTooltipListener(viewerWien, tooltipWien));
 		viewerMariazell.addSelectionChangedListener(createTooltipListener(viewerMariazell, tooltipMariazell));
 
-		//sort the table by default
-		viewerLeoben.setSorter(new TransportSorter(TransportSorter.ABF_SORTER,SWT.DOWN));
-		viewerGraz.setSorter(new TransportSorter(TransportSorter.ABF_SORTER,SWT.DOWN));
-		viewerKapfenberg.setSorter(new TransportSorter(TransportSorter.ABF_SORTER,SWT.DOWN));
-		viewerBruck.setSorter(new TransportSorter(TransportSorter.ABF_SORTER,SWT.DOWN));
-		viewerWien.setSorter(new TransportSorter(TransportSorter.ABF_SORTER,SWT.DOWN));
-		viewerMariazell.setSorter(new TransportSorter(TransportSorter.ABF_SORTER,SWT.DOWN));
+		// sort the table by default
+		viewerLeoben.setSorter(new TransportSorter(TransportSorter.ABF_SORTER, SWT.DOWN));
+		viewerGraz.setSorter(new TransportSorter(TransportSorter.ABF_SORTER, SWT.DOWN));
+		viewerKapfenberg.setSorter(new TransportSorter(TransportSorter.ABF_SORTER, SWT.DOWN));
+		viewerBruck.setSorter(new TransportSorter(TransportSorter.ABF_SORTER, SWT.DOWN));
+		viewerWien.setSorter(new TransportSorter(TransportSorter.ABF_SORTER, SWT.DOWN));
+		viewerMariazell.setSorter(new TransportSorter(TransportSorter.ABF_SORTER, SWT.DOWN));
 
 		makeActionsBruck(viewerBruck);
 		makeActionsKapfenberg(viewerKapfenberg);
@@ -229,10 +239,10 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		hookContextMenuBruck(viewerBruck);
 		hookContextMenuKapfenberg(viewerKapfenberg);
 
-		//apply the filters
+		// apply the filters
 		applyFilters(Calendar.getInstance());
 
-		//refresh the views
+		// refresh the views
 		viewerBruck.refresh();
 		viewerGraz.refresh();
 		viewerKapfenberg.refresh();
@@ -244,47 +254,46 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 	/**
 	 * Creates the needed actions
 	 */
-	private void makeActionsBruck(TableViewer viewer)
-	{		
+	private void makeActionsBruck(TableViewer viewer) {
 
 		editTransportActionBruck = new EditTransportAction(viewer, "prebooking");
 		moveToOutstandingTransportsActionBruck = new MoveToOutstandingTransportsAction(viewer);
 		cancelTransportActionBruck = new CancelTransportAction(viewer);
 		copyTransportActionBruck = new CopyTransportAction(viewer);
 	}
-	private void makeActionsKapfenberg(TableViewer viewer)
-	{		
+
+	private void makeActionsKapfenberg(TableViewer viewer) {
 
 		editTransportActionKapfenberg = new EditTransportAction(viewer, "prebooking");
 		moveToOutstandingTransportsActionKapfenberg = new MoveToOutstandingTransportsAction(viewer);
 		cancelTransportActionKapfenberg = new CancelTransportAction(viewer);
 		copyTransportActionKapfenberg = new CopyTransportAction(viewer);
 	}
-	private void makeActionsLeoben(TableViewer viewer)
-	{		
+
+	private void makeActionsLeoben(TableViewer viewer) {
 
 		editTransportActionLeoben = new EditTransportAction(viewer, "prebooking");
 		moveToOutstandingTransportsActionLeoben = new MoveToOutstandingTransportsAction(viewer);
 		cancelTransportActionLeoben = new CancelTransportAction(viewer);
 		copyTransportActionLeoben = new CopyTransportAction(viewer);
 	}
-	private void makeActionsMariazell(TableViewer viewer)
-	{		
+
+	private void makeActionsMariazell(TableViewer viewer) {
 
 		editTransportActionMariazell = new EditTransportAction(viewer, "prebooking");
 		moveToOutstandingTransportsActionMariazell = new MoveToOutstandingTransportsAction(viewer);
 		cancelTransportActionMariazell = new CancelTransportAction(viewer);
 		copyTransportActionMariazell = new CopyTransportAction(viewer);
 	}
-	private void makeActionsGraz(TableViewer viewer)
-	{		
+
+	private void makeActionsGraz(TableViewer viewer) {
 		editTransportActionGraz = new EditTransportAction(viewer, "prebooking");
 		moveToOutstandingTransportsActionGraz = new MoveToOutstandingTransportsAction(viewer);
 		cancelTransportActionGraz = new CancelTransportAction(viewer);
 		copyTransportActionGraz = new CopyTransportAction(viewer);
 	}
-	private void makeActionsWien(TableViewer viewer)
-	{		
+
+	private void makeActionsWien(TableViewer viewer) {
 		editTransportActionWien = new EditTransportAction(viewer, "prebooking");
 		moveToOutstandingTransportsActionWien = new MoveToOutstandingTransportsAction(viewer);
 		cancelTransportActionWien = new CancelTransportAction(viewer);
@@ -292,13 +301,13 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 	}
 
 	/**
-	 * Creates the context menu 
+	 * Creates the context menu
 	 */
-	private void hookContextMenuBruck(final TableViewer viewer) 
-	{
+	private void hookContextMenuBruck(final TableViewer viewer) {
 		MenuManager menuManager = new MenuManager("#PrebookingBruckPopupMenu");
 		menuManager.setRemoveAllWhenShown(true);
 		menuManager.addMenuListener(new IMenuListener() {
+
 			public void menuAboutToShow(IMenuManager manager) {
 				fillContextMenuBruck(manager, viewer);
 			}
@@ -308,11 +317,12 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		viewer.getControl().setMenu(menu);
 		getSite().registerContextMenu(menuManager, viewer);
 	}
-	private void hookContextMenuKapfenberg(final TableViewer viewer) 
-	{
+
+	private void hookContextMenuKapfenberg(final TableViewer viewer) {
 		MenuManager menuManager = new MenuManager("#PrebookingKapfenbergPopupMenu");
 		menuManager.setRemoveAllWhenShown(true);
 		menuManager.addMenuListener(new IMenuListener() {
+
 			public void menuAboutToShow(IMenuManager manager) {
 				fillContextMenuKapfenberg(manager, viewer);
 			}
@@ -322,11 +332,12 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		viewer.getControl().setMenu(menu);
 		getSite().registerContextMenu(menuManager, viewer);
 	}
-	private void hookContextMenuLeoben(final TableViewer viewer) 
-	{
+
+	private void hookContextMenuLeoben(final TableViewer viewer) {
 		MenuManager menuManager = new MenuManager("#PrebookingLeobenPopupMenu");
 		menuManager.setRemoveAllWhenShown(true);
 		menuManager.addMenuListener(new IMenuListener() {
+
 			public void menuAboutToShow(IMenuManager manager) {
 				fillContextMenuLeoben(manager, viewer);
 			}
@@ -336,11 +347,12 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		viewer.getControl().setMenu(menu);
 		getSite().registerContextMenu(menuManager, viewer);
 	}
-	private void hookContextMenuMariazell(final TableViewer viewer) 
-	{
+
+	private void hookContextMenuMariazell(final TableViewer viewer) {
 		MenuManager menuManager = new MenuManager("#PrebookingMariazellPopupMenu");
 		menuManager.setRemoveAllWhenShown(true);
 		menuManager.addMenuListener(new IMenuListener() {
+
 			public void menuAboutToShow(IMenuManager manager) {
 				fillContextMenuMariazell(manager, viewer);
 			}
@@ -350,11 +362,12 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		viewer.getControl().setMenu(menu);
 		getSite().registerContextMenu(menuManager, viewer);
 	}
-	private void hookContextMenuGraz(final TableViewer viewer) 
-	{
+
+	private void hookContextMenuGraz(final TableViewer viewer) {
 		MenuManager menuManager = new MenuManager("#PrebookingGrazPopupMenu");
 		menuManager.setRemoveAllWhenShown(true);
 		menuManager.addMenuListener(new IMenuListener() {
+
 			public void menuAboutToShow(IMenuManager manager) {
 				fillContextMenuGraz(manager, viewer);
 			}
@@ -364,11 +377,12 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		viewer.getControl().setMenu(menu);
 		getSite().registerContextMenu(menuManager, viewer);
 	}
-	private void hookContextMenuWien(final TableViewer viewer) 
-	{
+
+	private void hookContextMenuWien(final TableViewer viewer) {
 		MenuManager menuManager = new MenuManager("#PrebookingWienPopupMenu");
 		menuManager.setRemoveAllWhenShown(true);
 		menuManager.addMenuListener(new IMenuListener() {
+
 			public void menuAboutToShow(IMenuManager manager) {
 				fillContextMenuWien(manager, viewer);
 			}
@@ -382,200 +396,187 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 	/**
 	 * Fills the context menu with the actions
 	 */
-	private void fillContextMenuBruck(IMenuManager manager, TableViewer viewer)
-	{
-		//get the selected object
+	private void fillContextMenuBruck(IMenuManager manager, TableViewer viewer) {
+		// get the selected object
 		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
 
-		//cast to a Transport
-		Transport transport = (Transport)firstSelectedObject;
+		// cast to a Transport
+		Transport transport = (Transport) firstSelectedObject;
 
-		if(transport == null)
+		if (transport == null)
 			return;
 
-		//add the actions
+		// add the actions
 		manager.add(editTransportActionBruck);
 		manager.add(new Separator());
 		manager.add(moveToOutstandingTransportsActionBruck);
 		manager.add(cancelTransportActionBruck);
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 		manager.add(copyTransportActionBruck);
-		
-		//disable actions if the transport is locked
-		if(lockManager.containsLock(Transport.ID, transport.getTransportId()))
-		{
+
+		// disable actions if the transport is locked
+		if (lockManager.containsLock(Transport.ID, transport.getTransportId())) {
 			moveToOutstandingTransportsActionBruck.setEnabled(false);
 			cancelTransportActionBruck.setEnabled(false);
 			copyTransportActionBruck.setEnabled(false);
 		}
-		else
-		{
+		else {
 			moveToOutstandingTransportsActionBruck.setEnabled(true);
 			cancelTransportActionBruck.setEnabled(true);
 			copyTransportActionBruck.setEnabled(true);
 		}
-			
+
 	}
-	private void fillContextMenuKapfenberg(IMenuManager manager, TableViewer viewer)
-	{
-		//get the selected object
+
+	private void fillContextMenuKapfenberg(IMenuManager manager, TableViewer viewer) {
+		// get the selected object
 		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
 
-		//cast to a Transport
-		Transport transport = (Transport)firstSelectedObject;
+		// cast to a Transport
+		Transport transport = (Transport) firstSelectedObject;
 
-		if(transport == null)
+		if (transport == null)
 			return;
 
-		//add the actions
+		// add the actions
 		manager.add(editTransportActionKapfenberg);
 		manager.add(new Separator());
 		manager.add(moveToOutstandingTransportsActionKapfenberg);
 		manager.add(cancelTransportActionKapfenberg);
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 		manager.add(copyTransportActionKapfenberg);
-		
-		//disable actions if the transport is locked
-		if(lockManager.containsLock(Transport.ID, transport.getTransportId()))
-		{
+
+		// disable actions if the transport is locked
+		if (lockManager.containsLock(Transport.ID, transport.getTransportId())) {
 			moveToOutstandingTransportsActionKapfenberg.setEnabled(false);
 			cancelTransportActionKapfenberg.setEnabled(false);
 			copyTransportActionKapfenberg.setEnabled(false);
 		}
-		else
-		{
+		else {
 			moveToOutstandingTransportsActionKapfenberg.setEnabled(true);
 			cancelTransportActionKapfenberg.setEnabled(true);
 			copyTransportActionKapfenberg.setEnabled(true);
 		}
 	}
-	private void fillContextMenuLeoben(IMenuManager manager, TableViewer viewer)
-	{
-		//get the selected object
+
+	private void fillContextMenuLeoben(IMenuManager manager, TableViewer viewer) {
+		// get the selected object
 		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
 
-		//cast to a Transport
-		Transport transport = (Transport)firstSelectedObject;
+		// cast to a Transport
+		Transport transport = (Transport) firstSelectedObject;
 
-		if(transport == null)
+		if (transport == null)
 			return;
 
-		//add the actions
+		// add the actions
 		manager.add(editTransportActionLeoben);
 		manager.add(new Separator());
 		manager.add(moveToOutstandingTransportsActionLeoben);
 		manager.add(cancelTransportActionLeoben);
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 		manager.add(copyTransportActionLeoben);
-		
-		//disable actions if the transport is locked
-		if(lockManager.containsLock(Transport.ID, transport.getTransportId()))
-		{
+
+		// disable actions if the transport is locked
+		if (lockManager.containsLock(Transport.ID, transport.getTransportId())) {
 			moveToOutstandingTransportsActionLeoben.setEnabled(false);
 			cancelTransportActionLeoben.setEnabled(false);
 			copyTransportActionLeoben.setEnabled(false);
 		}
-		else
-		{
+		else {
 			moveToOutstandingTransportsActionLeoben.setEnabled(true);
 			cancelTransportActionLeoben.setEnabled(true);
 			copyTransportActionLeoben.setEnabled(true);
 		}
 	}
-	private void fillContextMenuMariazell(IMenuManager manager, TableViewer viewer)
-	{
-		//get the selected object
+
+	private void fillContextMenuMariazell(IMenuManager manager, TableViewer viewer) {
+		// get the selected object
 		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
 
-		//cast to a Transport
-		Transport transport = (Transport)firstSelectedObject;
+		// cast to a Transport
+		Transport transport = (Transport) firstSelectedObject;
 
-		if(transport == null)
+		if (transport == null)
 			return;
 
-		//add the actions
+		// add the actions
 		manager.add(editTransportActionMariazell);
 		manager.add(new Separator());
 		manager.add(moveToOutstandingTransportsActionMariazell);
 		manager.add(cancelTransportActionMariazell);
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 		manager.add(copyTransportActionMariazell);
-		
-		//disable actions if the transport is locked
-		if(lockManager.containsLock(Transport.ID, transport.getTransportId()))
-		{
+
+		// disable actions if the transport is locked
+		if (lockManager.containsLock(Transport.ID, transport.getTransportId())) {
 			moveToOutstandingTransportsActionMariazell.setEnabled(false);
 			cancelTransportActionMariazell.setEnabled(false);
 			copyTransportActionMariazell.setEnabled(false);
 		}
-		else
-		{
+		else {
 			moveToOutstandingTransportsActionMariazell.setEnabled(true);
 			cancelTransportActionMariazell.setEnabled(true);
 			copyTransportActionMariazell.setEnabled(true);
 		}
 	}
-	private void fillContextMenuGraz(IMenuManager manager, TableViewer viewer)
-	{
-		//get the selected object
+
+	private void fillContextMenuGraz(IMenuManager manager, TableViewer viewer) {
+		// get the selected object
 		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
 
-		//cast to a Transport
-		Transport transport = (Transport)firstSelectedObject;
+		// cast to a Transport
+		Transport transport = (Transport) firstSelectedObject;
 
-		if(transport == null)
+		if (transport == null)
 			return;
 
-		//add the actions
+		// add the actions
 		manager.add(editTransportActionGraz);
 		manager.add(new Separator());
 		manager.add(moveToOutstandingTransportsActionGraz);
 		manager.add(cancelTransportActionGraz);
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 		manager.add(copyTransportActionGraz);
-		
-		//disable actions if the transport is locked
-		if(lockManager.containsLock(Transport.ID, transport.getTransportId()))
-		{
+
+		// disable actions if the transport is locked
+		if (lockManager.containsLock(Transport.ID, transport.getTransportId())) {
 			moveToOutstandingTransportsActionGraz.setEnabled(false);
 			cancelTransportActionGraz.setEnabled(false);
 			copyTransportActionGraz.setEnabled(false);
 		}
-		else
-		{
+		else {
 			moveToOutstandingTransportsActionGraz.setEnabled(true);
 			cancelTransportActionGraz.setEnabled(true);
 			copyTransportActionGraz.setEnabled(true);
 		}
 	}
-	private void fillContextMenuWien(IMenuManager manager, TableViewer viewer)
-	{
-		//get the selected object
+
+	private void fillContextMenuWien(IMenuManager manager, TableViewer viewer) {
+		// get the selected object
 		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
 
-		//cast to a Transport
-		Transport transport = (Transport)firstSelectedObject;
+		// cast to a Transport
+		Transport transport = (Transport) firstSelectedObject;
 
-		if(transport == null)
+		if (transport == null)
 			return;
 
-		//add the actions
+		// add the actions
 		manager.add(editTransportActionWien);
 		manager.add(new Separator());
 		manager.add(moveToOutstandingTransportsActionWien);
 		manager.add(cancelTransportActionWien);
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 		manager.add(copyTransportActionWien);
-		
-		//disable actions if the transport is locked
-		if(lockManager.containsLock(Transport.ID, transport.getTransportId()))
-		{
+
+		// disable actions if the transport is locked
+		if (lockManager.containsLock(Transport.ID, transport.getTransportId())) {
 			moveToOutstandingTransportsActionWien.setEnabled(false);
 			cancelTransportActionWien.setEnabled(false);
 			copyTransportActionWien.setEnabled(false);
 		}
-		else
-		{
+		else {
 			moveToOutstandingTransportsActionWien.setEnabled(true);
 			cancelTransportActionWien.setEnabled(true);
 			copyTransportActionWien.setEnabled(true);
@@ -586,16 +587,13 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 	 * Passing the focus request to the viewer's control.
 	 */
 	@Override
-	public void setFocus()  { }
+	public void setFocus() {
+	}
 
-	public void propertyChange(PropertyChangeEvent evt) 
-	{
+	public void propertyChange(PropertyChangeEvent evt) {
 		// the viewer represents simple model. refresh should be enough.
-		if ("TRANSPORT_ADD".equals(evt.getPropertyName())
-				|| "TRANSPORT_REMOVE".equals(evt.getPropertyName())
-				|| "TRANSPORT_UPDATE".equals(evt.getPropertyName())
-				|| "TRANSPORT_CLEARED".equals(evt.getPropertyName())) 
-		{
+		if ("TRANSPORT_ADD".equals(evt.getPropertyName()) || "TRANSPORT_REMOVE".equals(evt.getPropertyName())
+				|| "TRANSPORT_UPDATE".equals(evt.getPropertyName()) || "TRANSPORT_CLEARED".equals(evt.getPropertyName())) {
 			viewerLeoben.refresh();
 			viewerBruck.refresh();
 			viewerGraz.refresh();
@@ -603,31 +601,28 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 			viewerMariazell.refresh();
 			viewerWien.refresh();
 		}
-		//listen to changes of the date to set up the filter
-		if("TRANSPORT_DATE_CHANGED".equalsIgnoreCase(evt.getPropertyName()))
-		{
-			//get the new value
-			this.filteredDate = (Calendar)evt.getNewValue();
-			//set up the new view filter
+		// listen to changes of the date to set up the filter
+		if ("TRANSPORT_DATE_CHANGED".equalsIgnoreCase(evt.getPropertyName())) {
+			// get the new value
+			this.filteredDate = (Calendar) evt.getNewValue();
+			// set up the new view filter
 			resetFilters();
 			applyFilters(filteredDate);
 		}
 
-		//listen to filter events
-		if("TRANSPORT_FILTER_CHANGED".equalsIgnoreCase(evt.getPropertyName()))
-		{
-			//get the new filter
-			TransportViewFilter filter = (TransportViewFilter)evt.getNewValue();
-			//remove all filters and apply the new
+		// listen to filter events
+		if ("TRANSPORT_FILTER_CHANGED".equalsIgnoreCase(evt.getPropertyName())) {
+			// get the new filter
+			TransportViewFilter filter = (TransportViewFilter) evt.getNewValue();
+			// remove all filters and apply the new
 			resetFilters();
 			applyFilters(filteredDate);
 			applySearchFilter(filter);
 		}
-		
-		//listen to lock changes
-		if("LOCK_ADD".equalsIgnoreCase(evt.getPropertyName()) || "LOCK_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
-		{
-			//refresh the views
+
+		// listen to lock changes
+		if ("LOCK_ADD".equalsIgnoreCase(evt.getPropertyName()) || "LOCK_REMOVE".equalsIgnoreCase(evt.getPropertyName())) {
+			// refresh the views
 			viewerBruck.refresh();
 			viewerGraz.refresh();
 			viewerKapfenberg.refresh();
@@ -643,23 +638,22 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 
 	/**
 	 * Creates and returns the table viewer.
-	 * @param parent the parent composite to insert
+	 * 
+	 * @param parent
+	 *            the parent composite to insert
 	 * @return the created table
 	 */
-	private TableViewer createTableViewer(Composite parent)
-	{
-		final TableViewer viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
+	private TableViewer createTableViewer(Composite parent) {
+		final TableViewer viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
 		viewer.setContentProvider(new PrebookingViewContentProvider());
 		viewer.setLabelProvider(new PrebookingViewLabelProvider());
 		viewer.setInput(ModelFactory.getInstance().getTransportManager().toArray());
 		viewer.getTable().setLinesVisible(true);
-		
-		viewer.getTable().addMouseListener(new MouseAdapter() 
-		{
-			public void mouseDown(MouseEvent e) 
-			{
-				if( viewer.getTable().getItem(new Point(e.x,e.y))==null ) 
-				{
+
+		viewer.getTable().addMouseListener(new MouseAdapter() {
+
+			public void mouseDown(MouseEvent e) {
+				if (viewer.getTable().getItem(new Point(e.x, e.y)) == null) {
 					viewer.setSelection(new StructuredSelection());
 				}
 			}
@@ -673,7 +667,6 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		blockColumn.setToolTipText("Eintrag wird gerade bearbeitet");
 		blockColumn.setWidth(24);
 		blockColumn.setText("L");
-	
 
 		final TableColumn bTableColumnOrtsstelle = new TableColumn(table, SWT.NONE);
 		bTableColumnOrtsstelle.setWidth(30);
@@ -710,60 +703,57 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 		bTableColumnTA.setToolTipText("Transportart");
 		bTableColumnTA.setWidth(23);
 		bTableColumnTA.setText("T");
-		
+
 		final TableColumn anmerkungTransporte = new TableColumn(table, SWT.NONE);
 		anmerkungTransporte.setWidth(66);
 		anmerkungTransporte.setText("Anmerkung");
 
-		Listener sortListener = new Listener() 
-		{
-			public void handleEvent(Event e) 
-			{
+		Listener sortListener = new Listener() {
+
+			public void handleEvent(Event e) {
 				// determine new sort column and direction
 				TableColumn sortColumn = viewer.getTable().getSortColumn();
 				TableColumn currentColumn = (TableColumn) e.widget;
 				int dir = viewer.getTable().getSortDirection();
-				//revert the sort order if the column is the same
-				if (sortColumn == currentColumn) 
-				{
-					if(dir == SWT.UP)
+				// revert the sort order if the column is the same
+				if (sortColumn == currentColumn) {
+					if (dir == SWT.UP)
 						dir = SWT.DOWN;
 					else
 						dir = SWT.UP;
-				} 
-				else 
-				{
+				}
+				else {
 					viewer.getTable().setSortColumn(currentColumn);
 					dir = SWT.UP;
 				}
 				// sort the data based on column and direction
 				String sortIdentifier = null;
-				if (currentColumn == bTableColumnOrtsstelle) 
+				if (currentColumn == bTableColumnOrtsstelle)
 					sortIdentifier = TransportSorter.RESP_STATION_SORTER;
-				if (currentColumn == bTableColumnAbfahrt) 
+				if (currentColumn == bTableColumnAbfahrt)
 					sortIdentifier = TransportSorter.ABF_SORTER;
-				if (currentColumn == bTableColumnAnkunft) 
+				if (currentColumn == bTableColumnAnkunft)
 					sortIdentifier = TransportSorter.AT_PATIENT_SORTER;
 				if (currentColumn == bTableColumnTermin)
 					sortIdentifier = TransportSorter.TERM_SORTER;
 				if (currentColumn == bTableColumnTransportVon)
 					sortIdentifier = TransportSorter.TRANSPORT_FROM_SORTER;
-				if(currentColumn == bTtableColumnPatient)
+				if (currentColumn == bTtableColumnPatient)
 					sortIdentifier = TransportSorter.PATIENT_SORTER;
-				if(currentColumn == bTableColumnTransportNach)
+				if (currentColumn == bTableColumnTransportNach)
 					sortIdentifier = TransportSorter.TRANSPORT_TO_SORTER;
-				if(currentColumn == bTableColumnTA)
+				if (currentColumn == bTableColumnTA)
 					sortIdentifier = TransportSorter.TA_SORTER;
-				if(currentColumn == anmerkungTransporte)
+				if (currentColumn == anmerkungTransporte)
 					sortIdentifier = TransportSorter.NOTES_SORTER;
-				
-				//apply the filter
+
+				// apply the filter
 				viewer.getTable().setSortDirection(dir);
-				viewer.setSorter(new TransportSorter(sortIdentifier,dir));
+				viewer.setSorter(new TransportSorter(sortIdentifier, dir));
 			}
 		};
 
-		//attach the listener
+		// attach the listener
 		bTableColumnOrtsstelle.addListener(SWT.Selection, sortListener);
 		bTableColumnAbfahrt.addListener(SWT.Selection, sortListener);
 		bTableColumnAnkunft.addListener(SWT.Selection, sortListener);
@@ -779,19 +769,19 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 
 	/**
 	 * Creates the selection listener to show the tooltip.
-	 * @param viewer the viewer to listet to changes
-	 * @param tooltip the tooltip to show
+	 * 
+	 * @param viewer
+	 *            the viewer to listet to changes
+	 * @param tooltip
+	 *            the tooltip to show
 	 * @return the created listener
 	 */
-	private ISelectionChangedListener createTooltipListener(final TableViewer viewer,final JournalViewTooltip tooltip)
-	{
-		return new ISelectionChangedListener() 
-		{
-			public void selectionChanged(SelectionChangedEvent event) 
-			{
+	private ISelectionChangedListener createTooltipListener(final TableViewer viewer, final JournalViewTooltip tooltip) {
+		return new ISelectionChangedListener() {
+
+			public void selectionChanged(SelectionChangedEvent event) {
 				TableItem[] selection = viewer.getTable().getSelection();
-				if (selection != null && selection.length > 0) 
-				{
+				if (selection != null && selection.length > 0) {
 					Rectangle bounds = selection[0].getBounds();
 					tooltip.show(new Point(bounds.x, bounds.y));
 				}
@@ -802,9 +792,8 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 	/**
 	 * Removes all the filters from the table
 	 */
-	public void resetFilters()
-	{
-		//remove all filters
+	public void resetFilters() {
+		// remove all filters
 		viewerBruck.resetFilters();
 		viewerGraz.resetFilters();
 		viewerWien.resetFilters();
@@ -814,28 +803,29 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 	}
 
 	/**
-	 * Sets the filter for the dialysis transports 
-	 * @param date the date of the transports to render
+	 * Sets the filter for the dialysis transports
+	 * 
+	 * @param date
+	 *            the date of the transports to render
 	 */
-	private void applyFilters(Calendar date)
-	{
-		//set up the filters for the view
+	private void applyFilters(Calendar date) {
+		// set up the filters for the view
 		viewerBruck.addFilter(new TransportStateViewFilter(PROGRAM_STATUS_PREBOOKING));
 		viewerGraz.addFilter(new TransportStateViewFilter(PROGRAM_STATUS_PREBOOKING));
 		viewerWien.addFilter(new TransportStateViewFilter(PROGRAM_STATUS_PREBOOKING));
 		viewerMariazell.addFilter(new TransportStateViewFilter(PROGRAM_STATUS_PREBOOKING));
 		viewerKapfenberg.addFilter(new TransportStateViewFilter(PROGRAM_STATUS_PREBOOKING));
 		viewerLeoben.addFilter(new TransportStateViewFilter(PROGRAM_STATUS_PREBOOKING));
-		//apply the filter for the tables
+		// apply the filter for the tables
 		viewerBruck.addFilter(new TransportDirectnessFilter(TOWARDS_BRUCK));
 		viewerGraz.addFilter(new TransportDirectnessFilter(TOWARDS_GRAZ));
 		viewerWien.addFilter(new TransportDirectnessFilter(TOWARDS_VIENNA));
 		viewerMariazell.addFilter(new TransportDirectnessFilter(TOWARDS_MARIAZELL));
 		viewerKapfenberg.addFilter(new TransportDirectnessFilter(TOWARDS_KAPFENBERG));
-		viewerLeoben.addFilter(new TransportDirectnessFilter(TOWARDS_LEOBEN));		
-		//show only transports from today
+		viewerLeoben.addFilter(new TransportDirectnessFilter(TOWARDS_LEOBEN));
+		// show only transports from today
 		TransportDateFilter dateFilter = new TransportDateFilter(date);
-		//set it new
+		// set it new
 		viewerBruck.addFilter(dateFilter);
 		viewerGraz.addFilter(dateFilter);
 		viewerWien.addFilter(dateFilter);
@@ -846,10 +836,11 @@ public class PrebookingView extends ViewPart implements PropertyChangeListener, 
 
 	/**
 	 * Sets the filter when transport is searched
-	 * @param filter the filter to apply
+	 * 
+	 * @param filter
+	 *            the filter to apply
 	 */
-	public void applySearchFilter(TransportViewFilter searchFilter)
-	{
+	public void applySearchFilter(TransportViewFilter searchFilter) {
 		viewerBruck.addFilter(searchFilter);
 		viewerGraz.addFilter(searchFilter);
 		viewerWien.addFilter(searchFilter);

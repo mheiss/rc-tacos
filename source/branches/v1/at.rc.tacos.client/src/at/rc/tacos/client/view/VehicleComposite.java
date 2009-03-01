@@ -1,27 +1,44 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Internettechnik, FH JOANNEUM
+ * http://www.fh-joanneum.at/itm
+ * 
+ * 	Licenced under the GNU GENERAL PUBLIC LICENSE Version 2;
+ * 	You may obtain a copy of the License at
+ * 	http://www.gnu.org/licenses/gpl-2.0.txt
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *******************************************************************************/
 package at.rc.tacos.client.view;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+
 import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.model.VehicleDetail;
 
 /**
- * Creates CarComposite for the class VehiclesView, called from the CarCompositeManager
- * no actions are provided in this view (problems with the given objects and not required)
+ * Creates CarComposite for the class VehiclesView, called from the
+ * CarCompositeManager no actions are provided in this view (problems with the
+ * given objects and not required)
+ * 
  * @author b.thek
  */
-public class VehicleComposite extends Composite implements PropertyChangeListener
-{
-	//the parent composite
+public class VehicleComposite extends Composite implements PropertyChangeListener {
+
+	// the parent composite
 	private VehicleDetail vehicle;
 
-	//the labels to display
+	// the labels to display
 	private Composite compositeCarBottom;
 	private Composite compositeCarIcons;
 	private Label vehicleNameLabel;
@@ -38,19 +55,21 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 
 	/**
 	 * Default constructor creating a new car composite
-	 * @param parent the parent control 
-	 * @param vehicle the vehicle data to use
+	 * 
+	 * @param parent
+	 *            the parent control
+	 * @param vehicle
+	 *            the vehicle data to use
 	 */
-	public VehicleComposite(Composite parent, VehicleDetail vehicle)
-	{
-		//create the composite
-		super(parent,SWT.NONE);
+	public VehicleComposite(Composite parent, VehicleDetail vehicle) {
+		// create the composite
+		super(parent, SWT.NONE);
 		this.vehicle = vehicle;
 
-		//store the vehicle
+		// store the vehicle
 		setData(vehicle);
 
-		//initalize the components
+		// initalize the components
 		initialize();
 		updateColors();
 
@@ -61,8 +80,7 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 	 * Cleanup
 	 */
 	@Override
-	public void dispose()
-	{
+	public void dispose() {
 		super.dispose();
 		ModelFactory.getInstance().getVehicleManager().removePropertyChangeListener(this);
 	}
@@ -70,15 +88,14 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 	/**
 	 * Creates and initializes the components
 	 */
-	private void initialize()
-	{
-		//the layout for the composite
+	private void initialize() {
+		// the layout for the composite
 		setLayout(new FillLayout(SWT.VERTICAL));
 
-		//top composite (name of the ambulance, type of the ambulance)
-		Composite compositeCarTop = new Composite(this,SWT.NONE);
+		// top composite (name of the ambulance, type of the ambulance)
+		Composite compositeCarTop = new Composite(this, SWT.NONE);
 		compositeCarTop.setLayout(new FillLayout());
-		
+
 		// .. name of the ambulance
 		vehicleNameLabel = new Label(compositeCarTop, SWT.NONE);
 		vehicleNameLabel.setForeground(CustomColors.COLOR_LINK);
@@ -91,7 +108,7 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 		vehicleTypeLabel.setFont(CustomColors.VEHICLE_TEXT);
 		vehicleTypeLabel.setBackground(CustomColors.COLOR_GRAY);
 
-		//bottom composite (icons, staff of the ambulance)
+		// bottom composite (icons, staff of the ambulance)
 		compositeCarBottom = new Composite(this, SWT.NONE);
 		compositeCarBottom.setLayout(new FillLayout(SWT.VERTICAL));
 
@@ -147,15 +164,13 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 		medicIILabel.setAlignment(SWT.RIGHT);
 		medicIILabel.setBounds(88, 19, 44, 13);
 	}
-	
+
 	/**
 	 * Updates the colors of the vehicle
 	 */
-	private void updateColors()
-	{
-		//change the background color
-		if(vehicle.getDriver() == null)
-		{
+	private void updateColors() {
+		// change the background color
+		if (vehicle.getDriver() == null) {
 			compositeCarIcons.setBackground(CustomColors.COLOR_GRAY);
 			vehicleNameLabel.setBackground(CustomColors.COLOR_GRAY);
 			vehicleTypeLabel.setBackground(CustomColors.COLOR_GRAY);
@@ -169,8 +184,7 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 			repairLabel.setBackground(CustomColors.COLOR_GRAY);
 			statusLabel.setBackground(CustomColors.COLOR_GRAY);
 		}
-		else
-		{
+		else {
 			compositeCarIcons.setBackground(CustomColors.COLOR_BLUE);
 			vehicleNameLabel.setBackground(CustomColors.COLOR_BLUE);
 			vehicleTypeLabel.setBackground(CustomColors.COLOR_BLUE);
@@ -184,25 +198,22 @@ public class VehicleComposite extends Composite implements PropertyChangeListene
 			repairLabel.setBackground(CustomColors.COLOR_BLUE);
 			statusLabel.setBackground(CustomColors.COLOR_BLUE);
 		}
-		//change the forground color
-		if(vehicle.isOutOfOrder())
+		// change the forground color
+		if (vehicle.isOutOfOrder())
 			vehicleNameLabel.setForeground(CustomColors.COLOR_WHITE);
 		else
 			vehicleNameLabel.setForeground(CustomColors.COLOR_LINK);
-		//redraw the composite
+		// redraw the composite
 		layout(true);
 	}
 
 	@Override
-	public void propertyChange(PropertyChangeEvent evt) 
-	{        
-		if("VEHICLE_UPDATE".equalsIgnoreCase(evt.getPropertyName()))
-		{
-			//get the updated vehicle
-			VehicleDetail updatedVehicle = (VehicleDetail)evt.getNewValue();
-			//check the vehicle
-			if(vehicle.equals(updatedVehicle))
-			{
+	public void propertyChange(PropertyChangeEvent evt) {
+		if ("VEHICLE_UPDATE".equalsIgnoreCase(evt.getPropertyName())) {
+			// get the updated vehicle
+			VehicleDetail updatedVehicle = (VehicleDetail) evt.getNewValue();
+			// check the vehicle
+			if (vehicle.equals(updatedVehicle)) {
 				this.vehicle = updatedVehicle;
 				updateColors();
 			}

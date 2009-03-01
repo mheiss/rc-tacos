@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Internettechnik, FH JOANNEUM
+ * http://www.fh-joanneum.at/itm
+ * 
+ * 	Licenced under the GNU GENERAL PUBLIC LICENSE Version 2;
+ * 	You may obtain a copy of the License at
+ * 	http://www.gnu.org/licenses/gpl-2.0.txt
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *******************************************************************************/
 package at.rc.tacos.client.editors;
 
 import java.beans.PropertyChangeEvent;
@@ -38,28 +51,27 @@ import at.rc.tacos.core.net.NetWrapper;
 import at.rc.tacos.factory.ImageFactory;
 import at.rc.tacos.model.Competence;
 
-public class CompetenceEditor extends EditorPart implements PropertyChangeListener
-{
+public class CompetenceEditor extends EditorPart implements PropertyChangeListener {
+
 	public static final String ID = "at.rc.tacos.client.editors.competenceEditor";
 
-	//properties
+	// properties
 	boolean isDirty;
 	private FormToolkit toolkit;
 	private ScrolledForm form;
 
 	private CLabel infoLabel;
-	private ImageHyperlink saveHyperlink,removeHyperlink;
-	private Text id,name;
+	private ImageHyperlink saveHyperlink, removeHyperlink;
+	private Text id, name;
 
-	//managed data
+	// managed data
 	private Competence competence;
 	private boolean isNew;
 
 	/**
 	 * Default class constructor
 	 */
-	public CompetenceEditor()
-	{
+	public CompetenceEditor() {
 		ModelFactory.getInstance().getCompetenceManager().addPropertyChangeListener(this);
 	}
 
@@ -67,96 +79,91 @@ public class CompetenceEditor extends EditorPart implements PropertyChangeListen
 	 * Cleanup
 	 */
 	@Override
-	public void dispose()
-	{
+	public void dispose() {
 		ModelFactory.getInstance().getCompetenceManager().removePropertyChangeListener(this);
 	}
 
 	/**
-	 * This is a callback that will allow us to create the viewer and initialize it.
+	 * This is a callback that will allow us to create the viewer and initialize
+	 * it.
 	 */
 	@Override
-	public void createPartControl(final Composite parent) 
-	{	
-		competence = ((CompetenceEditorInput)getEditorInput()).getCompetence();
-		isNew = ((CompetenceEditorInput)getEditorInput()).isNew();
+	public void createPartControl(final Composite parent) {
+		competence = ((CompetenceEditorInput) getEditorInput()).getCompetence();
+		isNew = ((CompetenceEditorInput) getEditorInput()).isNew();
 		isDirty = false;
 
-		//Create the form
+		// Create the form
 		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
 		form = toolkit.createScrolledForm(parent);
 		toolkit.decorateFormHeading(form.getForm());
 		form.getBody().setLayout(new GridLayout());
 		form.getBody().setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		//create the content
+		// create the content
 		createManageSection(form.getBody());
 		createDetailSection(form.getBody());
 
-		//load the data
+		// load the data
 		loadData();
-		
-		//disable editing of system competences
-		if(competence.getId() <= 14 && competence.getId() > 0)
-		{
+
+		// disable editing of system competences
+		if (competence.getId() <= 14 && competence.getId() > 0) {
 			form.setText("Vom System vorgegebene Kompetenzen können nicht bearbeitet werden.");
 			form.setEnabled(false);
 		}
 
-		//force redraw
+		// force redraw
 		form.pack(true);
 	}
 
 	/**
 	 * Creates the section to manage the changes
 	 */
-	private void createManageSection(Composite parent)
-	{
+	private void createManageSection(Composite parent) {
 		Composite client = createSection(parent, "Kompetenz verwalten");
 
-		//create info label and hyperlinks to save and revert the changes
-		infoLabel = new CLabel(client,SWT.NONE);
+		// create info label and hyperlinks to save and revert the changes
+		infoLabel = new CLabel(client, SWT.NONE);
 		infoLabel.setText("Hier können sie die aktuelle Kompetenz verwalten und die Änderungen speichern.");
 		infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("admin.info"));
 
-		//Create the hyperlink to save the changes
+		// Create the hyperlink to save the changes
 		saveHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		saveHyperlink.setText("Änderungen speichern");
 		saveHyperlink.setEnabled(false);
 		saveHyperlink.setForeground(CustomColors.GREY_COLOR);
 		saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.saveDisabled"));
-		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() 
-		{
+		saveHyperlink.addHyperlinkListener(new HyperlinkAdapter() {
+
 			@Override
-			public void linkActivated(HyperlinkEvent e) 
-			{
+			public void linkActivated(HyperlinkEvent e) {
 				EditorSaveAction saveAction = new EditorSaveAction();
 				saveAction.run();
 			}
 		});
 
-		//Create the hyperlink to remove the competence
+		// Create the hyperlink to remove the competence
 		removeHyperlink = toolkit.createImageHyperlink(client, SWT.NONE);
 		removeHyperlink.setText("Kompetenz löschen");
 		removeHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.competenceRemove"));
-		removeHyperlink.addHyperlinkListener(new HyperlinkAdapter()
-		{
+		removeHyperlink.addHyperlinkListener(new HyperlinkAdapter() {
+
 			@Override
-			public void linkActivated(HyperlinkEvent e) 
-			{
-				boolean result = MessageDialog.openConfirm(getSite().getShell(), 
-						"Löschen der Kompetenz bestätigen", 
-						"Möchten sie die Kompetenz " +competence.getCompetenceName()+" wirklich löschen?");
-				if(!result)
+			public void linkActivated(HyperlinkEvent e) {
+				boolean result = MessageDialog.openConfirm(getSite().getShell(), "Löschen der Kompetenz bestätigen", "Möchten sie die Kompetenz "
+						+ competence.getCompetenceName() + " wirklich löschen?");
+				if (!result)
 					return;
-				//reset the dirty flag to prevent the 'save changes' to popup on a deleted item
+				// reset the dirty flag to prevent the 'save changes' to popup
+				// on a deleted item
 				isDirty = false;
-				//send the remove request
-				NetWrapper.getDefault().sendRemoveMessage(Competence.ID,competence);
+				// send the remove request
+				NetWrapper.getDefault().sendRemoveMessage(Competence.ID, competence);
 			}
 		});
 
-		//info label should span over two
+		// info label should span over two
 		GridData data = new GridData(GridData.FILL_BOTH);
 		data.horizontalSpan = 2;
 		data.widthHint = 600;
@@ -165,13 +172,14 @@ public class CompetenceEditor extends EditorPart implements PropertyChangeListen
 
 	/**
 	 * Creates the section containing the competence details
-	 * @param parent the parent composite
+	 * 
+	 * @param parent
+	 *            the parent composite
 	 */
-	private void createDetailSection(Composite parent)
-	{
+	private void createDetailSection(Composite parent) {
 		Composite client = createSection(parent, "Kompetenz Details");
 
-		//label and the text field
+		// label and the text field
 		final Label labelId = toolkit.createLabel(client, "Kompetenz ID");
 		id = toolkit.createText(client, "");
 		id.setEditable(false);
@@ -180,177 +188,167 @@ public class CompetenceEditor extends EditorPart implements PropertyChangeListen
 
 		final Label labelCompName = toolkit.createLabel(client, "Kompetenz Bezeichnung");
 		name = toolkit.createText(client, "");
-		name.addModifyListener(new ModifyListener() { 
+		name.addModifyListener(new ModifyListener() {
+
 			@Override
 			public void modifyText(ModifyEvent me) {
 				inputChanged();
 			}
 		});
 
-		//set the layout for the composites
+		// set the layout for the composites
 		GridData data = new GridData();
 		data.widthHint = 150;
 		labelId.setLayoutData(data);
 		data = new GridData();
 		data.widthHint = 150;
 		labelCompName.setLayoutData(data);
-		//layout for the text fields
+		// layout for the text fields
 		GridData data2 = new GridData(GridData.FILL_HORIZONTAL);
 		id.setLayoutData(data2);
 		data2 = new GridData(GridData.FILL_HORIZONTAL);
-		name.setLayoutData(data2);	
+		name.setLayoutData(data2);
 	}
 
 	/**
 	 * Loads the data and shows them in the view
 	 */
-	private void loadData()
-	{
-		//initialize the editor
-		if(isNew)
-		{
+	private void loadData() {
+		// initialize the editor
+		if (isNew) {
 			form.setText("Neue Kompetenz anlegen");
 			removeHyperlink.setVisible(false);
 			return;
 		}
-		
-		//enable the remove link
+
+		// enable the remove link
 		removeHyperlink.setVisible(true);
-		
-		//load the data
+
+		// load the data
 		form.setText("Details der Kompetenz: " + competence.getCompetenceName());
 		id.setText(String.valueOf(competence.getId()));
 		name.setText(competence.getCompetenceName());
 	}
 
 	@Override
-	public void doSave(IProgressMonitor monitor) 
-	{
-		//reset error message
+	public void doSave(IProgressMonitor monitor) {
+		// reset error message
 		form.setMessage(null, IMessageProvider.NONE);
 
-		//name must be provided and because of the varchar(30) in the database, mustn't have a length more than 30 characters
-		if(name.getText().length() >30 || name.getText().trim().isEmpty())
-		{
+		// name must be provided and because of the varchar(30) in the database,
+		// mustn't have a length more than 30 characters
+		if (name.getText().length() > 30 || name.getText().trim().isEmpty()) {
 			form.getDisplay().beep();
 			form.setMessage("Bitte geben sie eine gültige Bezeichnung für die Kompetenz ein (max. 30 Zeichen)", IMessageProvider.ERROR);
 			return;
 		}
 		competence.setCompetenceName(name.getText());
 
-		//create new or send update request
-		if(isNew)
+		// create new or send update request
+		if (isNew)
 			NetWrapper.getDefault().sendAddMessage(Competence.ID, competence);
 		else
 			NetWrapper.getDefault().sendUpdateMessage(Competence.ID, competence);
 	}
 
 	@Override
-	public void doSaveAs() 
-	{
-		//not supported
+	public void doSaveAs() {
+		// not supported
 	}
 
 	@Override
-	public void init(IEditorSite site, IEditorInput input) throws PartInitException 
-	{
+	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 		setSite(site);
 		setInput(input);
 		setPartName(input.getName());
 	}
 
 	@Override
-	public void setFocus() 
-	{
+	public void setFocus() {
 		form.setFocus();
 	}
 
 	@Override
-	public boolean isDirty() 
-	{
+	public boolean isDirty() {
 		return isDirty;
 	}
 
 	@Override
-	public boolean isSaveAsAllowed() 
-	{
-		//not supported
+	public boolean isSaveAsAllowed() {
+		// not supported
 		return false;
 	}
 
 	@Override
-	public void propertyChange(PropertyChangeEvent evt) 
-	{
-		if("COMPETENCE_UPDATE".equals(evt.getPropertyName()) || "COMPETENCE_ADD".equalsIgnoreCase(evt.getPropertyName()))
-		{
+	public void propertyChange(PropertyChangeEvent evt) {
+		if ("COMPETENCE_UPDATE".equals(evt.getPropertyName()) || "COMPETENCE_ADD".equalsIgnoreCase(evt.getPropertyName())) {
 			Competence updateCompetence = null;
-			//get the new value
-			if(evt.getNewValue() instanceof Competence)
-				updateCompetence = (Competence)evt.getNewValue();
+			// get the new value
+			if (evt.getNewValue() instanceof Competence)
+				updateCompetence = (Competence) evt.getNewValue();
 
-			//assert we have a value
-			if(updateCompetence == null)
+			// assert we have a value
+			if (updateCompetence == null)
 				return;
 
-			//is this competence is the current one -> update it
-			if(competence.equals(updateCompetence) || competence.getCompetenceName().equals(updateCompetence.getCompetenceName()))
-			{
-				//save the updated competence
-				setInput(new CompetenceEditorInput(updateCompetence,false));
+			// is this competence is the current one -> update it
+			if (competence.equals(updateCompetence) || competence.getCompetenceName().equals(updateCompetence.getCompetenceName())) {
+				// save the updated competence
+				setInput(new CompetenceEditorInput(updateCompetence, false));
 				setPartName(updateCompetence.getCompetenceName());
 				competence = updateCompetence;
 				isNew = false;
-				//update the editor
+				// update the editor
 				loadData();
-				//show the result
+				// show the result
 				isDirty = false;
 				infoLabel.setText("Änderungen gespeichert");
 				infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.ok"));
 				Display.getCurrent().beep();
 			}
 		}
-		if("COMPETENCE_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
-		{
-			//get the removed competence
-			Competence removedCompetence = (Competence)evt.getOldValue();
-			//current open
-			if(competence.equals(removedCompetence))
-			{
-				MessageDialog.openInformation(getSite().getShell(), 
-						"Kompetenz wurde gelöscht",
-				"Die Kompetenz, welche Sie gerade editieren, wurde gelöscht");
+		if ("COMPETENCE_REMOVE".equalsIgnoreCase(evt.getPropertyName())) {
+			// get the removed competence
+			Competence removedCompetence = (Competence) evt.getOldValue();
+			// current open
+			if (competence.equals(removedCompetence)) {
+				MessageDialog.openInformation(getSite().getShell(), "Kompetenz wurde gelöscht",
+						"Die Kompetenz, welche Sie gerade editieren, wurde gelöscht");
 				EditorCloseAction closeAction = new EditorCloseAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow());
 				closeAction.run();
 			}
 		}
 	}
 
-	//Helper methods
+	// Helper methods
 	/**
 	 * Creates and returns a section and a composite with two colums
-	 * @param parent the parent composite
-	 * @param sectionName the title of the section
+	 * 
+	 * @param parent
+	 *            the parent composite
+	 * @param sectionName
+	 *            the title of the section
 	 * @return the created composite to hold the other widgets
 	 */
-	private Composite createSection(Composite parent,String sectionName)
-	{
-		//create the section
-		Section section = toolkit.createSection(parent,ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
+	private Composite createSection(Composite parent, String sectionName) {
+		// create the section
+		Section section = toolkit.createSection(parent, ExpandableComposite.TITLE_BAR | ExpandableComposite.TWISTIE);
 		toolkit.createCompositeSeparator(section);
 		section.setText(sectionName);
 		section.setLayout(new GridLayout());
 		section.setLayoutData(new GridData(GridData.BEGINNING | GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING));
 		section.setExpanded(true);
-		//composite to add the client area
+		// composite to add the client area
 		Composite client = new Composite(section, SWT.NONE);
 		section.setClient(client);
 
-		//layout
+		// layout
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 2;
 		layout.makeColumnsEqualWidth = false;
 		client.setLayout(layout);
-		GridData clientDataLayout = new GridData(GridData.BEGINNING | GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING | GridData.FILL_BOTH);
+		GridData clientDataLayout = new GridData(GridData.BEGINNING | GridData.HORIZONTAL_ALIGN_BEGINNING | GridData.VERTICAL_ALIGN_BEGINNING
+				| GridData.FILL_BOTH);
 		client.setLayoutData(clientDataLayout);
 
 		return client;
@@ -359,18 +357,16 @@ public class CompetenceEditor extends EditorPart implements PropertyChangeListen
 	/**
 	 * This is called when the input of a text box or a combo box was changes
 	 */
-	private void inputChanged()
-	{
-		//reset the flag		
+	private void inputChanged() {
+		// reset the flag
 		isDirty = false;
 
-		//get the current input
-		CompetenceEditorInput competenceInput = (CompetenceEditorInput)getEditorInput();
+		// get the current input
+		CompetenceEditorInput competenceInput = (CompetenceEditorInput) getEditorInput();
 		Competence competence = competenceInput.getCompetence();
 
-		//check the competence name
-		if(!name.getText().equalsIgnoreCase(competence.getCompetenceName()))
-		{
+		// check the competence name
+		if (!name.getText().equalsIgnoreCase(competence.getCompetenceName())) {
 			isDirty = true;
 			infoLabel.setText("Bitte speichern Sie ihre lokalen Änderungen.");
 			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("info.warning"));
@@ -378,15 +374,14 @@ public class CompetenceEditor extends EditorPart implements PropertyChangeListen
 			saveHyperlink.setForeground(CustomColors.GREY_COLOR);
 			saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.saveDisabled"));
 		}
-		else
-		{
+		else {
 			infoLabel.setText("Hier können sie die aktuelle Kompetenz verwalten und die Änderungen speichern.");
 			infoLabel.setImage(ImageFactory.getInstance().getRegisteredImage("admin.info"));
 			saveHyperlink.setForeground(CustomColors.COLOR_LINK);
 			saveHyperlink.setImage(ImageFactory.getInstance().getRegisteredImage("admin.saveDisabled"));
 		}
-		
-		//set the dirty flag
-		firePropertyChange(IWorkbenchPartConstants.PROP_DIRTY); 
+
+		// set the dirty flag
+		firePropertyChange(IWorkbenchPartConstants.PROP_DIRTY);
 	}
 }

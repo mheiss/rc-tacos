@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Internettechnik, FH JOANNEUM
+ * http://www.fh-joanneum.at/itm
+ * 
+ * 	Licenced under the GNU GENERAL PUBLIC LICENSE Version 2;
+ * 	You may obtain a copy of the License at
+ * 	http://www.gnu.org/licenses/gpl-2.0.txt
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *******************************************************************************/
 package at.rc.tacos.client.view;
 
 import java.beans.PropertyChangeEvent;
@@ -35,7 +48,6 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
-import com.swtdesigner.SWTResourceManager;
 
 import at.rc.tacos.client.jobs.FilterAddressJob;
 import at.rc.tacos.client.modelManager.LockManager;
@@ -52,12 +64,15 @@ import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Patient;
 import at.rc.tacos.model.SickPerson;
 
+import com.swtdesigner.SWTResourceManager;
+
 /**
  * GUI (form) to manage the details of a dialysis patient
+ * 
  * @author b.thek
  */
-public class DialysisForm implements IKindOfTransport, PropertyChangeListener
-{
+public class DialysisForm implements IKindOfTransport, PropertyChangeListener {
+
 	private Composite composite;
 	private Label dialysetransportBearbeitenLabel;
 	private Label dialysetransportLabel;
@@ -92,9 +107,9 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 
 	private DialysisPatient dia;
 
-	private Text textPatientLastName,textPatientFirstName;
-	private Text textFromStreet,textToStreet,textFromCity,textToCity;
-	private AutoCompleteField acFromStreet,acToStreet,acFromCity,acToCity;
+	private Text textPatientLastName, textPatientFirstName;
+	private Text textFromStreet, textToStreet, textFromCity, textToCity;
+	private AutoCompleteField acFromStreet, acToStreet, acFromCity, acToCity;
 
 	/**
 	 * The scheduler job to start the filter
@@ -104,8 +119,7 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 	/**
 	 * constructor used to create a a new dialysis transport entry.
 	 */
-	public DialysisForm()
-	{
+	public DialysisForm() {
 		createNew = true;
 		this.dia = new DialysisPatient();
 		createContents();
@@ -113,10 +127,11 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 
 	/**
 	 * used to edit an dialysis entry
-	 * @param dialysisPatient the dialysisPatient to edit
+	 * 
+	 * @param dialysisPatient
+	 *            the dialysisPatient to edit
 	 */
-	public DialysisForm(DialysisPatient patient, boolean createNew)
-	{
+	public DialysisForm(DialysisPatient patient, boolean createNew) {
 		this.createNew = createNew;
 		this.dia = patient;
 
@@ -124,114 +139,114 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 
 		GregorianCalendar gcal = new GregorianCalendar();
 
-		//planned start of transport
-		if(dia.getPlannedStartOfTransport() != 0)
-		{
+		// planned start of transport
+		if (dia.getPlannedStartOfTransport() != 0) {
 			gcal.setTimeInMillis(dia.getPlannedStartOfTransport());
-			String abfahrtTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
+			String abfahrtTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <= 9 ? "0" : "") + gcal.get(GregorianCalendar.HOUR_OF_DAY) + ":"
+					+ ((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") + gcal.get(GregorianCalendar.MINUTE));
 			this.textAbf.setText(abfahrtTime);
 		}
 
-		//time at patient
-		if (dia.getPlannedTimeAtPatient() != 0)
-		{
+		// time at patient
+		if (dia.getPlannedTimeAtPatient() != 0) {
 			gcal.setTimeInMillis(dia.getPlannedTimeAtPatient());
-			String beiPatientTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
+			String beiPatientTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <= 9 ? "0" : "") + gcal.get(GregorianCalendar.HOUR_OF_DAY) + ":"
+					+ ((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") + gcal.get(GregorianCalendar.MINUTE));
 			this.textBeiPat.setText(beiPatientTime);
 		}
 
-		//time at destination
-		if (dia.getAppointmentTimeAtDialysis() != 0)
-		{
+		// time at destination
+		if (dia.getAppointmentTimeAtDialysis() != 0) {
 			gcal.setTimeInMillis(dia.getAppointmentTimeAtDialysis());
-			String terminTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
+			String terminTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <= 9 ? "0" : "") + gcal.get(GregorianCalendar.HOUR_OF_DAY) + ":"
+					+ ((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") + gcal.get(GregorianCalendar.MINUTE));
 			this.textTermin.setText(terminTime);
 		}
 
-		//time abfRT
-		if (dia.getPlannedStartForBackTransport() != 0)
-		{
+		// time abfRT
+		if (dia.getPlannedStartForBackTransport() != 0) {
 			gcal.setTimeInMillis(dia.getPlannedStartForBackTransport());
-			String abfRTTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
+			String abfRTTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <= 9 ? "0" : "") + gcal.get(GregorianCalendar.HOUR_OF_DAY) + ":"
+					+ ((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") + gcal.get(GregorianCalendar.MINUTE));
 			this.textAbfRT.setText(abfRTTime);
 		}
 
-		//time ready
-		if (dia.getReadyTime() != 0)
-		{
+		// time ready
+		if (dia.getReadyTime() != 0) {
 			gcal.setTimeInMillis(dia.getReadyTime());
-			String readyTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <=9 ? "0" : "") +gcal.get(GregorianCalendar.HOUR_OF_DAY)+":" +((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") +gcal.get(GregorianCalendar.MINUTE));
+			String readyTime = (gcal.get(GregorianCalendar.HOUR_OF_DAY) <= 9 ? "0" : "") + gcal.get(GregorianCalendar.HOUR_OF_DAY) + ":"
+					+ ((gcal.get(GregorianCalendar.MINUTE) <= 9 ? "0" : "") + gcal.get(GregorianCalendar.MINUTE));
 			this.textFertig.setText(readyTime);
 		}
 
 		textFromStreet.setText(dia.getFromStreet());
-		if(dia.getFromCity() != null)
+		if (dia.getFromCity() != null)
 			textFromCity.setText(dia.getFromCity());
-		if(dia.getToCity() != null)
+		if (dia.getToCity() != null)
 			textToCity.setText(dia.getToCity());
 
-		if(dia.getToStreet() != null)
+		if (dia.getToStreet() != null)
 			textToStreet.setText(dia.getToStreet());
 
-		if(dia.getPatient().getLastname() != null)
+		if (dia.getPatient().getLastname() != null)
 			textPatientLastName.setText(dia.getPatient().getLastname());
 
-		if(dia.getPatient().getFirstname() != null)
+		if (dia.getPatient().getFirstname() != null)
 			textPatientFirstName.setText(dia.getPatient().getFirstname());
 
 		this.begleitpersonButton.setSelection(dia.isAssistantPerson());
 
-		if(dia.getLocation() != null)
-			this.zustaendigeOrtsstelle.setSelection(new StructuredSelection(dia.getLocation()));//mandatory!! default: Bezirk
+		if (dia.getLocation() != null)
+			this.zustaendigeOrtsstelle.setSelection(new StructuredSelection(dia.getLocation()));// mandatory!!
+																								// default:
+																								// Bezirk
 
-			this.montagButton.setSelection(dia.isMonday());
-			this.dienstagButton.setSelection(dia.isTuesday());
-			this.mittwochButton.setSelection(dia.isWednesday());
-			this.donnerstagButton.setSelection(dia.isThursday());
-			this.freitagButton.setSelection(dia.isFriday());
-			this.samstagButton.setSelection(dia.isSaturday());
-			this.sonntagButton.setSelection(dia.isSunday());
+		this.montagButton.setSelection(dia.isMonday());
+		this.dienstagButton.setSelection(dia.isTuesday());
+		this.mittwochButton.setSelection(dia.isWednesday());
+		this.donnerstagButton.setSelection(dia.isThursday());
+		this.freitagButton.setSelection(dia.isFriday());
+		this.samstagButton.setSelection(dia.isSaturday());
+		this.sonntagButton.setSelection(dia.isSunday());
 
-			this.button_stationary.setSelection(dia.isStationary());
+		this.button_stationary.setSelection(dia.isStationary());
 
-			//kind of transport
-			if(dia.getKindOfTransport() != null)
-				combokindOfTransport.setText(dia.getKindOfTransport());
+		// kind of transport
+		if (dia.getKindOfTransport() != null)
+			combokindOfTransport.setText(dia.getKindOfTransport());
 	}
-	
+
 	/**
 	 * Open the window
 	 */
-	public void open()
-	{
-		//get the active shell
+	public void open() {
+		// get the active shell
 		Shell parent = PlatformUI.getWorkbench().getDisplay().getActiveShell();
 
-		//get the shell and resize
+		// get the shell and resize
 		shell.setSize(1083, 370);
 
-		//calculate and draw centered
+		// calculate and draw centered
 		Rectangle workbenchSize = parent.getBounds();
 		Rectangle mySize = shell.getBounds();
 		int locationX, locationY;
-		locationX = (workbenchSize.width - mySize.width)/2+workbenchSize.x;
-		locationY = (workbenchSize.height - mySize.height)/2+workbenchSize.y;
-		shell.setLocation(locationX,locationY);
+		locationX = (workbenchSize.width - mySize.width) / 2 + workbenchSize.x;
+		locationY = (workbenchSize.height - mySize.height) / 2 + workbenchSize.y;
+		shell.setLocation(locationX, locationY);
 		shell.open();
 	}
 
 	/**
 	 * Create contents of the window
 	 */
-	protected void createContents() 
-	{
-		//add the listener for address records
+	protected void createContents() {
+		// add the listener for address records
 		ModelFactory.getInstance().getAddressManager().addPropertyChangeListener(this);
-		//create the content of the form
-		shell = new Shell(Display.getCurrent(),SWT.APPLICATION_MODAL | SWT.TITLE | SWT.BORDER | SWT.CLOSE);
+		// create the content of the form
+		shell = new Shell(Display.getCurrent(), SWT.APPLICATION_MODAL | SWT.TITLE | SWT.BORDER | SWT.CLOSE);
 		shell.addShellListener(new ShellAdapter() {
-			public void shellClosed(final ShellEvent e) 
-			{
+
+			public void shellClosed(final ShellEvent e) {
 				LockManager.removeLock(DialysisPatient.ID, dia.getId());
 				ModelFactory.getInstance().getAddressManager().removePropertyChangeListener(DialysisForm.this);
 			}
@@ -257,53 +272,47 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 
 		textToStreet = new Text(transportdatenGroup, SWT.WRAP | SWT.MULTI | SWT.BORDER);
 		textToStreet.setBounds(41, 66, 230, 21);
-		textToStreet.addKeyListener(new KeyAdapter()
-		{
+		textToStreet.addKeyListener(new KeyAdapter() {
+
 			@Override
-			public void keyPressed(KeyEvent e) 
-			{
-				//no action when the enter key is pressed
-				if(e.keyCode == 13)
-				{
+			public void keyPressed(KeyEvent e) {
+				// no action when the enter key is pressed
+				if (e.keyCode == 13) {
 					e.doit = false;
 					return;
 				}
-				//go to the next field when the tab is pressed
-				if(e.keyCode == 9)
-				{
+				// go to the next field when the tab is pressed
+				if (e.keyCode == 9) {
 					textToCity.setFocus();
 					e.doit = false;
 					return;
 				}
-				inputChanged(textToStreet.getText(),IFilterTypes.SEARCH_STRING_STREET);
+				inputChanged(textToStreet.getText(), IFilterTypes.SEARCH_STRING_STREET);
 			}
 		});
-		acToStreet = new AutoCompleteField(textToStreet, new TextContentAdapter(), new String[] {} );
+		acToStreet = new AutoCompleteField(textToStreet, new TextContentAdapter(), new String[] {});
 
 		textFromStreet = new Text(transportdatenGroup, SWT.WRAP | SWT.MULTI | SWT.BORDER);
 		textFromStreet.setBounds(41, 39, 230, 21);
-		textFromStreet.addKeyListener(new KeyAdapter()
-		{
+		textFromStreet.addKeyListener(new KeyAdapter() {
+
 			@Override
-			public void keyPressed(KeyEvent e) 
-			{
-				//no action when the enter key is pressed
-				if(e.keyCode == 13)
-				{
+			public void keyPressed(KeyEvent e) {
+				// no action when the enter key is pressed
+				if (e.keyCode == 13) {
 					e.doit = false;
 					return;
 				}
-				//go to the next field when the tab is pressed
-				if(e.keyCode == 9)
-				{
+				// go to the next field when the tab is pressed
+				if (e.keyCode == 9) {
 					textFromCity.setFocus();
 					e.doit = false;
 					return;
 				}
-				inputChanged(textFromStreet.getText(),IFilterTypes.SEARCH_STRING_STREET);
+				inputChanged(textFromStreet.getText(), IFilterTypes.SEARCH_STRING_STREET);
 			}
 		});
-		acFromStreet = new AutoCompleteField(textFromStreet,new TextContentAdapter(), new String[] {} );
+		acFromStreet = new AutoCompleteField(textFromStreet, new TextContentAdapter(), new String[] {});
 
 		final Label nachLabel = new Label(transportdatenGroup, SWT.NONE);
 		nachLabel.setForeground(Util.getColor(128, 128, 128));
@@ -315,55 +324,49 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 		label.setText("Straße");
 		label.setBounds(41, 20, 56, 13);
 
-		textFromCity = new Text(transportdatenGroup,SWT.WRAP | SWT.MULTI | SWT.BORDER);
+		textFromCity = new Text(transportdatenGroup, SWT.WRAP | SWT.MULTI | SWT.BORDER);
 		textFromCity.setBounds(277, 39, 156, 21);
-		textFromCity.addKeyListener(new KeyAdapter()
-		{
+		textFromCity.addKeyListener(new KeyAdapter() {
+
 			@Override
-			public void keyPressed(KeyEvent e) 
-			{
-				//no action when the enter key is pressed
-				if(e.keyCode == 13)
-				{
+			public void keyPressed(KeyEvent e) {
+				// no action when the enter key is pressed
+				if (e.keyCode == 13) {
 					e.doit = false;
 					return;
 				}
-				//go to the next field when the tab is pressed
-				if(e.keyCode == 9)
-				{
+				// go to the next field when the tab is pressed
+				if (e.keyCode == 9) {
 					textPatientLastName.setFocus();
 					e.doit = false;
 					return;
 				}
-				inputChanged(textFromCity.getText(),IFilterTypes.SEARCH_STRING_CITY);
+				inputChanged(textFromCity.getText(), IFilterTypes.SEARCH_STRING_CITY);
 			}
 		});
-		acFromCity = new AutoCompleteField(textFromCity, new TextContentAdapter(), new String[] {} );
+		acFromCity = new AutoCompleteField(textFromCity, new TextContentAdapter(), new String[] {});
 
 		textToCity = new Text(transportdatenGroup, SWT.WRAP | SWT.MULTI | SWT.BORDER);
 		textToCity.setBounds(277, 66, 156, 21);
-		textToCity.addKeyListener(new KeyAdapter()
-		{
+		textToCity.addKeyListener(new KeyAdapter() {
+
 			@Override
-			public void keyPressed(KeyEvent e) 
-			{
-				//no action when the enter key is pressed
-				if(e.keyCode == 13)
-				{
+			public void keyPressed(KeyEvent e) {
+				// no action when the enter key is pressed
+				if (e.keyCode == 13) {
 					e.doit = false;
 					return;
 				}
-				//go to the next field when the tab is pressed
-				if(e.keyCode == 9)
-				{
+				// go to the next field when the tab is pressed
+				if (e.keyCode == 9) {
 					begleitpersonButton.setFocus();
 					e.doit = false;
 					return;
 				}
-				inputChanged(textToCity.getText(),IFilterTypes.SEARCH_STRING_CITY);
+				inputChanged(textToCity.getText(), IFilterTypes.SEARCH_STRING_CITY);
 			}
 		});
-		acToCity = new AutoCompleteField(textToCity, new TextContentAdapter(), new String[] {} );
+		acToCity = new AutoCompleteField(textToCity, new TextContentAdapter(), new String[] {});
 
 		final Label ortLabel = new Label(transportdatenGroup, SWT.NONE);
 		ortLabel.setForeground(Util.getColor(128, 128, 128));
@@ -372,20 +375,17 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 
 		textPatientLastName = new Text(transportdatenGroup, SWT.WRAP | SWT.MULTI | SWT.BORDER);
 		textPatientLastName.setBounds(467, 39, 171, 21);
-		textPatientLastName.addKeyListener(new KeyAdapter()
-		{
+		textPatientLastName.addKeyListener(new KeyAdapter() {
+
 			@Override
-			public void keyPressed(KeyEvent e) 
-			{
-				//no action when the enter key is pressed
-				if(e.keyCode == 13)
-				{
+			public void keyPressed(KeyEvent e) {
+				// no action when the enter key is pressed
+				if (e.keyCode == 13) {
 					e.doit = false;
 					return;
 				}
-				//go to the next field when the tab is pressed
-				if(e.keyCode == 9)
-				{
+				// go to the next field when the tab is pressed
+				if (e.keyCode == 9) {
 					textPatientFirstName.setFocus();
 					e.doit = false;
 					return;
@@ -400,20 +400,17 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 
 		textPatientFirstName = new Text(transportdatenGroup, SWT.WRAP | SWT.MULTI | SWT.BORDER);
 		textPatientFirstName.setBounds(644, 39, 171, 21);
-		textPatientFirstName.addKeyListener(new KeyAdapter()
-		{
+		textPatientFirstName.addKeyListener(new KeyAdapter() {
+
 			@Override
-			public void keyPressed(KeyEvent e) 
-			{
-				//no action when the enter key is pressed
-				if(e.keyCode == 13)
-				{
+			public void keyPressed(KeyEvent e) {
+				// no action when the enter key is pressed
+				if (e.keyCode == 13) {
 					e.doit = false;
 					return;
 				}
-				//go to the next field when the tab is pressed
-				if(e.keyCode == 9)
-				{
+				// go to the next field when the tab is pressed
+				if (e.keyCode == 9) {
 					combokindOfTransport.setFocus();
 					e.doit = false;
 					return;
@@ -422,31 +419,30 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 		});
 
 		button = new Button(transportdatenGroup, SWT.NONE);
-		button.setBounds(821, 37,32, 23);
+		button.setBounds(821, 37, 32, 23);
 		button.setText("...");
-		button.addSelectionListener(new SelectionAdapter() 
-		{		
-			public void widgetSelected(final SelectionEvent e) 
-			{
-				Shell parentShell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
-				//open the selection dialog to choose a patient
-				PatientSelectionDialog selectionDialog = new PatientSelectionDialog(textPatientLastName.getText(),parentShell);
-				selectionDialog.open();
-				SickPerson selectedPerson = (SickPerson)selectionDialog.getResult()[0];
+		button.addSelectionListener(new SelectionAdapter() {
 
-				//assert valid
-				if(selectedPerson == null)
+			public void widgetSelected(final SelectionEvent e) {
+				Shell parentShell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
+				// open the selection dialog to choose a patient
+				PatientSelectionDialog selectionDialog = new PatientSelectionDialog(textPatientLastName.getText(), parentShell);
+				selectionDialog.open();
+				SickPerson selectedPerson = (SickPerson) selectionDialog.getResult()[0];
+
+				// assert valid
+				if (selectedPerson == null)
 					return;
 
-				if(selectedPerson.getFirstName() != null)
+				if (selectedPerson.getFirstName() != null)
 					textPatientFirstName.setText(selectedPerson.getFirstName());
-				if(selectedPerson.getLastName() != null)
+				if (selectedPerson.getLastName() != null)
 					textPatientLastName.setText(selectedPerson.getLastName());
-				if(selectedPerson.getStreetname() != null)
+				if (selectedPerson.getStreetname() != null)
 					textFromStreet.setText(selectedPerson.getStreetname());
-				if(selectedPerson.getCityname() != null)
+				if (selectedPerson.getCityname() != null)
 					textFromCity.setText(selectedPerson.getCityname());
-				if(selectedPerson.getKindOfTransport() != null)
+				if (selectedPerson.getKindOfTransport() != null)
 					combokindOfTransport.setText(selectedPerson.getKindOfTransport());
 			}
 		});
@@ -461,8 +457,8 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 		label_kind.setForeground(Util.getColor(128, 128, 128));
 		label_kind.setText("Transportart:");
 		combokindOfTransport = new Combo(transportdatenGroup, SWT.READ_ONLY);
-		//set possible priorities
-		String[] kindsOfTransport = {TRANSPORT_KIND_GEHEND, TRANSPORT_KIND_TRAGSESSEL, TRANSPORT_KIND_KRANKENTRAGE, TRANSPORT_KIND_ROLLSTUHL};
+		// set possible priorities
+		String[] kindsOfTransport = { TRANSPORT_KIND_GEHEND, TRANSPORT_KIND_TRAGSESSEL, TRANSPORT_KIND_KRANKENTRAGE, TRANSPORT_KIND_ROLLSTUHL };
 		combokindOfTransport.setItems(kindsOfTransport);
 		combokindOfTransport.setBounds(753, 69, 100, 23);
 		combokindOfTransport.setForeground(Util.getColor(128, 128, 128));
@@ -512,7 +508,7 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 		terminLabel.setBounds(10, 91, 28, 13);
 
 		textBeiPat = new Text(planungGroup, SWT.BORDER);
-		textBeiPat.setBounds(41, 61,41, 21);
+		textBeiPat.setBounds(41, 61, 41, 21);
 
 		textTermin = new Text(planungGroup, SWT.BORDER);
 		textTermin.setBounds(41, 88, 41, 21);
@@ -535,13 +531,11 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 
 		textFertig = new Text(planungGroup, SWT.BORDER);
 		textFertig.setBounds(41, 142, 41, 21);
-		planungGroup.setTabList(new Control[] {textAbf, textBeiPat, textTermin, textAbfRT, textFertig});
+		planungGroup.setTabList(new Control[] { textAbf, textBeiPat, textTermin, textAbfRT, textFertig });
 
 		patientenzustandGroup = new Group(shell, SWT.NONE);
-		transportdatenGroup.setTabList(new Control[] {
-				textFromStreet, textFromCity, textPatientLastName, textPatientFirstName, combokindOfTransport, 
-				textToStreet, textToCity, begleitpersonButton, 
-				button_stationary});
+		transportdatenGroup.setTabList(new Control[] { textFromStreet, textFromCity, textPatientLastName, textPatientFirstName, combokindOfTransport,
+				textToStreet, textToCity, begleitpersonButton, button_stationary });
 		patientenzustandGroup.setLayout(new FormLayout());
 		final FormData fd_patientenzustandGroup = new FormData();
 		fd_patientenzustandGroup.right = new FormAttachment(transportdatenGroup, -5, SWT.LEFT);
@@ -599,7 +593,8 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 		fd_sonntagButton.left = new FormAttachment(0, 5);
 		sonntagButton.setLayoutData(fd_sonntagButton);
 		sonntagButton.setText("Sonntag");
-		patientenzustandGroup.setTabList(new Control[] {montagButton, dienstagButton, mittwochButton, donnerstagButton, freitagButton, samstagButton, sonntagButton});
+		patientenzustandGroup.setTabList(new Control[] { montagButton, dienstagButton, mittwochButton, donnerstagButton, freitagButton,
+				samstagButton, sonntagButton });
 
 		abbrechenButton = new Button(shell, SWT.NONE);
 		final FormData fd_abbrechenButton = new FormData();
@@ -609,23 +604,22 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 		fd_abbrechenButton.top = new FormAttachment(0, 303);
 		abbrechenButton.setLayoutData(fd_abbrechenButton);
 		abbrechenButton.setText("Abbrechen");
-		//listener
+		// listener
 		exitListener = new Listener() {
-			public void handleEvent(Event e) 
-			{
+
+			public void handleEvent(Event e) {
 				MessageBox dialog = new MessageBox(shell, SWT.YES | SWT.NO | SWT.ICON_QUESTION);
 				dialog.setText("Abbrechen");
 				dialog.setMessage("Wollen Sie wirklich abbrechen?");
-				if (e.type == SWT.Close) 
+				if (e.type == SWT.Close)
 					e.doit = false;
-				if (dialog.open() != SWT.YES) 
+				if (dialog.open() != SWT.YES)
 					return;
 				LockManager.removeLock(DialysisPatient.ID, dia.getId());
 				shell.dispose();
 			}
 		};
 		abbrechenButton.addListener(SWT.Selection, exitListener);
-
 
 		okButton = new Button(shell, SWT.NONE);
 		final FormData fd_okButton = new FormData();
@@ -635,8 +629,8 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 		fd_okButton.left = new FormAttachment(0, 865);
 		okButton.setLayoutData(fd_okButton);
 		okButton.setText("OK");
-		okButton.addListener(SWT.Selection, new Listener()
-		{	
+		okButton.addListener(SWT.Selection, new Listener() {
+
 			String requiredFields;
 
 			int hourStart;
@@ -686,8 +680,7 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 
 			String formatOfTime;
 
-			public void handleEvent(Event event) 
-			{
+			public void handleEvent(Event event) {
 				String kindOfTransport = "";
 
 				requiredFields = "";
@@ -708,93 +701,79 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 
 				this.getContentOfAllFields();
 
-				if (textPatientFirstName.getText().length() >30)
-				{
+				if (textPatientFirstName.getText().length() > 30) {
 					this.displayMessageBox(event, "Bitte geben Sie einen Vornamen, der kürzer 30 Zeichen ist, ein", firstName);
 					return;
 				}
 
-				if (textPatientLastName.getText().length() >30)
-				{
+				if (textPatientLastName.getText().length() > 30) {
 					this.displayMessageBox(event, "Bitte geben Sie einen Nachname, der kürzer 30 Zeichen ist, ein", lastName);
 					return;
 				}
 
-				if (textToCity.getText().length() >50)
-				{
+				if (textToCity.getText().length() > 50) {
 					this.displayMessageBox(event, "Bitte geben Sie einen Stadt (nach) ein, der kürzer 50Zeichen ist, ein", toCommunity);
 					return;
 				}
-				if (textToStreet.getText().length() >100)
-				{
+				if (textToStreet.getText().length() > 100) {
 					this.displayMessageBox(event, "Bitte geben Sie eine Straße (zu), der kürzer 100 Zeichen ist, ein", toStreet);
 					return;
 				}
 
-				if (textFromCity.getText().length() >50)
-				{
+				if (textFromCity.getText().length() > 50) {
 					this.displayMessageBox(event, "Bitte geben Sie einen Stadt (von) ein, der kürzer 50 Zeichen ist, ein", fromCommunity);
 					return;
 				}
-				if (textFromStreet.getText().length() >100)
-				{
+				if (textFromStreet.getText().length() > 100) {
 					this.displayMessageBox(event, "Bitte geben Sie eine Straße (von), der kürzer 100 Zeichen ist, ein", fromStreet);
 					return;
 				}
 
-				//check required fields
-				if (!this.checkRequiredFields().equalsIgnoreCase(""))
-				{
+				// check required fields
+				if (!this.checkRequiredFields().equalsIgnoreCase("")) {
 					this.displayMessageBox(event, requiredFields, "Bitte noch folgende Mussfelder ausfüllen:");
 					return;
 				}
 
-				//validating
-				if(!this.checkFormatOfTimeFields().equalsIgnoreCase(""))
-				{
-					this.displayMessageBox(event,formatOfTime, "Format von Transportzeiten falsch: ");	
+				// validating
+				if (!this.checkFormatOfTimeFields().equalsIgnoreCase("")) {
+					this.displayMessageBox(event, formatOfTime, "Format von Transportzeiten falsch: ");
 					return;
 				}
 
 				this.transformToLong();
 
-				//validate: start before atPatient
-				if(atPatientLong<startLong && !start.equalsIgnoreCase("") && !atPatient.equalsIgnoreCase(""))
-				{
+				// validate: start before atPatient
+				if (atPatientLong < startLong && !start.equalsIgnoreCase("") && !atPatient.equalsIgnoreCase("")) {
 					this.displayMessageBox(event, "Ankunft bei Patient kann nicht vor Abfahrtszeit des Fahrzeuges liegen", "Fehler (Zeit)");
 					return;
-				}	
+				}
 
-
-				//validate: atPatient before term
-				if((termLong<atPatientLong && !term.equalsIgnoreCase("") && !atPatient.equalsIgnoreCase("")))
-				{
+				// validate: atPatient before term
+				if ((termLong < atPatientLong && !term.equalsIgnoreCase("") && !atPatient.equalsIgnoreCase(""))) {
 					this.displayMessageBox(event, "Termin kann nicht vor Ankunft bei Patient sein", "Fehler (Zeit)");
 					return;
 				}
 
-				//validate: start before term
-				if(termLong<startLong && !term.equalsIgnoreCase("") && !start.equalsIgnoreCase(""))
-				{
+				// validate: start before term
+				if (termLong < startLong && !term.equalsIgnoreCase("") && !start.equalsIgnoreCase("")) {
 					this.displayMessageBox(event, "Termin kann nicht vor Abfahrtszeit des Fahrzeuges liegen", "Fehler (Zeit)");
 					return;
 				}
 
-				//validate: abfRT before ready
-				if(readyLong<abfRTLong && !abfRT.equalsIgnoreCase("") && !ready.equalsIgnoreCase(""))
-				{
+				// validate: abfRT before ready
+				if (readyLong < abfRTLong && !abfRT.equalsIgnoreCase("") && !ready.equalsIgnoreCase("")) {
 					this.displayMessageBox(event, "Abholzeit (fertig) kann nicht vor Abfahrtszeit liegen", "Fehler (Zeit)");
 					return;
-				}	
+				}
 
-				//set the kind of transport
-				//the kind of transport
+				// set the kind of transport
+				// the kind of transport
 				int index = combokindOfTransport.getSelectionIndex();
 				if (index != -1)
 					kindOfTransport = combokindOfTransport.getItem(index);
 
-				if(createNew)
-				{
+				if (createNew) {
 					dia = new DialysisPatient();
 					dia.setAppointmentTimeAtDialysis(termLong);
 
@@ -806,11 +785,11 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 					dia.setFromCity(fromCommunity);
 					dia.setFromStreet(fromStreet);
 					dia.setInsurance("Versicherung unbekannt");
-					if(kindOfTransport != null)
+					if (kindOfTransport != null)
 						dia.setKindOfTransport(kindOfTransport);
 
 					index = zustaendigeOrtsstelle.getCombo().getSelectionIndex();
-					dia.setLocation((Location)zustaendigeOrtsstelle.getElementAt(index));
+					dia.setLocation((Location) zustaendigeOrtsstelle.getElementAt(index));
 
 					dia.setPlannedStartForBackTransport(abfRTLong);
 					dia.setPlannedStartOfTransport(startLong);
@@ -831,8 +810,7 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 					dia.setAssistantPerson(assistant);
 					NetWrapper.getDefault().sendAddMessage(DialysisPatient.ID, dia);
 				}
-				else
-				{
+				else {
 					dia.setAppointmentTimeAtDialysis(termLong);
 
 					Patient patient = new Patient();
@@ -841,7 +819,7 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 					dia.setPatient(patient);
 					dia.setFromCity(fromCommunity);
 					dia.setFromStreet(fromStreet);
-					if(kindOfTransport != null)
+					if (kindOfTransport != null)
 						dia.setKindOfTransport(kindOfTransport);
 					dia.setPlannedStartForBackTransport(abfRTLong);
 					dia.setPlannedStartOfTransport(startLong);
@@ -867,8 +845,7 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 				shell.close();
 			}
 
-			private void getContentOfAllFields()
-			{
+			private void getContentOfAllFields() {
 				montag = montagButton.getSelection();
 				dienstag = dienstagButton.getSelection();
 				mittwoch = mittwochButton.getSelection();
@@ -895,291 +872,251 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 				fromStreet = textFromStreet.getText();
 			}
 
-			private String checkRequiredFields()
-			{
+			private String checkRequiredFields() {
 				if (fromStreet.equalsIgnoreCase(""))
-					requiredFields = requiredFields +" " +"von Straße";
+					requiredFields = requiredFields + " " + "von Straße";
 				if (fromCommunity.equalsIgnoreCase(""))
-					requiredFields = requiredFields +" " +"von Ort";
+					requiredFields = requiredFields + " " + "von Ort";
 				if (toStreet.equalsIgnoreCase(""))
-					requiredFields = requiredFields +" " +"Zielort";
-				//the planned location
+					requiredFields = requiredFields + " " + "Zielort";
+				// the planned location
 				int index = zustaendigeOrtsstelle.getCombo().getSelectionIndex();
-				if(index == -1)
-					requiredFields = requiredFields +"zuständige Ortsstelle";
+				if (index == -1)
+					requiredFields = requiredFields + "zuständige Ortsstelle";
 
 				if (start.equalsIgnoreCase(""))
-					requiredFields = requiredFields +" " +"Abfahrtszeit";
+					requiredFields = requiredFields + " " + "Abfahrtszeit";
 				if (atPatient.equalsIgnoreCase(""))
-					requiredFields = requiredFields +" " +"Zeit bei Patient";
+					requiredFields = requiredFields + " " + "Zeit bei Patient";
 				if (term.equalsIgnoreCase(""))
-					requiredFields = requiredFields +" " +"Termin Dialyse";
+					requiredFields = requiredFields + " " + "Termin Dialyse";
 				if (abfRT.equalsIgnoreCase(""))
-					requiredFields = requiredFields +" " +"Abfahrt für Rücktransport";
+					requiredFields = requiredFields + " " + "Abfahrt für Rücktransport";
 				if (ready.equalsIgnoreCase(""))
-					requiredFields = requiredFields +" " +"Abholzeit (fertig)";
+					requiredFields = requiredFields + " " + "Abholzeit (fertig)";
 				return requiredFields;
 			}
 
-			private String checkFormatOfTimeFields()
-			{
-				Pattern p4 = Pattern.compile("(\\d{2})(\\d{2})");//if content is e.g. 1234
-				Pattern p5 = Pattern.compile("(\\d{2}):(\\d{2})");//if content is e.g. 12:34
+			private String checkFormatOfTimeFields() {
+				Pattern p4 = Pattern.compile("(\\d{2})(\\d{2})");// if content
+																	// is e.g.
+																	// 1234
+				Pattern p5 = Pattern.compile("(\\d{2}):(\\d{2})");// if content
+																	// is e.g.
+																	// 12:34
 
-				//check in
-				if(!start.equalsIgnoreCase(""))
-				{
-					Matcher m41= p4.matcher(start);
-					Matcher m51= p5.matcher(start);
-					if(m41.matches())
-					{
+				// check in
+				if (!start.equalsIgnoreCase("")) {
+					Matcher m41 = p4.matcher(start);
+					Matcher m51 = p5.matcher(start);
+					if (m41.matches()) {
 						hourStart = Integer.parseInt(m41.group(1));
 						minutesStart = Integer.parseInt(m41.group(2));
 
-						if(hourStart >= 0 && hourStart <=23 && minutesStart >= 0 && minutesStart <=59)
-						{
-							start = hourStart + ":" +minutesStart;//for the splitter
+						if (hourStart >= 0 && hourStart <= 23 && minutesStart >= 0 && minutesStart <= 59) {
+							start = hourStart + ":" + minutesStart;// for the
+																	// splitter
 						}
-						else
-						{
+						else {
 							formatOfTime = " - Abfahrtszeit";
 						}
 					}
-					else if(m51.matches())
-					{
+					else if (m51.matches()) {
 						hourStart = Integer.parseInt(m51.group(1));
 						minutesStart = Integer.parseInt(m51.group(2));
 
-						if(!(hourStart >= 0 && hourStart <=23 && minutesStart >= 0 && minutesStart <=59))
-						{
+						if (!(hourStart >= 0 && hourStart <= 23 && minutesStart >= 0 && minutesStart <= 59)) {
 							formatOfTime = " - Abfahrtszeit";
 						}
 					}
-					else
-					{
+					else {
 						formatOfTime = " - Abfahrtszeit";
 					}
 				}
 
-				//at patient
-				if (!atPatient.equalsIgnoreCase(""))
-				{
-					Matcher m42= p4.matcher(atPatient);
-					Matcher m52= p5.matcher(atPatient);
-					if(m42.matches())
-					{
+				// at patient
+				if (!atPatient.equalsIgnoreCase("")) {
+					Matcher m42 = p4.matcher(atPatient);
+					Matcher m52 = p5.matcher(atPatient);
+					if (m42.matches()) {
 						hourAtPatient = Integer.parseInt(m42.group(1));
 						minutesAtPatient = Integer.parseInt(m42.group(2));
 
-						if(hourAtPatient >= 0 && hourAtPatient <=23 && minutesAtPatient >= 0 && minutesAtPatient <=59)
-						{
-							atPatient = hourAtPatient +":" +minutesAtPatient;
+						if (hourAtPatient >= 0 && hourAtPatient <= 23 && minutesAtPatient >= 0 && minutesAtPatient <= 59) {
+							atPatient = hourAtPatient + ":" + minutesAtPatient;
 						}
-						else
-						{
-							formatOfTime = formatOfTime +"Ankunft bei Patient (Zeit)";
+						else {
+							formatOfTime = formatOfTime + "Ankunft bei Patient (Zeit)";
 						}
 					}
-					else if(m52.matches())
-					{
+					else if (m52.matches()) {
 						hourAtPatient = Integer.parseInt(m52.group(1));
 						minutesAtPatient = Integer.parseInt(m52.group(2));
 
-						if(!(hourAtPatient >= 0 && hourAtPatient <=23 && minutesAtPatient >= 0 && minutesAtPatient <=59))
-						{
-							formatOfTime = formatOfTime +"Ankunft bei Patient (Zeit)";
+						if (!(hourAtPatient >= 0 && hourAtPatient <= 23 && minutesAtPatient >= 0 && minutesAtPatient <= 59)) {
+							formatOfTime = formatOfTime + "Ankunft bei Patient (Zeit)";
 						}
 					}
-					else
-					{
-						formatOfTime = formatOfTime +"Ankunft bei Patient (Zeit)";
+					else {
+						formatOfTime = formatOfTime + "Ankunft bei Patient (Zeit)";
 					}
 				}
 
-				//term
-				if (!term.equalsIgnoreCase(""))
-				{
-					Matcher m42= p4.matcher(term);
-					Matcher m52= p5.matcher(term);
-					if(m42.matches())
-					{
+				// term
+				if (!term.equalsIgnoreCase("")) {
+					Matcher m42 = p4.matcher(term);
+					Matcher m52 = p5.matcher(term);
+					if (m42.matches()) {
 						hourTerm = Integer.parseInt(m42.group(1));
 						minutesTerm = Integer.parseInt(m42.group(2));
 
-						if(hourTerm >= 0 && hourTerm <=23 && minutesTerm >= 0 && minutesTerm <=59)
-						{
-							term = hourTerm +":" +minutesTerm;
+						if (hourTerm >= 0 && hourTerm <= 23 && minutesTerm >= 0 && minutesTerm <= 59) {
+							term = hourTerm + ":" + minutesTerm;
 						}
-						else
-						{
-							formatOfTime = formatOfTime +"Terminzeit";
+						else {
+							formatOfTime = formatOfTime + "Terminzeit";
 						}
 					}
-					else if(m52.matches())
-					{
+					else if (m52.matches()) {
 						hourTerm = Integer.parseInt(m52.group(1));
 						minutesTerm = Integer.parseInt(m52.group(2));
 
-						if(!(hourTerm >= 0 && hourTerm <=23 && minutesTerm >= 0 && minutesTerm <=59))
-						{
-							formatOfTime = formatOfTime +"Terminzeit";
+						if (!(hourTerm >= 0 && hourTerm <= 23 && minutesTerm >= 0 && minutesTerm <= 59)) {
+							formatOfTime = formatOfTime + "Terminzeit";
 						}
 					}
-					else
-					{
-						formatOfTime = formatOfTime +"Terminzeit";
+					else {
+						formatOfTime = formatOfTime + "Terminzeit";
 					}
 				}
 
-
-				//abf RT
-				if (!abfRT.equalsIgnoreCase(""))
-				{
-					Matcher m42= p4.matcher(abfRT);
-					Matcher m52= p5.matcher(abfRT);
-					if(m42.matches())
-					{
+				// abf RT
+				if (!abfRT.equalsIgnoreCase("")) {
+					Matcher m42 = p4.matcher(abfRT);
+					Matcher m52 = p5.matcher(abfRT);
+					if (m42.matches()) {
 						hourAbfRT = Integer.parseInt(m42.group(1));
 						minutesAbfRT = Integer.parseInt(m42.group(2));
 
-						if(hourAbfRT >= 0 && hourAbfRT <=23 && minutesAbfRT >= 0 && minutesAbfRT <=59)
-						{
-							abfRT = hourAbfRT +":" +minutesAbfRT;
+						if (hourAbfRT >= 0 && hourAbfRT <= 23 && minutesAbfRT >= 0 && minutesAbfRT <= 59) {
+							abfRT = hourAbfRT + ":" + minutesAbfRT;
 						}
-						else
-						{
-							formatOfTime = formatOfTime +"Abfahrt Rücktransport";
+						else {
+							formatOfTime = formatOfTime + "Abfahrt Rücktransport";
 						}
 					}
-					else if(m52.matches())
-					{
+					else if (m52.matches()) {
 						hourAbfRT = Integer.parseInt(m52.group(1));
 						minutesAbfRT = Integer.parseInt(m52.group(2));
 
-						if(!(hourAbfRT >= 0 && hourAbfRT <=23 && minutesAbfRT >= 0 && minutesAbfRT <=59))
-						{
-							formatOfTime = formatOfTime +"Abfahrt Rücktransport";
+						if (!(hourAbfRT >= 0 && hourAbfRT <= 23 && minutesAbfRT >= 0 && minutesAbfRT <= 59)) {
+							formatOfTime = formatOfTime + "Abfahrt Rücktransport";
 						}
 					}
-					else
-					{
-						formatOfTime = formatOfTime +"Abfahrt Rücktransport";
+					else {
+						formatOfTime = formatOfTime + "Abfahrt Rücktransport";
 					}
 				}
 
-				//fertig
-				if (!ready.equalsIgnoreCase(""))
-				{
-					Matcher m42= p4.matcher(ready);
-					Matcher m52= p5.matcher(ready);
-					if(m42.matches())
-					{
+				// fertig
+				if (!ready.equalsIgnoreCase("")) {
+					Matcher m42 = p4.matcher(ready);
+					Matcher m52 = p5.matcher(ready);
+					if (m42.matches()) {
 						hourReady = Integer.parseInt(m42.group(1));
 						minutesReady = Integer.parseInt(m42.group(2));
 
-						if(hourReady >= 0 && hourReady <=23 && minutesReady >= 0 && minutesReady <=59)
-						{
-							ready = hourReady +":" +minutesReady;
+						if (hourReady >= 0 && hourReady <= 23 && minutesReady >= 0 && minutesReady <= 59) {
+							ready = hourReady + ":" + minutesReady;
 						}
-						else
-						{
-							formatOfTime = formatOfTime +"Ankunft bei Patient (Zeit)";
+						else {
+							formatOfTime = formatOfTime + "Ankunft bei Patient (Zeit)";
 						}
 					}
-					else if(m52.matches())
-					{
+					else if (m52.matches()) {
 						hourReady = Integer.parseInt(m52.group(1));
 						minutesReady = Integer.parseInt(m52.group(2));
 
-						if(!(hourReady >= 0 && hourReady <=23 && minutesReady >= 0 && minutesReady <=59))
-						{
-							formatOfTime = formatOfTime +"Zeit fertig";
+						if (!(hourReady >= 0 && hourReady <= 23 && minutesReady >= 0 && minutesReady <= 59)) {
+							formatOfTime = formatOfTime + "Zeit fertig";
 						}
 					}
-					else
-					{
-						formatOfTime = formatOfTime +"Zeit fertig";
+					else {
+						formatOfTime = formatOfTime + "Zeit fertig";
 					}
 				}
 				return formatOfTime;
 			}
 
-			private void transformToLong()
-			{
-				//get a new instance of the calendar
+			private void transformToLong() {
+				// get a new instance of the calendar
 				GregorianCalendar cal = new GregorianCalendar();
 
-
-				if (!term.equalsIgnoreCase(""))
-				{
+				if (!term.equalsIgnoreCase("")) {
 					String[] theTerm = term.split(":");
 
 					int hoursTerm = Integer.valueOf(theTerm[0]).intValue();
 					int minutesTerm = Integer.valueOf(theTerm[1]).intValue();
 
 					cal.set(GregorianCalendar.HOUR_OF_DAY, hoursTerm);
-					cal.set(GregorianCalendar.MINUTE,minutesTerm);
+					cal.set(GregorianCalendar.MINUTE, minutesTerm);
 
 					termLong = cal.getTimeInMillis();
 				}
 
-				if (!atPatient.equalsIgnoreCase(""))
-				{
+				if (!atPatient.equalsIgnoreCase("")) {
 					String[] theTimeAtPatient = atPatient.split(":");
 					int hourstheTimeAtPatient = Integer.valueOf(theTimeAtPatient[0]).intValue();
 					int minutestheTimeAtPatient = Integer.valueOf(theTimeAtPatient[1]).intValue();
 
 					cal.set(GregorianCalendar.HOUR_OF_DAY, hourstheTimeAtPatient);
-					cal.set(GregorianCalendar.MINUTE,minutestheTimeAtPatient);
+					cal.set(GregorianCalendar.MINUTE, minutestheTimeAtPatient);
 
 					atPatientLong = cal.getTimeInMillis();
 				}
 
-				if (!start.equalsIgnoreCase(""))
-				{
+				if (!start.equalsIgnoreCase("")) {
 					String[] theStartTime = start.split(":");
 					int hourstheStartTime = Integer.valueOf(theStartTime[0]).intValue();
 					int minutestheStartTime = Integer.valueOf(theStartTime[1]).intValue();
 
 					cal.set(GregorianCalendar.HOUR_OF_DAY, hourstheStartTime);
-					cal.set(GregorianCalendar.MINUTE,minutestheStartTime);
+					cal.set(GregorianCalendar.MINUTE, minutestheStartTime);
 
 					startLong = cal.getTimeInMillis();
 				}
 
-				if (!abfRT.equalsIgnoreCase(""))
-				{
+				if (!abfRT.equalsIgnoreCase("")) {
 					String[] theAbfRTTime = abfRT.split(":");
 					int hourstheAbfRTTime = Integer.valueOf(theAbfRTTime[0]).intValue();
 					int minutestheAbfRTTime = Integer.valueOf(theAbfRTTime[1]).intValue();
 
 					cal.set(GregorianCalendar.HOUR_OF_DAY, hourstheAbfRTTime);
-					cal.set(GregorianCalendar.MINUTE,minutestheAbfRTTime);
+					cal.set(GregorianCalendar.MINUTE, minutestheAbfRTTime);
 
 					abfRTLong = cal.getTimeInMillis();
 				}
 
-				if (!ready.equalsIgnoreCase(""))
-				{
+				if (!ready.equalsIgnoreCase("")) {
 					String[] theReadyTime = ready.split(":");
 					int hourstheReadyTime = Integer.valueOf(theReadyTime[0]).intValue();
 					int minutestheReadyTime = Integer.valueOf(theReadyTime[1]).intValue();
 
 					cal.set(GregorianCalendar.HOUR_OF_DAY, hourstheReadyTime);
-					cal.set(GregorianCalendar.MINUTE,minutestheReadyTime);
+					cal.set(GregorianCalendar.MINUTE, minutestheReadyTime);
 
 					readyLong = cal.getTimeInMillis();
 				}
 
 			}
 
-			private void displayMessageBox(Event event, String fields, String message)
-			{
+			private void displayMessageBox(Event event, String fields, String message) {
 				MessageBox mb = new MessageBox(shell, 0);
 				mb.setText(message);
 				mb.setMessage(fields);
 				mb.open();
-				if(event.type == SWT.Close) event.doit = false;
+				if (event.type == SWT.Close)
+					event.doit = false;
 			}
 
 		});
@@ -1223,16 +1160,15 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 		fd_label_1.top = new FormAttachment(0, 1);
 		label_1.setLayoutData(fd_label_1);
 		label_1.setBackgroundImage(ImageFactory.getInstance().getRegisteredImage("application.logo"));
-		shell.setTabList(new Control[] {planungGroup, patientenzustandGroup, transportdatenGroup, okButton, abbrechenButton, dialysetransportLabel, dialysetransportBearbeitenLabel, composite});
+		shell.setTabList(new Control[] { planungGroup, patientenzustandGroup, transportdatenGroup, okButton, abbrechenButton, dialysetransportLabel,
+				dialysetransportBearbeitenLabel, composite });
 	}
 
 	@Override
-	public void propertyChange(PropertyChangeEvent evt)
-	{
+	public void propertyChange(PropertyChangeEvent evt) {
 		String event = evt.getPropertyName();
-		if("ADDRESS_ADD".equalsIgnoreCase(event) || "ADDRESS_ADD_ALL".equalsIgnoreCase(event))
-		{
-			//update the proposal listeners
+		if ("ADDRESS_ADD".equalsIgnoreCase(event) || "ADDRESS_ADD_ALL".equalsIgnoreCase(event)) {
+			// update the proposal listeners
 			acFromStreet.setProposals(ModelFactory.getInstance().getAddressManager().toStreetArray());
 			acFromCity.setProposals(ModelFactory.getInstance().getAddressManager().toCityArray());
 			acToStreet.setProposals(ModelFactory.getInstance().getAddressManager().toStreetArray());
@@ -1240,49 +1176,46 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 		}
 	}
 
-	//PRIVATE METHODS
+	// PRIVATE METHODS
 	/**
 	 * Called when the input text of a filter is changes
 	 */
-	private void inputChanged(String changedText,String filterType)
-	{
-		//assert valid
-		if(changedText == null)
+	private void inputChanged(String changedText, String filterType) {
+		// assert valid
+		if (changedText == null)
 			return;
 
-		//get the entered text
-		if(changedText.trim().length() < 1)
-		{
+		// get the entered text
+		if (changedText.trim().length() < 1) {
 			Display.getCurrent().beep();
 			return;
 		}
 
-		if(filterJob == null)
+		if (filterJob == null)
 			filterJob = new FilterAddressJob(null);
 
-		//check the state
-		if(filterJob.getState() == Job.RUNNING)
-		{
+		// check the state
+		if (filterJob.getState() == Job.RUNNING) {
 			return;
 		}
 
-		//check if the filter should return streets
-		if(filterType.equalsIgnoreCase(IFilterTypes.SEARCH_STRING_STREET))
+		// check if the filter should return streets
+		if (filterType.equalsIgnoreCase(IFilterTypes.SEARCH_STRING_STREET))
 			filterJob.setStrStreet(changedText);
 		else
 			filterJob.setStrStreet("");
-		//check if the filter should return cities
-		if(filterType.equalsIgnoreCase(IFilterTypes.SEARCH_STRING_CITY))
+		// check if the filter should return cities
+		if (filterType.equalsIgnoreCase(IFilterTypes.SEARCH_STRING_CITY))
 			filterJob.setStrCity(changedText);
 		else
 			filterJob.setStrCity("");
-		//check if the filter should return zip codes
-		if(filterType.equalsIgnoreCase(IFilterTypes.SEARCH_STRING_ZIP))
+		// check if the filter should return zip codes
+		if (filterType.equalsIgnoreCase(IFilterTypes.SEARCH_STRING_ZIP))
 			filterJob.setStrZip(changedText);
 		else
 			filterJob.setStrZip("");
 
-		//schedule the thread to run now
+		// schedule the thread to run now
 		filterJob.schedule(0);
 	}
 }

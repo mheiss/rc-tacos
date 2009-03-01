@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Internettechnik, FH JOANNEUM
+ * http://www.fh-joanneum.at/itm
+ * 
+ * 	Licenced under the GNU GENERAL PUBLIC LICENSE Version 2;
+ * 	You may obtain a copy of the License at
+ * 	http://www.gnu.org/licenses/gpl-2.0.txt
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *******************************************************************************/
 package at.rc.tacos.client.controller;
 
 import java.util.Calendar;
@@ -14,60 +27,64 @@ import at.rc.tacos.model.Disease;
 import at.rc.tacos.model.Transport;
 
 /**
- * This action creates a back transport for a dialysis patient and sends a add request to the server
+ * This action creates a back transport for a dialysis patient and sends a add
+ * request to the server
+ * 
  * @author Birgit
  */
-public class CreateBackTransportFromDialysis extends Action
-{
-	//properties
+public class CreateBackTransportFromDialysis extends Action {
+
+	// properties
 	private DialysisPatient patient;
 	private Calendar dateOfTransport;
-	
+
 	/**
 	 * Default class constructor defining the dialysis patient for the transport
-	 * @param patient the dialysis patient
-	 * @param dateOfTransport the date when the transport should be sheduled for
+	 * 
+	 * @param patient
+	 *            the dialysis patient
+	 * @param dateOfTransport
+	 *            the date when the transport should be sheduled for
 	 */
-	public CreateBackTransportFromDialysis(DialysisPatient patient,Calendar dateOfTransport)
-	{
+	public CreateBackTransportFromDialysis(DialysisPatient patient, Calendar dateOfTransport) {
 		this.patient = patient;
 		this.dateOfTransport = dateOfTransport;
 	}
-	
+
 	/**
 	 * Creates the transport and sends the add request
 	 */
 	@Override
-	public void run()
-	{
-		//In the dialysis patients is only the time stored, so we have to add the current year,month and day
+	public void run() {
+		// In the dialysis patients is only the time stored, so we have to add
+		// the current year,month and day
 		Calendar start = Calendar.getInstance();
 		start.setTimeInMillis(patient.getPlannedStartForBackTransport());
-		
-		//now add the current year,month and day
+
+		// now add the current year,month and day
 		start.set(Calendar.YEAR, dateOfTransport.get(Calendar.YEAR));
 		start.set(Calendar.MONTH, dateOfTransport.get(Calendar.MONTH));
 		start.set(Calendar.DAY_OF_MONTH, dateOfTransport.get(Calendar.DAY_OF_MONTH));
-		
-		//time at patient
+
+		// time at patient
 		Calendar ready = Calendar.getInstance();
 		ready.setTimeInMillis(patient.getReadyTime());
 		ready.set(Calendar.YEAR, dateOfTransport.get(Calendar.YEAR));
 		ready.set(Calendar.MONTH, dateOfTransport.get(Calendar.MONTH));
 		ready.set(Calendar.DAY_OF_MONTH, dateOfTransport.get(Calendar.DAY_OF_MONTH));
-		
-		//create a new transport
+
+		// create a new transport
 		Transport newTransport = new Transport();
 		newTransport.setProgramStatus(IProgramStatus.PROGRAM_STATUS_OUTSTANDING);
 		newTransport.setCreatedByUsername(SessionManager.getInstance().getLoginInformation().getUsername());
-		
-		//the date time of the transport is the planed start of the transport
+
+		// the date time of the transport is the planed start of the transport
 		newTransport.setDateOfTransport(dateOfTransport.getTimeInMillis());
 		newTransport.setTransportPriority("D");
-		
-		//set the known fields of the dialyis patient
+
+		// set the known fields of the dialyis patient
 		newTransport.setCreationTime(Calendar.getInstance().getTimeInMillis());
-		newTransport.setFromStreet(patient.getToStreet());//!
+		newTransport.setFromStreet(patient.getToStreet());// !
 		newTransport.setFromCity(patient.getToCity());
 		newTransport.setToCity(patient.getFromCity());
 		newTransport.setToStreet(patient.getFromStreet());
@@ -78,15 +95,16 @@ public class CreateBackTransportFromDialysis extends Action
 		newTransport.setPatient(patient.getPatient());
 		newTransport.setPlanedLocation(patient.getLocation());
 		Disease disease = new Disease("Dialyse RT");
-		if(disease != null)
+		if (disease != null)
 			newTransport.setKindOfIllness(disease);
-		if(patient.getKindOfTransport() != null)
+		if (patient.getKindOfTransport() != null)
 			newTransport.setKindOfTransport(patient.getKindOfTransport());
-		
-		//add the transport to the database
+
+		// add the transport to the database
 		NetWrapper.getDefault().sendAddMessage(Transport.ID, newTransport);
-		
-		//log
-		Activator.getDefault().log("Automatically generated the back transport "+newTransport+" for the dialyse patient "+patient,IStatus.INFO);
+
+		// log
+		Activator.getDefault()
+				.log("Automatically generated the back transport " + newTransport + " for the dialyse patient " + patient, IStatus.INFO);
 	}
 }

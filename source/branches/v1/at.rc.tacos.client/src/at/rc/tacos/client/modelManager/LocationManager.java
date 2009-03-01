@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Internettechnik, FH JOANNEUM
+ * http://www.fh-joanneum.at/itm
+ * 
+ * 	Licenced under the GNU GENERAL PUBLIC LICENSE Version 2;
+ * 	You may obtain a copy of the License at
+ * 	http://www.gnu.org/licenses/gpl-2.0.txt
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *******************************************************************************/
 package at.rc.tacos.client.modelManager;
 
 import java.beans.PropertyChangeEvent;
@@ -9,135 +22,134 @@ import org.eclipse.swt.widgets.Display;
 
 import at.rc.tacos.model.Location;
 
-public class LocationManager extends PropertyManager 
-{
-    //the list
-    private List<Location> objectList = new ArrayList<Location>();
+public class LocationManager extends PropertyManager {
 
-    /**
-     * Default class constructor
-     */
-    public LocationManager() { }
+	// the list
+	private List<Location> objectList = new ArrayList<Location>();
 
-    /**
-     * Adds a new location to the list
-     * @param location the location to add
-     */
-    public void add(final Location location) 
-    {
-        Display.getDefault().syncExec(new Runnable ()    
-        {
-            public void run ()       
-            {
-                //add the item
-                objectList.add(location);
-                //notify the view
-                firePropertyChange("LOCATION_ADD", null, location);
-            }
-        }); 
-    }    
+	/**
+	 * Default class constructor
+	 */
+	public LocationManager() {
+	}
 
-    /**
-     * Removes the location from the list
-     * @param location the location to remove
-     */
-    public void remove(final Location location) 
-    {
-        Display.getDefault().syncExec(new Runnable ()    
-        {
-            public void run ()       
-            {
-                objectList.remove(location);
-                firePropertyChange("LOCATION_REMOVE", location, null); 
-            }
-        }); 
-    }
-    
-    /**
-     * Updates the location in the list
-     * @param location the location to update
-     */
-    public void update(final Location location) 
-    {
-        Display.getDefault().syncExec(new Runnable ()    
-        {
-            public void run ()       
-            {   
-            	//assert we have this location
-            	if(!objectList.contains(location))
-            		return;
-                //get the position of the entry
-                int id = objectList.indexOf(location);
-                objectList.set(id, location);
-                firePropertyChange("LOCATION_UPDATE", null, location); 
-            }
-        }); 
-    }
-    
-    /**
-     * Removes all elements form the list
-     */
-    public void removeAllEntries()
-    {
-        Display.getDefault().syncExec(new Runnable ()    
-        {
-            public void run ()       
-            {   
-                objectList.clear();
-                firePropertyChange("LOCATION_CLEARED",null,null);
-            }
-        }); 
-    }
-    
-    /**
-     * Returns whether or not this location is in the list of managed object
-     * @param newLocation the Location to check
-     */
-    public boolean contains(Location newLocation)
-    {
-    	return objectList.contains(newLocation);
-    }
-    
-    /**
-     * Returns a given location by the name of the station
-     * @param station name the name of the station to get the location
-     */
-    public Location getLocationByName(String station)
-    {
-        //loop and search
-        for(Location loc :objectList)
-        {
-            if(loc.getLocationName().equalsIgnoreCase(station))
-                return loc;
-        }
-        //nothing found
-        return null;
-    }
-    
-    /**
-     *  informs all listeners about new locations
-     */
-    public void initViews(PropertyChangeListener listener)
-    {
-    	for(Location location:objectList)
-    		listener.propertyChange(new PropertyChangeEvent(this,"LOCATION_ADD", null, location));
-    }
-    
-    /**
-     * Returns all locations in the list
-     * @return the location list
-     */
-    public List<Location> getLocations()
-    {
-        return objectList;
-    }
+	/**
+	 * Adds a new location to the list
+	 * 
+	 * @param location
+	 *            the location to add
+	 */
+	public void add(final Location location) {
+		Display.getDefault().syncExec(new Runnable() {
 
-    /**
-     * Converts the list to an array
-     * @return the list as a array
-     */
-    public Object[] toArray()
-    {
-        return objectList.toArray();
-    }
+			public void run() {
+				// add the item
+				objectList.add(location);
+				// notify the view
+				firePropertyChange("LOCATION_ADD", null, location);
+			}
+		});
+	}
+
+	/**
+	 * Removes the location from the list
+	 * 
+	 * @param location
+	 *            the location to remove
+	 */
+	public void remove(final Location location) {
+		Display.getDefault().syncExec(new Runnable() {
+
+			public void run() {
+				objectList.remove(location);
+				firePropertyChange("LOCATION_REMOVE", location, null);
+			}
+		});
+	}
+
+	/**
+	 * Updates the location in the list
+	 * 
+	 * @param location
+	 *            the location to update
+	 */
+	public void update(final Location location) {
+		Display.getDefault().syncExec(new Runnable() {
+
+			public void run() {
+				// assert we have this location
+				if (!objectList.contains(location))
+					return;
+				// get the position of the entry
+				int id = objectList.indexOf(location);
+				objectList.set(id, location);
+				firePropertyChange("LOCATION_UPDATE", null, location);
+			}
+		});
+	}
+
+	/**
+	 * Removes all elements form the list
+	 */
+	public void removeAllEntries() {
+		Display.getDefault().syncExec(new Runnable() {
+
+			public void run() {
+				objectList.clear();
+				firePropertyChange("LOCATION_CLEARED", null, null);
+			}
+		});
+	}
+
+	/**
+	 * Returns whether or not this location is in the list of managed object
+	 * 
+	 * @param newLocation
+	 *            the Location to check
+	 */
+	public boolean contains(Location newLocation) {
+		return objectList.contains(newLocation);
+	}
+
+	/**
+	 * Returns a given location by the name of the station
+	 * 
+	 * @param station
+	 *            name the name of the station to get the location
+	 */
+	public Location getLocationByName(String station) {
+		// loop and search
+		for (Location loc : objectList) {
+			if (loc.getLocationName().equalsIgnoreCase(station))
+				return loc;
+		}
+		// nothing found
+		return null;
+	}
+
+	/**
+	 * informs all listeners about new locations
+	 */
+	public void initViews(PropertyChangeListener listener) {
+		for (Location location : objectList)
+			listener.propertyChange(new PropertyChangeEvent(this, "LOCATION_ADD", null, location));
+	}
+
+	/**
+	 * Returns all locations in the list
+	 * 
+	 * @return the location list
+	 */
+	public List<Location> getLocations() {
+		return objectList;
+	}
+
+	/**
+	 * Converts the list to an array
+	 * 
+	 * @return the list as a array
+	 */
+	public Object[] toArray() {
+		return objectList.toArray();
+	}
 }

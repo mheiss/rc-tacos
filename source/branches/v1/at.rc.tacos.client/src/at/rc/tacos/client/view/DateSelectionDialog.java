@@ -1,15 +1,22 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2007 Mylyn project committers and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2008, 2009 Internettechnik, FH JOANNEUM
+ * http://www.fh-joanneum.at/itm
+ * 
+ * 	Licenced under the GNU GENERAL PUBLIC LICENSE Version 2;
+ * 	You may obtain a copy of the License at
+ * 	http://www.gnu.org/licenses/gpl-2.0.txt
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *******************************************************************************/
 
 package at.rc.tacos.client.view;
 
 import java.util.Calendar;
 import java.util.Date;
+
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -23,14 +30,15 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import at.rc.tacos.client.view.DatePickerPanel.DateSelection;
 
 /**
- * The date selection dialog from the clipse mylyn project.
- * (c) is by the eclipse mylyn project
+ * The date selection dialog from the clipse mylyn project. (c) is by the
+ * eclipse mylyn project
+ * 
  * @author Ken Sueda
  * @author Mik Kersten
  * @author Rob Elves
  */
-public class DateSelectionDialog extends Dialog 
-{
+public class DateSelectionDialog extends Dialog {
+
 	private Date reminderDate = null;
 
 	private String title = "Date Selection";

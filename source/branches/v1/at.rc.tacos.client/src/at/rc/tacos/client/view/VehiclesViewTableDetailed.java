@@ -1,7 +1,21 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Internettechnik, FH JOANNEUM
+ * http://www.fh-joanneum.at/itm
+ * 
+ * 	Licenced under the GNU GENERAL PUBLIC LICENSE Version 2;
+ * 	You may obtain a copy of the License at
+ * 	http://www.gnu.org/licenses/gpl-2.0.txt
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *******************************************************************************/
 package at.rc.tacos.client.view;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
@@ -18,7 +32,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
-
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.forms.widgets.Form;
@@ -32,323 +45,307 @@ import at.rc.tacos.client.controller.VehicleTableSetReadyAction;
 import at.rc.tacos.client.controller.VehicleTableSetRepairStatusAction;
 import at.rc.tacos.client.modelManager.LockManager;
 import at.rc.tacos.client.modelManager.ModelFactory;
-
 import at.rc.tacos.client.providers.VehicleContentProvider;
 import at.rc.tacos.client.providers.VehicleViewTableDetailLabelProvider;
 import at.rc.tacos.client.util.CustomColors;
 import at.rc.tacos.client.view.sorterAndTooltip.VehicleViewTableSorter;
 import at.rc.tacos.model.VehicleDetail;
 
-public class VehiclesViewTableDetailed extends ViewPart implements PropertyChangeListener
-{
-    public static final String ID = "at.rc.tacos.client.view.vehiclestabledetailed_view";
+public class VehiclesViewTableDetailed extends ViewPart implements PropertyChangeListener {
 
-    //the toolkit to use
-    private FormToolkit toolkit;
-    private Form form;
-    private TableViewer viewer;
+	public static final String ID = "at.rc.tacos.client.view.vehiclestabledetailed_view";
 
-    //the actions for the context menu
+	// the toolkit to use
+	private FormToolkit toolkit;
+	private Form form;
+	private TableViewer viewer;
+
+	// the actions for the context menu
 	private VehicleTableEditAction editAction;
 	private VehicleTableDetachAllStaffMembersAction detachAction;
 	private VehicleTableSetReadyAction readyStatus;
 	private VehicleTableSetRepairStatusAction repairStatus;
 	private VehicleTableAtStationAction vehicleAtStationAction;
-	
-	//the lock manager
+
+	// the lock manager
 	private LockManager lockManager = ModelFactory.getInstance().getLockManager();
 
-    /**
-     * Constructs a new vehicle view.
-     */
-    public VehiclesViewTableDetailed()
-    {
-        // add listener to model to keep on track. 
-        ModelFactory.getInstance().getRosterEntryManager().addPropertyChangeListener(this);
-        ModelFactory.getInstance().getVehicleManager().addPropertyChangeListener(this);
-        ModelFactory.getInstance().getLockManager().addPropertyChangeListener(this);
-        //listen to changes of jobs, serviceTypes and staff member updates
-        ModelFactory.getInstance().getStaffManager().addPropertyChangeListener(this);
-        ModelFactory.getInstance().getServiceManager().addPropertyChangeListener(this);
-        ModelFactory.getInstance().getJobList().addPropertyChangeListener(this);
-    }
+	/**
+	 * Constructs a new vehicle view.
+	 */
+	public VehiclesViewTableDetailed() {
+		// add listener to model to keep on track.
+		ModelFactory.getInstance().getRosterEntryManager().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getVehicleManager().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getLockManager().addPropertyChangeListener(this);
+		// listen to changes of jobs, serviceTypes and staff member updates
+		ModelFactory.getInstance().getStaffManager().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getServiceManager().addPropertyChangeListener(this);
+		ModelFactory.getInstance().getJobList().addPropertyChangeListener(this);
+	}
 
-    /**
-     * Cleanup the view
-     */
-    @Override
-    public void dispose() 
-    {
-        ModelFactory.getInstance().getRosterEntryManager().removePropertyChangeListener(this);
-        ModelFactory.getInstance().getLocationManager().removePropertyChangeListener(this);
-        ModelFactory.getInstance().getVehicleManager().removePropertyChangeListener(this);
-        ModelFactory.getInstance().getLockManager().removePropertyChangeListener(this);
-        //remove again
-        ModelFactory.getInstance().getStaffManager().removePropertyChangeListener(this);
-        ModelFactory.getInstance().getServiceManager().removePropertyChangeListener(this);
-        ModelFactory.getInstance().getJobList().removePropertyChangeListener(this);
-    }
+	/**
+	 * Cleanup the view
+	 */
+	@Override
+	public void dispose() {
+		ModelFactory.getInstance().getRosterEntryManager().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getLocationManager().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getVehicleManager().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getLockManager().removePropertyChangeListener(this);
+		// remove again
+		ModelFactory.getInstance().getStaffManager().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getServiceManager().removePropertyChangeListener(this);
+		ModelFactory.getInstance().getJobList().removePropertyChangeListener(this);
+	}
 
-    /**
-     * Callback method to create the control and initalize them.
-     * @param parent the parent composite to add
-     */
-    @Override
-	public void createPartControl(final Composite parent) 
-    {
-        // Create the scrolled parent component
-        toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
-        form = toolkit.createForm(parent);
-        toolkit.decorateFormHeading(form);
-        form.getBody().setLayout(new FillLayout());
+	/**
+	 * Callback method to create the control and initalize them.
+	 * 
+	 * @param parent
+	 *            the parent composite to add
+	 */
+	@Override
+	public void createPartControl(final Composite parent) {
+		// Create the scrolled parent component
+		toolkit = new FormToolkit(CustomColors.FORM_COLOR(parent.getDisplay()));
+		form = toolkit.createForm(parent);
+		toolkit.decorateFormHeading(form);
+		form.getBody().setLayout(new FillLayout());
 
-        final Composite composite = form.getBody();
-        viewer = new TableViewer(composite, SWT.SINGLE| SWT.H_SCROLL | SWT.V_SCROLL|SWT.FULL_SELECTION);
-        viewer.setContentProvider(new VehicleContentProvider());
-        viewer.setLabelProvider(new VehicleViewTableDetailLabelProvider());
-        viewer.setInput(ModelFactory.getInstance().getVehicleManager().toArray());
-        viewer.getTable().setLinesVisible(true);
-        
-        viewer.refresh();
-        
-        viewer.getTable().addMouseListener(new MouseAdapter() 
-		{
-			public void mouseDown(MouseEvent e) 
-			{
-				if( viewer.getTable().getItem(new Point(e.x,e.y))==null ) 
-				{
+		final Composite composite = form.getBody();
+		viewer = new TableViewer(composite, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
+		viewer.setContentProvider(new VehicleContentProvider());
+		viewer.setLabelProvider(new VehicleViewTableDetailLabelProvider());
+		viewer.setInput(ModelFactory.getInstance().getVehicleManager().toArray());
+		viewer.getTable().setLinesVisible(true);
+
+		viewer.refresh();
+
+		viewer.getTable().addMouseListener(new MouseAdapter() {
+
+			public void mouseDown(MouseEvent e) {
+				if (viewer.getTable().getItem(new Point(e.x, e.y)) == null) {
 					viewer.setSelection(new StructuredSelection());
 				}
 			}
 		});
-        //sort the table by default
-        viewer.setSorter(new VehicleViewTableSorter(VehicleViewTableSorter.VEHICLE_SORTER,SWT.UP));
+		// sort the table by default
+		viewer.setSorter(new VehicleViewTableSorter(VehicleViewTableSorter.VEHICLE_SORTER, SWT.UP));
 
-        //create the table for the vehicles 
-        final Table table = viewer.getTable();
-        table.setLinesVisible(true);
-        table.setHeaderVisible(true);
-        
-        final TableColumn columnLock = new TableColumn(table, SWT.NONE);
-        columnLock.setToolTipText("Gesperrt");
-        columnLock.setWidth(24);
-        columnLock.setText("L");
-        
-        final TableColumn columnReady = new TableColumn(table, SWT.NONE);
-        columnReady.setToolTipText("Einsatzbereit");
-        columnReady.setWidth(20);
-        columnReady.setText("EB");
+		// create the table for the vehicles
+		final Table table = viewer.getTable();
+		table.setLinesVisible(true);
+		table.setHeaderVisible(true);
 
-        final TableColumn columnVehicleName = new TableColumn(table, SWT.NONE);
-        columnVehicleName.setToolTipText("Fahrzeugname");
-        columnVehicleName.setWidth(45);
+		final TableColumn columnLock = new TableColumn(table, SWT.NONE);
+		columnLock.setToolTipText("Gesperrt");
+		columnLock.setWidth(24);
+		columnLock.setText("L");
 
-        final TableColumn columnVehicleStatus = new TableColumn(table, SWT.NONE);
-        columnVehicleStatus.setToolTipText("Verfügbarkeit des Fahrzeuges");
-        columnVehicleStatus.setWidth(20);
-        
-        final TableColumn columnDriver = new TableColumn(table, SWT.NONE);
-        columnDriver.setToolTipText("Fahrer");
-        columnDriver.setWidth(100);
-        columnDriver.setText("Fahrer");
-        
-        final TableColumn columnMedicI = new TableColumn(table, SWT.NONE);
-        columnMedicI.setToolTipText("Sanitäter I");
-        columnMedicI.setWidth(100);
-        columnMedicI.setText("Sanitäter I");
-        
-        final TableColumn columnMedicII = new TableColumn(table, SWT.NONE);
-        columnMedicII.setToolTipText("Sanitäter");
-        columnMedicII.setWidth(100);
-        columnMedicII.setText("Sanitäter II");
-        
-        final TableColumn columnPhone = new TableColumn(table, SWT.NONE);
-        columnPhone.setToolTipText("Anderes als primäres Handy");
-        columnPhone.setWidth(18);
-        
-        final TableColumn columnStation = new TableColumn(table, SWT.NONE);
-        columnStation.setToolTipText("Andere als primäres Ortsstelle");
-        columnStation.setWidth(18);
-        
-        final TableColumn columnOutOfOrder = new TableColumn(table, SWT.NONE);
-        columnOutOfOrder.setToolTipText("Fahrzeug ist außer Dienst");
-        columnOutOfOrder.setWidth(18);
-        
-        final TableColumn columnNotes = new TableColumn(table, SWT.NONE);
-        columnNotes.setToolTipText("Notizen zum Fahrzeug vorhanden");
-        columnNotes.setWidth(18);
-        
-        final TableColumn columnLastDestinationFree = new TableColumn(table, SWT.NONE);
-        columnLastDestinationFree.setToolTipText("Zeigt den Standort der letzten Meldung \"Ziel frei\" (S6)an");
-        columnLastDestinationFree.setWidth(226);
-        columnLastDestinationFree.setText("Letzter Status S5"); 
+		final TableColumn columnReady = new TableColumn(table, SWT.NONE);
+		columnReady.setToolTipText("Einsatzbereit");
+		columnReady.setWidth(20);
+		columnReady.setText("EB");
 
-        //make the columns sortable
-        Listener sortListener = new Listener() 
-        {
-            public void handleEvent(Event e) 
-            {
-                // determine new sort column and direction
-                TableColumn sortColumn = viewer.getTable().getSortColumn();
-                TableColumn currentColumn = (TableColumn) e.widget;
-                int dir = viewer.getTable().getSortDirection();
-                //revert the sortorder if the column is the same
-                if (sortColumn == currentColumn) 
-                {
-                    if(dir == SWT.UP)
-                        dir = SWT.DOWN;
-                    else
-                        dir = SWT.UP;
-                } 
-                else 
-                {
-                    viewer.getTable().setSortColumn(currentColumn);
-                    dir = SWT.UP;
-                }
-                // sort the data based on column and direction
-                String sortIdentifier = null;
-                if (currentColumn == columnVehicleStatus) 
-                    sortIdentifier = VehicleViewTableSorter.STATUS_SORTER;
-                if (currentColumn == columnVehicleName) 
-                    sortIdentifier = VehicleViewTableSorter.VEHICLE_SORTER;
-                if (currentColumn == columnDriver)
-                	sortIdentifier = VehicleViewTableSorter.DRIVER_SORTER;
-                if(currentColumn == columnMedicI)
-                	sortIdentifier = VehicleViewTableSorter.PARAMEDIC_I_SORTER;
-                if(currentColumn == columnMedicII)
-                	sortIdentifier = VehicleViewTableSorter.PARAMEDIC_II_SORTER;
-                if(currentColumn == columnNotes)
-                	sortIdentifier = VehicleViewTableSorter.NOTES_SORTER;
-                if(currentColumn == columnLastDestinationFree)
-                	sortIdentifier = VehicleViewTableSorter.LDF_SORTER;
-               
-                //apply the filter
-                viewer.getTable().setSortDirection(dir);
-                viewer.setSorter(new VehicleViewTableSorter(sortIdentifier,dir));
-            }
-        };
+		final TableColumn columnVehicleName = new TableColumn(table, SWT.NONE);
+		columnVehicleName.setToolTipText("Fahrzeugname");
+		columnVehicleName.setWidth(45);
 
-        //attach the listener
-        columnVehicleName.addListener(SWT.Selection, sortListener);
-        columnVehicleStatus.addListener(SWT.Selection, sortListener);
-        columnDriver.addListener(SWT.Selection, sortListener);
-        columnMedicI.addListener(SWT.Selection, sortListener);
-        columnMedicII.addListener(SWT.Selection, sortListener);
-        columnNotes.addListener(SWT.Selection, sortListener);
-        columnLastDestinationFree.addListener(SWT.Selection, sortListener);
-        
-        //create the actions
-        makeActions();
-        hookContextMenu();
-        
-        viewer.refresh();
-    }
+		final TableColumn columnVehicleStatus = new TableColumn(table, SWT.NONE);
+		columnVehicleStatus.setToolTipText("Verfügbarkeit des Fahrzeuges");
+		columnVehicleStatus.setWidth(20);
 
-    /**
-     * Creates the needed actions
-     */
-    private void makeActions()
-    {
-    	
-    	editAction = new VehicleTableEditAction(this.viewer);
+		final TableColumn columnDriver = new TableColumn(table, SWT.NONE);
+		columnDriver.setToolTipText("Fahrer");
+		columnDriver.setWidth(100);
+		columnDriver.setText("Fahrer");
+
+		final TableColumn columnMedicI = new TableColumn(table, SWT.NONE);
+		columnMedicI.setToolTipText("Sanitäter I");
+		columnMedicI.setWidth(100);
+		columnMedicI.setText("Sanitäter I");
+
+		final TableColumn columnMedicII = new TableColumn(table, SWT.NONE);
+		columnMedicII.setToolTipText("Sanitäter");
+		columnMedicII.setWidth(100);
+		columnMedicII.setText("Sanitäter II");
+
+		final TableColumn columnPhone = new TableColumn(table, SWT.NONE);
+		columnPhone.setToolTipText("Anderes als primäres Handy");
+		columnPhone.setWidth(18);
+
+		final TableColumn columnStation = new TableColumn(table, SWT.NONE);
+		columnStation.setToolTipText("Andere als primäres Ortsstelle");
+		columnStation.setWidth(18);
+
+		final TableColumn columnOutOfOrder = new TableColumn(table, SWT.NONE);
+		columnOutOfOrder.setToolTipText("Fahrzeug ist außer Dienst");
+		columnOutOfOrder.setWidth(18);
+
+		final TableColumn columnNotes = new TableColumn(table, SWT.NONE);
+		columnNotes.setToolTipText("Notizen zum Fahrzeug vorhanden");
+		columnNotes.setWidth(18);
+
+		final TableColumn columnLastDestinationFree = new TableColumn(table, SWT.NONE);
+		columnLastDestinationFree.setToolTipText("Zeigt den Standort der letzten Meldung \"Ziel frei\" (S6)an");
+		columnLastDestinationFree.setWidth(226);
+		columnLastDestinationFree.setText("Letzter Status S5");
+
+		// make the columns sortable
+		Listener sortListener = new Listener() {
+
+			public void handleEvent(Event e) {
+				// determine new sort column and direction
+				TableColumn sortColumn = viewer.getTable().getSortColumn();
+				TableColumn currentColumn = (TableColumn) e.widget;
+				int dir = viewer.getTable().getSortDirection();
+				// revert the sortorder if the column is the same
+				if (sortColumn == currentColumn) {
+					if (dir == SWT.UP)
+						dir = SWT.DOWN;
+					else
+						dir = SWT.UP;
+				}
+				else {
+					viewer.getTable().setSortColumn(currentColumn);
+					dir = SWT.UP;
+				}
+				// sort the data based on column and direction
+				String sortIdentifier = null;
+				if (currentColumn == columnVehicleStatus)
+					sortIdentifier = VehicleViewTableSorter.STATUS_SORTER;
+				if (currentColumn == columnVehicleName)
+					sortIdentifier = VehicleViewTableSorter.VEHICLE_SORTER;
+				if (currentColumn == columnDriver)
+					sortIdentifier = VehicleViewTableSorter.DRIVER_SORTER;
+				if (currentColumn == columnMedicI)
+					sortIdentifier = VehicleViewTableSorter.PARAMEDIC_I_SORTER;
+				if (currentColumn == columnMedicII)
+					sortIdentifier = VehicleViewTableSorter.PARAMEDIC_II_SORTER;
+				if (currentColumn == columnNotes)
+					sortIdentifier = VehicleViewTableSorter.NOTES_SORTER;
+				if (currentColumn == columnLastDestinationFree)
+					sortIdentifier = VehicleViewTableSorter.LDF_SORTER;
+
+				// apply the filter
+				viewer.getTable().setSortDirection(dir);
+				viewer.setSorter(new VehicleViewTableSorter(sortIdentifier, dir));
+			}
+		};
+
+		// attach the listener
+		columnVehicleName.addListener(SWT.Selection, sortListener);
+		columnVehicleStatus.addListener(SWT.Selection, sortListener);
+		columnDriver.addListener(SWT.Selection, sortListener);
+		columnMedicI.addListener(SWT.Selection, sortListener);
+		columnMedicII.addListener(SWT.Selection, sortListener);
+		columnNotes.addListener(SWT.Selection, sortListener);
+		columnLastDestinationFree.addListener(SWT.Selection, sortListener);
+
+		// create the actions
+		makeActions();
+		hookContextMenu();
+
+		viewer.refresh();
+	}
+
+	/**
+	 * Creates the needed actions
+	 */
+	private void makeActions() {
+
+		editAction = new VehicleTableEditAction(this.viewer);
 		detachAction = new VehicleTableDetachAllStaffMembersAction(this.viewer);
 		readyStatus = new VehicleTableSetReadyAction(this.viewer);
 		repairStatus = new VehicleTableSetRepairStatusAction(this.viewer);
 		vehicleAtStationAction = new VehicleTableAtStationAction(this.viewer);
-    }
+	}
 
-    /**
-     * Creates the context menu 
-     */
-    private void hookContextMenu() 
-    {
-        MenuManager menuManager = new MenuManager("#PopupMenu");
-        menuManager.setRemoveAllWhenShown(true);
-        menuManager.addMenuListener(new IMenuListener() {
-            public void menuAboutToShow(IMenuManager manager) {
-                fillContextMenu(manager);
-            }
-        });
-        Menu menu = menuManager.createContextMenu(viewer.getControl());
-        viewer.getControl().setMenu(menu);
-        getSite().registerContextMenu(menuManager, viewer);
-    }
+	/**
+	 * Creates the context menu
+	 */
+	private void hookContextMenu() {
+		MenuManager menuManager = new MenuManager("#PopupMenu");
+		menuManager.setRemoveAllWhenShown(true);
+		menuManager.addMenuListener(new IMenuListener() {
 
-    /**
-     * Fills the context menu with the actions
-     */
-    private void fillContextMenu(IMenuManager manager)
-    {
-        //get the selected object
-        final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
+			public void menuAboutToShow(IMenuManager manager) {
+				fillContextMenu(manager);
+			}
+		});
+		Menu menu = menuManager.createContextMenu(viewer.getControl());
+		viewer.getControl().setMenu(menu);
+		getSite().registerContextMenu(menuManager, viewer);
+	}
 
-        //cast to a vehicle detail
-        VehicleDetail vehicle = (VehicleDetail)firstSelectedObject;
+	/**
+	 * Fills the context menu with the actions
+	 */
+	private void fillContextMenu(IMenuManager manager) {
+		// get the selected object
+		final Object firstSelectedObject = ((IStructuredSelection) viewer.getSelection()).getFirstElement();
 
-        if(vehicle == null)
-            return;
+		// cast to a vehicle detail
+		VehicleDetail vehicle = (VehicleDetail) firstSelectedObject;
 
-        //add the actions
-        manager.add(editAction);
+		if (vehicle == null)
+			return;
+
+		// add the actions
+		manager.add(editAction);
 		manager.add(detachAction);
 		manager.add(new Separator());
 		manager.add(vehicleAtStationAction);
 		manager.add(new Separator());
 		manager.add(readyStatus);
 		manager.add(repairStatus);
-		
-		//default
+
+		// default
 		detachAction.setEnabled(true);
 		vehicleAtStationAction.setEnabled(true);
 		readyStatus.setEnabled(true);
 		repairStatus.setEnabled(true);
-		
-		
-		//enable or disable the actions
-		if(vehicle.isReadyForAction())
+
+		// enable or disable the actions
+		if (vehicle.isReadyForAction())
 			readyStatus.setEnabled(false);
 		else
 			readyStatus.setEnabled(true);
-		if(vehicle.isOutOfOrder())
-		{
+		if (vehicle.isOutOfOrder()) {
 			readyStatus.setEnabled(false);
 			repairStatus.setEnabled(false);
 		}
-		else 
+		else
 			repairStatus.setEnabled(true);
-		
-		//disable actions if the vehicle is locked
-		if(lockManager.containsLock(VehicleDetail.ID, vehicle.getVehicleName()))
-		{
+
+		// disable actions if the vehicle is locked
+		if (lockManager.containsLock(VehicleDetail.ID, vehicle.getVehicleName())) {
 			detachAction.setEnabled(false);
 			vehicleAtStationAction.setEnabled(false);
 			readyStatus.setEnabled(false);
 			repairStatus.setEnabled(false);
 		}
-    }
+	}
 
-    /**
-     * Passing the focus request to the viewer's control.
-     */
-    @Override
-	public void setFocus()  { }
+	/**
+	 * Passing the focus request to the viewer's control.
+	 */
+	@Override
+	public void setFocus() {
+	}
 
-    public void propertyChange(PropertyChangeEvent evt) 
-    {		
-        // the viewer represents simple model. refresh should be enough.
-        if ("VEHICLE_ADD".equals(evt.getPropertyName())
-        		|| "VEHICLE_ADD_ALL".equalsIgnoreCase(evt.getPropertyName())
-                || "VEHICLE_REMOVE".equals(evt.getPropertyName())
-                || "VEHICLE_UPDATE".equals(evt.getPropertyName())
-                || "VEHICLE_CLEARED".equals(evt.getPropertyName())) 
-        {
-            viewer.refresh();
-        }
-        
-      //listen to lock changes
-		if("LOCK_ADD".equalsIgnoreCase(evt.getPropertyName()) || "LOCK_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
-		{
+	public void propertyChange(PropertyChangeEvent evt) {
+		// the viewer represents simple model. refresh should be enough.
+		if ("VEHICLE_ADD".equals(evt.getPropertyName()) || "VEHICLE_ADD_ALL".equalsIgnoreCase(evt.getPropertyName())
+				|| "VEHICLE_REMOVE".equals(evt.getPropertyName()) || "VEHICLE_UPDATE".equals(evt.getPropertyName())
+				|| "VEHICLE_CLEARED".equals(evt.getPropertyName())) {
 			viewer.refresh();
 		}
-    }
+
+		// listen to lock changes
+		if ("LOCK_ADD".equalsIgnoreCase(evt.getPropertyName()) || "LOCK_REMOVE".equalsIgnoreCase(evt.getPropertyName())) {
+			viewer.refresh();
+		}
+	}
 }

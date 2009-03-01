@@ -1,5 +1,17 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Internettechnik, FH JOANNEUM
+ * http://www.fh-joanneum.at/itm
+ * 
+ * 	Licenced under the GNU GENERAL PUBLIC LICENSE Version 2;
+ * 	You may obtain a copy of the License at
+ * 	http://www.gnu.org/licenses/gpl-2.0.txt
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *******************************************************************************/
 package at.rc.tacos.client.controller;
-
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.dnd.Clipboard;
@@ -11,13 +23,15 @@ import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.model.Transport;
 
 /**
- * Class to copy the details of the transport into the windows clipboard
- * Called from the TransportManager if the old transport has no vehicle but the new transport = while car assigning
+ * Class to copy the details of the transport into the windows clipboard Called
+ * from the TransportManager if the old transport has no vehicle but the new
+ * transport = while car assigning
+ * 
  * @author b.thek
  */
-public class CopyTransportDetailsIntoClipboardUpdateAction extends Action implements ITransportStatus
-{
-	//properties
+public class CopyTransportDetailsIntoClipboardUpdateAction extends Action implements ITransportStatus {
+
+	// properties
 	private String transportNumber;
 	private String patient;
 	private String toStreet = "";
@@ -30,46 +44,46 @@ public class CopyTransportDetailsIntoClipboardUpdateAction extends Action implem
 	private String notes = "";
 	private String priority;
 	private String al = "";
-	private String smsData;	
+	private String smsData;
 	private String kindOfTransport = "";
 	private Transport transport;
-	
+
 	/**
 	 * Default class constructor.
-	 * @param viewer the table viewer
+	 * 
+	 * @param viewer
+	 *            the table viewer
 	 */
-	public CopyTransportDetailsIntoClipboardUpdateAction(Transport transport)
-	{
+	public CopyTransportDetailsIntoClipboardUpdateAction(Transport transport) {
 		this.transport = transport;
 		setText("Transportdetails in die Zwischenablage kopieren");
 		setToolTipText("Kopiert die Transportdetails in die Windows Zwischenablage");
 	}
-	
+
 	@Override
-	public void run()
-	{
-		//common transport properties
-		transportNumber = "TNr: " +String.valueOf(transport.getTransportNumber());
-		fromStreet = "von: " +transport.getFromStreet();
-		if(transport.getFromCity() != null)
-			fromCity = " " +transport.getFromCity();
-		from = fromStreet + "/" +fromCity;
+	public void run() {
+		// common transport properties
+		transportNumber = "TNr: " + String.valueOf(transport.getTransportNumber());
+		fromStreet = "von: " + transport.getFromStreet();
+		if (transport.getFromCity() != null)
+			fromCity = " " + transport.getFromCity();
+		from = fromStreet + "/" + fromCity;
 		if (transport.getPatient() != null)
-			patient = transport.getPatient().getLastname() +" " +transport.getPatient().getFirstname();
-		if(transport.getToStreet() != null)
-			toStreet = "nach: " +transport.getToStreet();
-		if(transport.getToCity() != null)
-			toCity = " " +transport.getToCity();
-		if(!toStreet.trim().isEmpty() |! toCity.trim().isEmpty())
-			to = toStreet +"/" +toCity;
-		if(transport.getKindOfIllness() != null)
+			patient = transport.getPatient().getLastname() + " " + transport.getPatient().getFirstname();
+		if (transport.getToStreet() != null)
+			toStreet = "nach: " + transport.getToStreet();
+		if (transport.getToCity() != null)
+			toCity = " " + transport.getToCity();
+		if (!toStreet.trim().isEmpty() | !toCity.trim().isEmpty())
+			to = toStreet + "/" + toCity;
+		if (transport.getKindOfIllness() != null)
 			kindOfIllness = transport.getKindOfIllness().getDiseaseName();
-		if(transport.getNotes() != null)
-			if(!transport.getNotes().trim().isEmpty())
+		if (transport.getNotes() != null)
+			if (!transport.getNotes().trim().isEmpty())
 				notes = transport.getNotes();
-		
-		//transport priority
-		if(transport.getTransportPriority().equalsIgnoreCase("A"))
+
+		// transport priority
+		if (transport.getTransportPriority().equalsIgnoreCase("A"))
 			priority = "1 NEF";
 		else if (transport.getTransportPriority().equalsIgnoreCase("B"))
 			priority = "2 Transport";
@@ -83,41 +97,41 @@ public class CopyTransportDetailsIntoClipboardUpdateAction extends Action implem
 			priority = "6 Sonstiges";
 		else if (transport.getTransportPriority().equalsIgnoreCase("G"))
 			priority = "7 NEF extern";
-		priority = "Pr: " +priority;
-		if(transport.isBlueLight1())
+		priority = "Pr: " + priority;
+		if (transport.isBlueLight1())
 			priority = priority + " BD1";
-		
-		//alarming
-		if(transport.isBrkdtAlarming())
+
+		// alarming
+		if (transport.isBrkdtAlarming())
 			al = "BRKDT";
-		if(transport.isDfAlarming())
+		if (transport.isDfAlarming())
 			al = al + " DF";
-		if (transport.isEmergencyDoctorAlarming())//extern!!!
+		if (transport.isEmergencyDoctorAlarming())// extern!!!
 			al = al + " NA extern";
-		if(transport.isFirebrigadeAlarming())
+		if (transport.isFirebrigadeAlarming())
 			al = al + "Feuerwehr";
-		if(transport.isHelicopterAlarming())
-			al = al + "Hubschrauber";	
-		if(transport.isMountainRescueServiceAlarming())
+		if (transport.isHelicopterAlarming())
+			al = al + "Hubschrauber";
+		if (transport.isMountainRescueServiceAlarming())
 			al = al + "Bergrettung";
-		if(transport.isPoliceAlarming())
+		if (transport.isPoliceAlarming())
 			al = al + "Polizei";
-		if(transport.getKindOfTransport()!= null)
+		if (transport.getKindOfTransport() != null)
 			kindOfTransport = transport.getKindOfTransport();
-		if(!al.equalsIgnoreCase(""))
-			al = "alarmiert: " +al;
-		
-		smsData = transportNumber +";" +priority +";" +kindOfTransport +";"  +from +";" +patient +";" +to +";"
-		+notes +";" +kindOfIllness +";" +al;
-		if(transport.isLongDistanceTrip())
+		if (!al.equalsIgnoreCase(""))
+			al = "alarmiert: " + al;
+
+		smsData = transportNumber + ";" + priority + ";" + kindOfTransport + ";" + from + ";" + patient + ";" + to + ";" + notes + ";"
+				+ kindOfIllness + ";" + al;
+		if (transport.isLongDistanceTrip())
 			smsData = smsData + " Fernfahrt";
-		if(transport.isEmergencyPhone())
+		if (transport.isEmergencyPhone())
 			smsData = smsData + " Rufhilfepatient";
-		
-		//clipboard
+
+		// clipboard
 		Clipboard clipboard = new Clipboard(PlatformUI.getWorkbench().getDisplay());
 		TextTransfer textTransfer = TextTransfer.getInstance();
-		clipboard.setContents(new Object[]{smsData}, new Transfer[]{textTransfer});
-		clipboard.dispose();	
+		clipboard.setContents(new Object[] { smsData }, new Transfer[] { textTransfer });
+		clipboard.dispose();
 	}
 }
