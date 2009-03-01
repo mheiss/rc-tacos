@@ -1,17 +1,31 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2009 Internettechnik, FH JOANNEUM
+ * http://www.fh-joanneum.at/itm
+ * 
+ * 	Licenced under the GNU GENERAL PUBLIC LICENSE Version 2;
+ * 	You may obtain a copy of the License at
+ * 	http://www.gnu.org/licenses/gpl-2.0.txt
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *******************************************************************************/
 package at.rc.tacos.model;
 
 import at.rc.tacos.common.AbstractMessage;
 
 /**
  * Stores information about a specifiy period
+ * 
  * @author Birgit
  */
-public class Period extends AbstractMessage
-{
-	//the id
+public class Period extends AbstractMessage {
+
+	// the id
 	public final static String ID = "period";
-	
-	//properties
+
+	// properties
 	private int periodId;
 	private String period;
 	private String serviceTypeCompetence;
@@ -19,45 +33,47 @@ public class Period extends AbstractMessage
 	/**
 	 * Default class constructor
 	 */
-	public Period()
-	{
+	public Period() {
 		super(ID);
 		period = "";
 		serviceTypeCompetence = "";
 	}
-	
+
 	/**
 	 * Default class constructor for a complete period object.
-	 * @param zip the zip code
-	 * @param period the name of the period
-	 * @param serviceTypeCompetence the name of the serviceTypeCompetence
+	 * 
+	 * @param zip
+	 *            the zip code
+	 * @param period
+	 *            the name of the period
+	 * @param serviceTypeCompetence
+	 *            the name of the serviceTypeCompetence
 	 */
-	public Period(int zip,String period,String serviceTypeCompetence)
-	{
+	public Period(int zip, String period, String serviceTypeCompetence) {
 		this();
 		this.period = period;
 		this.serviceTypeCompetence = serviceTypeCompetence;
 	}
-	
+
 	/**
-	 * Returns the string based description 
+	 * Returns the string based description
+	 * 
 	 * @return the human readable version
 	 */
 	@Override
-	public String toString()
-	{
-	 return "period: " +period+";" +"serviceTypeCompetence: " +serviceTypeCompetence;
-			
+	public String toString() {
+		return "period: " + period + ";" + "serviceTypeCompetence: " + serviceTypeCompetence;
+
 	}
 
 	/**
 	 * Returns the calculated hash code based on the complete period<br>
 	 * Two periodes have the same hash code if all fields are the same.
+	 * 
 	 * @return the calculated hash code
 	 */
 	@Override
-	public int hashCode() 
-	{
+	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((period == null) ? 0 : period.hashCode());
@@ -68,11 +84,11 @@ public class Period extends AbstractMessage
 	/**
 	 * Returns whether the objects are equal or not.<br>
 	 * Two periodes are equal if all propertie fields are the same.
+	 * 
 	 * @return true if all fields are the same otherwise false.
 	 */
 	@Override
-	public boolean equals(Object obj) 
-	{
+	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -80,59 +96,59 @@ public class Period extends AbstractMessage
 		if (getClass() != obj.getClass())
 			return false;
 		final Period other = (Period) obj;
-		if (period == null) 
-		{
+		if (period == null) {
 			if (other.period != null)
 				return false;
-		} 
+		}
 		else if (!period.equals(other.period))
 			return false;
-		if (serviceTypeCompetence == null) 
-		{
+		if (serviceTypeCompetence == null) {
 			if (other.serviceTypeCompetence != null)
 				return false;
-		} 
+		}
 		else if (!serviceTypeCompetence.equals(other.serviceTypeCompetence))
 			return false;
 		return true;
 	}
-	
+
 	/**
 	 * Returns the name of the period.
+	 * 
 	 * @return the name of the period
 	 */
-	public String getPeriod()
-	{
+	public String getPeriod() {
 		return period;
 	}
-	
+
 	/**
 	 * Returns the name of the serviceTypeCompetence
+	 * 
 	 * @return the serviceTypeCompetencename
 	 */
-	public String getServiceTypeCompetence()
-	{
+	public String getServiceTypeCompetence() {
 		return serviceTypeCompetence;
 	}
-	
+
 	/**
 	 * Sets the name of the period
-	 * @param period the period
+	 * 
+	 * @param period
+	 *            the period
 	 */
-	public void setPeriod(String period)
-	{
+	public void setPeriod(String period) {
 		this.period = period;
 	}
-	
+
 	/**
 	 * Sets the name of the serviceTypeCompetence
-	 * @param serviceTypeCompetence the serviceTypeCompetencename
+	 * 
+	 * @param serviceTypeCompetence
+	 *            the serviceTypeCompetencename
 	 */
-	public void setServiceTypeCompetence(String serviceTypeCompetence)
-	{
+	public void setServiceTypeCompetence(String serviceTypeCompetence) {
 		this.serviceTypeCompetence = serviceTypeCompetence;
 	}
-	
+
 	public int getPeriodId() {
 		return periodId;
 	}
