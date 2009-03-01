@@ -8,3 +8,4 @@ Require-Bundle: at.rc.tacos.core.db,
  at.rc.tacos.model
 Bundle-ClassPath: lib/log4j-1.2.15.jar,
  .
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
