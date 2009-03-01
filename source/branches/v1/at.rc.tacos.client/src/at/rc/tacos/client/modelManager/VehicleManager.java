@@ -3,10 +3,11 @@ package at.rc.tacos.client.modelManager;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
+
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
+
 import at.rc.tacos.common.IProgramStatus;
 import at.rc.tacos.common.ITransportStatus;
 import at.rc.tacos.core.net.NetWrapper;
@@ -15,7 +16,6 @@ import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.StaffMember;
 import at.rc.tacos.model.Transport;
 import at.rc.tacos.model.VehicleDetail;
-import at.rc.tacos.util.MyUtils;
 
 /**
  * This class manages the vehicles.
@@ -277,48 +277,35 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
     	//to get the color status for the nef vehicle (--> add action)
     	if("TRANSPORT_ADD".equalsIgnoreCase(evt.getPropertyName()))
     	{
-    		VehicleDetail vehicle;
-    		//the transport manager
             TransportManager transportManager = ModelFactory.getInstance().getTransportManager();
             //the added transport
             Transport transport = (Transport)evt.getNewValue();
-            
             if(transport == null)
             	return;
             
-            if(transport.getVehicleDetail() == null)
+            //check if the transport has a vehicle
+            VehicleDetail vehicle = transport.getVehicleDetail();
+            if(vehicle == null)
             	return;
-            
-            //TODO: abklären, wozu diese Abfrage gedacht war! --> vermutlich jetzt für alle Vehicles nötig, da das direkte Fahrzeug Zuweisen möglich ist.
-//            if(!transport.getVehicleDetail().getVehicleName().equalsIgnoreCase("NEF"))
-//            	return;
-            
-            vehicle = transport.getVehicleDetail();
             
             int index = objectList.indexOf(vehicle);
             VehicleDetail detail = objectList.get(index);
-            
             if(detail == null)
             	return;
             
-            //get the list of transports
+            //get the list of transports and update the status color
             List<Transport> transportList = transportManager.getUnderwayTransportsByVehicle(detail.getVehicleName());
-
-            this.checkVehicleColorState(transportList, detail);
+            checkVehicleColorState(transportList, detail);
     	}
         if("TRANSPORT_UPDATE".equalsIgnoreCase(evt.getPropertyName()))
         {	
             //the transport manager
             TransportManager transportManager = ModelFactory.getInstance().getTransportManager();
 
-            //the updated transport
+            // assert valid transport
             Transport transport = (Transport)evt.getNewValue();
-            
-            //assert valid
             if(transport == null)
                 return;
-            
-            VehicleDetail vehicle = null;
             
             //to update the vehicle color status in case of detaching a vehicle from a transport
             if(transport.getNotes() != null)
@@ -365,34 +352,29 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
             }
   
             //assert valid
-            if(transport.getVehicleDetail() == null)
-            {
+            VehicleDetail vehicle;
+            if(transport.getVehicleDetail() == null) {
             	//check the old vehicle of the transport
                 if(evt.getOldValue() == null)
                 	return;
-                System.out.println("Checking the old transport");
                 vehicle = (VehicleDetail)evt.getOldValue();
             }
-            else
+            else {
             	vehicle = transport.getVehicleDetail();
+            }
             
             int index = objectList.indexOf(vehicle);
             VehicleDetail detail = objectList.get(index);
 
-            //get the list of transports
+            //get the list of transports and update the color
             List<Transport> transportList = transportManager.getUnderwayTransportsByVehicle(detail.getVehicleName());
-
-            //TODO this is the reason for the automatically vehicle updates (triggered from the DateTime (SWT.CALENDAR)- Field
-            //without this calculation the status green is not set correctly
-            
-            this.checkVehicleColorState(transportList, detail);
+            checkVehicleColorState(transportList, detail);
         }
         
         if("ROSTERENTRY_UPDATE".equalsIgnoreCase(evt.getPropertyName()))
         {	        	        	
             //the updated entry
             RosterEntry entry = (RosterEntry)evt.getNewValue();
-            //assert valid
             if(entry == null)
                 return;
             
@@ -410,25 +392,29 @@ public class VehicleManager extends PropertyManager implements PropertyChangeLis
             if(entry.getRealEndOfWork() == 0)
             	return;
             
-            //don't detach the staff member from the car if there is a checked in entry
+            //don't detach the staff member from the car if there is another checked in entry
             RosterEntryManager rosterManager = ModelFactory.getInstance().getRosterEntryManager();
             RosterEntry checkedInEntry = rosterManager.getCheckedInRosterEntryByStaffId(member.getStaffMemberId());
-            Calendar calToday = Calendar.getInstance();
-            
-            if(checkedInEntry != null && ((MyUtils.isEqualDate(calToday.getTimeInMillis(), checkedInEntry.getPlannedEndOfWork()) ||
-            		(MyUtils.isEqualDate(calToday.getTimeInMillis(), checkedInEntry.getPlannedStartOfWork())))))
-            	return;
+            if(checkedInEntry != null) {
+            	//check if there is another signed in entry
+            	if(checkedInEntry.getRealEndOfWork() == 0) {
+            		return;
+            	}
+            }
             
             //detach the staff member from the car
             //driver
-            if(member.equals(detail.getDriver()))
+            if(member.equals(detail.getDriver())) {
             	detail.setDriver(null);
+            }
             //paramedic
-            if(member.equals(detail.getFirstParamedic()))
+            if(member.equals(detail.getFirstParamedic())) {
             	detail.setFirstParamedic(null);
+            }
             //paramedic
-            if(member.equals(detail.getSecondParamedic()))
+            if(member.equals(detail.getSecondParamedic())) {
             	detail.setSecondParamedic(null);
+            }
             
             //adjust the status
             detail.setReadyForAction(false);

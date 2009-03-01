@@ -563,7 +563,6 @@ public class PersonalView extends ViewPart implements PropertyChangeListener
 		if("LOCK_ADD".equalsIgnoreCase(evt.getPropertyName()) || "LOCK_REMOVE".equalsIgnoreCase(evt.getPropertyName()))
 		{
 			viewer.refresh();
-			System.out.println("event");
 		}
 	}
 }

@@ -237,7 +237,6 @@ public class RosterEntryForm extends TitleAreaDialog implements PropertyChangeLi
 
 			int index2 = comboOrtsstelle.getCombo().getSelectionIndex();
 			rosterEntry.setStation((Location)comboOrtsstelle.getElementAt(index2));
-			System.out.println(rosterEntry.getStation());
 
 			 if (noteEditor.getTextWidget().getText().length() > 400)
 		        {

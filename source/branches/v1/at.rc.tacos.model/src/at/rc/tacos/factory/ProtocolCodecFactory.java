@@ -82,16 +82,6 @@ public class ProtocolCodecFactory
     }
     
     /**
-     * Prints out the available encoders to the console
-     */
-    public void printEncoder()
-    {
-    	Iterator<String> iter = encoders.keySet().iterator();
-    	while(iter.hasNext())
-    		System.out.println(iter.next());
-    }
-    
-    /**
      * Convenience method to check if this type of
      * message has a decoder or not.
      * @param id the message to check for decoders

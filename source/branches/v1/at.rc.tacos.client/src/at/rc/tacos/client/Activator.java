@@ -259,8 +259,6 @@ public class Activator extends AbstractUIPlugin
 		catch(NullPointerException npe)
 		{
 			Activator.getDefault().log("Please check the images and the properties file", IStatus.ERROR);
-			System.out.println("Failed to load the images files");
-			System.out.println("Please check the images and the properties file");
 			npe.printStackTrace();
 		}
 	}

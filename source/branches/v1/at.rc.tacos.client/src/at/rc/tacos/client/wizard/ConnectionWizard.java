@@ -154,13 +154,11 @@ public class ConnectionWizard extends Wizard implements INewWizard, PropertyChan
 		}
 		catch (InvocationTargetException ite) 
 		{
-			System.out.println("Failed to connect and login to the server");
 			ite.printStackTrace();
 			return false;
 		}
 		catch (InterruptedException e) 
 		{
-			System.out.println("Thread interrupted");
 			return false;
 		}
 		//check the login status

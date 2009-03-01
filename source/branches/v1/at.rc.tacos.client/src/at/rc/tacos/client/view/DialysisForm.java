@@ -1263,7 +1263,6 @@ public class DialysisForm implements IKindOfTransport, PropertyChangeListener
 		//check the state
 		if(filterJob.getState() == Job.RUNNING)
 		{
-			System.out.println("Job is currently running");
 			return;
 		}
 
