@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Control;
 import at.rc.tacos.client.providers.ConnectionServerContentProvider;
 import at.rc.tacos.client.providers.ConnectionServerLabelProvider;
 import at.rc.tacos.core.net.NetSource;
-import at.rc.tacos.core.net.internal.ServerInfo;
+import at.rc.tacos.core.net.socket.ServerInfo;
 
 public class ConnectionServerPage extends WizardPage {
 

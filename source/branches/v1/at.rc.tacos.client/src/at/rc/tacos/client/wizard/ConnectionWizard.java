@@ -31,7 +31,7 @@ import at.rc.tacos.client.modelManager.ModelFactory;
 import at.rc.tacos.client.modelManager.SessionManager;
 import at.rc.tacos.core.net.NetSource;
 import at.rc.tacos.core.net.NetWrapper;
-import at.rc.tacos.core.net.internal.ServerInfo;
+import at.rc.tacos.core.net.socket.ServerInfo;
 import at.rc.tacos.model.Login;
 
 public class ConnectionWizard extends Wizard implements INewWizard, PropertyChangeListener {

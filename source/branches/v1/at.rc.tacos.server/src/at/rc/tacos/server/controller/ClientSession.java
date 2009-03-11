@@ -13,7 +13,7 @@
  *******************************************************************************/
 package at.rc.tacos.server.controller;
 
-import at.rc.tacos.core.net.internal.MyClient;
+import at.rc.tacos.core.net.socket.MyClient;
 
 /**
  * This class contains the data for a single client connection

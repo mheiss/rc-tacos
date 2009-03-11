@@ -67,7 +67,7 @@ import at.rc.tacos.codec.VehicleDecoder;
 import at.rc.tacos.codec.VehicleEncoder;
 import at.rc.tacos.common.AbstractMessageInfo;
 import at.rc.tacos.common.IModelActions;
-import at.rc.tacos.core.net.internal.MyClient;
+import at.rc.tacos.core.net.socket.MyClient;
 import at.rc.tacos.factory.ProtocolCodecFactory;
 import at.rc.tacos.factory.ServerListenerFactory;
 import at.rc.tacos.factory.XMLFactory;

@@ -13,7 +13,7 @@
  *******************************************************************************/
 package at.rc.tacos.core.net.event;
 
-import at.rc.tacos.core.net.internal.MyClient;
+import at.rc.tacos.core.net.socket.MyClient;
 
 /**
  * Simple class for network events.

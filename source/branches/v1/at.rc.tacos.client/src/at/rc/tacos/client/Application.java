@@ -22,8 +22,8 @@ import org.eclipse.ui.PlatformUI;
 
 import at.rc.tacos.core.net.NetSource;
 import at.rc.tacos.core.net.NetWrapper;
-import at.rc.tacos.core.net.internal.IServerInfo;
-import at.rc.tacos.core.net.internal.ServerInfo;
+import at.rc.tacos.core.net.socket.IServerInfo;
+import at.rc.tacos.core.net.socket.ServerInfo;
 
 /**
  * This class controls all aspects of the application's execution

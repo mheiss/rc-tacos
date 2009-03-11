@@ -22,9 +22,9 @@ import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import at.rc.tacos.core.net.internal.IServerInfo;
-import at.rc.tacos.core.net.internal.MySocket;
-import at.rc.tacos.core.net.internal.ServerInfo;
+import at.rc.tacos.core.net.socket.IServerInfo;
+import at.rc.tacos.core.net.socket.MySocket;
+import at.rc.tacos.core.net.socket.ServerInfo;
 
 /**
  * This class is responsible for loading the server configuration and managing
