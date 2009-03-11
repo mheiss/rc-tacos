@@ -16,7 +16,7 @@ package at.rc.tacos.server.run;
 import org.apache.log4j.Logger;
 
 import at.rc.tacos.core.db.DataSource;
-import at.rc.tacos.core.net.internal.MyServer;
+import at.rc.tacos.core.net.socket.MyServer;
 import at.rc.tacos.server.controller.ClientHandler;
 import at.rc.tacos.server.controller.ServerController;
 

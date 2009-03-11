@@ -26,7 +26,7 @@ import at.rc.tacos.common.IModelActions;
 import at.rc.tacos.common.IServerListener;
 import at.rc.tacos.core.net.event.INetListener;
 import at.rc.tacos.core.net.event.NetEvent;
-import at.rc.tacos.core.net.internal.MyClient;
+import at.rc.tacos.core.net.socket.MyClient;
 import at.rc.tacos.factory.ServerListenerFactory;
 import at.rc.tacos.factory.XMLFactory;
 import at.rc.tacos.model.DAOException;

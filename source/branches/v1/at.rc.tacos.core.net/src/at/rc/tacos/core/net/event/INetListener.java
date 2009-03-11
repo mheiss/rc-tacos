@@ -13,7 +13,7 @@
  *******************************************************************************/
 package at.rc.tacos.core.net.event;
 
-import at.rc.tacos.core.net.internal.MyClient;
+import at.rc.tacos.core.net.socket.MyClient;
 
 /**
  * This interface defines the methods that the network layer must provide to

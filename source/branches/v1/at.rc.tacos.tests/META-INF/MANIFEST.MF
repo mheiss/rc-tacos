@@ -4,6 +4,6 @@ Bundle-Name: Tests Plug-in
 Bundle-SymbolicName: at.rc.tacos.tests
 Bundle-Version: 1.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: at.rc.tacos.core.db;bundle-version="1.0.0",
- at.rc.tacos.model;bundle-version="1.0.0",
- org.junit4;bundle-version="4.3.1"
+Require-Bundle: at.rc.tacos.core.db,
+ at.rc.tacos.model,
+ org.junit4

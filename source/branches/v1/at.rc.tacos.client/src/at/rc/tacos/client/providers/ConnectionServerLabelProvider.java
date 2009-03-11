@@ -17,8 +17,8 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
-import at.rc.tacos.core.net.internal.IServerInfo;
-import at.rc.tacos.core.net.internal.ServerInfo;
+import at.rc.tacos.core.net.socket.IServerInfo;
+import at.rc.tacos.core.net.socket.ServerInfo;
 import at.rc.tacos.factory.ImageFactory;
 
 public class ConnectionServerLabelProvider extends LabelProvider implements ITableLabelProvider {

@@ -11,7 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *******************************************************************************/
-package at.rc.tacos.core.net.internal;
+package at.rc.tacos.core.net.socket;
 
 /**
  * This class contains information about a server.
