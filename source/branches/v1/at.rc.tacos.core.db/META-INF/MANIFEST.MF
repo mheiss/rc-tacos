@@ -5,8 +5,7 @@ Bundle-SymbolicName: at.rc.tacos.core.db
 Bundle-Version: 1.0.0
 Bundle-Activator: at.rc.tacos.core.db.DbWrapper
 Require-Bundle: org.eclipse.core.runtime,
- at.rc.tacos.model,
- org.junit4
+ at.rc.tacos.model
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: lib/commons-dbcp-1.2.2.jar,
  lib/commons-pool-1.3.jar,
@@ -16,5 +15,5 @@ Bundle-ClassPath: lib/commons-dbcp-1.2.2.jar,
 Export-Package: at.rc.tacos.core.db,
  at.rc.tacos.core.db.dao,
  at.rc.tacos.core.db.dao.factory,
- at.rc.tacos.core.db.dao.mysql
+ at.rc.tacos.core.db.dao.sqlserver
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
