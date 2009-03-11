@@ -38,10 +38,6 @@ import at.rc.tacos.core.db.dao.VehicleDAO;
  */
 public interface DaoFactory {
 
-	// factory for MYSQL
-	@Deprecated
-	final DaoFactoryMySql MYSQL = new DaoFactoryMySql();
-
 	// factory for SQL
 	final DaoFactorySQL SQL = new DaoFactorySQL();
 
