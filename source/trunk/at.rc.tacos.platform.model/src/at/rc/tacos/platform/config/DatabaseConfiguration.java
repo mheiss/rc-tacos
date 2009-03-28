@@ -7,7 +7,6 @@ package at.rc.tacos.platform.config;
  */
 public class DatabaseConfiguration {
 
-	private String dbDriver;
 	private String dbHost;
 	private String dbUsername;
 	private String dbPassword;
@@ -19,10 +18,6 @@ public class DatabaseConfiguration {
 	}
 
 	// GETTERS AND SETTERS
-	public String getDbDriver() {
-		return dbDriver;
-	}
-
 	public String getDbHost() {
 		return dbHost;
 	}
@@ -33,10 +28,6 @@ public class DatabaseConfiguration {
 
 	public String getDbPassword() {
 		return dbPassword;
-	}
-
-	public void setDbDriver(String dbDriver) {
-		this.dbDriver = dbDriver;
 	}
 
 	public void setDbHost(String dbHost) {
