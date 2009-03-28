@@ -2,7 +2,6 @@
 <config.ServerConfiguration>
 	<serverPort>4711</serverPort>
 	<dbConfig>
-		<dbDriver> <!-- the database driver --> </dbDriver>
 		<dbHost> <!-- the host and connection param --> </dbHost>
 		<dbUsername> <!-- the username for the login --> </dbUsername>
 		<dbPassword> <!-- the password for the login --> </dbPassword>

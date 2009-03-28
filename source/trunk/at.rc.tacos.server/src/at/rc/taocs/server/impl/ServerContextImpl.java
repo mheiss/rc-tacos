@@ -2,10 +2,8 @@ package at.rc.taocs.server.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import at.rc.tacos.platform.config.ServerConfiguration;
 import at.rc.tacos.platform.net.ServerContext;
@@ -22,8 +20,6 @@ import at.rc.tacos.server.net.HandlerFactoryImpl;
  * @author Michael
  */
 public class ServerContextImpl implements ServerContext {
-
-	private Logger log = LoggerFactory.getLogger(ServerContextImpl.class);
 
 	// the configuration file
 	private File configurationFile;
@@ -53,8 +49,7 @@ public class ServerContextImpl implements ServerContext {
 	public void loadConfiguration() throws Exception {
 		// check the config file
 		if (configurationFile == null | !configurationFile.exists()) {
-			log.warn("The configuration file 'config.xml' cannot be found in the workspace");
-			return;
+			throw new FileNotFoundException("The configuration file 'config.xml' cannot be found in the workspace");
 		}
 		// load the configuration
 		serverConfiguration = xStream.extFromXML(new FileInputStream(configurationFile), ServerConfiguration.class);
@@ -64,7 +59,6 @@ public class ServerContextImpl implements ServerContext {
 	 * Persists the current configuration to the specified configuration file.
 	 */
 	public void storeConfiguration() throws Exception {
-		XStream2 xStream = new XStream2();
 		xStream.extToXML(serverConfiguration, new FileOutputStream(configurationFile));
 	}
 

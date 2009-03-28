@@ -59,18 +59,9 @@ public class DataSourceImpl implements DataSource {
 		log.info("Initialize database connection pool");
 
 		// load the settings from the file
-		String dbDriver = dbConfig.getDbDriver();
 		String dbHost = dbConfig.getDbHost();
 		String dbUser = dbConfig.getDbUsername();
 		String dbPwd = dbConfig.getDbPassword();
-
-		try {
-			// load the mysql driver
-			Class.forName(dbDriver);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
 
 		// create and initialize the connection pool
 		connectionPool = new GenericObjectPool(null);

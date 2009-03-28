@@ -41,8 +41,8 @@ public class ServerApplication implements IApplication {
 		try {
 			URL platformUrl = Platform.getInstanceLocation().getURL();
 			File platformFile = new File(platformUrl.toURI());
-			File configFile = new File(platformFile, "conf/config.xml");
-
+			File configFile = new File(platformFile, "config.xml");
+			
 			// create and setup the server configuration
 			ServerContextImpl serverContext = new ServerContextImpl(configFile);
 			serverContext.loadConfiguration();
@@ -58,7 +58,7 @@ public class ServerApplication implements IApplication {
 			// start the tasks that should be executed
 			taskFactory = new TaskFactory();
 			taskFactory.setupTasks(serverContext, messageServer.getAcceptor());
-//			taskFactory.scheduleTasks();
+			// taskFactory.scheduleTasks();
 		}
 		catch (Exception e) {
 			log.error("Failed to read and setup the configuration", e);

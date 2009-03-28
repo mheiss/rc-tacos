@@ -1,5 +1,6 @@
 package at.rc.tacos.client.ui.splash;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.net.InetSocketAddress;
 import java.util.List;
@@ -416,8 +417,12 @@ public class LoginSplashHandler extends AbstractSplashHandler {
 			configuration.setServerList(updatedList);
 			// persist the configuration
 			try {
+				File configFile = context.getConfigurationFile();
+				if (!configFile.getParentFile().exists()) {
+					configFile.getParentFile().mkdirs();
+				}
 				XStream2 xStream = new XStream2();
-				xStream.extToXML(configuration, new FileOutputStream(context.getConfigurationFile()));
+				xStream.extToXML(configuration, new FileOutputStream(configFile));
 			}
 			catch (Exception e) {
 				log.error("Failed to persist the updated configuration", e);
