@@ -10,11 +10,12 @@ Thats it! Now you can start enhancing the TACOS platform :)
 Available TeamProjectSets
 -------------------------
 
-The latest version v2 is running with eclipse 3.4 and is currently under active development
-  -> Tacos_subclipse_v2.psf
-
 The v1 version is the current productive version and developed with eclipse 3.3
   -> Tacos_subclipse_v1.psf
+
+The v2 version was a technology preview and is NOT longer developed. Is running with eclipse 3.4.
+  -> Tacos_subclipse_v2.psf
+
 
 Requirements
 ------------
