@@ -5,6 +5,7 @@
 	<projects>
 		<project>at.rc.tacos.model</project>
 		<project>at.rc.tacos.core.net</project>
+		<project>at.rc.tacos.libs</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

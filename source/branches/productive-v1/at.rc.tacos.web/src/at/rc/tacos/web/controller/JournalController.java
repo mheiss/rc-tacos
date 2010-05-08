@@ -19,7 +19,7 @@ import org.springframework.beans.support.PropertyComparator;
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
 import at.rc.tacos.common.ITransportStatus;
-import at.rc.tacos.core.net.internal.WebClient;
+import at.rc.tacos.core.net.socket.WebClient;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.QueryFilter;
 import at.rc.tacos.model.Transport;

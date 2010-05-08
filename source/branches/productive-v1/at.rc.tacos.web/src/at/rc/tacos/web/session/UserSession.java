@@ -2,7 +2,7 @@ package at.rc.tacos.web.session;
 
 import java.util.Date;
 
-import at.rc.tacos.core.net.internal.WebClient;
+import at.rc.tacos.core.net.socket.WebClient;
 import at.rc.tacos.model.Login;
 
 /**

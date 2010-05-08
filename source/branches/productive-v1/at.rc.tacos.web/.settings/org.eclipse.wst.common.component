@@ -9,6 +9,9 @@
         <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/at.rc.tacos.core.net/at.rc.tacos.core.net">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="at.rc.tacos.libs.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/at.rc.tacos.libs/at.rc.tacos.libs">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
 		<property name="context-root" value="at.rc.tacos.web"/>
 		<property name="java-output-path" value="build/classes"/>
 	</wb-module>

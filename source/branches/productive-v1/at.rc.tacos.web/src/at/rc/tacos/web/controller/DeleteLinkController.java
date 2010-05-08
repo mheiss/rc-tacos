@@ -11,11 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
-import at.rc.tacos.core.net.internal.WebClient;
+import at.rc.tacos.core.net.socket.WebClient;
 import at.rc.tacos.model.Link;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.QueryFilter;
-import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.web.session.UserSession;
 
 /**
