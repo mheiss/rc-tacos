@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:f="http://java.sun.com/jsf/core" 
+	xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" type="text/css" href="#{facesContext.externalContext.requestContextPath}/resources/css/reset.css" />
+		<link rel="stylesheet" type="text/css" href="#{facesContext.externalContext.requestContextPath}/resources/css/columns.css" />
+		<link rel="stylesheet" type="text/css" href="#{facesContext.externalContext.requestContextPath}/resources/css/widgets.css" />
+		<link rel="stylesheet" type="text/css" href="#{facesContext.externalContext.requestContextPath}/resources/css/font.css" />
+		<link rel="stylesheet" type="text/css" href="#{facesContext.externalContext.requestContextPath}/resources/css/layout.css" />
+		<title>TACOS - Online-Dienstplan</title>
+	</head>
+	<body>
+		<div id="page">
+			<!-- BEGINNING: HEADER -->
+			<div id="header-wrapper">
+				<ui:include src="/WEB-INF/templates/header.xhtml" />
+			</div>
+			<!-- END: SIDEBAR -->
+			
+			<!-- BEGINNING: PRIMARY MENU -->
+			<div id="primary-menu-wrapper" class="clear">
+				<ui:include src="/WEB-INF/menu/global-navigation.xhtml" />
+				<div class="clear"> <!-- cleanup --> </div>
+			</div>
+			<!-- END: PRIMARY MENU -->
+			
+			<div id="spacer" class="clear" />
+			
+			<div id="main-wrapper" class="colmask leftmenu">
+				<div class="colleft">
+					<!-- BEGINNING: CONTENT -->
+					<div id="content-wrapper" class="col1">
+						<ui:include src="/WEB-INF/templates/page.xhtml" />
+					</div>
+					<!-- END: CONTENT -->
+				
+					<!-- BEGINNING: SIDEBAR -->
+					<div id="menu-wrapper" class="col2">
+						<ui:insert name="navigation">Default Navigation</ui:insert>
+					</div>
+					<!-- END: SIDEBAR -->
+				</div>
+				<div class="clear"> <!-- cleanup --> </div>
+			</div>
+			
+			<div id="spacer" class="clear" />
+			
+			<!-- BEGINNING: FOOTER -->
+			<div id="footer">
+				<ui:include src="/WEB-INF/templates/footer.xhtml" />
+			</div>
+			<!-- END: FOOTER -->
+		</div>
+	</body>
+</html>

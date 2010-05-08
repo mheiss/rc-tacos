@@ -1,0 +1,97 @@
+/*******************************************************
+ 	Rounded-Box-Styling
+ *******************************************************/
+.block-wrapper {
+	margin-bottom: 1em;
+}
+
+div.rounded-block {
+	margin-top: -1px;
+}
+
+div.rounded-block-top-left,div.rounded-block-bottom-left {
+	margin-right: 11px;
+}
+
+div.rounded-block-top-left,div.rounded-block-top-right,div.rounded-block-bottom-left,div.rounded-block-bottom-right {
+	background: url("../images/widgets/box/rounded-block.png") no-repeat scroll 0 0 transparent;
+	height: 11px;
+}
+
+div.rounded-block-top-right,div.rounded-block-bottom-right {
+	margin-left: 11px;
+	margin-top: -11px;
+}
+
+div.rounded-block-top-right {
+	background-position: 100% 0;
+}
+
+div.rounded-outside,div.rounded-inside {
+	background: url("../images/widgets/box/rounded-block-inner.png") repeat-y scroll right center transparent;
+	padding-right: 8px;
+}
+
+div.rounded-inside {
+	background-position: left center;
+	padding: 0 0 0 8px;
+}
+
+p.rounded-topspace {
+	margin-top: -14px;
+}
+
+div.rounded-block-bottom-left {
+	background-position: 0 -11px;
+}
+
+div.rounded-block-bottom-right {
+	background-position: 100% -11px;
+}
+
+p.rounded-bottomspace {
+	margin-bottom: -10px;
+}
+
+div.block-icon {
+	float: left;
+	padding-left: 1em;
+}
+
+h2.block-title {
+	text-transform: uppercase;
+	background-color: #9A0000;
+	color: #FFFFFF;
+	padding: 8px 8px 6px 46px;
+	text-align: right;
+	text-shadow: 1px 1px #545454;
+	-moz-border-radius-topleft: 3px;
+	-moz-border-radius-topright: 3px;
+}
+
+div.block div.content {
+	-moz-border-radius-bottomleft: 6px;
+	-moz-border-radius-bottomright: 6px;
+	background: url("../images/widgets/box/block-gradient.png") no-repeat scroll center bottom transparent;
+	border-bottom: 3px solid #F1F5F7;
+	padding: 10px 10px 8px;
+}
+
+ul .menu {
+	border: medium none;
+	list-style: none outside none;
+	text-align: left;
+}
+
+ul.menu li.menu-item {
+	margin: 0.2em;
+	padding: 5px 0 0 15px;
+	background: url("../images/list-item.png") no-repeat scroll left 0.833em transparent;
+	list-style-image: none;
+	list-style-type: none;
+}
+
+div.block ul li a,div.block ul.menu li a {
+	font-size: 1em;
+	font-weight: bold;
+}
