@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.6.0_02"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre6"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/at.rc.tacos.core.net"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/at.rc.tacos.model"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/at.rc.tacos.core.db"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/at.rc.tacos.libs"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/at.rc.tacos.server"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/at.rc.tacos.tests"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.support.PropertyComparator;
 
 import at.rc.tacos.common.AbstractMessage;
-import at.rc.tacos.core.net.internal.WebClient;
+import at.rc.tacos.core.net.socket.WebClient;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.VehicleDetail;
 import at.rc.tacos.web.container.VehicleContainer;

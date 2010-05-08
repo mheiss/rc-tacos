@@ -6,7 +6,6 @@ import java.util.Date;
 import at.rc.tacos.model.Competence;
 import at.rc.tacos.model.RosterEntry;
 import at.rc.tacos.model.ServiceType;
-import at.rc.tacos.web.container.Function;
 
 /**
  * Container for RosterEntry.

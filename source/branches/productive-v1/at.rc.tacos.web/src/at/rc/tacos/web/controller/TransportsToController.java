@@ -1,8 +1,6 @@
 package at.rc.tacos.web.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,7 +16,7 @@ import org.springframework.beans.support.PropertyComparator;
 
 import at.rc.tacos.common.AbstractMessage;
 import at.rc.tacos.common.IFilterTypes;
-import at.rc.tacos.core.net.internal.WebClient;
+import at.rc.tacos.core.net.socket.WebClient;
 import at.rc.tacos.model.Location;
 import at.rc.tacos.model.Login;
 import at.rc.tacos.model.QueryFilter;
