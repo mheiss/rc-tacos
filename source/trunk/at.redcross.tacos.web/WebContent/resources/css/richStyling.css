@@ -1,0 +1,36 @@
+/***********************************************************
+ Table styling
+ **********************************************************/
+.bigtable {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.bigtable th {
+	text-align: left;
+	border-left: 0px;
+	border-right: 0px;
+}
+
+.bigtable tr {
+	border: 1px solid #BBBBBB;
+	padding: 3px 4px;
+}
+
+.bigtable td {
+	border: 0px;
+	border-bottom: 1px solid #BBBBBB;
+}
+
+.smallColumn {
+	width: 2em;
+	text-align: center;
+}
+
+.mediumColumn {
+	width: 20%;
+}
+
+.largeColumn {
+	width: 40%;
+}

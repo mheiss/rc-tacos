@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pretty-config xmlns="http://ocpsoft.com/prettyfaces/2.0.4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://ocpsoft.com/prettyfaces/2.0.4 http://ocpsoft.com/xml/ns/prettyfaces/ocpsoft-pretty-faces-2.0.4.xsd">
+
+	<!-- ################ home ####################### -->
+	<url-mapping id="home">
+		<pattern value="/" />
+		<view-id>/WEB-INF/pages/home/home.faces</view-id>
+	</url-mapping>
+	<url-mapping id="error">
+		<pattern value="/error" />
+		<query-param name="cameFrom" decode="false">#{errorBean.cameFrom}</query-param>
+		<view-id>/WEB-INF/pages/home/error.faces</view-id>
+		<action>#{errorBean.prettyInit}</action>
+	</url-mapping>
+	<url-mapping id="softwareVersion">
+		<pattern value="/administration/software" />
+		<view-id>/WEB-INF/pages/home/softwareVersion.faces</view-id>
+		<action>#{softwareVersionBean.prettyInit}</action>
+	</url-mapping>
+
+	<!-- ################ home ####################### -->
+</pretty-config>
