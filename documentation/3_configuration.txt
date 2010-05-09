@@ -9,11 +9,11 @@ First of all you have to define the runtime of the web project. Currently the we
 to use Apache Tomcat 6.x as target runtime.  
 
 So create a new "Server" using the Eclipse Wizard:
-	File -> New -> Server -> Apache -> Tomcat 6.0
+    File -> New -> Server -> Apache -> Tomcat 6.0
 Follow the instructions to configure the server server. 
 
 Tell Eclipse to compile all projects using 
-	Project -> CleanAll
+    Project -> CleanAll
 
 After the configuration of the server adapter all projects in your workspace should compile without
 any errors. If you have compile errors check the build-path for unbound Libraries and missing Builders.
@@ -23,20 +23,11 @@ Configuration:
 The project requires two mandatory configuration files that have to be provided. For both files
 templates are checked-in as sample configuration.
 
-	Log4j: 	at.redcross.tacos.logging
- 			Copy src/log4j.properties.example to src/log4j.properties
- 	
- 	JPA:	at.redcross.tacos.dbal
- 	 		Copy src/META-INF/persistence.xml.example to src/META-INF/persistence.xml
- 	 		
+    Log4j:  at.redcross.tacos.logging
+            Copy src/log4j.properties.example to src/log4j.properties
+
+    JPA:    at.redcross.tacos.dbal
+            Copy src/META-INF/persistence.xml.example to src/META-INF/persistence.xml
+
 The provided templates contain a meaningful default configuration that should be a good starting point.
- 	
-
-
-
-
-
-
-
-
 

@@ -11,8 +11,8 @@ following features:
 	Tomcat 6.0.26        |  http://tomcat.apache.org/download-60.cgi
 	----------------------------------------------------------------------------------------------------
 
-The project requires external features that are not bundled with the Eclipse SDK. 
-You can get them from the specified update-sites using the build-in update manager. 
+The project requires external features that are not bundled with the Eclipse SDK.
+You can get them from the specified update-sites using the build-in update manager.
 
     What to install                 |   from Site...
     ---------------------------------------------------------------------------------------------------

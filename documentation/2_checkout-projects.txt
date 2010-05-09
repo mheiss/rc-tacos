@@ -4,10 +4,10 @@ The target of this documentation is to describe how to get the projects from SVN
 We provide a so called TeamProjectSet to quickly checkout the required projects code from SVN. 
 
 The latest file is available in SVN and can be downloaded using the following URL:
-	http://rc-tacos.svn.sourceforge.net/viewvc/rc-tacos/development/Tacos_trunk.psf?revision=3715
+    http://rc-tacos.svn.sourceforge.net/viewvc/rc-tacos/development/Tacos_trunk.psf?revision=3715
 
 Save a copy of this file on your local hard drive and then import it using the import manager of Eclipse:
-	 -> File -> Import -> Team -> Team Project Set.
+    File -> Import -> Team -> Team Project Set.
 
 Now the referenced projects will be checked-out into your workspace. 
 
@@ -17,7 +17,7 @@ To ensure that all Java-Code from different developers is formatted the same way
 a Code-Formatter template. The formatter is in the workspace under development/TacosCodeFormatter.xml
 
 Tell eclipse to use this formatter using:
-  -> Window -> Preferences -> Java -> Code Style -> Formatter -> Import
-  
+    Window -> Preferences -> Java -> Code Style -> Formatter -> Import
+
 Now proceed to the next step to get rid of the compile errors :)
-  
+
