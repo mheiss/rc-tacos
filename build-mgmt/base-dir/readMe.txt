@@ -1,1 +1,0 @@
-Download and unzip 'Eclipse-SDK' and the 'Delta Pack' from http://update.eclipse.org into this directory.
