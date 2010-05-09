@@ -12,11 +12,12 @@ So create a new "Server" using the Eclipse Wizard:
     File -> New -> Server -> Apache -> Tomcat 6.0
 Follow the instructions to configure the server server. 
 
-Tell Eclipse to compile all projects using 
+Now you have to restart Eclipse and then tell Eclipse to compile all projects using:
     Project -> CleanAll
-
-After the configuration of the server adapter all projects in your workspace should compile without
-any errors. If you have compile errors check the build-path for unbound Libraries and missing Builders.
+I can't figure out why Eclipse needs a restart to compile all projects, but it seems to help :)
+    
+Now all projects in your workspace should compile without any errors. If you have compile errors 
+check the build-path for unbound Libraries and missing Builders.
 
 Configuration:
 --------------
