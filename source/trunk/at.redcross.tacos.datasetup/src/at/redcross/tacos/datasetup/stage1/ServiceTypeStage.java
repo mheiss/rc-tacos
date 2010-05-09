@@ -21,62 +21,32 @@ public class ServiceTypeStage implements DatasetupStage {
     public void performImport(EntityManager manager) {
         {
             ServiceType type = new ServiceType();
-            type.setName("Azubi");
-            type.setDescription("Azubi");
+            type.setName("Hauptamtlich");
+            type.setDescription("Hauptamtlich");
             manager.persist(type);
         }
         {
             ServiceType type = new ServiceType();
-            type.setName("Bezirksrettungskommandant");
-            type.setDescription("Bezirksrettungskommandant");
+            type.setName("Freiwillig");
+            type.setDescription("Freiwillig");
             manager.persist(type);
         }
         {
             ServiceType type = new ServiceType();
-            type.setName("BKTW-Fahrer");
-            type.setDescription("BKTW-Fahrer");
+            type.setName("Ersatzeinstellung");
+            type.setDescription("Ersatzeinstellung");
             manager.persist(type);
         }
         {
             ServiceType type = new ServiceType();
-            type.setName("Dienstführender");
-            type.setDescription("Dienstführender");
+            type.setName("Zivildiener");
+            type.setDescription("Zivildiener");
             manager.persist(type);
         }
         {
             ServiceType type = new ServiceType();
-            type.setName("Fahrer");
-            type.setDescription("Fahrer");
-            manager.persist(type);
-        }
-        {
-            ServiceType type = new ServiceType();
-            type.setName("First Responder Böhler");
-            type.setDescription("First Responder Böhler");
-            manager.persist(type);
-        }
-        {
-            ServiceType type = new ServiceType();
-            type.setName("NEF Azubi");
-            type.setDescription("NEF Azubi");
-            manager.persist(type);
-        }
-        {
-            ServiceType type = new ServiceType();
-            type.setName("Notarzt");
-            type.setDescription("Notarzt");
-            manager.persist(type);
-        }
-        {
-            ServiceType type = new ServiceType();
-            type.setName("Sanitäter");
-            type.setDescription("Sanitäter");
-            manager.persist(type);
-        }
-        {
-            ServiceType type = new ServiceType();
-            type.setName("Volontär");
-            type.setDescription("Volontär");
+            type.setName("Sonstiges");
+            type.setDescription("Sonstiges");
             manager.persist(type);
         }
     }
