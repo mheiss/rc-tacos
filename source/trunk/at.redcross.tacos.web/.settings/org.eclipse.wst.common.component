@@ -12,39 +12,6 @@
         <dependent-module archiveName="at.redcross.tacos.logging.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/at.redcross.tacos.logging/at.redcross.tacos.logging">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/at.redcross.tacos.hibernate/lib/antlr-2.7.6.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/at.redcross.tacos.hibernate/lib/commons-collections-3.1.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/at.redcross.tacos.hibernate/lib/dom4j-1.6.1.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/at.redcross.tacos.hibernate/lib/hibernate-jpa-2.0-api-1.0.0.Final.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/at.redcross.tacos.hibernate/lib/hibernate3.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/at.redcross.tacos.hibernate/lib/javassist-3.9.0.GA.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/at.redcross.tacos.hibernate/lib/jta-1.1.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/at.redcross.tacos.logging/lib/log4j-1.2.16.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/at.redcross.tacos.logging/lib/slf4j-api-1.5.11.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/at.redcross.tacos.logging/lib/slf4j-log4j12-1.5.11.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/at.redcross.tacos.hsqldb/lib/hsqldb.jar">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module archiveName="at.redcross.tacos.hsqldb.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/at.redcross.tacos.hsqldb/at.redcross.tacos.hsqldb">
             <dependency-type>uses</dependency-type>
         </dependent-module>
