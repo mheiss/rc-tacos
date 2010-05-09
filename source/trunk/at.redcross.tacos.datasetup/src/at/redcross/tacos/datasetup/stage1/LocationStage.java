@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import at.redcross.tacos.datasetup.DatasetupStage;
+import at.redcross.tacos.dbal.entity.Address;
 import at.redcross.tacos.dbal.entity.Location;
 import at.redcross.tacos.dbal.entity.Location;
 
@@ -23,10 +24,14 @@ public class LocationStage implements DatasetupStage {
         {
             Location location = new Location();
             location.setName("Bezirk: Bruck - Kapfenberg");
-            //location.setAddress(address);
+            Address address1 = new Address();
+            address1.setCity("Bruck an der Mur");
+            address1.setEmail("bruck@st.roteskreuz.at");
+            location.setAddress(address1);
             //location.setDistrict(district);
             manager.persist(location);
         }
+        /*
         {
             Location location = new Location();
             location.setName("Bruck an der Mur");
@@ -39,7 +44,7 @@ public class LocationStage implements DatasetupStage {
         }
         {
             Location location = new Location();
-            location.setName("Thörl");
+            location.setName("Thï¿½rl");
             manager.persist(location);
         }
         {
@@ -57,5 +62,6 @@ public class LocationStage implements DatasetupStage {
             location.setName("Breitenau");
             manager.persist(location);
         }
+        */
     }
 }
