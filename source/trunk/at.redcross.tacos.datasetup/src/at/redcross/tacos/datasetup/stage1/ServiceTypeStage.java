@@ -1,12 +1,21 @@
 package at.redcross.tacos.datasetup.stage1;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 import at.redcross.tacos.datasetup.DatasetupStage;
 import at.redcross.tacos.dbal.entity.ServiceType;
 
 // creates service stages
 public class ServiceTypeStage implements DatasetupStage {
+
+    @Override
+    public void performCleanup(EntityManager manager) {
+        TypedQuery<ServiceType> query = manager.createQuery("from ServiceType", ServiceType.class);
+        for (ServiceType type : query.getResultList()) {
+            manager.remove(type);
+        }
+    }
 
     @Override
     public void performImport(EntityManager manager) {

@@ -16,4 +16,9 @@ public interface DatasetupStage {
      */
     public void performImport(EntityManager manager);
 
+    /**
+     * Called before the import of the given stage.
+     */
+    public void performCleanup(EntityManager manager);
+
 }
