@@ -1,0 +1,24 @@
+STARTUP |
+--------
+In order to use the application you have to create two different launch configuration.
+
+Tomcat 6.x
+-----------
+Use the eclipse launch manager to create a default configuration. No specialized
+configuration has to be done.
+	
+Database
+--------
+To increment the local development speed it is highly recommended to use the provided
+HSQL-DB instance. So you do NOT need to install any third party database like MS-SQL-Server.
+When you want to use a third-party database provider then you have to change the 'persistence.xml' configuration.
+	
+Create a new Java launch configuration using the launch manager of eclipse and configure it 
+to use the following settings:
+	
+	Java-Launch-Configuration "Main" Tab:
+		Project: 	at.redcross.tacos.hsqldb
+		Main-Class: at.redcross.tacos.hsqldb.HsqlServer
+		
+The database files and tables are stored in 'at.redcross.tacos.hsqldb/database' and will be created automatically.
+Now you are ready to launch both applications. :)
