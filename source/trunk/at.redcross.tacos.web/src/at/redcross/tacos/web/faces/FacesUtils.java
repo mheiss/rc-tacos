@@ -18,7 +18,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.ocpsoft.pretty.PrettyContext;
 import com.ocpsoft.pretty.config.PrettyConfig;
-import com.ocpsoft.pretty.config.mapping.UrlMapping;
+import com.ocpsoft.pretty.config.PrettyUrlMapping;
 
 /**
  * The {@code FacesUtils} contains common static helper methods.
@@ -165,7 +165,7 @@ public class FacesUtils {
 			PrettyConfig prettyConfig = prettyContext.getConfig();
 
 			String requestedUri = prettyContext.getOriginalRequestUrl();
-			UrlMapping requestedMapping = prettyConfig.getMappingForUrl(requestedUri);
+			PrettyUrlMapping requestedMapping = prettyConfig.getMappingForUrl(requestedUri);
 			String prettyId = (requestedMapping != null) ? requestedMapping.getId() : null;
 			if (log.isErrorEnabled()) {
 				String message = "Failed to process request from %1$s (%2$s)";
@@ -173,7 +173,7 @@ public class FacesUtils {
 			}
 
 			// redirect the user to the error page
-			UrlMapping mapping = prettyConfig.getMappingById("error");
+			PrettyUrlMapping mapping = prettyConfig.getMappingById("error");
 			StringBuffer target = new StringBuffer();
 			target.append(externalContext.getRequestContextPath());
 			target.append(mapping.getPattern());
@@ -207,7 +207,8 @@ public class FacesUtils {
 	 */
 	public static ValueExpression createValueExpression(String valueExpression, Class<?> valueType) {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
-		return facesContext.getApplication().getExpressionFactory().createValueExpression(facesContext.getELContext(), valueExpression, valueType);
+		return facesContext.getApplication().getExpressionFactory().createValueExpression(
+				facesContext.getELContext(), valueExpression, valueType);
 	}
 
 	/**
@@ -222,8 +223,8 @@ public class FacesUtils {
 	 */
 	public static MethodExpression createActionExpression(String actionExpression, Class<?> returnType) {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
-		return facesContext.getApplication().getExpressionFactory().createMethodExpression(facesContext.getELContext(), actionExpression, returnType,
-				new Class[0]);
+		return facesContext.getApplication().getExpressionFactory().createMethodExpression(
+				facesContext.getELContext(), actionExpression, returnType, new Class[0]);
 	}
 
 	/**
@@ -262,7 +263,8 @@ public class FacesUtils {
 			builder.append(" ) ");
 			builder.append("\n\r");
 		}
-		String cause = t.getCause() != null ? t.getCause().getClass().getSimpleName() : " (not available) ";
+		String cause = t.getCause() != null ? t.getCause().getClass().getSimpleName()
+				: " (not available) ";
 		addErrorMessage(cause + " - " + t.getMessage(), builder.toString());
 	}
 
