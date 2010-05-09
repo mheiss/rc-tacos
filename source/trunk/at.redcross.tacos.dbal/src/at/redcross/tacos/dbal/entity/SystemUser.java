@@ -14,6 +14,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -49,6 +50,9 @@ public class SystemUser extends EntityImpl {
 
 	@ManyToMany
 	private Collection<Group> groups;
+	
+	@OneToMany
+	private Collection<Competence> competences;
 
 	// ---------------------------------
 	// Custom methods
@@ -119,6 +123,10 @@ public class SystemUser extends EntityImpl {
 	public void setGroups(Collection<Group> groups) {
 		this.groups = groups;
 	}
+	
+	public void setCompetences(Collection<Competence> competences) {
+		this.competences = competences;
+	}
 
 	// ---------------------------------
 	// Setters for the properties
@@ -156,6 +164,13 @@ public class SystemUser extends EntityImpl {
 			groups = new ArrayList<Group>();
 		}
 		return groups;
+	}
+	
+	public Collection<Competence> getCompetences() {
+		if (competences == null) {
+			competences = new ArrayList<Competence>();
+		}
+		return competences;
 	}
 
 }
