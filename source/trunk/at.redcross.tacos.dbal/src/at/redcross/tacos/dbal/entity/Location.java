@@ -2,9 +2,13 @@ package at.redcross.tacos.dbal.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
+import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "Location")
 public class Location extends EntityImpl {
 
 	private static final long serialVersionUID = 6997613929181751597L;
@@ -16,8 +20,7 @@ public class Location extends EntityImpl {
 	@Column(nullable = false)
 	private Address address;
 
-	@OneToOne(mappedBy = "location")
-	@Column(nullable = false)
+	@ManyToOne
 	private District district;
 
 	// ---------------------------------

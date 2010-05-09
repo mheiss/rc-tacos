@@ -20,15 +20,12 @@ public class RosterEntry {
 	private long id;
 
 	@OneToOne
-	@Column(nullable = false)
 	private Location location;
 
 	@OneToOne
-	@Column(nullable = false)
 	private ServiceType serviceType;
 
 	@OneToOne
-	@Column(nullable = false)
 	private Assignment assignment;
 
 	@Temporal(TemporalType.DATE)

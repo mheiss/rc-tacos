@@ -45,7 +45,6 @@ public class SystemUser extends EntityImpl {
 	private Address address;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@Column(nullable = false)
 	private Login login;
 
 	@OneToMany
