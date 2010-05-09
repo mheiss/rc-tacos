@@ -8,8 +8,9 @@
 		<view-id>/WEB-INF/pages/home/home.faces</view-id>
 	</url-mapping>
 	<url-mapping id="error">
-		<pattern>/error"</pattern>
+		<pattern>/error</pattern>
 		<query-param name="cameFrom" decode="false">#{errorBean.cameFrom}</query-param>
+		<query-param name="errorCode" decode="false">#{errorBean.errorCode}</query-param>
 		<view-id>/WEB-INF/pages/home/error.faces</view-id>
 		<action>#{errorBean.prettyInit}</action>
 	</url-mapping>

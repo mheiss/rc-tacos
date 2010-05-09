@@ -67,6 +67,7 @@ a,a:link,a:visited {
 
 #primary-menu-wrapper {
 	margin-right: 3em;
+	margin-left: 3em;
 }
 
 #primary-menu {
@@ -74,7 +75,6 @@ a,a:link,a:visited {
 	float: right;
 	font-size: 1em;
 	font-weight: bold;
-	margin-top: 12px;
 	position: relative;
 	text-transform: uppercase;
 }
