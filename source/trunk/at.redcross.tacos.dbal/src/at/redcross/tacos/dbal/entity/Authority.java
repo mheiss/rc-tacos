@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Authority")
+@Table(name = "UserAuthority")
 public class Authority extends EntityImpl {
 
 	private static final long serialVersionUID = -722724664751403613L;

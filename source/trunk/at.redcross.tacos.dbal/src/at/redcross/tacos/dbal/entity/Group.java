@@ -7,11 +7,11 @@ import java.util.Iterator;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "group")
+@Table(name = "UserGroup")
 public class Group {
 
 	@Id
@@ -20,7 +20,7 @@ public class Group {
 	@Column(nullable = false)
 	private String description;
 
-	@OneToMany
+	@ManyToMany
 	private Collection<Authority> authority;
 
 	// ---------------------------------

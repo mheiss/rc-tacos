@@ -13,7 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -47,7 +47,7 @@ public class SystemUser extends EntityImpl {
 	@OneToOne(cascade = CascadeType.ALL)
 	private Login login;
 
-	@OneToMany
+	@ManyToMany
 	private Collection<Group> groups;
 
 	// ---------------------------------

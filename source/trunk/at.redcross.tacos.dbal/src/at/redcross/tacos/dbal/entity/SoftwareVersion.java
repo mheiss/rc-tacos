@@ -36,7 +36,7 @@ public class SoftwareVersion extends EntityImpl {
 	private String version;
 
 	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "SoftwareVersion")
+	@JoinColumn(name = "SoftwareVersion_Fk")
 	private Collection<ChangelogEntry> changelogs;
 
 	// ---------------------------------
