@@ -8,6 +8,9 @@ import javax.persistence.EntityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import at.redcross.tacos.datasetup.stage1.AssignmentStage;
+import at.redcross.tacos.datasetup.stage1.CompetenceStage;
+import at.redcross.tacos.datasetup.stage1.LoginStage;
 import at.redcross.tacos.datasetup.stage1.ServiceTypeStage;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 
@@ -101,6 +104,9 @@ public class DatasetupApplication {
     public static void main(String[] args) {
         DatasetupApplication app = new DatasetupApplication();
         app.registerStage(new ServiceTypeStage());
+        app.registerStage(new AssignmentStage());
+        app.registerStage(new CompetenceStage());
+        app.registerStage(new LoginStage());
         app.execute();
     }
 }
