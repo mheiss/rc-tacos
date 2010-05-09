@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -15,7 +16,8 @@ public class District {
 	@Id
 	private String name;
 
-	@OneToMany(mappedBy = "district")
+	@OneToMany
+	@JoinColumn(name = "District_Fk")
 	private Collection<Location> locations;
 
 	// ---------------------------------

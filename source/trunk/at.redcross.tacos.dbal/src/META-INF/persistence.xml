@@ -17,6 +17,9 @@
 			<!-- Print out all SQL statements -->
 			<property name="hibernate.show_sql" value="true" />
 
+			<!-- Embedded columns will have a prefix -->
+			<property name="hibernate.ejb.naming_strategy" value="org.hibernate.cfg.DefaultComponentSafeNamingStrategy" />
+
 			<!-- Drop and re-create the database schema on startup -->
 			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
 
