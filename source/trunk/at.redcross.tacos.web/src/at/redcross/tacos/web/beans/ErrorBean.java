@@ -8,6 +8,9 @@ public class ErrorBean extends BaseBean {
 	// the injected URI
 	private String cameFrom;
 
+	// the injected error code;
+	private String errorCode;
+
 	@Override
 	protected void init() throws Exception {
 	}
@@ -16,7 +19,15 @@ public class ErrorBean extends BaseBean {
 		this.cameFrom = cameFrom;
 	}
 
+	public void setErrorCode(String errorCode) {
+		this.errorCode = errorCode;
+	}
+
 	public String getCameFrom() {
 		return cameFrom;
+	}
+
+	public String getErrorCode() {
+		return errorCode;
 	}
 }

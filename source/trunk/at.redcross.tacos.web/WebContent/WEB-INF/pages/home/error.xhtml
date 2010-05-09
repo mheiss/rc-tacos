@@ -19,10 +19,14 @@
 	<!-- Render the content -->
 	<ui:define name="content">
 		<h:outputText value=".... während ihrer letzen Anfrage ist ein unerwarteter Fehler aufgetreten." />
-		<p><h:outputText value="Bitte gehen Sie zurück zu " /> <h:outputLink
-			value="#{facesContext.externalContext.requestContextPath}/#{errorBean.cameFrom}">
-			<h:outputText value=" #{errorBean.cameFrom}" />
-		</h:outputLink> <h:outputText value=" und versuchen es erneut." /></p>
+		<h:outputText styleClass="italic" value=" (Fehlercode #{errorBean.errorCode})" rendered="#{not empty errorBean.errorCode}" />
+		<p>
+			<h:outputText value="Bitte gehen Sie zurück zu " /> 
+			<h:outputLink value="#{facesContext.externalContext.requestContextPath}/#{errorBean.cameFrom}">
+				<h:outputText value=" #{errorBean.cameFrom}" />
+			</h:outputLink> 
+			<h:outputText value=" und versuchen es erneut." />
+		</p>
 	</ui:define>
 
 </ui:composition>

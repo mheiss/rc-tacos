@@ -164,20 +164,26 @@ public class FacesUtils {
 			PrettyContext prettyContext = PrettyContext.getCurrentInstance();
 			PrettyConfig prettyConfig = prettyContext.getConfig();
 
+			// make the URL relative
 			String requestedUri = prettyContext.getOriginalRequestUrl();
+			requestedUri = requestedUri.replace(externalContext.getRequestContextPath(), "");
+			requestedUri = requestedUri.replaceFirst("/", "");
+
 			PrettyUrlMapping requestedMapping = prettyConfig.getMappingForUrl(requestedUri);
 			String prettyId = (requestedMapping != null) ? requestedMapping.getId() : null;
 			if (log.isErrorEnabled()) {
 				String message = "Failed to process request from %1$s (%2$s)";
 				log.error(String.format(message, requestedUri, prettyId), t);
 			}
+			ExceptionResolver resolver = new ExceptionResolver(t);
 
 			// redirect the user to the error page
 			PrettyUrlMapping mapping = prettyConfig.getMappingById("error");
 			StringBuffer target = new StringBuffer();
 			target.append(externalContext.getRequestContextPath());
 			target.append(mapping.getPattern());
-			target.append("?cameFrom=" + requestedUri.replaceFirst("/", ""));
+			target.append("?cameFrom=" + requestedUri);
+			target.append("&errorCode=" + resolver.resolve());
 			facesContext.responseComplete();
 			externalContext.redirect(target.toString());
 		}
