@@ -3,32 +3,32 @@ SETUP-ECLIPSE |
 
 To get involved into the TACOS project you have to prepare the development environment using the 
 following features:
-
-	What to install 	| from URL...	
+	
+	What to install		|	from URL...	
 	---------------------------------------------------------------------------------------------------
 	Eclipse SDK 3.5		|	http://download.eclipse.org/eclipse/downloads/drops/R-3.5.2-201002111343/index.php
 	---------------------------------------------------------------------------------------------------
 	Tomcat 6.0.26		|	http://tomcat.apache.org/download-60.cgi
 	----------------------------------------------------------------------------------------------------
-
+	
 The project requires external features that are not bundled with the Eclipse SDK. 
 You can get them from the specified update-sites using the build-in update manager. 
-
-	What to install 				| from Site...	
-	---------------------------------------------------------------------------------------------------
-	Subversive SVN Team Provider	| http://download.eclipse.org/technology/subversive/0.7/update-site/									
+	
+    What to install					| from Site...	
+    ---------------------------------------------------------------------------------------------------
+    Subversive SVN Team Provider	|	http://download.eclipse.org/technology/subversive/0.7/update-site/									
+    ----------------------------------------------------------------------------------------------------
+    Subversive SVN Connectors       |	http://community.polarion.com/projects/subversive/download/eclipse/2.0/update-site/
+    SVNKit 1.3.0 Implementation     |	
 	----------------------------------------------------------------------------------------------------
-	Subversive SVN Connectors		| http://community.polarion.com/projects/subversive/download/eclipse/2.0/update-site/
-	SVNKit 1.3.0 Implementation		|	
-	----------------------------------------------------------------------------------------------------
-	JST Server UI					| http://download.eclipse.org/releases/galileo
-	JST Web UI						|
-	JST Server Adapters				|
-	WST Server Adapters				|
-	Eclipse Web Developer Tools		|
+	JST Server UI                   |	http://download.eclipse.org/releases/galileo
+	JST Web UI                      |
+	JST Server Adapters             |
+	WST Server Adapters             |
+	Eclipse Web Developer Tools     |
 	Eclipse Java EE Developer Tools |
 	-----------------------------------------------------------------------------------------------------					
-	JBoss Tools RichFaces			| http://download.jboss.org/jbosstools/updates/stable/galileo/		
+	JBoss Tools RichFaces           |	http://download.jboss.org/jbosstools/updates/stable/galileo/		
 	-----------------------------------------------------------------------------------------------------  					
 	
 Restart eclipse after the installation and proceed with the next step.
