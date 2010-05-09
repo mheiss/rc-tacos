@@ -20,7 +20,6 @@ public class ServiceType extends EntityImpl {
 	// ---------------------------------
 	// Setters for the properties
 	// ---------------------------------
-
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -32,7 +31,6 @@ public class ServiceType extends EntityImpl {
 	// ---------------------------------
 	// Getters for the properties
 	// ---------------------------------
-
 	public String getName() {
 		return name;
 	}

@@ -6,10 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-/**
- * The {@code ChangelogEntry} describes what has changed in the software
- * product.
- */
 @Entity
 @Table(name = "ChangelogEntry")
 public class ChangelogEntry extends EntityImpl {

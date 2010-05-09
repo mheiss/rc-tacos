@@ -14,9 +14,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-/**
- * The {@code SoftwareVersion} describes the version of the product.
- */
 @Entity
 @Table(name = "SoftwareVersion")
 public class SoftwareVersion extends EntityImpl {
