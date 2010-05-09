@@ -14,6 +14,9 @@ following features:
 The project requires external features that are not bundled with the Eclipse SDK.
 You can get them from the specified update-sites using the build-in update manager.
 
+Some update-sites group the available features into categories, so it is the best when you use the 
+build-in search mechanism to find the features.
+
     What to install                 |   from Site...
     ---------------------------------------------------------------------------------------------------
     Subversive SVN Team Provider    |   http://download.eclipse.org/technology/subversive/0.7/update-site/
