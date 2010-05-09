@@ -18,7 +18,7 @@ to use the following settings:
 
 	Java-Launch-Configuration "Main" Tab:
        Project:      at.redcross.tacos.hsqldb
-        Main-Class:  at.redcross.tacos.hsqldb.HsqlServer
+       Main-Class:  at.redcross.tacos.hsqldb.HsqlServer
 
 The database files and tables are stored in 'at.redcross.tacos.hsqldb/database' and will be created automatically.
 Now you are ready to launch both applications. :)
