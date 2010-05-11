@@ -5,29 +5,33 @@ import javax.faces.bean.ManagedBean;
 @ManagedBean(name = "errorBean")
 public class ErrorBean extends BaseBean {
 
-	// the injected URI
-	private String cameFrom;
+    private static final long serialVersionUID = -8228546063540602086L;
 
-	// the injected error code;
-	private String errorCode;
+    // the injected URI
+    private String cameFrom;
 
-	@Override
-	protected void init() throws Exception {
-	}
+    // the injected error code;
+    private String errorCode;
 
-	public void setCameFrom(String cameFrom) {
-		this.cameFrom = cameFrom;
-	}
+    // ---------------------------------
+    // Setters for the properties
+    // ---------------------------------
+    public void setCameFrom(String cameFrom) {
+        this.cameFrom = cameFrom;
+    }
 
-	public void setErrorCode(String errorCode) {
-		this.errorCode = errorCode;
-	}
+    public void setErrorCode(String errorCode) {
+        this.errorCode = errorCode;
+    }
 
-	public String getCameFrom() {
-		return cameFrom;
-	}
+    // ---------------------------------
+    // Getters for the properties
+    // ---------------------------------
+    public String getCameFrom() {
+        return cameFrom;
+    }
 
-	public String getErrorCode() {
-		return errorCode;
-	}
+    public String getErrorCode() {
+        return errorCode;
+    }
 }

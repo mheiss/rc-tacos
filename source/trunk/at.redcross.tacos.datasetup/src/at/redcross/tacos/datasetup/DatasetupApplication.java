@@ -8,10 +8,11 @@ import javax.persistence.EntityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import at.redcross.tacos.datasetup.persistence.EntityManagerFactory;
 import at.redcross.tacos.datasetup.stage1.AssignmentStage;
 import at.redcross.tacos.datasetup.stage1.CompetenceStage;
+import at.redcross.tacos.datasetup.stage1.DistrictStage;
 import at.redcross.tacos.datasetup.stage1.LocationStage;
-import at.redcross.tacos.datasetup.stage1.LoginStage;
 import at.redcross.tacos.datasetup.stage1.ServiceTypeStage;
 import at.redcross.tacos.datasetup.stage1.SystemUserStage;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
@@ -72,7 +73,7 @@ public class DatasetupApplication {
     public void runCleanup() {
         EntityManager manager = null;
         try {
-            manager = EntityManagerHelper.createEntityManager();
+            manager = EntityManagerFactory.createEntityManager();
             for (DatasetupStage stage : stages) {
                 logger.debug("Cleaning stage '" + stage.getClass().getSimpleName() + "'");
                 stage.performCleanup(manager);
@@ -90,7 +91,7 @@ public class DatasetupApplication {
     public void runImport() {
         EntityManager manager = null;
         try {
-            manager = EntityManagerHelper.createEntityManager();
+            manager = EntityManagerFactory.createEntityManager();
             for (DatasetupStage stage : stages) {
                 logger.debug("Importing stage '" + stage.getClass().getSimpleName() + "'");
                 stage.performImport(manager);
@@ -105,12 +106,12 @@ public class DatasetupApplication {
     // run as java-application
     public static void main(String[] args) {
         DatasetupApplication app = new DatasetupApplication();
+        app.registerStage(new DistrictStage());
         app.registerStage(new ServiceTypeStage());
         app.registerStage(new AssignmentStage());
         app.registerStage(new CompetenceStage());
-        app.registerStage(new LoginStage());
-        app.registerStage(new LocationStage());
         app.registerStage(new SystemUserStage());
+        app.registerStage(new LocationStage());
         app.execute();
     }
 }
