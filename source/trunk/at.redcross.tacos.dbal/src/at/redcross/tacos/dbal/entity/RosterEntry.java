@@ -13,118 +13,120 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "RosterEntry")
-public class RosterEntry {
+public class RosterEntry extends EntityImpl {
 
-	@Id
-	@GeneratedValue
-	private long id;
+    private static final long serialVersionUID = -8201138084188688001L;
 
-	@OneToOne
-	private Location location;
+    @Id
+    @GeneratedValue
+    private long id;
 
-	@OneToOne
-	private ServiceType serviceType;
+    @OneToOne
+    private Location location;
 
-	@OneToOne
-	private Assignment assignment;
+    @OneToOne
+    private ServiceType serviceType;
 
-	@Temporal(TemporalType.DATE)
-	private Calendar plannedStart;
+    @OneToOne
+    private Assignment assignment;
 
-	@Temporal(TemporalType.DATE)
-	private Calendar plannedEnd;
+    @Temporal(TemporalType.DATE)
+    private Calendar plannedStart;
 
-	@Temporal(TemporalType.DATE)
-	private Calendar realStart;
+    @Temporal(TemporalType.DATE)
+    private Calendar plannedEnd;
 
-	@Temporal(TemporalType.DATE)
-	private Calendar realEnd;
+    @Temporal(TemporalType.DATE)
+    private Calendar realStart;
 
-	@Column
-	private String notes;
+    @Temporal(TemporalType.DATE)
+    private Calendar realEnd;
 
-	@Column
-	private boolean standby;
+    @Column
+    private String notes;
 
-	// ---------------------------------
-	// Setters for the properties
-	// ---------------------------------
-	public void setLocation(Location location) {
-		this.location = location;
-	}
+    @Column
+    private boolean standby;
 
-	public void setServiceType(ServiceType serviceType) {
-		this.serviceType = serviceType;
-	}
+    // ---------------------------------
+    // Setters for the properties
+    // ---------------------------------
+    public void setLocation(Location location) {
+        this.location = location;
+    }
 
-	public void setAssignment(Assignment assignment) {
-		this.assignment = assignment;
-	}
+    public void setServiceType(ServiceType serviceType) {
+        this.serviceType = serviceType;
+    }
 
-	public void setPlannedStart(Calendar plannedStart) {
-		this.plannedStart = plannedStart;
-	}
+    public void setAssignment(Assignment assignment) {
+        this.assignment = assignment;
+    }
 
-	public void setPlannedEnd(Calendar plannedEnd) {
-		this.plannedEnd = plannedEnd;
-	}
+    public void setPlannedStart(Calendar plannedStart) {
+        this.plannedStart = plannedStart;
+    }
 
-	public void setRealStart(Calendar realStart) {
-		this.realStart = realStart;
-	}
+    public void setPlannedEnd(Calendar plannedEnd) {
+        this.plannedEnd = plannedEnd;
+    }
 
-	public void setRealEnd(Calendar realEnd) {
-		this.realEnd = realEnd;
-	}
+    public void setRealStart(Calendar realStart) {
+        this.realStart = realStart;
+    }
 
-	public void setNotes(String notes) {
-		this.notes = notes;
-	}
+    public void setRealEnd(Calendar realEnd) {
+        this.realEnd = realEnd;
+    }
 
-	public void setStandby(boolean standby) {
-		this.standby = standby;
-	}
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
 
-	// ---------------------------------
-	// Getters for the properties
-	// ---------------------------------
-	public long getId() {
-		return id;
-	}
+    public void setStandby(boolean standby) {
+        this.standby = standby;
+    }
 
-	public ServiceType getServiceType() {
-		return serviceType;
-	}
+    // ---------------------------------
+    // Getters for the properties
+    // ---------------------------------
+    public long getId() {
+        return id;
+    }
 
-	public Assignment getAssignment() {
-		return assignment;
-	}
+    public ServiceType getServiceType() {
+        return serviceType;
+    }
 
-	public Location getLocation() {
-		return location;
-	}
+    public Assignment getAssignment() {
+        return assignment;
+    }
 
-	public Calendar getPlannedStart() {
-		return plannedStart;
-	}
+    public Location getLocation() {
+        return location;
+    }
 
-	public Calendar getPlannedEnd() {
-		return plannedEnd;
-	}
+    public Calendar getPlannedStart() {
+        return plannedStart;
+    }
 
-	public Calendar getRealStart() {
-		return realStart;
-	}
+    public Calendar getPlannedEnd() {
+        return plannedEnd;
+    }
 
-	public Calendar getRealEnd() {
-		return realEnd;
-	}
+    public Calendar getRealStart() {
+        return realStart;
+    }
 
-	public boolean isStandby() {
-		return standby;
-	}
+    public Calendar getRealEnd() {
+        return realEnd;
+    }
 
-	public String getNotes() {
-		return notes;
-	}
+    public boolean isStandby() {
+        return standby;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
 }

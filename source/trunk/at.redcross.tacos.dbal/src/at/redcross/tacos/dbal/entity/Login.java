@@ -12,78 +12,80 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "Login")
-public class Login {
+public class Login extends EntityImpl {
 
-	@Id
-	@Column(unique = true)
-	private String alias;
+    private static final long serialVersionUID = -8204373123508547368L;
 
-	@Column
-	private String password;
+    @Id
+    @Column(unique = true)
+    private String alias;
 
-	@Temporal(TemporalType.DATE)
-	private Calendar expireAt;
+    @Column
+    private String password;
 
-	@Column
-	private boolean invalidLogout;
+    @Temporal(TemporalType.DATE)
+    private Calendar expireAt;
 
-	@Column
-	private boolean passwordExpired;
+    @Column
+    private boolean invalidLogout;
 
-	@OneToOne(mappedBy = "login")
-	private SystemUser systemUser;
+    @Column
+    private boolean passwordExpired;
 
-	// ---------------------------------
-	// Setters for the properties
-	// ---------------------------------
-	public void setAlias(String alias) {
-		this.alias = alias;
-	}
+    @OneToOne(mappedBy = "login")
+    private SystemUser systemUser;
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    // ---------------------------------
+    // Setters for the properties
+    // ---------------------------------
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
 
-	public void setExpireAt(Calendar expireAt) {
-		this.expireAt = expireAt;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public void setInvalidLogout(boolean invalidLogout) {
-		this.invalidLogout = invalidLogout;
-	}
+    public void setExpireAt(Calendar expireAt) {
+        this.expireAt = expireAt;
+    }
 
-	public void setPasswordExpired(boolean passwordExpired) {
-		this.passwordExpired = passwordExpired;
-	}
+    public void setInvalidLogout(boolean invalidLogout) {
+        this.invalidLogout = invalidLogout;
+    }
 
-	public void setSystemUser(SystemUser systemUser) {
-		this.systemUser = systemUser;
-	}
+    public void setPasswordExpired(boolean passwordExpired) {
+        this.passwordExpired = passwordExpired;
+    }
 
-	// ---------------------------------
-	// Getters for the properties
-	// ---------------------------------
-	public String getAlias() {
-		return alias;
-	}
+    public void setSystemUser(SystemUser systemUser) {
+        this.systemUser = systemUser;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    // ---------------------------------
+    // Getters for the properties
+    // ---------------------------------
+    public String getAlias() {
+        return alias;
+    }
 
-	public Calendar getExpireAt() {
-		return expireAt;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public boolean isInvalidLogout() {
-		return invalidLogout;
-	}
+    public Calendar getExpireAt() {
+        return expireAt;
+    }
 
-	public boolean isPasswordExpired() {
-		return passwordExpired;
-	}
+    public boolean isInvalidLogout() {
+        return invalidLogout;
+    }
 
-	public SystemUser getSystemUser() {
-		return systemUser;
-	}
+    public boolean isPasswordExpired() {
+        return passwordExpired;
+    }
+
+    public SystemUser getSystemUser() {
+        return systemUser;
+    }
 }

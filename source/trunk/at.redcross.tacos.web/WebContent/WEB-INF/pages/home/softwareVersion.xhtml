@@ -20,9 +20,9 @@
 	<ui:define name="content">
 		<p><h:outputText value="Alle verfügbaren Software Versionen im System:" /></p>
 		<rich:dataTable id="configList" forcedId="true" rendered="#{not empty softwareVersionBean.versions}" styleClass="bigtable"
-			value="#{softwareVersionBean.versions}" var="configs" onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"
+			value="#{softwareVersionBean.versions}" var="version" onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"
 			onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
-			<rich:column sortBy="#{config.id}" styleClass="smallColumn">
+			<rich:column sortBy="#{version.id}" styleClass="smallColumn">
 				<f:facet name="header">
 					<h:outputText value="ID" />
 				</f:facet>
@@ -36,15 +36,34 @@
 			</rich:column>
 			<rich:column styleClass="smallColumn">
 				<f:facet name="header">
-					<h:outputText value="Datum" />
-				</f:facet>
-				<h:outputText value="#{version.date}" />
-			</rich:column>
-			<rich:column styleClass="smallColumn">
-				<f:facet name="header">
 					<h:outputText value="Version" />
 				</f:facet>
 				<h:outputText value="#{version.version}" />
+			</rich:column>
+
+			<rich:column styleClass="smallColumn">
+				<f:facet name="header">
+					<h:outputText value="Created by" />
+				</f:facet>
+				<h:outputText value="#{version.history.createdBy}" />
+			</rich:column>
+			<rich:column styleClass="smallColumn">
+				<f:facet name="header">
+					<h:outputText value="Created at" />
+				</f:facet>
+				<h:outputText value="#{version.history.createdAt}" />
+			</rich:column>
+			<rich:column styleClass="smallColumn">
+				<f:facet name="header">
+					<h:outputText value="Last updated by" />
+				</f:facet>
+				<h:outputText value="#{version.history.changedBy}" />
+			</rich:column>
+			<rich:column styleClass="smallColumn">
+				<f:facet name="header">
+					<h:outputText value="Last update at" />
+				</f:facet>
+				<h:outputText value="#{version.history.changedAt}" />
 			</rich:column>
 		</rich:dataTable>
 	</ui:define>

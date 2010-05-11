@@ -4,29 +4,28 @@
 <body>
 <ui:composition>
 	<div id="page-header">
-		<div id="page-title">
-			<a4j:status>
-				<f:facet name="start">
-					<h:panelGroup>
-						<h:graphicImage library="images" name="page/ajax-loader-big.gif" alt="Image:[updating]" title="Updating, please wait ..." />
-						<h2 class="title"><h:outputText value="#{caption}" /></h2>
-					</h:panelGroup>
-				</f:facet>
-				<f:facet name="stop">
-					<h:panelGroup>
-						<ui:insert name="page-image" />
-						<h2 class="title"><ui:insert name="page-title" /></h2>
-					</h:panelGroup>
-				</f:facet>
-			</a4j:status>
-			<div class="clear" />
-		</div>
-		<div id="page-toolbar" class="toolbar"> <ui:insert name="toolbar" /> </div>
-		<div class="clear" />
+		<div id="page-title"><a4j:status>
+			<f:facet name="start">
+				<h:panelGroup>
+					<h:graphicImage library="images" name="page/ajax-loader-big.gif" alt="Image:[updating]" title="Updating, please wait ..." />
+					<h2 class="title"><h:outputText value="#{caption}" /></h2>
+				</h:panelGroup>
+			</f:facet>
+			<f:facet name="stop">
+				<h:panelGroup>
+					<ui:insert name="page-image" />
+					<h2 class="title"><ui:insert name="page-title" /></h2>
+				</h:panelGroup>
+			</f:facet>
+		</a4j:status>
+		<div class="clear" /> 
 	</div>
-	<div id="page-content">
+	<div id="page-toolbar" class="toolbar"><ui:insert name="toolbar" /></div>
+	   <div class="clear" />
+	</div>
+	<a4j:form id="page-content">
 		<ui:insert name="content">Default Content</ui:insert>
-	</div>
+	</a4j:form>
 </ui:composition>
 </body>
 </html>

@@ -14,7 +14,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -24,153 +23,152 @@ import javax.persistence.TemporalType;
 @Table(name = "SystemUser")
 public class SystemUser extends EntityImpl {
 
-	private static final long serialVersionUID = 1556985467901977440L;
+    private static final long serialVersionUID = 1556985467901977440L;
 
-	@Id
-	private long id;
+    @Id
+    private long id;
 
-	@Column(nullable = false)
-	private String firstName;
+    @Column(nullable = false)
+    private String firstName;
 
-	@Column(nullable = false)
-	private String lastName;
+    @Column(nullable = false)
+    private String lastName;
 
-	@Enumerated(EnumType.STRING)
-	private Gender gender;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
-	@Temporal(TemporalType.DATE)
-	private Calendar birthday;
+    @Temporal(TemporalType.DATE)
+    private Calendar birthday;
 
-	@Embedded
-	@Column(nullable = false)
-	private Address address;
+    @Embedded
+    @Column(nullable = false)
+    private Address address;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	private Login login;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Login login;
 
-	@ManyToMany
-	private Collection<Group> groups;
-	
-	@OneToMany
-	private Collection<Competence> competences;
+    @ManyToMany
+    private Collection<Group> groups;
 
-	// ---------------------------------
-	// Custom methods
-	// ---------------------------------
-	/**
-	 * Adds this user to the given group
-	 * 
-	 * @param group
-	 *            the group to add this user
-	 */
-	public void addGroup(Group group) {
-		getGroups().add(group);
-	}
+    @ManyToMany
+    private Collection<Competence> competences;
 
-	/**
-	 * Returns whether or not this user has the given authority. All current
-	 * roles are considered when the authority is queried.
-	 * 
-	 * @param authority
-	 *            the authority to query
-	 */
-	public boolean hasAuthority(String name) {
-		List<Authority> authorities = new ArrayList<Authority>();
-		for (Group group : getGroups()) {
-			authorities.addAll(group.getAuthority());
-		}
-		Iterator<Authority> authIter = authorities.iterator();
-		while (authIter.hasNext()) {
-			Authority authority = authIter.next();
-			if (authority.getId().equals(name)) {
-				return true;
-			}
-		}
-		return false;
-	}
+    // ---------------------------------
+    // Custom methods
+    // ---------------------------------
+    /**
+     * Adds this user to the given group
+     * 
+     * @param group
+     *            the group to add this user
+     */
+    public void addGroup(Group group) {
+        getGroups().add(group);
+    }
 
-	// ---------------------------------
-	// Setters for the properties
-	// ---------------------------------
-	public void setId(long id) {
-		this.id = id;
-	}
+    /**
+     * Returns whether or not this user has the given authority. All current
+     * roles are considered when the authority is queried.
+     * 
+     * @param authority
+     *            the authority to query
+     */
+    public boolean hasAuthority(String name) {
+        List<Authority> authorities = new ArrayList<Authority>();
+        for (Group group : getGroups()) {
+            authorities.addAll(group.getAuthority());
+        }
+        Iterator<Authority> authIter = authorities.iterator();
+        while (authIter.hasNext()) {
+            Authority authority = authIter.next();
+            if (authority.getId().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    // ---------------------------------
+    // Setters for the properties
+    // ---------------------------------
+    public void setId(long id) {
+        this.id = id;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	public void setGender(Gender gender) {
-		this.gender = gender;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public void setBirthday(Calendar birthday) {
-		this.birthday = birthday;
-	}
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
 
-	public void setAddress(Address address) {
-		this.address = address;
-	}
+    public void setBirthday(Calendar birthday) {
+        this.birthday = birthday;
+    }
 
-	public void setLogin(Login login) {
-		this.login = login;
-	}
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
-	public void setGroups(Collection<Group> groups) {
-		this.groups = groups;
-	}
-	
-	public void setCompetences(Collection<Competence> competences) {
-		this.competences = competences;
-	}
+    public void setLogin(Login login) {
+        this.login = login;
+    }
 
-	// ---------------------------------
-	// Setters for the properties
-	// ---------------------------------
-	public long getId() {
-		return id;
-	}
+    public void setGroups(Collection<Group> groups) {
+        this.groups = groups;
+    }
 
-	public String getLastName() {
-		return lastName;
-	}
+    public void setCompetences(Collection<Competence> competences) {
+        this.competences = competences;
+    }
 
-	public String getFirstName() {
-		return firstName;
-	}
+    // ---------------------------------
+    // Setters for the properties
+    // ---------------------------------
+    public long getId() {
+        return id;
+    }
 
-	public Gender getGender() {
-		return gender;
-	}
+    public String getLastName() {
+        return lastName;
+    }
 
-	public Calendar getBirthday() {
-		return birthday;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public Address getAddress() {
-		return address;
-	}
+    public Gender getGender() {
+        return gender;
+    }
 
-	public Login getLogin() {
-		return login;
-	}
+    public Calendar getBirthday() {
+        return birthday;
+    }
 
-	public Collection<Group> getGroups() {
-		if (groups == null) {
-			groups = new ArrayList<Group>();
-		}
-		return groups;
-	}
-	
-	public Collection<Competence> getCompetences() {
-		if (competences == null) {
-			competences = new ArrayList<Competence>();
-		}
-		return competences;
-	}
+    public Address getAddress() {
+        return address;
+    }
 
+    public Login getLogin() {
+        return login;
+    }
+
+    public Collection<Group> getGroups() {
+        if (groups == null) {
+            groups = new ArrayList<Group>();
+        }
+        return groups;
+    }
+
+    public Collection<Competence> getCompetences() {
+        if (competences == null) {
+            competences = new ArrayList<Competence>();
+        }
+        return competences;
+    }
 }

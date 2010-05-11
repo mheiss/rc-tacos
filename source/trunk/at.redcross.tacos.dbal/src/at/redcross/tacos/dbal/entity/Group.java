@@ -12,63 +12,65 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "UserGroup")
-public class Group {
+public class Group extends EntityImpl {
 
-	@Id
-	private String name;
+    private static final long serialVersionUID = 3623563317740713699L;
 
-	@Column(nullable = false)
-	private String description;
+    @Id
+    private String name;
 
-	@ManyToMany
-	private Collection<Authority> authority;
+    @Column(nullable = false)
+    private String description;
 
-	// ---------------------------------
-	// Custom methods
-	// ---------------------------------
-	/**
-	 * Returns whether or not this group has the given authority
-	 * 
-	 * @param authority
-	 *            the authority to query
-	 */
-	public boolean hasAuthority(String name) {
-		Iterator<Authority> authIter = getAuthority().iterator();
-		while (authIter.hasNext()) {
-			Authority authority = authIter.next();
-			if (authority.getId().equals(name)) {
-				return true;
-			}
-		}
-		return false;
-	}
+    @ManyToMany
+    private Collection<Authority> authority;
 
-	// ---------------------------------
-	// Setters for the properties
-	// ---------------------------------
-	public void setName(String name) {
-		this.name = name;
-	}
+    // ---------------------------------
+    // Custom methods
+    // ---------------------------------
+    /**
+     * Returns whether or not this group has the given authority
+     * 
+     * @param authority
+     *            the authority to query
+     */
+    public boolean hasAuthority(String name) {
+        Iterator<Authority> authIter = getAuthority().iterator();
+        while (authIter.hasNext()) {
+            Authority authority = authIter.next();
+            if (authority.getId().equals(name)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    // ---------------------------------
+    // Setters for the properties
+    // ---------------------------------
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	// ---------------------------------
-	// Setters for the properties
-	// ---------------------------------
-	public String getName() {
-		return name;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    // ---------------------------------
+    // Setters for the properties
+    // ---------------------------------
+    public String getName() {
+        return name;
+    }
 
-	public Collection<Authority> getAuthority() {
-		if (authority == null) {
-			authority = new ArrayList<Authority>();
-		}
-		return authority;
-	}
+    public String getDescription() {
+        return description;
+    }
+
+    public Collection<Authority> getAuthority() {
+        if (authority == null) {
+            authority = new ArrayList<Authority>();
+        }
+        return authority;
+    }
 }

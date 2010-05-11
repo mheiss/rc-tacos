@@ -6,7 +6,7 @@ import javax.persistence.TypedQuery;
 import at.redcross.tacos.datasetup.DatasetupStage;
 import at.redcross.tacos.dbal.entity.ServiceType;
 
-// creates service stages
+// creates service types
 public class ServiceTypeStage implements DatasetupStage {
 
     @Override
