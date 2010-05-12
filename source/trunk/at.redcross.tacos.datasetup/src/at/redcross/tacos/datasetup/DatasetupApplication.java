@@ -107,11 +107,11 @@ public class DatasetupApplication {
     public static void main(String[] args) {
         DatasetupApplication app = new DatasetupApplication();
         app.registerStage(new DistrictStage());
+        app.registerStage(new LocationStage());
         app.registerStage(new ServiceTypeStage());
         app.registerStage(new AssignmentStage());
         app.registerStage(new CompetenceStage());
         app.registerStage(new SystemUserStage());
-        app.registerStage(new LocationStage());
         app.execute();
     }
 }

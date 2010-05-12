@@ -1,6 +1,6 @@
 package at.redcross.tacos.dbal.entity;
 
-import java.util.Calendar;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +10,10 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 @Entity
 @Table(name = "RosterEntry")
@@ -22,6 +26,9 @@ public class RosterEntry extends EntityImpl {
     private long id;
 
     @OneToOne
+    private SystemUser systemUser;
+
+    @OneToOne
     private Location location;
 
     @OneToOne
@@ -31,16 +38,16 @@ public class RosterEntry extends EntityImpl {
     private Assignment assignment;
 
     @Temporal(TemporalType.DATE)
-    private Calendar plannedStart;
+    private Date plannedStart;
 
     @Temporal(TemporalType.DATE)
-    private Calendar plannedEnd;
+    private Date plannedEnd;
 
     @Temporal(TemporalType.DATE)
-    private Calendar realStart;
+    private Date realStart;
 
     @Temporal(TemporalType.DATE)
-    private Calendar realEnd;
+    private Date realEnd;
 
     @Column
     private String notes;
@@ -49,8 +56,40 @@ public class RosterEntry extends EntityImpl {
     private boolean standby;
 
     // ---------------------------------
+    // 
+    // ---------------------------------
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("id", id).append("user", systemUser).toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(id).hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        if (obj.getClass() != getClass()) {
+            return false;
+        }
+        RosterEntry rhs = (RosterEntry) obj;
+        return new EqualsBuilder().append(id, rhs.id).isEquals();
+    }
+
+    // ---------------------------------
     // Setters for the properties
     // ---------------------------------
+    public void setSystemUser(SystemUser systemUser) {
+        this.systemUser = systemUser;
+    }
+
     public void setLocation(Location location) {
         this.location = location;
     }
@@ -63,19 +102,19 @@ public class RosterEntry extends EntityImpl {
         this.assignment = assignment;
     }
 
-    public void setPlannedStart(Calendar plannedStart) {
+    public void setPlannedStart(Date plannedStart) {
         this.plannedStart = plannedStart;
     }
 
-    public void setPlannedEnd(Calendar plannedEnd) {
+    public void setPlannedEnd(Date plannedEnd) {
         this.plannedEnd = plannedEnd;
     }
 
-    public void setRealStart(Calendar realStart) {
+    public void setRealStart(Date realStart) {
         this.realStart = realStart;
     }
 
-    public void setRealEnd(Calendar realEnd) {
+    public void setRealEnd(Date realEnd) {
         this.realEnd = realEnd;
     }
 
@@ -94,6 +133,10 @@ public class RosterEntry extends EntityImpl {
         return id;
     }
 
+    public SystemUser getSystemUser() {
+        return systemUser;
+    }
+
     public ServiceType getServiceType() {
         return serviceType;
     }
@@ -106,19 +149,19 @@ public class RosterEntry extends EntityImpl {
         return location;
     }
 
-    public Calendar getPlannedStart() {
+    public Date getPlannedStart() {
         return plannedStart;
     }
 
-    public Calendar getPlannedEnd() {
+    public Date getPlannedEnd() {
         return plannedEnd;
     }
 
-    public Calendar getRealStart() {
+    public Date getRealStart() {
         return realStart;
     }
 
-    public Calendar getRealEnd() {
+    public Date getRealEnd() {
         return realEnd;
     }
 

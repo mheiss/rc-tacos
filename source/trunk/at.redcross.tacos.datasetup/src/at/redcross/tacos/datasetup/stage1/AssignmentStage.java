@@ -16,72 +16,61 @@ public class AssignmentStage implements DatasetupStage {
             manager.remove(assignment);
         }
     }
-      
+
     @Override
     public void performImport(EntityManager manager) {
         {
-            Assignment assignment = new Assignment();
-            assignment.setName("Fahrer");
+            Assignment assignment = new Assignment("Fahrer");
             assignment.setDescription("Fahrer");
             manager.persist(assignment);
         }
         {
-        	Assignment assignment = new Assignment();
-            assignment.setName("Sanit‰ter");
-            assignment.setDescription("Sanit‰ter");
+            Assignment assignment = new Assignment("Sanit√§ter");
+            assignment.setDescription("Sanit√§ter");
             manager.persist(assignment);
         }
         {
-        	Assignment assignment = new Assignment();
-            assignment.setName("Notfallsanit‰ter");
-            assignment.setDescription("Notfallsanit‰ter");
+            Assignment assignment = new Assignment("Notfallsanit√§ter");
+            assignment.setDescription("Notfallsanit√§ter");
             manager.persist(assignment);
         }
         {
-        	Assignment assignment = new Assignment();
-            assignment.setName("Notarzt");
+            Assignment assignment = new Assignment("Notarzt");
             assignment.setDescription("Notarzt");
             manager.persist(assignment);
         }
         {
-        	Assignment assignment = new Assignment();
-            assignment.setName("Leitstellendisponent");
+            Assignment assignment = new Assignment("Leitstellendisponent");
             assignment.setDescription("Leitstellendisponent");
             manager.persist(assignment);
         }
         {
-        	Assignment assignment = new Assignment();
-            assignment.setName("Dienstf¸hrender");
-            assignment.setDescription("Dienstf¸hrender");
+            Assignment assignment = new Assignment("Dienstf√ºhrender");
+            assignment.setDescription("Dienstf√ºhrender");
             manager.persist(assignment);
         }
         {
-        	Assignment assignment = new Assignment();
-            assignment.setName("Inspektionsdienst");
+            Assignment assignment = new Assignment("Inspektionsdienst");
             assignment.setDescription("Inspektionsdienst");
             manager.persist(assignment);
         }
         {
-        	Assignment assignment = new Assignment();
-            assignment.setName("BKTW-Fahrer");
+            Assignment assignment = new Assignment("BKTW-Fahrer");
             assignment.setDescription("BKTW-Fahrer");
             manager.persist(assignment);
         }
         {
-        	Assignment assignment = new Assignment();
-            assignment.setName("Journaldienst");
+            Assignment assignment = new Assignment("Journaldienst");
             assignment.setDescription("Journaldienst");
             manager.persist(assignment);
         }
         {
-        	Assignment assignment = new Assignment();
-            assignment.setName("Volont‰r");
-            assignment.setDescription("Volont‰r");
+            Assignment assignment = new Assignment("Volont√§r");
+            assignment.setDescription("Volont√§r");
             manager.persist(assignment);
         }
         {
-        	Assignment assignment = new Assignment();
-            assignment.setName("Sonstiges");
+            Assignment assignment = new Assignment("Sonstiges");
             assignment.setDescription("Sonstiges");
             manager.persist(assignment);
         }

@@ -19,13 +19,6 @@ public class EntityImpl implements Serializable {
     private History history;
 
     // ---------------------------------
-    // Setters for the properties
-    // ---------------------------------
-    public void setHistory(History history) {
-        this.history = history;
-    }
-
-    // ---------------------------------
     // Getters for the properties
     // ---------------------------------
     public History getHistory() {
