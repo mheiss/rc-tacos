@@ -77,7 +77,7 @@ div.block div.content {
 	padding: 10px 10px 8px;
 }
 
-ul .menu {
+ul.menu {
 	border: medium none;
 	list-style: none outside none;
 	text-align: left;
@@ -89,6 +89,15 @@ ul.menu li.menu-item {
 	background: url("../images/list-item.png") no-repeat scroll left 0.833em transparent;
 	list-style-image: none;
 	list-style-type: none;
+}
+
+ul.menu li.menu-item a:hover {
+	color: #000;
+}
+
+ul.menu li.selected a {
+	color: #000;
+	text-decoration: underline;
 }
 
 div.block ul li a,div.block ul.menu li a {

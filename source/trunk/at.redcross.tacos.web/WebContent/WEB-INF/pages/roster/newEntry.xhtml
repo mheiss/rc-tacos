@@ -4,8 +4,8 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
 <body>
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
-	<ui:param name="section" value="home" />
-	<ui:param name="page" value="home" />
+	<ui:param name="section" value="roster" />
+	<ui:param name="page" value="createView" />
 
 	<!-- Include the navigation of the page -->
 	<ui:define name="navigation">
@@ -13,14 +13,14 @@
 	</ui:define>
 
 	<!-- Customize the title and image -->
-	<ui:define name="page-title"> Willkommen bei TACOS </ui:define>
+	<ui:define name="page-title"> Neuer Dienstplaneintrag </ui:define>
 	<ui:define name="page-image">
 		<h:graphicImage library="images/page" name="home.png" />
 	</ui:define>
 
 	<!-- Render the content -->
 	<ui:define name="content">
-		<p>Anstehende Dienste, wichtige Nachrichten ....</p>
+		<h:outputText value="Neuer Eintrag..." />
 	</ui:define>
 
 </ui:composition>

@@ -2,11 +2,7 @@
 	xsi:schemaLocation="http://ocpsoft.com/prettyfaces-xsd 
 	http://ocpsoft.com/xml/ns/prettyfaces/pretty-1.0.xsd">
 
-	<!-- ################ home ####################### -->
-	<url-mapping id="home">
-		<pattern>/</pattern>
-		<view-id>/WEB-INF/pages/home/home.faces</view-id>
-	</url-mapping>
+	<!-- ################ SPECIAL MAPPINGS ####################### -->
 	<url-mapping id="error">
 		<pattern>/error</pattern>
 		<query-param name="cameFrom" decode="false">#{errorBean.cameFrom}</query-param>
@@ -14,11 +10,47 @@
 		<view-id>/WEB-INF/pages/home/error.faces</view-id>
 		<action>#{errorBean.prettyInit}</action>
 	</url-mapping>
+
+	<!-- ################ home ####################### -->
+	<url-mapping id="home">
+		<pattern>/</pattern>
+		<view-id>/WEB-INF/pages/home/home.faces</view-id>
+	</url-mapping>
+	<url-mapping id="profile">
+		<pattern>/profile</pattern>
+		<view-id>/WEB-INF/pages/home/profile.faces</view-id>
+	</url-mapping>
+	<url-mapping id="links">
+		<pattern>/links</pattern>
+		<view-id>/WEB-INF/pages/home/links.faces</view-id>
+	</url-mapping>
+	<url-mapping id="info">
+		<pattern>/info</pattern>
+		<view-id>/WEB-INF/pages/home/info.faces</view-id>
+	</url-mapping>
+
+	<!-- ################ roster ####################### -->
+	<url-mapping id="dayView">
+		<pattern>/roster</pattern>
+		<view-id>/WEB-INF/pages/roster/dayView.faces</view-id>
+	</url-mapping>
+	<url-mapping id="personalView">
+		<pattern>/roster/my</pattern>
+		<view-id>/WEB-INF/pages/roster/personalView.faces</view-id>
+	</url-mapping>
+	<url-mapping id="weekView">
+		<pattern>/roster/week</pattern>
+		<view-id>/WEB-INF/pages/roster/weekView.faces</view-id>
+	</url-mapping>
+	<url-mapping id="createRoster">
+		<pattern>/roster/create</pattern>
+		<view-id>/WEB-INF/pages/roster/newEntry.faces</view-id>
+	</url-mapping>
+
+	<!-- ################ administration ####################### -->
 	<url-mapping id="softwareVersion">
 		<pattern>/administration/software</pattern>
 		<view-id>/WEB-INF/pages/home/softwareVersion.faces</view-id>
 		<action>#{softwareVersionBean.prettyInit}</action>
 	</url-mapping>
-
-	<!-- ################ home ####################### -->
 </pretty-config>
