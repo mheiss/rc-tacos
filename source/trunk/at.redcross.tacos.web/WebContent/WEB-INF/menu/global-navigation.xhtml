@@ -1,20 +1,20 @@
 <?xml version="1.0" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces">
 
 <body>
 <ui:composition>
-<div id="primary-menu">
+	<div id="primary-menu">
 	<ul class="menu">
-		<li class="tab active"><h:outputLink value="#">Home</h:outputLink></li>	
-		<li class="tab"><h:outputLink value="#">Dienstplan</h:outputLink></li>	
-		<li class="tab"><h:outputLink value="#">Informationen</h:outputLink></li>	
-		<li class="tab"><h:outputLink value="#">Profil</h:outputLink></li>	
-		<li class="tab"><h:outputLink value="#">Hilfe</h:outputLink></li>	
-		<li class="tab"><h:outputLink value="#">Administration</h:outputLink></li>	
+		<li class="tab #{section eq 'home' ? 'active' : ''}"><pretty:link mappingId="home">Home</pretty:link></li>
+		<li class="tab #{section eq 'roster' ? 'active' : ''}"><pretty:link mappingId="dayView">Dienstplan</pretty:link></li>
+		<li class="tab #{section eq 'info' ? 'active' : ''}"><h:outputLink value="#">Informationen</h:outputLink></li>
+		<li class="tab #{section eq 'help' ? 'active' : ''}"><h:outputLink value="#">Hilfe</h:outputLink></li>
+		<li class="tab #{section eq 'admin' ? 'active' : ''}"><h:outputLink value="#">Administration</h:outputLink></li>
 	</ul>
-</div>
+	</div>
 </ui:composition>
 </body>
 </html>

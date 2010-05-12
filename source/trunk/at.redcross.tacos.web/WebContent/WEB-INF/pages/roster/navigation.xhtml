@@ -10,16 +10,16 @@
 	<ui:define name="block-image">
 		<h:graphicImage library="images/page" name="home.png" />
 	</ui:define>
-	<ui:define name="block-title"> Startseite </ui:define>
+	<ui:define name="block-title"> Dienstplan </ui:define>
 	<!-- END: BLOCK-METADATA -->
 
 	<!-- BEGINNING: HOME-NAVIGATION -->
 	<ui:define name="block-content">
 		<ul class="menu">
-			<li class="menu-item #{page eq 'home' ? 'selected' : ''}"><pretty:link mappingId="home"> Startseite </pretty:link></li>
-			<li class="menu-item #{page eq 'profile' ? 'selected' : ''}"><pretty:link mappingId="profile"> Mein Profil </pretty:link></li>
-			<li class="menu-item #{page eq 'info' ? 'selected' : ''}"><pretty:link mappingId="info"> Informationen </pretty:link></li>
-			<li class="menu-item #{page eq 'links' ? 'selected' : ''}"><pretty:link mappingId="links"> Links </pretty:link></li>
+			<li class="menu-item #{page eq 'dayView' ? 'selected' : ''}"><pretty:link mappingId="dayView"> Tageansicht </pretty:link></li>
+			<li class="menu-item #{page eq 'myView' ? 'selected' : ''}"><pretty:link mappingId="personalView"> Meine Dienste </pretty:link></li>
+			<li class="menu-item #{page eq 'weekView' ? 'selected' : ''}"><pretty:link mappingId="weekView"> Wochenansicht </pretty:link></li>
+			<li class="menu-item #{page eq 'createView' ? 'selected' : ''}"><pretty:link mappingId="createRoster"> Neuer Eintrag </pretty:link></li>
 		</ul>
 	</ui:define>
 	<!-- END: HOME-NAVIGATION -->
