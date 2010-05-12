@@ -1,7 +1,8 @@
 package at.redcross.tacos.dbal.entity;
 
-import java.util.Calendar;
+import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -9,6 +10,10 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 @Entity
 @Table(name = "Login")
@@ -24,7 +29,7 @@ public class Login extends EntityImpl {
     private String password;
 
     @Temporal(TemporalType.DATE)
-    private Calendar expireAt;
+    private Date expireAt;
 
     @Column
     private boolean invalidLogout;
@@ -32,21 +37,64 @@ public class Login extends EntityImpl {
     @Column
     private boolean passwordExpired;
 
-    @OneToOne(mappedBy = "login")
+    @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
     private SystemUser systemUser;
+
+    /**
+     * Default protected constructor for JPA
+     */
+    protected Login() {
+    }
+
+    /**
+     * Creates a new {@code Login} using the given alias and user.
+     * 
+     * @param user
+     *            the system user to connect to
+     * @param alias
+     *            the unique alias of the login
+     */
+    public Login(SystemUser user, String alias) {
+        this.alias = alias;
+        this.systemUser = user;
+    }
+
+    // ---------------------------------
+    // 
+    // ---------------------------------
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("alias", alias).toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(alias).hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        if (obj.getClass() != getClass()) {
+            return false;
+        }
+        Login rhs = (Login) obj;
+        return new EqualsBuilder().append(alias, rhs.alias).isEquals();
+    }
 
     // ---------------------------------
     // Setters for the properties
     // ---------------------------------
-    public void setAlias(String alias) {
-        this.alias = alias;
-    }
-
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public void setExpireAt(Calendar expireAt) {
+    public void setExpireAt(Date expireAt) {
         this.expireAt = expireAt;
     }
 
@@ -56,10 +104,6 @@ public class Login extends EntityImpl {
 
     public void setPasswordExpired(boolean passwordExpired) {
         this.passwordExpired = passwordExpired;
-    }
-
-    public void setSystemUser(SystemUser systemUser) {
-        this.systemUser = systemUser;
     }
 
     // ---------------------------------
@@ -73,7 +117,7 @@ public class Login extends EntityImpl {
         return password;
     }
 
-    public Calendar getExpireAt() {
+    public Date getExpireAt() {
         return expireAt;
     }
 

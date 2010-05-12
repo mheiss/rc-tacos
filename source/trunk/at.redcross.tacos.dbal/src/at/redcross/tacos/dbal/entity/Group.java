@@ -10,6 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 @Entity
 @Table(name = "UserGroup")
 public class Group extends EntityImpl {
@@ -24,6 +28,50 @@ public class Group extends EntityImpl {
 
     @ManyToMany
     private Collection<Authority> authority;
+
+    /**
+     * Default protected constructor for JPA
+     */
+    protected Group() {
+    }
+
+    /**
+     * Creates a new {@code Group} using the given name
+     * 
+     * @param name
+     *            the name of the group
+     */
+    public Group(String name) {
+        this.name = name;
+    }
+
+    // ---------------------------------
+    // 
+    // ---------------------------------
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("name", name).toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(name).hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        if (obj.getClass() != getClass()) {
+            return false;
+        }
+        Group rhs = (Group) obj;
+        return new EqualsBuilder().append(name, rhs.name).isEquals();
+    }
 
     // ---------------------------------
     // Custom methods
@@ -48,10 +96,6 @@ public class Group extends EntityImpl {
     // ---------------------------------
     // Setters for the properties
     // ---------------------------------
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public void setDescription(String description) {
         this.description = description;
     }

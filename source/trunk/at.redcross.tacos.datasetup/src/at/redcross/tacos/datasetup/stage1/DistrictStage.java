@@ -19,8 +19,7 @@ public class DistrictStage implements DatasetupStage {
     @Override
     public void performImport(EntityManager manager) {
         {
-            District district = new District();
-            district.setShortName("BM");
+            District district = new District("BM");
             district.setFullName("Bezirk Bruck/Kapfenberg");
             manager.persist(district);
         }

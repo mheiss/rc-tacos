@@ -10,6 +10,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 @Entity
 @Table(name = "District")
 public class District extends EntityImpl {
@@ -17,52 +21,62 @@ public class District extends EntityImpl {
     private static final long serialVersionUID = 9135510026388921765L;
 
     @Id
-    private String shortName;
+    private String id;
 
     @Column(nullable = false)
     private String fullName;
 
-    @OneToMany
+    @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "District_Fk")
     private Collection<Location> locations;
 
-    // ---------------------------------
-    // public API
-    // ---------------------------------
     /**
-     * Adds the given location to this district
-     * 
-     * @param location
-     *            the location to add
+     * Default protected constructor for JPA
      */
-    public void addLocation(Location location) {
-        Collection<Location> locations = getLocations();
-        if (locations.contains(locations)) {
-            return;
-        }
-        location.setDistrict(this);
-        locations.add(location);
+    protected District() {
     }
 
     /**
-     * Removes the given location from this district.
+     * Creates a new {@code District} using the given unique short name
      * 
-     * @param location
-     *            the location to remove
+     * @param id
+     *            the id of the district
      */
-    public void removeLocation(Location location) {
-        if (getLocations().remove(location)) {
-            location.setDistrict(null);
+    public District(String id) {
+        this.id = id;
+    }
+
+    // ---------------------------------
+    // 
+    // ---------------------------------
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("id", id).toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(id).hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
         }
+        if (obj == this) {
+            return true;
+        }
+        if (obj.getClass() != getClass()) {
+            return false;
+        }
+        District rhs = (District) obj;
+        return new EqualsBuilder().append(id, rhs.id).isEquals();
     }
 
     // ---------------------------------
     // Setters for the properties
     // ---------------------------------
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
-    }
-
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
@@ -74,8 +88,8 @@ public class District extends EntityImpl {
     // ---------------------------------
     // Getters for the properties
     // ---------------------------------
-    public String getShortName() {
-        return shortName;
+    public String getId() {
+        return id;
     }
 
     public String getFullName() {

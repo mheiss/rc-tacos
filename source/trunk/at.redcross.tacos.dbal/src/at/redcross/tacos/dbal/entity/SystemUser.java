@@ -12,12 +12,17 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 @Entity
 @Table(name = "SystemUser")
@@ -26,6 +31,7 @@ public class SystemUser extends EntityImpl {
     private static final long serialVersionUID = 1556985467901977440L;
 
     @Id
+    @GeneratedValue
     private long id;
 
     @Column(nullable = false)
@@ -44,7 +50,7 @@ public class SystemUser extends EntityImpl {
     @Column(nullable = false)
     private Address address;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "systemUser", orphanRemoval = true, cascade = CascadeType.ALL)
     private Login login;
 
     @ManyToMany
@@ -52,6 +58,35 @@ public class SystemUser extends EntityImpl {
 
     @ManyToMany
     private Collection<Competence> competences;
+
+    // ---------------------------------
+    // 
+    // ---------------------------------
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("id", id).append("firstName", firstName).append(
+                "lastName", lastName).toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(id).hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        if (obj.getClass() != getClass()) {
+            return false;
+        }
+        SystemUser rhs = (SystemUser) obj;
+        return new EqualsBuilder().append(id, rhs.id).isEquals();
+    }
 
     // ---------------------------------
     // Custom methods
@@ -91,10 +126,6 @@ public class SystemUser extends EntityImpl {
     // ---------------------------------
     // Setters for the properties
     // ---------------------------------
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }

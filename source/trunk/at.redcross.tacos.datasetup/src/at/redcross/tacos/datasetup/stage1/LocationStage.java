@@ -5,6 +5,7 @@ import javax.persistence.TypedQuery;
 
 import at.redcross.tacos.datasetup.DatasetupStage;
 import at.redcross.tacos.dbal.entity.Address;
+import at.redcross.tacos.dbal.entity.District;
 import at.redcross.tacos.dbal.entity.Location;
 
 // creates service stages
@@ -20,16 +21,16 @@ public class LocationStage implements DatasetupStage {
 
     @Override
     public void performImport(EntityManager manager) {
+        District district = manager.find(District.class, "BM");
         {
-            Address address1 = new Address();
-            address1.setCity("Bruck an der Mur");
-            address1.setEmail("bruck@st.roteskreuz.at");
+            Address address = new Address();
+            address.setCity("Bruck an der Mur");
+            address.setEmail("bruck@st.roteskreuz.at");
 
-            Location location = new Location();
+            Location location = new Location(district, "BK");
             location.setName("Bezirk: Bruck - Kapfenberg");
-            location.setAddress(address1);
+            location.setAddress(address);
 
-            // location.setDistrict(district);
             manager.persist(location);
         }
         /*

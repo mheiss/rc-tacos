@@ -7,49 +7,103 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 @Entity
 @Table(name = "Location")
 public class Location extends EntityImpl {
 
-	private static final long serialVersionUID = 6997613929181751597L;
+    private static final long serialVersionUID = 6997613929181751597L;
 
-	@Id
-	private String name;
+    @Id
+    private String id;
 
-	@Embedded
-	@Column(nullable = false)
-	private Address address;
+    @Column(nullable = false)
+    private String name;
 
-	@ManyToOne
-	private District district;
+    @Embedded
+    @Column(nullable = false)
+    private Address address;
 
-	// ---------------------------------
-	// Setters for the properties
-	// ---------------------------------
-	public void setName(String name) {
-		this.name = name;
-	}
+    @ManyToOne
+    private District district;
 
-	public void setAddress(Address address) {
-		this.address = address;
-	}
+    /**
+     * Default protected constructor for JPA
+     */
+    protected Location() {
+    }
 
-	public void setDistrict(District district) {
-		this.district = district;
-	}
+    /**
+     * Creates a new {@code Location} using the id name and district
+     * 
+     * @param district
+     *            the district of the location
+     * @param name
+     *            the short name of the location
+     */
+    public Location(District district, String id) {
+        this.id = id;
+        this.district = district;
+    }
 
-	// ---------------------------------
-	// Getters for the properties
-	// ---------------------------------
-	public String getName() {
-		return name;
-	}
+    // ---------------------------------
+    // 
+    // ---------------------------------
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("id", id).toString();
+    }
 
-	public Address getAddress() {
-		return address;
-	}
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(id).hashCode();
+    }
 
-	public District getDistrict() {
-		return district;
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        if (obj.getClass() != getClass()) {
+            return false;
+        }
+        Location rhs = (Location) obj;
+        return new EqualsBuilder().append(id, rhs.id).isEquals();
+    }
+
+    // ---------------------------------
+    // Setters for the properties
+    // ---------------------------------
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    // ---------------------------------
+    // Getters for the properties
+    // ---------------------------------
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public District getDistrict() {
+        return district;
+    }
 }

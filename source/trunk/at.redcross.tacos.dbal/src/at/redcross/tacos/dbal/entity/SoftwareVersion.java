@@ -14,63 +14,94 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 @Entity
 @Table(name = "SoftwareVersion")
 public class SoftwareVersion extends EntityImpl {
 
-	private static final long serialVersionUID = -5465614486707438472L;
+    private static final long serialVersionUID = -5465614486707438472L;
 
-	@Id
-	@Column(name = "id")
-	@GeneratedValue
-	private long id;
+    @Id
+    @GeneratedValue
+    private long id;
 
-	@Column(name = "date", nullable = false)
-	@Temporal(TemporalType.DATE)
-	private java.util.Date date;
+    @Column(name = "date", nullable = false)
+    @Temporal(TemporalType.DATE)
+    private java.util.Date date;
 
-	@Column(name = "version", nullable = false)
-	private String version;
+    @Column(name = "version", nullable = false)
+    private String version;
 
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "SoftwareVersion_Fk")
-	private Collection<ChangelogEntry> changelogs;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "SoftwareVersion_Fk")
+    private Collection<ChangelogEntry> changelogs;
 
-	// ---------------------------------
-	// Setters for the properties
-	// ---------------------------------
-	public void setVersion(String version) {
-		this.version = version;
-	}
+    // ---------------------------------
+    // 
+    // ---------------------------------
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("id", id).toString();
+    }
 
-	public void setDate(java.util.Date date) {
-		this.date = date;
-	}
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(id).hashCode();
+    }
 
-	public void addChangelogEntry(ChangelogEntry entry) {
-		getChangelogs().add(entry);
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        if (obj.getClass() != getClass()) {
+            return false;
+        }
+        SoftwareVersion rhs = (SoftwareVersion) obj;
+        return new EqualsBuilder().append(id, rhs.id).isEquals();
+    }
 
-	// ---------------------------------
-	// Getters for the properties
-	// ---------------------------------
-	public long getId() {
-		return id;
-	}
+    // ---------------------------------
+    // Setters for the properties
+    // ---------------------------------
+    public void setVersion(String version) {
+        this.version = version;
+    }
 
-	public String getVersion() {
-		return version;
-	}
+    public void setDate(java.util.Date date) {
+        this.date = date;
+    }
 
-	public java.util.Date getDate() {
-		return date;
-	}
+    public void addChangelogEntry(ChangelogEntry entry) {
+        getChangelogs().add(entry);
+    }
 
-	public Collection<ChangelogEntry> getChangelogs() {
-		if (changelogs == null) {
-			changelogs = new ArrayList<ChangelogEntry>();
-		}
-		return changelogs;
-	}
+    // ---------------------------------
+    // Getters for the properties
+    // ---------------------------------
+    public long getId() {
+        return id;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public java.util.Date getDate() {
+        return date;
+    }
+
+    public Collection<ChangelogEntry> getChangelogs() {
+        if (changelogs == null) {
+            changelogs = new ArrayList<ChangelogEntry>();
+        }
+        return changelogs;
+    }
 
 }
