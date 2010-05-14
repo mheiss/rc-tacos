@@ -45,6 +45,7 @@
 	<url-mapping id="createRoster">
 		<pattern>/roster/create</pattern>
 		<view-id>/WEB-INF/pages/roster/newEntry.faces</view-id>
+		<action>#{rosterEntryBean.prettyInit}</action>
 	</url-mapping>
 
 	<!-- ################ administration ####################### -->

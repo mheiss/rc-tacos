@@ -50,45 +50,68 @@
 		<p>
 			<h:outputText value="Hier können Sie einen neuen Dienstplaneintrag erstellen" />
 		</p>
+		<rich:messages globalOnly="true" />
 		<fieldset class="defaultStyle">
 			<legend><h:outputText value="Allgemeine Daten:" /></legend>
 			<ol>
 				<li>
-					<h:outputLabel value="Mitarbeiter" /> 
+					<h:outputLabel for="systemUser" value="Mitarbeiter" /> 
 					<div class="input">
-						<rich:comboBox selectFirstOnUpdate="false" defaultLabel="-- Mitarbeiter wählen ---" />
-					</div>
-				</li>
-				<li>
-					<h:outputLabel value="Ortsstelle" /> 
-					<div class="input">
-						<rich:comboBox selectFirstOnUpdate="false" defaultLabel="-- Orststelle wählen ---" />
-					</div>
-				</li>
-				<li>
-					<h:outputLabel value="Verwendung" /> 
-					<div class="input">
-						<rich:comboBox selectFirstOnUpdate="false" defaultLabel="-- Verwendung wählen ---">
-						
+						<rich:comboBox id="systemUser" defaultLabel="Mitarbeiter" value="#{rosterEntryBean.selectedUser}" selectFirstOnUpdate="false" 
+							validator="#{rosterEntryBean.validateUser}" 
+							required="true" requiredMessage="Bitte geben sie einen Mitarbeiter an">
+							<f:selectItems value="#{rosterEntryBean.userItems}" />
+							<rich:ajaxValidator event="onblur"/>
 						</rich:comboBox>
+						<rich:message for="systemUser" errorClass="error" />
 					</div>
 				</li>
 				<li>
-					<h:outputLabel value="Dienstverhältnis" /> 
+					<h:outputLabel for="location" value="Ortsstelle" /> 
 					<div class="input">
-						<rich:comboBox selectFirstOnUpdate="false" defaultLabel="-- Dienstverhältnis wählen ---" />
+						<rich:comboBox id="location" defaultLabel="Orststelle" value="#{rosterEntryBean.selectedLocation}" selectFirstOnUpdate="false" 
+							validator="#{rosterEntryBean.validateLocation}" 
+							required="true" requiredMessage="Bitte geben sie eine Dienststelle an">
+							<f:selectItems value="#{rosterEntryBean.locationItems}" />
+							<rich:ajaxValidator event="onblur"/>
+						</rich:comboBox>
+						<rich:message for="location" errorClass="error" />
 					</div>
 				</li>
 				<li>
-					<h:outputLabel value="Bereitschaft" /> 
+					<h:outputLabel for="assignment" value="Verwendung" /> 
 					<div class="input">
-						<h:selectBooleanCheckbox label="Bereitschaft" value="" />
+						<rich:comboBox id="assignment" defaultLabel="Verwendung" value="#{rosterEntryBean.selectedAssignment}" selectFirstOnUpdate="false" 
+							validator="#{rosterEntryBean.validateAssignment}" validatorMessage="Das gewählte Dienstverhältnis existiert nicht"
+							required="true" requiredMessage="Bitte geben sie eine Verwendung an">
+							<f:selectItems value="#{rosterEntryBean.assignmentItems}" />
+							<rich:ajaxValidator event="onblur"/>
+						</rich:comboBox>
+						<rich:message for="assignment" errorClass="error" />
 					</div>
 				</li>
 				<li>
-					<h:outputLabel value="Sonderdienst" /> 
+					<h:outputLabel for="serviceType" value="Dienstverhältnis" /> 
 					<div class="input">
-						<h:selectBooleanCheckbox value="" />
+						<rich:comboBox id="serviceType" defaultLabel="Dienstverhältnis" value="#{rosterEntryBean.selectedServiceType}" selectFirstOnUpdate="false" 
+							validator="#{rosterEntryBean.validateServiceType}"
+							required="true" requiredMessage="Bitte geben sie ein Dienstverhältnis an">
+							<f:selectItems value="#{rosterEntryBean.serviceTypeItems}" />
+							<rich:ajaxValidator event="onblur"/>
+						</rich:comboBox>
+						<rich:message for="serviceType" errorClass="error" />
+					</div>
+				</li>
+				<li>
+					<h:outputLabel for="standby" value="Bereitschaft" /> 
+					<div class="input">
+						<h:selectBooleanCheckbox id="standby" value="#{rosterEntryBean.rosterEntry.standby}" />
+					</div>
+				</li>
+				<li>
+					<h:outputLabel for="specialService" value="Sonderdienst" /> 
+					<div class="input">
+						<h:selectBooleanCheckbox id="specialService" value="#{rosterEntryBean.rosterEntry.specialService}" />
 						<span class="hint"><h:outputText value="Keine regulären Fahrdienste (Ambulanz, Übungen ...)" /></span>
 					</div>
 				</li>
@@ -98,26 +121,54 @@
 			<legend><h:outputText value="Dienstzeiten" /></legend>
 			<ol>
 				<li>
-					<h:outputLabel value="Dienstzeit von" /> 
+					<h:outputLabel for="startTime" value="Dienstzeit von" /> 
 					<div class="input">
-						<h:inputText /> 
-						<rich:calendar styleClass="rich-calendar" enableManualInput="true" datePattern="dd.MM.yyyy" />
+						<h:inputText id="startTime" value="#{rosterEntryBean.plannedStartTime}"
+							required="true" requiredMessage="Bitte geben Sie einen Startzeitpunkt an"
+							converterMessage="Bitte geben Sie eine gültige Zeit an. Beispiel: 10:47">
+							 <f:convertDateTime pattern="HH:mm" />
+							 <rich:ajaxValidator event="onblur"/>
+						</h:inputText>
+						<rich:calendar id="startDate" value="#{rosterEntryBean.plannedStartDate}" styleClass="rich-calendar" enableManualInput="true" datePattern="dd.MM.yyyy"
+							required="true" requiredMessage="Bitte geben Sie ein Startdatum an"
+							converterMessage="Bitte geben Sie ein gültiges Datum an">
+							<f:convertDateTime pattern="dd.MM.yyyy" />
+							<rich:ajaxValidator event="oninputblur"/>
+						</rich:calendar>
+						<rich:message for="startTime" errorClass="error" />
+						<rich:message for="startDate" errorClass="error" />
 					</div>
 				</li>
 				<li>
-					<h:outputLabel value="Dienstzeit bis" /> 
+					<h:outputLabel for="endTime" value="Dienstzeit bis" /> 
 					<div class="input">
-						<h:inputText /> 
-						<rich:calendar styleClass="rich-calendar" enableManualInput="true" datePattern="dd.MM.yyyy" />
+						<h:inputText id="endTime" value="#{rosterEntryBean.plannedEndTime}"
+							required="true" requiredMessage="Bitte geben Sie einen Endzeitpunkt an"
+							converterMessage="Bitte geben Sie eine gültige Zeit an. Beispiel: 10:47"> 
+							 <f:convertDateTime pattern="HH:mm" />
+							 <rich:ajaxValidator event="onblur"/>
+						</h:inputText>
+						<rich:calendar id="endDate" value="#{rosterEntryBean.plannedEndDate}" styleClass="rich-calendar" enableManualInput="true" datePattern="dd.MM.yyyy"
+							required="true" requiredMessage="Bitte geben Sie ein Enddatum an."
+							converterMessage="Bitte geben Sie ein gültiges Datum an.">
+							<f:convertDateTime pattern="dd.MM.yyyy" />
+							<rich:ajaxValidator event="oninputblur"/>
+						</rich:calendar>
+						<rich:message for="endTime" errorClass="error" />
+						<rich:message for="endDate" errorClass="error" />
 					</div>	
 				</li>
 			</ol>
 		</fieldset>
 		<fieldset class="defaultStyle">
 			<legend><h:outputText value="Anmerkungen" /></legend> 
-			<rich:editor value="meins" theme="simple" oninit="smartColumns()" autoResize="true" language="de" />
+			<rich:editor value="#{rosterEntryBean.rosterEntry.notes}" theme="simple" oninit="smartColumns()" autoResize="true" language="de" />
 		</fieldset>
-	</ui:define>
+		<fieldset class="defaultStyle">
+			<a4j:commandButton value="Create" actionListener="#{rosterEntryBean.persistUser}" />
+		</fieldset>
+		
+			</ui:define>
 </ui:composition>
 </body>
 </html>

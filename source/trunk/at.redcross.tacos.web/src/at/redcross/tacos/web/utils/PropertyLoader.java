@@ -1,4 +1,4 @@
-package at.redcross.tacos.web.faces;
+package at.redcross.tacos.web.utils;
 
 import java.io.InputStream;
 import java.util.Properties;
