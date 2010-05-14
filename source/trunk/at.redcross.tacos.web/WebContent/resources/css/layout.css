@@ -23,6 +23,50 @@ a,a:link,a:visited {
 }
 
 /*******************************************************
+ 	Defines the general layout of the page
+ 	See: http://matthewjamestaylor.com/blog/perfect-2-column-left-menu.htm
+ *******************************************************/
+.colmask {
+	position: relative; /* This fixes the IE7 overflow hidden bug */
+	clear: both;
+	float: left;
+	width: 100%; /* width of whole page */
+}
+
+/* common column settings */
+.colleft {
+	float: left;
+	width: 100%;
+	position: relative;
+}
+
+.col1,.col2 {
+	float: left;
+	position: relative;
+	padding: 0 0 1em 0;
+}
+
+/* 2 Column (left menu) settings */
+.leftmenu {
+	background: none repeat scroll 0 0 #fff;
+}
+
+.leftmenu .colleft {
+	right: 75%; /* right column width */
+	background: #F5F5F5; /* left column background colour */
+}
+
+.leftmenu .col1 {
+	width: 71%; /* right column content width */
+	left: 102%; /* 100% plus left column left padding */
+}
+
+.leftmenu .col2 {
+	width: 21%; /* left column content width (column width minus left and right padding) */
+	left: 6%; /* (right column left and right padding) plus (left column left padding) */
+}
+
+/*******************************************************
  	Define the layout
  *******************************************************/
 #page {
@@ -114,9 +158,9 @@ a,a:link,a:visited {
 }
 
 #spacer {
-	border-top: 5px solid #000;
+	height: 30px;
 	background: #9A0000;
-	min-height: 30px;
+	border-bottom: 5px solid #000;
 	background: #9A0000;
 }
 

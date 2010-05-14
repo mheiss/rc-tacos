@@ -6,6 +6,31 @@
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
 	<ui:param name="section" value="roster" />
 	<ui:param name="page" value="createView" />
+	
+	<!--  Dynamically resize the input fields -->
+	<ui:define name="javaScriptMethod">
+		function smartColumns() {
+			var legendWidth = jQuery("legend").width();
+			var inputWidth = jQuery("div.input").width();
+	
+			jQuery("div.rich-combobox-shell").css( {
+				'width' : inputWidth
+			});
+			jQuery("div.rich-combobox-shell input:first-child").css( {
+				'width' : inputWidth  - 20
+			});
+			jQuery("table.mceLayout").css( {
+				'width' : legendWidth
+			});
+		}
+		jQuery(window).resize(function() {
+			smartColumns();
+		});
+		jQuery(document).ready(function() {
+			smartColumns();
+		});
+	</ui:define>
+	
 
 	<!-- Include the navigation of the page -->
 	<ui:define name="navigation">
@@ -13,16 +38,86 @@
 	</ui:define>
 
 	<!-- Customize the title and image -->
-	<ui:define name="page-title"> Neuer Dienstplaneintrag </ui:define>
+	<ui:define name="page-title">
+		<h:outputText value="Neuer Dienstplaneintrag" />
+	</ui:define>
 	<ui:define name="page-image">
 		<h:graphicImage library="images/page" name="home.png" />
 	</ui:define>
 
 	<!-- Render the content -->
 	<ui:define name="content">
-		<h:outputText value="Neuer Eintrag..." />
+		<p>
+			<h:outputText value="Hier können Sie einen neuen Dienstplaneintrag erstellen" />
+		</p>
+		<fieldset class="defaultStyle">
+			<legend><h:outputText value="Allgemeine Daten:" /></legend>
+			<ol>
+				<li>
+					<h:outputLabel value="Mitarbeiter" /> 
+					<div class="input">
+						<rich:comboBox selectFirstOnUpdate="false" defaultLabel="-- Mitarbeiter wählen ---" />
+					</div>
+				</li>
+				<li>
+					<h:outputLabel value="Ortsstelle" /> 
+					<div class="input">
+						<rich:comboBox selectFirstOnUpdate="false" defaultLabel="-- Orststelle wählen ---" />
+					</div>
+				</li>
+				<li>
+					<h:outputLabel value="Verwendung" /> 
+					<div class="input">
+						<rich:comboBox selectFirstOnUpdate="false" defaultLabel="-- Verwendung wählen ---">
+						
+						</rich:comboBox>
+					</div>
+				</li>
+				<li>
+					<h:outputLabel value="Dienstverhältnis" /> 
+					<div class="input">
+						<rich:comboBox selectFirstOnUpdate="false" defaultLabel="-- Dienstverhältnis wählen ---" />
+					</div>
+				</li>
+				<li>
+					<h:outputLabel value="Bereitschaft" /> 
+					<div class="input">
+						<h:selectBooleanCheckbox label="Bereitschaft" value="" />
+					</div>
+				</li>
+				<li>
+					<h:outputLabel value="Sonderdienst" /> 
+					<div class="input">
+						<h:selectBooleanCheckbox value="" />
+						<span class="hint"><h:outputText value="Keine regulären Fahrdienste (Ambulanz, Übungen ...)" /></span>
+					</div>
+				</li>
+			</ol>
+		</fieldset>
+		<fieldset class="defaultStyle">
+			<legend><h:outputText value="Dienstzeiten" /></legend>
+			<ol>
+				<li>
+					<h:outputLabel value="Dienstzeit von" /> 
+					<div class="input">
+						<h:inputText /> 
+						<rich:calendar styleClass="rich-calendar" enableManualInput="true" datePattern="dd.MM.yyyy" />
+					</div>
+				</li>
+				<li>
+					<h:outputLabel value="Dienstzeit bis" /> 
+					<div class="input">
+						<h:inputText /> 
+						<rich:calendar styleClass="rich-calendar" enableManualInput="true" datePattern="dd.MM.yyyy" />
+					</div>	
+				</li>
+			</ol>
+		</fieldset>
+		<fieldset class="defaultStyle">
+			<legend><h:outputText value="Anmerkungen" /></legend> 
+			<rich:editor value="meins" theme="simple" oninit="smartColumns()" autoResize="true" language="de" />
+		</fieldset>
 	</ui:define>
-
 </ui:composition>
 </body>
 </html>

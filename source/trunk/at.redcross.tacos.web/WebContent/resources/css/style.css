@@ -1,0 +1,109 @@
+/*******************************************************
+ 	Font rules
+ *******************************************************/
+.bold {
+	font-weight: bold
+}
+
+.italic {
+	font-style: italic;
+}
+
+h2.title {
+	font-size: 1.5em;
+}
+
+/*******************************************************
+ 	Form
+ *******************************************************/
+fieldset.defaultStyle {
+	float: left;
+	clear: both;
+	width: 100%;
+	border-style: none;
+	margin-bottom: 1em;
+}
+
+fieldset.defaultStyle legend {
+	width: 100%;
+	font-size: 1.2em;
+	font-weight: bold;
+	margin-bottom: 1em;
+	border-bottom: 1px solid #000000;
+}
+
+fieldset.defaultStyle li {
+	padding: 8px 10px;
+}
+
+fieldset.defaultStyle label {
+	float: left;
+	width: 10em;
+	color: #000;
+	padding-top: 0.2em;
+	font-weight: bold;
+	font-size: 1.1em;
+}
+
+fieldset.defaultStyle .input {
+	padding-left: 12em;
+	padding-right: 3em;
+	word-wrap: break-word;
+}
+
+fieldset.defaultStyle .input span.hint {
+	color:#5C5C5C;
+	display:block;
+	font-size:0.9em;
+	font-style:italic;
+}
+
+fieldset.defaultStyle .input input {
+	height: 20px;
+	font-size: 1.1em;
+}
+
+fieldset.defaultStyle .rich-calendar-input  {
+	margin-left:1.5em;
+}
+
+fieldset.defaultStyle .rich-calendar-input, fieldset.defaultStyle .rich-calendar-button  {
+	margin-top:-0.3em;
+}
+
+/***********************************************************
+ Table styling
+ **********************************************************/
+.bigtable {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.bigtable th {
+	text-align: left;
+	border-left: 0px;
+	border-right: 0px;
+}
+
+.bigtable tr {
+	border: 1px solid #BBBBBB;
+	padding: 3px 4px;
+}
+
+.bigtable td {
+	border: 0px;
+	border-bottom: 1px solid #BBBBBB;
+}
+
+.smallColumn {
+	width: 2em;
+	text-align: center;
+}
+
+.mediumColumn {
+	width: 20%;
+}
+
+.largeColumn {
+	width: 40%;
+}
