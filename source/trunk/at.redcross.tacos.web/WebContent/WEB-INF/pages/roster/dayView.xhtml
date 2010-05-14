@@ -1,7 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
 <body>
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
 	<ui:param name="section" value="roster" />
@@ -13,16 +12,111 @@
 	</ui:define>
 
 	<!-- Customize the title and image -->
-	<ui:define name="page-title"> Tagesansicht </ui:define>
+	<ui:define name="page-title">
+		<h:outputText value="Tagesansicht" />
+	</ui:define>
 	<ui:define name="page-image">
 		<h:graphicImage library="images/page" name="home.png" />
 	</ui:define>
 
 	<!-- Render the content -->
 	<ui:define name="content">
-		<h:outputText value="Tagesansicht ..." />
-	</ui:define>
+		<rich:dataTable styleClass="defaultStyle" value="#{rosterDayViewBean.locationEntry}" var="locationEntry">
+			<f:facet name="header">
+				<rich:columnGroup>
+					<rich:column rowspan="2" title="Index">
+						<rich:spacer />
+					</rich:column>
+					<rich:column rowspan="2" styleClass="mediumColumn">
+						<h:outputText value="Mitarbeiter" />
+					</rich:column>
+					<rich:column rowspan="2" title="Anmerkungen" styleClass="smallColumn">
+						<rich:spacer />
+					</rich:column>
+					<rich:column colspan="2" styleClass="largeColumn">
+						<h:outputText value="Geplante Dienstzeit" />
+					</rich:column>
+					<rich:column colspan="2" styleClass="largeColumn">
+						<h:outputText value="Reale Dienstzeit" />
+					</rich:column>
+					<rich:column rowspan="2" title="Verwendung" styleClass="smallColumn">
+						<rich:spacer />
+					</rich:column>
+					<rich:column rowspan="2" title="Dienstverhältnis" styleClass="smallColumn">
+						<rich:spacer />
+					</rich:column>
+					<rich:column rowspan="2" title="Editieren" styleClass="smallColumn">
+						<rich:spacer />
+					</rich:column>
+					<rich:column breakBefore="true">
+						<h:outputText value="Start" />
+					</rich:column>
+					<rich:column>
+						<h:outputText value="Ende" />
+					</rich:column>
+					<rich:column>
+						<h:outputText value="Start" />
+					</rich:column>
+					<rich:column>
+						<h:outputText value="Ende" />
+					</rich:column>
+				</rich:columnGroup>
+			</f:facet>
 
+			<rich:column colspan="10">
+				<h:outputText value="#{locationEntry.location.name}" />
+			</rich:column>
+
+			<rich:subTable onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'" value="#{locationEntry.entries}" var="entry" rowKeyVar="row">
+				<rich:column styleClass="center bold">
+					<h:outputText value="#{row+1}" />
+				</rich:column>
+				<rich:column styleClass="bold">
+					<h:outputText value="#{entry.systemUser.lastName} #{entry.systemUser.firstName}" />
+				</rich:column>
+				<rich:column styleClass="center">
+					<a4j:outputPanel layout="block">
+						<rich:toolTip styleClass="tooltipDefault" followMouse="false" direction="bottom-right" layout="block">
+							<h3><h:outputText value="Notes:" /></h3>
+							<h:outputText value="#{entry.notes}" escape="false" />
+						</rich:toolTip>
+						<h:graphicImage library="images" name="notes.png" rendered="#{not empty entry.notes}" />
+					</a4j:outputPanel>
+				</rich:column>
+				<rich:column styleClass="center">
+					<h:outputText value="#{entry.plannedStart}">
+						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+					</h:outputText>
+				</rich:column>
+				<rich:column styleClass="center">
+					<h:outputText value="#{entry.plannedEnd}">
+						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+					</h:outputText>
+				</rich:column>
+				<rich:column styleClass="center">
+					<h:graphicImage library="images" name="left-arrow.png" />
+					<h:outputText value="#{entry.realStart}">
+						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+					</h:outputText>
+				</rich:column>
+				<rich:column styleClass="center">
+					<h:graphicImage library="images" name="right-arrow.png" />
+					<h:outputText value="#{entry.realEnd}">
+						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+					</h:outputText>
+				</rich:column>
+				<rich:column styleClass="center">
+					<h:outputText value="#{entry.assignment.id}" />
+				</rich:column>
+				<rich:column styleClass="center">
+					<h:outputText value="#{entry.serviceType.name}" />
+				</rich:column>
+				<rich:column styleClass="center">
+					<h:graphicImage library="images" name="edit.png" />
+				</rich:column>
+			</rich:subTable>
+		</rich:dataTable>
+	</ui:define>
 </ui:composition>
 </body>
 </html>
