@@ -133,6 +133,7 @@
 							required="true" requiredMessage="Bitte geben Sie ein Startdatum an"
 							converterMessage="Bitte geben Sie ein gültiges Datum an">
 							<f:convertDateTime pattern="dd.MM.yyyy" />
+							<rich:ajaxValidator event="onchanged"/>
 							<rich:ajaxValidator event="oninputblur"/>
 						</rich:calendar>
 						<rich:message for="startTime" errorClass="error" />
@@ -152,6 +153,7 @@
 							required="true" requiredMessage="Bitte geben Sie ein Enddatum an."
 							converterMessage="Bitte geben Sie ein gültiges Datum an.">
 							<f:convertDateTime pattern="dd.MM.yyyy" />
+							<rich:ajaxValidator event="onchanged"/>
 							<rich:ajaxValidator event="oninputblur"/>
 						</rich:calendar>
 						<rich:message for="endTime" errorClass="error" />
