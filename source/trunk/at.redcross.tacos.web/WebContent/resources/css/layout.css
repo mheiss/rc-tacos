@@ -81,9 +81,7 @@ a,a:link,a:visited {
 }
 
 #header-left {
-	float: left;
-	margin: 2em 4em 0 0;
-	width: 380px;
+	margin: 1.5em 1em;
 }
 
 #header-left #header-logo {
@@ -92,9 +90,8 @@ a,a:link,a:visited {
 }
 
 #header-left #header-text {
-	font-size: 3em;
+	font-size: 2em;
 	font-weight: bold;
-	margin-top: 0.2em;
 }
 
 #header-left #header-text a {
@@ -106,7 +103,6 @@ a,a:link,a:visited {
 	display: block;
 	font-size: 1.2em;
 	font-weight: bold;
-	margin: 0.2em 0em;
 }
 
 #primary-menu-wrapper {
@@ -119,12 +115,10 @@ a,a:link,a:visited {
 	float: right;
 	font-size: 1em;
 	font-weight: bold;
-	position: relative;
 	text-transform: uppercase;
 }
 
 #primary-menu ul.menu {
-	margin: 6px 0 12px;
 	border: medium none;
 	list-style: none outside none;
 	text-align: left;
