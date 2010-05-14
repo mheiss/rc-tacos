@@ -1,5 +1,4 @@
-<pretty-config xmlns="http://ocpsoft.com/prettyfaces-xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://ocpsoft.com/prettyfaces-xsd 
+<pretty-config xmlns="http://ocpsoft.com/prettyfaces-xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://ocpsoft.com/prettyfaces-xsd 
 	http://ocpsoft.com/xml/ns/prettyfaces/pretty-1.0.xsd">
 
 	<!-- ################ SPECIAL MAPPINGS ####################### -->
@@ -45,7 +44,7 @@
 	<url-mapping id="createRoster">
 		<pattern>/roster/create</pattern>
 		<view-id>/WEB-INF/pages/roster/newEntry.faces</view-id>
-		<action>#{rosterEntryBean.prettyInit}</action>
+		<action onPostback="false">#{rosterEntryBean.prettyInit}</action>
 	</url-mapping>
 
 	<!-- ################ administration ####################### -->
