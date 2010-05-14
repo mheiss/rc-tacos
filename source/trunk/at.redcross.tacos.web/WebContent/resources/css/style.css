@@ -1,7 +1,7 @@
 /*******************************************************
  	Font rules
  *******************************************************/
-.bold {
+strong, .bold {
 	font-weight: bold
 }
 
@@ -56,63 +56,90 @@ fieldset.defaultStyle .input input {
 	font-size: 1.1em;
 }
 
-fieldset.defaultStyle .rich-calendar-input  {
-	margin-left:1.5em;
+fieldset.defaultStyle .rich-calendar-button {
+	margin-right: 1.5em;
 }
 
-fieldset.defaultStyle .rich-calendar-input, fieldset.defaultStyle .rich-calendar-button  {
-	margin-top:-0.3em;
+fieldset.defaultStyle .rich-calendar-input,fieldset.defaultStyle .rich-calendar-button {
+	margin-top: -0.3em;
 }
 
 fieldset.defaultStyle .input span.hint {
-	color:#5C5C5C;
-	display:block;
-	margin-top:1em;
-	font-size:0.9em;
-	font-style:italic;
+	color: #5C5C5C;
+	display: block;
+	margin-top: 1em;
+	font-size: 0.9em;
+	font-style: italic;
 }
 
 fieldset.defaultStyle .input span.error {
-	color:#9A0000;
-	display:block;
-	margin-top:1em;
-	font-size:0.9em;
-	font-weight:bold;	
+	color: #9A0000;
+	display: block;
+	margin-top: 1em;
+	font-size: 0.9em;
+	font-weight: bold;
 }
 
 /***********************************************************
  Table styling
  **********************************************************/
-.bigtable {
+table.defaultStyle {
 	width: 100%;
 	border-collapse: collapse;
 }
 
-.bigtable th {
+table.defaultStyle th {
 	text-align: left;
-	border-left: 0px;
-	border-right: 0px;
+	text-align: center;
 }
 
-.bigtable tr {
+table.defaultStyle tr {
 	border: 1px solid #BBBBBB;
 	padding: 3px 4px;
 }
 
-.bigtable td {
+table.defaultStyle td {
 	border: 0px;
 	border-bottom: 1px solid #BBBBBB;
 }
 
-.smallColumn {
+table.defaultStyle .rich-table-firstrow {
+	height:3em;
+	font-weight: bold;
+	text-align: center;
+	background: #636363;
+}
+
+table.defaultStyle .rich-table-firstrow td {
+	color: #fff;
+	font-size: 1.2em;
+}
+
+table.defaultStyle .smallColumn {
 	width: 2em;
 	text-align: center;
 }
 
-.mediumColumn {
+table.defaultStyle .mediumColumn {
 	width: 20%;
 }
 
-.largeColumn {
-	width: 40%;
+table.defaultStyle .largeColumn {
+	width: 30%;
 }
+
+table.defaultStyle .center {
+	text-align: center;
+}
+
+/***********************************************************
+ Tooltip styling
+ **********************************************************/
+.tooltipDefault {
+	min-width:150px;
+	min-height:100px;
+	display:block;
+	border:2px solid #000;
+	background:#fff;
+}
+	

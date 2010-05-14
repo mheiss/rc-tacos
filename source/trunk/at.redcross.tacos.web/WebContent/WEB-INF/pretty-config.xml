@@ -32,6 +32,7 @@
 	<url-mapping id="dayView">
 		<pattern>/roster</pattern>
 		<view-id>/WEB-INF/pages/roster/dayView.faces</view-id>
+		<action onPostback="false">#{rosterDayViewBean.prettyInit}</action>
 	</url-mapping>
 	<url-mapping id="personalView">
 		<pattern>/roster/my</pattern>
