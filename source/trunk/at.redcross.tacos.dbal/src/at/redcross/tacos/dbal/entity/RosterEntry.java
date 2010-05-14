@@ -55,6 +55,9 @@ public class RosterEntry extends EntityImpl {
     @Column
     private boolean standby;
 
+    @Column
+    private boolean specialService;
+
     // ---------------------------------
     // 
     // ---------------------------------
@@ -126,6 +129,10 @@ public class RosterEntry extends EntityImpl {
         this.standby = standby;
     }
 
+    public void setSpecialService(boolean specialService) {
+        this.specialService = specialService;
+    }
+
     // ---------------------------------
     // Getters for the properties
     // ---------------------------------
@@ -167,6 +174,10 @@ public class RosterEntry extends EntityImpl {
 
     public boolean isStandby() {
         return standby;
+    }
+
+    public boolean isSpecialService() {
+        return specialService;
     }
 
     public String getNotes() {
