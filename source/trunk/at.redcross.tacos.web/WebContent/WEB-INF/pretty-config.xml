@@ -29,20 +29,20 @@
 	</url-mapping>
 
 	<!-- ################ roster ####################### -->
-	<url-mapping id="dayView">
+	<url-mapping id="roster-dayView">
 		<pattern>/roster</pattern>
 		<view-id>/WEB-INF/pages/roster/dayView.faces</view-id>
 		<action onPostback="false">#{rosterDayViewBean.prettyInit}</action>
 	</url-mapping>
-	<url-mapping id="personalView">
+	<url-mapping id="roster-personalView">
 		<pattern>/roster/my</pattern>
 		<view-id>/WEB-INF/pages/roster/personalView.faces</view-id>
 	</url-mapping>
-	<url-mapping id="weekView">
+	<url-mapping id="roster-weekView">
 		<pattern>/roster/week</pattern>
 		<view-id>/WEB-INF/pages/roster/weekView.faces</view-id>
 	</url-mapping>
-	<url-mapping id="createRoster">
+	<url-mapping id="roster-create">
 		<pattern>/roster/create</pattern>
 		<view-id>/WEB-INF/pages/roster/newEntry.faces</view-id>
 		<action onPostback="false">#{rosterEntryBean.prettyInit}</action>

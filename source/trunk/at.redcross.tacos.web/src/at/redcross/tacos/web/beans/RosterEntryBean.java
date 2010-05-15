@@ -8,7 +8,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 import javax.faces.validator.ValidatorException;
 import javax.persistence.EntityManager;
@@ -94,9 +93,9 @@ public class RosterEntryBean extends BaseBean {
     }
 
     // ---------------------------------
-    // 
+    // Actions
     // ---------------------------------
-    public void persistUser(ActionEvent event) {
+    public String persistUser() {
         // set the missing attributes
         rosterEntry.setSystemUser(lookupUser(selectedUser));
         rosterEntry.setLocation(lookupLocation(selectedLocation));
@@ -113,9 +112,11 @@ public class RosterEntryBean extends BaseBean {
             manager = EntityManagerFactory.createEntityManager();
             manager.persist(rosterEntry);
             EntityManagerHelper.commit(manager);
+            return "pretty:roster-dayView";
         }
         catch (Exception ex) {
             FacesUtils.addErrorMessage("Der Dienstplaneintrag konnte nicht gespeichert werden");
+            return null;
         }
         finally {
             manager = EntityManagerHelper.close(manager);
