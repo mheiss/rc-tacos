@@ -1,16 +1,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces">
 <body>
 <ui:composition>
 	<div id="header-left">
 		<div id="header-logo">
-			<h:graphicImage library="images" name="tacosLogo.png" />
+			<pretty:link mappingId="home">
+				<h:graphicImage library="images" name="tacosLogo.png" />
+			</pretty:link>
 		</div>
 		<h1 id="header-text">
-			<h:outputLink value="#{facesContext.externalContext.requestContextPath}">TACOS</h:outputLink>
+			<pretty:link mappingId="home"> 
+				<h:outputText value="TACOS" /> 
+			</pretty:link>
 		</h1>
-		<h2 id="header-desc">Online Dienstplan des Rotes Kreuz</h2>
+		<h2 id="header-desc"><h:outputText value="Online Dienstplan des Rotes Kreuz" /></h2>
 	</div>
 </ui:composition>
 </body>
