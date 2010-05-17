@@ -1,7 +1,7 @@
 /*******************************************************
  	Font rules
  *******************************************************/
-strong, .bold {
+strong,.bold {
 	font-weight: bold
 }
 
@@ -104,7 +104,7 @@ table.defaultStyle td {
 }
 
 table.defaultStyle .rich-table-firstrow {
-	height:3em;
+	height: 3em;
 	font-weight: bold;
 	text-align: center;
 	background: #636363;
@@ -136,10 +136,24 @@ table.defaultStyle .center {
  Tooltip styling
  **********************************************************/
 .tooltipDefault {
-	min-width:150px;
-	min-height:100px;
-	display:block;
-	border:2px solid #000;
-	background:#fff;
+	margin-bottom: 20px;
+	margin-right: 20px;
+	padding: 5px;
+	position: relative;
+	background: #fff;
+	min-width: 100px;
+	min-height: 80px;
+	border: 2px solid #636363;
 }
-	
+
+.tooltipDefault .tooltip-image {
+	height: 20px;
+	width: 20px;
+	bottom: -20px;
+	position: absolute;
+	background: url("../images/widgets/round/arrow.png") no-repeat scroll 0 0 transparent;
+}
+
+.tooltipDefault li {
+	list-style-type: square;
+}
