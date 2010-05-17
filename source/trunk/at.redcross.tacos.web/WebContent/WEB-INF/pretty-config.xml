@@ -44,7 +44,12 @@
 	</url-mapping>
 	<url-mapping id="roster-create">
 		<pattern>/roster/create</pattern>
-		<view-id>/WEB-INF/pages/roster/newEntry.faces</view-id>
+		<view-id>/WEB-INF/pages/roster/rosterEntry.faces</view-id>
+		<action onPostback="false">#{rosterEntryBean.prettyInit}</action>
+	</url-mapping>
+		<url-mapping id="roster-edit">
+		<pattern>/roster/edit/#{rosterEntryBean.rosterId}</pattern>
+		<view-id>/WEB-INF/pages/roster/rosterEntry.faces</view-id>
 		<action onPostback="false">#{rosterEntryBean.prettyInit}</action>
 	</url-mapping>
 
