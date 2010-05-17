@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich" xmlns:pretty="http://ocpsoft.com/prettyfaces">
 <body>
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
 	<ui:param name="section" value="roster" />
@@ -36,13 +36,13 @@
 					<rich:column colspan="2" styleClass="largeColumn">
 						<h:outputText value="Reale Dienstzeit" />
 					</rich:column>
-					<rich:column rowspan="2" title="Verwendung" styleClass="smallColumn">
-						<rich:spacer />
+					<rich:column rowspan="2" styleClass="smallColumn">
+						<h:outputText value="Verwendung" />
 					</rich:column>
-					<rich:column rowspan="2" title="Dienstverhältnis" styleClass="smallColumn">
-						<rich:spacer />
+					<rich:column rowspan="2" styleClass="smallColumn">
+						<h:outputText value="Dienstverhältnis" />
 					</rich:column>
-					<rich:column rowspan="2" title="Editieren" styleClass="smallColumn">
+					<rich:column rowspan="2" title="Bearbeiten" styleClass="smallColumn">
 						<rich:spacer />
 					</rich:column>
 					<rich:column breakBefore="true">
@@ -70,8 +70,7 @@
 				</rich:column>
 				<rich:column styleClass="center">
 					<a4j:outputPanel layout="block">
-						<rich:toolTip styleClass="tooltipDefault" followMouse="false" direction="top-right" layout="block"
-							verticalOffset="35">
+						<rich:toolTip styleClass="tooltipDefault" followMouse="false" direction="top-right" layout="block" verticalOffset="35">
 							<h:outputText value="#{entry.notes}" escape="false" />
 							<div class="tooltip-image" />
 						</rich:toolTip>
@@ -100,14 +99,17 @@
 						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
 					</h:outputText>
 				</rich:column>
-				<rich:column styleClass="center">
+				<rich:column>
 					<h:outputText value="#{entry.assignment.id}" />
 				</rich:column>
-				<rich:column styleClass="center">
+				<rich:column>
 					<h:outputText value="#{entry.serviceType.name}" />
 				</rich:column>
 				<rich:column styleClass="center">
-					<h:graphicImage library="images" name="edit.png" />
+					<pretty:link mappingId="roster-edit">
+						<f:param value="#{entry.id}" />
+						<h:graphicImage library="images" name="edit.png" />
+					</pretty:link>
 				</rich:column>
 			</rich:subTable>
 		</rich:dataTable>

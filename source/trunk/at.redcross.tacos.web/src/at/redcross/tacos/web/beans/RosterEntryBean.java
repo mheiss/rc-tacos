@@ -4,12 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
-import javax.faces.validator.ValidatorException;
 import javax.persistence.EntityManager;
 
 import org.ajax4jsf.model.KeepAlive;
@@ -31,6 +27,7 @@ public class RosterEntryBean extends BaseBean {
     private static final long serialVersionUID = 3440196753805921232L;
 
     // the entry to create
+    private long rosterId = -1;
     private RosterEntry rosterEntry;
 
     // the suggested values for the UI
@@ -59,11 +56,11 @@ public class RosterEntryBean extends BaseBean {
 
     @Override
     public void init() throws Exception {
-        rosterEntry = new RosterEntry();
-
         EntityManager manager = null;
         try {
             manager = EntityManagerFactory.createEntityManager();
+            rosterEntry = loadRosterEntry(manager, rosterId);
+
             users = manager.createQuery("from SystemUser", SystemUser.class).getResultList();
             locations = manager.createQuery("from Location", Location.class).getResultList();
             assignments = manager.createQuery("from Assignment", Assignment.class).getResultList();
@@ -110,7 +107,12 @@ public class RosterEntryBean extends BaseBean {
         EntityManager manager = null;
         try {
             manager = EntityManagerFactory.createEntityManager();
-            manager.persist(rosterEntry);
+            if (isNew()) {
+                manager.persist(rosterEntry);
+            }
+            else {
+                manager.merge(rosterEntry);
+            }
             EntityManagerHelper.commit(manager);
             return "pretty:roster-dayView";
         }
@@ -124,55 +126,26 @@ public class RosterEntryBean extends BaseBean {
     }
 
     // ---------------------------------
-    // Validation methods
-    // ---------------------------------
-    public void validateUser(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-        if (lookupUser(value) != null) {
-            return;
-        }
-        FacesMessage message = new FacesMessage();
-        message.setSummary("Der gewählte Benutzer '" + value + "' existiert nicht");
-        message.setSeverity(FacesMessage.SEVERITY_ERROR);
-        context.addMessage(component.getClientId(), message);
-        throw new ValidatorException(message);
-    }
-
-    public void validateLocation(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-        if (lookupLocation(value) != null) {
-            return;
-        }
-        FacesMessage message = new FacesMessage();
-        message.setSummary("Die gewählte Dienststelle '" + value + "' existiert nicht");
-        message.setSeverity(FacesMessage.SEVERITY_ERROR);
-        context.addMessage(component.getClientId(), message);
-        throw new ValidatorException(message);
-    }
-
-    public void validateServiceType(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-        if (lookupServiceType(value) != null) {
-            return;
-        }
-        FacesMessage message = new FacesMessage();
-        message.setSummary("Das gewählte Dienstverhältnis '" + value + "' existiert nicht");
-        message.setSeverity(FacesMessage.SEVERITY_ERROR);
-        context.addMessage(component.getClientId(), message);
-        throw new ValidatorException(message);
-    }
-
-    public void validateAssignment(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-        if (lookupAssignment(value) != null) {
-            return;
-        }
-        FacesMessage message = new FacesMessage();
-        message.setSummary("Das gewählte Verwendung '" + value + "' existiert nicht");
-        message.setSeverity(FacesMessage.SEVERITY_ERROR);
-        context.addMessage(component.getClientId(), message);
-        throw new ValidatorException(message);
-    }
-
-    // ---------------------------------
     // Helper methods
     // ---------------------------------
+    private RosterEntry loadRosterEntry(EntityManager manager, long id) {
+        rosterEntry = manager.find(RosterEntry.class, id);
+        if (rosterEntry == null) {
+            rosterId = -1;
+            return new RosterEntry();
+        }
+        SystemUser systemUser = rosterEntry.getSystemUser();
+        selectedUser = systemUser.getLastName() + " " + systemUser.getFirstName();
+        selectedAssignment = rosterEntry.getAssignment().getId();
+        selectedLocation = rosterEntry.getLocation().getName();
+        selectedServiceType = rosterEntry.getServiceType().getName();
+        plannedStartDate = rosterEntry.getPlannedStart();
+        plannedStartTime = rosterEntry.getPlannedStart();
+        plannedEndDate = rosterEntry.getPlannedEnd();
+        plannedEndTime = rosterEntry.getPlannedEnd();
+        return rosterEntry;
+    }
+
     private SystemUser lookupUser(Object value) {
         for (SystemUser user : users) {
             String userId = user.getLastName() + " " + user.getFirstName();
@@ -217,6 +190,10 @@ public class RosterEntryBean extends BaseBean {
     // ---------------------------------
     // Setters for the properties
     // ---------------------------------
+    public void setRosterId(long rosterId) {
+        this.rosterId = rosterId;
+    }
+
     public void setSelectedUser(String selectedUser) {
         this.selectedUser = selectedUser;
     }
@@ -252,6 +229,10 @@ public class RosterEntryBean extends BaseBean {
     // ---------------------------------
     // Getters for the properties
     // ---------------------------------
+    public boolean isNew() {
+        return rosterId == -1;
+    }
+
     public String getSelectedUser() {
         return selectedUser;
     }
@@ -303,5 +284,4 @@ public class RosterEntryBean extends BaseBean {
     public RosterEntry getRosterEntry() {
         return rosterEntry;
     }
-
 }

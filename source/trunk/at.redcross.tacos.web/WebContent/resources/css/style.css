@@ -28,7 +28,7 @@ fieldset.defaultStyle legend {
 	width: 100%;
 	font-size: 1.2em;
 	font-weight: bold;
-	margin-bottom: 1em;
+	margin-bottom: 0.4em;
 	border-bottom: 1px solid #000000;
 }
 
@@ -67,7 +67,7 @@ fieldset.defaultStyle .rich-calendar-input,fieldset.defaultStyle .rich-calendar-
 fieldset.defaultStyle .input span.hint {
 	color: #5C5C5C;
 	display: block;
-	margin-top: 1em;
+	margin-top: 0.8em;
 	font-size: 0.9em;
 	font-style: italic;
 }
@@ -75,9 +75,20 @@ fieldset.defaultStyle .input span.hint {
 fieldset.defaultStyle .input span.error {
 	color: #9A0000;
 	display: block;
-	margin-top: 1em;
+	margin-top: 0.8em;
 	font-size: 0.9em;
 	font-weight: bold;
+}
+
+fieldset.defaultStyle .actionBar {
+	padding: 1em;
+	height: 2em;
+	background: #F5F5F5;
+	border-top: 2px solid #636363;
+}
+
+fieldset.defaultStyle .actionBar input {
+	float: right;
 }
 
 /***********************************************************
@@ -142,7 +153,7 @@ table.defaultStyle .center {
 	position: relative;
 	background: #fff;
 	min-width: 100px;
-	min-height: 80px;
+	text-align: left;
 	border: 2px solid #636363;
 }
 
@@ -154,6 +165,14 @@ table.defaultStyle .center {
 	background: url("../images/widgets/round/arrow.png") no-repeat scroll 0 0 transparent;
 }
 
-.tooltipDefault li {
+.tooltipDefault ul,.tooltipDefault ol {
+	margin-left: 20px;
+}
+
+.tooltipDefault ul li {
 	list-style-type: square;
+}
+
+.tooltipDefault ol li {
+	list-style-type: decimal;
 }
