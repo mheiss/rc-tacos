@@ -35,6 +35,7 @@ public class RosterDayViewBean extends BaseBean {
                 StringBuilder builder = new StringBuilder();
                 builder.append(" select entry from RosterEntry entry ");
                 builder.append(" where entry.location.id=:locationId ");
+                builder.append(" order by entry.plannedStart");
 
                 TypedQuery<RosterEntry> query = manager.createQuery(builder.toString(),
                         RosterEntry.class);
