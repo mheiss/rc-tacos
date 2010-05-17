@@ -76,9 +76,10 @@
 				</rich:column>
 				<rich:column styleClass="center">
 					<a4j:outputPanel layout="block">
-						<rich:toolTip styleClass="tooltipDefault" followMouse="false" direction="bottom-right" layout="block">
-							<h3><h:outputText value="Notes:" /></h3>
+						<rich:toolTip styleClass="tooltipDefault" followMouse="false" direction="top-right" layout="block"
+							verticalOffset="35">
 							<h:outputText value="#{entry.notes}" escape="false" />
+							<div class="tooltip-image" />
 						</rich:toolTip>
 						<h:graphicImage library="images" name="notes.png" rendered="#{not empty entry.notes}" />
 					</a4j:outputPanel>
