@@ -24,9 +24,6 @@
 		<rich:dataTable styleClass="defaultStyle" value="#{rosterDayViewBean.locationEntry}" var="locationEntry">
 			<f:facet name="header">
 				<rich:columnGroup>
-					<rich:column rowspan="2" title="Index">
-						<rich:spacer />
-					</rich:column>
 					<rich:column rowspan="2" styleClass="mediumColumn">
 						<h:outputText value="Mitarbeiter" />
 					</rich:column>
@@ -63,14 +60,11 @@
 				</rich:columnGroup>
 			</f:facet>
 
-			<rich:column colspan="10">
+			<rich:column colspan="9">
 				<h:outputText value="#{locationEntry.location.name}" />
 			</rich:column>
 
-			<rich:subTable onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'" value="#{locationEntry.entries}" var="entry" rowKeyVar="row">
-				<rich:column styleClass="center bold">
-					<h:outputText value="#{row+1}" />
-				</rich:column>
+			<rich:subTable onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'" value="#{locationEntry.entries}" var="entry">
 				<rich:column styleClass="bold">
 					<h:outputText value="#{entry.systemUser.lastName} #{entry.systemUser.firstName}" />
 				</rich:column>
