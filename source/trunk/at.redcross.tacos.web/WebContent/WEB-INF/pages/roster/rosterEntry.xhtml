@@ -49,7 +49,9 @@
 
 	<!-- Render the content -->
 	<ui:define name="content">
-		<rich:messages globalOnly="true" />
+	
+		<rich:messages errorClass="errorMessage" globalOnly="true" />
+		
 		<fieldset class="defaultStyle"><legend><h:outputText value="Allgemeine Daten:" /></legend>
 		<ol>
 			<li><h:outputLabel for="systemUser" value="Mitarbeiter" />
@@ -156,9 +158,14 @@
 				oninit="smartColumns()" autoResize="true" language="de" />
 		</fieldset>
 		
-		<fieldset class="defaultStyle">
+		<fieldset class="defaultStyle last">
 			<div class="actionBar">
-				<a4j:commandButton value="Dienstplaneintrag speichern" action="#{rosterEntryBean.persistUser}" />
+				<a4j:commandLink immediate="true" reRender="content-wrapper" styleClass="button" action="#{rosterEntryBean.revert}">
+					<span><h:outputText value="Zurücksetzen" /> </span>
+				</a4j:commandLink>
+				<a4j:commandLink styleClass="button" action="#{rosterEntryBean.persist}">
+					<span><h:outputText value="Dienstplaneintrag speichern" /></span>
+				</a4j:commandLink>
 			</div>
 		</fieldset>
 	</ui:define>

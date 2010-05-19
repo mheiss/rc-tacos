@@ -80,15 +80,44 @@ fieldset.defaultStyle .input span.error {
 	font-weight: bold;
 }
 
-fieldset.defaultStyle .actionBar {
-	padding: 1em;
-	height: 2em;
-	background: #F5F5F5;
+fieldset.last {
 	border-top: 2px solid #636363;
 }
 
-fieldset.defaultStyle .actionBar input {
+fieldset.defaultStyle .actionBar {
+	padding: 1em;
+	height: 2em;
 	float: right;
+}
+
+fieldset.defaultStyle .actionBar a.button {
+	color: #000;
+	display: block;
+	float: left;
+	height: 24px;
+	font-weight: bold;
+	margin-right: 6px;
+	padding-right: 18px;
+	text-decoration: none;
+	background: transparent url("../images/widgets/button/bg_button_a.gif") no-repeat scroll top right;
+}
+
+fieldset.defaultStyle .actionBar a.button span {
+	display: block;
+	line-height: 14px;
+	padding: 5px 0 5px 18px;
+	background: transparent url("../images/widgets/button/bg_button_span.gif") no-repeat;
+}
+
+fieldset.defaultStyle .actionBar a.button:active {
+	color: #000;
+	outline: none;
+	background-position: bottom right;
+}
+
+fieldset.defaultStyle .actionBar a.button:active span {
+	padding: 6px 0 4px 18px;
+	background-position: bottom left;
 }
 
 /***********************************************************
@@ -175,4 +204,39 @@ table.defaultStyle .center {
 
 .tooltipDefault ol li {
 	list-style-type: decimal;
+}
+
+/***********************************************************
+ Message box styling
+ **********************************************************/
+.infoMessage,.successMessage,.warningMessage,.errorMessage {
+	border: 1px solid;
+	margin: 10px 5px;
+	padding: 15px 10px 15px 50px;
+	background-repeat: no-repeat;
+	background-position: 10px center;
+}
+
+.infoMessage {
+	color: #00529B;
+	background-color: #BDE5F8;
+	background-image: url("../images/messages/info.png");
+}
+
+.successMessage {
+	color: #4F8A10;
+	background-color: #DFF2BF;
+	background-image: url("../images/messages/success.png");
+}
+
+.warningMessage {
+	color: #9F6000;
+	background-color: #FEEFB3;
+	background-image: url("../images/messages/warning.png");
+}
+
+.errorMessage {
+	color: #D8000C;
+	background-color: #FFBABA;
+	background-image: url("../images/messages/error.png");
 }
