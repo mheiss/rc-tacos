@@ -1,6 +1,14 @@
 package at.redcross.tacos.web.beans;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.FacesContext;
+
+import at.redcross.tacos.web.faces.FacesMessageExt;
 
 @ManagedBean(name = "errorBean")
 public class ErrorBean extends BaseBean {
@@ -12,6 +20,27 @@ public class ErrorBean extends BaseBean {
 
     // the injected error code;
     private String errorCode;
+
+    /**
+     * Returns all currently registered error and warning messages.
+     * 
+     * @return a list of error messages
+     */
+    public List<FacesMessageExt> getErrorMessages() {
+        List<FacesMessageExt> messages = new ArrayList<FacesMessageExt>();
+        Iterator<FacesMessage> messageIter = FacesContext.getCurrentInstance().getMessages(null);
+        while (messageIter.hasNext()) {
+            FacesMessage next = messageIter.next();
+            if (next.getSeverity() == FacesMessage.SEVERITY_INFO) {
+                continue;
+            }
+            if (next.getSeverity() == FacesMessage.SEVERITY_WARN) {
+                continue;
+            }
+            messages.add(new FacesMessageExt(next));
+        }
+        return messages;
+    }
 
     // ---------------------------------
     // Setters for the properties

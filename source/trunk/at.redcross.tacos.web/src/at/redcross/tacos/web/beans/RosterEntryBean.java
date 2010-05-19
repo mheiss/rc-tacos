@@ -92,7 +92,10 @@ public class RosterEntryBean extends BaseBean {
     // ---------------------------------
     // Actions
     // ---------------------------------
-    public String persistUser() {
+    /**
+     * Persists the current entity in the database
+     */
+    public String persist() {
         // set the missing attributes
         rosterEntry.setSystemUser(lookupUser(selectedUser));
         rosterEntry.setLocation(lookupLocation(selectedLocation));
@@ -118,6 +121,25 @@ public class RosterEntryBean extends BaseBean {
         }
         catch (Exception ex) {
             FacesUtils.addErrorMessage("Der Dienstplaneintrag konnte nicht gespeichert werden");
+            return null;
+        }
+        finally {
+            manager = EntityManagerHelper.close(manager);
+        }
+    }
+
+    /**
+     * Reverts any changes that may have been done
+     */
+    public String revert() {
+        EntityManager manager = null;
+        try {
+            manager = EntityManagerFactory.createEntityManager();
+            rosterEntry = loadRosterEntry(manager, rosterEntry.getId());
+            return "pretty:roster-edit";
+        }
+        catch (Exception ex) {
+            FacesUtils.addErrorMessage("Der Dienstplaneintrag konnte nicht zurückgesetzt werden");
             return null;
         }
         finally {
@@ -190,6 +212,10 @@ public class RosterEntryBean extends BaseBean {
     // ---------------------------------
     // Setters for the properties
     // ---------------------------------
+    public long getRosterId() {
+        return rosterId;
+    }
+    
     public void setRosterId(long rosterId) {
         this.rosterId = rosterId;
     }
