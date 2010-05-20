@@ -88,13 +88,13 @@
 					</h:outputText>
 				</rich:column>
 				<rich:column styleClass="center">
-					<h:graphicImage library="images" name="left-arrow.png" />
+					<h:graphicImage library="images" name="clock-into.png" />
 					<h:outputText value="#{entry.realStart}">
 						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
 					</h:outputText>
 				</rich:column>
 				<rich:column styleClass="center">
-					<h:graphicImage library="images" name="right-arrow.png" />
+					<h:graphicImage library="images" name="clock-out.png" />
 					<h:outputText value="#{entry.realEnd}">
 						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
 					</h:outputText>
@@ -106,7 +106,7 @@
 					<h:outputText value="#{entry.serviceType.name}" />
 				</rich:column>
 				<rich:column styleClass="center">
-					<pretty:link mappingId="roster-edit">
+					<pretty:link mappingId="roster-edit" title="Dienstplaneintrag bearbeiten">
 						<f:param value="#{entry.id}" />
 						<h:graphicImage library="images" name="edit.png" />
 					</pretty:link>
