@@ -88,16 +88,30 @@
 					</h:outputText>
 				</rich:column>
 				<rich:column styleClass="center">
-					<h:graphicImage library="images" name="clock-into.png" />
-					<h:outputText value="#{entry.realStart}">
-						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
-					</h:outputText>
+					<a4j:commandLink title="Anmelden" oncomplete="#{rich:component('signInPanel')}.show();return false;">
+						<h:panelGroup rendered="#{empty entry.realStart}">
+							<h:graphicImage styleClass="actionImage" library="images" name="clock-into.png" />
+							<h:outputText styleClass="actionText" value="Anmelden" />
+						</h:panelGroup>
+						<h:panelGroup rendered="#{not empty entry.realStart}">
+							<h:outputText value="#{entry.realStart}">
+								<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+							</h:outputText>
+						</h:panelGroup>
+					</a4j:commandLink>
 				</rich:column>
 				<rich:column styleClass="center">
-					<h:graphicImage library="images" name="clock-out.png" />
-					<h:outputText value="#{entry.realEnd}">
-						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
-					</h:outputText>
+					<a4j:commandLink title="Abmelden" oncomplete="#{rich:component('signOutPanel')}.show();return false;">
+						<h:panelGroup rendered="#{empty entry.realStart}">
+							<h:graphicImage styleClass="actionImage" library="images" name="clock-out.png" />
+							<h:outputText styleClass="actionText" value="Abmelden" />
+						</h:panelGroup>
+						<h:panelGroup rendered="#{not empty entry.realEnd}">
+							<h:outputText value="#{entry.realEnd}">
+								<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+							</h:outputText>
+						</h:panelGroup>
+					</a4j:commandLink>
 				</rich:column>
 				<rich:column>
 					<h:outputText value="#{entry.assignment.id}" />
@@ -108,11 +122,27 @@
 				<rich:column styleClass="center">
 					<pretty:link mappingId="roster-edit" title="Dienstplaneintrag bearbeiten">
 						<f:param value="#{entry.id}" />
-						<h:graphicImage library="images" name="edit.png" />
+						<h:graphicImage styleClass="actionImage" library="images" name="edit.png" />
 					</pretty:link>
 				</rich:column>
 			</rich:subTable>
 		</rich:dataTable>
+	</ui:define>
+	<ui:define name="panel">
+		<ui:decorate template="/WEB-INF/templates/widgets/modalPanel.xhtml">
+			<ui:param name="panelId" value="signInPanel" />
+			<ui:param name="panelHeader" value="Zum Dienst anmelden" />
+			<ui:define name="panelContent">
+				<h:outputText value="TODO"></h:outputText>
+			</ui:define>
+		</ui:decorate>
+		<ui:decorate template="/WEB-INF/templates/widgets/modalPanel.xhtml">
+			<ui:param name="panelId" value="signOutPanel" />
+			<ui:param name="panelHeader" value="Vom Dienst abmelden" />
+			<ui:define name="panelContent">
+				<h:outputText value="TODO"></h:outputText>
+			</ui:define>
+		</ui:decorate>
 	</ui:define>
 </ui:composition>
 </body>

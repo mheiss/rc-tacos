@@ -14,6 +14,19 @@ h2.title {
 }
 
 /*******************************************************
+ 	General
+ *******************************************************/
+.actionText {
+	text-decoration: underline;
+}
+
+.actionImage {
+	top: 0.2em;
+	position: relative;
+	padding-right: 0.6em;
+}
+
+/*******************************************************
  	Form
  *******************************************************/
 fieldset.defaultStyle {
@@ -239,4 +252,17 @@ table.defaultStyle .center {
 	color: #D8000C;
 	background-color: #FFBABA;
 	background-image: url("../images/messages/error.png");
+}
+
+/***********************************************************
+   Modal Panels
+ **********************************************************/
+.rich-mpnl-header {
+	border: 0px;
+	padding-top: 1em;
+	padding-left: 0.5em;
+	font-weight: bold;
+	color: #fff;
+	background: #9A0000;
+	border-bottom: 1px solid #000;
 }
