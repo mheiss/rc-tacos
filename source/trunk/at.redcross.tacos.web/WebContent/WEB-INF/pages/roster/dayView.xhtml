@@ -79,12 +79,12 @@
 				</rich:column>
 				<rich:column styleClass="center">
 					<h:outputText value="#{entry.plannedStart}">
-						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}"  />
 					</h:outputText>
 				</rich:column>
 				<rich:column styleClass="center">
 					<h:outputText value="#{entry.plannedEnd}">
-						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 					</h:outputText>
 				</rich:column>
 				<rich:column styleClass="center">
@@ -95,7 +95,7 @@
 						</h:panelGroup>
 						<h:panelGroup rendered="#{not empty entry.realStart}">
 							<h:outputText value="#{entry.realStart}">
-								<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+								<f:convertDateTime pattern="dd.MM.yyyy HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 							</h:outputText>
 						</h:panelGroup>
 					</a4j:commandLink>
@@ -108,7 +108,7 @@
 						</h:panelGroup>
 						<h:panelGroup rendered="#{not empty entry.realEnd}">
 							<h:outputText value="#{entry.realEnd}">
-								<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+								<f:convertDateTime pattern="dd.MM.yyyy HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 							</h:outputText>
 						</h:panelGroup>
 					</a4j:commandLink>
