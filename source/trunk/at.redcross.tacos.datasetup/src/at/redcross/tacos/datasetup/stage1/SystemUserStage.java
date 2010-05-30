@@ -5,6 +5,7 @@ import javax.persistence.TypedQuery;
 
 import at.redcross.tacos.datasetup.DatasetupStage;
 import at.redcross.tacos.dbal.entity.Address;
+import at.redcross.tacos.dbal.entity.Location;
 import at.redcross.tacos.dbal.entity.Login;
 import at.redcross.tacos.dbal.entity.SystemUser;
 
@@ -21,6 +22,9 @@ public class SystemUserStage implements DatasetupStage {
 
     @Override
     public void performImport(EntityManager manager) {
+    	Location location1 = manager.find(Location.class, "B");
+    	Location location2 = manager.find(Location.class, "K");
+    	
         {
             Address address = new Address();
             address.setCity("Graz");
@@ -31,10 +35,13 @@ public class SystemUserStage implements DatasetupStage {
             SystemUser sysUser = new SystemUser();
             sysUser.setFirstName("Michael");
             sysUser.setLastName("Heiss");
+            sysUser.setPhoneI("0664/1231212");
             sysUser.setAddress(address);
 
             Login login = new Login(sysUser, "m.heiss");
             login.setPassword("m.heiss");
+            
+            sysUser.setLocation(location1);
 
             manager.persist(login);
             manager.persist(sysUser);
@@ -49,10 +56,14 @@ public class SystemUserStage implements DatasetupStage {
             SystemUser sysUser = new SystemUser();
             sysUser.setFirstName("Birgit");
             sysUser.setLastName("Thek");
+            sysUser.setPhoneI("0664/4143824");
+            sysUser.setPhoneII("03862/1212121");
             sysUser.setAddress(address);
 
             Login login = new Login(sysUser, "b.thek");
             login.setPassword("b.thek");
+            
+            sysUser.setLocation(location2);
 
             manager.persist(login);
             manager.persist(sysUser);
