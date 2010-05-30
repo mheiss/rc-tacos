@@ -10,18 +10,18 @@ import javax.persistence.TypedQuery;
 import org.ajax4jsf.model.KeepAlive;
 
 import at.redcross.tacos.dbal.entity.Location;
-import at.redcross.tacos.dbal.entity.RosterEntry;
+import at.redcross.tacos.dbal.entity.SystemUser;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
-import at.redcross.tacos.web.entity.LocationRosterEntry;
+import at.redcross.tacos.web.entity.LocationSystemUserEntry;
 import at.redcross.tacos.web.persitence.EntityManagerFactory;
 
 @KeepAlive
-@ManagedBean(name = "rosterDayViewBean")
-public class RosterDayViewBean extends BaseBean {
+@ManagedBean(name = "systemUserViewBean")
+public class SystemUserViewBean extends BaseBean {
 
     private static final long serialVersionUID = 8817078489086816724L;
 
-    private List<LocationRosterEntry> locationEntry;
+    private List<LocationSystemUserEntry> locationEntry;
 
     @Override
     protected void init() throws Exception {
@@ -30,19 +30,17 @@ public class RosterDayViewBean extends BaseBean {
             manager = EntityManagerFactory.createEntityManager();
             List<Location> locations = manager.createQuery("from Location", Location.class)
                     .getResultList();
-            locationEntry = new ArrayList<LocationRosterEntry>();
+            locationEntry = new ArrayList<LocationSystemUserEntry>();
             for (Location location : locations) {
-            	
-                StringBuilder builder = new StringBuilder();
-                builder.append(" select entry from RosterEntry entry ");
-                builder.append(" where entry.location.id=:locationId ");
-                builder.append(" order by entry.plannedStart");
+            	StringBuilder builder = new StringBuilder();
+                builder.append(" select user from SystemUser user ");
+                builder.append(" where user.location.id=:locationId ");
+                builder.append(" order by user.lastName");
 
-                TypedQuery<RosterEntry> query = manager.createQuery(builder.toString(),
-                        RosterEntry.class);
+                TypedQuery<SystemUser> query = manager.createQuery(builder.toString(),
+                        SystemUser.class);
                 query.setParameter("locationId", location.getId());
-                
-                locationEntry.add(new LocationRosterEntry(location, query.getResultList()));
+                locationEntry.add(new LocationSystemUserEntry(location, query.getResultList()));
             }
         }
         finally {
@@ -53,7 +51,7 @@ public class RosterDayViewBean extends BaseBean {
     // ---------------------------------
     // Getters for the properties
     // ---------------------------------
-    public List<LocationRosterEntry> getLocationEntry() {
+    public List<LocationSystemUserEntry> getLocationEntry() {
         return locationEntry;
     }
 }
