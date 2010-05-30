@@ -25,10 +25,32 @@ public class LocationStage implements DatasetupStage {
         {
             Address address = new Address();
             address.setCity("Bruck an der Mur");
-            address.setEmail("bruck@st.roteskreuz.at");
+            address.setEmail("bruck-kapfenberg@st.roteskreuz.at");
 
             Location location = new Location(district, "BK");
             location.setName("Bezirk: Bruck - Kapfenberg");
+            location.setAddress(address);
+
+            manager.persist(location);
+        }
+        {
+            Address address = new Address();
+            address.setCity("Bruck an der Mur");
+            address.setEmail("bruck@st.roteskreuz.at");
+
+            Location location = new Location(district, "B");
+            location.setName("Bruck an der Mur");
+            location.setAddress(address);
+
+            manager.persist(location);
+        }
+        {
+            Address address = new Address();
+            address.setCity("Kapfenberg");
+            address.setEmail("kapfenberg@st.roteskreuz.at");
+
+            Location location = new Location(district, "K");
+            location.setName("Kapfenberg");
             location.setAddress(address);
 
             manager.persist(location);
