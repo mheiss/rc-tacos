@@ -39,12 +39,24 @@ public class SystemUser extends EntityImpl {
 
     @Column(nullable = false)
     private String lastName;
+    
+    @Column
+    private int pnr;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
     @Temporal(TemporalType.DATE)
     private Calendar birthday;
+    
+    @Column
+    private String phoneI;
+    
+    @Column
+    private String phoneII;
+    
+    @Column
+    private String notes;
 
     @Embedded
     @Column(nullable = false)
@@ -52,6 +64,9 @@ public class SystemUser extends EntityImpl {
 
     @OneToOne(mappedBy = "systemUser", orphanRemoval = true, cascade = CascadeType.ALL)
     private Login login;
+    
+    @OneToOne
+    private Location location;
 
     @ManyToMany
     private Collection<Group> groups;
@@ -133,6 +148,14 @@ public class SystemUser extends EntityImpl {
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
+    
+    public void setPNr(int pnr) {
+        this.pnr = pnr;
+    }
+    
+    public void setLocation(Location location) {
+        this.location = location;
+    }
 
     public void setGender(Gender gender) {
         this.gender = gender;
@@ -140,6 +163,14 @@ public class SystemUser extends EntityImpl {
 
     public void setBirthday(Calendar birthday) {
         this.birthday = birthday;
+    }
+    
+    public void setPhoneI(String phoneI) {
+        this.phoneI = phoneI;
+    }
+    
+    public void setPhoneII(String phoneII) {
+        this.phoneII = phoneII;
     }
 
     public void setAddress(Address address) {
@@ -157,6 +188,10 @@ public class SystemUser extends EntityImpl {
     public void setCompetences(Collection<Competence> competences) {
         this.competences = competences;
     }
+    
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
 
     // ---------------------------------
     // Setters for the properties
@@ -173,6 +208,14 @@ public class SystemUser extends EntityImpl {
         return firstName;
     }
 
+    public int getPNr() {
+        return pnr;
+    }
+    
+    public Location getLocation() {
+        return location;
+    }
+    
     public Gender getGender() {
         return gender;
     }
@@ -184,9 +227,21 @@ public class SystemUser extends EntityImpl {
     public Address getAddress() {
         return address;
     }
+    
+    public String getPhoneI() {
+        return phoneI;
+    }
+    
+    public String getPhoneII() {
+        return phoneII;
+    }
 
     public Login getLogin() {
         return login;
+    }
+    
+    public String getNotes() {
+        return notes;
     }
 
     public Collection<Group> getGroups() {

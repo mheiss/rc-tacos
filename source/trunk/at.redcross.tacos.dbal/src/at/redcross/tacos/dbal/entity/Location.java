@@ -29,6 +29,7 @@ public class Location extends EntityImpl {
 
     @ManyToOne
     private District district;
+    
 
     /**
      * Default protected constructor for JPA
@@ -48,6 +49,8 @@ public class Location extends EntityImpl {
         this.id = id;
         this.district = district;
     }
+    
+    
 
     // ---------------------------------
     // 
@@ -87,6 +90,7 @@ public class Location extends EntityImpl {
     public void setAddress(Address address) {
         this.address = address;
     }
+    
 
     // ---------------------------------
     // Getters for the properties
