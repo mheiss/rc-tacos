@@ -1,0 +1,84 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich" xmlns:pretty="http://ocpsoft.com/prettyfaces">
+<body>
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+	<ui:param name="section" value="employee" />
+	<ui:param name="page" value="systemUserView" />
+
+	<!-- Include the navigation of the page -->
+	<ui:define name="navigation">
+		<ui:include src="navigation.xhtml" />
+	</ui:define>
+
+	<!-- Customize the title and image -->
+	<ui:define name="page-title">
+		<h:outputText value="Mitarbeiteransicht" />
+	</ui:define>
+	<ui:define name="page-image">
+		<h:graphicImage library="images/page" name="home.png" />
+	</ui:define>
+
+	<!-- Render the content -->
+	<ui:define name="content">
+		<rich:dataTable styleClass="defaultStyle" value="#{systemUserViewBean.locationEntry}" var="locationEntry">
+			<f:facet name="header">
+				<rich:columnGroup>
+					<rich:column rowspan="1" styleClass="largeColumn">
+						<h:outputText value="Name" />
+					</rich:column>
+					<rich:column colspan="1" styleClass="mediumColumn">
+						<h:outputText value="Telefon 1" />
+					</rich:column>
+					<rich:column colspan="1" styleClass="mediumColumn">
+						<h:outputText value="Telefon 2" />
+					</rich:column>
+					<rich:column rowspan="1" styleClass="mediumColumn">
+						<h:outputText value="KompetenzenTODO" />
+					</rich:column>
+					<rich:column rowspan="1" title="Bearbeiten" styleClass="smallColumn">
+						<h:outputText value=".." />
+						<rich:spacer />
+					</rich:column>
+				</rich:columnGroup>
+			</f:facet>
+
+			<rich:column colspan="7" styleClass="center">
+				<h:outputText value="#{locationEntry.location.name}" />
+			</rich:column>
+
+			<rich:subTable onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'" value="#{locationEntry.entries}" var="user">
+				<rich:column styleClass="bold">
+					<h:outputText value="#{user.lastName} #{user.firstName}" />
+				</rich:column>
+				<rich:column styleClass="center">
+					<h:outputText value="#{user.phoneI}" />
+				</rich:column>
+				<rich:column styleClass="center">
+					<h:outputText value="#{user.phoneII}" />
+				</rich:column>
+				<rich:column styleClass="center">
+					<h:outputText value="TODO" />
+				</rich:column>
+				<rich:column styleClass="center">
+					<h:outputText value="TODO" />
+				</rich:column>
+				<!-- 
+				<rich:column styleClass="bold">
+					<h:outputText value="#{user.competences}" />
+				</rich:column>
+				-->
+				<!--
+				<rich:column styleClass="center">
+					<pretty:link mappingId="employee-edit" title="Mitarbeitereintrag bearbeiten">
+						<f:param value="#{user.id}" />
+						<h:graphicImage styleClass="actionImage" library="images" name="edit.png" />
+					</pretty:link>
+				</rich:column>
+				-->
+			</rich:subTable>
+		</rich:dataTable>
+	</ui:define>
+</ui:composition>
+</body>
+</html>
