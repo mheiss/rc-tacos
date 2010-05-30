@@ -52,6 +52,23 @@
 		<view-id>/WEB-INF/pages/roster/rosterEntry.faces</view-id>
 		<action onPostback="false">#{rosterEntryBean.prettyInit}</action>
 	</url-mapping>
+	
+	<!-- ################ employee ####################### -->
+	<url-mapping id="employee-systemUserView">
+		<pattern>/employee</pattern>
+		<view-id>/WEB-INF/pages/employee/systemUserView.faces</view-id>
+		<action onPostback="false">#{systemUserViewBean.prettyInit}</action>
+	</url-mapping>
+	<url-mapping id="employee-create">
+		<pattern>/employee/create</pattern>
+		<view-id>/WEB-INF/pages/employee/systemUserEntry.faces</view-id>
+		<action onPostback="false">#{systemUserEntryBean.prettyInit}</action>
+	</url-mapping>
+		<url-mapping id="employee-edit">
+		<pattern>/employee/edit/#{systemUserEntryBean.sysUserId}</pattern>
+		<view-id>/WEB-INF/pages/employee/systemUserEntry.faces</view-id>
+		<action onPostback="false">#{systemUserEntryBean.prettyInit}</action>
+	</url-mapping>
 
 	<!-- ################ administration ####################### -->
 	<url-mapping id="softwareVersion">
