@@ -156,14 +156,14 @@ table.defaultStyle td {
 	border-bottom: 1px solid #BBBBBB;
 }
 
-table.defaultStyle .rich-table-firstrow {
+table.defaultStyle .rich-table-row {
 	height: 3em;
 	font-weight: bold;
 	text-align: center;
 	background: #636363;
 }
 
-table.defaultStyle .rich-table-firstrow td {
+table.defaultStyle .rich-table-row td {
 	color: #fff;
 	font-size: 1.2em;
 }
