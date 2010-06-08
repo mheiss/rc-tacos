@@ -32,21 +32,6 @@ public class SystemUserEntryBean extends BaseBean {
 	private long sysUserId = -1;
 	private SystemUser systemUser;
 	private Login login;
-	private Address address;
-
-	// the suggested values for the UI
-	// FIXME: Address records should not be listed
-	// automatically create a new address record when editing a system-user
-	private String selectedAddress;
-	private List<Address> addresses;
-	private List<SelectItem> addressItems;
-
-	// FIXME: logins should not be listed. A login should be created
-	// automatically when creating a new system user.
-	// Separate management of Login and SystemUser is not good
-	private String selectedLogin;
-	private List<Login> logins;
-	private List<SelectItem> loginItems;
 
 	private String selectedLocation;
 	private List<Location> locations;
@@ -57,8 +42,10 @@ public class SystemUserEntryBean extends BaseBean {
 	private List<Competence> competences;
 	private List<SelectItem> competenceItems;
 
+	//TODO groups?
 	private Collection<Group> selectedGroups;
 
+	private Address address;
 	private Calendar birthday;
 	private Gender gender;
 
@@ -68,28 +55,15 @@ public class SystemUserEntryBean extends BaseBean {
 		try {
 			manager = EntityManagerFactory.createEntityManager();
 			systemUser = loadSystemUser(manager, sysUserId);
-
-			// FIXME: Address is stored 'embedded' in the system-user table and
-			// cannot be listed
-			// addresses = manager.createQuery("from Address",
-			// Address.class).getResultList();
-
-			// logins = manager.createQuery("from Login",
-			// Login.class).getResultList();
+			
+			competences = manager.createQuery("from Competence", Competence.class).getResultList();
+			competenceItems = new ArrayList<SelectItem>();
+			for (Competence competence : competences){
+				competenceItems.add(new SelectItem(competence.getDescription()));
+			}
+			
+			
 			locations = manager.createQuery("from Location", Location.class).getResultList();
-
-			// loginItems = new ArrayList<SelectItem>();
-			// for (Login login : logins) {
-			// loginItems.add(new SelectItem(login.getAlias()));
-			// }
-
-			// addressItems = new ArrayList<SelectItem>();
-			// for (Address address : addresses) {
-			// addressItems.add(new SelectItem(address.getStreet() + " " +
-			// address.getZipCode()
-			// + " " + address.getCity()));
-			// }
-
 			locationItems = new ArrayList<SelectItem>();
 			for (Location location : locations) {
 				locationItems.add(new SelectItem(location.getName()));
@@ -108,11 +82,10 @@ public class SystemUserEntryBean extends BaseBean {
 	 */
 	public String persist() {
 		// set the missing attributes
-		// systemUser.setAddress(lookupAddress(selectedAddress));
 		// systemUser.setCompetences(selectedCompetences);
 		// systemUser.setGroups(selectedGroups);
-		// systemUser.setLogin(lookupLogin(selectedLogin));
 		systemUser.setLocation(lookupLocation(selectedLocation));
+		systemUser.setCompetences((lookupCompetence(selectedCompetences)));
 
 		// write to the database
 		EntityManager manager = null;
@@ -166,12 +139,11 @@ public class SystemUserEntryBean extends BaseBean {
 			sysUserId = -1;
 			return new SystemUser();
 		}
-		selectedAddress = systemUser.getAddress().getStreet() + " "
-				+ systemUser.getAddress().getZipCode() + " " + systemUser.getAddress().getCity();
 		selectedCompetences = systemUser.getCompetences();
 		selectedGroups = systemUser.getGroups();
-		selectedLogin = systemUser.getLogin().getAlias();
 		selectedLocation = systemUser.getLocation().getName();
+		login = systemUser.getLogin();
+		address = systemUser.getAddress();
 		gender = systemUser.getGender();
 		birthday = systemUser.getBirthday();
 		return systemUser;
@@ -186,20 +158,35 @@ public class SystemUserEntryBean extends BaseBean {
 		}
 		return null;
 	}
+	
+	// TODO ?? return competence or competences?
+	private Collection<Competence> lookupCompetence(Object value) {
+		for (Competence competence : competences) {
+			String competenceId = competence.getDescription();
+			if (competenceId.equals(value)) {
+				return competences;
+			}
+		}
+		return null;
+	}
 
 	// ---------------------------------
 	// Setters for the properties
 	// ---------------------------------
-	public void setSelectedLogin(String selectedLogin) {
-		this.selectedLogin = selectedLogin;
+	public void setLogin(Login login) {
+		this.login = login;
 	}
 
-	public void setSelectedAddress(String selectedAddress) {
-		this.selectedAddress = selectedAddress;
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 
 	public void setSelectedLocation(String selectedLocation) {
 		this.selectedLocation = selectedLocation;
+	}
+	
+	public void setSelectedCompetences(Collection<Competence> selectedCompetences){
+		this.selectedCompetences = selectedCompetences;
 	}
 
 	public void setBirthday(Calendar birthday) {
@@ -217,24 +204,20 @@ public class SystemUserEntryBean extends BaseBean {
 		return sysUserId == -1;
 	}
 
-	public String getSelectedLogin() {
-		return selectedLogin;
-	}
-
-	public String getSelectedAddress() {
-		return selectedAddress;
-	}
-
-	public List<SelectItem> getLoginItems() {
-		return loginItems;
-	}
-
-	public List<SelectItem> getAddressItems() {
-		return addressItems;
-	}
-
 	public List<SelectItem> getLocationItems() {
-		return addressItems;
+		return locationItems;
+	}
+	
+	public List<SelectItem> getCompetenceItems() {
+		return competenceItems;
+	}
+	
+	public Address getAddress(){
+		return address;
+	}
+	
+	public Login getLogin(){
+		return login;
 	}
 
 	public Calendar getBirthday() {
