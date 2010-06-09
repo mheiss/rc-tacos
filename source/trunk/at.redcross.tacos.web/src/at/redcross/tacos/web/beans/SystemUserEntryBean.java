@@ -47,7 +47,9 @@ public class SystemUserEntryBean extends BaseBean {
 
 	private Address address;
 	private Calendar birthday;
-	private Gender gender;
+	
+	private String selectedGender;
+	private List<SelectItem> genderItems;
 
 	@Override
 	public void init() throws Exception {
@@ -56,18 +58,26 @@ public class SystemUserEntryBean extends BaseBean {
 			manager = EntityManagerFactory.createEntityManager();
 			systemUser = loadSystemUser(manager, sysUserId);
 			
+			//competences
 			competences = manager.createQuery("from Competence", Competence.class).getResultList();
 			competenceItems = new ArrayList<SelectItem>();
 			for (Competence competence : competences){
 				competenceItems.add(new SelectItem(competence.getDescription()));
 			}
 			
-			
+			//location
 			locations = manager.createQuery("from Location", Location.class).getResultList();
 			locationItems = new ArrayList<SelectItem>();
 			for (Location location : locations) {
 				locationItems.add(new SelectItem(location.getName()));
 			}
+			
+			//gender
+			genderItems = new ArrayList<SelectItem>();
+			genderItems.add(new SelectItem("männlich"));
+			genderItems.add(new SelectItem("weiblich"));
+			genderItems.add(new SelectItem("unbekannt"));
+			
 		}
 		finally {
 			manager = EntityManagerHelper.close(manager);
@@ -85,7 +95,8 @@ public class SystemUserEntryBean extends BaseBean {
 		// systemUser.setCompetences(selectedCompetences);
 		// systemUser.setGroups(selectedGroups);
 		systemUser.setLocation(lookupLocation(selectedLocation));
-		systemUser.setCompetences((lookupCompetence(selectedCompetences)));
+		systemUser.setCompetences(lookupCompetence(selectedCompetences));
+		systemUser.setGender(lookupGender(selectedGender));
 
 		// write to the database
 		EntityManager manager = null;
@@ -142,9 +153,10 @@ public class SystemUserEntryBean extends BaseBean {
 		selectedCompetences = systemUser.getCompetences();
 		selectedGroups = systemUser.getGroups();
 		selectedLocation = systemUser.getLocation().getName();
+		//TODO ???
+		selectedGender = systemUser.getGender().name();
 		login = systemUser.getLogin();
 		address = systemUser.getAddress();
-		gender = systemUser.getGender();
 		birthday = systemUser.getBirthday();
 		return systemUser;
 	}
@@ -158,6 +170,20 @@ public class SystemUserEntryBean extends BaseBean {
 		}
 		return null;
 	}
+	
+	private Gender lookupGender(Object value) {
+		if ("männlich".equals(value)){
+			return Gender.MALE;
+		}
+		if ("weiblich".equals(value)){
+			return Gender.FEMALE;
+		}
+		if ("unbekannt".equals(value)){
+			return Gender.UNKNOWN;
+		}
+		return null;
+	}
+	
 	
 	// TODO ?? return competence or competences?
 	private Collection<Competence> lookupCompetence(Object value) {
@@ -185,16 +211,16 @@ public class SystemUserEntryBean extends BaseBean {
 		this.selectedLocation = selectedLocation;
 	}
 	
+	public void setSelectedGender(String selectedGender) {
+		this.selectedGender = selectedGender;
+	}
+	
 	public void setSelectedCompetences(Collection<Competence> selectedCompetences){
 		this.selectedCompetences = selectedCompetences;
 	}
 
 	public void setBirthday(Calendar birthday) {
 		this.birthday = birthday;
-	}
-
-	public void setGender(Gender gender) {
-		this.gender = gender;
 	}
 
 	// ---------------------------------
@@ -212,6 +238,10 @@ public class SystemUserEntryBean extends BaseBean {
 		return competenceItems;
 	}
 	
+	public List<SelectItem> getGenderItems() {
+		return genderItems;
+	}
+	
 	public Address getAddress(){
 		return address;
 	}
@@ -222,10 +252,6 @@ public class SystemUserEntryBean extends BaseBean {
 
 	public Calendar getBirthday() {
 		return birthday;
-	}
-
-	public Gender getGender() {
-		return gender;
 	}
 
 	public SystemUser getSystemUser() {
