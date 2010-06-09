@@ -19,9 +19,8 @@ import at.redcross.tacos.web.persitence.EntityManagerFactory;
 @ManagedBean(name = "systemUserViewBean")
 public class SystemUserViewBean extends BaseBean {
 
-    private static final long serialVersionUID = 8817078489086816724L;
-
-    private List<LocationSystemUserEntry> locationEntry;
+	private static final long serialVersionUID = -5114023802685654841L;
+	private List<LocationSystemUserEntry> locationEntry;
 
     @Override
     protected void init() throws Exception {
