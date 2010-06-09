@@ -5,8 +5,8 @@
 	xmlns:pretty="http://ocpsoft.com/prettyfaces">
 <body>
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
-	<ui:param name="section" value="employee" />
-	<ui:param name="page" value="systemUserEntry" />
+	<ui:param name="section" value="admin" />
+	<ui:param name="page" value="createView" />
 
 	<!--  Dynamically resize the input fields -->
 	<ui:define name="javaScriptMethod">
@@ -66,15 +66,16 @@
 						<rich:ajaxValidator event="onblur" />
 				</h:inputText> 
 			</li>
+
+			
 			<li><h:outputLabel for="gender" value="Geschlecht" />
-				<div class="input">
-					<rich:comboBox id="gender"  value="#{systemUserEntryBean.gender}" 
-					selectFirstOnUpdate="false" defaultLabel="Geschlecht"
-					required="true" requiredMessage="Bitte geben sie ein Geschlecht an">
-						<f:selectItem itemValue="weiblich"/>
-						<f:selectItem itemValue="männlich"/>
-					<rich:ajaxValidator event="onchange" />
-				</rich:comboBox> <rich:message for="gender" errorClass="error" /></div>
+			<div class="input"><rich:comboBox id="gender"  value=""
+				selectFirstOnUpdate="false" defaultLabel="Geschlecht"
+				required="true" requiredMessage="Bitte geben sie ein Geschlecht an">
+				<f:selectItems value="#{systemUserEntryBean.genderItems}" />
+				<f:validator validatorId="validator.dropDown" />
+				<rich:ajaxValidator event="onchange" />
+			</rich:comboBox> <rich:message for="gender" errorClass="error" /></div>
 			</li>
 		</ol>
 		</fieldset>
