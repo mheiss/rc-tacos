@@ -54,6 +54,12 @@
 		
 		<fieldset class="defaultStyle"><legend><h:outputText value="Allgemeine Mitarbeiterdaten:" /></legend>
 		<ol>
+		<li><h:outputLabel for="pnr" value="Personalnummer" />
+				<h:inputText id="pnr" value="#{systemUser.pnr}" 
+						required="true" requiredMessage="Bitte geben Sie eine gültige Personalnummer an" >
+						<rich:ajaxValidator event="onblur" />
+				</h:inputText> 
+			</li>
 			<li><h:outputLabel for="lastName" value="Nachname" />
 				<h:inputText id="lastName" value="#{systemUserEntryBean.systemUser.lastName}" 
 						required="true" requiredMessage="Bitte geben Sie einen Nachnamen an" >
