@@ -1,7 +1,9 @@
 package at.redcross.tacos.web.beans;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -36,6 +38,8 @@ public class SystemUserEntryBean extends BaseBean {
     private List<SelectItem> genderItems;
     private List<SelectItem> competenceItems;
     private List<SelectItem> locationItems;
+    
+    private Date birthday;
 
     // TODO groups?
     private Collection<Group> selectedGroups;
@@ -62,6 +66,8 @@ public class SystemUserEntryBean extends BaseBean {
             genderItems.add(new DropDownItem("männlich", Gender.MALE).getItem());
             genderItems.add(new DropDownItem("weiblich", Gender.FEMALE).getItem());
             genderItems.add(new DropDownItem("unbekannt", Gender.UNKNOWN).getItem());
+            
+            //birthday TODO???
 
         }
         finally {
@@ -77,6 +83,62 @@ public class SystemUserEntryBean extends BaseBean {
      */
     public String persist() {
         systemUser.setLogin(login);
+        Calendar cal = new Calendar() {
+			
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 2899073018236411386L;
+
+			@Override
+			public void roll(int field, boolean up) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public int getMinimum(int field) {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+			
+			@Override
+			public int getMaximum(int field) {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+			
+			@Override
+			public int getLeastMaximum(int field) {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+			
+			@Override
+			public int getGreatestMinimum(int field) {
+				// TODO Auto-generated method stub
+				return 0;
+			}
+			
+			@Override
+			protected void computeTime() {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			protected void computeFields() {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void add(int field, int amount) {
+				// TODO Auto-generated method stub
+				
+			}
+		};;;
+        systemUser.setBirthday(cal);
         EntityManager manager = null;
         try {
             manager = EntityManagerFactory.createEntityManager();
@@ -157,5 +219,9 @@ public class SystemUserEntryBean extends BaseBean {
 
     public SystemUser getSystemUser() {
         return systemUser;
+    }
+    
+    public Date getBirthday(){
+    	return birthday;
     }
 }
