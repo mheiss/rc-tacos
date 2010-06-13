@@ -1,4 +1,4 @@
-package at.redcross.tacos.web.faces.validator;
+package at.redcross.tacos.web.faces.combo;
 
 import java.util.List;
 
@@ -30,8 +30,8 @@ public class DropDownValidator implements Validator {
             @SuppressWarnings("unchecked")
             List<SelectItem> items = (List<SelectItem>) childItem.getValue();
             for (SelectItem item : items) {
-                String itemValue = (String) item.getValue();
-                if (value.equals(itemValue)) {
+                DropDownItem downItem = (DropDownItem) item.getValue();
+                if (value.equals(downItem.getValue())) {
                     return;
                 }
             }
@@ -40,7 +40,7 @@ public class DropDownValidator implements Validator {
         FacesMessage message = new FacesMessage();
         message.setSummary("Das gewählte Element '" + value + "' existiert nicht");
         message.setSeverity(FacesMessage.SEVERITY_ERROR);
-        context.addMessage(component.getClientId(), message);
+        context.addMessage(component.getId(), message);
         throw new ValidatorException(message);
     }
 

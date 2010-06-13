@@ -1,6 +1,5 @@
 package at.redcross.tacos.web.beans;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +16,7 @@ import at.redcross.tacos.dbal.entity.ServiceType;
 import at.redcross.tacos.dbal.entity.SystemUser;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.web.faces.FacesUtils;
+import at.redcross.tacos.web.faces.combo.DropDownHelper;
 import at.redcross.tacos.web.persitence.EntityManagerFactory;
 import at.redcross.tacos.web.utils.DateUtils;
 
@@ -26,25 +26,14 @@ public class RosterEntryBean extends BaseBean {
 
     private static final long serialVersionUID = 3440196753805921232L;
 
-    // the entry to create
+    // the entry to create or edit
     private long rosterId = -1;
     private RosterEntry rosterEntry;
 
-    // the suggested values for the UI
-    private String selectedUser;
-    private List<SystemUser> users;
+    // the suggested values for the drop down boxes
     private List<SelectItem> userItems;
-
-    private String selectedLocation;
-    private List<Location> locations;
     private List<SelectItem> locationItems;
-
-    private String selectedServiceType;
-    private List<ServiceType> serviceTypes;
     private List<SelectItem> serviceTypeItems;
-
-    private String selectedAssignment;
-    private List<Assignment> assignments;
     private List<SelectItem> assignmentItems;
 
     // start and end time
@@ -59,30 +48,21 @@ public class RosterEntryBean extends BaseBean {
         EntityManager manager = null;
         try {
             manager = EntityManagerFactory.createEntityManager();
-            rosterEntry = loadRosterEntry(manager, rosterId);
+            loadfromDatabase(manager, rosterId);
 
-            users = manager.createQuery("from SystemUser", SystemUser.class).getResultList();
-            locations = manager.createQuery("from Location", Location.class).getResultList();
-            assignments = manager.createQuery("from Assignment", Assignment.class).getResultList();
-            serviceTypes = manager.createQuery("from ServiceType", ServiceType.class)
+            List<SystemUser> users = manager.createQuery("from SystemUser", SystemUser.class)
                     .getResultList();
+            List<Location> locations = manager.createQuery("from Location", Location.class)
+                    .getResultList();
+            List<Assignment> assignments = manager.createQuery("from Assignment", Assignment.class)
+                    .getResultList();
+            List<ServiceType> serviceTypes = manager.createQuery("from ServiceType",
+                    ServiceType.class).getResultList();
 
-            userItems = new ArrayList<SelectItem>();
-            for (SystemUser user : users) {
-                userItems.add(new SelectItem(user.getLastName() + " " + user.getFirstName()));
-            }
-            locationItems = new ArrayList<SelectItem>();
-            for (Location location : locations) {
-                locationItems.add(new SelectItem(location.getName()));
-            }
-            serviceTypeItems = new ArrayList<SelectItem>();
-            for (ServiceType type : serviceTypes) {
-                serviceTypeItems.add(new SelectItem(type.getName()));
-            }
-            assignmentItems = new ArrayList<SelectItem>();
-            for (Assignment assignment : assignments) {
-                assignmentItems.add(new SelectItem(assignment.getId()));
-            }
+            userItems = DropDownHelper.convertToItems(users);
+            locationItems = DropDownHelper.convertToItems(locations);
+            serviceTypeItems = DropDownHelper.convertToItems(serviceTypes);
+            assignmentItems = DropDownHelper.convertToItems(assignments);
         }
         finally {
             manager = EntityManagerHelper.close(manager);
@@ -96,12 +76,6 @@ public class RosterEntryBean extends BaseBean {
      * Persists the current entity in the database
      */
     public String persist() {
-        // set the missing attributes
-        rosterEntry.setSystemUser(lookupUser(selectedUser));
-        rosterEntry.setLocation(lookupLocation(selectedLocation));
-        rosterEntry.setAssignment(lookupAssignment(selectedAssignment));
-        rosterEntry.setServiceType(lookupServiceType(selectedServiceType));
-
         // merge the separate date and time values
         rosterEntry.setPlannedStart(DateUtils.mergeDateAndTime(plannedStartDate, plannedStartTime));
         rosterEntry.setPlannedEnd(DateUtils.mergeDateAndTime(plannedEndDate, plannedEndTime));
@@ -135,7 +109,7 @@ public class RosterEntryBean extends BaseBean {
         EntityManager manager = null;
         try {
             manager = EntityManagerFactory.createEntityManager();
-            rosterEntry = loadRosterEntry(manager, rosterEntry.getId());
+            loadfromDatabase(manager, rosterEntry.getId());
             return "pretty:roster-edit";
         }
         catch (Exception ex) {
@@ -150,63 +124,16 @@ public class RosterEntryBean extends BaseBean {
     // ---------------------------------
     // Helper methods
     // ---------------------------------
-    private RosterEntry loadRosterEntry(EntityManager manager, long id) {
+    private void loadfromDatabase(EntityManager manager, long id) {
         rosterEntry = manager.find(RosterEntry.class, id);
         if (rosterEntry == null) {
             rosterId = -1;
-            return new RosterEntry();
+            rosterEntry = new RosterEntry();
         }
-        SystemUser systemUser = rosterEntry.getSystemUser();
-        selectedUser = systemUser.getLastName() + " " + systemUser.getFirstName();
-        selectedAssignment = rosterEntry.getAssignment().getId();
-        selectedLocation = rosterEntry.getLocation().getName();
-        selectedServiceType = rosterEntry.getServiceType().getName();
         plannedStartDate = rosterEntry.getPlannedStart();
         plannedStartTime = rosterEntry.getPlannedStart();
         plannedEndDate = rosterEntry.getPlannedEnd();
         plannedEndTime = rosterEntry.getPlannedEnd();
-        return rosterEntry;
-    }
-
-    private SystemUser lookupUser(Object value) {
-        for (SystemUser user : users) {
-            String userId = user.getLastName() + " " + user.getFirstName();
-            if (userId.equals(value)) {
-                return user;
-            }
-        }
-        return null;
-    }
-
-    private Location lookupLocation(Object value) {
-        for (Location location : locations) {
-            String name = location.getName();
-            if (name.equals(value)) {
-                return location;
-            }
-        }
-        return null;
-    }
-
-    private Assignment lookupAssignment(Object value) {
-        for (Assignment assignment : assignments) {
-            String name = assignment.getId();
-            if (name.equals(value)) {
-                return assignment;
-            }
-
-        }
-        return null;
-    }
-
-    private ServiceType lookupServiceType(Object value) {
-        for (ServiceType serviceType : serviceTypes) {
-            String name = serviceType.getName();
-            if (name.equals(value)) {
-                return serviceType;
-            }
-        }
-        return null;
     }
 
     // ---------------------------------
@@ -215,25 +142,9 @@ public class RosterEntryBean extends BaseBean {
     public long getRosterId() {
         return rosterId;
     }
-    
+
     public void setRosterId(long rosterId) {
         this.rosterId = rosterId;
-    }
-
-    public void setSelectedUser(String selectedUser) {
-        this.selectedUser = selectedUser;
-    }
-
-    public void setSelectedLocation(String selectedLocation) {
-        this.selectedLocation = selectedLocation;
-    }
-
-    public void setSelectedServiceType(String selectedServiceType) {
-        this.selectedServiceType = selectedServiceType;
-    }
-
-    public void setSelectedAssignment(String selectedAssignment) {
-        this.selectedAssignment = selectedAssignment;
     }
 
     public void setPlannedStartTime(Date plannedStartTime) {
@@ -257,22 +168,6 @@ public class RosterEntryBean extends BaseBean {
     // ---------------------------------
     public boolean isNew() {
         return rosterId == -1;
-    }
-
-    public String getSelectedUser() {
-        return selectedUser;
-    }
-
-    public String getSelectedLocation() {
-        return selectedLocation;
-    }
-
-    public String getSelectedServiceType() {
-        return selectedServiceType;
-    }
-
-    public String getSelectedAssignment() {
-        return selectedAssignment;
     }
 
     public List<SelectItem> getUserItems() {

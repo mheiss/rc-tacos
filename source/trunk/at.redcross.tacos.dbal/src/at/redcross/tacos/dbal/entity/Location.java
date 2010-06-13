@@ -50,10 +50,16 @@ public class Location extends EntityImpl {
         this.district = district;
     }
     
-    
+    // ---------------------------------
+    // EntityImpl
+    // ---------------------------------
+    @Override
+    public String getDisplayString() {
+        return name;
+    }
 
     // ---------------------------------
-    // 
+    // Object related methods
     // ---------------------------------
     @Override
     public String toString() {
