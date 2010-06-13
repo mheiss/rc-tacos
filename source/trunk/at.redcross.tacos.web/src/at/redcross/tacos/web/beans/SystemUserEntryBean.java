@@ -28,9 +28,12 @@ import at.redcross.tacos.web.persitence.EntityManagerFactory;
 @ManagedBean(name = "systemUserEntryBean")
 public class SystemUserEntryBean extends BaseBean {
 
-    private static final long serialVersionUID = 3440196753805921232L;
 
-    // the system user and login
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8941798819713448843L;
+	// the system user and login
     private long sysUserId = -1;
     private SystemUser systemUser;
     private Login login;
@@ -195,10 +198,21 @@ public class SystemUserEntryBean extends BaseBean {
     }
 
     // ---------------------------------
+    // Setters for the properties
+    // ---------------------------------
+    
+    public void setSysUserId(long sysUserId){
+    	this.sysUserId = sysUserId;
+    }
+    // ---------------------------------
     // Getters for the properties
     // ---------------------------------
     public boolean isNew() {
         return sysUserId == -1;
+    }
+    
+    public long getSysUserId(){
+    	return sysUserId;
     }
 
     public List<SelectItem> getLocationItems() {
