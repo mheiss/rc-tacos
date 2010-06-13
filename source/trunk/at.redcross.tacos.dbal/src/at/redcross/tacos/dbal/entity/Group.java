@@ -46,7 +46,15 @@ public class Group extends EntityImpl {
     }
 
     // ---------------------------------
-    // 
+    // EntityImpl
+    // ---------------------------------
+    @Override
+    public String getDisplayString() {
+        return name;
+    }
+
+    // ---------------------------------
+    // Object related methods
     // ---------------------------------
     @Override
     public String toString() {

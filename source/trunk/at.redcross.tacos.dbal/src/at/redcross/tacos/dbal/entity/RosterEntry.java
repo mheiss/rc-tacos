@@ -59,7 +59,15 @@ public class RosterEntry extends EntityImpl {
     private boolean specialService;
 
     // ---------------------------------
-    // 
+    // EntityImpl
+    // ---------------------------------
+    @Override
+    public String getDisplayString() {
+        return String.valueOf(id);
+    }
+
+    // ---------------------------------
+    // Object related methods
     // ---------------------------------
     @Override
     public String toString() {

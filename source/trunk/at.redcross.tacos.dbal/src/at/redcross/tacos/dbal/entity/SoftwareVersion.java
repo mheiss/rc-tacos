@@ -40,7 +40,15 @@ public class SoftwareVersion extends EntityImpl {
     private Collection<ChangelogEntry> changelogs;
 
     // ---------------------------------
-    // 
+    // EntityImpl
+    // ---------------------------------
+    @Override
+    public String getDisplayString() {
+        return version;
+    }
+
+    // ---------------------------------
+    // Object related methods
     // ---------------------------------
     @Override
     public String toString() {

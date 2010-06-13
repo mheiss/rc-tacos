@@ -39,7 +39,7 @@ public class SystemUser extends EntityImpl {
 
     @Column(nullable = false)
     private String lastName;
-    
+
     @Column
     private int pnr;
 
@@ -48,13 +48,13 @@ public class SystemUser extends EntityImpl {
 
     @Temporal(TemporalType.DATE)
     private Calendar birthday;
-    
+
     @Column
     private String phoneI;
-    
+
     @Column
     private String phoneII;
-    
+
     @Column
     private String notes;
 
@@ -64,7 +64,7 @@ public class SystemUser extends EntityImpl {
 
     @OneToOne(mappedBy = "systemUser", orphanRemoval = true, cascade = CascadeType.ALL)
     private Login login;
-    
+
     @OneToOne
     private Location location;
 
@@ -75,7 +75,15 @@ public class SystemUser extends EntityImpl {
     private Collection<Competence> competences;
 
     // ---------------------------------
-    // 
+    // EntityImpl
+    // ---------------------------------
+    @Override
+    public String getDisplayString() {
+        return lastName + " " + firstName;
+    }
+
+    // ---------------------------------
+    // Object related methods
     // ---------------------------------
     @Override
     public String toString() {
@@ -148,11 +156,11 @@ public class SystemUser extends EntityImpl {
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-    
+
     public void setPNr(int pnr) {
         this.pnr = pnr;
     }
-    
+
     public void setLocation(Location location) {
         this.location = location;
     }
@@ -164,11 +172,11 @@ public class SystemUser extends EntityImpl {
     public void setBirthday(Calendar birthday) {
         this.birthday = birthday;
     }
-    
+
     public void setPhoneI(String phoneI) {
         this.phoneI = phoneI;
     }
-    
+
     public void setPhoneII(String phoneII) {
         this.phoneII = phoneII;
     }
@@ -188,7 +196,7 @@ public class SystemUser extends EntityImpl {
     public void setCompetences(Collection<Competence> competences) {
         this.competences = competences;
     }
-    
+
     public void setNotes(String notes) {
         this.notes = notes;
     }
@@ -211,11 +219,11 @@ public class SystemUser extends EntityImpl {
     public int getPNr() {
         return pnr;
     }
-    
+
     public Location getLocation() {
         return location;
     }
-    
+
     public Gender getGender() {
         return gender;
     }
@@ -227,11 +235,11 @@ public class SystemUser extends EntityImpl {
     public Address getAddress() {
         return address;
     }
-    
+
     public String getPhoneI() {
         return phoneI;
     }
-    
+
     public String getPhoneII() {
         return phoneII;
     }
@@ -239,7 +247,7 @@ public class SystemUser extends EntityImpl {
     public Login getLogin() {
         return login;
     }
-    
+
     public String getNotes() {
         return notes;
     }

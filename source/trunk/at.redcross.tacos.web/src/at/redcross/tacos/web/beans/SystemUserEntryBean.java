@@ -1,7 +1,6 @@
 package at.redcross.tacos.web.beans;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
@@ -11,7 +10,6 @@ import javax.persistence.EntityManager;
 
 import org.ajax4jsf.model.KeepAlive;
 
-import at.redcross.tacos.dbal.entity.Address;
 import at.redcross.tacos.dbal.entity.Competence;
 import at.redcross.tacos.dbal.entity.Gender;
 import at.redcross.tacos.dbal.entity.Group;
@@ -20,241 +18,144 @@ import at.redcross.tacos.dbal.entity.Login;
 import at.redcross.tacos.dbal.entity.SystemUser;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.web.faces.FacesUtils;
+import at.redcross.tacos.web.faces.combo.DropDownHelper;
+import at.redcross.tacos.web.faces.combo.DropDownItem;
 import at.redcross.tacos.web.persitence.EntityManagerFactory;
 
 @KeepAlive
 @ManagedBean(name = "systemUserEntryBean")
 public class SystemUserEntryBean extends BaseBean {
 
-	private static final long serialVersionUID = 3440196753805921232L;
+    private static final long serialVersionUID = 3440196753805921232L;
 
-	// the system user and login
-	private long sysUserId = -1;
-	private SystemUser systemUser;
-	private Login login;
+    // the system user and login
+    private long sysUserId = -1;
+    private SystemUser systemUser;
+    private Login login;
 
-	private String selectedLocation;
-	private List<Location> locations;
-	private List<SelectItem> locationItems;
+    private List<SelectItem> genderItems;
+    private List<SelectItem> competenceItems;
+    private List<SelectItem> locationItems;
 
-	// ?? TODO
-	private Collection<Competence> selectedCompetences;
-	private List<Competence> competences;
-	private List<SelectItem> competenceItems;
+    // TODO groups?
+    private Collection<Group> selectedGroups;
 
-	//TODO groups?
-	private Collection<Group> selectedGroups;
+    @Override
+    public void init() throws Exception {
+        EntityManager manager = null;
+        try {
+            manager = EntityManagerFactory.createEntityManager();
+            loadfromDatabase(manager, sysUserId);
 
-	private Address address;
-	private Calendar birthday;
-	
-	private String selectedGender;
-	private List<SelectItem> genderItems;
+            // competences
+            List<Competence> competences = manager.createQuery("from Competence", Competence.class)
+                    .getResultList();
+            competenceItems = DropDownHelper.convertToItems(competences);
 
-	@Override
-	public void init() throws Exception {
-		EntityManager manager = null;
-		try {
-			manager = EntityManagerFactory.createEntityManager();
-			systemUser = loadSystemUser(manager, sysUserId);
-			
-			//competences
-			competences = manager.createQuery("from Competence", Competence.class).getResultList();
-			competenceItems = new ArrayList<SelectItem>();
-			for (Competence competence : competences){
-				competenceItems.add(new SelectItem(competence.getDescription()));
-			}
-			
-			//location
-			locations = manager.createQuery("from Location", Location.class).getResultList();
-			locationItems = new ArrayList<SelectItem>();
-			for (Location location : locations) {
-				locationItems.add(new SelectItem(location.getName()));
-			}
-			
-			//gender
-			genderItems = new ArrayList<SelectItem>();
-			genderItems.add(new SelectItem("männlich"));
-			genderItems.add(new SelectItem("weiblich"));
-			genderItems.add(new SelectItem("unbekannt"));
-			
-		}
-		finally {
-			manager = EntityManagerHelper.close(manager);
-		}
-	}
+            // location
+            List<Location> locations = manager.createQuery("from Location", Location.class)
+                    .getResultList();
+            locationItems = DropDownHelper.convertToItems(locations);
 
-	// ---------------------------------
-	// Actions
-	// ---------------------------------
-	/**
-	 * Persists the current entity in the database
-	 */
-	public String persist() {
-		// set the missing attributes
-		// systemUser.setCompetences(selectedCompetences);
-		// systemUser.setGroups(selectedGroups);
-		systemUser.setLocation(lookupLocation(selectedLocation));
-		systemUser.setCompetences(lookupCompetence(selectedCompetences));
-		systemUser.setGender(lookupGender(selectedGender));
+            // gender
+            genderItems = new ArrayList<SelectItem>();
+            genderItems.add(new DropDownItem("männlich", Gender.MALE).getItem());
+            genderItems.add(new DropDownItem("weiblich", Gender.FEMALE).getItem());
+            genderItems.add(new DropDownItem("unbekannt", Gender.UNKNOWN).getItem());
 
-		// write to the database
-		EntityManager manager = null;
-		try {
-			manager = EntityManagerFactory.createEntityManager();
-			if (isNew()) {
-				manager.persist(systemUser);
-				manager.persist(login);
-			}
-			else {
-				manager.merge(systemUser);
-				manager.merge(login);
-			}
-			EntityManagerHelper.commit(manager);
-			return "pretty:employee-systemUserView";
-		}
-		catch (Exception ex) {
-			FacesUtils.addErrorMessage("Der Mitarbeitereintrag konnte nicht gespeichert werden");
-			return null;
-		}
-		finally {
-			manager = EntityManagerHelper.close(manager);
-		}
-	}
+        }
+        finally {
+            manager = EntityManagerHelper.close(manager);
+        }
+    }
 
-	/**
-	 * Reverts any changes that may have been done
-	 */
-	public String revert() {
-		EntityManager manager = null;
-		try {
-			manager = EntityManagerFactory.createEntityManager();
-			systemUser = loadSystemUser(manager, systemUser.getId());
-			return "pretty:employee-edit";
-		}
-		catch (Exception ex) {
-			FacesUtils.addErrorMessage("Der Mitarbeitereintrag konnte nicht zurückgesetzt werden");
-			return null;
-		}
-		finally {
-			manager = EntityManagerHelper.close(manager);
-		}
-	}
+    // ---------------------------------
+    // Actions
+    // ---------------------------------
+    /**
+     * Persists the current entity in the database
+     */
+    public String persist() {
+        systemUser.setLogin(login);
+        EntityManager manager = null;
+        try {
+            manager = EntityManagerFactory.createEntityManager();
+            if (isNew()) {
+                manager.persist(systemUser);
+                manager.persist(login);
+            }
+            else {
+                manager.merge(systemUser);
+                manager.merge(login);
+            }
+            EntityManagerHelper.commit(manager);
+            return "pretty:employee-systemUserView";
+        }
+        catch (Exception ex) {
+            FacesUtils.addErrorMessage("Der Mitarbeitereintrag konnte nicht gespeichert werden");
+            return null;
+        }
+        finally {
+            manager = EntityManagerHelper.close(manager);
+        }
+    }
 
-	// ---------------------------------
-	// Helper methods
-	// ---------------------------------
-	private SystemUser loadSystemUser(EntityManager manager, long id) {
-		systemUser = manager.find(SystemUser.class, id);
-		if (systemUser == null) {
-			sysUserId = -1;
-			return new SystemUser();
-		}
-		selectedCompetences = systemUser.getCompetences();
-		selectedGroups = systemUser.getGroups();
-		selectedLocation = systemUser.getLocation().getName();
-		//TODO ???
-		selectedGender = systemUser.getGender().name();
-		login = systemUser.getLogin();
-		address = systemUser.getAddress();
-		birthday = systemUser.getBirthday();
-		return systemUser;
-	}
+    /**
+     * Reverts any changes that may have been done
+     */
+    public String revert() {
+        EntityManager manager = null;
+        try {
+            manager = EntityManagerFactory.createEntityManager();
+            loadfromDatabase(manager, systemUser.getId());
+            return "pretty:employee-edit";
+        }
+        catch (Exception ex) {
+            FacesUtils.addErrorMessage("Der Mitarbeitereintrag konnte nicht zurückgesetzt werden");
+            return null;
+        }
+        finally {
+            manager = EntityManagerHelper.close(manager);
+        }
+    }
 
-	private Location lookupLocation(Object value) {
-		for (Location location : locations) {
-			String locationId = location.getName();
-			if (locationId.equals(value)) {
-				return location;
-			}
-		}
-		return null;
-	}
-	
-	private Gender lookupGender(Object value) {
-		if ("männlich".equals(value)){
-			return Gender.MALE;
-		}
-		if ("weiblich".equals(value)){
-			return Gender.FEMALE;
-		}
-		if ("unbekannt".equals(value)){
-			return Gender.UNKNOWN;
-		}
-		return null;
-	}
-	
-	
-	// TODO ?? return competence or competences?
-	private Collection<Competence> lookupCompetence(Object value) {
-		for (Competence competence : competences) {
-			String competenceId = competence.getDescription();
-			if (competenceId.equals(value)) {
-				return competences;
-			}
-		}
-		return null;
-	}
+    // ---------------------------------
+    // Helper methods
+    // ---------------------------------
+    private void loadfromDatabase(EntityManager manager, long id) {
+        systemUser = manager.find(SystemUser.class, id);
+        if (systemUser == null) {
+            sysUserId = -1;
+            systemUser = new SystemUser();
+        }
+        selectedGroups = systemUser.getGroups();
+        login = systemUser.getLogin();
+    }
 
-	// ---------------------------------
-	// Setters for the properties
-	// ---------------------------------
-	public void setLogin(Login login) {
-		this.login = login;
-	}
+    // ---------------------------------
+    // Getters for the properties
+    // ---------------------------------
+    public boolean isNew() {
+        return sysUserId == -1;
+    }
 
-	public void setAddress(Address address) {
-		this.address = address;
-	}
+    public List<SelectItem> getLocationItems() {
+        return locationItems;
+    }
 
-	public void setSelectedLocation(String selectedLocation) {
-		this.selectedLocation = selectedLocation;
-	}
-	
-	public void setSelectedGender(String selectedGender) {
-		this.selectedGender = selectedGender;
-	}
-	
-	public void setSelectedCompetences(Collection<Competence> selectedCompetences){
-		this.selectedCompetences = selectedCompetences;
-	}
+    public List<SelectItem> getCompetenceItems() {
+        return competenceItems;
+    }
 
-	public void setBirthday(Calendar birthday) {
-		this.birthday = birthday;
-	}
+    public List<SelectItem> getGenderItems() {
+        return genderItems;
+    }
 
-	// ---------------------------------
-	// Getters for the properties
-	// ---------------------------------
-	public boolean isNew() {
-		return sysUserId == -1;
-	}
+    public Login getLogin() {
+        return login;
+    }
 
-	public List<SelectItem> getLocationItems() {
-		return locationItems;
-	}
-	
-	public List<SelectItem> getCompetenceItems() {
-		return competenceItems;
-	}
-	
-	public List<SelectItem> getGenderItems() {
-		return genderItems;
-	}
-	
-	public Address getAddress(){
-		return address;
-	}
-	
-	public Login getLogin(){
-		return login;
-	}
-
-	public Calendar getBirthday() {
-		return birthday;
-	}
-
-	public SystemUser getSystemUser() {
-		return systemUser;
-	}
+    public SystemUser getSystemUser() {
+        return systemUser;
+    }
 }

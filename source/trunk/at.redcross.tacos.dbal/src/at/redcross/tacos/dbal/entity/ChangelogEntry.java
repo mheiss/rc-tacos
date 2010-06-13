@@ -24,7 +24,15 @@ public class ChangelogEntry extends EntityImpl {
     private String message;
 
     // ---------------------------------
-    // 
+    // EntityImpl
+    // ---------------------------------
+    @Override
+    public String getDisplayString() {
+        return message;
+    }
+
+    // ---------------------------------
+    // Object related methods
     // ---------------------------------
     @Override
     public String toString() {

@@ -10,20 +10,6 @@
 
 	<!--  Dynamically resize the input fields -->
 	<ui:define name="javaScriptMethod">
-		function smartColumns() {
-			var legendWidth = jQuery("legend").width();
-			var inputWidth = jQuery("div.input").width();
-	
-			jQuery("div.rich-combobox-shell").css( {
-				'width' : inputWidth
-			});
-			jQuery("div.rich-combobox-shell input:first-child").css( {
-				'width' : inputWidth  - 20
-			});
-			jQuery("table.mceLayout").css( {
-				'width' : legendWidth
-			});
-		}
 		jQuery(window).resize(function() {
 			smartColumns();
 		});
@@ -31,7 +17,6 @@
 			smartColumns();
 		});
 	</ui:define>
-
 
 	<!-- Include the navigation of the page -->
 	<ui:define name="navigation">
@@ -54,42 +39,61 @@
 		
 		<fieldset class="defaultStyle"><legend><h:outputText value="Allgemeine Daten:" /></legend>
 		<ol>
-			<li><h:outputLabel for="systemUser" value="Mitarbeiter" />
-			<div class="input">
-				<rich:comboBox id="systemUser"  value="#{rosterEntryBean.selectedUser}" 
-				selectFirstOnUpdate="false" defaultLabel="Mitarbeiter"
-				required="true" requiredMessage="Bitte geben sie einen Mitarbeiter an">
-				<f:selectItems value="#{rosterEntryBean.userItems}" />
-				<f:validator validatorId="validator.dropDown" />
-				<rich:ajaxValidator event="onchange" />
-			</rich:comboBox> <rich:message for="systemUser" errorClass="error" /></div>
+			<li>
+				<h:outputLabel for="systemUser" value="Mitarbeiter" />
+				<div class="input">
+					<rich:comboBox id="systemUser" value="#{rosterEntryBean.rosterEntry.systemUser}" 
+						selectFirstOnUpdate="false" defaultLabel="Mitarbeiter"
+						required="true" requiredMessage="Bitte geben sie einen Mitarbeiter an">
+						<f:selectItems value="#{rosterEntryBean.userItems}" />
+						<f:validator validatorId="validator.dropDown" />
+						<f:converter converterId="converter.dropDown" />
+						<rich:ajaxValidator event="onchange" />
+					</rich:comboBox> 
+					<rich:message for="systemUser" errorClass="error" />
+				</div>
 			</li>
-			<li><h:outputLabel for="location" value="Ortsstelle" />
-			<div class="input"><rich:comboBox id="location"  value="#{rosterEntryBean.selectedLocation}" 
-				selectFirstOnUpdate="false" defaultLabel="Orststelle"
-				required="true" requiredMessage="Bitte geben sie eine Dienststelle an">
-				<f:selectItems value="#{rosterEntryBean.locationItems}" />
-				<f:validator validatorId="validator.dropDown" />
-				<rich:ajaxValidator event="onchange" />
-			</rich:comboBox> <rich:message for="location" errorClass="error" /></div>
+			<li>
+				<h:outputLabel for="location" value="Ortsstelle" />
+				<div class="input">
+					<rich:comboBox id="location" value="#{rosterEntryBean.rosterEntry.location}" 
+						selectFirstOnUpdate="false" defaultLabel="Orststelle"
+						required="true" requiredMessage="Bitte geben sie eine Dienststelle an">
+						<f:selectItems value="#{rosterEntryBean.locationItems}" />
+						<f:validator validatorId="validator.dropDown" />
+						<f:converter converterId="converter.dropDown" />
+						<rich:ajaxValidator event="onchange" />
+					</rich:comboBox> 
+					<rich:message for="location" errorClass="error" />
+				</div>
 			</li>
-			<li><h:outputLabel for="assignment" value="Verwendung" />
-			<div class="input"><rich:comboBox id="assignment"  value="#{rosterEntryBean.selectedAssignment}" 
-				selectFirstOnUpdate="false" defaultLabel="Verwendung"
-				required="true"	requiredMessage="Bitte geben sie eine Verwendung an">
-				<f:selectItems value="#{rosterEntryBean.assignmentItems}" />
-				<f:validator validatorId="validator.dropDown" />
-				<rich:ajaxValidator event="onchange" />
-			</rich:comboBox> <rich:message for="assignment" errorClass="error" /></div>
+			<li>
+				<h:outputLabel for="assignment" value="Verwendung" />
+				<div class="input">
+					<rich:comboBox id="assignment" value="#{rosterEntryBean.rosterEntry.assignment}" 
+						selectFirstOnUpdate="false" defaultLabel="Verwendung"
+						required="true"	requiredMessage="Bitte geben sie eine Verwendung an">
+						<f:selectItems value="#{rosterEntryBean.assignmentItems}" />
+						<f:validator validatorId="validator.dropDown" />
+						<f:converter converterId="converter.dropDown" />
+						<rich:ajaxValidator event="onchange" />
+					</rich:comboBox> 
+					<rich:message for="assignment" errorClass="error" />
+				</div>
 			</li>
-			<li><h:outputLabel for="serviceType" value="Dienstverhältnis" />
-			<div class="input"><rich:comboBox id="serviceType"  value="#{rosterEntryBean.selectedServiceType}" 
-				selectFirstOnUpdate="false" defaultLabel="Dienstverhältnis"
-				required="true" requiredMessage="Bitte geben sie ein Dienstverhältnis an">
-				<f:selectItems value="#{rosterEntryBean.serviceTypeItems}" />
-				<f:validator validatorId="validator.dropDown" />
-				<rich:ajaxValidator event="onchange" />
-			</rich:comboBox> <rich:message for="serviceType" errorClass="error" /></div>
+			<li>
+				<h:outputLabel for="serviceType" value="Dienstverhältnis" />
+				<div class="input">
+					<rich:comboBox id="serviceType"  value="#{rosterEntryBean.rosterEntry.serviceType}" 
+						selectFirstOnUpdate="false" defaultLabel="Dienstverhältnis"
+						required="true" requiredMessage="Bitte geben sie ein Dienstverhältnis an">
+						<f:selectItems value="#{rosterEntryBean.serviceTypeItems}" />
+						<f:validator validatorId="validator.dropDown" />
+						<f:converter converterId="converter.dropDown" />
+						<rich:ajaxValidator event="onchange" />
+					</rich:comboBox> 
+					<rich:message for="serviceType" errorClass="error" />
+				</div>
 			</li>
 			<li>
 				<h:outputLabel for="standby" value="Bereitschaft" />
@@ -101,7 +105,9 @@
 				<h:outputLabel for="specialService" value="Sonderdienst" />
 				<div class="input">
 					<h:selectBooleanCheckbox id="specialService" value="#{rosterEntryBean.rosterEntry.specialService}" /> 
-					<span class="hint"><h:outputText value="Keine regulären Fahrdienste (Ambulanz, Übungen ...)" /></span>
+					<span class="hint">
+						<h:outputText value="Keine regulären Fahrdienste (Ambulanz, Übungen ...)" />
+					</span>
 				</div>
 			</li>
 		</ol>

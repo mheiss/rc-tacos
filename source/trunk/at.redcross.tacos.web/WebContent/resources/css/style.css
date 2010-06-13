@@ -69,6 +69,10 @@ fieldset.defaultStyle .input input {
 	font-size: 1.1em;
 }
 
+fieldset.defaultStyle .input .textfield {
+	width:100%;
+}
+
 fieldset.defaultStyle .rich-calendar-button {
 	margin-right: 1.5em;
 }
