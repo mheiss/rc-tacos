@@ -61,7 +61,10 @@
 					<h:outputText value="TODO" />
 				</rich:column>
 				<rich:column styleClass="center">
-					<h:outputText value="TODO" />
+					<pretty:link mappingId="employee-edit" title="Mitarbeitereintrag bearbeiten">
+						<f:param value="#{user.id}" />
+						<h:graphicImage styleClass="actionImage" library="images" name="edit.png" />
+					</pretty:link>
 				</rich:column>
 				<!-- 
 				<rich:column styleClass="bold">
