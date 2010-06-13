@@ -32,7 +32,7 @@ public class DateUtils {
     }
 
     // returns a calendar instance using the current locale and timezone
-    private static Calendar getCalendar(long timestamp) {
+    public static Calendar getCalendar(long timestamp) {
         LocaleBean bean = (LocaleBean) FacesUtils.lookupBean("localeBean");
         Calendar calendar = Calendar.getInstance(bean.getTimeZone(), bean.getLocale());
         calendar.setTimeInMillis(timestamp);
