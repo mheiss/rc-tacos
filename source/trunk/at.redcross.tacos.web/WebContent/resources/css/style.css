@@ -26,6 +26,16 @@ h2.title {
 	padding-right: 0.6em;
 }
 
+.leftColumn {
+	width:48%;
+	float:left;
+}
+
+.rightColumn {
+	width:48%;
+	float:right;
+}
+
 /*******************************************************
  	Form
  *******************************************************/
@@ -70,14 +80,15 @@ fieldset.defaultStyle .input input {
 }
 
 fieldset.defaultStyle .input .textfield {
-	width:100%;
+	width: 100%;
 }
 
 fieldset.defaultStyle .rich-calendar-button {
 	margin-right: 1.5em;
 }
 
-fieldset.defaultStyle .rich-calendar-input,fieldset.defaultStyle .rich-calendar-button {
+fieldset.defaultStyle .rich-calendar-input,fieldset.defaultStyle .rich-calendar-button
+	{
 	margin-top: -0.3em;
 }
 
@@ -116,14 +127,16 @@ fieldset.defaultStyle .actionBar a.button {
 	margin-right: 6px;
 	padding-right: 18px;
 	text-decoration: none;
-	background: transparent url("../images/widgets/button/bg_button_a.gif") no-repeat scroll top right;
+	background: transparent url("../images/widgets/button/bg_button_a.gif")
+		no-repeat scroll top right;
 }
 
 fieldset.defaultStyle .actionBar a.button span {
 	display: block;
 	line-height: 14px;
 	padding: 5px 0 5px 18px;
-	background: transparent url("../images/widgets/button/bg_button_span.gif") no-repeat;
+	background: transparent
+		url("../images/widgets/button/bg_button_span.gif") no-repeat;
 }
 
 fieldset.defaultStyle .actionBar a.button:active {
@@ -190,6 +203,17 @@ table.defaultStyle .center {
 }
 
 /***********************************************************
+ Toggle panel styling
+ **********************************************************/
+.defaultToggleStyle {
+	margin-bottom:1em;
+}
+ 
+.defaultToggleBodyStyle {
+	
+}
+
+/***********************************************************
  Tooltip styling
  **********************************************************/
 .tooltipDefault {
@@ -208,7 +232,8 @@ table.defaultStyle .center {
 	width: 20px;
 	bottom: -20px;
 	position: absolute;
-	background: url("../images/widgets/round/arrow.png") no-repeat scroll 0 0 transparent;
+	background: url("../images/widgets/round/arrow.png") no-repeat scroll 0
+		0 transparent;
 }
 
 .tooltipDefault ul,.tooltipDefault ol {

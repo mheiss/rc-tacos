@@ -1,9 +1,15 @@
 package at.redcross.tacos.web.beans;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.event.ActionEvent;
+import javax.faces.model.SelectItem;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
@@ -11,49 +17,130 @@ import org.ajax4jsf.model.KeepAlive;
 
 import at.redcross.tacos.dbal.entity.Location;
 import at.redcross.tacos.dbal.entity.RosterEntry;
+import at.redcross.tacos.dbal.helper.LocationHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.web.entity.LocationRosterEntry;
+import at.redcross.tacos.web.faces.combo.DropDownHelper;
 import at.redcross.tacos.web.persitence.EntityManagerFactory;
+import at.redcross.tacos.web.utils.DateUtils;
 
 @KeepAlive
 @ManagedBean(name = "rosterDayViewBean")
 public class RosterDayViewBean extends BaseBean {
 
-    private static final long serialVersionUID = 8817078489086816724L;
+	private static final long serialVersionUID = 8817078489086816724L;
 
-    private List<LocationRosterEntry> locationEntry;
+	// filter by location
+	private Location location;
+	private List<SelectItem> locationItems;
 
-    @Override
-    protected void init() throws Exception {
-        EntityManager manager = null;
-        try {
-            manager = EntityManagerFactory.createEntityManager();
-            List<Location> locations = manager.createQuery("from Location", Location.class)
-                    .getResultList();
-            locationEntry = new ArrayList<LocationRosterEntry>();
-            for (Location location : locations) {
-            	
-                StringBuilder builder = new StringBuilder();
-                builder.append(" select entry from RosterEntry entry ");
-                builder.append(" where entry.location.id=:locationId ");
-                builder.append(" order by entry.plannedStart");
+	// filter by date
+	private Date date;
 
-                TypedQuery<RosterEntry> query = manager.createQuery(builder.toString(),
-                        RosterEntry.class);
-                query.setParameter("locationId", location.getId());
-                
-                locationEntry.add(new LocationRosterEntry(location, query.getResultList()));
-            }
-        }
-        finally {
-            manager = EntityManagerHelper.close(manager);
-        }
-    }
+	// queried result
+	private List<LocationRosterEntry> locationEntry;
 
-    // ---------------------------------
-    // Getters for the properties
-    // ---------------------------------
-    public List<LocationRosterEntry> getLocationEntry() {
-        return locationEntry;
-    }
+	@Override
+	protected void init() throws Exception {
+		EntityManager manager = null;
+		try {
+			manager = EntityManagerFactory.createEntityManager();
+
+			date = new Date();
+			locationItems = DropDownHelper.convertToItems(LocationHelper.list(manager));
+			loadfromDatabase(manager, location, date);
+		}
+		finally {
+			manager = EntityManagerHelper.close(manager);
+		}
+	}
+
+	// ---------------------------------
+	// Actions
+	// ---------------------------------
+	public void filterChanged(ActionEvent event) {
+		EntityManager manager = null;
+		try {
+			manager = EntityManagerFactory.createEntityManager();
+			loadfromDatabase(manager, location, date);
+		}
+		finally {
+			manager = EntityManagerHelper.close(manager);
+		}
+	}
+
+	// ---------------------------------
+	// Private API
+	// ---------------------------------
+	private void loadfromDatabase(EntityManager manager, Location filterLocation, Date date) {
+		// fetch all entries - optionally with location filter
+		StringBuilder builder = new StringBuilder();
+		builder.append(" select entry from RosterEntry entry ");
+		builder.append(" left join entry.location as location ");
+		builder.append(" join fetch entry.systemUser ");
+		builder.append(" where day(entry.plannedStart)=:day ");
+		builder.append(" and month(entry.plannedStart)=:month ");
+		builder.append(" and year(entry.plannedStart)=:year ");
+		if (filterLocation != null) {
+			builder.append(" and location.id=:locationId");
+		}
+		TypedQuery<RosterEntry> query = manager.createQuery(builder.toString(), RosterEntry.class);
+		{
+			Calendar filterCal = DateUtils.getCalendar(date.getTime());
+			query.setParameter("day", filterCal.get(Calendar.DAY_OF_MONTH));
+			query.setParameter("month", filterCal.get(Calendar.MONTH) + 1);
+			query.setParameter("year", filterCal.get(Calendar.YEAR));
+		}
+		if (filterLocation != null) {
+			query.setParameter("locationId", filterLocation.getId());
+		}
+
+		// build a structure containing all results grouped by locations
+		Map<Location, List<RosterEntry>> mappedResult = new HashMap<Location, List<RosterEntry>>();
+		for (RosterEntry entry : query.getResultList()) {
+			Location location = entry.getLocation();
+			List<RosterEntry> list = mappedResult.get(location);
+			if (list == null) {
+				list = new ArrayList<RosterEntry>();
+				mappedResult.put(location, list);
+			}
+			list.add(entry);
+		}
+		// map this structure again for visualization
+		locationEntry = new ArrayList<LocationRosterEntry>();
+		for (Map.Entry<Location, List<RosterEntry>> entry : mappedResult.entrySet()) {
+			LocationRosterEntry value = new LocationRosterEntry(entry.getKey(), entry.getValue());
+			locationEntry.add(value);
+		}
+	}
+
+	// ---------------------------------
+	// Setters for the properties
+	// ---------------------------------
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+
+	// ---------------------------------
+	// Getters for the properties
+	// ---------------------------------
+	public Date getDate() {
+		return date;
+	}
+
+	public Location getLocation() {
+		return location;
+	}
+
+	public List<SelectItem> getLocationItems() {
+		return locationItems;
+	}
+
+	public List<LocationRosterEntry> getLocationEntry() {
+		return locationEntry;
+	}
 }

@@ -9,11 +9,11 @@ import javax.persistence.EntityManager;
 
 import org.ajax4jsf.model.KeepAlive;
 
-import at.redcross.tacos.dbal.entity.Assignment;
-import at.redcross.tacos.dbal.entity.Location;
 import at.redcross.tacos.dbal.entity.RosterEntry;
-import at.redcross.tacos.dbal.entity.ServiceType;
-import at.redcross.tacos.dbal.entity.SystemUser;
+import at.redcross.tacos.dbal.helper.AssignmentHelper;
+import at.redcross.tacos.dbal.helper.LocationHelper;
+import at.redcross.tacos.dbal.helper.ServiceTypeHelper;
+import at.redcross.tacos.dbal.helper.SystemUserHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.faces.combo.DropDownHelper;
@@ -24,185 +24,176 @@ import at.redcross.tacos.web.utils.DateUtils;
 @ManagedBean(name = "rosterEntryBean")
 public class RosterEntryBean extends BaseBean {
 
-    private static final long serialVersionUID = 3440196753805921232L;
+	private static final long serialVersionUID = 3440196753805921232L;
 
-    // the entry to create or edit
-    private long rosterId = -1;
-    private RosterEntry rosterEntry;
+	// the entry to create or edit
+	private long rosterId = -1;
+	private RosterEntry rosterEntry;
 
-    // the suggested values for the drop down boxes
-    private List<SelectItem> userItems;
-    private List<SelectItem> locationItems;
-    private List<SelectItem> serviceTypeItems;
-    private List<SelectItem> assignmentItems;
+	// the suggested values for the drop down boxes
+	private List<SelectItem> userItems;
+	private List<SelectItem> locationItems;
+	private List<SelectItem> serviceTypeItems;
+	private List<SelectItem> assignmentItems;
 
-    // start and end time
-    private Date plannedStartTime;
-    private Date plannedStartDate;
+	// start and end time
+	private Date plannedStartTime;
+	private Date plannedStartDate;
 
-    private Date plannedEndTime;
-    private Date plannedEndDate;
+	private Date plannedEndTime;
+	private Date plannedEndDate;
 
-    @Override
-    public void init() throws Exception {
-        EntityManager manager = null;
-        try {
-            manager = EntityManagerFactory.createEntityManager();
-            loadfromDatabase(manager, rosterId);
+	@Override
+	public void init() throws Exception {
+		EntityManager manager = null;
+		try {
+			manager = EntityManagerFactory.createEntityManager();
+			loadfromDatabase(manager, rosterId);
+			// fetch values for the drop-down components on the page
+			userItems = DropDownHelper.convertToItems(SystemUserHelper.list(manager));
+			locationItems = DropDownHelper.convertToItems(LocationHelper.list(manager));
+			serviceTypeItems = DropDownHelper.convertToItems(ServiceTypeHelper.list(manager));
+			assignmentItems = DropDownHelper.convertToItems(AssignmentHelper.list(manager));
+		}
+		finally {
+			manager = EntityManagerHelper.close(manager);
+		}
+	}
 
-            List<SystemUser> users = manager.createQuery("from SystemUser", SystemUser.class)
-                    .getResultList();
-            List<Location> locations = manager.createQuery("from Location", Location.class)
-                    .getResultList();
-            List<Assignment> assignments = manager.createQuery("from Assignment", Assignment.class)
-                    .getResultList();
-            List<ServiceType> serviceTypes = manager.createQuery("from ServiceType",
-                    ServiceType.class).getResultList();
+	// ---------------------------------
+	// Actions
+	// ---------------------------------
+	/**
+	 * Persists the current entity in the database
+	 */
+	public String persist() {
+		// merge the separate date and time values
+		rosterEntry.setPlannedStart(DateUtils.mergeDateAndTime(plannedStartDate, plannedStartTime));
+		rosterEntry.setPlannedEnd(DateUtils.mergeDateAndTime(plannedEndDate, plannedEndTime));
 
-            userItems = DropDownHelper.convertToItems(users);
-            locationItems = DropDownHelper.convertToItems(locations);
-            serviceTypeItems = DropDownHelper.convertToItems(serviceTypes);
-            assignmentItems = DropDownHelper.convertToItems(assignments);
-        }
-        finally {
-            manager = EntityManagerHelper.close(manager);
-        }
-    }
+		// write to the database
+		EntityManager manager = null;
+		try {
+			manager = EntityManagerFactory.createEntityManager();
+			if (isNew()) {
+				manager.persist(rosterEntry);
+			}
+			else {
+				manager.merge(rosterEntry);
+			}
+			EntityManagerHelper.commit(manager);
+			return "pretty:roster-dayView";
+		}
+		catch (Exception ex) {
+			FacesUtils.addErrorMessage("Der Dienstplaneintrag konnte nicht gespeichert werden");
+			return null;
+		}
+		finally {
+			manager = EntityManagerHelper.close(manager);
+		}
+	}
 
-    // ---------------------------------
-    // Actions
-    // ---------------------------------
-    /**
-     * Persists the current entity in the database
-     */
-    public String persist() {
-        // merge the separate date and time values
-        rosterEntry.setPlannedStart(DateUtils.mergeDateAndTime(plannedStartDate, plannedStartTime));
-        rosterEntry.setPlannedEnd(DateUtils.mergeDateAndTime(plannedEndDate, plannedEndTime));
+	/**
+	 * Reverts any changes that may have been done
+	 */
+	public String revert() {
+		EntityManager manager = null;
+		try {
+			manager = EntityManagerFactory.createEntityManager();
+			loadfromDatabase(manager, rosterEntry.getId());
+			return "pretty:roster-edit";
+		}
+		catch (Exception ex) {
+			FacesUtils.addErrorMessage("Der Dienstplaneintrag konnte nicht zurückgesetzt werden");
+			return null;
+		}
+		finally {
+			manager = EntityManagerHelper.close(manager);
+		}
+	}
 
-        // write to the database
-        EntityManager manager = null;
-        try {
-            manager = EntityManagerFactory.createEntityManager();
-            if (isNew()) {
-                manager.persist(rosterEntry);
-            }
-            else {
-                manager.merge(rosterEntry);
-            }
-            EntityManagerHelper.commit(manager);
-            return "pretty:roster-dayView";
-        }
-        catch (Exception ex) {
-            FacesUtils.addErrorMessage("Der Dienstplaneintrag konnte nicht gespeichert werden");
-            return null;
-        }
-        finally {
-            manager = EntityManagerHelper.close(manager);
-        }
-    }
+	// ---------------------------------
+	// Helper methods
+	// ---------------------------------
+	private void loadfromDatabase(EntityManager manager, long id) {
+		rosterEntry = manager.find(RosterEntry.class, id);
+		if (rosterEntry == null) {
+			rosterId = -1;
+			rosterEntry = new RosterEntry();
+		}
+		plannedStartDate = rosterEntry.getPlannedStart();
+		plannedStartTime = rosterEntry.getPlannedStart();
+		plannedEndDate = rosterEntry.getPlannedEnd();
+		plannedEndTime = rosterEntry.getPlannedEnd();
+	}
 
-    /**
-     * Reverts any changes that may have been done
-     */
-    public String revert() {
-        EntityManager manager = null;
-        try {
-            manager = EntityManagerFactory.createEntityManager();
-            loadfromDatabase(manager, rosterEntry.getId());
-            return "pretty:roster-edit";
-        }
-        catch (Exception ex) {
-            FacesUtils.addErrorMessage("Der Dienstplaneintrag konnte nicht zurückgesetzt werden");
-            return null;
-        }
-        finally {
-            manager = EntityManagerHelper.close(manager);
-        }
-    }
+	// ---------------------------------
+	// Setters for the properties
+	// ---------------------------------
+	public long getRosterId() {
+		return rosterId;
+	}
 
-    // ---------------------------------
-    // Helper methods
-    // ---------------------------------
-    private void loadfromDatabase(EntityManager manager, long id) {
-        rosterEntry = manager.find(RosterEntry.class, id);
-        if (rosterEntry == null) {
-            rosterId = -1;
-            rosterEntry = new RosterEntry();
-        }
-        plannedStartDate = rosterEntry.getPlannedStart();
-        plannedStartTime = rosterEntry.getPlannedStart();
-        plannedEndDate = rosterEntry.getPlannedEnd();
-        plannedEndTime = rosterEntry.getPlannedEnd();
-    }
+	public void setRosterId(long rosterId) {
+		this.rosterId = rosterId;
+	}
 
-    // ---------------------------------
-    // Setters for the properties
-    // ---------------------------------
-    public long getRosterId() {
-        return rosterId;
-    }
+	public void setPlannedStartTime(Date plannedStartTime) {
+		this.plannedStartTime = plannedStartTime;
+	}
 
-    public void setRosterId(long rosterId) {
-        this.rosterId = rosterId;
-    }
+	public void setPlannedStartDate(Date plannedStartDate) {
+		this.plannedStartDate = plannedStartDate;
+	}
 
-    public void setPlannedStartTime(Date plannedStartTime) {
-        this.plannedStartTime = plannedStartTime;
-    }
+	public void setPlannedEndTime(Date plannedEndTime) {
+		this.plannedEndTime = plannedEndTime;
+	}
 
-    public void setPlannedStartDate(Date plannedStartDate) {
-        this.plannedStartDate = plannedStartDate;
-    }
+	public void setPlannedEndDate(Date plannedEndDate) {
+		this.plannedEndDate = plannedEndDate;
+	}
 
-    public void setPlannedEndTime(Date plannedEndTime) {
-        this.plannedEndTime = plannedEndTime;
-    }
+	// ---------------------------------
+	// Getters for the properties
+	// ---------------------------------
+	public boolean isNew() {
+		return rosterId == -1;
+	}
 
-    public void setPlannedEndDate(Date plannedEndDate) {
-        this.plannedEndDate = plannedEndDate;
-    }
+	public List<SelectItem> getUserItems() {
+		return userItems;
+	}
 
-    // ---------------------------------
-    // Getters for the properties
-    // ---------------------------------
-    public boolean isNew() {
-        return rosterId == -1;
-    }
+	public List<SelectItem> getLocationItems() {
+		return locationItems;
+	}
 
-    public List<SelectItem> getUserItems() {
-        return userItems;
-    }
+	public List<SelectItem> getServiceTypeItems() {
+		return serviceTypeItems;
+	}
 
-    public List<SelectItem> getLocationItems() {
-        return locationItems;
-    }
+	public List<SelectItem> getAssignmentItems() {
+		return assignmentItems;
+	}
 
-    public List<SelectItem> getServiceTypeItems() {
-        return serviceTypeItems;
-    }
+	public Date getPlannedStartTime() {
+		return plannedStartTime;
+	}
 
-    public List<SelectItem> getAssignmentItems() {
-        return assignmentItems;
-    }
+	public Date getPlannedStartDate() {
+		return plannedStartDate;
+	}
 
-    public Date getPlannedStartTime() {
-        return plannedStartTime;
-    }
+	public Date getPlannedEndDate() {
+		return plannedEndDate;
+	}
 
-    public Date getPlannedStartDate() {
-        return plannedStartDate;
-    }
+	public Date getPlannedEndTime() {
+		return plannedEndTime;
+	}
 
-    public Date getPlannedEndDate() {
-        return plannedEndDate;
-    }
-
-    public Date getPlannedEndTime() {
-        return plannedEndTime;
-    }
-
-    public RosterEntry getRosterEntry() {
-        return rosterEntry;
-    }
+	public RosterEntry getRosterEntry() {
+		return rosterEntry;
+	}
 }
