@@ -157,7 +157,7 @@ public class SystemUser extends EntityImpl {
         this.firstName = firstName;
     }
 
-    public void setPNr(int pnr) {
+    public void setPnr(int pnr) {
         this.pnr = pnr;
     }
 
@@ -216,7 +216,7 @@ public class SystemUser extends EntityImpl {
         return firstName;
     }
 
-    public int getPNr() {
+    public int getPnr() {
         return pnr;
     }
 
