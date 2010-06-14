@@ -1,5 +1,7 @@
 package at.redcross.tacos.web.beans;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -11,20 +13,24 @@ import javax.faces.bean.SessionScoped;
 @ManagedBean(name = "localeBean")
 public class LocaleBean {
 
-    private TimeZone timeZone;
-    private Locale locale;
+	private TimeZone timeZone;
+	private Locale locale;
 
-    @PostConstruct
-    protected void init() {
-        locale = new Locale("de", "AT");
-        timeZone = TimeZone.getTimeZone("Europe/Berlin");
-    }
+	@PostConstruct
+	protected void init() {
+		locale = new Locale("de", "AT");
+		timeZone = TimeZone.getTimeZone("Europe/Berlin");
+	}
 
-    public Locale getLocale() {
-        return locale;
-    }
+	public Date getDate() {
+		return Calendar.getInstance(timeZone, locale).getTime();
+	}
 
-    public TimeZone getTimeZone() {
-        return timeZone;
-    }
+	public Locale getLocale() {
+		return locale;
+	}
+
+	public TimeZone getTimeZone() {
+		return timeZone;
+	}
 }

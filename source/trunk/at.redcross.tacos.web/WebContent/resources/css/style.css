@@ -9,8 +9,12 @@ strong,.bold {
 	font-style: italic;
 }
 
-h2.title {
+.title {
 	font-size: 1.5em;
+}
+
+.left {
+	float: left;
 }
 
 /*******************************************************
@@ -27,13 +31,13 @@ h2.title {
 }
 
 .leftColumn {
-	width:48%;
-	float:left;
+	width: 48%;
+	float: left;
 }
 
 .rightColumn {
-	width:48%;
-	float:right;
+	width: 48%;
+	float: right;
 }
 
 /*******************************************************
@@ -70,8 +74,17 @@ fieldset.defaultStyle label {
 
 fieldset.defaultStyle .input {
 	padding-left: 12em;
-	padding-right: 3em;
-	word-wrap: break-word;
+}
+
+fieldset.defaultStyle .leftDecorator {
+	float: left;
+	margin-left: 1em;
+	margin-top: 0.2em;
+}
+
+fieldset.defaultStyle .leftDateDecorator {
+	float: left;
+	margin-left: -0.6em;
 }
 
 fieldset.defaultStyle .input input {
@@ -206,9 +219,9 @@ table.defaultStyle .center {
  Toggle panel styling
  **********************************************************/
 .defaultToggleStyle {
-	margin-bottom:1em;
+	margin-bottom: 1em;
 }
- 
+
 .defaultToggleBodyStyle {
 	
 }
