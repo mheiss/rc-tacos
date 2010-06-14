@@ -45,8 +45,7 @@ public class RosterDayViewBean extends BaseBean {
 		EntityManager manager = null;
 		try {
 			manager = EntityManagerFactory.createEntityManager();
-
-			date = new Date();
+			date = DateUtils.getCalendar(System.currentTimeMillis()).getTime();
 			locationItems = DropDownHelper.convertToItems(LocationHelper.list(manager));
 			loadfromDatabase(manager, location, date);
 		}
@@ -61,6 +60,10 @@ public class RosterDayViewBean extends BaseBean {
 	public void filterChanged(ActionEvent event) {
 		EntityManager manager = null;
 		try {
+			// provide default value if date is null
+			if(date == null) {
+				date = DateUtils.getCalendar(System.currentTimeMillis()).getTime();
+			}
 			manager = EntityManagerFactory.createEntityManager();
 			loadfromDatabase(manager, location, date);
 		}
@@ -78,18 +81,20 @@ public class RosterDayViewBean extends BaseBean {
 		builder.append(" select entry from RosterEntry entry ");
 		builder.append(" left join entry.location as location ");
 		builder.append(" join fetch entry.systemUser ");
-		builder.append(" where day(entry.plannedStart)=:day ");
-		builder.append(" and month(entry.plannedStart)=:month ");
-		builder.append(" and year(entry.plannedStart)=:year ");
+		builder.append(" where day(entry.plannedEnd) >= :day AND day(entry.plannedStart) <= :day");
+		builder
+				.append(" and month(entry.plannedEnd) >= :month AND month(entry.plannedStart) <= :month");
+		builder
+				.append(" and year(entry.plannedEnd) >= :year AND year(entry.plannedStart) <= :year");
 		if (filterLocation != null) {
 			builder.append(" and location.id=:locationId");
 		}
 		TypedQuery<RosterEntry> query = manager.createQuery(builder.toString(), RosterEntry.class);
 		{
-			Calendar filterCal = DateUtils.getCalendar(date.getTime());
-			query.setParameter("day", filterCal.get(Calendar.DAY_OF_MONTH));
-			query.setParameter("month", filterCal.get(Calendar.MONTH) + 1);
-			query.setParameter("year", filterCal.get(Calendar.YEAR));
+			Calendar cal = DateUtils.getCalendar(date.getTime());
+			query.setParameter("day", cal.get(Calendar.DAY_OF_MONTH));
+			query.setParameter("month", cal.get(Calendar.MONTH) + 1);
+			query.setParameter("year", cal.get(Calendar.YEAR));
 		}
 		if (filterLocation != null) {
 			query.setParameter("locationId", filterLocation.getId());

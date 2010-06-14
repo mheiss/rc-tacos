@@ -19,7 +19,10 @@
 
 	<!-- Customize the title and image -->
 	<ui:define name="page-title">
-		<h:outputText value="Tagesansicht" />
+		<h:outputText value="Tagesansicht für " />
+		<h:outputText id="dateTitle" value="#{rosterDayViewBean.date}">
+			<f:convertDateTime pattern="E, dd.MMMMM yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+		</h:outputText>
 	</ui:define>
 	<ui:define name="page-image">
 		<h:graphicImage library="images/page" name="home.png" />
@@ -27,12 +30,12 @@
 
 	<!-- Render the content -->
 	<ui:define name="content">
-		<rich:simpleTogglePanel opened="false" label="Filter" bodyClass="defaultToggleBodyStyle" styleClass="defaultToggleStyle" switchType="client">
+		<rich:simpleTogglePanel id="filter" opened="false" label="Filter" bodyClass="defaultToggleBodyStyle" styleClass="defaultToggleStyle" switchType="client">
 			<fieldset class="defaultStyle">
 				<div class="leftColumn">
 					<h:outputLabel for="location" value="Ortsstelle" />
-					<div class="input">
-						<rich:comboBox id="location" value="#{rosterDayViewBean.location}" 
+					<div class="input left inputZoom">
+						<rich:comboBox id="location" value="#{rosterDayViewBean.location}" width="250"
 							selectFirstOnUpdate="false" defaultLabel="Filter nach Orststelle">
 							<f:selectItems value="#{rosterDayViewBean.locationItems}" />
 							<f:validator validatorId="validator.dropDown" />
@@ -42,19 +45,34 @@
 						</rich:comboBox> 
 						<rich:message for="location" errorClass="error" />
 					</div>
+					<div class="leftDecorator">
+						<a4j:commandLink reRender="filter,resultList" title="Filter zurücksetzen">
+							<a4j:actionparam name="locationFilter" value="#{null}" 
+								assignTo="#{rosterDayViewBean.location}" actionListener="#{rosterDayViewBean.filterChanged}" />
+								<h:graphicImage library="images" name="edit-clear.png" />
+						</a4j:commandLink> 
+					</div>
 				</div>
 				<div class="rightColumn">
 					<h:outputLabel for="date" value="Datum" />
-					<div class="input">
+					<div class="input left">
 						<rich:calendar id="date" value="#{rosterDayViewBean.date}" styleClass="rich-calendar" 
+							defaultTime="#{localeBean.date}"
 							datePattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" 
 							converterMessage="Bitte geben Sie ein gültiges Datum an.">
 							<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 							<rich:ajaxValidator event="onchanged" />
 							<rich:ajaxValidator event="oninputblur" />
-							<a4j:support event="onchanged" actionListener="#{rosterDayViewBean.filterChanged}" reRender="resultList" />
-						</rich:calendar> 
+							<a4j:support event="onchanged" actionListener="#{rosterDayViewBean.filterChanged}" reRender="dateTitle,filter,resultList" />
+						</rich:calendar>
 						<rich:message for="date" errorClass="error" />
+					</div>
+					<div class="leftDateDecorator">
+						<a4j:commandLink reRender="dateTitle,filter,resultList" title="Filter zurücksetzen">
+							<a4j:actionparam name="dateFilter" value="#{null}" 
+								assignTo="#{rosterDayViewBean.date}" actionListener="#{rosterDayViewBean.filterChanged}" />
+								<h:graphicImage library="images" name="edit-clear.png" />
+						</a4j:commandLink> 
 					</div>
 				</div>
 			</fieldset>
