@@ -55,7 +55,7 @@
 		<fieldset class="defaultStyle"><legend><h:outputText value="Allgemeine Mitarbeiterdaten:" /></legend>
 		<ol>
 		<li><h:outputLabel for="pnr" value="Personalnummer" />
-				<h:inputText id="pnr" value="#{systemUser.pnr}" 
+				<h:inputText id="pnr" value="#{systemUserEntryBean.systemUser.pnr}" 
 						required="true" requiredMessage="Bitte geben Sie eine gültige Personalnummer an" >
 						<rich:ajaxValidator event="onblur" />
 				</h:inputText> 
@@ -106,8 +106,8 @@
 			
 		</ol>
 		</fieldset>
-		
-		<fieldset class="defaultStyle"><legend><h:outputText value="Logindaten:" /></legend>
+		<!-- 
+				<fieldset class="defaultStyle"><legend><h:outputText value="Logindaten:" /></legend>
 		<ol>
 			<li><h:outputLabel for="alias" value="Benutzername" />
 				<h:inputText id="alias" value="#{login.alias}" 
@@ -136,7 +136,7 @@
 		</ol>
 		
 		</fieldset>
-		
+		-->
 		<fieldset class="defaultStyle">
 			<legend><h:outputText value="Anmerkungen" /></legend> 
 			<rich:editor value="#{systemUserEntryBean.systemUser.notes}" theme="simple" 
