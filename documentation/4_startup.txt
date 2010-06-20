@@ -17,7 +17,7 @@ Create a new Java launch configuration using the launch manager of eclipse and c
 to use the following settings:
 
 	Java-Launch-Configuration "Main" Tab:
-       Project:      at.redcross.tacos.hsqldb
+       Project:     at.redcross.tacos.hsqldb
        Main-Class:  at.redcross.tacos.hsqldb.HsqlServer
 
 The database files and tables are stored in 'at.redcross.tacos.hsqldb/database' and will be created automatically.

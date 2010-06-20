@@ -1,0 +1,29 @@
+REPORTING - ENGINE |
+--------------------
+This readme file will guide you through the deployment of the BIRT-Reporting engine so that you will be able to 
+create PDF reports using the web application.
+
+1) Download "Latest BIRT Runtime Release" (2.5.x)" to a local directory:
+   RUNTIME: http://www.eclipse.org/downloads/download.php?file=/birt/downloads/drops/R-R1-2_5_2-201002221500/birt-runtime-2_5_2.zip
+   
+2) Extract "birt-runtime-2_5_x.zip" to a local directory
+
+3) Navigate to the ReportEngine sub-directory 
+
+4) Copy the two folders 'plugins' and 'configuration' to the 'at.redcross-tacos-web/WebContent/WEB-INF/platform' directory.
+
+5) The resulting file system structure should look like
+
+   at.redcross-tacos-web
+   |
+   -  WebContent
+      |
+      - WEB-INF
+        |
+        - platform
+          |
+          - configuration
+          - plugins
+          
+6) Start or Restart the web application and you are ready to create your first report :)
+  
