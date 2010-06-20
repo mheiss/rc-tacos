@@ -120,6 +120,7 @@ public class RosterDayViewBean extends BaseBean {
             params.reportName = "Dienstplan_" + sdf.format(date) + ".pdf";
             params.reportFile = "rosterDayReport.rptdesign";
             params.arguments.put("rosterList", entries);
+            params.arguments.put("reportDate", date);
 
             // render the report
             ReportRenderer.getInstance().renderReport(params);
