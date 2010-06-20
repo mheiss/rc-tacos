@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app id="WebApp_ID" version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+<web-app id="WebApp_ID" version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
 	<!-- general configuration-->
 	<display-name>TacosProject</display-name>
@@ -10,6 +9,12 @@
 	<context-param>
 		<param-name>java.faces.PROJECT_STAGE</param-name>
 		<param-value>Development</param-value>
+	</context-param>
+
+	<!-- BIRT configuration -->
+	<context-param>
+		<param-name>org.eclipse.birt.configPath</param-name>
+		<param-value>configuration/config.ini</param-value>
 	</context-param>
 
 	<!-- RichFaces configuration -->

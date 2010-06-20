@@ -16,11 +16,11 @@
 	<!-- BEGINNING: HOME-NAVIGATION -->
 	<ui:define name="block-content">
 		<ul class="menu">
-			<li class="menu-item #{page eq 'dayView' ? 'selected' : ''}">
-				<pretty:link mappingId="roster-dayView"><h:outputText value="Tageansicht" /> </pretty:link>
-			</li>
 			<li class="menu-item #{page eq 'myView' ? 'selected' : ''}">
 				<pretty:link mappingId="roster-personalView"> <h:outputText value="Meine Dienste" /> </pretty:link>
+			</li>
+			<li class="menu-item #{page eq 'dayView' ? 'selected' : ''}">
+				<pretty:link mappingId="roster-dayView"><h:outputText value="Tageansicht" /> </pretty:link>
 			</li>
 			<li class="menu-item #{page eq 'weekView' ? 'selected' : ''}">
 				<pretty:link mappingId="roster-weekView"> <h:outputText value="Wochenansicht" /> </pretty:link>

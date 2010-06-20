@@ -6,7 +6,8 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:a4j="http://richfaces.org/a4j"
 	xmlns:rich="http://richfaces.org/rich"
-	xmlns:pretty="http://ocpsoft.com/prettyfaces">
+	xmlns:pretty="http://ocpsoft.com/prettyfaces"
+	xmlns:birt="http://jsf4birt.components">
 <body>
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
 	<ui:param name="section" value="roster" />
@@ -19,13 +20,35 @@
 
 	<!-- Customize the title and image -->
 	<ui:define name="page-title">
-		<h:outputText value="Tagesansicht für " />
-		<h:outputText id="dateTitle" value="#{rosterDayViewBean.date}">
-			<f:convertDateTime pattern="E, dd.MMMMM yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
-		</h:outputText>
-	</ui:define>
-	<ui:define name="page-image">
 		<h:graphicImage library="images/page" name="home.png" />
+		<h2 class="title">
+			<h:outputText value="Tagesansicht für " />
+			<h:outputText id="dateTitle" value="#{rosterDayViewBean.date}">
+				<f:convertDateTime pattern="E, dd.MMMMM yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+			</h:outputText>
+		</h2>
+	</ui:define>
+	
+	<!-- Customize the toolbar -->
+	<ui:define name="page-toolbar">
+		<li>
+			<a4j:commandLink actionListener="#{rosterDayViewBean.navigateNextDay}" reRender="dateTitle,filter,resultList">
+				<h:graphicImage styleClass="toolbarItem" library="images/toolbar" name="next.png" />
+				<h:outputText styleClass="toolbarText" value="Nächster Tag"  />
+			</a4j:commandLink>
+		</li>
+		<li>
+			<a4j:htmlCommandLink actionListener="#{rosterDayViewBean.createPdfReport}">
+				<h:graphicImage styleClass="toolbarItem" library="images/toolbar" name="pdf.png" />
+				<h:outputText styleClass="toolbarText" value="Exportieren"  />
+			</a4j:htmlCommandLink>
+		</li>
+		<li>
+			<a4j:commandLink actionListener="#{rosterDayViewBean.navigatePreviousDay}" reRender="dateTitle,filter,resultList">
+				<h:graphicImage styleClass="toolbarItem" library="images/toolbar" name="back.png" />
+				<h:outputText styleClass="toolbarText" value="Vorheriger Tag"  />
+			</a4j:commandLink>
+		</li>
 	</ui:define>
 
 	<!-- Render the content -->

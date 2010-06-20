@@ -25,18 +25,16 @@
 
 	<!-- Customize the title and image -->
 	<ui:define name="page-title">
-		<h:outputText value="Neuer Mitarbeitereintrag" rendered="#{systemUserBean.new}" />
-		<h:outputText value="Dienstplaneintrag bearbeiten" rendered="#{not rosterEntryBean.new}" />
-	</ui:define>
-	<ui:define name="page-image">
 		<h:graphicImage library="images/page" name="home.png" />
+		<h2 class="title">
+			<h:outputText value="Neuer Dienstplaneintrag" rendered="#{rosterEntryBean.new}" />
+			<h:outputText value="Dienstplaneintrag bearbeiten" rendered="#{not rosterEntryBean.new}" />
+		</h2>
 	</ui:define>
-
+	
 	<!-- Render the content -->
 	<ui:define name="content">
-	
 		<rich:messages errorClass="errorMessage" globalOnly="true" />
-		
 		<fieldset class="defaultStyle"><legend><h:outputText value="Allgemeine Daten:" /></legend>
 		<ol>
 			<li>
@@ -124,6 +122,7 @@
 						<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 						<rich:ajaxValidator event="onchanged" />
 						<rich:ajaxValidator event="oninputblur" />
+						<f:validator validatorId="validator.fromTo" />
 					</rich:calendar> 
 					<h:inputText id="startTime" value="#{rosterEntryBean.plannedStartTime}" 
 						required="true" requiredMessage="Bitte geben Sie einen Startzeitpunkt an" 
@@ -145,6 +144,7 @@
 						<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 						<rich:ajaxValidator event="onchanged" />
 						<rich:ajaxValidator event="oninputblur" />
+						<f:validator validatorId="validator.fromTo" />
 					</rich:calendar> 
 					<h:inputText id="endTime" value="#{rosterEntryBean.plannedEndTime}" 
 						required="true" requiredMessage="Bitte geben Sie einen Endzeitpunkt an" 

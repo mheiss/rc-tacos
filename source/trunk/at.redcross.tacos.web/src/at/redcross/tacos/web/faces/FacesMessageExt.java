@@ -29,6 +29,10 @@ public class FacesMessageExt extends FacesMessage {
         initDetails();
     }
 
+    public List<String> getDetails() {
+        return details;
+    }
+
     private void initDetails() {
         details = new ArrayList<String>();
         if (getDetail() == null) {
@@ -41,9 +45,5 @@ public class FacesMessageExt extends FacesMessage {
         for (String line : getDetail().split("\\r?\\n")) {
             details.add(line);
         }
-    }
-
-    public List<String> getDetails() {
-        return details;
     }
 }

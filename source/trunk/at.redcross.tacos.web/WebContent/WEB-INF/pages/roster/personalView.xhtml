@@ -12,11 +12,16 @@
         <ui:include src="navigation.xhtml" />
     </ui:define>
 
-    <!-- Customize the title and image -->
-    <ui:define name="page-title"> Meine Dienste </ui:define>
-    <ui:define name="page-image">
-        <h:graphicImage library="images/page" name="home.png" />
-    </ui:define>
+	<!-- Customize the title and image -->
+	<ui:define name="page-title">
+		<h:graphicImage library="images/page" name="home.png" />
+		<h2 class="title">
+			<h:outputText value="Meine Dienste" />
+			<h:outputText id="dateTitle" value="#{rosterDayViewBean.date}">
+				<f:convertDateTime pattern="MMMMM yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+			</h:outputText>
+		</h2>
+	</ui:define>
 
     <!-- Render the content -->
     <ui:define name="content">
