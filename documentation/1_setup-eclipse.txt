@@ -24,7 +24,8 @@ build-in search mechanism to find the features.
     Subversive SVN Connectors       |   http://community.polarion.com/projects/subversive/download/eclipse/2.0/update-site/
     SVNKit 1.3.0 Implementation     |
     ----------------------------------------------------------------------------------------------------
-    JST Server UI                   |   http://download.eclipse.org/releases/galileo
+    BIRT Framework                  |   http://download.eclipse.org/releases/galileo
+    JST Server UI                   |   
     JST Web UI                      |
     JST Server Adapters             |
     WST Server Adapters             |
