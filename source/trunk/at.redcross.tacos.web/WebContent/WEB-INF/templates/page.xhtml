@@ -3,30 +3,37 @@
 <body>
 <ui:composition>
 	<div id="page-header">
-	<div id="page-title"><a4j:status>
-		<f:facet name="start">
-			<h:panelGroup>
-				<h:graphicImage library="images" name="page/ajax-loader-big.gif" alt="Image:[updating]" title="Updating, please wait ..." />
-				<h2 class="title"><h:outputText value="#{caption}" /></h2>
-			</h:panelGroup>
-		</f:facet>
-		<f:facet name="stop">
-			<h:panelGroup>
-				<ui:insert name="page-image" />
-				<h2 class="title"><ui:insert name="page-title" /></h2>
-			</h:panelGroup>
-		</f:facet>
-	</a4j:status>
-	<div class="clear" />
+		<div id="page-title">
+			<a4j:status>
+				<f:facet name="start">
+					<h:panelGroup>
+						<h:graphicImage library="images" name="page/ajax-loader-big.gif" alt="Image:[updating]" />
+						<h2 class="title"><h:outputText value="Anfrage wird bearbeitet, bitte warten ..." /></h2>
+					</h:panelGroup>
+				</f:facet>
+				<f:facet name="stop">
+					<h:panelGroup>
+						<ui:insert name="page-title" />
+					</h:panelGroup>
+				</f:facet>
+			</a4j:status>
+			<div class="clear" />
+		</div>
+		<div id="page-toolbar" class="toolbar">
+			<a4j:form>
+				<ul>
+					<ui:insert name="page-toolbar" />
+				</ul>
+				<div class="clear" />
+			</a4j:form>
+		</div>
 	</div>
-	<div id="page-toolbar" class="toolbar"><ui:insert name="toolbar" /></div>
-	<div class="clear" />
-	</div>
-	<a4j:form id="page-content" ajaxSubmit="true">
-		<ui:insert name="content">Default Content</ui:insert>
+	<a4j:form id="page-content">
+		<ui:insert name="content"> (Default Content) </ui:insert>
 	</a4j:form>
+	<!-- additional panels must have a own form -->
 	<a4j:form id="page-panels" ajaxSubmit="true">
-		<ui:insert name="panel"></ui:insert>
+		<ui:insert name="panel" />
 	</a4j:form>
 </ui:composition>
 </body>

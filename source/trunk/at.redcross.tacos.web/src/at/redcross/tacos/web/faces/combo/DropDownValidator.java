@@ -36,12 +36,9 @@ public class DropDownValidator implements Validator {
                 }
             }
         }
-
         FacesMessage message = new FacesMessage();
         message.setSummary("Das gewählte Element '" + value + "' existiert nicht");
         message.setSeverity(FacesMessage.SEVERITY_ERROR);
-        context.addMessage(component.getId(), message);
         throw new ValidatorException(message);
     }
-
 }

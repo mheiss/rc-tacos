@@ -21,14 +21,14 @@ public class DateUtils {
      *            the time value
      * @return a new date
      */
-    public static Date mergeDateAndTime(Date date, Date time) {
+    public static Calendar mergeDateAndTime(Date date, Date time) {
         Calendar dCal = getCalendar(date.getTime());
         Calendar tCal = getCalendar(time.getTime());
         dCal.set(Calendar.HOUR_OF_DAY, tCal.get(Calendar.HOUR_OF_DAY));
         dCal.set(Calendar.MINUTE, tCal.get(Calendar.MINUTE));
         dCal.set(Calendar.SECOND, tCal.get(Calendar.SECOND));
         dCal.set(Calendar.MILLISECOND, tCal.get(Calendar.MILLISECOND));
-        return dCal.getTime();
+        return dCal;
     }
 
     // returns a calendar instance using the current locale and timezone
