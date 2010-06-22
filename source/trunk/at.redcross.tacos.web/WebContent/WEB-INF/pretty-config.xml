@@ -35,45 +35,51 @@
 		<action onPostback="false">#{rosterDayViewBean.prettyInit}</action>
 	</url-mapping>
 	<url-mapping id="roster-personalView">
-		<pattern>/roster/my</pattern>
+		<pattern>/roster/personal</pattern>
 		<view-id>/WEB-INF/pages/roster/personalView.faces</view-id>
 	</url-mapping>
 	<url-mapping id="roster-weekView">
 		<pattern>/roster/week</pattern>
 		<view-id>/WEB-INF/pages/roster/weekView.faces</view-id>
 	</url-mapping>
-	<url-mapping id="roster-create">
+	<url-mapping id="roster-createEntryView">
 		<pattern>/roster/create</pattern>
-		<view-id>/WEB-INF/pages/roster/rosterEntry.faces</view-id>
+		<view-id>/WEB-INF/pages/roster/editEntryView.faces</view-id>
 		<action onPostback="false">#{rosterEntryBean.prettyInit}</action>
 	</url-mapping>
-		<url-mapping id="roster-edit">
+		<url-mapping id="roster-editEntryView">
 		<pattern>/roster/edit/#{rosterEntryBean.rosterId}</pattern>
-		<view-id>/WEB-INF/pages/roster/rosterEntry.faces</view-id>
+		<view-id>/WEB-INF/pages/roster/editEntryView.faces</view-id>
 		<action onPostback="false">#{rosterEntryBean.prettyInit}</action>
 	</url-mapping>
 	
-	<!-- ################ employee ####################### -->
-	<url-mapping id="employee-systemUserView">
-		<pattern>/employee</pattern>
-		<view-id>/WEB-INF/pages/employee/systemUserView.faces</view-id>
-		<action onPostback="false">#{systemUserViewBean.prettyInit}</action>
-	</url-mapping>
-	<url-mapping id="employee-create">
-		<pattern>/employee/create</pattern>
-		<view-id>/WEB-INF/pages/employee/systemUserEntry.faces</view-id>
-		<action onPostback="false">#{systemUserEntryBean.prettyInit}</action>
-	</url-mapping>
-		<url-mapping id="employee-edit">
-		<pattern>/employee/edit/#{systemUserEntryBean.sysUserId}</pattern>
-		<view-id>/WEB-INF/pages/employee/systemUserEntry.faces</view-id>
-		<action onPostback="false">#{systemUserEntryBean.prettyInit}</action>
-	</url-mapping>
-
 	<!-- ################ administration ####################### -->
-	<url-mapping id="softwareVersion">
-		<pattern>/administration/software</pattern>
-		<view-id>/WEB-INF/pages/home/softwareVersion.faces</view-id>
+	<url-mapping id="admin-home">
+		<pattern>/admin</pattern>
+		<view-id>/WEB-INF/pages/administration/homeView.faces</view-id>
+	</url-mapping>
+	
+	<url-mapping id="admin-software">
+		<pattern>/admin/software</pattern>
+		<view-id>/WEB-INF/pages/administration/softwareVersionView.faces</view-id>
 		<action>#{softwareVersionBean.prettyInit}</action>
 	</url-mapping>
+	
+	<!-- ################ employee ####################### -->
+	<url-mapping id="admin-createUserView">
+		<pattern>/admin/user/create</pattern>
+		<view-id>/WEB-INF/pages/administration/editUserView.faces</view-id>
+		<action onPostback="false">#{systemUserEntryBean.prettyInit}</action>
+	</url-mapping>
+	<url-mapping id="admin-editUserView">
+		<pattern>/admin/user/edit/#{systemUserEntryBean.sysUserId}</pattern>
+		<view-id>/WEB-INF/pages/administration/editUserView.faces</view-id>
+		<action onPostback="false">#{systemUserViewBean.prettyInit}</action>
+	</url-mapping>
+	<url-mapping id="admin-listUsersView">
+		<pattern>/admin/users</pattern>
+		<view-id>/WEB-INF/pages/administration/userListingView.faces</view-id>
+		<action onPostback="false">#{systemUserViewBean.prettyInit}</action>
+	</url-mapping>
+	
 </pretty-config>

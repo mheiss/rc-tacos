@@ -30,12 +30,12 @@ public class SystemUserStage implements DatasetupStage {
             address.setCity("Graz");
             address.setZipCode("8053");
             address.setStreet("Straße 1");
+            address.setPhone("0664/1231212");
             address.setEmail("michael.heiss@st.roteskreuz.at");
 
             SystemUser sysUser = new SystemUser();
             sysUser.setFirstName("Michael");
             sysUser.setLastName("Heiss");
-            sysUser.setPhoneI("0664/1231212");
             sysUser.setAddress(address);
 
             Login login = new Login(sysUser, "m.heiss");
@@ -51,13 +51,13 @@ public class SystemUserStage implements DatasetupStage {
             address.setCity("St.Lorenzen");
             address.setZipCode("8642");
             address.setStreet("Straße 2");
+            address.setPhone("0664/4143824");
+            address.setPhoneII("03862/1212121");
             address.setEmail("birgit.thek@st.roteskreuz.at");
 
             SystemUser sysUser = new SystemUser();
             sysUser.setFirstName("Birgit");
             sysUser.setLastName("Thek");
-            sysUser.setPhoneI("0664/4143824");
-            sysUser.setPhoneII("03862/1212121");
             sysUser.setAddress(address);
 
             Login login = new Login(sysUser, "b.thek");
