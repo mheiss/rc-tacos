@@ -50,12 +50,6 @@ public class SystemUser extends EntityImpl {
     private Calendar birthday;
 
     @Column
-    private String phoneI;
-
-    @Column
-    private String phoneII;
-
-    @Column
     private String notes;
 
     @Embedded
@@ -173,14 +167,6 @@ public class SystemUser extends EntityImpl {
         this.birthday = birthday;
     }
 
-    public void setPhoneI(String phoneI) {
-        this.phoneI = phoneI;
-    }
-
-    public void setPhoneII(String phoneII) {
-        this.phoneII = phoneII;
-    }
-
     public void setAddress(Address address) {
         this.address = address;
     }
@@ -234,14 +220,6 @@ public class SystemUser extends EntityImpl {
 
     public Address getAddress() {
         return address;
-    }
-
-    public String getPhoneI() {
-        return phoneI;
-    }
-
-    public String getPhoneII() {
-        return phoneII;
     }
 
     public Login getLogin() {

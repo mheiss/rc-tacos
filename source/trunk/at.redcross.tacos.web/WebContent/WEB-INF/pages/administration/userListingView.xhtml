@@ -4,7 +4,7 @@
 <body>
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
 	<ui:param name="section" value="admin" />
-	<ui:param name="page" value="systemUserView" />
+	<ui:param name="page" value="listUsersView" />
 
 	<!-- Include the navigation of the page -->
 	<ui:define name="navigation">
@@ -13,10 +13,8 @@
 
 	<!-- Customize the title and image -->
 	<ui:define name="page-title">
-		<h:outputText value="Mitarbeiteransicht" />
-	</ui:define>
-	<ui:define name="page-image">
 		<h:graphicImage library="images/page" name="home.png" />
+		<h2 class="title" ><h:outputText value="Mitarbeiteransicht" /> </h2>
 	</ui:define>
 
 	<!-- Render the content -->
@@ -24,20 +22,25 @@
 		<rich:dataTable styleClass="defaultStyle" value="#{systemUserViewBean.locationEntry}" var="locationEntry">
 			<f:facet name="header">
 				<rich:columnGroup>
-					<rich:column rowspan="1" styleClass="largeColumn">
-						<h:outputText value="Name" />
+					<rich:column>
+						<h:outputText value="Nachname" />
 					</rich:column>
-					<rich:column colspan="1" styleClass="mediumColumn">
-						<h:outputText value="Telefon 1" />
+					<rich:column>
+						<h:outputText value="Vorname" />
 					</rich:column>
-					<rich:column colspan="1" styleClass="mediumColumn">
-						<h:outputText value="Telefon 2" />
+					<rich:column>
+						<h:outputText value="eMail" />
 					</rich:column>
-					<rich:column rowspan="1" styleClass="mediumColumn">
-						<h:outputText value="KompetenzenTODO" />
+					<rich:column styleClass="mediumColumn">
+						<h:outputText value="Telefon (dienstlich)" />
 					</rich:column>
-					<rich:column rowspan="1" title="Bearbeiten" styleClass="smallColumn">
-						<h:outputText value=".." />
+					<rich:column styleClass="mediumColumn">
+						<h:outputText value="Telefon (privat)" />
+					</rich:column>
+					<rich:column styleClass="mediumColumn">
+						<h:outputText value="Kompetenzen" />
+					</rich:column>
+					<rich:column title="Bearbeiten" styleClass="smallColumn">
 						<rich:spacer />
 					</rich:column>
 				</rich:columnGroup>
@@ -49,19 +52,25 @@
 
 			<rich:subTable onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'" value="#{locationEntry.entries}" var="user">
 				<rich:column styleClass="bold">
-					<h:outputText value="#{user.lastName} #{user.firstName}" />
+					<h:outputText value="#{user.lastName}" />
+				</rich:column>
+				<rich:column styleClass="bold">
+					<h:outputText value="#{user.firstName}" />
 				</rich:column>
 				<rich:column styleClass="center">
-					<h:outputText value="#{user.phoneI}" />
+					<h:outputText value="#{user.address.email}" />
 				</rich:column>
 				<rich:column styleClass="center">
-					<h:outputText value="#{user.phoneII}" />
+					<h:outputText value="#{user.address.phone}" />
+				</rich:column>
+				<rich:column styleClass="center">
+					<h:outputText value="#{user.address.phoneII}" />
 				</rich:column>
 				<rich:column styleClass="center">
 					<h:outputText value="TODO" />
 				</rich:column>
 				<rich:column styleClass="center">
-					<pretty:link mappingId="employee-edit" title="Mitarbeitereintrag bearbeiten">
+					<pretty:link mappingId="admin-editUserView" title="Mitarbeitereintrag bearbeiten">
 						<f:param value="#{user.id}" />
 						<h:graphicImage styleClass="actionImage" library="images" name="edit.png" />
 					</pretty:link>

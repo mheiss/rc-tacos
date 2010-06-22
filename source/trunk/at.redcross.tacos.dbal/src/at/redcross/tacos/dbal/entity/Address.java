@@ -8,66 +8,77 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Address implements Serializable {
 
-	private static final long serialVersionUID = -8467253043757429402L;
+    private static final long serialVersionUID = -8467253043757429402L;
 
-	@Column
-	private String zipCode;
+    @Column
+    private String zipCode;
 
-	@Column
-	private String city;
+    @Column
+    private String city;
 
-	@Column
-	private String street;
+    @Column
+    private String street;
 
-	@Column
-	private String phone;
+    @Column
+    private String phone;
 
-	@Column(nullable = false, unique = true)
-	private String email;
+    @Column
+    private String phoneII;
 
-	// ---------------------------------
-	// Setters for the properties
-	// ---------------------------------
-	public void setZipCode(String zipCode) {
-		this.zipCode = zipCode;
-	}
+    @Column(nullable = false, unique = true)
+    private String email;
 
-	public void setCity(String city) {
-		this.city = city;
-	}
+    // ---------------------------------
+    // Setters for the properties
+    // ---------------------------------
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
 
-	public void setStreet(String street) {
-		this.street = street;
-	}
+    public void setCity(String city) {
+        this.city = city;
+    }
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+    public void setStreet(String street) {
+        this.street = street;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-	// ---------------------------------
-	// Getters for the properties
-	// ---------------------------------
-	public String getZipCode() {
-		return zipCode;
-	}
+    public void setPhoneII(String phoneII) {
+        this.phoneII = phoneII;
+    }
 
-	public String getCity() {
-		return city;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	public String getStreet() {
-		return street;
-	}
+    // ---------------------------------
+    // Getters for the properties
+    // ---------------------------------
+    public String getZipCode() {
+        return zipCode;
+    }
 
-	public String getPhone() {
-		return phone;
-	}
+    public String getCity() {
+        return city;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getStreet() {
+        return street;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getPhoneII() {
+        return phoneII;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 }
