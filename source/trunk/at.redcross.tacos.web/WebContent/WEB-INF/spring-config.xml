@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security" xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd"
+>
+	<!-- ####################################################################################### -->
+	<http use-expressions="true">
+		<!-- Access to common pages are permitted for everybody  -->
+		<intercept-url pattern="/" access="permitAll" />
+		<intercept-url pattern="/login" access="permitAll" />
+		<intercept-url pattern="/logout" access="permitAll" />
+		<intercept-url pattern="/error" access="permitAll" />
+
+		<!-- Resources (images,libraries, scripts ...) should never be restricted -->
+		<intercept-url pattern="/resources/**" filters="none" />
+		<intercept-url pattern="/a4j/**" filters="none" />
+		<intercept-url pattern="/javax.faces.resource/**" filters="none" />
+
+		<!-- All other pages are protected -->
+		<intercept-url pattern="/**" access="isAuthenticated()" />
+
+		<!-- We want a customized login and logout page -->
+		<form-login login-processing-url="/j_spring_security_check" login-page="/login" default-target-url="/" authentication-failure-url="/login" />
+		<logout logout-url="/logout" logout-success-url="/" />
+
+		<!-- Session management -->
+		<session-management session-fixation-protection="none" />
+	</http>
+	<!-- ####################################################################################### -->
+
+	<!-- ####################################################################################### -->
+	<beans:bean id="webUserDetailsService" class="at.redcross.tacos.web.security.WebUserDetailsService" />
+	<authentication-manager>
+		<authentication-provider user-service-ref="webUserDetailsService">
+			<!-- TODO: implement me <password-encoder hash="md5" /> -->
+		</authentication-provider>
+	</authentication-manager>
+	<!-- ####################################################################################### -->
+</beans:beans>

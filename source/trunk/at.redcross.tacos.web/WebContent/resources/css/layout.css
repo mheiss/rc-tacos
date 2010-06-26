@@ -112,6 +112,7 @@ a,a:link,a:visited {
 
 #primary-menu {
 	display: block;
+	position: relative;
 	float: right;
 	font-size: 1em;
 	font-weight: bold;
@@ -185,7 +186,7 @@ a,a:link,a:visited {
 }
 
 #page-header .toolbar {
-	float:right;
+	float: right;
 	padding: 0em;
 	margin-top: -3.5em;
 }
@@ -211,8 +212,8 @@ a,a:link,a:visited {
 }
 
 #page-header .toolbarText {
-	color:#545454;
-	display:block;
+	color: #545454;
+	display: block;
 }
 
 #footer {

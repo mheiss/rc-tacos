@@ -5,11 +5,6 @@
 <body>
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
 
-	<!-- Include the navigation of the page -->
-	<ui:define name="navigation">
-		<ui:include src="/WEB-INF/pages/home/navigation.xhtml" />
-	</ui:define>
-
 	<!-- Customize the title and image -->
 	<ui:define name="page-title">
 		<h:graphicImage library="images/page" name="error.png" />
@@ -20,15 +15,7 @@
 
 	<!-- Render the content -->
 	<ui:define name="content">
-		<h:outputText value=".... während ihrer letzen Anfrage ist ein unerwarteter Fehler aufgetreten." />
-		<h:outputText styleClass="italic" value=" (Fehlercode #{errorBean.errorCode})" rendered="#{not empty errorBean.errorCode}" />
-		<p>
-			<h:outputText value="Bitte gehen Sie zurück zu " /> 
-			<h:outputLink value="#{facesContext.externalContext.requestContextPath}/#{errorBean.cameFrom}">
-				<h:outputText value=" #{errorBean.cameFrom}" />
-			</h:outputLink> 
-			<h:outputText value=" und versuchen es erneut." />
-		</p>
+		<h:outputText value=".... sie sind nicht berechtigt diese Seite aufzurufen." />
 	</ui:define>
 
 </ui:composition>

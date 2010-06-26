@@ -2,8 +2,6 @@ package at.redcross.tacos.dbal.entity;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -23,6 +21,8 @@ import javax.persistence.TemporalType;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
 @Table(name = "SystemUser")
@@ -63,10 +63,12 @@ public class SystemUser extends EntityImpl {
     private Location location;
 
     @ManyToMany
-    private Collection<Group> groups;
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Group> groups;
 
     @ManyToMany
-    private Collection<Competence> competences;
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Competence> competences;
 
     // ---------------------------------
     // EntityImpl
@@ -118,28 +120,6 @@ public class SystemUser extends EntityImpl {
         getGroups().add(group);
     }
 
-    /**
-     * Returns whether or not this user has the given authority. All current
-     * roles are considered when the authority is queried.
-     * 
-     * @param authority
-     *            the authority to query
-     */
-    public boolean hasAuthority(String name) {
-        List<Authority> authorities = new ArrayList<Authority>();
-        for (Group group : getGroups()) {
-            authorities.addAll(group.getAuthority());
-        }
-        Iterator<Authority> authIter = authorities.iterator();
-        while (authIter.hasNext()) {
-            Authority authority = authIter.next();
-            if (authority.getId().equals(name)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     // ---------------------------------
     // Setters for the properties
     // ---------------------------------
@@ -175,11 +155,11 @@ public class SystemUser extends EntityImpl {
         this.login = login;
     }
 
-    public void setGroups(Collection<Group> groups) {
+    public void setGroups(List<Group> groups) {
         this.groups = groups;
     }
 
-    public void setCompetences(Collection<Competence> competences) {
+    public void setCompetences(List<Competence> competences) {
         this.competences = competences;
     }
 
@@ -230,14 +210,14 @@ public class SystemUser extends EntityImpl {
         return notes;
     }
 
-    public Collection<Group> getGroups() {
+    public List<Group> getGroups() {
         if (groups == null) {
             groups = new ArrayList<Group>();
         }
         return groups;
     }
 
-    public Collection<Competence> getCompetences() {
+    public List<Competence> getCompetences() {
         if (competences == null) {
             competences = new ArrayList<Competence>();
         }

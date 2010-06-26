@@ -35,7 +35,7 @@ public class Login extends EntityImpl {
     private boolean invalidLogout;
 
     @Column
-    private boolean passwordExpired;
+    private boolean locked;
 
     @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
     private SystemUser systemUser;
@@ -110,8 +110,8 @@ public class Login extends EntityImpl {
         this.invalidLogout = invalidLogout;
     }
 
-    public void setPasswordExpired(boolean passwordExpired) {
-        this.passwordExpired = passwordExpired;
+    public void setLocked(boolean locked) {
+        this.locked = locked;
     }
 
     // ---------------------------------
@@ -129,12 +129,12 @@ public class Login extends EntityImpl {
         return expireAt;
     }
 
-    public boolean isInvalidLogout() {
-        return invalidLogout;
+    public boolean isLocked() {
+        return locked;
     }
 
-    public boolean isPasswordExpired() {
-        return passwordExpired;
+    public boolean isInvalidLogout() {
+        return invalidLogout;
     }
 
     public SystemUser getSystemUser() {

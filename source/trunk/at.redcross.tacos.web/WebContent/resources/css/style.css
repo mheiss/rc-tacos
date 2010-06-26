@@ -41,6 +41,26 @@ strong,.bold {
 }
 
 /*******************************************************
+ 	Navigation bar
+ *******************************************************/
+#user-info {
+	float: left;
+	display: block;
+	font-size:1.1em;
+	margin-left: 0.8em;
+}
+
+#user-info .greeting {
+	font-weight:bold;
+	color: #9A0000;
+}
+
+#user-info a {
+	color: #004B91;
+	text-decoration: underline;
+}
+
+/*******************************************************
  	Form
  *******************************************************/
 fieldset.defaultStyle {
@@ -92,6 +112,11 @@ fieldset.defaultStyle .input input {
 	font-size: 1.1em;
 }
 
+fieldset.defaultStyle .input .loginButton {
+	height:28px;
+	width:12em;
+}
+
 fieldset.defaultStyle .input .textfield {
 	width: 100%;
 }
@@ -100,8 +125,7 @@ fieldset.defaultStyle .rich-calendar-button {
 	margin-right: 1.5em;
 }
 
-fieldset.defaultStyle .rich-calendar-input,fieldset.defaultStyle .rich-calendar-button
-	{
+fieldset.defaultStyle .rich-calendar-input,fieldset.defaultStyle .rich-calendar-button {
 	margin-top: -0.3em;
 }
 
@@ -131,7 +155,7 @@ fieldset.defaultStyle .actionBar {
 	float: right;
 }
 
-fieldset.defaultStyle .actionBar a.button {
+fieldset.defaultStyle a.button {
 	color: #000;
 	display: block;
 	float: left;
@@ -140,25 +164,23 @@ fieldset.defaultStyle .actionBar a.button {
 	margin-right: 6px;
 	padding-right: 18px;
 	text-decoration: none;
-	background: transparent url("../images/widgets/button/bg_button_a.gif")
-		no-repeat scroll top right;
+	background: transparent url("../images/widgets/button/bg_button_a.gif") no-repeat scroll top right;
 }
 
-fieldset.defaultStyle .actionBar a.button span {
+fieldset.defaultStyle a.button span {
 	display: block;
 	line-height: 14px;
 	padding: 5px 0 5px 18px;
-	background: transparent
-		url("../images/widgets/button/bg_button_span.gif") no-repeat;
+	background: transparent url("../images/widgets/button/bg_button_span.gif") no-repeat;
 }
 
-fieldset.defaultStyle .actionBar a.button:active {
+fieldset.defaultStyle a.button:active {
 	color: #000;
 	outline: none;
 	background-position: bottom right;
 }
 
-fieldset.defaultStyle .actionBar a.button:active span {
+fieldset.defaultStyle a.button:active span {
 	padding: 6px 0 4px 18px;
 	background-position: bottom left;
 }
@@ -245,8 +267,7 @@ table.defaultStyle .center {
 	width: 20px;
 	bottom: -20px;
 	position: absolute;
-	background: url("../images/widgets/round/arrow.png") no-repeat scroll 0
-		0 transparent;
+	background: url("../images/widgets/round/arrow.png") no-repeat scroll 0 0 transparent;
 }
 
 .tooltipDefault ul,.tooltipDefault ol {
@@ -266,7 +287,6 @@ table.defaultStyle .center {
  **********************************************************/
 .infoMessage,.successMessage,.warningMessage,.errorMessage {
 	border: 1px solid;
-	margin: 10px 5px;
 	padding: 15px 10px 15px 50px;
 	background-repeat: no-repeat;
 	background-position: 10px center;
