@@ -1,0 +1,55 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
+<body>
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+	<ui:param name="section" value="home" />
+	<ui:param name="page" value="login" />
+
+	<!-- Include the navigation of the page -->
+	<ui:define name="navigation">
+		<ui:include src="navigation.xhtml" />
+	</ui:define>
+
+	<!-- Customize the title and image -->
+	<ui:define name="page-title">
+		<h:graphicImage library="images/page" name="home.png" />
+		<h2 class="title"><h:outputText value="Anmeldung" /></h2>
+	</ui:define>
+
+	<!-- Render the content -->
+	<ui:define name="content">
+		<p>
+			<h:outputText value="Bitte melden Sie sich mit Ihrem Benutzernamen und Ihrem Passwort an." />
+		</p>
+		<rich:messages errorClass="errorMessage" globalOnly="true" />
+		<fieldset class="defaultStyle">
+			<ol>
+				<li>
+					<h:outputLabel for="username"><h:outputText value="Benutzername:" /> </h:outputLabel>
+					<div class="input">
+						<h:inputText id="username" value="#{loginBean.username}"
+							required="true" requiredMessage="Bitte geben Sie einen Benutzernamen ein."/>
+						<rich:message for="username" errorClass="error" />
+					</div>
+				</li>
+				<li>
+				<h:outputLabel for="password"><h:outputText value="Passwort:" /> </h:outputLabel>
+				<div class="input">
+					<h:inputSecret id="password" value="#{loginBean.password}"
+						required="true" requiredMessage="Bitte geben Sie Ihr Passwort ein."/>
+					<rich:message for="password" errorClass="error" />
+				</div>
+				</li>
+				<li>
+					<rich:spacer />
+					<div class="input">
+						<a4j:commandButton id="login" type="submit" styleClass="loginButton" value="Anmelden" actionListener="#{loginBean.login}" />
+					</div>
+				</li>
+			</ol>
+		</fieldset>
+	</ui:define>
+</ui:composition>
+</body>
+</html>

@@ -1,13 +1,8 @@
 package at.redcross.tacos.dbal.entity;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -25,9 +20,6 @@ public class Group extends EntityImpl {
 
     @Column(nullable = false)
     private String description;
-
-    @ManyToMany
-    private Collection<Authority> authority;
 
     /**
      * Default protected constructor for JPA
@@ -82,26 +74,6 @@ public class Group extends EntityImpl {
     }
 
     // ---------------------------------
-    // Custom methods
-    // ---------------------------------
-    /**
-     * Returns whether or not this group has the given authority
-     * 
-     * @param authority
-     *            the authority to query
-     */
-    public boolean hasAuthority(String name) {
-        Iterator<Authority> authIter = getAuthority().iterator();
-        while (authIter.hasNext()) {
-            Authority authority = authIter.next();
-            if (authority.getId().equals(name)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // ---------------------------------
     // Setters for the properties
     // ---------------------------------
     public void setDescription(String description) {
@@ -117,12 +89,5 @@ public class Group extends EntityImpl {
 
     public String getDescription() {
         return description;
-    }
-
-    public Collection<Authority> getAuthority() {
-        if (authority == null) {
-            authority = new ArrayList<Authority>();
-        }
-        return authority;
     }
 }
