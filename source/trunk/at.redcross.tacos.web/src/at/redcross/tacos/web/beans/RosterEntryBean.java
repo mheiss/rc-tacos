@@ -105,7 +105,7 @@ public class RosterEntryBean extends BaseBean {
         try {
             manager = EntityManagerFactory.createEntityManager();
             loadfromDatabase(manager, rosterEntry.getId());
-            return "pretty:roster-edit";
+            return "pretty:roster-editEntryView";
         }
         catch (Exception ex) {
             FacesUtils.addErrorMessage("Der Dienstplaneintrag konnte nicht zurückgesetzt werden");

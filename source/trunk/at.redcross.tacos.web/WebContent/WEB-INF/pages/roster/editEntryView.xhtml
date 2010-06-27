@@ -5,7 +5,7 @@
 	xmlns:pretty="http://ocpsoft.com/prettyfaces">
 <body>
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
-	<ui:param name="section" value="administration" />
+	<ui:param name="section" value="roster" />
 	<ui:param name="page" value="createView" />
 
 	<!--  Dynamically resize the input fields -->
@@ -25,7 +25,8 @@
 
 	<!-- Customize the title and image -->
 	<ui:define name="page-title">
-		<h:graphicImage library="images/page" name="home.png" />
+		<h:graphicImage rendered="#{rosterEntryBean.new}" library="images/32x32" name="calendar_add.png" />
+		<h:graphicImage rendered="#{not rosterEntryBean.new}" library="images/32x32" name="calendar_edit.png" />
 		<h2 class="title">
 			<h:outputText value="Neuer Dienstplaneintrag" rendered="#{rosterEntryBean.new}" />
 			<h:outputText value="Dienstplaneintrag bearbeiten" rendered="#{not rosterEntryBean.new}" />

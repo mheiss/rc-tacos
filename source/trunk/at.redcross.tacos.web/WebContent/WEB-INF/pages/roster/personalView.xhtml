@@ -7,14 +7,12 @@
     <ui:param name="section" value="roster" />
     <ui:param name="page" value="myView" />
 
-    <!-- Include the navigation of the page -->
     <ui:define name="navigation">
         <ui:include src="navigation.xhtml" />
     </ui:define>
 
-	<!-- Customize the title and image -->
 	<ui:define name="page-title">
-		<h:graphicImage library="images/page" name="home.png" />
+		<h:graphicImage library="images/32x32" name="calendar_personal.png" />
 		<h2 class="title">
 			<h:outputText value="Meine Dienste" />
 			<h:outputText id="dateTitle" value="#{rosterDayViewBean.date}">
@@ -23,7 +21,6 @@
 		</h2>
 	</ui:define>
 
-    <!-- Render the content -->
     <ui:define name="content">
         <h:outputText value="Meine Dienste" />
     </ui:define>
