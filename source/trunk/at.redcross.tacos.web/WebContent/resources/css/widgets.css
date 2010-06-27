@@ -14,7 +14,7 @@ div.rounded-block-top-left,div.rounded-block-bottom-left {
 }
 
 div.rounded-block-top-left,div.rounded-block-top-right,div.rounded-block-bottom-left,div.rounded-block-bottom-right {
-	background: url("../images/widgets/box/rounded-block.png") no-repeat scroll 0 0 transparent;
+	background: url("../images/custom/box_rounded.png") no-repeat scroll 0 0 transparent;
 	height: 11px;
 }
 
@@ -28,7 +28,7 @@ div.rounded-block-top-right {
 }
 
 div.rounded-outside,div.rounded-inside {
-	background: url("../images/widgets/box/rounded-block-inner.png") repeat-y scroll right center transparent;
+	background: url("../images/custom/box_rounded_inner.png") repeat-y scroll right center transparent;
 	padding-right: 8px;
 }
 
@@ -72,7 +72,7 @@ h2.block-title {
 div.block div.content {
 	-moz-border-radius-bottomleft: 6px;
 	-moz-border-radius-bottomright: 6px;
-	background: url("../images/widgets/box/block-gradient.png") no-repeat scroll center bottom transparent;
+	background: url("../images/custom/box_gradient.png") no-repeat scroll center bottom transparent;
 	border-bottom: 3px solid #F1F5F7;
 	padding: 10px 10px 8px;
 }
@@ -86,7 +86,7 @@ ul.menu {
 ul.menu li.menu-item {
 	margin: 0.2em;
 	padding: 5px 0 0 15px;
-	background: url("../images/list-item.png") no-repeat scroll left 0.833em transparent;
+	background: url("../images/custom/list-item.png") no-repeat scroll left 0.833em transparent;
 	list-style-image: none;
 	list-style-type: none;
 }

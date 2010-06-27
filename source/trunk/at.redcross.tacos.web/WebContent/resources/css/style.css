@@ -164,14 +164,14 @@ fieldset.defaultStyle a.button {
 	margin-right: 6px;
 	padding-right: 18px;
 	text-decoration: none;
-	background: transparent url("../images/widgets/button/bg_button_a.gif") no-repeat scroll top right;
+	background: transparent url("../images/custom/bg_button_a.gif") no-repeat scroll top right;
 }
 
 fieldset.defaultStyle a.button span {
 	display: block;
 	line-height: 14px;
 	padding: 5px 0 5px 18px;
-	background: transparent url("../images/widgets/button/bg_button_span.gif") no-repeat;
+	background: transparent url("../images/custom/bg_button_b.gif") no-repeat;
 }
 
 fieldset.defaultStyle a.button:active {
@@ -267,7 +267,7 @@ table.defaultStyle .center {
 	width: 20px;
 	bottom: -20px;
 	position: absolute;
-	background: url("../images/widgets/round/arrow.png") no-repeat scroll 0 0 transparent;
+	background: url("../images/custom/arrow.png") no-repeat scroll 0 0 transparent;
 }
 
 .tooltipDefault ul,.tooltipDefault ol {
@@ -295,25 +295,25 @@ table.defaultStyle .center {
 .infoMessage {
 	color: #00529B;
 	background-color: #BDE5F8;
-	background-image: url("../images/messages/info.png");
+	background-image: url("../images/32x32/info.png");
 }
 
 .successMessage {
 	color: #4F8A10;
 	background-color: #DFF2BF;
-	background-image: url("../images/messages/success.png");
+	background-image: url("../images/32x32/success.png");
 }
 
 .warningMessage {
 	color: #9F6000;
 	background-color: #FEEFB3;
-	background-image: url("../images/messages/warning.png");
+	background-image: url("../images/32x32/warning.png");
 }
 
 .errorMessage {
 	color: #D8000C;
 	background-color: #FFBABA;
-	background-image: url("../images/messages/error.png");
+	background-image: url("../images/32x32/error.png");
 }
 
 /***********************************************************

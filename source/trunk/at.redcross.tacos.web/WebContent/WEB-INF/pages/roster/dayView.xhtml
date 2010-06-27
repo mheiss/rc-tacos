@@ -20,7 +20,7 @@
 
 	<!-- Customize the title and image -->
 	<ui:define name="page-title">
-		<h:graphicImage library="images/page" name="home.png" />
+		<h:graphicImage library="images/32x32" name="home.png" />
 		<h2 class="title">
 			<h:outputText value="Tagesansicht für " />
 			<h:outputText id="dateTitle" value="#{rosterDayViewBean.date}">
@@ -33,19 +33,19 @@
 	<ui:define name="page-toolbar">
 		<li>
 			<a4j:commandLink actionListener="#{rosterDayViewBean.navigateNextDay}" reRender="dateTitle,filter,resultList">
-				<h:graphicImage styleClass="toolbarItem" library="images/toolbar" name="next.png" />
+				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="next.png" />
 				<h:outputText styleClass="toolbarText" value="Nächster Tag"  />
 			</a4j:commandLink>
 		</li>
 		<li>
 			<a4j:htmlCommandLink actionListener="#{rosterDayViewBean.createPdfReport}">
-				<h:graphicImage styleClass="toolbarItem" library="images/toolbar" name="pdf.png" />
+				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="pdf.png" />
 				<h:outputText styleClass="toolbarText" value="Exportieren"  />
 			</a4j:htmlCommandLink>
 		</li>
 		<li>
 			<a4j:commandLink actionListener="#{rosterDayViewBean.navigatePreviousDay}" reRender="dateTitle,filter,resultList">
-				<h:graphicImage styleClass="toolbarItem" library="images/toolbar" name="back.png" />
+				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="back.png" />
 				<h:outputText styleClass="toolbarText" value="Vorheriger Tag"  />
 			</a4j:commandLink>
 		</li>
