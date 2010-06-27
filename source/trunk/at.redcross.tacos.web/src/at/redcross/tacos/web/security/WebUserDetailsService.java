@@ -40,7 +40,7 @@ public class WebUserDetailsService implements UserDetailsService {
             loginQuery.setParameter("alias", username);
             List<Login> logins = loginQuery.getResultList();
             if (logins == null || logins.isEmpty() || logins.size() > 1) {
-                throw new UsernameNotFoundException(username + " existiert nicht");
+                throw new UsernameNotFoundException(username);
             }
             return new WebUserDetails(logins.iterator().next());
         }

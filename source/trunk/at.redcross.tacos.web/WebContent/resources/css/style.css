@@ -46,12 +46,12 @@ strong,.bold {
 #user-info {
 	float: left;
 	display: block;
-	font-size:1.1em;
+	font-size: 1.1em;
 	margin-left: 0.8em;
 }
 
 #user-info .greeting {
-	font-weight:bold;
+	font-weight: bold;
 	color: #9A0000;
 }
 
@@ -113,8 +113,8 @@ fieldset.defaultStyle .input input {
 }
 
 fieldset.defaultStyle .input .loginButton {
-	height:28px;
-	width:12em;
+	height: 28px;
+	width: 12em;
 }
 
 fieldset.defaultStyle .input .textfield {
@@ -164,14 +164,14 @@ fieldset.defaultStyle a.button {
 	margin-right: 6px;
 	padding-right: 18px;
 	text-decoration: none;
-	background: transparent url("../images/custom/bg_button_a.gif") no-repeat scroll top right;
+	background: transparent url("../images/custom/bg_button_a.png") no-repeat scroll top right;
 }
 
 fieldset.defaultStyle a.button span {
 	display: block;
 	line-height: 14px;
 	padding: 5px 0 5px 18px;
-	background: transparent url("../images/custom/bg_button_b.gif") no-repeat;
+	background: transparent url("../images/custom/bg_button_b.png") no-repeat;
 }
 
 fieldset.defaultStyle a.button:active {
@@ -285,6 +285,10 @@ table.defaultStyle .center {
 /***********************************************************
  Message box styling
  **********************************************************/
+.rich-messages {
+	margin: 1em 0em 0.5em;
+}
+
 .infoMessage,.successMessage,.warningMessage,.errorMessage {
 	border: 1px solid;
 	padding: 15px 10px 15px 50px;

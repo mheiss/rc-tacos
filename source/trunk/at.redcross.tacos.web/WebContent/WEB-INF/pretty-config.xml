@@ -4,22 +4,22 @@
 	<!-- ################ SPECIAL MAPPINGS ####################### -->
 	<url-mapping id="login">
 		<pattern>/login</pattern>
-		<view-id>/WEB-INF/pages/home/login.faces</view-id>
+		<view-id>/WEB-INF/pages/login.faces</view-id>
 		<action onPostback="false">#{loginBean.prettyInit}</action>
 	</url-mapping>
 	<url-mapping id="error">
 		<pattern>/error</pattern>
 		<query-param name="cameFrom" decode="false">#{errorBean.cameFrom}</query-param>
 		<query-param name="errorCode" decode="false">#{errorBean.errorCode}</query-param>
-		<view-id>/WEB-INF/pages/home/error.faces</view-id>
+		<view-id>/WEB-INF/pages/error.faces</view-id>
 		<action>#{errorBean.prettyInit}</action>
 	</url-mapping>
 	<url-mapping id="accessDenied">
 		<pattern>/accessDenied</pattern>
-		<view-id>/WEB-INF/pages/home/accessDenied.faces</view-id>
+		<view-id>/WEB-INF/pages/accessDenied.faces</view-id>
 	</url-mapping>
 
-	<!-- ################ home ####################### -->
+	<!-- ################ HOME ####################### -->
 	<url-mapping id="home">
 		<pattern>/</pattern>
 		<view-id>/WEB-INF/pages/home/home.faces</view-id>
@@ -37,7 +37,7 @@
 		<view-id>/WEB-INF/pages/home/info.faces</view-id>
 	</url-mapping>
 
-	<!-- ################ roster ####################### -->
+	<!-- ################ ROSTER ####################### -->
 	<url-mapping id="roster-dayView">
 		<pattern>/roster</pattern>
 		<view-id>/WEB-INF/pages/roster/dayView.faces</view-id>
@@ -62,7 +62,7 @@
 		<action onPostback="false">#{rosterEntryBean.prettyInit}</action>
 	</url-mapping>
 	
-	<!-- ################ administration ####################### -->
+	<!-- ################ ADMINISTRATION ####################### -->
 	<url-mapping id="admin-home">
 		<pattern>/admin</pattern>
 		<view-id>/WEB-INF/pages/administration/homeView.faces</view-id>
@@ -74,7 +74,7 @@
 		<action>#{softwareVersionBean.prettyInit}</action>
 	</url-mapping>
 	
-	<!-- ################ employee ####################### -->
+	<!-- ################ ADMINISTRATION - USER ####################### -->
 	<url-mapping id="admin-createUserView">
 		<pattern>/admin/user/create</pattern>
 		<view-id>/WEB-INF/pages/administration/editUserView.faces</view-id>

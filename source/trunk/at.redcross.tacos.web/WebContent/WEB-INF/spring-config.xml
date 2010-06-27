@@ -10,6 +10,7 @@
 		<intercept-url pattern="/login" access="permitAll" />
 		<intercept-url pattern="/logout" access="permitAll" />
 		<intercept-url pattern="/error" access="permitAll" />
+		<intercept-url pattern="/accessDenied" access="permitAll" />
 
 		<!-- Resources (images,libraries, scripts ...) should never be restricted -->
 		<intercept-url pattern="/resources/**" filters="none" />
@@ -20,10 +21,10 @@
 		<intercept-url pattern="/**" access="isAuthenticated()" />
 
 		<!-- We want a customized login and logout page -->
-		<form-login login-processing-url="/j_spring_security_check" login-page="/login" default-target-url="/" authentication-failure-url="/login" />
+		<form-login login-processing-url="/j_spring_security_check" login-page="/login" authentication-failure-url="/login" />
 		<logout logout-url="/logout" logout-success-url="/" />
 
-		<!-- Session management -->
+		<!-- No special session management as this causes problems -->
 		<session-management session-fixation-protection="none" />
 	</http>
 	<!-- ####################################################################################### -->

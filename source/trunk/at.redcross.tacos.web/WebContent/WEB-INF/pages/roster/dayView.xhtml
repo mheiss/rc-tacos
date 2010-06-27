@@ -20,7 +20,7 @@
 
 	<!-- Customize the title and image -->
 	<ui:define name="page-title">
-		<h:graphicImage library="images/32x32" name="home.png" />
+		<h:graphicImage library="images/32x32" name="calendar.png" />
 		<h2 class="title">
 			<h:outputText value="Tagesansicht für " />
 			<h:outputText id="dateTitle" value="#{rosterDayViewBean.date}">
@@ -72,7 +72,7 @@
 						<a4j:commandLink reRender="filter,resultList" title="Filter zurücksetzen">
 							<a4j:actionparam name="locationFilter" value="#{null}" 
 								assignTo="#{rosterDayViewBean.location}" actionListener="#{rosterDayViewBean.filterChanged}" />
-								<h:graphicImage library="images" name="edit-clear.png" />
+								<h:graphicImage library="images/16x16" name="edit-clear.png" />
 						</a4j:commandLink> 
 					</div>
 				</div>
@@ -165,7 +165,7 @@
 								<h:outputText value="#{entry.notes}" escape="false" />
 								<div class="tooltip-image" />
 							</rich:toolTip>
-							<h:graphicImage library="images" name="notes.png"
+							<h:graphicImage library="images/16x16" name="notes.png"
 								rendered="#{not empty entry.notes}" />
 						</a4j:outputPanel>
 					</rich:column>
@@ -185,8 +185,7 @@
 						<a4j:commandLink title="Anmelden"
 							oncomplete="#{rich:component('signInPanel')}.show();return false;">
 							<h:panelGroup rendered="#{empty entry.realStart}">
-								<h:graphicImage styleClass="actionImage" library="images"
-									name="clock-into.png" />
+								<h:graphicImage styleClass="actionImage" library="images/16x16" name="clock-into.png" />
 								<h:outputText styleClass="actionText" value="Anmelden" />
 							</h:panelGroup>
 							<h:panelGroup rendered="#{not empty entry.realStart}">
@@ -201,8 +200,7 @@
 						<a4j:commandLink title="Abmelden"
 							oncomplete="#{rich:component('signOutPanel')}.show();return false;">
 							<h:panelGroup rendered="#{empty entry.realStart}">
-								<h:graphicImage styleClass="actionImage" library="images"
-									name="clock-out.png" />
+								<h:graphicImage styleClass="actionImage" library="images/16x16" name="clock-out.png" />
 								<h:outputText styleClass="actionText" value="Abmelden" />
 							</h:panelGroup>
 							<h:panelGroup rendered="#{not empty entry.realEnd}">
@@ -223,8 +221,7 @@
 						<pretty:link mappingId="roster-editEntryView"
 							title="Dienstplaneintrag bearbeiten">
 							<f:param value="#{entry.id}" />
-							<h:graphicImage styleClass="actionImage" library="images"
-								name="edit.png" />
+							<h:graphicImage styleClass="actionImage" library="images/16x16" name="edit.png" />
 						</pretty:link>
 					</rich:column>
 				</rich:subTable>
