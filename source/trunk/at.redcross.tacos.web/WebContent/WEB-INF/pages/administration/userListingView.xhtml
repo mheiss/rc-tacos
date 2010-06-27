@@ -13,83 +13,100 @@
 
 	<!-- Customize the title and image -->
 	<ui:define name="page-title">
-		<h:graphicImage library="images/page" name="home.png" />
-		<h2 class="title" ><h:outputText value="Mitarbeiteransicht" /> </h2>
+		<h:graphicImage library="images/32x32" name="users.png" />
+		<h2 class="title"><h:outputText value="Mitarbeiteransicht" /></h2>
 	</ui:define>
 
 	<!-- Render the content -->
 	<ui:define name="content">
-		<rich:dataTable styleClass="defaultStyle" value="#{systemUserViewBean.locationEntry}" var="locationEntry">
-			<f:facet name="header">
-				<rich:columnGroup>
-					<rich:column>
-						<h:outputText value="Nachname" />
+		<rich:simpleTogglePanel id="filter" opened="false" label="Filter" bodyClass="defaultToggleBodyStyle" styleClass="defaultToggleStyle" switchType="client">
+			<fieldset class="defaultStyle">
+			
+			</fieldset>
+		</rich:simpleTogglePanel>
+		<h:panelGroup id="resultList">
+			<rich:panel rendered="#{empty systemUserViewBean.locationEntry}">
+				<h:outputText value="Keine Einträge gefunden" styleClass="italic" />
+			</rich:panel>
+			<rich:dataTable styleClass="defaultStyle" value="#{systemUserViewBean.locationEntry}" var="locationEntry">
+				<f:facet name="header">
+					<rich:columnGroup styleClass="smallColumn">
+						<rich:column>
+							<rich:spacer />
+						</rich:column>
+						<rich:column>
+							<h:outputText value="Nachname" />
+						</rich:column>
+						<rich:column>
+							<h:outputText value="Vorname" />
+						</rich:column>
+						<rich:column>
+							<h:outputText value="eMail" />
+						</rich:column>
+						<rich:column styleClass="mediumColumn">
+							<h:outputText value="Telefon (dienstlich)" />
+						</rich:column>
+						<rich:column styleClass="mediumColumn">
+							<h:outputText value="Telefon (privat)" />
+						</rich:column>
+						<rich:column styleClass="mediumColumn">
+							<h:outputText value="Kompetenzen" />
+						</rich:column>
+						<rich:column title="Bearbeiten" styleClass="smallColumn">
+							<rich:spacer />
+						</rich:column>
+					</rich:columnGroup>
+				</f:facet>
+	
+				<rich:column colspan="8" styleClass="center">
+					<h:outputText value="#{locationEntry.location.name}" />
+				</rich:column>
+	
+				<rich:subTable onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'" value="#{locationEntry.entries}" var="user">
+					<rich:column styleClass="bold">
+						<h:graphicImage library="images/24x24" name="user.png" rendered="#{not user.login.locked}" />
+						<h:graphicImage library="images/24x24" name="user_locked.png" rendered="#{user.login.locked}" />
 					</rich:column>
-					<rich:column>
-						<h:outputText value="Vorname" />
+					<rich:column styleClass="bold">
+						<h:outputText value="#{user.lastName}" />
 					</rich:column>
-					<rich:column>
-						<h:outputText value="eMail" />
+					<rich:column styleClass="bold">
+						<h:outputText value="#{user.firstName}" />
 					</rich:column>
-					<rich:column styleClass="mediumColumn">
-						<h:outputText value="Telefon (dienstlich)" />
+					<rich:column styleClass="center">
+						<h:outputText value="#{user.address.email}" />
 					</rich:column>
-					<rich:column styleClass="mediumColumn">
-						<h:outputText value="Telefon (privat)" />
+					<rich:column styleClass="center">
+						<h:outputText value="#{user.address.phone}" />
 					</rich:column>
-					<rich:column styleClass="mediumColumn">
-						<h:outputText value="Kompetenzen" />
+					<rich:column styleClass="center">
+						<h:outputText value="#{user.address.phoneII}" />
 					</rich:column>
-					<rich:column title="Bearbeiten" styleClass="smallColumn">
-						<rich:spacer />
+					<rich:column styleClass="center">
+						<h:outputText value="TODO" />
 					</rich:column>
-				</rich:columnGroup>
-			</f:facet>
-
-			<rich:column colspan="7" styleClass="center">
-				<h:outputText value="#{locationEntry.location.name}" />
-			</rich:column>
-
-			<rich:subTable onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'" value="#{locationEntry.entries}" var="user">
-				<rich:column styleClass="bold">
-					<h:outputText value="#{user.lastName}" />
-				</rich:column>
-				<rich:column styleClass="bold">
-					<h:outputText value="#{user.firstName}" />
-				</rich:column>
-				<rich:column styleClass="center">
-					<h:outputText value="#{user.address.email}" />
-				</rich:column>
-				<rich:column styleClass="center">
-					<h:outputText value="#{user.address.phone}" />
-				</rich:column>
-				<rich:column styleClass="center">
-					<h:outputText value="#{user.address.phoneII}" />
-				</rich:column>
-				<rich:column styleClass="center">
-					<h:outputText value="TODO" />
-				</rich:column>
-				<rich:column styleClass="center">
-					<pretty:link mappingId="admin-editUserView" title="Mitarbeitereintrag bearbeiten">
-						<f:param value="#{user.id}" />
-						<h:graphicImage styleClass="actionImage" library="images" name="edit.png" />
-					</pretty:link>
-				</rich:column>
-				<!-- 
-				<rich:column styleClass="bold">
-					<h:outputText value="#{user.competences}" />
-				</rich:column>
-				-->
-				<!--
-				<rich:column styleClass="center">
-					<pretty:link mappingId="employee-edit" title="Mitarbeitereintrag bearbeiten">
-						<f:param value="#{user.id}" />
-						<h:graphicImage styleClass="actionImage" library="images" name="edit.png" />
-					</pretty:link>
-				</rich:column>
-				-->
-			</rich:subTable>
-		</rich:dataTable>
+					<rich:column styleClass="center">
+						<pretty:link mappingId="admin-editUserView" title="Mitarbeitereintrag bearbeiten">
+							<f:param value="#{user.id}" />
+							<h:graphicImage styleClass="actionImage" library="images" name="edit.png" />
+						</pretty:link>
+					</rich:column>
+					<!-- 
+					<rich:column styleClass="bold">
+						<h:outputText value="#{user.competences}" />
+					</rich:column>
+					-->
+					<!--
+					<rich:column styleClass="center">
+						<pretty:link mappingId="employee-edit" title="Mitarbeitereintrag bearbeiten">
+							<f:param value="#{user.id}" />
+							<h:graphicImage styleClass="actionImage" library="images" name="edit.png" />
+						</pretty:link>
+					</rich:column>
+					-->
+				</rich:subTable>
+			</rich:dataTable>
+		</h:panelGroup>
 	</ui:define>
 </ui:composition>
 </body>

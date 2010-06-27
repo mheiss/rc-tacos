@@ -126,7 +126,7 @@ a,a:link,a:visited {
 }
 
 #primary-menu ul.menu li {
-	background: url("../images/widgets/tab/tab-left.png") no-repeat scroll left 0 transparent;
+	background: url("../images/custom/tab-left.png") no-repeat scroll left 0 transparent;
 	display: block;
 	float: left;
 	margin: 0 4px 0 0;
@@ -136,7 +136,7 @@ a,a:link,a:visited {
 }
 
 #primary-menu ul.menu li a {
-	background: url("../images/widgets/tab/tab-right.png") no-repeat scroll right 0 transparent;
+	background: url("../images/custom/tab-right.png") no-repeat scroll right 0 transparent;
 	color: #154B70;
 	display: block;
 	padding: 0.5em 2em 0.5em 0;
