@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/at.redcross.tacos.datasetup"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/at.redcross.tacos.dbal"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/at.redcross.tacos.hibernate"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/at.redcross.tacos.hsqldb"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/at.redcross.tacos.logging"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/at.redcross.tacos.web"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
