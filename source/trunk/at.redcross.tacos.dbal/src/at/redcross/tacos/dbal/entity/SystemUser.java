@@ -34,14 +34,14 @@ public class SystemUser extends EntityImpl {
     @GeneratedValue
     private long id;
 
+    @Column(unique = true)
+    private int pnr;
+
     @Column(nullable = false)
     private String firstName;
 
     @Column(nullable = false)
     private String lastName;
-
-    @Column
-    private int pnr;
 
     @Enumerated(EnumType.STRING)
     private Gender gender;

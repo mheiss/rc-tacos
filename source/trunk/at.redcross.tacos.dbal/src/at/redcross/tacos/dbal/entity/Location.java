@@ -3,6 +3,7 @@ package at.redcross.tacos.dbal.entity;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -18,10 +19,14 @@ public class Location extends EntityImpl {
     private static final long serialVersionUID = 6997613929181751597L;
 
     @Id
-    private String id;
+    @GeneratedValue
+    private long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
+
+    @Column
+    private String shortName;
 
     @Embedded
     @Column(nullable = false)
@@ -29,27 +34,7 @@ public class Location extends EntityImpl {
 
     @ManyToOne
     private District district;
-    
 
-    /**
-     * Default protected constructor for JPA
-     */
-    protected Location() {
-    }
-
-    /**
-     * Creates a new {@code Location} using the id name and district
-     * 
-     * @param district
-     *            the district of the location
-     * @param name
-     *            the short name of the location
-     */
-    public Location(District district, String id) {
-        this.id = id;
-        this.district = district;
-    }
-    
     // ---------------------------------
     // EntityImpl
     // ---------------------------------
@@ -93,20 +78,31 @@ public class Location extends EntityImpl {
         this.name = name;
     }
 
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
+
     public void setAddress(Address address) {
         this.address = address;
     }
-    
+
+    public void setDistrict(District district) {
+        this.district = district;
+    }
 
     // ---------------------------------
     // Getters for the properties
     // ---------------------------------
-    public String getId() {
+    public long getId() {
         return id;
     }
 
     public String getName() {
         return name;
+    }
+
+    public String getShortName() {
+        return shortName;
     }
 
     public Address getAddress() {

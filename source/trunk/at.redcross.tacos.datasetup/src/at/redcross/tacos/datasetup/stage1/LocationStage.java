@@ -21,14 +21,16 @@ public class LocationStage implements DatasetupStage {
 
     @Override
     public void performImport(EntityManager manager) {
-        District district = manager.find(District.class, "BM");
+        District district = getDistrictByName(manager, "Bruck an der Mur");
         {
             Address address = new Address();
             address.setCity("Bruck an der Mur");
             address.setEmail("bruck-kapfenberg@st.roteskreuz.at");
 
-            Location location = new Location(district, "BK");
+            Location location = new Location();
+            location.setDistrict(district);
             location.setName("Bezirk: Bruck - Kapfenberg");
+            location.setShortName("BK");
             location.setAddress(address);
 
             manager.persist(location);
@@ -38,8 +40,10 @@ public class LocationStage implements DatasetupStage {
             address.setCity("Bruck an der Mur");
             address.setEmail("bruck@st.roteskreuz.at");
 
-            Location location = new Location(district, "B");
-            location.setName("Bruck an der Mur");
+            Location location = new Location();
+            location.setDistrict(district);
+            location.setName("Bruck");
+            location.setShortName("B");
             location.setAddress(address);
 
             manager.persist(location);
@@ -49,23 +53,20 @@ public class LocationStage implements DatasetupStage {
             address.setCity("Kapfenberg");
             address.setEmail("kapfenberg@st.roteskreuz.at");
 
-            Location location = new Location(district, "K");
+            Location location = new Location();
+            location.setDistrict(district);
+            location.setShortName("K");
             location.setName("Kapfenberg");
             location.setAddress(address);
 
             manager.persist(location);
         }
-        /*
-         * { Location location = new Location();
-         * location.setName("Bruck an der Mur"); manager.persist(location); } {
-         * Location location = new Location(); location.setName("Kapfenberg");
-         * manager.persist(location); } { Location location = new Location();
-         * location.setName("Th�rl"); manager.persist(location); } { Location
-         * location = new Location(); location.setName("Turnau");
-         * manager.persist(location); } { Location location = new Location();
-         * location.setName("St. Marein"); manager.persist(location); } {
-         * Location location = new Location(); location.setName("Breitenau");
-         * manager.persist(location); }
-         */
+    }
+
+    private District getDistrictByName(EntityManager manager, String name) {
+        String hqlQuery = "select district from District district where district.name = :name";
+        TypedQuery<District> query = manager.createQuery(hqlQuery, District.class);
+        query.setParameter("name", name);
+        return query.getSingleResult();
     }
 }

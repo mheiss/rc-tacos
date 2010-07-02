@@ -89,17 +89,17 @@ public class DatasetupApplication {
      * Loops through all registered stages and imports the data.
      */
     public void runImport() {
-        EntityManager manager = null;
-        try {
-            manager = EntityManagerFactory.createEntityManager();
-            for (DatasetupStage stage : stages) {
+        for (DatasetupStage stage : stages) {
+            EntityManager manager = null;
+            try {
+                manager = EntityManagerFactory.createEntityManager();
                 logger.debug("Importing stage '" + stage.getClass().getSimpleName() + "'");
                 stage.performImport(manager);
+                EntityManagerHelper.commit(manager);
             }
-            EntityManagerHelper.commit(manager);
-        }
-        finally {
-            manager = EntityManagerHelper.close(manager);
+            finally {
+                manager = EntityManagerHelper.close(manager);
+            }
         }
     }
 

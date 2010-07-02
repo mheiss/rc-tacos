@@ -2,6 +2,7 @@ package at.redcross.tacos.dbal.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -16,26 +17,14 @@ public class Group extends EntityImpl {
     private static final long serialVersionUID = 3623563317740713699L;
 
     @Id
+    @GeneratedValue
+    private long id;
+
+    @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(nullable = false)
+    @Column(length = 255)
     private String description;
-
-    /**
-     * Default protected constructor for JPA
-     */
-    protected Group() {
-    }
-
-    /**
-     * Creates a new {@code Group} using the given name
-     * 
-     * @param name
-     *            the name of the group
-     */
-    public Group(String name) {
-        this.name = name;
-    }
 
     // ---------------------------------
     // EntityImpl
@@ -55,7 +44,7 @@ public class Group extends EntityImpl {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(name).hashCode();
+        return new HashCodeBuilder().append(id).hashCode();
     }
 
     @Override
@@ -70,12 +59,16 @@ public class Group extends EntityImpl {
             return false;
         }
         Group rhs = (Group) obj;
-        return new EqualsBuilder().append(name, rhs.name).isEquals();
+        return new EqualsBuilder().append(id, rhs.id).isEquals();
     }
 
     // ---------------------------------
     // Setters for the properties
     // ---------------------------------
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }
@@ -83,6 +76,10 @@ public class Group extends EntityImpl {
     // ---------------------------------
     // Setters for the properties
     // ---------------------------------
+    public long getId() {
+        return id;
+    }
+
     public String getName() {
         return name;
     }

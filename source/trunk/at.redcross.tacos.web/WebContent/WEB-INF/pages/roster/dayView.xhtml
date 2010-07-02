@@ -13,12 +13,10 @@
 	<ui:param name="section" value="roster" />
 	<ui:param name="page" value="dayView" />
 
-	<!-- Include the navigation of the page -->
 	<ui:define name="navigation">
 		<ui:include src="navigation.xhtml" />
 	</ui:define>
 
-	<!-- Customize the title and image -->
 	<ui:define name="page-title">
 		<h:graphicImage library="images/32x32" name="calendar.png" />
 		<h2 class="title">
@@ -29,10 +27,9 @@
 		</h2>
 	</ui:define>
 	
-	<!-- Customize the toolbar -->
 	<ui:define name="page-toolbar">
 		<li>
-			<a4j:commandLink actionListener="#{rosterDayViewBean.navigateNextDay}" reRender="dateTitle,filter,resultList">
+			<a4j:commandLink actionListener="#{rosterDayViewBean.navigateNext}" reRender="dateTitle,filter,resultList">
 				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="next.png" />
 				<h:outputText styleClass="toolbarText" value="Nächster Tag"  />
 			</a4j:commandLink>
@@ -44,189 +41,20 @@
 			</a4j:htmlCommandLink>
 		</li>
 		<li>
-			<a4j:commandLink actionListener="#{rosterDayViewBean.navigatePreviousDay}" reRender="dateTitle,filter,resultList">
+			<a4j:commandLink actionListener="#{rosterDayViewBean.navigatePrevious}" reRender="dateTitle,filter,resultList">
 				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="back.png" />
 				<h:outputText styleClass="toolbarText" value="Vorheriger Tag"  />
 			</a4j:commandLink>
 		</li>
 	</ui:define>
 
-	<!-- Render the content -->
 	<ui:define name="content">
-		<rich:simpleTogglePanel id="filter" opened="false" label="Filter" bodyClass="defaultToggleBodyStyle" styleClass="defaultToggleStyle" switchType="client">
-			<fieldset class="defaultStyle">
-				<div class="leftColumn">
-					<h:outputLabel for="location" value="Ortsstelle" />
-					<div class="input left inputZoom">
-						<rich:comboBox id="location" value="#{rosterDayViewBean.location}" width="250"
-							selectFirstOnUpdate="false" defaultLabel="Filter nach Orststelle">
-							<f:selectItems value="#{rosterDayViewBean.locationItems}" />
-							<f:validator validatorId="validator.dropDown" />
-							<f:converter converterId="converter.dropDown" />
-							<rich:ajaxValidator event="onchange" />
-							<a4j:support event="onselect" actionListener="#{rosterDayViewBean.filterChanged}" reRender="resultList" />
-						</rich:comboBox> 
-						<rich:message for="location" errorClass="error" />
-					</div>
-					<div class="leftDecorator">
-						<a4j:commandLink reRender="filter,resultList" title="Filter zurücksetzen">
-							<a4j:actionparam name="locationFilter" value="#{null}" 
-								assignTo="#{rosterDayViewBean.location}" actionListener="#{rosterDayViewBean.filterChanged}" />
-								<h:graphicImage library="images/16x16" name="edit-clear.png" />
-						</a4j:commandLink> 
-					</div>
-				</div>
-				<div class="rightColumn">
-					<h:outputLabel for="date" value="Datum" />
-					<div class="input left">
-						<rich:calendar id="date" value="#{rosterDayViewBean.date}" styleClass="rich-calendar" 
-							defaultTime="#{localeBean.date}"
-							datePattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" 
-							converterMessage="Bitte geben Sie ein gültiges Datum an.">
-							<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
-							<rich:ajaxValidator event="onchanged" />
-							<rich:ajaxValidator event="oninputblur" />
-							<a4j:support event="onchanged" actionListener="#{rosterDayViewBean.filterChanged}" reRender="dateTitle,filter,resultList" />
-						</rich:calendar>
-						<rich:message for="date" errorClass="error" />
-					</div>
-					<div class="leftDateDecorator">
-						<a4j:commandLink reRender="dateTitle,filter,resultList" title="Filter zurücksetzen">
-							<a4j:actionparam name="dateFilter" value="#{null}" 
-								assignTo="#{rosterDayViewBean.date}" actionListener="#{rosterDayViewBean.filterChanged}" />
-								<h:graphicImage library="images" name="edit-clear.png" />
-						</a4j:commandLink> 
-					</div>
-				</div>
-			</fieldset>
-		</rich:simpleTogglePanel>
-		<h:panelGroup id="resultList">
-			<rich:panel rendered="#{empty rosterDayViewBean.locationEntry}">
-				<h:outputText value="Keine Einträge gefunden" styleClass="italic" />
-			</rich:panel>
-			<rich:dataTable  styleClass="defaultStyle" rendered="#{not empty rosterDayViewBean.locationEntry}"
-				value="#{rosterDayViewBean.locationEntry}" var="locationEntry">
-				<f:facet name="header">
-					<rich:columnGroup>
-						<rich:column rowspan="2" styleClass="mediumColumn">
-							<h:outputText value="Mitarbeiter" />
-						</rich:column>
-						<rich:column rowspan="2" title="Anmerkungen"
-							styleClass="smallColumn">
-							<rich:spacer />
-						</rich:column>
-						<rich:column colspan="2" styleClass="largeColumn">
-							<h:outputText value="Geplante Dienstzeit" />
-						</rich:column>
-						<rich:column colspan="2" styleClass="largeColumn">
-							<h:outputText value="Reale Dienstzeit" />
-						</rich:column>
-						<rich:column rowspan="2" styleClass="smallColumn">
-							<h:outputText value="Verwendung" />
-						</rich:column>
-						<rich:column rowspan="2" styleClass="smallColumn">
-							<h:outputText value="Dienstverhältnis" />
-						</rich:column>
-						<rich:column rowspan="2" title="Bearbeiten"
-							styleClass="smallColumn">
-							<rich:spacer />
-						</rich:column>
-						<rich:column breakBefore="true">
-							<h:outputText value="Start" />
-						</rich:column>
-						<rich:column>
-							<h:outputText value="Ende" />
-						</rich:column>
-						<rich:column>
-							<h:outputText value="Start" />
-						</rich:column>
-						<rich:column>
-							<h:outputText value="Ende" />
-						</rich:column>
-					</rich:columnGroup>
-				</f:facet>
-	
-				<rich:column colspan="9">
-					<h:outputText value="#{locationEntry.location.name}" />
-				</rich:column>
-	
-				<rich:subTable
-					onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'"
-					onRowMouseOver="this.style.backgroundColor='#D8D8D8'"
-					value="#{locationEntry.entries}" var="entry">
-					<rich:column styleClass="bold">
-						<h:outputText
-							value="#{entry.systemUser.lastName} #{entry.systemUser.firstName}" />
-					</rich:column>
-					<rich:column styleClass="center">
-						<a4j:outputPanel layout="block">
-							<rich:toolTip styleClass="tooltipDefault" followMouse="false"
-								direction="top-right" layout="block" verticalOffset="35">
-								<h:outputText value="#{entry.notes}" escape="false" />
-								<div class="tooltip-image" />
-							</rich:toolTip>
-							<h:graphicImage library="images/16x16" name="notes.png"
-								rendered="#{not empty entry.notes}" />
-						</a4j:outputPanel>
-					</rich:column>
-					<rich:column styleClass="center">
-						<h:outputText value="#{entry.plannedStart}">
-							<f:convertDateTime pattern="dd.MM.yyyy HH:mm"
-								locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
-						</h:outputText>
-					</rich:column>
-					<rich:column styleClass="center">
-						<h:outputText value="#{entry.plannedEnd}">
-							<f:convertDateTime pattern="dd.MM.yyyy HH:mm"
-								locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
-						</h:outputText>
-					</rich:column>
-					<rich:column styleClass="center">
-						<a4j:commandLink title="Anmelden"
-							oncomplete="#{rich:component('signInPanel')}.show();return false;">
-							<h:panelGroup rendered="#{empty entry.realStart}">
-								<h:graphicImage styleClass="actionImage" library="images/16x16" name="clock-into.png" />
-								<h:outputText styleClass="actionText" value="Anmelden" />
-							</h:panelGroup>
-							<h:panelGroup rendered="#{not empty entry.realStart}">
-								<h:outputText value="#{entry.realStart}">
-									<f:convertDateTime pattern="dd.MM.yyyy HH:mm"
-										locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
-								</h:outputText>
-							</h:panelGroup>
-						</a4j:commandLink>
-					</rich:column>
-					<rich:column styleClass="center">
-						<a4j:commandLink title="Abmelden"
-							oncomplete="#{rich:component('signOutPanel')}.show();return false;">
-							<h:panelGroup rendered="#{empty entry.realStart}">
-								<h:graphicImage styleClass="actionImage" library="images/16x16" name="clock-out.png" />
-								<h:outputText styleClass="actionText" value="Abmelden" />
-							</h:panelGroup>
-							<h:panelGroup rendered="#{not empty entry.realEnd}">
-								<h:outputText value="#{entry.realEnd}">
-									<f:convertDateTime pattern="dd.MM.yyyy HH:mm"
-										locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
-								</h:outputText>
-							</h:panelGroup>
-						</a4j:commandLink>
-					</rich:column>
-					<rich:column>
-						<h:outputText value="#{entry.assignment.id}" />
-					</rich:column>
-					<rich:column>
-						<h:outputText value="#{entry.serviceType.name}" />
-					</rich:column>
-					<rich:column styleClass="center">
-						<pretty:link mappingId="roster-editEntryView"
-							title="Dienstplaneintrag bearbeiten">
-							<f:param value="#{entry.id}" />
-							<h:graphicImage styleClass="actionImage" library="images/16x16" name="edit.png" />
-						</pretty:link>
-					</rich:column>
-				</rich:subTable>
-			</rich:dataTable>
-		</h:panelGroup>
+		<ui:decorate template="rosterFilter.xhtml">
+			<ui:param name="bean" value="#{rosterDayViewBean}" />
+		</ui:decorate>
+		<ui:decorate template="rosterTable.xhtml">
+			<ui:param name="values" value="#{rosterDayViewBean.locationEntry}" />
+		</ui:decorate>
 	</ui:define>
 	<ui:define name="panel">
 		<ui:decorate template="/WEB-INF/templates/widgets/modalPanel.xhtml">

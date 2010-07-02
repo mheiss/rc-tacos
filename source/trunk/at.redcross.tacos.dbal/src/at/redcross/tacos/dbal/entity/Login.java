@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -22,7 +23,10 @@ public class Login extends EntityImpl {
     private static final long serialVersionUID = -8204373123508547368L;
 
     @Id
-    @Column(unique = true)
+    @GeneratedValue
+    private long id;
+
+    @Column(nullable = false, unique = true)
     private String alias;
 
     @Column
@@ -39,25 +43,6 @@ public class Login extends EntityImpl {
 
     @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
     private SystemUser systemUser;
-
-    /**
-     * Default protected constructor for JPA
-     */
-    protected Login() {
-    }
-
-    /**
-     * Creates a new {@code Login} using the given alias and user.
-     * 
-     * @param user
-     *            the system user to connect to
-     * @param alias
-     *            the unique alias of the login
-     */
-    public Login(SystemUser user, String alias) {
-        this.alias = alias;
-        this.systemUser = user;
-    }
 
     // ---------------------------------
     // EntityImpl
@@ -92,12 +77,20 @@ public class Login extends EntityImpl {
             return false;
         }
         Login rhs = (Login) obj;
-        return new EqualsBuilder().append(alias, rhs.alias).isEquals();
+        return new EqualsBuilder().append(id, rhs.id).isEquals();
     }
 
     // ---------------------------------
     // Setters for the properties
     // ---------------------------------
+    public void setSystemUser(SystemUser systemUser) {
+        this.systemUser = systemUser;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }
@@ -117,6 +110,10 @@ public class Login extends EntityImpl {
     // ---------------------------------
     // Getters for the properties
     // ---------------------------------
+    public long getId() {
+        return id;
+    }
+
     public String getAlias() {
         return alias;
     }

@@ -46,17 +46,19 @@
 	<url-mapping id="roster-personalView">
 		<pattern>/roster/personal</pattern>
 		<view-id>/WEB-INF/pages/roster/personalView.faces</view-id>
+		<action onPostback="false">#{rosterPersonalViewBean.prettyInit}</action>
 	</url-mapping>
 	<url-mapping id="roster-weekView">
 		<pattern>/roster/week</pattern>
 		<view-id>/WEB-INF/pages/roster/weekView.faces</view-id>
+		<action onPostback="false">#{rosterWeekViewBean.prettyInit}</action>
 	</url-mapping>
 	<url-mapping id="roster-createEntryView">
 		<pattern>/roster/create</pattern>
 		<view-id>/WEB-INF/pages/roster/editEntryView.faces</view-id>
 		<action onPostback="false">#{rosterEntryBean.prettyInit}</action>
 	</url-mapping>
-		<url-mapping id="roster-editEntryView">
+	<url-mapping id="roster-editEntryView">
 		<pattern>/roster/edit/#{rosterEntryBean.rosterId}</pattern>
 		<view-id>/WEB-INF/pages/roster/editEntryView.faces</view-id>
 		<action onPostback="false">#{rosterEntryBean.prettyInit}</action>

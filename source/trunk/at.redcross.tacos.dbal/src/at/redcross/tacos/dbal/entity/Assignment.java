@@ -2,6 +2,7 @@ package at.redcross.tacos.dbal.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -16,33 +17,24 @@ public class Assignment extends EntityImpl {
     private static final long serialVersionUID = -2510131078051328478L;
 
     @Id
-    private String id;
+    @GeneratedValue
+    private long id;
 
     @Column(nullable = false)
+    private String name;
+
+    @Column
+    private String shortName;
+
+    @Column(length = 255)
     private String description;
-
-    /**
-     * Default protected constructor for JPA
-     */
-    protected Assignment() {
-    }
-
-    /**
-     * Creates a new {@code Assignment} using the given name
-     * 
-     * @param id
-     *            the unique name of the assignment
-     */
-    public Assignment(String id) {
-        this.id = id;
-    }
 
     // ---------------------------------
     // EntityImpl
     // ---------------------------------
     @Override
     public String getDisplayString() {
-        return id;
+        return name;
     }
 
     // ---------------------------------
@@ -76,6 +68,14 @@ public class Assignment extends EntityImpl {
     // ---------------------------------
     // Setters for the properties
     // ---------------------------------
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }
@@ -83,8 +83,16 @@ public class Assignment extends EntityImpl {
     // ---------------------------------
     // Getters for the properties
     // ---------------------------------
-    public String getId() {
+    public long getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getShortName() {
+        return shortName;
     }
 
     public String getDescription() {

@@ -37,17 +37,37 @@ public class RosterEntry extends EntityImpl {
     @OneToOne
     private Assignment assignment;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date plannedStart;
+    // PLANNED START DATE AND TIME
+    @Temporal(TemporalType.DATE)
+    @Column(nullable = false)
+    private Date plannedStartDate;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date plannedEnd;
+    @Temporal(TemporalType.TIME)
+    @Column(nullable = false)
+    private Date plannedStartTime;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date realStart;
+    // PLANNED END DATE AND TIME
+    @Temporal(TemporalType.DATE)
+    @Column(nullable = false)
+    private Date plannedEndDate;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date realEnd;
+    @Temporal(TemporalType.TIME)
+    @Column(nullable = false)
+    private Date plannedEndTime;
+
+    // REAL START DATE AND TIME
+    @Temporal(TemporalType.DATE)
+    private Date realStartDate;
+
+    @Temporal(TemporalType.TIME)
+    private Date realStartTime;
+
+    // REAL END DATE AND TIME
+    @Temporal(TemporalType.DATE)
+    private Date realEndDate;
+
+    @Temporal(TemporalType.TIME)
+    private Date realEndTime;
 
     @Column
     private String notes;
@@ -113,20 +133,36 @@ public class RosterEntry extends EntityImpl {
         this.assignment = assignment;
     }
 
-    public void setPlannedStart(Date plannedStart) {
-        this.plannedStart = plannedStart;
+    public void setPlannedStartDate(Date plannedStartDate) {
+        this.plannedStartDate = plannedStartDate;
     }
 
-    public void setPlannedEnd(Date plannedEnd) {
-        this.plannedEnd = plannedEnd;
+    public void setPlannedStartTime(Date plannedStartTime) {
+        this.plannedStartTime = plannedStartTime;
     }
 
-    public void setRealStart(Date realStart) {
-        this.realStart = realStart;
+    public void setPlannedEndDate(Date plannedEndDate) {
+        this.plannedEndDate = plannedEndDate;
     }
 
-    public void setRealEnd(Date realEnd) {
-        this.realEnd = realEnd;
+    public void setPlannedEndTime(Date plannedEndTime) {
+        this.plannedEndTime = plannedEndTime;
+    }
+
+    public void setRealEndDate(Date realEndDate) {
+        this.realEndDate = realEndDate;
+    }
+
+    public void setRealEndTime(Date realEndTime) {
+        this.realEndTime = realEndTime;
+    }
+
+    public void setRealStartDate(Date realStartDate) {
+        this.realStartDate = realStartDate;
+    }
+
+    public void setRealStartTime(Date realStartTime) {
+        this.realStartTime = realStartTime;
     }
 
     public void setNotes(String notes) {
@@ -164,20 +200,36 @@ public class RosterEntry extends EntityImpl {
         return location;
     }
 
-    public Date getPlannedStart() {
-        return plannedStart;
+    public Date getPlannedEndDate() {
+        return plannedEndDate;
     }
 
-    public Date getPlannedEnd() {
-        return plannedEnd;
+    public Date getPlannedEndTime() {
+        return plannedEndTime;
     }
 
-    public Date getRealStart() {
-        return realStart;
+    public Date getPlannedStartDate() {
+        return plannedStartDate;
     }
 
-    public Date getRealEnd() {
-        return realEnd;
+    public Date getPlannedStartTime() {
+        return plannedStartTime;
+    }
+
+    public Date getRealStartDate() {
+        return realStartDate;
+    }
+
+    public Date getRealStartTime() {
+        return realStartTime;
+    }
+
+    public Date getRealEndDate() {
+        return realEndDate;
+    }
+
+    public Date getRealEndTime() {
+        return realEndTime;
     }
 
     public boolean isStandby() {
