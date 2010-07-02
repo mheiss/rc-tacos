@@ -16,36 +16,35 @@ import at.redcross.tacos.dbal.helper.RosterEntryHelper;
 import at.redcross.tacos.web.reporting.ReportRenderer.ReportRenderParameters;
 
 @KeepAlive
-@ManagedBean(name = "rosterDayViewBean")
-public class RosterDayViewBean extends RosterViewBean {
+@ManagedBean(name = "rosterWeekViewBean")
+public class RosterWeekViewBean extends RosterViewBean {
 
-    private static final long serialVersionUID = 8817078489086816724L;
+    private static final long serialVersionUID = 8106951839383744965L;
 
-    private final SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
-
-    @Override
-    protected Date getPreviousDate(Date date) {
-        return DateUtils.addDays(date, -1);
-    }
+    private final SimpleDateFormat sdf = new SimpleDateFormat("w");
 
     @Override
     protected Date getNextDate(Date date) {
-        return DateUtils.addDays(date, +1);
+        return DateUtils.addWeeks(date, 1);
     }
 
     @Override
-    protected List<RosterEntry> getEntries(EntityManager manager, Location location, Date date) {
-        return RosterEntryHelper.listByDay(manager, location, date);
+    protected Date getPreviousDate(Date date) {
+        return DateUtils.addWeeks(date, -1);
     }
 
     @Override
     protected ReportRenderParameters getReportParams() {
         ReportRenderParameters params = new ReportRenderParameters();
-        params.reportName = "Dienstplan_" + sdf.format(date) + ".pdf";
+        params.reportName = "Dienstplan_KW" + sdf.format(date) + ".pdf";
         params.reportFile = "rosterDayReport.rptdesign";
         params.arguments.put("rosterList", entries);
         params.arguments.put("reportDate", date);
         return params;
     }
 
+    @Override
+    protected List<RosterEntry> getEntries(EntityManager manager, Location location, Date date) {
+        return RosterEntryHelper.listByWeek(manager, location, date);
+    }
 }

@@ -30,7 +30,11 @@ public class FacesUtils {
     // ---------------------------------
     // Application Helper Methods
     // ---------------------------------
-    public String getContextRoot() {
+    public static String pretty(String url) {
+        return "pretty:" + url;
+    }
+
+    public static String getContextRoot() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         return facesContext.getExternalContext().getRequestContextPath();
     }

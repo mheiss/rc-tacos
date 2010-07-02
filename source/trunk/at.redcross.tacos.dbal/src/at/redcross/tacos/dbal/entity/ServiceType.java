@@ -2,6 +2,7 @@ package at.redcross.tacos.dbal.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -16,26 +17,17 @@ public class ServiceType extends EntityImpl {
     private static final long serialVersionUID = 7780994907233444353L;
 
     @Id
+    @GeneratedValue
+    private long id;
+
+    @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(nullable = false)
+    @Column
+    private String shortName;
+
+    @Column(length = 255)
     private String description;
-
-    /**
-     * Default protected constructor for JPA
-     */
-    protected ServiceType() {
-    }
-
-    /**
-     * Creates a new {@code ServiceType} using the given unique id
-     * 
-     * @param name
-     *            the name of the service type
-     */
-    public ServiceType(String name) {
-        this.name = name;
-    }
 
     // ---------------------------------
     // EntityImpl
@@ -55,7 +47,7 @@ public class ServiceType extends EntityImpl {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(name).hashCode();
+        return new HashCodeBuilder().append(id).hashCode();
     }
 
     @Override
@@ -70,12 +62,20 @@ public class ServiceType extends EntityImpl {
             return false;
         }
         ServiceType rhs = (ServiceType) obj;
-        return new EqualsBuilder().append(name, rhs.name).isEquals();
+        return new EqualsBuilder().append(id, rhs.id).isEquals();
     }
 
     // ---------------------------------
     // Setters for the properties
     // ---------------------------------
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }
@@ -83,8 +83,16 @@ public class ServiceType extends EntityImpl {
     // ---------------------------------
     // Getters for the properties
     // ---------------------------------
+    public long getId() {
+        return id;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public String getShortName() {
+        return shortName;
     }
 
     public String getDescription() {

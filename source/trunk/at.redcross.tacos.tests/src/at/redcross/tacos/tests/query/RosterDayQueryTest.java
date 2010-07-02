@@ -1,27 +1,26 @@
 package at.redcross.tacos.tests.query;
 
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
-import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import junit.framework.Assert;
 
-import org.apache.commons.lang.time.DateUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import at.redcross.tacos.dbal.entity.Assignment;
-import at.redcross.tacos.dbal.entity.Location;
 import at.redcross.tacos.dbal.entity.RosterEntry;
-import at.redcross.tacos.dbal.entity.ServiceType;
-import at.redcross.tacos.dbal.entity.SystemUser;
+import at.redcross.tacos.dbal.helper.AssignmentHelper;
+import at.redcross.tacos.dbal.helper.LocationHelper;
+import at.redcross.tacos.dbal.helper.RosterEntryHelper;
+import at.redcross.tacos.dbal.helper.ServiceTypeHelper;
+import at.redcross.tacos.dbal.helper.SystemUserHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 
 /**
- * Contains test for roster day view query.
+ * Contains test cases for roster day view query.
  * <p>
  * The entry is created with the following parameters:
  * </p>
@@ -32,7 +31,7 @@ import at.redcross.tacos.dbal.manager.EntityManagerHelper;
  * </pre>
  * 
  * The query is expected to return a single result when the START and the END
- * matches exactly.
+ * are in the range of the given date.
  */
 public class RosterDayQueryTest extends BaseTest {
 
@@ -41,55 +40,18 @@ public class RosterDayQueryTest extends BaseTest {
         {
             RosterEntry entry = new RosterEntry();
             entry.setNotes("note");
-            entry.setAssignment(manager.find(Assignment.class, "Fahrer"));
-            entry.setLocation(manager.find(Location.class, "B"));
-            entry.setServiceType(manager.find(ServiceType.class, "Hauptamtlich"));
-            entry.setSystemUser(manager.find(SystemUser.class, 1L));
-            entry.setPlannedStart(DateUtils.parseDate("13.06.2010", new String[] { "dd.MM.yyyy" }));
-            entry.setPlannedEnd(DateUtils.parseDate("15.06.2010", new String[] { "dd.MM.yyyy" }));
+            entry.setAssignment(AssignmentHelper.getByName(manager, "Fahrer"));
+            entry.setLocation(LocationHelper.getByName(manager, "Bruck"));
+            entry.setServiceType(ServiceTypeHelper.getByName(manager, "Hauptamtlich"));
+            entry.setSystemUser(SystemUserHelper.getByLogin(manager, "m.heiss"));
+            entry.setPlannedStartTime(DateHelper.parseTime("12:30"));
+            entry.setPlannedStartDate(DateHelper.parseDate("31.07.2010"));
+
+            entry.setPlannedEndTime(DateHelper.parseTime("14:30"));
+            entry.setPlannedEndDate(DateHelper.parseDate("01.08.2010"));
             manager.persist(entry);
         }
         EntityManagerHelper.commit(manager);
-    }
-
-    @Test
-    public void testQueryDayEntry() throws Exception {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(DateUtils.parseDate("12.06.2010", new String[] { "dd.MM.yyyy" }));
-        List<RosterEntry> rosterList = doLoadDay(calendar, manager);
-        Assert.assertEquals(0, rosterList.size());
-    }
-
-    @Test
-    public void testQueryDayEntry2() throws Exception {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(DateUtils.parseDate("13.06.2010", new String[] { "dd.MM.yyyy" }));
-        List<RosterEntry> rosterList = doLoadDay(calendar, manager);
-        Assert.assertEquals(1, rosterList.size());
-    }
-
-    @Test
-    public void testQueryDayEntry3() throws Exception {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(DateUtils.parseDate("14.06.2010", new String[] { "dd.MM.yyyy" }));
-        List<RosterEntry> rosterList = doLoadDay(calendar, manager);
-        Assert.assertEquals(1, rosterList.size());
-    }
-
-    @Test
-    public void testQueryDayEntry4() throws Exception {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(DateUtils.parseDate("15.06.2010", new String[] { "dd.MM.yyyy" }));
-        List<RosterEntry> rosterList = doLoadDay(calendar, manager);
-        Assert.assertEquals(1, rosterList.size());
-    }
-
-    @Test
-    public void testQueryDayEntry5() throws Exception {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(DateUtils.parseDate("16.06.2010", new String[] { "dd.MM.yyyy" }));
-        List<RosterEntry> rosterList = doLoadDay(calendar, manager);
-        Assert.assertEquals(0, rosterList.size());
     }
 
     @After
@@ -101,12 +63,38 @@ public class RosterDayQueryTest extends BaseTest {
         EntityManagerHelper.commit(manager);
     }
 
-    private List<RosterEntry> doLoadDay(Calendar calendar, EntityManager manager) {
-        StringBuilder builder = new StringBuilder();
-        builder.append(" select entry from RosterEntry entry ");
-        builder.append(" where :date1 >= entry.plannedStart AND :date1 <= entry.plannedEnd ");
-        TypedQuery<RosterEntry> query = manager.createQuery(builder.toString(), RosterEntry.class);
-        query.setParameter("date1", calendar.getTime());
-        return query.getResultList();
+    @Test
+    public void testQueryDayEntry() throws Exception {
+        Date date = DateHelper.parseDate("30.07.2010");
+        List<RosterEntry> rosterList = RosterEntryHelper.listByDay(manager, null, date);
+        Assert.assertEquals(0, rosterList.size());
+    }
+
+    @Test
+    public void testQueryDayEntry2() throws Exception {
+        Date date = DateHelper.parseDate("31.07.2010");
+        List<RosterEntry> rosterList = RosterEntryHelper.listByDay(manager, null, date);
+        Assert.assertEquals(1, rosterList.size());
+    }
+
+    @Test
+    public void testQueryDayEntry3() throws Exception {
+        Date date = DateHelper.parseDate("01.08.2010");
+        List<RosterEntry> rosterList = RosterEntryHelper.listByDay(manager, null, date);
+        Assert.assertEquals(1, rosterList.size());
+    }
+
+    @Test
+    public void testQueryDayEntry4() throws Exception {
+        Date date = DateHelper.parseDate("02.08.2010");
+        List<RosterEntry> rosterList = RosterEntryHelper.listByDay(manager, null, date);
+        Assert.assertEquals(0, rosterList.size());
+    }
+
+    @Test
+    public void testQueryDayEntry5() throws Exception {
+        Date date = DateHelper.parseDate("16.06.2010");
+        List<RosterEntry> rosterList = RosterEntryHelper.listByDay(manager, null, date);
+        Assert.assertEquals(0, rosterList.size());
     }
 }

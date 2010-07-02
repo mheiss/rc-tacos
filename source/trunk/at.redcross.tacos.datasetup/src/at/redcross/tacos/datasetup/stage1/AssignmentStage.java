@@ -20,58 +20,60 @@ public class AssignmentStage implements DatasetupStage {
     @Override
     public void performImport(EntityManager manager) {
         {
-            Assignment assignment = new Assignment("Fahrer");
+            Assignment assignment = new Assignment();
+            assignment.setName("Fahrer");
             assignment.setDescription("Fahrer");
             manager.persist(assignment);
         }
         {
-            Assignment assignment = new Assignment("Sanitäter");
+            Assignment assignment = new Assignment();
+            assignment.setName("Sanitäter");
             assignment.setDescription("Sanitäter");
             manager.persist(assignment);
         }
         {
-            Assignment assignment = new Assignment("Notfallsanitäter");
-            assignment.setDescription("Notfallsanitäter");
+            Assignment assignment = new Assignment();
+            assignment.setName("Notfallsanitäter");
             manager.persist(assignment);
         }
         {
-            Assignment assignment = new Assignment("Notarzt");
-            assignment.setDescription("Notarzt");
+            Assignment assignment = new Assignment();
+            assignment.setName("Notarzt");
             manager.persist(assignment);
         }
         {
-            Assignment assignment = new Assignment("Leitstellendisponent");
-            assignment.setDescription("Leitstellendisponent");
+            Assignment assignment = new Assignment();
+            assignment.setName("Leitstellendisponent");
             manager.persist(assignment);
         }
         {
-            Assignment assignment = new Assignment("Dienstführender");
-            assignment.setDescription("Dienstführender");
+            Assignment assignment = new Assignment();
+            assignment.setName("Dienstführender");
             manager.persist(assignment);
         }
         {
-            Assignment assignment = new Assignment("Inspektionsdienst");
-            assignment.setDescription("Inspektionsdienst");
+            Assignment assignment = new Assignment();
+            assignment.setName("Inspektionsdienst");
             manager.persist(assignment);
         }
         {
-            Assignment assignment = new Assignment("BKTW-Fahrer");
-            assignment.setDescription("BKTW-Fahrer");
+            Assignment assignment = new Assignment();
+            assignment.setName("BKTW-Fahrer");
             manager.persist(assignment);
         }
         {
-            Assignment assignment = new Assignment("Journaldienst");
-            assignment.setDescription("Journaldienst");
+            Assignment assignment = new Assignment();
+            assignment.setName("Journaldienst");
             manager.persist(assignment);
         }
         {
-            Assignment assignment = new Assignment("Volontär");
-            assignment.setDescription("Volontär");
+            Assignment assignment = new Assignment();
+            assignment.setName("Volontär");
             manager.persist(assignment);
         }
         {
-            Assignment assignment = new Assignment("Sonstiges");
-            assignment.setDescription("Sonstiges");
+            Assignment assignment = new Assignment();
+            assignment.setName("Sonstiges");
             manager.persist(assignment);
         }
     }

@@ -20,28 +20,28 @@ public class ServiceTypeStage implements DatasetupStage {
     @Override
     public void performImport(EntityManager manager) {
         {
-            ServiceType type = new ServiceType("Hauptamtlich");
-            type.setDescription("Hauptamtlich");
+            ServiceType type = new ServiceType();
+            type.setName("Hauptamtlich");
             manager.persist(type);
         }
         {
-            ServiceType type = new ServiceType("Freiwillig");
-            type.setDescription("Freiwillig");
+            ServiceType type = new ServiceType();
+            type.setName("Freiwillig");
             manager.persist(type);
         }
         {
-            ServiceType type = new ServiceType("Ersatzeinstellung");
-            type.setDescription("Ersatzeinstellung");
+            ServiceType type = new ServiceType();
+            type.setName("Ersatzeinstellung");
             manager.persist(type);
         }
         {
-            ServiceType type = new ServiceType("Zivildiener");
-            type.setDescription("Zivildiener");
+            ServiceType type = new ServiceType();
+            type.setName("Zivildiener");
             manager.persist(type);
         }
         {
-            ServiceType type = new ServiceType("Sonstiges");
-            type.setDescription("Sonstiges");
+            ServiceType type = new ServiceType();
+            type.setName("Sonstiges");
             manager.persist(type);
         }
     }

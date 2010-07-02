@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -21,37 +22,25 @@ public class District extends EntityImpl {
     private static final long serialVersionUID = 9135510026388921765L;
 
     @Id
-    private String id;
+    @GeneratedValue
+    private long id;
 
-    @Column(nullable = false)
-    private String fullName;
+    @Column(nullable = false, unique = true)
+    private String name;
+
+    @Column
+    private String shortName;
 
     @OneToMany(orphanRemoval = true)
     @JoinColumn(name = "District_Fk")
     private Collection<Location> locations;
-
-    /**
-     * Default protected constructor for JPA
-     */
-    protected District() {
-    }
-
-    /**
-     * Creates a new {@code District} using the given unique short name
-     * 
-     * @param id
-     *            the id of the district
-     */
-    public District(String id) {
-        this.id = id;
-    }
 
     // ---------------------------------
     // EntityImpl
     // ---------------------------------
     @Override
     public String getDisplayString() {
-        return id;
+        return name;
     }
 
     // ---------------------------------
@@ -85,8 +74,12 @@ public class District extends EntityImpl {
     // ---------------------------------
     // Setters for the properties
     // ---------------------------------
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 
     public void setLocations(Collection<Location> locations) {
@@ -96,12 +89,17 @@ public class District extends EntityImpl {
     // ---------------------------------
     // Getters for the properties
     // ---------------------------------
-    public String getId() {
+
+    public long getId() {
         return id;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getShortName() {
+        return shortName;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public Collection<Location> getLocations() {

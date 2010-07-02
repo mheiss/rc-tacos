@@ -1,7 +1,5 @@
 package at.redcross.tacos.web.beans;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -19,7 +17,6 @@ import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.faces.combo.DropDownHelper;
 import at.redcross.tacos.web.persitence.EntityManagerFactory;
-import at.redcross.tacos.web.utils.DateUtils;
 
 @KeepAlive
 @ManagedBean(name = "rosterEntryBean")
@@ -36,13 +33,6 @@ public class RosterEntryBean extends BaseBean {
     private List<SelectItem> locationItems;
     private List<SelectItem> serviceTypeItems;
     private List<SelectItem> assignmentItems;
-
-    // start and end time
-    private Date plannedStartTime;
-    private Date plannedStartDate;
-
-    private Date plannedEndTime;
-    private Date plannedEndDate;
 
     @Override
     public void init() throws Exception {
@@ -68,14 +58,6 @@ public class RosterEntryBean extends BaseBean {
      * Persists the current entity in the database
      */
     public String persist() {
-        // merge the separate date and time values
-        Calendar start = DateUtils.mergeDateAndTime(plannedStartDate, plannedStartTime);
-        Calendar end = DateUtils.mergeDateAndTime(plannedEndDate, plannedEndTime);
-
-        rosterEntry.setPlannedStart(start.getTime());
-        rosterEntry.setPlannedEnd(end.getTime());
-
-        // write to the database
         EntityManager manager = null;
         try {
             manager = EntityManagerFactory.createEntityManager();
@@ -86,7 +68,7 @@ public class RosterEntryBean extends BaseBean {
                 manager.merge(rosterEntry);
             }
             EntityManagerHelper.commit(manager);
-            return "pretty:roster-dayView";
+            return FacesUtils.pretty("roster-dayView");
         }
         catch (Exception ex) {
             FacesUtils.addErrorMessage("Der Dienstplaneintrag konnte nicht gespeichert werden");
@@ -105,7 +87,7 @@ public class RosterEntryBean extends BaseBean {
         try {
             manager = EntityManagerFactory.createEntityManager();
             loadfromDatabase(manager, rosterEntry.getId());
-            return "pretty:roster-editEntryView";
+            return FacesUtils.pretty("roster-editEntryView");
         }
         catch (Exception ex) {
             FacesUtils.addErrorMessage("Der Dienstplaneintrag konnte nicht zurückgesetzt werden");
@@ -125,10 +107,6 @@ public class RosterEntryBean extends BaseBean {
             rosterId = -1;
             rosterEntry = new RosterEntry();
         }
-        plannedStartDate = rosterEntry.getPlannedStart();
-        plannedStartTime = rosterEntry.getPlannedStart();
-        plannedEndDate = rosterEntry.getPlannedEnd();
-        plannedEndTime = rosterEntry.getPlannedEnd();
     }
 
     // ---------------------------------
@@ -140,22 +118,6 @@ public class RosterEntryBean extends BaseBean {
 
     public void setRosterId(long rosterId) {
         this.rosterId = rosterId;
-    }
-
-    public void setPlannedStartTime(Date plannedStartTime) {
-        this.plannedStartTime = plannedStartTime;
-    }
-
-    public void setPlannedStartDate(Date plannedStartDate) {
-        this.plannedStartDate = plannedStartDate;
-    }
-
-    public void setPlannedEndTime(Date plannedEndTime) {
-        this.plannedEndTime = plannedEndTime;
-    }
-
-    public void setPlannedEndDate(Date plannedEndDate) {
-        this.plannedEndDate = plannedEndDate;
     }
 
     // ---------------------------------
@@ -179,22 +141,6 @@ public class RosterEntryBean extends BaseBean {
 
     public List<SelectItem> getAssignmentItems() {
         return assignmentItems;
-    }
-
-    public Date getPlannedStartTime() {
-        return plannedStartTime;
-    }
-
-    public Date getPlannedStartDate() {
-        return plannedStartDate;
-    }
-
-    public Date getPlannedEndDate() {
-        return plannedEndDate;
-    }
-
-    public Date getPlannedEndTime() {
-        return plannedEndTime;
     }
 
     public RosterEntry getRosterEntry() {

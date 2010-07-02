@@ -22,9 +22,9 @@ public class SystemUserStage implements DatasetupStage {
 
     @Override
     public void performImport(EntityManager manager) {
-    	Location location1 = manager.find(Location.class, "B");
-    	Location location2 = manager.find(Location.class, "K");
-    	
+        Location location1 = getLocationByName(manager, "Bruck");
+        Location location2 = getLocationByName(manager, "Kapfenberg");
+
         {
             Address address = new Address();
             address.setCity("Graz");
@@ -34,13 +34,16 @@ public class SystemUserStage implements DatasetupStage {
             address.setEmail("michael.heiss@st.roteskreuz.at");
 
             SystemUser sysUser = new SystemUser();
+            sysUser.setPnr(1);
             sysUser.setFirstName("Michael");
             sysUser.setLastName("Heiss");
             sysUser.setAddress(address);
 
-            Login login = new Login(sysUser, "m.heiss");
+            Login login = new Login();
+            login.setSystemUser(sysUser);
+            login.setAlias("m.heiss");
             login.setPassword("m.heiss");
-            
+
             sysUser.setLocation(location1);
 
             manager.persist(login);
@@ -56,17 +59,27 @@ public class SystemUserStage implements DatasetupStage {
             address.setEmail("birgit.thek@st.roteskreuz.at");
 
             SystemUser sysUser = new SystemUser();
+            sysUser.setPnr(2);
             sysUser.setFirstName("Birgit");
             sysUser.setLastName("Thek");
             sysUser.setAddress(address);
 
-            Login login = new Login(sysUser, "b.thek");
+            Login login = new Login();
+            login.setSystemUser(sysUser);
+            login.setAlias("b.thek");
             login.setPassword("b.thek");
-            
+
             sysUser.setLocation(location2);
 
             manager.persist(login);
             manager.persist(sysUser);
         }
+    }
+
+    private Location getLocationByName(EntityManager manager, String name) {
+        String hqlQuery = "from Location location where location.name = :name";
+        TypedQuery<Location> query = manager.createQuery(hqlQuery, Location.class);
+        query.setParameter("name", name);
+        return query.getSingleResult();
     }
 }

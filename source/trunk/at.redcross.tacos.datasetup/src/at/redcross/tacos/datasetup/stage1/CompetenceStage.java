@@ -20,73 +20,71 @@ public class CompetenceStage implements DatasetupStage {
     @Override
     public void performImport(EntityManager manager) {
         {
-            Competence competence = new Competence("Fahrer");
-            competence.setDescription("Fahrer");
+            Competence competence = new Competence();
+            competence.setName("Fahrer");
             manager.persist(competence);
         }
         {
-            Competence competence = new Competence("Sanitäter");
-            competence.setDescription("Sanitäter");
+            Competence competence = new Competence();
+            competence.setName("Sanitäter");
             manager.persist(competence);
         }
         {
-            Competence competence = new Competence("Notfallsanitäter");
-            competence.setDescription("Notfallsanitäter");
+            Competence competence = new Competence();
+            competence.setName("Notfallsanitäter");
             manager.persist(competence);
         }
         {
-            Competence competence = new Competence("Notarzt");
-            competence.setDescription("Notarzt");
+            Competence competence = new Competence();
+            competence.setName("Notarzt");
             manager.persist(competence);
         }
         {
-            Competence competence = new Competence("Leitstellendisponent");
-            competence.setDescription("Leitstellendisponent");
+            Competence competence = new Competence();
+            competence.setName("Dienstführender");
             manager.persist(competence);
         }
         {
-            Competence competence = new Competence("Dienstführender");
-            competence.setDescription("Dienstführender");
+            Competence competence = new Competence();
+            competence.setName("Inspektionsdienst");
             manager.persist(competence);
         }
         {
-            Competence competence = new Competence("Inspektionsdienst");
-            competence.setDescription("Inspektionsdienst");
+            Competence competence = new Competence();
+            competence.setName("BKTW-Fahrer");
             manager.persist(competence);
         }
         {
-            Competence competence = new Competence("BKTW-Fahrer");
-            competence.setDescription("BKTW-Fahrer");
+            Competence competence = new Competence();
+            competence.setName("Journaldienst");
             manager.persist(competence);
         }
         {
-            Competence competence = new Competence("Journaldienst");
-            competence.setDescription("Journaldienst");
+            Competence competence = new Competence();
+            competence.setName("Volontär");
             manager.persist(competence);
         }
         {
-            Competence competence = new Competence("Volontär");
-            competence.setDescription("Volontär");
+            Competence competence = new Competence();
+            competence.setName("Sonstiges");
             manager.persist(competence);
         }
         {
-            Competence competence = new Competence("Sonstiges");
-            competence.setDescription("Sonstiges");
+            Competence competence = new Competence();
+            competence.setName("Hauptamtlicher");
+            competence.setShortName("HA");
             manager.persist(competence);
         }
         {
-            Competence competence = new Competence("HA");
-            competence.setDescription("Hauptamtlicher");
+            Competence competence = new Competence();
+            competence.setName("Zivieldiener");
+            competence.setShortName("ZD");
             manager.persist(competence);
         }
         {
-            Competence competence = new Competence("ZD");
-            competence.setDescription("Zivieldiener");
-            manager.persist(competence);
-        }
-        {
-            Competence competence = new Competence("LS");
-            competence.setDescription("Leitstellendisponent");
+            Competence competence = new Competence();
+            competence.setName("Leitstellendisponent");
+            competence.setShortName("LS");
             manager.persist(competence);
         }
     }

@@ -1,0 +1,50 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich" xmlns:pretty="http://ocpsoft.com/prettyfaces"
+	xmlns:birt="http://jsf4birt.components">
+<body>
+<ui:composition>
+	<rich:simpleTogglePanel id="filter" opened="false" label="Filter" bodyClass="defaultToggleBodyStyle" styleClass="defaultToggleStyle" switchType="client">
+		<fieldset class="defaultStyle">
+			<div class="leftColumn">
+				<h:outputLabel for="location" value="Ortsstelle" />
+				<div class="input left inputZoom">
+				<rich:comboBox id="location" value="#{bean.location}" width="250" selectFirstOnUpdate="false" defaultLabel="Filter nach Orststelle">
+					<f:selectItems value="#{bean.locationItems}" />
+					<f:validator validatorId="validator.dropDown" />
+					<f:converter converterId="converter.dropDown" />
+					<rich:ajaxValidator event="onchange" />
+					<a4j:support event="onselect" actionListener="#{bean.filterChanged}" reRender="resultList" />
+				</rich:comboBox> 
+				<rich:message for="location" errorClass="error" />
+			</div>
+			<div class="leftDecorator">
+				<a4j:commandLink reRender="filter,resultList" title="Filter zurücksetzen">
+					<a4j:actionparam name="locationFilter" value="#{null}" assignTo="#{bean.location}" actionListener="#{bean.filterChanged}" />
+					<h:graphicImage library="images/16x16" name="edit-clear.png" />
+				</a4j:commandLink>
+			</div>
+			</div>
+			<div class="rightColumn">
+				<h:outputLabel for="date" value="Datum" />
+				<div class="input left">
+					<rich:calendar id="date" value="#{bean.date}" styleClass="rich-calendar" defaultTime="#{localeBean.date}" datePattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" converterMessage="Bitte geben Sie ein gültiges Datum an.">
+						<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+						<rich:ajaxValidator event="onchanged" />
+						<rich:ajaxValidator event="oninputblur" />
+						<a4j:support event="onchanged" actionListener="#{bean.filterChanged}" reRender="dateTitle,filter,resultList" />
+					</rich:calendar> 
+					<rich:message for="date" errorClass="error" />
+				</div>
+				<div class="leftDateDecorator">
+					<a4j:commandLink reRender="dateTitle,filter,resultList" title="Filter zurücksetzen">
+						<a4j:actionparam name="dateFilter" value="#{null}" assignTo="#{bean.date}" actionListener="#{bean.filterChanged}" />
+						<h:graphicImage library="images" name="edit-clear.png" />
+					</a4j:commandLink>
+				</div>
+			</div>
+		</fieldset>
+	</rich:simpleTogglePanel>
+</ui:composition>
+</body>
+</html>

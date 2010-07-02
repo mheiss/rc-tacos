@@ -116,7 +116,7 @@
 			<li>
 				<h:outputLabel for="startTime" value="Dienstzeit von" />
 				<div class="input">
-					<rich:calendar id="startDate" value="#{rosterEntryBean.plannedStartDate}" styleClass="rich-calendar" 
+					<rich:calendar id="startDate" value="#{rosterEntryBean.rosterEntry.plannedStartDate}" styleClass="rich-calendar" 
 						enableManualInput="true" converterMessage="Bitte geben Sie ein gültiges Datum an"
 						datePattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}"
 						required="true" requiredMessage="Bitte geben Sie ein Startdatum an">
@@ -125,7 +125,7 @@
 						<rich:ajaxValidator event="oninputblur" />
 						<f:validator validatorId="validator.fromTo" />
 					</rich:calendar> 
-					<h:inputText id="startTime" value="#{rosterEntryBean.plannedStartTime}" 
+					<h:inputText id="startTime" value="#{rosterEntryBean.rosterEntry.plannedStartTime}" 
 						required="true" requiredMessage="Bitte geben Sie einen Startzeitpunkt an" 
 						converterMessage="Bitte geben Sie eine gültige Zeit an. Beispiel: 10:47">
 						<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
@@ -138,7 +138,7 @@
 			<li>
 				<h:outputLabel for="endTime" value="Dienstzeit bis" />
 				<div class="input">
-					<rich:calendar id="endDate" value="#{rosterEntryBean.plannedEndDate}" styleClass="rich-calendar" 
+					<rich:calendar id="endDate" value="#{rosterEntryBean.rosterEntry.plannedEndDate}" styleClass="rich-calendar" 
 						enableManualInput="true" datePattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" 
 						required="true" requiredMessage="Bitte geben Sie ein Enddatum an." 
 						converterMessage="Bitte geben Sie ein gültiges Datum an.">
@@ -147,7 +147,7 @@
 						<rich:ajaxValidator event="oninputblur" />
 						<f:validator validatorId="validator.fromTo" />
 					</rich:calendar> 
-					<h:inputText id="endTime" value="#{rosterEntryBean.plannedEndTime}" 
+					<h:inputText id="endTime" value="#{rosterEntryBean.rosterEntry.plannedEndTime}" 
 						required="true" requiredMessage="Bitte geben Sie einen Endzeitpunkt an" 
 						converterMessage="Bitte geben Sie eine gültige Zeit an. Beispiel: 10:47">
 						<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
