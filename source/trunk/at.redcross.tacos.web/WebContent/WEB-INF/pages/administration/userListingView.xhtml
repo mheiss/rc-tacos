@@ -1,6 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich" xmlns:pretty="http://ocpsoft.com/prettyfaces">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" 
+	xmlns:rich="http://richfaces.org/rich" xmlns:pretty="http://ocpsoft.com/prettyfaces"
+	xmlns:c="http://java.sun.com/jstl/core">
 <body>
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
 	<ui:param name="section" value="admin" />
@@ -25,87 +29,12 @@
 			</fieldset>
 		</rich:simpleTogglePanel>
 		<h:panelGroup id="resultList">
-			<rich:panel rendered="#{empty systemUserViewBean.locationEntry}">
-				<h:outputText value="Keine Einträge gefunden" styleClass="italic" />
-			</rich:panel>
-			<rich:dataTable styleClass="defaultStyle" value="#{systemUserViewBean.locationEntry}" var="locationEntry">
-				<f:facet name="header">
-					<rich:columnGroup styleClass="smallColumn">
-						<rich:column>
-							<rich:spacer />
-						</rich:column>
-						<rich:column>
-							<h:outputText value="Nachname" />
-						</rich:column>
-						<rich:column>
-							<h:outputText value="Vorname" />
-						</rich:column>
-						<rich:column>
-							<h:outputText value="eMail" />
-						</rich:column>
-						<rich:column styleClass="mediumColumn">
-							<h:outputText value="Telefon (dienstlich)" />
-						</rich:column>
-						<rich:column styleClass="mediumColumn">
-							<h:outputText value="Telefon (privat)" />
-						</rich:column>
-						<rich:column styleClass="mediumColumn">
-							<h:outputText value="Kompetenzen" />
-						</rich:column>
-						<rich:column title="Bearbeiten" styleClass="smallColumn">
-							<rich:spacer />
-						</rich:column>
-					</rich:columnGroup>
-				</f:facet>
-	
-				<rich:column colspan="8" styleClass="center">
-					<h:outputText value="#{locationEntry.location.name}" />
-				</rich:column>
-	
-				<rich:subTable onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'" value="#{locationEntry.entries}" var="user">
-					<rich:column styleClass="bold">
-						<h:graphicImage library="images/24x24" name="user.png" rendered="#{not user.login.locked}" />
-						<h:graphicImage library="images/24x24" name="user_locked.png" rendered="#{user.login.locked}" />
-					</rich:column>
-					<rich:column styleClass="bold">
-						<h:outputText value="#{user.lastName}" />
-					</rich:column>
-					<rich:column styleClass="bold">
-						<h:outputText value="#{user.firstName}" />
-					</rich:column>
-					<rich:column styleClass="center">
-						<h:outputText value="#{user.address.email}" />
-					</rich:column>
-					<rich:column styleClass="center">
-						<h:outputText value="#{user.address.phone}" />
-					</rich:column>
-					<rich:column styleClass="center">
-						<h:outputText value="#{user.address.phoneII}" />
-					</rich:column>
-					<rich:column styleClass="center">
-						<h:outputText value="TODO" />
-					</rich:column>
-					<rich:column styleClass="center">
-						<pretty:link mappingId="admin-editUserView" title="Mitarbeitereintrag bearbeiten">
-							<f:param value="#{user.id}" />
-							<h:graphicImage styleClass="actionImage" library="images" name="edit.png" />
-						</pretty:link>
-					</rich:column>
-					<!-- 
-					<rich:column styleClass="bold">
-						<h:outputText value="#{user.competences}" />
-					</rich:column>
-					-->
-					<!--
-					<rich:column styleClass="center">
-						<pretty:link mappingId="employee-edit" title="Mitarbeitereintrag bearbeiten">
-							<f:param value="#{user.id}" />
-							<h:graphicImage styleClass="actionImage" library="images" name="edit.png" />
-						</pretty:link>
-					</rich:column>
-					-->
-				</rich:subTable>
-			</rich:dataTable>
+			<rich:tabPanel id="tabList" selectedTab="#{systemUserViewBean.locationId}">
+				<c:forEach items="#{systemUserViewBean.locations}" var="location">
+					<rich:tab label="#{location.name}" name="#{location.name}">
+					</rich:tab>
+				</c:forEach>
+			</rich:tabPanel> 
 		</h:panelGroup>
 	</ui:define>
 </ui:composition>
