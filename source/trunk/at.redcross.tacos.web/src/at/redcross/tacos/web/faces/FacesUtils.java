@@ -61,22 +61,24 @@ public class FacesUtils {
     // ---------------------------------
     // GetAttribute Helper Methods
     // ---------------------------------
-    public String getRequestParameter(final String param) {
+    public static String getRequestParameter(final String param) {
         ExternalContext context = getExternalContext();
         return context.getRequestParameterMap().get(param);
     }
 
-    public Object getFormValue(final UIComponent component, final String fieldName) {
-        String componentId = (String) component.getAttributes().get(fieldName);
-        UIInput input = (UIInput) getFacesContext().getViewRoot().findComponent(componentId);
-        return input.getValue();
+    /** Returns the value of the component in the given form */
+    public static Object getComponentValue(FacesContext context, String formId, String componentId) {
+        UIComponent component = context.getViewRoot().findComponent(formId + ":" + componentId);
+        UIInput input = (UIInput) component;
+        Object submittedValue = input.getSubmittedValue();
+        return input.getConverter().getAsObject(context, component, (String) submittedValue);
     }
 
-    public Object getSessionAttribute(final String key) {
+    public static Object getSessionAttribute(final String key) {
         return getExternalContext().getSessionMap().get(key);
     }
 
-    public void setSessionAttribute(final String key, final Object value) {
+    public static void setSessionAttribute(final String key, final Object value) {
         getExternalContext().getSessionMap().put(key, value);
     }
 
