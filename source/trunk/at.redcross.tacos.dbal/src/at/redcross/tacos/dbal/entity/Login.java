@@ -1,5 +1,6 @@
 package at.redcross.tacos.dbal.entity;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -22,6 +23,14 @@ public class Login extends EntityImpl {
 
     private static final long serialVersionUID = -8204373123508547368L;
 
+    /** the default date (01.01.1970) */
+    private static Date DEFAULT_DATE = null;
+    static {
+        Calendar DEFAULT = Calendar.getInstance();
+        DEFAULT.clear();
+        DEFAULT_DATE = DEFAULT.getTime();
+    }
+
     @Id
     @GeneratedValue
     private long id;
@@ -36,9 +45,6 @@ public class Login extends EntityImpl {
     private Date expireAt;
 
     @Column
-    private boolean invalidLogout;
-
-    @Column
     private boolean locked;
 
     @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
@@ -50,6 +56,22 @@ public class Login extends EntityImpl {
     @Override
     public String getDisplayString() {
         return alias;
+    }
+
+    // ---------------------------------
+    // Common helper methods
+    // ---------------------------------
+    public boolean isExpired() {
+        if (expireAt == null) {
+            return false;
+        }
+        if (DEFAULT_DATE.compareTo(expireAt) == 0) {
+            return false;
+        }
+        Calendar currentDate = Calendar.getInstance();
+        Calendar expireAt = Calendar.getInstance();
+        expireAt.setTime(this.expireAt);
+        return !currentDate.before(expireAt);
     }
 
     // ---------------------------------
@@ -99,10 +121,6 @@ public class Login extends EntityImpl {
         this.expireAt = expireAt;
     }
 
-    public void setInvalidLogout(boolean invalidLogout) {
-        this.invalidLogout = invalidLogout;
-    }
-
     public void setLocked(boolean locked) {
         this.locked = locked;
     }
@@ -128,10 +146,6 @@ public class Login extends EntityImpl {
 
     public boolean isLocked() {
         return locked;
-    }
-
-    public boolean isInvalidLogout() {
-        return invalidLogout;
     }
 
     public SystemUser getSystemUser() {

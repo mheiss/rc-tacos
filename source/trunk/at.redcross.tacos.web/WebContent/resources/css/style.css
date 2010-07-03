@@ -186,8 +186,59 @@ fieldset.defaultStyle a.button:active span {
 }
 
 /***********************************************************
+ Tab styling
+ **********************************************************/
+.defaultTabPanelStyle .rich-panel {
+	border: 0px;
+	margin: 0px;
+	padding: 0px;
+}
+
+.defaultTabHeaderStyle .rich-tabhdr-cell-active, .defaultTabHeaderStyle .rich-tabhdr-cell-inactive {
+	padding-right:5px;
+}
+
+.defaultTabHeaderStyle .rich-tabhdr-cell-active {
+	font-weight:bold;
+}
+
+.defaultTabPanelStyle .rich-tabpanel-content {
+	border: 0px;
+}
+
+.defaultTabPanelStyle .rich-panel-body {
+	border: 0px;
+	margin: 0px;
+	padding: 0px;
+}
+
+.defaultTabStyle {
+	padding:8px 15px;
+}
+
+/***********************************************************
  Table styling
  **********************************************************/
+.defaultScroller {
+	width: 100%;
+	margin-bottom: 0.5em;
+}
+
+.defaultScroller .rich-dtascroller-table {
+	width: 100%;
+	height: 2em;
+}
+
+.defaultScroller .rich-datascr-act {
+	border-bottom: 2px solid #000;
+}
+
+table.singleTable {
+	width: 100%;
+	border-right:1px;
+	border-collapse: collapse;
+}
+
 table.defaultStyle {
 	width: 100%;
 	border-collapse: collapse;
@@ -203,7 +254,7 @@ table.defaultStyle tr {
 	padding: 3px 4px;
 }
 
-table.defaultStyle td {
+table.defaultStyle td,table.singleTable td {
 	border: 0px;
 	border-bottom: 1px solid #BBBBBB;
 }
@@ -220,20 +271,20 @@ table.defaultStyle .rich-table-row td {
 	font-size: 1.2em;
 }
 
-table.defaultStyle .smallColumn {
+table.defaultStyle .smallColumn,table.singleTable .smallColumn {
 	width: 2em;
 	text-align: center;
 }
 
-table.defaultStyle .mediumColumn {
+table.defaultStyle .mediumColumn,table.singleTable .mediumColumn {
 	width: 20%;
 }
 
-table.defaultStyle .largeColumn {
+table.defaultStyle .largeColumn,table.singleTable .largeColumn {
 	width: 30%;
 }
 
-table.defaultStyle .center {
+table.defaultStyle .center,table.singleTable .center {
 	text-align: center;
 }
 

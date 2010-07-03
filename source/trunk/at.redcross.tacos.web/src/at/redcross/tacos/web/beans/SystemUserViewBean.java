@@ -3,6 +3,7 @@ package at.redcross.tacos.web.beans;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.event.ValueChangeEvent;
 import javax.persistence.EntityManager;
 
 import org.ajax4jsf.model.KeepAlive;
@@ -18,65 +19,99 @@ import at.redcross.tacos.web.persitence.EntityManagerFactory;
 @ManagedBean(name = "systemUserViewBean")
 public class SystemUserViewBean extends BaseBean {
 
-	private static final long serialVersionUID = -5114023802685654841L;
+    private static final long serialVersionUID = -5114023802685654841L;
 
-	/** all available locations */
-	private List<Location> locations;
+    /** available locations */
+    private List<Location> locations;
 
-	/** the active location */
-	private String locationId;
+    /** active location */
+    private String locationName = "*";
 
-	/** the system users for the location */
-	private List<SystemUser> users;
+    /** queried results for visualization / reporting */
+    private List<SystemUser> users;
 
-	/** the paging */
-	private int page = 0;
-	private int maxResults = 30;
+    /** paging */
+    private int page = 1;
+    private int maxResults = 30;
 
-	@Override
-	protected void init() throws Exception {
-		EntityManager manager = null;
-		try {
-			manager = EntityManagerFactory.createEntityManager();
-			locations = LocationHelper.list(manager);
-			users = SystemUserHelper.list(manager);
-		} finally {
-			manager = EntityManagerHelper.close(manager);
-		}
-	}
+    @Override
+    protected void init() throws Exception {
+        EntityManager manager = null;
+        try {
+            manager = EntityManagerFactory.createEntityManager();
+            locations = LocationHelper.list(manager);
+            loadfromDatabase(manager, getLocationByName(locationName));
+        }
+        finally {
+            manager = EntityManagerHelper.close(manager);
+        }
+    }
 
-	// ---------------------------------
-	// Setters for the properties
-	// ---------------------------------
-	public void setPage(int page) {
-		this.page = page;
-	}
+    // ---------------------------------
+    // Actions
+    // ---------------------------------
+    public void tabChanged(ValueChangeEvent event) {
+        EntityManager manager = null;
+        try {
+            page = 1;
+            manager = EntityManagerFactory.createEntityManager();
+            loadfromDatabase(manager, getLocationByName(locationName));
+        }
+        finally {
+            manager = EntityManagerHelper.close(manager);
+        }
+    }
 
-	public void setLocationId(String locationId) {
-		this.locationId = locationId;
-	}
+    // ---------------------------------
+    // Private API
+    // ---------------------------------
+    private void loadfromDatabase(EntityManager manager, String locationId) {
+        users = SystemUserHelper.listByLocationName(manager, locationId);
+    }
 
-	// ---------------------------------
-	// Getters for the properties
-	// ---------------------------------
-	public List<Location> getLocations() {
-		return locations;
-	}
+    private String getLocationByName(String locationName) {
+        if (locationName == null || "*".equals(locationName)) {
+            return null;
+        }
+        for (Location location : locations) {
+            if (location.getName().equals(locationName)) {
+                return location.getName();
+            }
+        }
+        return null;
+    }
 
-	public List<SystemUser> getUsers() {
-		return users;
-	}
+    // ---------------------------------
+    // Setters for the properties
+    // ---------------------------------
+    public void setPage(int page) {
+        this.page = page;
+    }
 
-	public String getLocationId() {
-		return locationId;
-	}
+    public void setLocationName(String locationName) {
+        this.locationName = locationName;
+    }
 
-	public int getMaxResults() {
-		return maxResults;
-	}
+    // ---------------------------------
+    // Getters for the properties
+    // ---------------------------------
+    public List<Location> getLocations() {
+        return locations;
+    }
 
-	public int getPage() {
-		return page;
-	}
+    public List<SystemUser> getUsers() {
+        return users;
+    }
 
+    public String getLocationName() {
+        return locationName;
+    }
+
+    public int getMaxResults() {
+        return maxResults;
+    }
+
+    public int getPage() {
+        return page;
+    }
 }
