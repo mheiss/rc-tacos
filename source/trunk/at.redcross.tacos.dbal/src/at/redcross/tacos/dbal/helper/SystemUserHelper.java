@@ -20,4 +20,18 @@ public class SystemUserHelper {
         query.setParameter("alias", alias);
         return query.getSingleResult().getSystemUser();
     }
+
+    public static List<SystemUser> listByLocationName(EntityManager manager, String locationName) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("from SystemUser user ");
+        if (locationName != null) {
+            builder.append("where user.location.name = :locationName");
+        }
+        TypedQuery<SystemUser> query = manager.createQuery(builder.toString(), SystemUser.class);
+        if (locationName != null) {
+            query.setParameter("locationName", locationName);
+        }
+        return query.getResultList();
+    }
+
 }
