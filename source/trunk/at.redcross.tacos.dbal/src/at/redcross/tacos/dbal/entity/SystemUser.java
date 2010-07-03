@@ -28,199 +28,201 @@ import org.hibernate.annotations.LazyCollectionOption;
 @Table(name = "SystemUser")
 public class SystemUser extends EntityImpl {
 
-    private static final long serialVersionUID = 1556985467901977440L;
+	private static final long serialVersionUID = 1556985467901977440L;
 
-    @Id
-    @GeneratedValue
-    private long id;
+	@Id
+	@GeneratedValue
+	private long id;
 
-    @Column(unique = true)
-    private int pnr;
+	@Column(unique = true)
+	private int pnr;
 
-    @Column(nullable = false)
-    private String firstName;
+	@Column(nullable = false)
+	private String firstName;
 
-    @Column(nullable = false)
-    private String lastName;
+	@Column(nullable = false)
+	private String lastName;
 
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
+	@Column(nullable=false)
+	@Enumerated(EnumType.STRING)
+	private Gender gender = Gender.UNKNOWN;
 
-    @Temporal(TemporalType.DATE)
-    private Calendar birthday;
+	@Temporal(TemporalType.DATE)
+	@Column
+	private Calendar birthday;
 
-    @Column
-    private String notes;
+	@Column
+	private String notes;
 
-    @Embedded
-    @Column(nullable = false)
-    private Address address;
+	@Embedded
+	@Column(nullable = false)
+	private Address address;
 
-    @OneToOne(mappedBy = "systemUser", orphanRemoval = true, cascade = CascadeType.ALL)
-    private Login login;
+	@OneToOne(mappedBy = "systemUser", orphanRemoval = true, cascade = CascadeType.ALL)
+	private Login login;
 
-    @OneToOne
-    private Location location;
+	@OneToOne
+	private Location location;
 
-    @ManyToMany
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Group> groups;
+	@ManyToMany
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<Group> groups;
 
-    @ManyToMany
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Competence> competences;
+	@ManyToMany
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<Competence> competences;
 
-    // ---------------------------------
-    // EntityImpl
-    // ---------------------------------
-    @Override
-    public String getDisplayString() {
-        return lastName + " " + firstName;
-    }
+	// ---------------------------------
+	// EntityImpl
+	// ---------------------------------
+	@Override
+	public String getDisplayString() {
+		return lastName + " " + firstName;
+	}
 
-    // ---------------------------------
-    // Object related methods
-    // ---------------------------------
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this).append("id", id).append("firstName", firstName).append(
-                "lastName", lastName).toString();
-    }
+	// ---------------------------------
+	// Object related methods
+	// ---------------------------------
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("id", id).append("firstName",
+				firstName).append("lastName", lastName).toString();
+	}
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(id).hashCode();
-    }
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().append(id).hashCode();
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        if (obj.getClass() != getClass()) {
-            return false;
-        }
-        SystemUser rhs = (SystemUser) obj;
-        return new EqualsBuilder().append(id, rhs.id).isEquals();
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
+		if (obj.getClass() != getClass()) {
+			return false;
+		}
+		SystemUser rhs = (SystemUser) obj;
+		return new EqualsBuilder().append(id, rhs.id).isEquals();
+	}
 
-    // ---------------------------------
-    // Custom methods
-    // ---------------------------------
-    /**
-     * Adds this user to the given group
-     * 
-     * @param group
-     *            the group to add this user
-     */
-    public void addGroup(Group group) {
-        getGroups().add(group);
-    }
+	// ---------------------------------
+	// Custom methods
+	// ---------------------------------
+	/**
+	 * Adds this user to the given group
+	 * 
+	 * @param group
+	 *            the group to add this user
+	 */
+	public void addGroup(Group group) {
+		getGroups().add(group);
+	}
 
-    // ---------------------------------
-    // Setters for the properties
-    // ---------------------------------
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+	// ---------------------------------
+	// Setters for the properties
+	// ---------------------------------
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
-    public void setPnr(int pnr) {
-        this.pnr = pnr;
-    }
+	public void setPnr(int pnr) {
+		this.pnr = pnr;
+	}
 
-    public void setLocation(Location location) {
-        this.location = location;
-    }
+	public void setLocation(Location location) {
+		this.location = location;
+	}
 
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
+	public void setGender(Gender gender) {
+		this.gender = gender;
+	}
 
-    public void setBirthday(Calendar birthday) {
-        this.birthday = birthday;
-    }
+	public void setBirthday(Calendar birthday) {
+		this.birthday = birthday;
+	}
 
-    public void setAddress(Address address) {
-        this.address = address;
-    }
+	public void setAddress(Address address) {
+		this.address = address;
+	}
 
-    public void setLogin(Login login) {
-        this.login = login;
-    }
+	public void setLogin(Login login) {
+		this.login = login;
+	}
 
-    public void setGroups(List<Group> groups) {
-        this.groups = groups;
-    }
+	public void setGroups(List<Group> groups) {
+		this.groups = groups;
+	}
 
-    public void setCompetences(List<Competence> competences) {
-        this.competences = competences;
-    }
+	public void setCompetences(List<Competence> competences) {
+		this.competences = competences;
+	}
 
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
+	public void setNotes(String notes) {
+		this.notes = notes;
+	}
 
-    // ---------------------------------
-    // Setters for the properties
-    // ---------------------------------
-    public long getId() {
-        return id;
-    }
+	// ---------------------------------
+	// Setters for the properties
+	// ---------------------------------
+	public long getId() {
+		return id;
+	}
 
-    public String getLastName() {
-        return lastName;
-    }
+	public String getLastName() {
+		return lastName;
+	}
 
-    public String getFirstName() {
-        return firstName;
-    }
+	public String getFirstName() {
+		return firstName;
+	}
 
-    public int getPnr() {
-        return pnr;
-    }
+	public int getPnr() {
+		return pnr;
+	}
 
-    public Location getLocation() {
-        return location;
-    }
+	public Location getLocation() {
+		return location;
+	}
 
-    public Gender getGender() {
-        return gender;
-    }
+	public Gender getGender() {
+		return gender;
+	}
 
-    public Calendar getBirthday() {
-        return birthday;
-    }
+	public Calendar getBirthday() {
+		return birthday;
+	}
 
-    public Address getAddress() {
-        return address;
-    }
+	public Address getAddress() {
+		return address;
+	}
 
-    public Login getLogin() {
-        return login;
-    }
+	public Login getLogin() {
+		return login;
+	}
 
-    public String getNotes() {
-        return notes;
-    }
+	public String getNotes() {
+		return notes;
+	}
 
-    public List<Group> getGroups() {
-        if (groups == null) {
-            groups = new ArrayList<Group>();
-        }
-        return groups;
-    }
+	public List<Group> getGroups() {
+		if (groups == null) {
+			groups = new ArrayList<Group>();
+		}
+		return groups;
+	}
 
-    public List<Competence> getCompetences() {
-        if (competences == null) {
-            competences = new ArrayList<Competence>();
-        }
-        return competences;
-    }
+	public List<Competence> getCompetences() {
+		if (competences == null) {
+			competences = new ArrayList<Competence>();
+		}
+		return competences;
+	}
 }

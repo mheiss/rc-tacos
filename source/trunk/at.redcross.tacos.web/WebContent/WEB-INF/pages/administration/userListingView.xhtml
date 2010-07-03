@@ -7,18 +7,26 @@
 	<ui:param name="section" value="admin" />
 	<ui:param name="page" value="listUsersView" />
 
-	<!-- Include the navigation of the page -->
 	<ui:define name="navigation">
 		<ui:include src="navigation.xhtml" />
 	</ui:define>
 
-	<!-- Customize the title and image -->
 	<ui:define name="page-title">
 		<h:graphicImage library="images/32x32" name="users.png" />
-		<h2 class="title"><h:outputText value="Mitarbeiteransicht" /></h2>
+		<h2 class="title">
+			<h:outputText value="Mitarbeiteransicht" />
+		</h2>
+	</ui:define>
+	
+	<ui:define name="page-toolbar">
+		<li>
+			<pretty:link mappingId="admin-createUserView" title="Mitarbeitereintrag bearbeiten">
+				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="add.png" />
+				<h:outputText styleClass="toolbarText" value="Mitarbeiter anlegen"  />
+			</pretty:link>
+		</li>
 	</ui:define>
 
-	<!-- Render the content -->
 	<ui:define name="content">
 		<rich:simpleTogglePanel id="filter" opened="false" label="Filter" bodyClass="defaultToggleBodyStyle" styleClass="defaultToggleStyle" switchType="client">
 			<fieldset class="defaultStyle"></fieldset>

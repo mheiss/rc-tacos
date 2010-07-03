@@ -34,7 +34,7 @@ public class SystemUserStage implements DatasetupStage {
             address.setEmail("michael.heiss@st.roteskreuz.at");
 
             SystemUser sysUser = new SystemUser();
-            sysUser.setPnr(1);
+            sysUser.setPnr(50000000);
             sysUser.setFirstName("Michael");
             sysUser.setLastName("Heiss");
             sysUser.setAddress(address);
@@ -55,11 +55,11 @@ public class SystemUserStage implements DatasetupStage {
             address.setZipCode("8642");
             address.setStreet("Straße 2");
             address.setPhone("0664/4143824");
-            address.setPhoneII("03862/1212121");
+            address.setPhone2("03862/1212121");
             address.setEmail("birgit.thek@st.roteskreuz.at");
 
             SystemUser sysUser = new SystemUser();
-            sysUser.setPnr(2);
+            sysUser.setPnr(50000001);
             sysUser.setFirstName("Birgit");
             sysUser.setLastName("Thek");
             sysUser.setAddress(address);
