@@ -112,6 +112,10 @@ fieldset.defaultStyle .input input {
 	font-size: 1.1em;
 }
 
+fieldset.defaultStyle .largeInput input {
+	width:25em;
+}
+
 fieldset.defaultStyle .input .loginButton {
 	height: 28px;
 	width: 12em;
@@ -293,10 +297,6 @@ table.defaultStyle .center,table.singleTable .center {
  **********************************************************/
 .defaultToggleStyle {
 	margin-bottom: 1em;
-}
-
-.defaultToggleBodyStyle {
-	
 }
 
 /***********************************************************

@@ -6,14 +6,11 @@
 <body>
 <ui:composition template="/WEB-INF/templates/widgets/round-box.xhtml">
 
-	<!-- BEGINNING: BLOCK-METADATA -->
 	<ui:define name="block-image">
-		<h:graphicImage library="images/page" name="home.png" />
+		<h:graphicImage library="images/32x32" name="calendar.png" />
 	</ui:define>
 	<ui:define name="block-title"> <h:outputText value="Dienstplan" /> </ui:define>
-	<!-- END: BLOCK-METADATA -->
 
-	<!-- BEGINNING: HOME-NAVIGATION -->
 	<ui:define name="block-content">
 		<ul class="menu">
 			<li class="menu-item #{page eq 'dayView' ? 'selected' : ''}">
@@ -30,7 +27,6 @@
 			</li>
 		</ul>
 	</ui:define>
-	<!-- END: HOME-NAVIGATION -->
 </ui:composition>
 </body>
 </html>
