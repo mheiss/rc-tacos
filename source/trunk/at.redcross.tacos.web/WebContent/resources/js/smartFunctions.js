@@ -12,3 +12,12 @@ function smartColumns() {
 		'width' : legendWidth
 	});
 }
+
+function smartEditor() {
+	var legendWidth = jQuery("legend").width();
+	var inputWidth = jQuery("div.input").width();
+
+	jQuery("table.mceLayout").css( {
+		'width' : legendWidth
+	});
+}

@@ -6,75 +6,147 @@
 	<ui:param name="section" value="admin" />
 	<ui:param name="page" value="createView" />
 
-	<!--  Dynamically resize the input fields -->
-	<ui:define name="javaScriptMethod">
-		jQuery(window).resize(function() {
-			smartColumns();
-		});
-		jQuery(document).ready(function() {
-			smartColumns();
-		});
-	</ui:define>
-
-	<!-- Include the navigation of the page -->
 	<ui:define name="navigation">
 		<ui:include src="navigation.xhtml" />
 	</ui:define>
 
-	<!-- Customize the title and image -->
 	<ui:define name="page-title">
 		<h:panelGroup rendered="#{systemUserEntryBean.new}">
-			<h:graphicImage library="images/page" name="home.png" />
+			<h:graphicImage library="images/32x32" name="user_add.png" />
 			<h2 class="title">
 				<h:outputText value="Neuer Mitarbeiter" />
 			</h2>
 		</h:panelGroup>
 		<h:panelGroup rendered="#{not systemUserEntryBean.new}">
-			<h:graphicImage library="images/page" name="home.png" />
+			<h:graphicImage library="images/32x32" name="user_edit.png" />
 			<h2 class="title">
-				<h:outputText value="Mitarbeiter bearbeiten" />
+				<h:outputText value="Mitarbeiter '#{systemUserEntryBean.systemUser.lastName} #{systemUserEntryBean.systemUser.firstName}' bearbeiten" />
 			</h2>
 		</h:panelGroup>
 	</ui:define>
 
-	<!-- Render the content -->
 	<ui:define name="content">
 		<rich:messages errorClass="errorMessage" globalOnly="true" />
-
-		<fieldset class="defaultStyle"><legend> <h:outputText value="Allgemeine Mitarbeiterdaten:" /> </legend>
+		<fieldset class="defaultStyle">
+			<legend> <h:outputText value="Allgemeine Mitarbeiterdaten:" /> 
+		</legend>
 		<ol>
-			<li><h:outputLabel for="pnr" value="Personalnummer" /> <h:inputText id="pnr" value="#{systemUserEntryBean.systemUser.pnr}" required="true" requiredMessage="Bitte geben Sie eine gültige Personalnummer an">
-				<rich:ajaxValidator event="onblur" />
-			</h:inputText></li>
-			<li><h:outputLabel for="lastName" value="Nachname" /> <h:inputText id="lastName" value="#{systemUserEntryBean.systemUser.lastName}" required="true" requiredMessage="Bitte geben Sie einen Nachnamen an">
-				<rich:ajaxValidator event="onblur" />
-			</h:inputText></li>
-			<li><h:outputLabel for="firstName" value="Vorname" /> <h:inputText id="firstName" value="#{systemUserEntryBean.systemUser.firstName}" required="true" requiredMessage="Bitte geben Sie einen Vornamen an">
-				<rich:ajaxValidator event="onblur" />
-			</h:inputText></li>
-			<li><h:outputLabel for="birthday" value="Geburtsdatum" />
-			<div class="input"><rich:calendar id="birthday" value="#{systemUserEntryBean.birthday}" styleClass="rich-calendar" enableManualInput="true" converterMessage="Bitte geben Sie ein gültiges Geburtsdatum an" datePattern="dd.MM.yyyy" locale="#{localeBean.locale}"
-				timeZone="#{localeBean.timeZone}">
-				<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
-				<rich:ajaxValidator event="onchanged" />
-				<rich:ajaxValidator event="oninputblur" />
-			</rich:calendar> <rich:message for="birthday" errorClass="error" /></div>
+			<li>
+				<h:outputLabel for="pnr" value="Personalnummer" /> 
+				<div class="input">
+					<h:inputText id="pnr" value="#{systemUserEntryBean.systemUser.pnr}" required="true" requiredMessage="Bitte geben Sie eine gültige Personalnummer an">
+						<rich:ajaxValidator event="onblur" />
+					</h:inputText>
+					<rich:message for="pnr" errorClass="error" />
+				</div>
 			</li>
-			<li><h:outputLabel for="phoneI" value="Telefon I" /> <h:inputText id="phoneI" value="#{systemUserEntryBean.systemUser.phoneI}">
-				<rich:ajaxValidator event="onblur" />
-			</h:inputText></li>
-			<li><h:outputLabel for="phoneII" value="Telefon II" /> <h:inputText id="phoneII" value="#{systemUserEntryBean.systemUser.phoneII}">
-				<rich:ajaxValidator event="onblur" />
-			</h:inputText></li>
-			<li><h:outputLabel for="gender" value="Geschlecht" />
-			<div class="input"><rich:comboBox id="gender" value="" selectFirstOnUpdate="false" defaultLabel="Geschlecht" required="true" requiredMessage="Bitte geben sie ein Geschlecht an">
-				<f:selectItems value="#{systemUserEntryBean.genderItems}" />
-				<f:validator validatorId="validator.dropDown" />
-				<rich:ajaxValidator event="onchange" />
-			</rich:comboBox> <rich:message for="gender" errorClass="error" /></div>
+			<li>
+				<h:outputLabel for="lastName" value="Nachname" />
+				<div class="input">	
+					 <h:inputText id="lastName" value="#{systemUserEntryBean.systemUser.lastName}" required="true" requiredMessage="Bitte geben Sie einen Nachnamen an">
+						<rich:ajaxValidator event="onblur" />
+					</h:inputText>
+					<rich:message for="lastName" errorClass="error" />
+				</div>
+			</li>
+			<li>
+				<h:outputLabel for="firstName" value="Vorname" />
+				<div class="input"> 
+					<h:inputText id="firstName" value="#{systemUserEntryBean.systemUser.firstName}" required="true" requiredMessage="Bitte geben Sie einen Vornamen an">
+						<rich:ajaxValidator event="onblur" />
+					</h:inputText>
+					<rich:message for="firstName" errorClass="error" />
+				</div>
+			</li>
+			<li>
+				<h:outputLabel for="birthday" value="Geburtsdatum" />
+					<div class="input">
+						<rich:calendar id="birthday" value="#{systemUserEntryBean.systemUser.birthday}" styleClass="rich-calendar" enableManualInput="true" converterMessage="Bitte geben Sie ein gültiges Geburtsdatum an" datePattern="dd.MM.yyyy" locale="#{localeBean.locale}"
+							timeZone="#{localeBean.timeZone}">
+							<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+							<rich:ajaxValidator event="onchanged" />
+							<rich:ajaxValidator event="oninputblur" />
+						</rich:calendar> 
+					<rich:message for="birthday" errorClass="error" />
+				</div>
+			</li>
+			<li>
+				<h:outputLabel for="gender" value="Geschlecht" />
+				<div class="input">
+					<rich:comboBox id="gender" width="175" value="#{systemUserEntryBean.systemUser.gender}" selectFirstOnUpdate="false" defaultLabel="Geschlecht" required="true" requiredMessage="Bitte geben sie ein Geschlecht an">
+						<f:selectItems value="#{systemUserEntryBean.genderItems}" />
+						<f:validator validatorId="validator.dropDown" />
+						<f:converter converterId="converter.dropDown" />
+						<rich:ajaxValidator event="onchange" />
+					</rich:comboBox> 
+					<rich:message for="gender" errorClass="error" />
+				</div>
 			</li>
 		</ol>
 		</fieldset>
+		<fieldset class="defaultStyle">
+			<legend> <h:outputText value="Kontaktdaten und Adressdaten:" /> </legend>
+			<ol>
+				<li>
+					<h:outputLabel for="mail" value="E-Mail" /> 
+					<div class="input largeInput">
+						<h:inputText id="mail" value="#{systemUserEntryBean.systemUser.address.email}"
+							required="true" requiredMessage="Bitte geben Sie eine e-mail adresse ein">
+							<rich:ajaxValidator event="onblur" />
+							<f:validator validatorId="validator.mail" />
+							<rich:ajaxValidator event="onchange" />
+						</h:inputText>
+						<rich:message for="mail" errorClass="error" />
+					</div>
+				</li>
+				<li>
+					<h:outputLabel for="phone" value="Telefon (dienstlich)" /> 
+					<div class="input">
+						<h:inputText id="phone" value="#{systemUserEntryBean.systemUser.address.phone}">
+							<rich:ajaxValidator event="onblur" />
+						</h:inputText>
+						<rich:message for="phone" errorClass="error" />
+					</div>
+				</li>
+				<li>
+					<h:outputLabel for="phone2" value="Telefon (privat)" />
+					<div class="input">
+						<h:inputText id="phone2" value="#{systemUserEntryBean.systemUser.address.phone2}">
+							<rich:ajaxValidator event="onblur" />
+						</h:inputText>
+						<rich:message for="phone2" errorClass="error" />
+					</div>
+				</li>
+				<li>
+					<h:outputLabel for="street" value="Straße" />
+					<div class="input largeInput">
+						<h:inputText id="street" value="#{systemUserEntryBean.systemUser.address.street}">
+							<rich:ajaxValidator event="onblur" />
+						</h:inputText>
+						<rich:message for="street" errorClass="error" />
+					</div>
+				</li>
+				<li>
+					<h:outputLabel for="zipCode" value="PLZ" />
+					<div class="input">
+						<h:inputText id="zipCode" value="#{systemUserEntryBean.systemUser.address.zipCode}">
+							<rich:ajaxValidator event="onblur" />
+						</h:inputText>
+						<rich:message for="zipCode" errorClass="error" />
+					</div>
+				</li>
+				<li>
+					<h:outputLabel for="city" value="Stadt" />
+					<div class="input">
+						<h:inputText id="city" value="#{systemUserEntryBean.systemUser.address.city}">
+							<rich:ajaxValidator event="onblur" />
+						</h:inputText>
+						<rich:message for="city" errorClass="error" />
+					</div>
+				</li>
+			</ol>
+		</fieldset>
+		
 		<!-- 
 				<fieldset class="defaultStyle"><legend><h:outputText value="Logindaten:" /></legend>
 		<ol>
@@ -106,14 +178,20 @@
 		
 		</fieldset>
 		-->
-		<fieldset class="defaultStyle"><legend><h:outputText value="Anmerkungen" /></legend> <rich:editor value="#{systemUserEntryBean.systemUser.notes}" theme="simple" oninit="smartColumns()" autoResize="true" language="de" /></fieldset>
+		<fieldset class="defaultStyle">
+			<legend> <h:outputText value="Anmerkungen" /> </legend> 
+			<rich:editor value="#{systemUserEntryBean.systemUser.notes}" theme="simple" oninit="smartEditor()" autoResize="true" language="de" />
+		</fieldset>
 
 		<fieldset class="defaultStyle last">
-		<div class="actionBar"><a4j:commandLink immediate="true" reRender="content-wrapper" styleClass="button" action="#{systemUserEntryBean.revert}">
-			<span><h:outputText value="Zurücksetzen" /> </span>
-		</a4j:commandLink> <a4j:commandLink styleClass="button" action="#{systemUserEntryBean.persist}">
-			<span><h:outputText value="Mitarbeiter speichern" /></span>
-		</a4j:commandLink></div>
+			<div class="actionBar">
+				<a4j:commandLink immediate="true" reRender="content-wrapper" styleClass="button" action="#{systemUserEntryBean.revert}">
+					<span> <h:outputText value="Zurücksetzen" /> </span>
+				</a4j:commandLink> 
+				<a4j:commandLink styleClass="button" action="#{systemUserEntryBean.persist}">
+					<span> <h:outputText value="Mitarbeiter speichern" /> </span>
+				</a4j:commandLink>
+			</div>
 		</fieldset>
 	</ui:define>
 </ui:composition>

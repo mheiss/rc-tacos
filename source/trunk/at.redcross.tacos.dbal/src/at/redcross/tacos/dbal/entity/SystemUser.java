@@ -1,7 +1,7 @@
 package at.redcross.tacos.dbal.entity;
 
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -43,13 +43,13 @@ public class SystemUser extends EntityImpl {
 	@Column(nullable = false)
 	private String lastName;
 
-	@Column(nullable=false)
+	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Gender gender = Gender.UNKNOWN;
 
 	@Temporal(TemporalType.DATE)
 	@Column
-	private Calendar birthday;
+	private Date birthday;
 
 	@Column
 	private String notes;
@@ -85,8 +85,8 @@ public class SystemUser extends EntityImpl {
 	// ---------------------------------
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this).append("id", id).append("firstName",
-				firstName).append("lastName", lastName).toString();
+		return new ToStringBuilder(this).append("id", id).append("firstName", firstName).append(
+				"lastName", lastName).toString();
 	}
 
 	@Override
@@ -145,7 +145,7 @@ public class SystemUser extends EntityImpl {
 		this.gender = gender;
 	}
 
-	public void setBirthday(Calendar birthday) {
+	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
 	}
 
@@ -196,7 +196,7 @@ public class SystemUser extends EntityImpl {
 		return gender;
 	}
 
-	public Calendar getBirthday() {
+	public Date getBirthday() {
 		return birthday;
 	}
 

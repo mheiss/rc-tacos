@@ -83,9 +83,9 @@
 		<action onPostback="false">#{systemUserEntryBean.prettyInit}</action>
 	</url-mapping>
 	<url-mapping id="admin-editUserView">
-		<pattern>/admin/user/edit/#{systemUserEntryBean.sysUserId}</pattern>
+		<pattern>/admin/user/edit/#{systemUserEntryBean.userId}</pattern>
 		<view-id>/WEB-INF/pages/administration/editUserView.faces</view-id>
-		<action onPostback="false">#{systemUserViewBean.prettyInit}</action>
+		<action onPostback="false">#{systemUserEntryBean.prettyInit}</action>
 	</url-mapping>
 	<url-mapping id="admin-listUsersView">
 		<pattern>/admin/users</pattern>

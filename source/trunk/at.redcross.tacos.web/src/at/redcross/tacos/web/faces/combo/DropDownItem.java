@@ -21,8 +21,41 @@ public class DropDownItem implements Serializable {
         this.label = label;
         this.value = value;
     }
+    
+    @Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((label == null) ? 0 : label.hashCode());
+		result = prime * result + ((value == null) ? 0 : value.hashCode());
+		return result;
+	}
 
-    public SelectItem getItem() {
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DropDownItem other = (DropDownItem) obj;
+		if (label == null) {
+			if (other.label != null)
+				return false;
+		}
+		else if (!label.equals(other.label))
+			return false;
+		if (value == null) {
+			if (other.value != null)
+				return false;
+		}
+		else if (!value.equals(other.value))
+			return false;
+		return true;
+	}
+
+	public SelectItem getItem() {
         return new SelectItem(this, getLabel());
     }
 
