@@ -1,18 +1,17 @@
 package at.redcross.tacos.web.beans;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 
 import org.ajax4jsf.model.KeepAlive;
 
 import at.redcross.tacos.dbal.entity.Location;
 import at.redcross.tacos.dbal.entity.SystemUser;
+import at.redcross.tacos.dbal.helper.LocationHelper;
+import at.redcross.tacos.dbal.helper.SystemUserHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
-import at.redcross.tacos.web.entity.LocationSystemUserEntry;
 import at.redcross.tacos.web.persitence.EntityManagerFactory;
 
 @KeepAlive
@@ -20,37 +19,64 @@ import at.redcross.tacos.web.persitence.EntityManagerFactory;
 public class SystemUserViewBean extends BaseBean {
 
 	private static final long serialVersionUID = -5114023802685654841L;
-	private List<LocationSystemUserEntry> locationEntry;
 
-    @Override
-    protected void init() throws Exception {
-        EntityManager manager = null;
-        try {
-            manager = EntityManagerFactory.createEntityManager();
-            List<Location> locations = manager.createQuery("from Location", Location.class)
-                    .getResultList();
-            locationEntry = new ArrayList<LocationSystemUserEntry>();
-            for (Location location : locations) {
-            	StringBuilder builder = new StringBuilder();
-                builder.append(" select user from SystemUser user ");
-                builder.append(" where user.location.id=:locationId ");
-                builder.append(" order by user.lastName");
+	/** all available locations */
+	private List<Location> locations;
 
-                TypedQuery<SystemUser> query = manager.createQuery(builder.toString(),
-                        SystemUser.class);
-                query.setParameter("locationId", location.getId());
-                locationEntry.add(new LocationSystemUserEntry(location, query.getResultList()));
-            }
-        }
-        finally {
-            manager = EntityManagerHelper.close(manager);
-        }
-    }
+	/** the active location */
+	private String locationId;
 
-    // ---------------------------------
-    // Getters for the properties
-    // ---------------------------------
-    public List<LocationSystemUserEntry> getLocationEntry() {
-        return locationEntry;
-    }
+	/** the system users for the location */
+	private List<SystemUser> users;
+
+	/** the paging */
+	private int page = 0;
+	private int maxResults = 30;
+
+	@Override
+	protected void init() throws Exception {
+		EntityManager manager = null;
+		try {
+			manager = EntityManagerFactory.createEntityManager();
+			locations = LocationHelper.list(manager);
+			users = SystemUserHelper.list(manager);
+		} finally {
+			manager = EntityManagerHelper.close(manager);
+		}
+	}
+
+	// ---------------------------------
+	// Setters for the properties
+	// ---------------------------------
+	public void setPage(int page) {
+		this.page = page;
+	}
+
+	public void setLocationId(String locationId) {
+		this.locationId = locationId;
+	}
+
+	// ---------------------------------
+	// Getters for the properties
+	// ---------------------------------
+	public List<Location> getLocations() {
+		return locations;
+	}
+
+	public List<SystemUser> getUsers() {
+		return users;
+	}
+
+	public String getLocationId() {
+		return locationId;
+	}
+
+	public int getMaxResults() {
+		return maxResults;
+	}
+
+	public int getPage() {
+		return page;
+	}
+
 }
