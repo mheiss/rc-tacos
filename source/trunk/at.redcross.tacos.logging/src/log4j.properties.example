@@ -12,6 +12,12 @@ log4j.logger.at.redcross.tacos=debug
 ### PrettyFaces ###
 log4j.logger.com.ocpsoft.pretty=warn
 
+### RichFaces ####
+log4j.logger.org.ajax4jsf=warn
+
+### Springframewrok ###
+log4j.logger.org.springframework=warn
+
 ## Hibernate ##
 log4j.logger.org.hibernate=warn
 
