@@ -93,7 +93,7 @@ fieldset.defaultStyle label {
 }
 
 fieldset.defaultStyle .input {
-	padding-left: 12em;
+	height:20px;
 }
 
 fieldset.defaultStyle .leftDecorator {

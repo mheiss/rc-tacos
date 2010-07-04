@@ -42,10 +42,10 @@ public class DropDownConverter implements Converter {
 			List<SelectItem> items = (List<SelectItem>) childItem.getValue();
 			for (SelectItem item : items) {
 				DropDownItem downItem = (DropDownItem) item.getValue();
-				if(downItem.equals(value)) {
+				if (downItem.equals(value)) {
 					return downItem.getLabel();
 				}
-				if (value.equals(downItem.getValue())) {
+				if (downItem.getValue().equals(value)) {
 					return downItem.getLabel();
 				}
 			}
