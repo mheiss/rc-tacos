@@ -48,4 +48,5 @@ public class WebUserDetailsService implements UserDetailsService {
             manager = EntityManagerHelper.close(manager);
         }
     }
+    
 }

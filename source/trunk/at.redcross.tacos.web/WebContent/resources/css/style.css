@@ -80,7 +80,23 @@ fieldset.defaultStyle legend {
 }
 
 fieldset.defaultStyle li {
+	clear:both;
+	height: 20px;
 	padding: 8px 10px;
+}
+
+fieldset.defaultStyle ol li.left {
+	clear: left !important;
+	float: left;
+}
+
+fieldset.defaultStyle ol li.right {
+	clear: none !important;
+	float: right;
+}
+
+fieldset.defaultStyle ol li.left,fieldset.defaultStyle ol li.right {
+	width: 47% !important;
 }
 
 fieldset.defaultStyle label {
@@ -93,13 +109,13 @@ fieldset.defaultStyle label {
 }
 
 fieldset.defaultStyle .input {
-	height:20px;
+	float:left;
+	margin-right:0.5em;
 }
 
 fieldset.defaultStyle .leftDecorator {
-	float: left;
-	margin-left: 1em;
-	margin-top: 0.2em;
+	position:relative;
+	top:0.3em;
 }
 
 fieldset.defaultStyle .leftDateDecorator {
@@ -108,12 +124,13 @@ fieldset.defaultStyle .leftDateDecorator {
 }
 
 fieldset.defaultStyle .input input {
-	height: 20px;
+	height:20px;
 	font-size: 1.1em;
 }
 
 fieldset.defaultStyle .largeInput input {
-	width:25em;
+	height:20px;
+	width: 20em;
 }
 
 fieldset.defaultStyle .input .loginButton {
@@ -168,14 +185,16 @@ fieldset.defaultStyle a.button {
 	margin-right: 6px;
 	padding-right: 18px;
 	text-decoration: none;
-	background: transparent url("../images/custom/bg_button_a.png") no-repeat scroll top right;
+	background: transparent url("../images/custom/bg_button_a.png")
+		no-repeat scroll top right;
 }
 
 fieldset.defaultStyle a.button span {
 	display: block;
 	line-height: 14px;
 	padding: 5px 0 5px 18px;
-	background: transparent url("../images/custom/bg_button_b.png") no-repeat;
+	background: transparent url("../images/custom/bg_button_b.png")
+		no-repeat;
 }
 
 fieldset.defaultStyle a.button:active {
@@ -198,12 +217,13 @@ fieldset.defaultStyle a.button:active span {
 	padding: 0px;
 }
 
-.defaultTabHeaderStyle .rich-tabhdr-cell-active, .defaultTabHeaderStyle .rich-tabhdr-cell-inactive {
-	padding-right:5px;
+.defaultTabHeaderStyle .rich-tabhdr-cell-active,.defaultTabHeaderStyle .rich-tabhdr-cell-inactive
+	{
+	padding-right: 2px;
 }
 
 .defaultTabHeaderStyle .rich-tabhdr-cell-active {
-	font-weight:bold;
+	font-weight: bold;
 }
 
 .defaultTabPanelStyle .rich-tabpanel-content {
@@ -217,7 +237,7 @@ fieldset.defaultStyle a.button:active span {
 }
 
 .defaultTabStyle {
-	padding:8px 15px;
+	padding: 5px 10px;
 }
 
 /***********************************************************
@@ -239,7 +259,7 @@ fieldset.defaultStyle a.button:active span {
 
 table.singleTable {
 	width: 100%;
-	border-right:1px;
+	border-right: 1px;
 	border-collapse: collapse;
 }
 
@@ -318,7 +338,8 @@ table.defaultStyle .center,table.singleTable .center {
 	width: 20px;
 	bottom: -20px;
 	position: absolute;
-	background: url("../images/custom/arrow.png") no-repeat scroll 0 0 transparent;
+	background: url("../images/custom/arrow.png") no-repeat scroll 0 0
+		transparent;
 }
 
 .tooltipDefault ul,.tooltipDefault ol {

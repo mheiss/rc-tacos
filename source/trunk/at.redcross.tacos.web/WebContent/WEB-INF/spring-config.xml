@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans xmlns="http://www.springframework.org/schema/security" xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd"
->
+<beans:beans	xmlns="http://www.springframework.org/schema/security" xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				xmlns:context="http://www.springframework.org/schema/context" 
+				xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd
+                        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 	<!-- ####################################################################################### -->
 	<http use-expressions="true">
 		<!-- Access to common pages are permitted for everybody  -->
@@ -30,10 +31,12 @@
 	<!-- ####################################################################################### -->
 
 	<!-- ####################################################################################### -->
+	<context:component-scan base-package="at.redcross.tacos.web.beans" />
 	<beans:bean id="webUserDetailsService" class="at.redcross.tacos.web.security.WebUserDetailsService" />
-	<authentication-manager>
+	<beans:bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder" />  
+	<authentication-manager >
 		<authentication-provider user-service-ref="webUserDetailsService">
-			<!-- TODO: implement me <password-encoder hash="md5" /> -->
+			<password-encoder hash="sha" />
 		</authentication-provider>
 	</authentication-manager>
 	<!-- ####################################################################################### -->
