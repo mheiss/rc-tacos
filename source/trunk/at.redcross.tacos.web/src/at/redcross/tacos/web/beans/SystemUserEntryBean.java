@@ -36,6 +36,10 @@ public class SystemUserEntryBean extends BaseBean {
 	private List<SelectItem> competenceItems;
 	private List<SelectItem> locationItems;
 
+	// passwords -> not directly attached to entity
+	private String password;
+	private String password2;
+
 	@Override
 	public void init() throws Exception {
 		EntityManager manager = null;
@@ -107,6 +111,7 @@ public class SystemUserEntryBean extends BaseBean {
 	// Helper methods
 	// ---------------------------------
 	private void loadfromDatabase(EntityManager manager, long id) {
+
 		systemUser = manager.find(SystemUser.class, id);
 		if (systemUser == null) {
 			userId = -1;
@@ -124,6 +129,14 @@ public class SystemUserEntryBean extends BaseBean {
 	// ---------------------------------
 	public void setUserId(long userId) {
 		this.userId = userId;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public void setPassword2(String password2) {
+		this.password2 = password2;
 	}
 
 	// ---------------------------------
@@ -155,5 +168,13 @@ public class SystemUserEntryBean extends BaseBean {
 
 	public SystemUser getSystemUser() {
 		return systemUser;
+	}
+
+	public String getPassword() {
+		return "";
+	}
+
+	public String getPassword2() {
+		return "";
 	}
 }

@@ -31,7 +31,7 @@
 			<legend> <h:outputText value="Allgemeine Mitarbeiterdaten:" /> 
 		</legend>
 		<ol>
-			<li>
+			<li class="left">
 				<h:outputLabel for="pnr" value="Personalnummer" /> 
 				<div class="input">
 					<h:inputText id="pnr" value="#{systemUserEntryBean.systemUser.pnr}" required="true" requiredMessage="Bitte geben Sie eine gültige Personalnummer an">
@@ -40,7 +40,7 @@
 					<rich:message for="pnr" errorClass="error" />
 				</div>
 			</li>
-			<li>
+			<li class="left">
 				<h:outputLabel for="lastName" value="Nachname" />
 				<div class="input">	
 					 <h:inputText id="lastName" value="#{systemUserEntryBean.systemUser.lastName}" required="true" requiredMessage="Bitte geben Sie einen Nachnamen an">
@@ -49,7 +49,7 @@
 					<rich:message for="lastName" errorClass="error" />
 				</div>
 			</li>
-			<li>
+			<li class="right">
 				<h:outputLabel for="firstName" value="Vorname" />
 				<div class="input"> 
 					<h:inputText id="firstName" value="#{systemUserEntryBean.systemUser.firstName}" required="true" requiredMessage="Bitte geben Sie einen Vornamen an">
@@ -57,8 +57,26 @@
 					</h:inputText>
 					<rich:message for="firstName" errorClass="error" />
 				</div>
+				<div class="leftDecorator">
+					<a4j:commandLink reRender="filter,resultList" title="Filter zurücksetzen">
+						<a4j:actionparam name="locationFilter" value="#{null}" assignTo="#{bean.location}" actionListener="#{bean.filterChanged}" />
+						<h:graphicImage library="images/16x16" name="edit-clear.png" />
+					</a4j:commandLink>
+				</div>
 			</li>
-			<li>
+			<li class="left">
+				<h:outputLabel for="gender" value="Geschlecht" />
+				<div class="input">
+					<rich:comboBox id="gender" value="#{systemUserEntryBean.systemUser.gender}" selectFirstOnUpdate="false" defaultLabel="Geschlecht" required="true" requiredMessage="Bitte geben sie ein Geschlecht an">
+						<f:selectItems value="#{systemUserEntryBean.genderItems}" />
+						<f:validator validatorId="validator.dropDown" />
+						<f:converter converterId="converter.dropDown" />
+						<rich:ajaxValidator event="onchange" />
+					</rich:comboBox> 
+					<rich:message for="gender" errorClass="error" />
+				</div>
+			</li>
+			<li class="right">
 				<h:outputLabel for="birthday" value="Geburtsdatum" />
 					<div class="input">
 						<rich:calendar id="birthday" value="#{systemUserEntryBean.systemUser.birthday}" styleClass="rich-calendar" enableManualInput="true" converterMessage="Bitte geben Sie ein gültiges Geburtsdatum an" datePattern="dd.MM.yyyy" locale="#{localeBean.locale}"
@@ -70,24 +88,12 @@
 					<rich:message for="birthday" errorClass="error" />
 				</div>
 			</li>
-			<li>
-				<h:outputLabel for="gender" value="Geschlecht" />
-				<div class="input">
-					<rich:comboBox id="gender" width="175" value="#{systemUserEntryBean.systemUser.gender}" selectFirstOnUpdate="false" defaultLabel="Geschlecht" required="true" requiredMessage="Bitte geben sie ein Geschlecht an">
-						<f:selectItems value="#{systemUserEntryBean.genderItems}" />
-						<f:validator validatorId="validator.dropDown" />
-						<f:converter converterId="converter.dropDown" />
-						<rich:ajaxValidator event="onchange" />
-					</rich:comboBox> 
-					<rich:message for="gender" errorClass="error" />
-				</div>
-			</li>
 		</ol>
 		</fieldset>
 		<fieldset class="defaultStyle">
 			<legend> <h:outputText value="Kontaktdaten und Adressdaten:" /> </legend>
 			<ol>
-				<li>
+				<li class="left">
 					<h:outputLabel for="mail" value="E-Mail" /> 
 					<div class="input largeInput">
 						<h:inputText id="mail" value="#{systemUserEntryBean.systemUser.address.email}"
@@ -99,7 +105,7 @@
 						<rich:message for="mail" errorClass="error" />
 					</div>
 				</li>
-				<li>
+				<li class="left">
 					<h:outputLabel for="phone" value="Telefon (dienstlich)" /> 
 					<div class="input">
 						<h:inputText id="phone" value="#{systemUserEntryBean.systemUser.address.phone}">
@@ -108,7 +114,7 @@
 						<rich:message for="phone" errorClass="error" />
 					</div>
 				</li>
-				<li>
+				<li class="right">
 					<h:outputLabel for="phone2" value="Telefon (privat)" />
 					<div class="input">
 						<h:inputText id="phone2" value="#{systemUserEntryBean.systemUser.address.phone2}">
@@ -117,7 +123,7 @@
 						<rich:message for="phone2" errorClass="error" />
 					</div>
 				</li>
-				<li>
+				<li class="left">
 					<h:outputLabel for="street" value="Straße" />
 					<div class="input largeInput">
 						<h:inputText id="street" value="#{systemUserEntryBean.systemUser.address.street}">
@@ -126,7 +132,7 @@
 						<rich:message for="street" errorClass="error" />
 					</div>
 				</li>
-				<li>
+				<li class="left">
 					<h:outputLabel for="zipCode" value="PLZ" />
 					<div class="input">
 						<h:inputText id="zipCode" value="#{systemUserEntryBean.systemUser.address.zipCode}">
@@ -135,7 +141,7 @@
 						<rich:message for="zipCode" errorClass="error" />
 					</div>
 				</li>
-				<li>
+				<li class="right">
 					<h:outputLabel for="city" value="Stadt" />
 					<div class="input">
 						<h:inputText id="city" value="#{systemUserEntryBean.systemUser.address.city}">
@@ -149,7 +155,7 @@
 		
 		<fieldset class="defaultStyle"> <legend> <h:outputText value="Logindaten:" /> </legend>
 			<ol>
-				<li>
+				<li class="left">
 					<h:outputLabel for="alias" value="Benutzername" />
 					<div class="input">
 						<h:inputText id="alias" value="#{login.alias}" required="true" requiredMessage="Bitte geben Sie einen Benutzernamen" >
@@ -158,20 +164,20 @@
 						<rich:message for="alias" errorClass="error" />
 					</div>
 				</li>
-				<li>
+				<li class="left">
 					<h:outputLabel for="password" value="Passwort" />
 					<div class="input">
-						<h:inputText id="password" value="#{login.password}" required="#{systemUserEntryBean.new}" requiredMessage="Bitte geben Sie ein Passwort ein" >
+						<h:inputText id="password" value="#{systemUserEntryBean.password}" required="#{systemUserEntryBean.new}" requiredMessage="Bitte geben Sie ein Passwort ein" >
 							<f:validator validatorId="validator.passwordMatch" />
 							<rich:ajaxValidator event="onblur" />
 						</h:inputText> 
 						<rich:message for="password" errorClass="error" />
 					</div>
 				</li>
-				<li>
-					<h:outputLabel for="password2" value="Passwort wiederholen" />
+				<li class="right">
+					<h:outputLabel for="password2" value="Wiederholen" />
 					<div class="input">
-						<h:inputText id="password2" value="#{login.password}" required="#{not systemUserEntryBean.new}" requiredMessage="Bitte wiederholen Sie ihr Passwort" >
+						<h:inputText id="password2" value="#{systemUserEntryBean.password2}" required="#{not systemUserEntryBean.new}" requiredMessage="Bitte wiederholen Sie ihr Passwort" >
 							<f:validator validatorId="validator.passwordMatch" />
 							<rich:ajaxValidator event="onblur" />
 						</h:inputText>

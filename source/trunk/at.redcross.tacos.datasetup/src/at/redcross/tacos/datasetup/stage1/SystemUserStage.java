@@ -42,8 +42,7 @@ public class SystemUserStage implements DatasetupStage {
             Login login = new Login();
             login.setSystemUser(sysUser);
             login.setAlias("m.heiss");
-            login.setPassword("m.heiss");
-
+            login.setPassword("ea6c321a04a32b5721b1f7385f79fb3ca704caa4");
             sysUser.setLocation(location1);
 
             manager.persist(login);
@@ -67,7 +66,7 @@ public class SystemUserStage implements DatasetupStage {
             Login login = new Login();
             login.setSystemUser(sysUser);
             login.setAlias("b.thek");
-            login.setPassword("b.thek");
+            login.setPassword("7d246ef870273a53a1b6f6eac1e724d40ecc783d");
 
             sysUser.setLocation(location2);
 
