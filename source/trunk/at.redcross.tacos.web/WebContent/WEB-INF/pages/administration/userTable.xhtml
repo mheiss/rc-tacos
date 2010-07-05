@@ -29,11 +29,11 @@
 				</f:facet>
 				<h:outputText value="#{user.pnr}" />
 			</rich:column>
-			<rich:column styleClass="bold" sortBy="#{user.login.alias}">
+			<rich:column styleClass="bold" sortBy="#{user.login.loginName}">
 				<f:facet name="header">
 					<h:outputText value="Login" />
 				</f:facet>
-				<h:outputText value="#{user.login.alias}" />
+				<h:outputText value="#{user.login.loginName}" />
 			</rich:column>
 			<rich:column styleClass="bold" sortBy="#{user.lastName}">
 				<f:facet name="header">

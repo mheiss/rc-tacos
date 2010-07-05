@@ -22,7 +22,7 @@ public class WebUserDetailsService implements UserDetailsService {
 
     /** the cached user query */
     private final static String USER_QUERY = " select login from Login login "
-            + " join fetch login.systemUser as user " + " where login.alias like :alias";
+            + " join fetch login.systemUser as user " + " where login.loginName like :loginName";
 
     /**
      * Default protected constructor for SPRING
@@ -37,7 +37,7 @@ public class WebUserDetailsService implements UserDetailsService {
         try {
             manager = EntityManagerFactory.createEntityManager();
             TypedQuery<Login> loginQuery = manager.createQuery(USER_QUERY, Login.class);
-            loginQuery.setParameter("alias", username);
+            loginQuery.setParameter("loginName", username);
             List<Login> logins = loginQuery.getResultList();
             if (logins == null || logins.isEmpty() || logins.size() > 1) {
                 throw new UsernameNotFoundException(username);
