@@ -12,55 +12,55 @@ import at.redcross.tacos.dbal.entity.Login;
 
 public class WebUserDetails implements UserDetails {
 
-    private static final long serialVersionUID = 1555245026723219309L;
+	private static final long serialVersionUID = 1555245026723219309L;
 
-    /** the associated login object */
-    private final Login login;
+	/** the associated login object */
+	private final Login login;
 
-    public WebUserDetails(Login login) {
-        this.login = login;
-    }
+	public WebUserDetails(Login login) {
+		this.login = login;
+	}
 
-    public Login getLogin() {
-        return login;
-    }
+	public Login getLogin() {
+		return login;
+	}
 
-    @Override
-    public String getPassword() {
-        return login.getPassword();
-    }
+	@Override
+	public String getPassword() {
+		return login.getPassword();
+	}
 
-    @Override
-    public String getUsername() {
-        return login.getAlias();
-    }
+	@Override
+	public String getUsername() {
+		return login.getLoginName();
+	}
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return !login.isLocked();
-    }
+	@Override
+	public boolean isAccountNonLocked() {
+		return !login.isLocked();
+	}
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
 
-    @Override
-    public boolean isEnabled() {
-        return !login.isLocked();
-    }
+	@Override
+	public boolean isEnabled() {
+		return !login.isLocked();
+	}
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return !login.isExpired();
-    }
+	@Override
+	public boolean isAccountNonExpired() {
+		return !login.isExpired();
+	}
 
-    @Override
-    public Collection<GrantedAuthority> getAuthorities() {
-        Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        for (Group group : login.getSystemUser().getGroups()) {
-            authorities.add(new GrantedAuthorityImpl(group.getName()));
-        }
-        return authorities;
-    }
+	@Override
+	public Collection<GrantedAuthority> getAuthorities() {
+		Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+		for (Group group : login.getSystemUser().getGroups()) {
+			authorities.add(new GrantedAuthorityImpl(group.getName()));
+		}
+		return authorities;
+	}
 }

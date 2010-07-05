@@ -21,134 +21,134 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @Table(name = "Login")
 public class Login extends EntityImpl {
 
-    private static final long serialVersionUID = -8204373123508547368L;
+	private static final long serialVersionUID = -8204373123508547368L;
 
-    /** the default date (01.01.1970) */
-    private static Date DEFAULT_DATE = null;
-    static {
-        Calendar DEFAULT = Calendar.getInstance();
-        DEFAULT.clear();
-        DEFAULT_DATE = DEFAULT.getTime();
-    }
+	/** the default date (01.01.1970) */
+	private static Date DEFAULT_DATE = null;
+	static {
+		Calendar DEFAULT = Calendar.getInstance();
+		DEFAULT.clear();
+		DEFAULT_DATE = DEFAULT.getTime();
+	}
 
-    @Id
-    @GeneratedValue
-    private long id;
+	@Id
+	@GeneratedValue
+	private long id;
 
-    @Column(nullable = false, unique = true)
-    private String alias;
+	@Column(nullable = false, unique = true)
+	private String loginName;
 
-    @Column
-    private String password;
+	@Column
+	private String password;
 
-    @Temporal(TemporalType.DATE)
-    private Date expireAt;
+	@Temporal(TemporalType.DATE)
+	private Date expireAt;
 
-    @Column
-    private boolean locked;
+	@Column
+	private boolean locked;
 
-    @OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
-    private SystemUser systemUser;
+	@OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
+	private SystemUser systemUser;
 
-    // ---------------------------------
-    // EntityImpl
-    // ---------------------------------
-    @Override
-    public String getDisplayString() {
-        return alias;
-    }
+	// ---------------------------------
+	// EntityImpl
+	// ---------------------------------
+	@Override
+	public String getDisplayString() {
+		return loginName;
+	}
 
-    // ---------------------------------
-    // Common helper methods
-    // ---------------------------------
-    public boolean isExpired() {
-        if (expireAt == null) {
-            return false;
-        }
-        if (DEFAULT_DATE.compareTo(expireAt) == 0) {
-            return false;
-        }
-        Calendar currentDate = Calendar.getInstance();
-        Calendar expireAt = Calendar.getInstance();
-        expireAt.setTime(this.expireAt);
-        return !currentDate.before(expireAt);
-    }
+	// ---------------------------------
+	// Common helper methods
+	// ---------------------------------
+	public boolean isExpired() {
+		if (expireAt == null) {
+			return false;
+		}
+		if (DEFAULT_DATE.compareTo(expireAt) == 0) {
+			return false;
+		}
+		Calendar currentDate = Calendar.getInstance();
+		Calendar expireAt = Calendar.getInstance();
+		expireAt.setTime(this.expireAt);
+		return !currentDate.before(expireAt);
+	}
 
-    // ---------------------------------
-    // Object related methods
-    // ---------------------------------
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this).append("alias", alias).toString();
-    }
+	// ---------------------------------
+	// Object related methods
+	// ---------------------------------
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("alias", loginName).toString();
+	}
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(alias).hashCode();
-    }
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().append(loginName).hashCode();
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        if (obj.getClass() != getClass()) {
-            return false;
-        }
-        Login rhs = (Login) obj;
-        return new EqualsBuilder().append(id, rhs.id).isEquals();
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
+		if (obj.getClass() != getClass()) {
+			return false;
+		}
+		Login rhs = (Login) obj;
+		return new EqualsBuilder().append(id, rhs.id).isEquals();
+	}
 
-    // ---------------------------------
-    // Setters for the properties
-    // ---------------------------------
-    public void setSystemUser(SystemUser systemUser) {
-        this.systemUser = systemUser;
-    }
+	// ---------------------------------
+	// Setters for the properties
+	// ---------------------------------
+	public void setSystemUser(SystemUser systemUser) {
+		this.systemUser = systemUser;
+	}
 
-    public void setAlias(String alias) {
-        this.alias = alias;
-    }
+	public void setLoginName(String loginName) {
+		this.loginName = loginName;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public void setExpireAt(Date expireAt) {
-        this.expireAt = expireAt;
-    }
+	public void setExpireAt(Date expireAt) {
+		this.expireAt = expireAt;
+	}
 
-    public void setLocked(boolean locked) {
-        this.locked = locked;
-    }
+	public void setLocked(boolean locked) {
+		this.locked = locked;
+	}
 
-    // ---------------------------------
-    // Getters for the properties
-    // ---------------------------------
-    public long getId() {
-        return id;
-    }
+	// ---------------------------------
+	// Getters for the properties
+	// ---------------------------------
+	public long getId() {
+		return id;
+	}
 
-    public String getAlias() {
-        return alias;
-    }
+	public String getLoginName() {
+		return loginName;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public Date getExpireAt() {
-        return expireAt;
-    }
+	public Date getExpireAt() {
+		return expireAt;
+	}
 
-    public boolean isLocked() {
-        return locked;
-    }
+	public boolean isLocked() {
+		return locked;
+	}
 
-    public SystemUser getSystemUser() {
-        return systemUser;
-    }
+	public SystemUser getSystemUser() {
+		return systemUser;
+	}
 }

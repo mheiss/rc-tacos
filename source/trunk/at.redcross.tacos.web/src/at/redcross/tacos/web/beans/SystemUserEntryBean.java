@@ -8,6 +8,9 @@ import javax.faces.model.SelectItem;
 import javax.persistence.EntityManager;
 
 import org.ajax4jsf.model.KeepAlive;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
+import org.springframework.stereotype.Component;
 
 import at.redcross.tacos.dbal.entity.Address;
 import at.redcross.tacos.dbal.entity.Gender;
@@ -20,8 +23,10 @@ import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.faces.combo.DropDownHelper;
 import at.redcross.tacos.web.faces.combo.DropDownItem;
 import at.redcross.tacos.web.persitence.EntityManagerFactory;
+import at.redcross.tacos.web.utils.StringUtils;
 
 @KeepAlive
+@Component
 @ManagedBean(name = "systemUserEntryBean")
 public class SystemUserEntryBean extends BaseBean {
 
@@ -35,6 +40,9 @@ public class SystemUserEntryBean extends BaseBean {
 	private List<SelectItem> genderItems;
 	private List<SelectItem> competenceItems;
 	private List<SelectItem> locationItems;
+
+	/** Encode passwords using SHA */
+	private PasswordEncoder encoder = new ShaPasswordEncoder(256);
 
 	// passwords -> not directly attached to entity
 	private String password;
@@ -67,6 +75,12 @@ public class SystemUserEntryBean extends BaseBean {
 	public String persist() {
 		EntityManager manager = null;
 		try {
+			// update the password if required
+			password = StringUtils.saveString(password);
+			password2 = StringUtils.saveString(password2);
+			if (!password.isEmpty() && !password2.isEmpty()) {
+				login.setPassword(encoder.encodePassword(password, null));
+			}
 			manager = EntityManagerFactory.createEntityManager();
 			if (isNew()) {
 				manager.persist(login);
@@ -111,7 +125,6 @@ public class SystemUserEntryBean extends BaseBean {
 	// Helper methods
 	// ---------------------------------
 	private void loadfromDatabase(EntityManager manager, long id) {
-
 		systemUser = manager.find(SystemUser.class, id);
 		if (systemUser == null) {
 			userId = -1;
