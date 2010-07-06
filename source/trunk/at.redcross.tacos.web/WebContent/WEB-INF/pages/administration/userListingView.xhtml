@@ -6,16 +6,14 @@
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
 	<ui:param name="section" value="admin" />
 	<ui:param name="page" value="listUsersView" />
-
+	
 	<ui:define name="navigation">
 		<ui:include src="navigation.xhtml" />
 	</ui:define>
 
 	<ui:define name="page-title">
 		<h:graphicImage library="images/32x32" name="users.png" />
-		<h2 class="title">
-			<h:outputText value="Mitarbeiteransicht" />
-		</h2>
+		<h2 class="title"> <h:outputText value="Mitarbeiteransicht" /> </h2>
 	</ui:define>
 	
 	<ui:define name="page-toolbar">

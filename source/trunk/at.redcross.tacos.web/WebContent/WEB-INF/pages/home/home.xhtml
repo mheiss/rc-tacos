@@ -5,19 +5,16 @@
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
 	<ui:param name="section" value="home" />
 	<ui:param name="page" value="home" />
-
-	<!-- Include the navigation of the page -->
+	
 	<ui:define name="navigation">
 		<ui:include src="navigation.xhtml" />
 	</ui:define>
 
-	<!-- Customize the title and image -->
 	<ui:define name="page-title">
 		<h:graphicImage library="images/32x32" name="home.png" />
 		<h2 class="title"><h:outputText value="Willkommen bei TACOS" /></h2>
 	</ui:define>
 
-	<!-- Render the content -->
 	<ui:define name="content">
 	</ui:define>
 

@@ -5,20 +5,11 @@
 <body>
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
 
-	<!-- Include the navigation of the page -->
-	<ui:define name="navigation">
-		<ui:include src="/WEB-INF/pages/home/navigation.xhtml" />
-	</ui:define>
-
-	<!-- Customize the title and image -->
 	<ui:define name="page-title">
-		<h:graphicImage library="images/page" name="error.png" />
-		<h2 class="title">
-			<h:outputText value=" Es tut uns sehr leid, aber ... " />
-		</h2>
+		<h:graphicImage library="images/32x32" name="error.png" />
+		<h2 class="title"> <h:outputText value=" Es tut uns sehr leid, aber ... " /> </h2>
 	</ui:define>
 
-	<!-- Render the content -->
 	<ui:define name="content">
 		<h:outputText value=".... während ihrer letzen Anfrage ist ein unerwarteter Fehler aufgetreten." />
 		<h:outputText styleClass="italic" value=" (Fehlercode #{errorBean.errorCode})" rendered="#{not empty errorBean.errorCode}" />
