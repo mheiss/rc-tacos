@@ -79,12 +79,12 @@
 	<!-- ################ ADMINISTRATION - USER ####################### -->
 	<url-mapping id="admin-createUserView">
 		<pattern>/admin/user/create</pattern>
-		<view-id>/WEB-INF/pages/administration/editUserView.faces</view-id>
+		<view-id>/WEB-INF/pages/administration/user/editUserView.faces</view-id>
 		<action onPostback="false">#{systemUserEntryBean.prettyInit}</action>
 	</url-mapping>
 	<url-mapping id="admin-editUserView">
 		<pattern>/admin/user/edit/#{systemUserEntryBean.userId}</pattern>
-		<view-id>/WEB-INF/pages/administration/editUserView.faces</view-id>
+		<view-id>/WEB-INF/pages/administration/user/editUserView.faces</view-id>
 		<action onPostback="false">#{systemUserEntryBean.prettyInit}</action>
 	</url-mapping>
 	<url-mapping id="admin-listUsersView">

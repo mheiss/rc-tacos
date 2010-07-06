@@ -5,7 +5,7 @@
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
 	<ui:param name="section" value="admin" />
 	<ui:param name="page" value="createView" />
-
+	
 	<ui:define name="navigation">
 		<ui:include src="navigation.xhtml" />
 	</ui:define>
@@ -56,12 +56,6 @@
 						<rich:ajaxValidator event="onblur" />
 					</h:inputText>
 					<rich:message for="firstName" errorClass="error" />
-				</div>
-				<div class="leftDecorator">
-					<a4j:commandLink reRender="filter,resultList" title="Filter zurücksetzen">
-						<a4j:actionparam name="locationFilter" value="#{null}" assignTo="#{bean.location}" actionListener="#{bean.filterChanged}" />
-						<h:graphicImage library="images/16x16" name="edit-clear.png" />
-					</a4j:commandLink>
 				</div>
 			</li>
 			<li class="left">

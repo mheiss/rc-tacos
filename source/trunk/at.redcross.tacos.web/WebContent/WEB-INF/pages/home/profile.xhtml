@@ -7,18 +7,15 @@
 	<ui:param name="section" value="home" />
 	<ui:param name="page" value="profile" />
 
-	<!-- Include the navigation of the page -->
 	<ui:define name="navigation">
 		<ui:include src="navigation.xhtml" />
 	</ui:define>
 
-	<!-- Customize the title and image -->
-	<ui:define name="page-title"> Profil </ui:define>
-	<ui:define name="page-image">
-		<h:graphicImage library="images/page" name="home.png" />
+	<ui:define name="page-title">
+		<h:graphicImage library="images/32x32" name="profile.png" />
+		<h2 class="title"><h:outputText value="Profil" /></h2>
 	</ui:define>
 
-	<!-- Render the content -->
 	<ui:define name="content">
 		<h:outputText value="Profil bearbeiten" />
 	</ui:define>

@@ -5,15 +5,11 @@
 <body>
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
 
-	<!-- Customize the title and image -->
 	<ui:define name="page-title">
-		<h:graphicImage library="images/page" name="error.png" />
-		<h2 class="title">
-			<h:outputText value=" Es tut uns sehr leid, aber ... " />
-		</h2>
+		<h:graphicImage library="images/32x32" name="error.png" />
+		<h2 class="title"> <h:outputText value=" Es tut uns sehr leid, aber ... " /> </h2>
 	</ui:define>
 
-	<!-- Render the content -->
 	<ui:define name="content">
 		<h:outputText value=".... sie sind nicht berechtigt diese Seite aufzurufen." />
 	</ui:define>

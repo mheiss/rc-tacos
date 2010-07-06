@@ -32,21 +32,24 @@ public class SystemUserEntryBean extends BaseBean {
 
 	private static final long serialVersionUID = -8941798819713448843L;
 
-	// the system user and login
+	/** the request parameter */
 	private long userId = -1;
+
+	/** the entities to manage */
 	private SystemUser systemUser;
 	private Login login;
 
+	/** the values for the drop down fields */
 	private List<SelectItem> genderItems;
 	private List<SelectItem> competenceItems;
 	private List<SelectItem> locationItems;
 
-	/** Encode passwords using SHA */
-	private PasswordEncoder encoder = new ShaPasswordEncoder(256);
-
-	// passwords -> not directly attached to entity
+	/** passwords -> not directly attached to entity */
 	private String password;
 	private String password2;
+
+	/** Encode passwords using SHA */
+	private PasswordEncoder encoder = new ShaPasswordEncoder(256);
 
 	@Override
 	public void init() throws Exception {
