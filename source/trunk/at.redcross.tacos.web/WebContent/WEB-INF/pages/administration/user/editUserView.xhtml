@@ -117,33 +117,20 @@
 						<rich:message for="phone2" errorClass="error" />
 					</div>
 				</li>
-				<li class="left">
-					<h:outputLabel for="street" value="Straße" />
-					<div class="input largeInput">
-						<h:inputText id="street" value="#{systemUserEntryBean.systemUser.address.street}">
-							<rich:ajaxValidator event="onblur" />
-						</h:inputText>
-						<rich:message for="street" errorClass="error" />
-					</div>
-				</li>
-				<li class="left">
-					<h:outputLabel for="zipCode" value="PLZ" />
-					<div class="input">
-						<h:inputText id="zipCode" value="#{systemUserEntryBean.systemUser.address.zipCode}">
-							<rich:ajaxValidator event="onblur" />
-						</h:inputText>
-						<rich:message for="zipCode" errorClass="error" />
-					</div>
-				</li>
-				<li class="right">
-					<h:outputLabel for="city" value="Stadt" />
-					<div class="input">
-						<h:inputText id="city" value="#{systemUserEntryBean.systemUser.address.city}">
-							<rich:ajaxValidator event="onblur" />
-						</h:inputText>
-						<rich:message for="city" errorClass="error" />
-					</div>
-				</li>
+				<li>
+				<h:outputLabel for="location" value="Primäre Dienststelle" />
+				<div class="input">
+					<rich:comboBox id="location" value="#{systemUserEntryBean.systemUser.location}" 
+						selectFirstOnUpdate="false" defaultLabel="primäre Dienststelle"
+						required="true" requiredMessage="Bitte geben sie eine primäre Dienststelle an">
+						<f:selectItems value="#{systemUserEntryBean.locationItems}" />
+						<f:validator validatorId="validator.dropDown" />
+						<f:converter converterId="converter.dropDown" />
+						<rich:ajaxValidator event="onchange" />
+					</rich:comboBox> 
+					<rich:message for="location" errorClass="error" />
+				</div>
+			</li>
 			</ol>
 		</fieldset>
 		
