@@ -118,18 +118,18 @@
 					</div>
 				</li>
 				<li class="right">
-				<h:outputLabel for="location" value="Primäre Dienststelle" />
-				<div class="input">
-					<rich:comboBox id="location" value="#{systemUserEntryBean.systemUser.location}" 
-						selectFirstOnUpdate="false" defaultLabel="primäre Dienststelle"
-						required="true" requiredMessage="Bitte geben sie eine primäre Dienststelle an">
-						<f:selectItems value="#{systemUserEntryBean.locationItems}" />
-						<f:validator validatorId="validator.dropDown" />
-						<f:converter converterId="converter.dropDown" />
-						<rich:ajaxValidator event="onchange" />
-					</rich:comboBox> 
-					<rich:message for="location" errorClass="error" />
-				</div>
+					<h:outputLabel for="location" value="Primäre Dienststelle" />
+					<div class="input">
+						<rich:comboBox id="location" value="#{systemUserEntryBean.systemUser.location}" 
+							selectFirstOnUpdate="false" defaultLabel="primäre Dienststelle"
+							required="true" requiredMessage="Bitte geben sie eine primäre Dienststelle an">
+							<f:selectItems value="#{systemUserEntryBean.locationItems}" />
+							<f:validator validatorId="validator.dropDown" />
+							<f:converter converterId="converter.dropDown" />
+							<rich:ajaxValidator event="onchange" />
+						</rich:comboBox> 
+						<rich:message for="location" errorClass="error" />
+					</div>
 			</li>
 			</ol>
 		</fieldset>

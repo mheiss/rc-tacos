@@ -93,4 +93,21 @@
 		<action onPostback="false">#{systemUserViewBean.prettyInit}</action>
 	</url-mapping>
 	
+	<!-- ################ ADMINISTRATION - CAR ####################### -->
+	<url-mapping id="admin-createCarView">
+		<pattern>/admin/car/create</pattern>
+		<view-id>/WEB-INF/pages/administration/car/editCarView.faces</view-id>
+		<action onPostback="false">#{carEntryBean.prettyInit}</action>
+	</url-mapping>
+	<url-mapping id="admin-editCarView">
+		<pattern>/admin/car/edit/#{carEntryBean.carId}</pattern>
+		<view-id>/WEB-INF/pages/administration/car/editCarView.faces</view-id>
+		<action onPostback="false">#{carEntryBean.prettyInit}</action>
+	</url-mapping>
+	<url-mapping id="admin-listCarsView">
+		<pattern>/admin/cars</pattern>
+		<view-id>/WEB-INF/pages/administration/car/carListingView.faces</view-id>
+		<action onPostback="false">#{carViewBean.prettyInit}</action>
+	</url-mapping>
+	
 </pretty-config>
