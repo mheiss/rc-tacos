@@ -117,7 +117,7 @@
 						<rich:message for="phone2" errorClass="error" />
 					</div>
 				</li>
-				<li>
+				<li class="right">
 				<h:outputLabel for="location" value="Primäre Dienststelle" />
 				<div class="input">
 					<rich:comboBox id="location" value="#{systemUserEntryBean.systemUser.location}" 
@@ -164,6 +164,12 @@
 						</h:inputText>
 						<rich:message for="password2" errorClass="error" />
 					</div> 
+				</li>
+				<li class="right">
+				<h:outputLabel for="locked" value="Gesperrt" />
+				<div class="input">
+					<h:selectBooleanCheckbox id="locked" value="#{systemUserEntryBean.login.locked}" />
+				</div>
 				</li>
 			</ol>
 		</fieldset>
