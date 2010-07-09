@@ -9,18 +9,12 @@
 	<ui:define name="block-image">
 		<h:graphicImage library="images/32x32" name="settings.png" />
 	</ui:define>
-	<ui:define name="block-title"> <h:outputText value="Administration" /> </ui:define>
+	<ui:define name="block-title"> <h:outputText value="Fahrzeuge" /> </ui:define>
 
 	<ui:define name="block-content">
 		<ul class="menu">
-			<li class="menu-item #{page eq 'home' ? 'selected' : ''}">
-				<pretty:link mappingId="admin-home"> <h:outputText value="Übersicht" /> </pretty:link>
-			</li>
-			<li class="menu-item #{page eq 'listUsersView' ? 'selected' : ''}">
-				<pretty:link mappingId="admin-listUsersView"> <h:outputText value="Mitarbeiterübersicht" /> </pretty:link>
-			</li>
-			<li class="menu-item #{page eq 'listCarsView' ? 'selected' : ''}">
-				<pretty:link mappingId="admin-listCarsView"> <h:outputText value="Fahrzeugübersicht" /> </pretty:link>
+			<li class="menu-item">
+				<pretty:link mappingId="admin-home"> <h:outputText value="Zurück" /> </pretty:link>
 			</li>
 		</ul>
 	</ui:define>
