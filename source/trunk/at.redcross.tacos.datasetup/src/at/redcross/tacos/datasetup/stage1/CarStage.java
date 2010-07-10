@@ -22,18 +22,43 @@ public class CarStage implements DatasetupStage {
     public void performImport(EntityManager manager) {
     	Location location1 = getLocationByName(manager, "Bruck");
         Location location2 = getLocationByName(manager, "Kapfenberg");
+        Location location3 = getLocationByName(manager, "Bezirk: Bruck - Kapfenberg");
         {
         	Car car = new Car();
-        	car.setCarName("125");
+        	car.setCarName("5.01 01");
         	car.setStandby(true);
         	car.setNotes("nicht zu schnell fahren, Bremsen funktionieren nicht!");
-        	car.setLocation(location1);
+        	car.setLocation(location3);
 
             manager.persist(car);
         }
         {
         	Car car = new Car();
-        	car.setCarName("126");
+        	car.setCarName("5.01 03");
+        	car.setStandby(true);
+        	car.setLocation(location3);
+
+            manager.persist(car);
+        }
+        {
+        	Car car = new Car();
+        	car.setCarName("5.01 04");
+        	car.setStandby(true);
+        	car.setLocation(location3);
+
+            manager.persist(car);
+        }
+        {
+        	Car car = new Car();
+        	car.setCarName("5.01 05");
+        	car.setStandby(true);
+        	car.setLocation(location3);
+
+            manager.persist(car);
+        }
+        {
+        	Car car = new Car();
+        	car.setCarName("5.01 28");
         	car.setStandby(true);
         	car.setLocation(location1);
 
@@ -41,7 +66,7 @@ public class CarStage implements DatasetupStage {
         }
         {
         	Car car = new Car();
-        	car.setCarName("127");
+        	car.setCarName("5.01 22");
         	car.setStandby(true);
         	car.setLocation(location1);
 
@@ -49,7 +74,7 @@ public class CarStage implements DatasetupStage {
         }
         {
         	Car car = new Car();
-        	car.setCarName("128");
+        	car.setCarName("5.01 23");
         	car.setStandby(true);
         	car.setLocation(location1);
 
@@ -57,7 +82,39 @@ public class CarStage implements DatasetupStage {
         }
         {
         	Car car = new Car();
-        	car.setCarName("140");
+        	car.setCarName("5.01 24");
+        	car.setStandby(true);
+        	car.setLocation(location1);
+
+            manager.persist(car);
+        }
+        {
+        	Car car = new Car();
+        	car.setCarName("5.01 25");
+        	car.setStandby(true);
+        	car.setLocation(location1);
+
+            manager.persist(car);
+        }
+        {
+        	Car car = new Car();
+        	car.setCarName("5.01 26");
+        	car.setStandby(true);
+        	car.setLocation(location1);
+
+            manager.persist(car);
+        }
+        {
+        	Car car = new Car();
+        	car.setCarName("5.01 27");
+        	car.setStandby(true);
+        	car.setLocation(location1);
+
+            manager.persist(car);
+        }
+        {
+        	Car car = new Car();
+        	car.setCarName("5.01 42");
         	car.setStandby(true);
         	car.setLocation(location2);
 
@@ -65,7 +122,7 @@ public class CarStage implements DatasetupStage {
         }
         {
         	Car car = new Car();
-        	car.setCarName("141");
+        	car.setCarName("5.01 43");
         	car.setStandby(true);
         	car.setLocation(location2);
 
@@ -73,7 +130,7 @@ public class CarStage implements DatasetupStage {
         }
         {
         	Car car = new Car();
-        	car.setCarName("142");
+        	car.setCarName("5.01 44");
         	car.setStandby(true);
         	car.setLocation(location2);
 
@@ -81,7 +138,7 @@ public class CarStage implements DatasetupStage {
         }
         {
         	Car car = new Car();
-        	car.setCarName("143");
+        	car.setCarName("5.01 45");
         	car.setStandby(true);
         	car.setLocation(location2);
 
@@ -89,23 +146,31 @@ public class CarStage implements DatasetupStage {
         }
         {
         	Car car = new Car();
-        	car.setCarName("144");
-        	car.setStandby(true);
+        	car.setCarName("5.01 46");
+        	car.setStandby(false);
         	car.setLocation(location2);
 
             manager.persist(car);
         }
         {
         	Car car = new Car();
-        	car.setCarName("145");
-        	car.setStandby(true);
+        	car.setCarName("5.01 47");
+        	car.setStandby(false);
         	car.setLocation(location2);
 
             manager.persist(car);
         }
         {
         	Car car = new Car();
-        	car.setCarName("146");
+        	car.setCarName("5.01 48");
+        	car.setStandby(false);
+        	car.setLocation(location2);
+
+            manager.persist(car);
+        }
+        {
+        	Car car = new Car();
+        	car.setCarName("5.01 49");
         	car.setStandby(false);
         	car.setLocation(location2);
 
