@@ -9,14 +9,14 @@
 	</rich:panel>
 	<rich:panel rendered="#{not empty values}">
 		<rich:dataTable id="table-#{tabId}" styleClass="singleTable" value="#{values}" var="car" onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
-			<rich:column styleClass="center">
+			<rich:column styleClass="smallColumn">
 				<f:facet name="header">
 					<rich:spacer />
 				</f:facet>
 				<h:panelGroup rendered="#{car.standby}">
 					<h:graphicImage library="images/24x24" name="user_male_expired.png" />
 				</h:panelGroup>
-				<h:panelGroup rendered="#{car.standby}">
+				<h:panelGroup rendered="#{not car.standby}">
 					<h:graphicImage library="images/24x24" name="user_male_locked.png" />
 				</h:panelGroup>
 			</rich:column>
@@ -26,11 +26,17 @@
 				</f:facet>
 				<h:outputText value="#{car.carName}" />
 			</rich:column>
-			<rich:column styleClass="mediumColumn">
+			<rich:column styleClass="largeColumn">
 				<f:facet name="header">
 					<h:outputText value="Dienststelle" />
 				</f:facet>
 				<h:outputText value="#{car.location.name}" />
+			</rich:column>
+			<rich:column styleClass="largeColumn">
+				<f:facet name="header">
+					<h:outputText value="Anmerkungen" />
+				</f:facet>
+				<h:outputText value="#{car.notes}" />
 			</rich:column>
 			<rich:column title="Bearbeiten" styleClass="smallColumn">
 				<f:facet name="header">
