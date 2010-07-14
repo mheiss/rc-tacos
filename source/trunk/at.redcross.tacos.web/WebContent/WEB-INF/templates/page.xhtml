@@ -2,34 +2,34 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
 <body>
 <ui:composition>
-	<div id="page-header">
-		<div id="page-title">
-			<a4j:status>
-				<f:facet name="start">
-					<h:panelGroup>
-						<h:graphicImage library="images/32x32" name="ajaxLoader.gif" alt="Image:[updating]" />
-						<h2 class="title"><h:outputText value="Anfrage wird bearbeitet, bitte warten ..." /></h2>
-					</h:panelGroup>
-				</f:facet>
-				<f:facet name="stop">
-					<h:panelGroup>
-						<ui:insert name="page-title" />
-					</h:panelGroup>
-				</f:facet>
-			</a4j:status>
-			<div class="clear" />
-		</div>
-		<div id="page-toolbar" class="toolbar">
-			<a4j:form>
-				<ul>
-					<ui:insert name="page-toolbar" />
-				</ul>
-				<div class="clear" />
-			</a4j:form>
-		</div>
-	</div>
 	<a4j:form id="page-content">
-		<ui:insert name="content"> (Default Content) </ui:insert>
+		<div id="page-header">
+			<div id="page-title">
+				<a4j:status>
+					<f:facet name="start">
+						<h:panelGroup>
+							<h:graphicImage library="images/32x32" name="ajaxLoader.gif" alt="Image:[updating]" />
+							<h2 class="title"><h:outputText value="Anfrage wird bearbeitet, bitte warten ..." /></h2>
+						</h:panelGroup>
+					</f:facet>
+					<f:facet name="stop">
+						<h:panelGroup>
+							<ui:insert name="page-title" />
+						</h:panelGroup>
+					</f:facet>
+				</a4j:status>
+				<div class="clear" />
+			</div>
+			<div id="page-toolbar" class="toolbar">
+					<ul>
+						<ui:insert name="page-toolbar" />
+					</ul>
+					<div class="clear" />
+			</div>
+		</div>
+		<div id="page-content">
+			<ui:insert name="content"> (Default Content) </ui:insert>
+		</div>
 	</a4j:form>
 	<!-- additional panels must have a own form -->
 	<a4j:form id="page-panels" ajaxSubmit="true">
