@@ -110,4 +110,11 @@
 		<action onPostback="false">#{carViewBean.prettyInit}</action>
 	</url-mapping>
 	
+		<!-- ################ ADMINISTRATION - COMPETENCE ####################### -->
+	<url-mapping id="admin-competenceMaintenance">
+		<pattern>/admin/competences</pattern>
+		<view-id>/WEB-INF/pages/administration/competenceMaintenance.faces</view-id>
+		<action onPostback="false">#{competenceMaintenanceBean.prettyInit}</action>
+	</url-mapping>
+	
 </pretty-config>

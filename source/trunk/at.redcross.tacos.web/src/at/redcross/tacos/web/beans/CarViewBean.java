@@ -10,10 +10,8 @@ import org.ajax4jsf.model.KeepAlive;
 
 import at.redcross.tacos.dbal.entity.Car;
 import at.redcross.tacos.dbal.entity.Location;
-import at.redcross.tacos.dbal.entity.SystemUser;
 import at.redcross.tacos.dbal.helper.CarHelper;
 import at.redcross.tacos.dbal.helper.LocationHelper;
-import at.redcross.tacos.dbal.helper.SystemUserHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.web.persitence.EntityManagerFactory;
 
@@ -21,9 +19,9 @@ import at.redcross.tacos.web.persitence.EntityManagerFactory;
 @ManagedBean(name = "carViewBean")
 public class CarViewBean extends BaseBean {
 
-	private static final long serialVersionUID = 5527463274271756151L;
+    private static final long serialVersionUID = 5527463274271756151L;
 
-	/** available locations */
+    /** available locations */
     private List<Location> locations;
 
     /** active location */
