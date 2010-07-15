@@ -77,8 +77,14 @@
 				<f:facet name="header">
 					<rich:spacer />
 				</f:facet>
-				<a4j:commandLink actionListener="#{competenceMaintenanceBean.removeCompetence}" reRender="competenceTable">
-					<a4j:actionparam name="competenceId" assignTo="#{competenceMaintenanceBean.competenceId}" value="#{dto.entity.id}" />
+				<a4j:commandLink reRender="competenceTable" rendered="#{dto.state.name ne 'delete'}">
+					<a4j:actionparam name="competenceId" assignTo="#{competenceMaintenanceBean.competenceId}" value="#{dto.entity.id}"
+						actionListener="#{competenceMaintenanceBean.removeCompetence}" />
+					<h:graphicImage library="images/16x16" name="remove.png" />
+				</a4j:commandLink>
+				<a4j:commandLink reRender="competenceTable" rendered="#{dto.state.name eq 'delete'}">
+					<a4j:actionparam name="competenceId" assignTo="#{competenceMaintenanceBean.competenceId}" value="#{dto.entity.id}"
+						actionListener="#{competenceMaintenanceBean.unremoveCompetence}" />
 					<h:graphicImage library="images/16x16" name="remove.png" />
 				</a4j:commandLink>
 			</rich:column>
