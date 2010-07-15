@@ -117,4 +117,11 @@
 		<action onPostback="false">#{competenceMaintenanceBean.prettyInit}</action>
 	</url-mapping>
 	
+			<!-- ################ ADMINISTRATION - ASSIGNMENT ####################### -->
+	<url-mapping id="admin-assignmentMaintenance">
+		<pattern>/admin/assignments</pattern>
+		<view-id>/WEB-INF/pages/administration/assignmentMaintenance.faces</view-id>
+		<action onPostback="false">#{assignmentMaintenanceBean.prettyInit}</action>
+	</url-mapping>
+	
 </pretty-config>

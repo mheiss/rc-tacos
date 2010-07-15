@@ -1,0 +1,95 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich" xmlns:pretty="http://ocpsoft.com/prettyfaces"
+	xmlns:c="http://java.sun.com/jstl/core">
+<body>
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+	<ui:param name="section" value="admin" />
+	<ui:param name="page" value="listAssignmentsView" />
+
+	<ui:define name="navigation">
+		<ui:include src="navigation.xhtml" />
+	</ui:define>
+
+	<ui:define name="page-title">
+		<h:graphicImage library="images/32x32" name="users.png" />
+		<h2 class="title"><h:outputText value="Verwendungen" /></h2>
+	</ui:define>
+
+	<ui:define name="page-toolbar">
+		<li>
+			<a4j:commandLink ajaxSingle="false" actionListener="#{assignmentMaintenanceBean.saveAssignments}" reRender="assignmentTable" title="Speichern">
+				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="save.png" />
+				<h:outputText styleClass="toolbarText" value="Änderungen speichern" />
+			</a4j:commandLink>
+		</li>
+		<li>
+			<a4j:commandLink actionListener="#{assignmentMaintenanceBean.addAssignment}" reRender="assignmentTable" title="Neue Verwendung anlegen">
+				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="add.png" />
+				<h:outputText styleClass="toolbarText" value="Verwendung anlegen" />
+			</a4j:commandLink>
+		</li>
+	</ui:define>
+
+	<ui:define name="content">
+		<rich:messages id="messages" errorClass="errorMessage" />
+		<rich:panel rendered="#{empty assignmentMaintenanceBean.assignments}" style="margin-top:10px;">
+			<h:outputText value="Keine Einträge gefunden" styleClass="italic" />
+		</rich:panel>
+		<rich:dataTable id="assignmentTable" styleClass="editorTable" value="#{assignmentMaintenanceBean.assignments}" var="dto" rowKeyVar="row"
+			onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
+			<rich:column styleClass="smallColumn">
+				<f:facet name="header">
+					<rich:spacer />
+				</f:facet>
+				<h:outputText value="#{row+1}" />
+			</rich:column>
+			<rich:column styleClass="smallColumn">
+				<f:facet name="header">
+					<h:outputText value="Status" />
+				</f:facet>
+				<h:graphicImage library="images/16x16" name="state_new.png" rendered="#{dto.state.name eq 'new'}" />
+				<h:graphicImage library="images/16x16" name="state_sync.png" rendered="#{dto.state.name eq 'sync'}" />
+				<h:graphicImage library="images/16x16" name="state_toDelete.png" rendered="#{dto.state.name eq 'delete'}" />	
+			</rich:column>
+			<rich:column sortBy="#{dto.entity.shortName}" styleClass="smallColumn">
+				<f:facet name="header">
+					<h:outputText value="Abkürzung" />
+				</f:facet>
+				<rich:inplaceInput value="#{dto.entity.shortName}" maxlength="5" layout="block" />
+			</rich:column>
+			<rich:column sortBy="#{dto.entity.name}" styleClass="mediumColumn">
+				<f:facet name="header">
+					<h:outputText value="Name" />
+				</f:facet>
+				<rich:inplaceInput value="#{dto.entity.name}" maxlength="30" layout="block"
+					required="true" requiredMessage="Zeile #{row+1}: Bitte geben Sie einen Namen für diese Verwendung an">
+					<a4j:support event="onviewactivated" reRender="assignmentTable, messages" />
+				</rich:inplaceInput>
+			</rich:column>
+			<rich:column sortBy="#{dto.entity.description}">
+				<f:facet name="header">
+					<h:outputText value="Beschreibung" />
+				</f:facet>
+				<rich:inplaceInput value="#{dto.entity.description}" maxlength="255" layout="block" />
+			</rich:column>
+			<rich:column styleClass="smallColumn">
+				<f:facet name="header">
+					<rich:spacer />
+				</f:facet>
+				<a4j:commandLink reRender="assignmentTable" rendered="#{dto.state.name ne 'delete'}" immediate="true">
+					<a4j:actionparam name="assignmentId" assignTo="#{assignmentMaintenanceBean.assignmentId}" value="#{dto.entity.id}"
+						actionListener="#{assignmentMaintenanceBean.removeAssignment}" />
+					<h:graphicImage library="images/16x16" name="remove.png" />
+				</a4j:commandLink>
+				<a4j:commandLink reRender="assignmentTable" rendered="#{dto.state.name eq 'delete'}">
+					<a4j:actionparam name="assignmentId" assignTo="#{assignmentMaintenanceBean.assignmentId}" value="#{dto.entity.id}"
+						actionListener="#{assignmentMaintenanceBean.unremoveAssignment}" />
+					<h:graphicImage library="images/16x16" name="remove.png" />
+				</a4j:commandLink>
+			</rich:column>
+		</rich:dataTable>
+	</ui:define>
+</ui:composition>
+</body>
+</html>
