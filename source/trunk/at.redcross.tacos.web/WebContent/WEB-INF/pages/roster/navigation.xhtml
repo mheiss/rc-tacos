@@ -13,20 +13,20 @@
 
 	<ui:define name="block-content">
 		<ul class="menu">
-			<li class="menu-item #{page eq 'dayView' ? 'selected' : ''}">
-				<pretty:link mappingId="roster-dayView"><h:outputText value="Tageansicht" /> </pretty:link>
+			<li class="menu-item #{page eq 'dayOverview' ? 'selected' : ''}">
+				<pretty:link mappingId="roster-dayOverview"><h:outputText value="Tageansicht" /> </pretty:link>
 			</li>
-			<li class="menu-item #{page eq 'weekView' ? 'selected' : ''}">
-				<pretty:link mappingId="roster-weekView"> <h:outputText value="Wochenansicht" /> </pretty:link>
+			<li class="menu-item #{page eq 'weekOverview' ? 'selected' : ''}">
+				<pretty:link mappingId="roster-weekOverview"> <h:outputText value="Wochenansicht" /> </pretty:link>
 			</li>
-			<li class="menu-item #{page eq 'carView' ? 'selected' : ''}">
-				<pretty:link mappingId="roster-carView"> <h:outputText value="Fahrzeugzuweisung" /> </pretty:link>
+			<li class="menu-item #{page eq 'carOverview' ? 'selected' : ''}">
+				<pretty:link mappingId="roster-carOverview"> <h:outputText value="Fahrzeugzuweisung" /> </pretty:link>
 			</li>
-			<li class="menu-item #{page eq 'myView' ? 'selected' : ''}">
-				<pretty:link mappingId="roster-personalView"> <h:outputText value="Meine Dienste" /> </pretty:link>
+			<li class="menu-item #{page eq 'personalOverview' ? 'selected' : ''}">
+				<pretty:link mappingId="roster-personalOverview"> <h:outputText value="Meine Dienste" /> </pretty:link>
 			</li>
-			<li class="menu-item #{page eq 'createView' ? 'selected' : ''}">
-				<pretty:link mappingId="roster-createEntryView"> <h:outputText value="Neuer Eintrag" /> </pretty:link>
+			<li class="menu-item #{page eq 'maintenance' ? 'selected' : ''}">
+				<pretty:link mappingId="roster-createMaintenance"> <h:outputText value="Neuer Eintrag" /> </pretty:link>
 			</li>
 		</ul>
 	</ui:define>

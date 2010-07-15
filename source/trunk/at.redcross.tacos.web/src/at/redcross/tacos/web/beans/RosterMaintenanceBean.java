@@ -19,8 +19,8 @@ import at.redcross.tacos.web.faces.combo.DropDownHelper;
 import at.redcross.tacos.web.persitence.EntityManagerFactory;
 
 @KeepAlive
-@ManagedBean(name = "rosterEntryBean")
-public class RosterEntryBean extends BaseBean {
+@ManagedBean(name = "rosterMaintenanceBean")
+public class RosterMaintenanceBean extends BaseBean {
 
 	private static final long serialVersionUID = 3440196753805921232L;
 
@@ -67,7 +67,7 @@ public class RosterEntryBean extends BaseBean {
 				manager.merge(rosterEntry);
 			}
 			EntityManagerHelper.commit(manager);
-			return FacesUtils.pretty("roster-dayView");
+			return FacesUtils.pretty("roster-dayOverview");
 		}
 		catch (Exception ex) {
 			FacesUtils.addErrorMessage("Der Dienstplaneintrag konnte nicht gespeichert werden");
@@ -86,7 +86,7 @@ public class RosterEntryBean extends BaseBean {
 		try {
 			manager = EntityManagerFactory.createEntityManager();
 			loadfromDatabase(manager, rosterEntry.getId());
-			return FacesUtils.pretty("roster-editEntryView");
+			return FacesUtils.pretty("roster-editMaintenance");
 		}
 		catch (Exception ex) {
 			FacesUtils.addErrorMessage("Der Dienstplaneintrag konnte nicht zurückgesetzt werden");

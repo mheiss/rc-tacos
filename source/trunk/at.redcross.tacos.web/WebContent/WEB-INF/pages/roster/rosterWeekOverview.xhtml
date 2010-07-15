@@ -11,7 +11,7 @@
 <body>
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
     <ui:param name="section" value="roster" />
-    <ui:param name="page" value="weekView" />
+    <ui:param name="page" value="weekOverview" />
 
     <ui:define name="navigation">
         <ui:include src="navigation.xhtml" />
@@ -21,7 +21,7 @@
     	<h:graphicImage library="images/32x32" name="calendar.png" />
     	<h2 class="title">
     		<h:outputText value="Wochenansicht für KW" />
-			<h:outputText id="dateTitle" value="#{rosterWeekViewBean.date}">
+			<h:outputText id="dateTitle" value="#{rosterWeekOverviewBean.date}">
 				<f:convertDateTime pattern="w" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 			</h:outputText>
     	</h2>
@@ -29,19 +29,19 @@
     
     <ui:define name="page-toolbar">
 		<li>
-			<a4j:commandLink actionListener="#{rosterWeekViewBean.navigateNext}" reRender="dateTitle,filter,resultList">
+			<a4j:commandLink actionListener="#{rosterWeekOverviewBean.navigateNext}" reRender="dateTitle,filter,resultList">
 				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="next.png" />
 				<h:outputText styleClass="toolbarText" value="Nächste Woche"  />
 			</a4j:commandLink>
 		</li>
 		<li>
-			<a4j:htmlCommandLink actionListener="#{rosterWeekViewBean.createPdfReport}">
+			<a4j:htmlCommandLink actionListener="#{rosterWeekOverviewBean.createPdfReport}">
 				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="pdf.png" />
 				<h:outputText styleClass="toolbarText" value="Exportieren"  />
 			</a4j:htmlCommandLink>
 		</li>
 		<li>
-			<a4j:commandLink actionListener="#{rosterWeekViewBean.navigatePrevious}" reRender="dateTitle,filter,resultList">
+			<a4j:commandLink actionListener="#{rosterWeekOverviewBean.navigatePrevious}" reRender="dateTitle,filter,resultList">
 				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="back.png" />
 				<h:outputText styleClass="toolbarText" value="Vorherige Woche"  />
 			</a4j:commandLink>
@@ -50,10 +50,10 @@
 
 	<ui:define name="content">
 		<ui:decorate template="rosterFilter.xhtml">
-			<ui:param name="bean" value="#{rosterWeekViewBean}" />
+			<ui:param name="bean" value="#{rosterWeekOverviewBean}" />
 		</ui:decorate>
 		<ui:decorate template="rosterTable.xhtml">
-			<ui:param name="values" value="#{rosterWeekViewBean.locationEntry}" />
+			<ui:param name="values" value="#{rosterWeekOverviewBean.locationEntry}" />
 		</ui:decorate>
 	</ui:define>
 

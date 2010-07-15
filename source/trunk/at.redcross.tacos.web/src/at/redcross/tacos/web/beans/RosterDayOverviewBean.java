@@ -16,8 +16,8 @@ import at.redcross.tacos.dbal.helper.RosterEntryHelper;
 import at.redcross.tacos.web.reporting.ReportRenderer.ReportRenderParameters;
 
 @KeepAlive
-@ManagedBean(name = "rosterDayViewBean")
-public class RosterDayViewBean extends RosterViewBean {
+@ManagedBean(name = "rosterDayOverviewBean")
+public class RosterDayOverviewBean extends RosterOverviewBean {
 
     private static final long serialVersionUID = 8817078489086816724L;
 

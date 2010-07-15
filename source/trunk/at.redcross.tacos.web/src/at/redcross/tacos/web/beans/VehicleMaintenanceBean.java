@@ -63,7 +63,7 @@ public class VehicleMaintenanceBean extends BaseBean {
 				manager.merge(car);
 			}
 			EntityManagerHelper.commit(manager);
-			return FacesUtils.pretty("admin-listCarsView");
+			return FacesUtils.pretty("admin-vehicleOverview");
 		}
 		catch (Exception ex) {
 			FacesUtils.addErrorMessage("Der Fahrzeugeintrag konnte nicht gespeichert werden");
