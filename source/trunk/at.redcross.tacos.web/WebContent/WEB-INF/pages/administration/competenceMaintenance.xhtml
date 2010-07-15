@@ -77,7 +77,7 @@
 				<f:facet name="header">
 					<rich:spacer />
 				</f:facet>
-				<a4j:commandLink reRender="competenceTable" rendered="#{dto.state.name ne 'delete'}">
+				<a4j:commandLink reRender="competenceTable" rendered="#{dto.state.name ne 'delete'}" immediate="true">
 					<a4j:actionparam name="competenceId" assignTo="#{competenceMaintenanceBean.competenceId}" value="#{dto.entity.id}"
 						actionListener="#{competenceMaintenanceBean.removeCompetence}" />
 					<h:graphicImage library="images/16x16" name="remove.png" />
