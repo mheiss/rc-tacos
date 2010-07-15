@@ -5,7 +5,7 @@
 <body>
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
 	<ui:param name="section" value="admin" />
-	<ui:param name="page" value="listCarsView" />
+	<ui:param name="page" value="userOverview" />
 	
 	<ui:define name="navigation">
 		<ui:include src="navigation.xhtml" />
@@ -13,14 +13,14 @@
 
 	<ui:define name="page-title">
 		<h:graphicImage library="images/32x32" name="users.png" />
-		<h2 class="title"> <h:outputText value="Fahrzeugansicht" /> </h2>
+		<h2 class="title"> <h:outputText value="Mitarbeiteransicht" /> </h2>
 	</ui:define>
 	
 	<ui:define name="page-toolbar">
 		<li>
-			<pretty:link mappingId="admin-createCarView" title="Fahrzeugeintrag bearbeiten">
+			<pretty:link mappingId="admin-userCreateMaintenance" title="Mitarbeitereintrag anlegen">
 				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="add.png" />
-				<h:outputText styleClass="toolbarText" value="Fahrzeug anlegen"  />
+				<h:outputText styleClass="toolbarText" value="Mitarbeiter anlegen"  />
 			</pretty:link>
 		</li>
 	</ui:define>
@@ -30,21 +30,21 @@
 			<fieldset class="defaultStyle"></fieldset>
 		</rich:simpleTogglePanel>
 		<h:panelGroup id="d">
-			<rich:tabPanel selectedTab="#{carViewBean.locationName}" switchType="ajax" valueChangeListener="#{carViewBean.tabChanged}"
+			<rich:tabPanel selectedTab="#{userOverviewBean.locationName}" switchType="ajax" valueChangeListener="#{userOverviewBean.tabChanged}"
 				styleClass="defaultTabPanelStyle" tabClass="defaultTabStyle" headerClass="defaultTabHeaderStyle">
 				<rich:tab label="Alle Dienststellen" name="*">
-					<ui:decorate template="carTable.xhtml">
-						<ui:param name="bean" value="#{carViewBean}" />
+					<ui:decorate template="userOverviewTable.xhtml">
+						<ui:param name="bean" value="#{userOverviewBean}" />
 						<ui:param name="tabId" value="all" />
-						<ui:param name="values" value="#{carViewBean.cars}" />
+						<ui:param name="values" value="#{userOverviewBean.users}" />
 					</ui:decorate>
 				</rich:tab>
-				<c:forEach items="#{carViewBean.locations}" var="location">
+				<c:forEach items="#{userOverviewBean.locations}" var="location">
 					<rich:tab label="#{location.name}" name="#{location.name}">
-						<ui:decorate template="carTable.xhtml">
-							<ui:param name="bean" value="#{carViewBean}" />
+						<ui:decorate template="userOverviewTable.xhtml">
+							<ui:param name="bean" value="#{userOverviewBean}" />
 							<ui:param name="tabId" value="#{location.id}" />
-							<ui:param name="values" value="#{carViewBean.cars}" />
+							<ui:param name="values" value="#{userOverviewBean.users}" />
 						</ui:decorate>
 					</rich:tab>
 				</c:forEach>

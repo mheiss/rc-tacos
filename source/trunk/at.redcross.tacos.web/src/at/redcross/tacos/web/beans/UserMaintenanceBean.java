@@ -27,8 +27,8 @@ import at.redcross.tacos.web.utils.StringUtils;
 
 @KeepAlive
 @Component
-@ManagedBean(name = "systemUserEntryBean")
-public class SystemUserEntryBean extends BaseBean {
+@ManagedBean(name = "userMaintenanceBean")
+public class UserMaintenanceBean extends BaseBean {
 
 	private static final long serialVersionUID = -8941798819713448843L;
 

@@ -18,8 +18,8 @@ import at.redcross.tacos.web.persitence.EntityManagerFactory;
 
 @KeepAlive
 @Component
-@ManagedBean(name = "carEntryBean")
-public class CarEntryBean extends BaseBean {
+@ManagedBean(name = "vehicleMaintenanceBean")
+public class VehicleMaintenanceBean extends BaseBean {
 	
 	private static final long serialVersionUID = 464932680405482944L;
 

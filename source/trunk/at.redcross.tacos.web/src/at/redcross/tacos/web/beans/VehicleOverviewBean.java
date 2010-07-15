@@ -8,18 +8,18 @@ import javax.persistence.EntityManager;
 
 import org.ajax4jsf.model.KeepAlive;
 
+import at.redcross.tacos.dbal.entity.Car;
 import at.redcross.tacos.dbal.entity.Location;
-import at.redcross.tacos.dbal.entity.SystemUser;
+import at.redcross.tacos.dbal.helper.CarHelper;
 import at.redcross.tacos.dbal.helper.LocationHelper;
-import at.redcross.tacos.dbal.helper.SystemUserHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.web.persitence.EntityManagerFactory;
 
 @KeepAlive
-@ManagedBean(name = "systemUserViewBean")
-public class SystemUserViewBean extends BaseBean {
+@ManagedBean(name = "vehicleOverviewBean")
+public class VehicleOverviewBean extends BaseBean {
 
-    private static final long serialVersionUID = -5114023802685654841L;
+    private static final long serialVersionUID = 5527463274271756151L;
 
     /** available locations */
     private List<Location> locations;
@@ -28,7 +28,7 @@ public class SystemUserViewBean extends BaseBean {
     private String locationName = "*";
 
     /** queried results for visualization / reporting */
-    private List<SystemUser> users;
+    private List<Car> cars;
 
     /** paging */
     private int page = 1;
@@ -66,7 +66,7 @@ public class SystemUserViewBean extends BaseBean {
     // Private API
     // ---------------------------------
     private void loadfromDatabase(EntityManager manager, String locationId) {
-        users = SystemUserHelper.listByLocationName(manager, locationId);
+        cars = CarHelper.listByLocationName(manager, locationId);
     }
 
     private String getLocationByName(String locationName) {
@@ -99,8 +99,8 @@ public class SystemUserViewBean extends BaseBean {
         return locations;
     }
 
-    public List<SystemUser> getUsers() {
-        return users;
+    public List<Car> getCars() {
+        return cars;
     }
 
     public String getLocationName() {

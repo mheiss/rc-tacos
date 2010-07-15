@@ -9,22 +9,22 @@
 	</rich:panel>
 	<rich:panel rendered="#{not empty values}">
 		<rich:dataTable id="table-#{tabId}" styleClass="singleTable" value="#{values}" var="car" onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
-			<rich:column styleClass="smallColumn">
+			<rich:column sortBy="#{car.standby}" styleClass="center smallColumn">
 				<f:facet name="header">
-					<rich:spacer />
+					<h:outputText value="Status" title="Status" />
 				</f:facet>
 				<h:panelGroup rendered="#{car.standby}">
-					<h:graphicImage library="images/24x24" name="user_male_expired.png" />
+					<h:graphicImage library="images/24x24" name="standby.png" />
 				</h:panelGroup>
 				<h:panelGroup rendered="#{not car.standby}">
-					<h:graphicImage library="images/24x24" name="user_male_locked.png" />
+					<h:graphicImage library="images/24x24" name="check.png" />
 				</h:panelGroup>
 			</rich:column>
-			<rich:column styleClass="bold" sortBy="#{car.carName}" sortOrder="ASCENDING">
+			<rich:column styleClass="mediumColumn bold" sortBy="#{car.name}" sortOrder="ASCENDING">
 				<f:facet name="header">
 					<h:outputText value="FZG" title="Fahrzeug" />
 				</f:facet>
-				<h:outputText value="#{car.carName}" />
+				<h:outputText value="#{car.name}" />
 			</rich:column>
 			<rich:column styleClass="largeColumn">
 				<f:facet name="header">
@@ -32,7 +32,7 @@
 				</f:facet>
 				<h:outputText value="#{car.location.name}" />
 			</rich:column>
-			<rich:column styleClass="largeColumn">
+			<rich:column>
 				<f:facet name="header">
 					<h:outputText value="Anmerkungen" />
 				</f:facet>
@@ -42,7 +42,7 @@
 				<f:facet name="header">
 					<rich:spacer />
 				</f:facet>
-				<pretty:link mappingId="admin-editCarView" title="Fahrzeugeintrag bearbeiten">
+				<pretty:link mappingId="admin-vehicleEditMaintenance" title="Fahrzeugeintrag bearbeiten">
 					<f:param value="#{car.id}" />
 					<h:graphicImage styleClass="actionImage" library="images/16x16" name="edit.png" />
 				</pretty:link>

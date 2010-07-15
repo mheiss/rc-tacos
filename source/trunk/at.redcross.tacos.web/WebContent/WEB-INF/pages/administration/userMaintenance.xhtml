@@ -4,23 +4,23 @@
 <body>
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
 	<ui:param name="section" value="admin" />
-	<ui:param name="page" value="createView" />
+	<ui:param name="page" value="userMaintenance" />
 	
 	<ui:define name="navigation">
 		<ui:include src="navigation.xhtml" />
 	</ui:define>
 
 	<ui:define name="page-title">
-		<h:panelGroup rendered="#{systemUserEntryBean.new}">
+		<h:panelGroup rendered="#{userMaintenanceBean.new}">
 			<h:graphicImage library="images/32x32" name="user_add.png" />
 			<h2 class="title">
-				<h:outputText value="Neuer Mitarbeiter" />
+				<h:outputText value="Neuen Mitarbeiter anlegen" />
 			</h2>
 		</h:panelGroup>
-		<h:panelGroup rendered="#{not systemUserEntryBean.new}">
+		<h:panelGroup rendered="#{not userMaintenanceBean.new}">
 			<h:graphicImage library="images/32x32" name="user_edit.png" />
 			<h2 class="title">
-				<h:outputText value="Mitarbeiter '#{systemUserEntryBean.systemUser.lastName} #{systemUserEntryBean.systemUser.firstName}' bearbeiten" />
+				<h:outputText value="Mitarbeiter '#{userMaintenanceBean.systemUser.lastName} #{userMaintenanceBean.systemUser.firstName}' bearbeiten" />
 			</h2>
 		</h:panelGroup>
 	</ui:define>
@@ -34,7 +34,7 @@
 			<li class="left">
 				<h:outputLabel for="pnr" value="Personalnummer" /> 
 				<div class="input">
-					<h:inputText id="pnr" value="#{systemUserEntryBean.systemUser.pnr}" required="true" requiredMessage="Bitte geben Sie eine gültige Personalnummer an">
+					<h:inputText id="pnr" value="#{userMaintenanceBean.systemUser.pnr}" required="true" requiredMessage="Bitte geben Sie eine gültige Personalnummer an">
 						<rich:ajaxValidator event="onblur" />
 					</h:inputText>
 					<rich:message for="pnr" errorClass="error" />
@@ -43,7 +43,7 @@
 			<li class="left">
 				<h:outputLabel for="lastName" value="Nachname" />
 				<div class="input">	
-					 <h:inputText id="lastName" value="#{systemUserEntryBean.systemUser.lastName}" required="true" requiredMessage="Bitte geben Sie einen Nachnamen an">
+					 <h:inputText id="lastName" value="#{userMaintenanceBean.systemUser.lastName}" required="true" requiredMessage="Bitte geben Sie einen Nachnamen an">
 						<rich:ajaxValidator event="onblur" />
 					</h:inputText>
 					<rich:message for="lastName" errorClass="error" />
@@ -52,7 +52,7 @@
 			<li class="right">
 				<h:outputLabel for="firstName" value="Vorname" />
 				<div class="input"> 
-					<h:inputText id="firstName" value="#{systemUserEntryBean.systemUser.firstName}" required="true" requiredMessage="Bitte geben Sie einen Vornamen an">
+					<h:inputText id="firstName" value="#{userMaintenanceBean.systemUser.firstName}" required="true" requiredMessage="Bitte geben Sie einen Vornamen an">
 						<rich:ajaxValidator event="onblur" />
 					</h:inputText>
 					<rich:message for="firstName" errorClass="error" />
@@ -61,8 +61,8 @@
 			<li class="left">
 				<h:outputLabel for="gender" value="Geschlecht" />
 				<div class="input">
-					<rich:comboBox id="gender" value="#{systemUserEntryBean.systemUser.gender}" selectFirstOnUpdate="false" defaultLabel="Geschlecht" required="true" requiredMessage="Bitte geben sie ein Geschlecht an">
-						<f:selectItems value="#{systemUserEntryBean.genderItems}" />
+					<rich:comboBox id="gender" value="#{userMaintenanceBean.systemUser.gender}" selectFirstOnUpdate="false" defaultLabel="Geschlecht" required="true" requiredMessage="Bitte geben sie ein Geschlecht an">
+						<f:selectItems value="#{userMaintenanceBean.genderItems}" />
 						<f:validator validatorId="validator.dropDown" />
 						<f:converter converterId="converter.dropDown" />
 						<rich:ajaxValidator event="onchange" />
@@ -73,7 +73,7 @@
 			<li class="right">
 				<h:outputLabel for="birthday" value="Geburtsdatum" />
 					<div class="input">
-						<rich:calendar id="birthday" value="#{systemUserEntryBean.systemUser.birthday}" styleClass="rich-calendar" enableManualInput="true" converterMessage="Bitte geben Sie ein gültiges Geburtsdatum an" datePattern="dd.MM.yyyy" locale="#{localeBean.locale}"
+						<rich:calendar id="birthday" value="#{userMaintenanceBean.systemUser.birthday}" styleClass="rich-calendar" enableManualInput="true" converterMessage="Bitte geben Sie ein gültiges Geburtsdatum an" datePattern="dd.MM.yyyy" locale="#{localeBean.locale}"
 							timeZone="#{localeBean.timeZone}">
 							<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 							<rich:ajaxValidator event="onchanged" />
@@ -90,7 +90,7 @@
 				<li class="left">
 					<h:outputLabel for="mail" value="E-Mail" /> 
 					<div class="input largeInput">
-						<h:inputText id="mail" value="#{systemUserEntryBean.systemUser.address.email}"
+						<h:inputText id="mail" value="#{userMaintenanceBean.systemUser.address.email}"
 							required="true" requiredMessage="Bitte geben Sie eine eMail Adresse ein">
 							<rich:ajaxValidator event="onblur" />
 							<f:validator validatorId="validator.mail" />
@@ -102,7 +102,7 @@
 				<li class="left">
 					<h:outputLabel for="phone" value="Telefon (dienstlich)" /> 
 					<div class="input">
-						<h:inputText id="phone" value="#{systemUserEntryBean.systemUser.address.phone}">
+						<h:inputText id="phone" value="#{userMaintenanceBean.systemUser.address.phone}">
 							<rich:ajaxValidator event="onblur" />
 						</h:inputText>
 						<rich:message for="phone" errorClass="error" />
@@ -111,7 +111,7 @@
 				<li class="right">
 					<h:outputLabel for="phone2" value="Telefon (privat)" />
 					<div class="input">
-						<h:inputText id="phone2" value="#{systemUserEntryBean.systemUser.address.phone2}">
+						<h:inputText id="phone2" value="#{userMaintenanceBean.systemUser.address.phone2}">
 							<rich:ajaxValidator event="onblur" />
 						</h:inputText>
 						<rich:message for="phone2" errorClass="error" />
@@ -120,10 +120,10 @@
 				<li class="right">
 					<h:outputLabel for="location" value="Primäre Dienststelle" />
 					<div class="input">
-						<rich:comboBox id="location" value="#{systemUserEntryBean.systemUser.location}" 
+						<rich:comboBox id="location" value="#{userMaintenanceBean.systemUser.location}" 
 							selectFirstOnUpdate="false" defaultLabel="primäre Dienststelle"
 							required="true" requiredMessage="Bitte geben sie eine primäre Dienststelle an">
-							<f:selectItems value="#{systemUserEntryBean.locationItems}" />
+							<f:selectItems value="#{userMaintenanceBean.locationItems}" />
 							<f:validator validatorId="validator.dropDown" />
 							<f:converter converterId="converter.dropDown" />
 							<rich:ajaxValidator event="onchange" />
@@ -139,7 +139,7 @@
 				<li class="left">
 					<h:outputLabel for="loginName" value="Benutzername" />
 					<div class="input">
-						<h:inputText id="loginName" value="#{systemUserEntryBean.login.loginName}" required="true" requiredMessage="Bitte geben Sie einen Benutzernamen" >
+						<h:inputText id="loginName" value="#{userMaintenanceBean.login.loginName}" required="true" requiredMessage="Bitte geben Sie einen Benutzernamen" >
 							<rich:ajaxValidator event="onblur" />
 						</h:inputText> 
 						<rich:message for="loginName" errorClass="error" />
@@ -148,7 +148,7 @@
 				<li class="left">
 					<h:outputLabel for="password" value="Passwort" />
 					<div class="input">
-						<h:inputText id="password" value="#{systemUserEntryBean.password}" required="#{systemUserEntryBean.new}" requiredMessage="Bitte geben Sie ein Passwort ein" >
+						<h:inputText id="password" value="#{userMaintenanceBean.password}" required="#{userMaintenanceBean.new}" requiredMessage="Bitte geben Sie ein Passwort ein" >
 							<f:validator validatorId="validator.passwordMatch" />
 							<rich:ajaxValidator event="onblur" />
 						</h:inputText> 
@@ -158,7 +158,7 @@
 				<li class="right">
 					<h:outputLabel for="password2" value="Wiederholen" />
 					<div class="input">
-						<h:inputText id="password2" value="#{systemUserEntryBean.password2}" required="#{systemUserEntryBean.new}" requiredMessage="Bitte wiederholen Sie ihr Passwort" >
+						<h:inputText id="password2" value="#{userMaintenanceBean.password2}" required="#{userMaintenanceBean.new}" requiredMessage="Bitte wiederholen Sie ihr Passwort" >
 							<f:validator validatorId="validator.passwordMatch" />
 							<rich:ajaxValidator event="onblur" />
 						</h:inputText>
@@ -168,7 +168,7 @@
 				<li class="right">
 				<h:outputLabel for="locked" value="Gesperrt" />
 				<div class="input">
-					<h:selectBooleanCheckbox id="locked" value="#{systemUserEntryBean.login.locked}" />
+					<h:selectBooleanCheckbox id="locked" value="#{userMaintenanceBean.login.locked}" />
 				</div>
 				</li>
 			</ol>
@@ -176,15 +176,15 @@
 	
 		<fieldset class="defaultStyle">
 			<legend> <h:outputText value="Anmerkungen" /> </legend> 
-			<rich:editor value="#{systemUserEntryBean.systemUser.notes}" theme="simple" oninit="smartEditor()" autoResize="true" language="de" />
+			<rich:editor value="#{userMaintenanceBean.systemUser.notes}" theme="simple" oninit="smartEditor()" autoResize="true" language="de" />
 		</fieldset>
 
 		<fieldset class="defaultStyle last">
 			<div class="actionBar">
-				<a4j:commandLink immediate="true" reRender="content-wrapper" styleClass="button" action="#{systemUserEntryBean.revert}">
+				<a4j:commandLink immediate="true" reRender="content-wrapper" styleClass="button" action="#{userMaintenanceBean.revert}">
 					<span> <h:outputText value="Zurücksetzen" /> </span>
 				</a4j:commandLink> 
-				<a4j:commandLink styleClass="button" action="#{systemUserEntryBean.persist}">
+				<a4j:commandLink styleClass="button" action="#{userMaintenanceBean.persist}">
 					<span> <h:outputText value="Mitarbeiter speichern" /> </span>
 				</a4j:commandLink>
 			</div>

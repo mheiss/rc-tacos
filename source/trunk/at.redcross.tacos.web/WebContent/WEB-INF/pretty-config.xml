@@ -77,37 +77,37 @@
 	</url-mapping>
 	
 	<!-- ################ ADMINISTRATION - USER ####################### -->
-	<url-mapping id="admin-createUserView">
+	<url-mapping id="admin-userCreateMaintenance">
 		<pattern>/admin/user/create</pattern>
-		<view-id>/WEB-INF/pages/administration/user/editUserView.faces</view-id>
-		<action onPostback="false">#{systemUserEntryBean.prettyInit}</action>
+		<view-id>/WEB-INF/pages/administration/userMaintenance.faces</view-id>
+		<action onPostback="false">#{userMaintenancebean.prettyInit}</action>
 	</url-mapping>
-	<url-mapping id="admin-editUserView">
-		<pattern>/admin/user/edit/#{systemUserEntryBean.userId}</pattern>
-		<view-id>/WEB-INF/pages/administration/user/editUserView.faces</view-id>
-		<action onPostback="false">#{systemUserEntryBean.prettyInit}</action>
+	<url-mapping id="admin-userEditMaintenance">
+		<pattern>/admin/user/edit/#{userMaintenancebean.userId}</pattern>
+		<view-id>/WEB-INF/pages/administration/userMaintenance.faces</view-id>
+		<action onPostback="false">#{userMaintenancebean.prettyInit}</action>
 	</url-mapping>
-	<url-mapping id="admin-listUsersView">
+	<url-mapping id="admin-userOverview">
 		<pattern>/admin/users</pattern>
-		<view-id>/WEB-INF/pages/administration/userListingView.faces</view-id>
-		<action onPostback="false">#{systemUserViewBean.prettyInit}</action>
+		<view-id>/WEB-INF/pages/administration/userOverview.faces</view-id>
+		<action onPostback="false">#{userOverviewBean.prettyInit}</action>
 	</url-mapping>
 	
 	<!-- ################ ADMINISTRATION - CAR ####################### -->
-	<url-mapping id="admin-createCarView">
+	<url-mapping id="admin-vehicleCreateMaintenance">
 		<pattern>/admin/car/create</pattern>
-		<view-id>/WEB-INF/pages/administration/car/editCarView.faces</view-id>
-		<action onPostback="false">#{carEntryBean.prettyInit}</action>
+		<view-id>/WEB-INF/pages/administration/vehicleMaintenance.faces</view-id>
+		<action onPostback="false">#{vehicleMaintenanceBean.prettyInit}</action>
 	</url-mapping>
-	<url-mapping id="admin-editCarView">
-		<pattern>/admin/car/edit/#{carEntryBean.carId}</pattern>
-		<view-id>/WEB-INF/pages/administration/car/editCarView.faces</view-id>
-		<action onPostback="false">#{carEntryBean.prettyInit}</action>
+	<url-mapping id="admin-vehicleEditMaintenance">
+		<pattern>/admin/car/edit/#{vehicleMaintenanceBean.carId}</pattern>
+		<view-id>/WEB-INF/pages/administration/vehicleMaintenance.faces</view-id>
+		<action onPostback="false">#{vehicleMaintenanceBean.prettyInit}</action>
 	</url-mapping>
-	<url-mapping id="admin-listCarsView">
-		<pattern>/admin/cars</pattern>
-		<view-id>/WEB-INF/pages/administration/car/carListingView.faces</view-id>
-		<action onPostback="false">#{carViewBean.prettyInit}</action>
+	<url-mapping id="admin-vehicleOverview">
+		<pattern>/admin/vehicles</pattern>
+		<view-id>/WEB-INF/pages/administration/vehicleOverview.faces</view-id>
+		<action onPostback="false">#{vehicleOverviewBean.prettyInit}</action>
 	</url-mapping>
 	
 		<!-- ################ ADMINISTRATION - COMPETENCE ####################### -->

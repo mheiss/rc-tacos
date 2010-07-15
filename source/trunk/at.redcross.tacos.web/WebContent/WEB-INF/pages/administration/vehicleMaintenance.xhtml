@@ -4,23 +4,23 @@
 <body>
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
 	<ui:param name="section" value="admin" />
-	<ui:param name="page" value="createView" />
+	<ui:param name="page" value="vehicleMaintenance" />
 	
 	<ui:define name="navigation">
 		<ui:include src="navigation.xhtml" />
 	</ui:define>
 
 	<ui:define name="page-title">
-		<h:panelGroup rendered="#{carEntryBean.new}">
+		<h:panelGroup rendered="#{vehicleMaintenanceBean.new}">
 			<h:graphicImage library="images/32x32" name="user_add.png" />
 			<h2 class="title">
 				<h:outputText value="Neues Fahrzeug" />
 			</h2>
 		</h:panelGroup>
-		<h:panelGroup rendered="#{not carEntryBean.new}">
+		<h:panelGroup rendered="#{not vehicleMaintenanceBean.new}">
 			<h:graphicImage library="images/32x32" name="user_edit.png" />
 			<h2 class="title">
-				<h:outputText value="Fahrzeug '#{carEntryBean.car.carName}' bearbeiten" />
+				<h:outputText value="Fahrzeug '#{vehicleMaintenanceBean.car.name}' bearbeiten" />
 			</h2>
 		</h:panelGroup>
 	</ui:define>
@@ -34,20 +34,20 @@
 			<li class="left">
 				<h:outputLabel for="carName" value="Bezeichnung" /> 
 				<div class="input">
-					<h:inputText id="pnr" value="#{carEntryBean.car.carName}" required="true" requiredMessage="Bitte geben Sie eine gültige Fahrzeugbezeichnung an">
+					<h:inputText id="carName" value="#{vehicleMaintenanceBean.car.name}" required="true" requiredMessage="Bitte geben Sie eine gültige Fahrzeugbezeichnung an">
 						<rich:ajaxValidator event="onblur" />
 					</h:inputText>
-					<rich:message for="pnr" errorClass="error" />
+					<rich:message for="carName" errorClass="error" />
 				</div>
 			</li>
 		
 			<li class="right">
 				<h:outputLabel for="location" value="Aktuelle Dienststelle" />
 				<div class="input">
-					<rich:comboBox id="location" value="#{carEntryBean.car.location}" 
+					<rich:comboBox id="location" value="#{vehicleMaintenanceBean.car.location}" 
 						selectFirstOnUpdate="false" defaultLabel="aktuelle Dienststelle"
 						required="true" requiredMessage="Bitte geben sie eine aktuelle Dienststelle an">
-						<f:selectItems value="#{carEntryBean.locationItems}" />
+						<f:selectItems value="#{vehicleMaintenanceBean.locationItems}" />
 						<f:validator validatorId="validator.dropDown" />
 						<f:converter converterId="converter.dropDown" />
 						<rich:ajaxValidator event="onchange" />
@@ -60,7 +60,7 @@
 			<li class="left">
 				<h:outputLabel for="standby" value="Einsatzbereit" />
 				<div class="input">
-					<h:selectBooleanCheckbox id="standby" value="#{carEntryBean.car.standby}" />
+					<h:selectBooleanCheckbox id="standby" value="#{vehicleMaintenanceBean.car.standby}" />
 				</div>
 			</li>
 		</ol>
@@ -68,15 +68,15 @@
 	
 		<fieldset class="defaultStyle">
 			<legend> <h:outputText value="Anmerkungen" /> </legend> 
-			<rich:editor value="#{carEntryBean.car.notes}" theme="simple" oninit="smartEditor()" autoResize="true" language="de" />
+			<rich:editor value="#{vehicleMaintenanceBean.car.notes}" theme="simple" oninit="smartEditor()" autoResize="true" language="de" />
 		</fieldset>
 
 		<fieldset class="defaultStyle last">
 			<div class="actionBar">
-				<a4j:commandLink immediate="true" reRender="content-wrapper" styleClass="button" action="#{carEntryBean.revert}">
+				<a4j:commandLink immediate="true" reRender="content-wrapper" styleClass="button" action="#{vehicleMaintenanceBean.revert}">
 					<span> <h:outputText value="Zurücksetzen" /> </span>
 				</a4j:commandLink> 
-				<a4j:commandLink styleClass="button" action="#{carEntryBean.persist}">
+				<a4j:commandLink styleClass="button" action="#{vehicleMaintenanceBean.persist}">
 					<span> <h:outputText value="Fahrzeug speichern" /> </span>
 				</a4j:commandLink>
 			</div>
