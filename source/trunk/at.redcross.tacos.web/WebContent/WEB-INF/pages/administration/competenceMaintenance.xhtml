@@ -5,14 +5,14 @@
 <body>
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
 	<ui:param name="section" value="admin" />
-	<ui:param name="page" value="listCompetenceView" />
+	<ui:param name="page" value="comptetenceMaintenance" />
 
 	<ui:define name="navigation">
 		<ui:include src="navigation.xhtml" />
 	</ui:define>
 
 	<ui:define name="page-title">
-		<h:graphicImage library="images/32x32" name="users.png" />
+		<h:graphicImage library="images/32x32" name="components.png" />
 		<h2 class="title"><h:outputText value="Kompetenzen" /></h2>
 	</ui:define>
 
@@ -48,9 +48,9 @@
 				<f:facet name="header">
 					<h:outputText value="Status" />
 				</f:facet>
-				<h:graphicImage library="images/16x16" name="state_new.png" rendered="#{dto.state.name eq 'new'}" />
-				<h:graphicImage library="images/16x16" name="state_sync.png" rendered="#{dto.state.name eq 'sync'}" />
-				<h:graphicImage library="images/16x16" name="state_toDelete.png" rendered="#{dto.state.name eq 'delete'}" />	
+				<h:graphicImage library="images/16x16" name="data_new.png" rendered="#{dto.state.name eq 'new'}" title="Sync" />
+				<h:graphicImage library="images/16x16" name="data.png" rendered="#{dto.state.name eq 'sync'}" title="Neu" />
+				<h:graphicImage library="images/16x16" name="data_delete.png" rendered="#{dto.state.name eq 'delete'}" title="Zu löschen" />	
 			</rich:column>
 			<rich:column sortBy="#{dto.entity.shortName}" styleClass="smallColumn">
 				<f:facet name="header">

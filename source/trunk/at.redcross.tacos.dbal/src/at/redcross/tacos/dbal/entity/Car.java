@@ -22,7 +22,7 @@ public class Car extends EntityImpl {
     private long id;
 
     @Column(nullable = false, unique = true)
-    private String carName;
+    private String name;
 
     @Column
     private boolean standby;
@@ -38,7 +38,7 @@ public class Car extends EntityImpl {
     // ---------------------------------
     @Override
     public String getDisplayString() {
-        return carName;
+        return name;
     }
 
     // ---------------------------------
@@ -46,7 +46,7 @@ public class Car extends EntityImpl {
     // ---------------------------------
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("carName", carName).toString();
+        return new ToStringBuilder(this).append("carName", name).toString();
     }
 
     @Override
@@ -72,8 +72,8 @@ public class Car extends EntityImpl {
     // ---------------------------------
     // Setters for the properties
     // ---------------------------------
-    public void setCarName(String carName) {
-        this.carName = carName;
+    public void setName(String carName) {
+        this.name = carName;
     }
 
     public void setStandby(boolean standby) {
@@ -95,8 +95,8 @@ public class Car extends EntityImpl {
         return id;
     }
 
-    public String getCarName() {
-        return carName;
+    public String getName() {
+        return name;
     }
 
     public boolean isStandby() {
