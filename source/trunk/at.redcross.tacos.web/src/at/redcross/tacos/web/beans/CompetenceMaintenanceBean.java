@@ -1,5 +1,6 @@
 package at.redcross.tacos.web.beans;
 
+import java.util.Iterator;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -49,12 +50,28 @@ public class CompetenceMaintenanceBean extends BaseBean {
     // Actions
     // ---------------------------------
     public void removeCompetence(ActionEvent event) {
+        Iterator<GenericDto<Competence>> iter = competences.iterator();
+        while (iter.hasNext()) {
+            GenericDto<Competence> dto = iter.next();
+            Competence competence = dto.getEntity();
+            if (competence.getId() != competenceId) {
+                continue;
+            }
+            if (dto.getState() == DtoState.NEW) {
+                iter.remove();
+            }
+
+            dto.setState(DtoState.DELETE);
+        }
+    }
+
+    public void unremoveCompetence(ActionEvent event) {
         for (GenericDto<Competence> dto : competences) {
             Competence competence = dto.getEntity();
             if (competence.getId() != competenceId) {
                 continue;
             }
-            dto.setState(DtoState.DELETE);
+            dto.setState(DtoState.SYNC);
         }
     }
 
