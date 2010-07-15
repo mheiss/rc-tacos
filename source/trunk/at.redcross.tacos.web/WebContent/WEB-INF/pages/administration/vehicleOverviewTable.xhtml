@@ -13,20 +13,20 @@
 				<f:facet name="header">
 					<h:outputText value="Status" title="Status" />
 				</f:facet>
-				<h:panelGroup rendered="#{car.standby}">
-					<h:graphicImage library="images/24x24" name="standby.png" />
-				</h:panelGroup>
 				<h:panelGroup rendered="#{not car.standby}">
-					<h:graphicImage library="images/24x24" name="check.png" />
+					<h:graphicImage library="images/24x24" name="standby.png" title="Nicht verfügbar"/>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{car.standby}">
+					<h:graphicImage library="images/24x24" name="check.png" title="Einsatzbereit" />
 				</h:panelGroup>
 			</rich:column>
 			<rich:column styleClass="mediumColumn bold" sortBy="#{car.name}" sortOrder="ASCENDING">
 				<f:facet name="header">
-					<h:outputText value="FZG" title="Fahrzeug" />
+					<h:outputText value="Fahrzeug Name" title="Fahrzeug" />
 				</f:facet>
 				<h:outputText value="#{car.name}" />
 			</rich:column>
-			<rich:column styleClass="largeColumn">
+			<rich:column styleClass="mediumColumn" sortBy="#{car.location.name}">
 				<f:facet name="header">
 					<h:outputText value="Dienststelle" />
 				</f:facet>
@@ -36,7 +36,7 @@
 				<f:facet name="header">
 					<h:outputText value="Anmerkungen" />
 				</f:facet>
-				<h:outputText value="#{car.notes}" />
+				<h:outputText value="#{car.notes}" escape="false"/>
 			</rich:column>
 			<rich:column title="Bearbeiten" styleClass="smallColumn">
 				<f:facet name="header">

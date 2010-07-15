@@ -40,11 +40,10 @@
 					<rich:message for="carName" errorClass="error" />
 				</div>
 			</li>
-		
 			<li class="right">
-				<h:outputLabel for="location" value="Aktuelle Dienststelle" />
+				<h:outputLabel for="location" value="Dienststelle" />
 				<div class="input">
-					<rich:comboBox id="location" value="#{vehicleMaintenanceBean.car.location}" 
+					<rich:comboBox id="location" width="250" value="#{vehicleMaintenanceBean.car.location}" 
 						selectFirstOnUpdate="false" defaultLabel="aktuelle Dienststelle"
 						required="true" requiredMessage="Bitte geben sie eine aktuelle Dienststelle an">
 						<f:selectItems value="#{vehicleMaintenanceBean.locationItems}" />
@@ -55,12 +54,13 @@
 					<rich:message for="location" errorClass="error" />
 				</div>
 			</li>
-
-				
 			<li class="left">
 				<h:outputLabel for="standby" value="Einsatzbereit" />
 				<div class="input">
 					<h:selectBooleanCheckbox id="standby" value="#{vehicleMaintenanceBean.car.standby}" />
+					<span class="hint">
+						<h:outputText value="Gibt an ob dieses Fahrzeug einsatzbereit ist." />
+					</span>
 				</div>
 			</li>
 		</ol>

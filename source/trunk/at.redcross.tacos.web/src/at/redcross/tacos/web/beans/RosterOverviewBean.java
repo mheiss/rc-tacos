@@ -23,7 +23,7 @@ import at.redcross.tacos.web.reporting.ReportRenderer.ReportRenderParameters;
 import at.redcross.tacos.web.utils.DateUtils;
 
 /** Provide base functions for all roster beans */
-public abstract class RosterViewBean extends BaseBean {
+public abstract class RosterOverviewBean extends BaseBean {
 
     private static final long serialVersionUID = -63594513702881676L;
 

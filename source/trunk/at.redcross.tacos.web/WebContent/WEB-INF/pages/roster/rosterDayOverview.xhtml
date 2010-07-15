@@ -11,7 +11,7 @@
 <body>
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
 	<ui:param name="section" value="roster" />
-	<ui:param name="page" value="dayView" />
+	<ui:param name="page" value="dayOverview" />
 
 	<ui:define name="navigation">
 		<ui:include src="navigation.xhtml" />
@@ -21,7 +21,7 @@
 		<h:graphicImage library="images/32x32" name="calendar.png" />
 		<h2 class="title">
 			<h:outputText value="Tagesansicht für " />
-			<h:outputText id="dateTitle" value="#{rosterDayViewBean.date}">
+			<h:outputText id="dateTitle" value="#{rosterDayOverviewBean.date}">
 				<f:convertDateTime pattern="E, dd.MMMMM yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 			</h:outputText>
 		</h2>
@@ -29,19 +29,19 @@
 	
 	<ui:define name="page-toolbar">
 		<li>
-			<a4j:commandLink actionListener="#{rosterDayViewBean.navigateNext}" reRender="dateTitle,filter,resultList">
+			<a4j:commandLink actionListener="#{rosterDayOverviewBean.navigateNext}" reRender="dateTitle,filter,resultList">
 				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="next.png" />
 				<h:outputText styleClass="toolbarText" value="Nächster Tag"  />
 			</a4j:commandLink>
 		</li>
 		<li>
-			<a4j:htmlCommandLink actionListener="#{rosterDayViewBean.createPdfReport}">
+			<a4j:htmlCommandLink actionListener="#{rosterDayOverviewBean.createPdfReport}">
 				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="pdf.png" />
 				<h:outputText styleClass="toolbarText" value="Exportieren"  />
 			</a4j:htmlCommandLink>
 		</li>
 		<li>
-			<a4j:commandLink actionListener="#{rosterDayViewBean.navigatePrevious}" reRender="dateTitle,filter,resultList">
+			<a4j:commandLink actionListener="#{rosterDayOverviewBean.navigatePrevious}" reRender="dateTitle,filter,resultList">
 				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="back.png" />
 				<h:outputText styleClass="toolbarText" value="Vorheriger Tag"  />
 			</a4j:commandLink>
@@ -50,10 +50,10 @@
 
 	<ui:define name="content">
 		<ui:decorate template="rosterFilter.xhtml">
-			<ui:param name="bean" value="#{rosterDayViewBean}" />
+			<ui:param name="bean" value="#{rosterDayOverviewBean}" />
 		</ui:decorate>
 		<ui:decorate template="rosterTable.xhtml">
-			<ui:param name="values" value="#{rosterDayViewBean.locationEntry}" />
+			<ui:param name="values" value="#{rosterDayOverviewBean.locationEntry}" />
 		</ui:decorate>
 	</ui:define>
 	<ui:define name="panel">

@@ -94,7 +94,7 @@ public class UserMaintenanceBean extends BaseBean {
 				manager.merge(systemUser);
 			}
 			EntityManagerHelper.commit(manager);
-			return FacesUtils.pretty("admin-listUsersView");
+			return FacesUtils.pretty("admin-userOverview");
 		}
 		catch (Exception ex) {
 			FacesUtils.addErrorMessage("Der Mitarbeitereintrag konnte nicht gespeichert werden");
@@ -113,7 +113,7 @@ public class UserMaintenanceBean extends BaseBean {
 		try {
 			manager = EntityManagerFactory.createEntityManager();
 			loadfromDatabase(manager, systemUser.getId());
-			return FacesUtils.pretty("admin-editUserView");
+			return FacesUtils.pretty("admin-userEditMaintenance");
 		}
 		catch (Exception ex) {
 			FacesUtils.addErrorMessage("Der Mitarbeitereintrag konnte nicht zurückgesetzt werden");

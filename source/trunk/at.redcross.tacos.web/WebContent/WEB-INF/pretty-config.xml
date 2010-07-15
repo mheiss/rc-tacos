@@ -38,30 +38,30 @@
 	</url-mapping>
 
 	<!-- ################ ROSTER ####################### -->
-	<url-mapping id="roster-dayView">
+	<url-mapping id="roster-dayOverview">
 		<pattern>/roster</pattern>
-		<view-id>/WEB-INF/pages/roster/dayView.faces</view-id>
-		<action onPostback="false">#{rosterDayViewBean.prettyInit}</action>
+		<view-id>/WEB-INF/pages/roster/rosterDayOverview.faces</view-id>
+		<action onPostback="false">#{rosterDayOverviewBean.prettyInit}</action>
 	</url-mapping>
-	<url-mapping id="roster-personalView">
+	<url-mapping id="roster-personalOverview">
 		<pattern>/roster/personal</pattern>
-		<view-id>/WEB-INF/pages/roster/personalView.faces</view-id>
-		<action onPostback="false">#{rosterPersonalViewBean.prettyInit}</action>
+		<view-id>/WEB-INF/pages/roster/rosterPersonalOverview.faces</view-id>
+		<action onPostback="false">#{rosterPersonalOverviewBean.prettyInit}</action>
 	</url-mapping>
-	<url-mapping id="roster-weekView">
+	<url-mapping id="roster-weekOverview">
 		<pattern>/roster/week</pattern>
-		<view-id>/WEB-INF/pages/roster/weekView.faces</view-id>
-		<action onPostback="false">#{rosterWeekViewBean.prettyInit}</action>
+		<view-id>/WEB-INF/pages/roster/rosterWeekOverview.faces</view-id>
+		<action onPostback="false">#{rosterWeekOverviewBean.prettyInit}</action>
 	</url-mapping>
-	<url-mapping id="roster-createEntryView">
+	<url-mapping id="roster-createMaintenance">
 		<pattern>/roster/create</pattern>
-		<view-id>/WEB-INF/pages/roster/editEntryView.faces</view-id>
-		<action onPostback="false">#{rosterEntryBean.prettyInit}</action>
+		<view-id>/WEB-INF/pages/roster/rosterMaintenance.faces</view-id>
+		<action onPostback="false">#{rosterMaintenanceBean.prettyInit}</action>
 	</url-mapping>
-	<url-mapping id="roster-editEntryView">
-		<pattern>/roster/edit/#{rosterEntryBean.rosterId}</pattern>
-		<view-id>/WEB-INF/pages/roster/editEntryView.faces</view-id>
-		<action onPostback="false">#{rosterEntryBean.prettyInit}</action>
+	<url-mapping id="roster-editMaintenance">
+		<pattern>/roster/edit/#{rosterMaintenanceBean.rosterId}</pattern>
+		<view-id>/WEB-INF/pages/roster/rosterMaintenance.faces</view-id>
+		<action onPostback="false">#{rosterMaintenanceBean.prettyInit}</action>
 	</url-mapping>
 	
 	<!-- ################ ADMINISTRATION ####################### -->
@@ -70,22 +70,16 @@
 		<view-id>/WEB-INF/pages/administration/homeView.faces</view-id>
 	</url-mapping>
 	
-	<url-mapping id="admin-software">
-		<pattern>/admin/software</pattern>
-		<view-id>/WEB-INF/pages/administration/softwareVersionView.faces</view-id>
-		<action>#{softwareVersionBean.prettyInit}</action>
-	</url-mapping>
-	
 	<!-- ################ ADMINISTRATION - USER ####################### -->
 	<url-mapping id="admin-userCreateMaintenance">
 		<pattern>/admin/user/create</pattern>
 		<view-id>/WEB-INF/pages/administration/userMaintenance.faces</view-id>
-		<action onPostback="false">#{userMaintenancebean.prettyInit}</action>
+		<action onPostback="false">#{userMaintenanceBean.prettyInit}</action>
 	</url-mapping>
 	<url-mapping id="admin-userEditMaintenance">
-		<pattern>/admin/user/edit/#{userMaintenancebean.userId}</pattern>
+		<pattern>/admin/user/edit/#{userMaintenanceBean.userId}</pattern>
 		<view-id>/WEB-INF/pages/administration/userMaintenance.faces</view-id>
-		<action onPostback="false">#{userMaintenancebean.prettyInit}</action>
+		<action onPostback="false">#{userMaintenanceBean.prettyInit}</action>
 	</url-mapping>
 	<url-mapping id="admin-userOverview">
 		<pattern>/admin/users</pattern>
@@ -110,14 +104,14 @@
 		<action onPostback="false">#{vehicleOverviewBean.prettyInit}</action>
 	</url-mapping>
 	
-		<!-- ################ ADMINISTRATION - COMPETENCE ####################### -->
+	<!-- ################ ADMINISTRATION - COMPETENCE ####################### -->
 	<url-mapping id="admin-competenceMaintenance">
 		<pattern>/admin/competences</pattern>
 		<view-id>/WEB-INF/pages/administration/competenceMaintenance.faces</view-id>
 		<action onPostback="false">#{competenceMaintenanceBean.prettyInit}</action>
 	</url-mapping>
 	
-			<!-- ################ ADMINISTRATION - ASSIGNMENT ####################### -->
+	<!-- ################ ADMINISTRATION - ASSIGNMENT ####################### -->
 	<url-mapping id="admin-assignmentMaintenance">
 		<pattern>/admin/assignments</pattern>
 		<view-id>/WEB-INF/pages/administration/assignmentMaintenance.faces</view-id>

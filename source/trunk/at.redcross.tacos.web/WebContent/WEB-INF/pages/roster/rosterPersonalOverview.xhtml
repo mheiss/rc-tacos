@@ -5,7 +5,7 @@
 <body>
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
     <ui:param name="section" value="roster" />
-    <ui:param name="page" value="myView" />
+    <ui:param name="page" value="personalOverview" />
 
     <ui:define name="navigation">
         <ui:include src="navigation.xhtml" />
@@ -15,7 +15,7 @@
 		<h:graphicImage library="images/32x32" name="calendar_personal.png" />
 		<h2 class="title">
 			<h:outputText value="Meine Dienste" />
-			<h:outputText id="dateTitle" value="#{rosterDayViewBean.date}">
+			<h:outputText id="dateTitle" value="#{rosterDayOverviewBean.date}">
 				<f:convertDateTime pattern="MMMMM yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 			</h:outputText>
 		</h2>
