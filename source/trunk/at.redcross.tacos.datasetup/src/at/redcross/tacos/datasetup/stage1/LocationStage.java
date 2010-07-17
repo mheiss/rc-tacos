@@ -31,7 +31,7 @@ public class LocationStage implements DatasetupStage {
             location.setDistrict(district);
             location.setName("Bezirk: Bruck - Kapfenberg");
             location.setShortName("BK");
-            location.setAddress(address);
+//            location.setAddress(address);
 
             manager.persist(location);
         }
@@ -44,7 +44,7 @@ public class LocationStage implements DatasetupStage {
             location.setDistrict(district);
             location.setName("Bruck");
             location.setShortName("B");
-            location.setAddress(address);
+//            location.setAddress(address);
 
             manager.persist(location);
         }
@@ -57,7 +57,7 @@ public class LocationStage implements DatasetupStage {
             location.setDistrict(district);
             location.setShortName("K");
             location.setName("Kapfenberg");
-            location.setAddress(address);
+//            location.setAddress(address);
 
             manager.persist(location);
         }
