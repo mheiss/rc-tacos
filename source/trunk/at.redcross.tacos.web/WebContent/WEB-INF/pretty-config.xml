@@ -118,4 +118,11 @@
 		<action onPostback="false">#{assignmentMaintenanceBean.prettyInit}</action>
 	</url-mapping>
 	
+	<!-- ################ ADMINISTRATION - SERVICETYPE ####################### -->
+	<url-mapping id="admin-serviceTypeMaintenance">
+		<pattern>/admin/serviceTypes</pattern>
+		<view-id>/WEB-INF/pages/administration/serviceTypeMaintenance.faces</view-id>
+		<action onPostback="false">#{serviceTypeMaintenanceBean.prettyInit}</action>
+	</url-mapping>
+	
 </pretty-config>
