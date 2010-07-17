@@ -125,4 +125,11 @@
 		<action onPostback="false">#{serviceTypeMaintenanceBean.prettyInit}</action>
 	</url-mapping>
 	
+	<!-- ################ ADMINISTRATION - LOCATION ####################### -->
+	<url-mapping id="admin-locationMaintenance">
+		<pattern>/admin/locations</pattern>
+		<view-id>/WEB-INF/pages/administration/locationMaintenance.faces</view-id>
+		<action onPostback="false">#{locationMaintenanceBean.prettyInit}</action>
+	</url-mapping>
+	
 </pretty-config>
