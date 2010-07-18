@@ -52,13 +52,13 @@
 				<h:graphicImage library="images/16x16" name="data.png" rendered="#{dto.state.name eq 'sync'}" title="Neu" />
 				<h:graphicImage library="images/16x16" name="data_delete.png" rendered="#{dto.state.name eq 'delete'}" title="Zu löschen" />	
 			</rich:column>
-			<rich:column sortBy="#{dto.entity.shortName}" styleClass="largeColumn">
+			<rich:column sortBy="#{dto.entity.shortName}" styleClass="smallColumn">
 				<f:facet name="header">
 					<h:outputText value="Abkürzung" />
 				</f:facet>
 				<rich:inplaceInput value="#{dto.entity.shortName}" maxlength="5" layout="block" />
 			</rich:column>
-			<rich:column sortBy="#{dto.entity.name}" styleClass="largeColumn">
+			<rich:column sortBy="#{dto.entity.name}">
 				<f:facet name="header">
 					<h:outputText value="Name" />
 				</f:facet>
