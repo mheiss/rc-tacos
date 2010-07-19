@@ -13,6 +13,7 @@ import at.redcross.tacos.datasetup.stage1.AssignmentStage;
 import at.redcross.tacos.datasetup.stage1.CarStage;
 import at.redcross.tacos.datasetup.stage1.CompetenceStage;
 import at.redcross.tacos.datasetup.stage1.DistrictStage;
+import at.redcross.tacos.datasetup.stage1.LinkStage;
 import at.redcross.tacos.datasetup.stage1.LocationStage;
 import at.redcross.tacos.datasetup.stage1.ServiceTypeStage;
 import at.redcross.tacos.datasetup.stage1.SystemUserStage;
@@ -114,6 +115,7 @@ public class DatasetupApplication {
         app.registerStage(new CompetenceStage());
         app.registerStage(new SystemUserStage());
         app.registerStage(new CarStage());
+        app.registerStage(new LinkStage());
         app.execute();
     }
 }

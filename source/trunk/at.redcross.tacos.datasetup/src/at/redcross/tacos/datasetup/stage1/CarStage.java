@@ -7,7 +7,7 @@ import at.redcross.tacos.datasetup.DatasetupStage;
 import at.redcross.tacos.dbal.entity.Car;
 import at.redcross.tacos.dbal.entity.Location;
 
-// creates assignment stages
+// creates car stages
 public class CarStage implements DatasetupStage {
 
     @Override
