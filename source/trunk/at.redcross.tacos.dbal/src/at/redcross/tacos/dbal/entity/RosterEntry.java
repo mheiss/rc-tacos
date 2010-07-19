@@ -2,6 +2,7 @@ package at.redcross.tacos.dbal.entity;
 
 import java.util.Date;
 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -77,6 +78,11 @@ public class RosterEntry extends EntityImpl {
 
     @Column
     private boolean specialService;
+    
+    @OneToOne
+    private Car car;
+    
+    
 
     // ---------------------------------
     // EntityImpl
@@ -176,6 +182,10 @@ public class RosterEntry extends EntityImpl {
     public void setSpecialService(boolean specialService) {
         this.specialService = specialService;
     }
+    
+    public void setCar(Location location) {
+        this.location = location;
+    }
 
     // ---------------------------------
     // Getters for the properties
@@ -242,5 +252,9 @@ public class RosterEntry extends EntityImpl {
 
     public String getNotes() {
         return notes;
+    }
+    
+    public Car getCar() {
+        return car;
     }
 }
