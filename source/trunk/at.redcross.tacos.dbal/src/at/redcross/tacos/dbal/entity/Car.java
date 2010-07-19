@@ -25,7 +25,7 @@ public class Car extends EntityImpl {
     private String name;
 
     @Column
-    private boolean standby;
+    private boolean outOfOrder;
 
     @Column
     private String notes;
@@ -76,11 +76,11 @@ public class Car extends EntityImpl {
         this.name = carName;
     }
 
-    public void setStandby(boolean standby) {
-        this.standby = standby;
-    }
+	public void setOutOfOrder(boolean outOfOrder) {
+		this.outOfOrder = outOfOrder;
+	}
 
-    public void setNotes(String notes) {
+	public void setNotes(String notes) {
         this.notes = notes;
     }
 
@@ -99,9 +99,9 @@ public class Car extends EntityImpl {
         return name;
     }
 
-    public boolean isStandby() {
-        return standby;
-    }
+    public boolean isOutOfOrder() {
+		return outOfOrder;
+	}
 
     public String getNotes() {
         return notes;

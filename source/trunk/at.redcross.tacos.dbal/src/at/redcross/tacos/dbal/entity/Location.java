@@ -1,7 +1,7 @@
 package at.redcross.tacos.dbal.entity;
 
 import javax.persistence.Column;
-import javax.persistence.Embedded;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -27,10 +27,6 @@ public class Location extends EntityImpl {
 
     @Column
     private String shortName;
-
-//    @Embedded
-//    @Column(nullable = false)
-//    private Address address;
 
     @ManyToOne
     private District district;
@@ -82,10 +78,6 @@ public class Location extends EntityImpl {
         this.shortName = shortName;
     }
 
-//    public void setAddress(Address address) {
-//        this.address = address;
-//    }
-
     public void setDistrict(District district) {
         this.district = district;
     }
@@ -104,10 +96,6 @@ public class Location extends EntityImpl {
     public String getShortName() {
         return shortName;
     }
-
-//    public Address getAddress() {
-//        return address;
-//    }
 
     public District getDistrict() {
         return district;
