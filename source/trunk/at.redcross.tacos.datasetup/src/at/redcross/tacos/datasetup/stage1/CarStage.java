@@ -26,7 +26,7 @@ public class CarStage implements DatasetupStage {
         {
         	Car car = new Car();
         	car.setName("5.01 01");
-        	car.setStandby(true);
+        	car.setOutOfOrder(true);
         	car.setNotes("nicht zu schnell fahren, Bremsen funktionieren nicht!");
         	car.setLocation(location3);
 
@@ -35,7 +35,7 @@ public class CarStage implements DatasetupStage {
         {
         	Car car = new Car();
         	car.setName("5.01 03");
-        	car.setStandby(true);
+        	car.setOutOfOrder(false);
         	car.setLocation(location3);
 
             manager.persist(car);
@@ -43,7 +43,7 @@ public class CarStage implements DatasetupStage {
         {
         	Car car = new Car();
         	car.setName("5.01 04");
-        	car.setStandby(true);
+        	car.setOutOfOrder(true);
         	car.setLocation(location3);
 
             manager.persist(car);
@@ -51,7 +51,7 @@ public class CarStage implements DatasetupStage {
         {
         	Car car = new Car();
         	car.setName("5.01 05");
-        	car.setStandby(true);
+        	car.setOutOfOrder(true);
         	car.setLocation(location3);
 
             manager.persist(car);
@@ -59,7 +59,7 @@ public class CarStage implements DatasetupStage {
         {
         	Car car = new Car();
         	car.setName("5.01 28");
-        	car.setStandby(true);
+        	car.setOutOfOrder(true);
         	car.setLocation(location1);
 
             manager.persist(car);
@@ -67,7 +67,7 @@ public class CarStage implements DatasetupStage {
         {
         	Car car = new Car();
         	car.setName("5.01 22");
-        	car.setStandby(true);
+        	car.setOutOfOrder(true);
         	car.setLocation(location1);
 
             manager.persist(car);
@@ -75,7 +75,7 @@ public class CarStage implements DatasetupStage {
         {
         	Car car = new Car();
         	car.setName("5.01 23");
-        	car.setStandby(true);
+        	car.setOutOfOrder(true);
         	car.setLocation(location1);
 
             manager.persist(car);
@@ -83,7 +83,7 @@ public class CarStage implements DatasetupStage {
         {
         	Car car = new Car();
         	car.setName("5.01 24");
-        	car.setStandby(true);
+        	car.setOutOfOrder(true);
         	car.setLocation(location1);
 
             manager.persist(car);
@@ -91,7 +91,7 @@ public class CarStage implements DatasetupStage {
         {
         	Car car = new Car();
         	car.setName("5.01 25");
-        	car.setStandby(true);
+        	car.setOutOfOrder(true);
         	car.setLocation(location1);
 
             manager.persist(car);
@@ -99,7 +99,7 @@ public class CarStage implements DatasetupStage {
         {
         	Car car = new Car();
         	car.setName("5.01 26");
-        	car.setStandby(true);
+        	car.setOutOfOrder(true);
         	car.setLocation(location1);
 
             manager.persist(car);
@@ -107,7 +107,7 @@ public class CarStage implements DatasetupStage {
         {
         	Car car = new Car();
         	car.setName("5.01 27");
-        	car.setStandby(true);
+        	car.setOutOfOrder(true);
         	car.setLocation(location1);
 
             manager.persist(car);
@@ -115,7 +115,7 @@ public class CarStage implements DatasetupStage {
         {
         	Car car = new Car();
         	car.setName("5.01 42");
-        	car.setStandby(true);
+        	car.setOutOfOrder(true);
         	car.setLocation(location2);
 
             manager.persist(car);
@@ -123,7 +123,7 @@ public class CarStage implements DatasetupStage {
         {
         	Car car = new Car();
         	car.setName("5.01 43");
-        	car.setStandby(true);
+        	car.setOutOfOrder(true);
         	car.setLocation(location2);
 
             manager.persist(car);
@@ -131,7 +131,7 @@ public class CarStage implements DatasetupStage {
         {
         	Car car = new Car();
         	car.setName("5.01 44");
-        	car.setStandby(true);
+        	car.setOutOfOrder(true);
         	car.setLocation(location2);
 
             manager.persist(car);
@@ -139,7 +139,7 @@ public class CarStage implements DatasetupStage {
         {
         	Car car = new Car();
         	car.setName("5.01 45");
-        	car.setStandby(true);
+        	car.setOutOfOrder(true);
         	car.setLocation(location2);
 
             manager.persist(car);
@@ -147,7 +147,7 @@ public class CarStage implements DatasetupStage {
         {
         	Car car = new Car();
         	car.setName("5.01 46");
-        	car.setStandby(false);
+        	car.setOutOfOrder(false);
         	car.setLocation(location2);
 
             manager.persist(car);
@@ -155,7 +155,7 @@ public class CarStage implements DatasetupStage {
         {
         	Car car = new Car();
         	car.setName("5.01 47");
-        	car.setStandby(false);
+        	car.setOutOfOrder(false);
         	car.setLocation(location2);
 
             manager.persist(car);
@@ -163,7 +163,7 @@ public class CarStage implements DatasetupStage {
         {
         	Car car = new Car();
         	car.setName("5.01 48");
-        	car.setStandby(false);
+        	car.setOutOfOrder(false);
         	car.setLocation(location2);
 
             manager.persist(car);
@@ -171,7 +171,7 @@ public class CarStage implements DatasetupStage {
         {
         	Car car = new Car();
         	car.setName("5.01 49");
-        	car.setStandby(false);
+        	car.setOutOfOrder(false);
         	car.setLocation(location2);
 
             manager.persist(car);
