@@ -32,6 +32,9 @@
 				<rich:column rowspan="2" title="Bearbeiten" styleClass="smallColumn">
 					<rich:spacer />
 				</rich:column>
+				<rich:column rowspan="2" title="Löschen" styleClass="smallColumn">
+					<rich:spacer />
+				</rich:column>
 				<rich:column breakBefore="true">
 					<h:outputText value="Start" />
 				</rich:column>
@@ -47,7 +50,7 @@
 			</rich:columnGroup>
 		</f:facet>
 
-		<rich:column colspan="9">
+		<rich:column colspan="10">
 			<h:outputText value="#{locationEntry.location.name}" />
 		</rich:column>
 
@@ -126,6 +129,12 @@
 				<pretty:link mappingId="roster-editMaintenance" title="Dienstplaneintrag bearbeiten">
 					<f:param value="#{entry.id}" />
 					<h:graphicImage styleClass="actionImage" library="images/16x16" name="edit.png" />
+				</pretty:link>
+			</rich:column>
+			<rich:column styleClass="center">
+				<pretty:link mappingId="roster-deleteMaintenance" title="Dienstplaneintrag löschen">
+					<f:param value="#{entry.id}" />
+					<h:graphicImage styleClass="actionImage" library="images/16x16" name="remove.png" />
 				</pretty:link>
 			</rich:column>
 		</rich:subTable>
