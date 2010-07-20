@@ -71,6 +71,9 @@ public class SystemUser extends EntityImpl {
 	@ManyToMany
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<Competence> competences;
+	
+	@Column
+	private boolean toDelete;
 
 	// ---------------------------------
 	// EntityImpl
@@ -169,6 +172,10 @@ public class SystemUser extends EntityImpl {
 		this.notes = notes;
 	}
 
+	public void setToDelete(boolean toDelete) {
+		this.toDelete = toDelete;
+	}
+
 	// ---------------------------------
 	// Setters for the properties
 	// ---------------------------------
@@ -225,4 +232,9 @@ public class SystemUser extends EntityImpl {
 		}
 		return competences;
 	}
+	
+	public boolean isToDelete() {
+		return toDelete;
+	}
+
 }

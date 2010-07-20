@@ -82,6 +82,9 @@ public class RosterEntry extends EntityImpl {
     @OneToOne
     private Car car;
     
+    @Column
+    private boolean toDelete;
+    
     
 
     // ---------------------------------
@@ -183,11 +186,16 @@ public class RosterEntry extends EntityImpl {
         this.specialService = specialService;
     }
     
-    public void setCar(Location location) {
-        this.location = location;
+    public void setCar(Car car) {
+        this.car = car;
     }
 
-    // ---------------------------------
+	public void setToDelete(boolean toDelete) {
+		this.toDelete = toDelete;
+	}
+
+
+	// ---------------------------------
     // Getters for the properties
     // ---------------------------------
     public long getId() {
@@ -257,4 +265,8 @@ public class RosterEntry extends EntityImpl {
     public Car getCar() {
         return car;
     }
+
+    public boolean isToDelete() {
+		return toDelete;
+	}
 }
