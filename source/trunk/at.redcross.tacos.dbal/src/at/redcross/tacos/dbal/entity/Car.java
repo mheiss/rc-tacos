@@ -33,6 +33,10 @@ public class Car extends EntityImpl {
     @OneToOne
     private Location location;
 
+	@Column
+    private boolean toDelete;
+    
+
     // ---------------------------------
     // EntityImpl
     // ---------------------------------
@@ -88,6 +92,10 @@ public class Car extends EntityImpl {
         this.location = location;
     }
 
+	public void setToDelete(boolean toDelete) {
+		this.toDelete = toDelete;
+	}
+
     // ---------------------------------
     // Getters for the properties
     // ---------------------------------
@@ -110,5 +118,9 @@ public class Car extends EntityImpl {
     public Location getLocation() {
         return location;
     }
+    
+    public boolean isToDelete() {
+		return toDelete;
+	}
 
 }
