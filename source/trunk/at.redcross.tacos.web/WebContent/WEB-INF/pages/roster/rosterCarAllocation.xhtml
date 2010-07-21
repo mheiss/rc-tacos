@@ -12,7 +12,7 @@
 	</ui:define>
 
 	<ui:define name="page-title">
-		<h:graphicImage library="images/32x32" name="building.png" />
+		<h:graphicImage library="images/32x32" name="vehicle.png" />
 		<h2 class="title"><h:outputText value="Fahrzeugzuweisung" /></h2>
 	</ui:define>
 
@@ -45,6 +45,12 @@
 				<h:graphicImage library="images/16x16" name="data_new.png" rendered="#{dto.state.name eq 'new'}" title="Sync" />
 				<h:graphicImage library="images/16x16" name="data.png" rendered="#{dto.state.name eq 'sync'}" title="Neu" />
 				<h:graphicImage library="images/16x16" name="data_delete.png" rendered="#{dto.state.name eq 'delete'}" title="Zu löschen" />	
+			</rich:column>
+			<rich:column sortBy="#{dto.entity.car}" styleClass="mediumColumn">
+				<f:facet name="header">
+					<h:outputText value="Fahrzeug" />
+				</f:facet>
+				<rich:inplaceInput value="#{dto.entity.car}" maxlength="10" layout="block" />
 			</rich:column>
 			<rich:column sortBy="#{dto.entity.systemUser.lastname}" styleClass="smallColumn">
 				<f:facet name="header">
