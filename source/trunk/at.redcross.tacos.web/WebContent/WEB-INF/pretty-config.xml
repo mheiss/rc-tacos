@@ -63,6 +63,12 @@
 		<view-id>/WEB-INF/pages/roster/rosterMaintenance.faces</view-id>
 		<action onPostback="false">#{rosterMaintenanceBean.prettyInit}</action>
 	</url-mapping>
+		<url-mapping id="roster-assignCar">
+		<pattern>/roster/assignCar</pattern>
+		<view-id>/WEB-INF/pages/roster/rosterCarAllocation.faces</view-id>
+		<action onPostback="false">#{rosterCarAllocationBean.prettyInit}</action>
+	</url-mapping>
+	
 	
 	<!-- ################ ADMINISTRATION ####################### -->
 	<url-mapping id="admin-home">

@@ -60,5 +60,15 @@ public class RosterEntryHelper {
         }
         return query.getResultList();
     }
+    
+    public static List<RosterEntry> list(EntityManager manager) {
+       
+    	StringBuilder builder = new StringBuilder();
+        builder.append(" from RosterEntry entry ");
+       
+        TypedQuery<RosterEntry> query = manager.createQuery(builder.toString(), RosterEntry.class);
+
+        return query.getResultList();
+    }
 
 }
