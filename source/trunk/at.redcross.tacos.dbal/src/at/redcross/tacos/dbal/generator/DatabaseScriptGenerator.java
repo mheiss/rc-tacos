@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.cfg.DefaultComponentSafeNamingStrategy;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 
 /**
@@ -75,6 +76,7 @@ public class DatabaseScriptGenerator {
 	private void generate(Dialect dialect) {
 		cfg.setProperty("hibernate.dialect", dialect.getDialectClass());
 		SchemaExport export = new SchemaExport(cfg);
+		export.setFormat(true);
 		export.setDelimiter(";");
 		// CREATE scripts
 		String dialectName = dialect.name().toLowerCase();
@@ -137,6 +139,7 @@ public class DatabaseScriptGenerator {
 	/** initializes the generator */
 	private void initGenerator() throws Exception {
 		cfg = new AnnotationConfiguration();
+		cfg.setNamingStrategy(new DefaultComponentSafeNamingStrategy());
 		cfg.setProperty("hibernate.hbm2ddl.auto", "create");
 		for (Class<?> clazz : getClasses(packageName)) {
 			cfg.addAnnotatedClass(clazz);
