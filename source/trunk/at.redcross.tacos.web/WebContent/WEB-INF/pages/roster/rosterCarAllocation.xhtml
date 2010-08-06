@@ -50,7 +50,7 @@
 				<f:facet name="header">
 					<h:outputText value="Fahrzeug" />
 				</f:facet>
-				<rich:inplaceInput value="#{dto.entity.car}" maxlength="10" layout="block" />
+				<rich:comboBox value="#{dto.entity.car}" maxlength="10" layout="block" />
 			</rich:column>
 			<rich:column sortBy="#{dto.entity.systemUser.lastName} #{dto.entity.systemUser.firstName}" styleClass="smallColumn">
 				<f:facet name="header">
