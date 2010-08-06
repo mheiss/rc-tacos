@@ -52,11 +52,11 @@
 				</f:facet>
 				<rich:inplaceInput value="#{dto.entity.car}" maxlength="10" layout="block" />
 			</rich:column>
-			<rich:column sortBy="#{dto.entity.systemUser.lastname} #{dto.entity.systemUser.firstname}" styleClass="smallColumn">
+			<rich:column sortBy="#{dto.entity.systemUser.lastName} #{dto.entity.systemUser.firstName}" styleClass="smallColumn">
 				<f:facet name="header">
 					<h:outputText value="Name" />
 				</f:facet>
-				<rich:inplaceInput value="#{dto.entity.systemUser.lastName}" maxlength="20" layout="block" />
+				<rich:inplaceInput value="#{dto.entity.systemUser.lastName} #{dto.entity.systemUser.firstName}" maxlength="50" layout="block" />
 			</rich:column>
 			<rich:column sortBy="#{dto.entity.plannedStartDate}" styleClass="smallColumn">
 				<f:facet name="header">
