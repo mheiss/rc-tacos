@@ -65,8 +65,8 @@
 	</url-mapping>
 		<url-mapping id="roster-assignCar">
 		<pattern>/roster/assignCar</pattern>
-		<view-id>/WEB-INF/pages/roster/rosterCarAllocation.faces</view-id>
-		<action onPostback="false">#{rosterCarAllocationBean.prettyInit}</action>
+		<view-id>/WEB-INF/pages/roster/rosterCarAllocationOverview.faces</view-id>
+		<action onPostback="false">#{rosterCarAllocationOverviewBean.prettyInit}</action>
 	</url-mapping>
 	
 	
