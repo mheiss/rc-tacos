@@ -52,23 +52,29 @@
 				</f:facet>
 				<rich:inplaceInput value="#{dto.entity.car}" maxlength="10" layout="block" />
 			</rich:column>
-			<rich:column sortBy="#{dto.entity.systemUser.lastname}" styleClass="smallColumn">
+			<rich:column sortBy="#{dto.entity.systemUser.lastname} #{dto.entity.systemUser.firstname}" styleClass="smallColumn">
 				<f:facet name="header">
 					<h:outputText value="Name" />
 				</f:facet>
 				<rich:inplaceInput value="#{dto.entity.systemUser.lastName}" maxlength="20" layout="block" />
 			</rich:column>
-			<rich:column sortBy="#{dto.entity.assignment}">
+			<rich:column sortBy="#{dto.entity.plannedStartDate}" styleClass="smallColumn">
+				<f:facet name="header">
+					<h:outputText value="Dienstzeit" />
+				</f:facet>
+				<rich:inplaceInput value="#{dto.entity.plannedStartDate} § #{dto.entity.plannedStartTime}   -   #{dto.entity.plannedEndDate} § #{dto.entity.plannedEndTime} " maxlength="20" layout="block" />
+			</rich:column>
+			<rich:column sortBy="#{dto.entity.assignment.name}">
 				<f:facet name="header">
 					<h:outputText value="Verwendung" />
 				</f:facet>
-				<rich:inplaceInput value="#{dto.entity.assignment}" maxlength="30" layout="block"/>
+				<rich:inplaceInput value="#{dto.entity.assignment.name}" maxlength="30" layout="block"/>
 			</rich:column>
-			<rich:column sortBy="#{dto.entity.serviceType}">
+			<rich:column sortBy="#{dto.entity.serviceType.name}">
 				<f:facet name="header">
 					<h:outputText value="Dienstverhältnis" />
 				</f:facet>
-				<rich:inplaceInput value="#{dto.entity.serviceType}" maxlength="30" layout="block"/>
+				<rich:inplaceInput value="#{dto.entity.serviceType.name}" maxlength="30" layout="block"/>
 			</rich:column>
 			
 			<rich:column styleClass="smallColumn">
