@@ -11,7 +11,7 @@
 <body>
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
 	<ui:param name="section" value="roster" />
-	<ui:param name="page" value="rosterCarAllocationOverview" />
+	<ui:param name="page" value="assignCar" />
 
 	<ui:define name="navigation">
 		<ui:include src="navigation.xhtml" />
@@ -44,6 +44,12 @@
 			<a4j:commandLink actionListener="#{rosterCarAllocationOverviewBean.navigatePrevious}" reRender="dateTitle,filter,resultList">
 				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="back.png" />
 				<h:outputText styleClass="toolbarText" value="Vorheriger Tag"  />
+			</a4j:commandLink>
+		</li>
+		<li>
+			<a4j:commandLink ajaxSingle="false" actionListener="#{rosterCarAllocationOverviewBean.saveEntries}" reRender="dateTitle,filter,resultList" title="Speichern">
+				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="save.png" />
+				<h:outputText styleClass="toolbarText" value="Speichern" />
 			</a4j:commandLink>
 		</li>
 	</ui:define>
