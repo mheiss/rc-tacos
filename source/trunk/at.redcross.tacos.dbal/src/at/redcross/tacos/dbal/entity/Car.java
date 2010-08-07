@@ -50,7 +50,7 @@ public class Car extends EntityImpl {
     // ---------------------------------
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("carName", name).toString();
+        return new ToStringBuilder(this).append("id", id).toString();
     }
 
     @Override
