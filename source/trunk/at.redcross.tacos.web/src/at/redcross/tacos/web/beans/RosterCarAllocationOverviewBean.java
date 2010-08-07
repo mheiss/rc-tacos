@@ -2,7 +2,9 @@ package at.redcross.tacos.web.beans;
 
 import java.text.SimpleDateFormat;
 
+
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -11,6 +13,7 @@ import javax.persistence.EntityManager;
 
 import org.ajax4jsf.model.KeepAlive;
 import org.apache.commons.lang.time.DateUtils;
+
 
 import at.redcross.tacos.dbal.entity.Location;
 import at.redcross.tacos.dbal.entity.RosterEntry;
@@ -33,6 +36,10 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
 	private long rosterId = -1;
 	private RosterEntry rosterEntry;
 	
+	// filter by date
+    protected Date date;
+	
+	
 	private final SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
 	
 	// the suggested values for the drop down boxes
@@ -44,15 +51,31 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
 		EntityManager manager = null;
 		try {
 			manager = EntityManagerFactory.createEntityManager();
-			loadfromDatabase(manager, rosterId);
-			this.getEntries();
+			GregorianCalendar cal = new GregorianCalendar();
+			date = cal.getTime();
 			locationItems = DropDownHelper.convertToItems(LocationHelper.list(manager));
 			carItems = DropDownHelper.convertToItems(CarHelper.list(manager));
+			loadfromDatabase(manager, location, date);
 		}
 		finally {
 			manager = EntityManagerHelper.close(manager);
 		}
 	}
+	
+//	@Override
+//    protected void init() throws Exception {
+//        EntityManager manager = null;
+//        try {
+//            manager = EntityManagerFactory.createEntityManager();
+//            date = DateUtils.getCalendar(System.currentTimeMillis()).getTime();
+//            locationItems = DropDownHelper.convertToItems(LocationHelper.list(manager));
+//            carItems = DropDownHelper.convertToItems(CarHelper.list(manager));
+//            loadfromDatabase(manager, location, date);
+//        }
+//        finally {
+//            manager = EntityManagerHelper.close(manager);
+//        }
+//    }
 	
 	
 	// ---------------------------------
@@ -61,6 +84,25 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
 	/**
 	 * Persists the current entity in the database
 	 */
+	public void saveEntries() {
+		for (RosterEntry entry : entries)
+		{
+			System.out.println("Einträge car:" +entry.getCar().getName());
+			System.out.println("Einträge name:" +entry.getSystemUser().getLastName());
+			EntityManager manager = null;
+			try {
+				manager = EntityManagerFactory.createEntityManager();
+					manager.merge(entry);
+				EntityManagerHelper.commit(manager);
+			}
+			catch (Exception ex) {
+				FacesUtils.addErrorMessage("Die Fahrzeugzuweisung konnte nicht gespeichert werden");
+			}
+			finally {
+				manager = EntityManagerHelper.close(manager);
+			}
+		}
+    }
 	public String persist() {
 		EntityManager manager = null;
 		try {
@@ -72,7 +114,7 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
 				manager.merge(rosterEntry);
 			}
 			EntityManagerHelper.commit(manager);
-			return FacesUtils.pretty("roster-rosterCarAllocationOverview");
+			return FacesUtils.pretty("roster-assignCar");
 		}
 		catch (Exception ex) {
 			FacesUtils.addErrorMessage("Die Fahrzeugzuweisung konnte nicht gespeichert werden");

@@ -1,6 +1,7 @@
 package at.redcross.tacos.web.beans;
 
 import java.util.ArrayList;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -131,7 +132,7 @@ public abstract class RosterOverviewBean extends BaseBean {
     // ---------------------------------
     // Private API
     // ---------------------------------
-    private void loadfromDatabase(EntityManager manager, Location filterLocation, Date date) {
+    protected void loadfromDatabase(EntityManager manager, Location filterLocation, Date date) {
         // build a structure containing all results grouped by locations
         entries = new ArrayList<RosterEntry>();
         Map<Location, List<RosterEntry>> mappedResult = new HashMap<Location, List<RosterEntry>>();
