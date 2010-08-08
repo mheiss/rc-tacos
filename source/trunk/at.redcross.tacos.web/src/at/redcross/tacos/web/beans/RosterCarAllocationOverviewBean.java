@@ -2,7 +2,6 @@ package at.redcross.tacos.web.beans;
 
 import java.text.SimpleDateFormat;
 
-
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -13,7 +12,6 @@ import javax.persistence.EntityManager;
 
 import org.ajax4jsf.model.KeepAlive;
 import org.apache.commons.lang.time.DateUtils;
-
 
 import at.redcross.tacos.dbal.entity.Location;
 import at.redcross.tacos.dbal.entity.RosterEntry;
@@ -31,21 +29,20 @@ import at.redcross.tacos.web.reporting.ReportRenderer.ReportRenderParameters;
 public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
 
 	private static final long serialVersionUID = -6923595116203096939L;
-	
-	//the entry to edit
+
+	// the entry to edit
 	private long rosterId = -1;
 	private RosterEntry rosterEntry;
-	
+
 	// filter by date
-    protected Date date;
-	
-	
+	protected Date date;
+
 	private final SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
-	
+
 	// the suggested values for the drop down boxes
 	private List<SelectItem> carItems;
 	private List<SelectItem> locationItems;
-	
+
 	@Override
 	public void init() throws Exception {
 		EntityManager manager = null;
@@ -54,30 +51,13 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
 			GregorianCalendar cal = new GregorianCalendar();
 			date = cal.getTime();
 			locationItems = DropDownHelper.convertToItems(LocationHelper.list(manager));
-			carItems = DropDownHelper.convertToItems(CarHelper.list(manager));
+			carItems = DropDownHelper.convertToItems(CarHelper.list(manager, false));
 			loadfromDatabase(manager, location, date);
-		}
-		finally {
+		} finally {
 			manager = EntityManagerHelper.close(manager);
 		}
 	}
-	
-//	@Override
-//    protected void init() throws Exception {
-//        EntityManager manager = null;
-//        try {
-//            manager = EntityManagerFactory.createEntityManager();
-//            date = DateUtils.getCalendar(System.currentTimeMillis()).getTime();
-//            locationItems = DropDownHelper.convertToItems(LocationHelper.list(manager));
-//            carItems = DropDownHelper.convertToItems(CarHelper.list(manager));
-//            loadfromDatabase(manager, location, date);
-//        }
-//        finally {
-//            manager = EntityManagerHelper.close(manager);
-//        }
-//    }
-	
-	
+
 	// ---------------------------------
 	// Actions
 	// ---------------------------------
@@ -85,42 +65,37 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
 	 * Persists the current entity in the database
 	 */
 	public void saveEntries() {
-		for (RosterEntry entry : entries)
-		{
-			System.out.println("Einträge car:" +entry.getCar().getName());
-			System.out.println("Einträge name:" +entry.getSystemUser().getLastName());
+		for (RosterEntry entry : entries) {
+			System.out.println("Einträge car:" + entry.getCar().getName());
+			System.out.println("Einträge name:" + entry.getSystemUser().getLastName());
 			EntityManager manager = null;
 			try {
 				manager = EntityManagerFactory.createEntityManager();
-					manager.merge(entry);
+				manager.merge(entry);
 				EntityManagerHelper.commit(manager);
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				FacesUtils.addErrorMessage("Die Fahrzeugzuweisung konnte nicht gespeichert werden");
-			}
-			finally {
+			} finally {
 				manager = EntityManagerHelper.close(manager);
 			}
 		}
-    }
+	}
+
 	public String persist() {
 		EntityManager manager = null;
 		try {
 			manager = EntityManagerFactory.createEntityManager();
 			if (isNew()) {
 				manager.persist(rosterEntry);
-			}
-			else {
+			} else {
 				manager.merge(rosterEntry);
 			}
 			EntityManagerHelper.commit(manager);
 			return FacesUtils.pretty("roster-assignCar");
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			FacesUtils.addErrorMessage("Die Fahrzeugzuweisung konnte nicht gespeichert werden");
 			return null;
-		}
-		finally {
+		} finally {
 			manager = EntityManagerHelper.close(manager);
 		}
 	}
@@ -134,16 +109,14 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
 			manager = EntityManagerFactory.createEntityManager();
 			loadfromDatabase(manager, rosterEntry.getId());
 			return FacesUtils.pretty("roster-rosterCarAllocationOverview");
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			FacesUtils.addErrorMessage("Der Dienstplaneintrag konnte nicht zurückgesetzt werden");
 			return null;
-		}
-		finally {
+		} finally {
 			manager = EntityManagerHelper.close(manager);
 		}
 	}
-	
+
 	// ---------------------------------
 	// Helper methods
 	// ---------------------------------
@@ -154,15 +127,13 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
 			rosterEntry = new RosterEntry();
 		}
 	}
-	
-	
+
 	// ---------------------------------
 	// Setters for the properties
 	// ---------------------------------
 	public void setRosterId(long rosterId) {
 		this.rosterId = rosterId;
 	}
-	
 
 	// ---------------------------------
 	// Getters for the properties
@@ -170,11 +141,10 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
 	public boolean isNew() {
 		return rosterId == -1;
 	}
-	
+
 	public long getRosterId() {
 		return rosterId;
 	}
-	
 
 	public List<SelectItem> getCarItems() {
 		return carItems;
@@ -183,35 +153,34 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
 	public RosterEntry getRosterEntry() {
 		return rosterEntry;
 	}
-	
+
 	public List<SelectItem> getLocationItems() {
 		return locationItems;
 	}
-	
-		
-    @Override
-    protected Date getPreviousDate(Date date) {
-        return DateUtils.addDays(date, -1);
-    }
 
-    @Override
-    protected Date getNextDate(Date date) {
-        return DateUtils.addDays(date, +1);
-    }
+	@Override
+	protected Date getPreviousDate(Date date) {
+		return DateUtils.addDays(date, -1);
+	}
 
-    @Override
-    protected List<RosterEntry> getEntries(EntityManager manager, Location location, Date date) {
-        return RosterEntryHelper.listByDay(manager, location, date);
-    }
+	@Override
+	protected Date getNextDate(Date date) {
+		return DateUtils.addDays(date, +1);
+	}
 
-    @Override
-    protected ReportRenderParameters getReportParams() {
-        ReportRenderParameters params = new ReportRenderParameters();
-        params.reportName = "Dienstplan_" + sdf.format(date) + ".pdf";
-        params.reportFile = "rosterDayReport.rptdesign";
-        params.arguments.put("rosterList", entries);
-        params.arguments.put("reportDate", date);
-        return params;
-    }
+	@Override
+	protected List<RosterEntry> getEntries(EntityManager manager, Location location, Date date) {
+		return RosterEntryHelper.listByDay(manager, location, date);
+	}
+
+	@Override
+	protected ReportRenderParameters getReportParams() {
+		ReportRenderParameters params = new ReportRenderParameters();
+		params.reportName = "Dienstplan_" + sdf.format(date) + ".pdf";
+		params.reportFile = "rosterDayReport.rptdesign";
+		params.arguments.put("rosterList", entries);
+		params.arguments.put("reportDate", date);
+		return params;
+	}
 
 }

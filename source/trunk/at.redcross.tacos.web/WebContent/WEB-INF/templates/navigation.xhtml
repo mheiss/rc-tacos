@@ -19,9 +19,11 @@
 			<li class="tab #{section eq 'help' ? 'active' : ''}">
 				<h:outputLink value="#"><h:outputText value="Hilfe" /></h:outputLink>
 			</li>
-			<li class="tab #{section eq 'admin' ? 'active' : ''}">
-				<pretty:link mappingId="admin-home"> <h:outputText value="Administration" /> </pretty:link>
-			</li>
+			<h:panelGroup rendered="#{securedResourceBean.admin}">
+				<li class="tab #{section eq 'admin' ? 'active' : ''}">
+					<pretty:link mappingId="admin-home" > <h:outputText value="Administration" /> </pretty:link>
+				</li>
+			</h:panelGroup>
 		</ul>
 	</div>
 </ui:composition>
