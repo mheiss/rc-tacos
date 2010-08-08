@@ -66,8 +66,6 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
 	 */
 	public void saveEntries() {
 		for (RosterEntry entry : entries) {
-			System.out.println("Einträge car:" + entry.getCar().getName());
-			System.out.println("Einträge name:" + entry.getSystemUser().getLastName());
 			EntityManager manager = null;
 			try {
 				manager = EntityManagerFactory.createEntityManager();
