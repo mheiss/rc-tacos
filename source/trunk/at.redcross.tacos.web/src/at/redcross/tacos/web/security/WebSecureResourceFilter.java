@@ -2,6 +2,7 @@ package at.redcross.tacos.web.security;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -63,7 +64,7 @@ public class WebSecureResourceFilter implements FilterInvocationSecurityMetadata
 
 	@Override
 	public Collection<ConfigAttribute> getAllConfigAttributes() {
-		return null;
+		return Collections.emptyList();
 	}
 
 	private boolean handleUrl(EntityManager manager, List<ConfigAttribute> attributes, String url) {

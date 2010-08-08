@@ -1,19 +1,19 @@
-package at.redcross.tacos.web.entity;
+package at.redcross.tacos.web.beans.dto;
 
 import java.io.Serializable;
 import java.util.List;
 
 import at.redcross.tacos.dbal.entity.Location;
-import at.redcross.tacos.dbal.entity.RosterEntry;
+import at.redcross.tacos.dbal.entity.SystemUser;
 
-public class LocationRosterEntry implements Serializable {
+public class LocationUsers implements Serializable {
 
     private static final long serialVersionUID = -1748313699178349834L;
 
     private final Location location;
-    private final List<RosterEntry> entries;
+    private final List<SystemUser> entries;
 
-    public LocationRosterEntry(Location location, List<RosterEntry> entries) {
+    public LocationUsers(Location location, List<SystemUser> entries) {
         this.location = location;
         this.entries = entries;
     }
@@ -22,7 +22,7 @@ public class LocationRosterEntry implements Serializable {
         return location;
     }
 
-    public List<RosterEntry> getEntries() {
+    public List<SystemUser> getEntries() {
         return entries;
     }
 }
