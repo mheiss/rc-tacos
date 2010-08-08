@@ -24,6 +24,7 @@ public class WebExpressionVoter implements AccessDecisionVoter {
 		if (attribute == null) {
 			return ACCESS_ABSTAIN;
 		}
+
 		boolean evaluationResult = ExpressionUtils
 				.evaluateAsBoolean(attribute.getExpression(), ctx);
 		return evaluationResult ? ACCESS_GRANTED : ACCESS_DENIED;

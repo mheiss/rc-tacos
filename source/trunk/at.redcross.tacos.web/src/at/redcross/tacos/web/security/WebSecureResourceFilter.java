@@ -81,7 +81,7 @@ public class WebSecureResourceFilter implements FilterInvocationSecurityMetadata
 		for (SecuredResource resource : resources) {
 			if (resource.isExpression()) {
 				Expression ex = parser.parseExpression(resource.getAccess());
-				attributes.add(new WebExpressionConfigAttribute(ex));
+				attributes.add(new WebExpressionConfigAttribute(resource.getResource(), ex));
 			} else {
 				attributes.addAll(SecurityConfig.createSingleAttributeList(resource.getAccess()));
 			}

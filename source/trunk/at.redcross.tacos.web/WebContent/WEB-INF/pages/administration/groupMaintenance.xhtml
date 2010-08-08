@@ -5,38 +5,38 @@
 <body>
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
 	<ui:param name="section" value="admin" />
-	<ui:param name="page" value="securedResourceMaintenance" />
+	<ui:param name="page" value="groupMaintenance" />
 
 	<ui:define name="navigation">
 		<ui:include src="navigation.xhtml" />
 	</ui:define>
 
 	<ui:define name="page-title">
-		<h:graphicImage library="images/32x32" name="securedResource.png" />
-		<h2 class="title"><h:outputText value="Seiten Zugriffsrechte" /></h2>
+		<h:graphicImage library="images/32x32" name="users.png" />
+		<h2 class="title"><h:outputText value="Gruppen" /></h2>
 	</ui:define>
 
 	<ui:define name="page-toolbar">
 		<li>
-			<a4j:commandLink ajaxSingle="false" actionListener="#{securedResourceMaintenanceBean.saveSecuredResources}" reRender="securedResourceTable" title="Speichern">
+			<a4j:commandLink ajaxSingle="false" actionListener="#{groupMaintenanceBean.saveGroups}" reRender="groupTable" title="Speichern">
 				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="save.png" />
 				<h:outputText styleClass="toolbarText" value="Änderungen speichern" />
 			</a4j:commandLink>
 		</li>
 		<li>
-			<a4j:commandLink actionListener="#{securedResourceMaintenanceBean.addSecuredResource}" reRender="securedResourceTable" title="Neue Resource anlegen">
+			<a4j:commandLink actionListener="#{groupMaintenanceBean.addGroup}" reRender="groupTable" title="Neue Gruppe anlegen">
 				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="add.png" />
-				<h:outputText styleClass="toolbarText" value="Resource anlegen" />
+				<h:outputText styleClass="toolbarText" value="Gruppe anlegen" />
 			</a4j:commandLink>
 		</li>
 	</ui:define>
 
 	<ui:define name="content">
 		<rich:messages id="messages" errorClass="errorMessage" />
-		<rich:panel rendered="#{empty securedResourceMaintenanceBean.resources}" style="margin-top:10px;">
+		<rich:panel rendered="#{empty groupMaintenanceBean.groups}" style="margin-top:10px;">
 			<h:outputText value="Keine Einträge gefunden" styleClass="italic" />
 		</rich:panel>
-		<rich:dataTable id="securedResourceTable" styleClass="editorTable" value="#{securedResourceMaintenanceBean.resources}" var="dto" rowKeyVar="row"
+		<rich:dataTable id="groupTable" styleClass="editorTable" value="#{groupMaintenanceBean.groups}" var="dto" rowKeyVar="row"
 			onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
 			<rich:column styleClass="smallColumn">
 				<f:facet name="header">
@@ -52,44 +52,37 @@
 				<h:graphicImage library="images/16x16" name="data.png" rendered="#{dto.state.name eq 'sync'}" title="Neu" />
 				<h:graphicImage library="images/16x16" name="data_delete.png" rendered="#{dto.state.name eq 'delete'}" title="Zu löschen" />	
 			</rich:column>
-			<rich:column sortBy="#{dto.entity.expression}" styleClass="smallColumn">
+			<rich:column sortBy="#{dto.entity.name}" styleClass="mediumColumn">
 				<f:facet name="header">
-					<h:outputText value="Komplex" />
+					<h:outputText value="Gruppenname" />
 				</f:facet>
-				<h:selectBooleanCheckbox value="#{dto.entity.expression}" />
-			</rich:column>
-			<rich:column sortBy="#{dto.entity.resource}" styleClass="mediumColumn">
-				<f:facet name="header">
-					<h:outputText value="Resource" />
-				</f:facet>
-				<rich:inplaceInput value="#{dto.entity.resource}" maxlength="100" layout="block"
-					required="true" requiredMessage="Zeile #{row+1}: Bitte geben Sie eine Resource ein">
-					<a4j:support event="onviewactivated" reRender="securedResourceTable, messages" />
+				<rich:inplaceInput value="#{dto.entity.name}" maxlength="100" layout="block"
+					required="true" requiredMessage="Zeile #{row+1}: Bitte geben Sie einen Namen für diese Gruppe ein"
+					validator="#{groupMaintenanceBean.validateGroup}"
+					validatorMessage="Zeile #{row+1}: Gruppennamen müssen mit dem Präfix 'ROLE_' beginnen">
+					<a4j:support event="onviewactivated" reRender="groupTable, messages" />
 				</rich:inplaceInput>
 			</rich:column>
-			<rich:column sortBy="#{dto.entity.access}">
+			<rich:column sortBy="#{dto.entity.description}">
 				<f:facet name="header">
-					<h:outputText value="Zugriffsberechtigung" />
+					<h:outputText value="Beschreibung" />
 				</f:facet>
-				<rich:inplaceInput value="#{dto.entity.access}" maxlength="100" layout="block"
-					required="true" requiredMessage="Zeile #{row+1}: Bitte geben Sie ein Zugriffsrecht ein"
-					validator="#{securedResourceMaintenanceBean.validateSecuredResource}"
-					validatorMessage="Zeile #{row+1}: Fehler beim parsen des Zugriffsrechts">
-					<a4j:support event="onviewactivated" reRender="securedResourceTable, messages" />
+				<rich:inplaceInput value="#{dto.entity.description}" maxlength="255" layout="block">
+					<a4j:support event="onviewactivated" reRender="groupTable, messages" />
 				</rich:inplaceInput>
 			</rich:column>
 			<rich:column styleClass="smallColumn">
 				<f:facet name="header">
 					<rich:spacer />
 				</f:facet>
-				<a4j:commandLink reRender="securedResourceTable" rendered="#{dto.state.name ne 'delete'}" immediate="true">
-					<a4j:actionparam name="securedResourceId" assignTo="#{securedResourceMaintenanceBean.securedResourceId}" value="#{dto.entity.id}"
-						actionListener="#{securedResourceMaintenanceBean.removeSecuredResource}" />
+				<a4j:commandLink reRender="groupTable" rendered="#{dto.state.name ne 'delete'}" immediate="true">
+					<a4j:actionparam name="groupId" assignTo="#{groupMaintenanceBean.groupId}" value="#{dto.entity.id}"
+						actionListener="#{groupMaintenanceBean.removeGroup}" />
 					<h:graphicImage library="images/16x16" name="remove.png" />
 				</a4j:commandLink>
-				<a4j:commandLink reRender="securedResourceTable" rendered="#{dto.state.name eq 'delete'}">
-					<a4j:actionparam name="securedResourceId" assignTo="#{securedResourceMaintenanceBean.securedResourceId}" value="#{dto.entity.id}"
-						actionListener="#{securedResourceMaintenanceBean.unremoveSecuredResource}" />
+				<a4j:commandLink reRender="groupTable" rendered="#{dto.state.name eq 'delete'}">
+					<a4j:actionparam name="groupId" assignTo="#{groupMaintenanceBean.groupId}" value="#{dto.entity.id}"
+						actionListener="#{groupMaintenanceBean.unremoveGroup}" />
 					<h:graphicImage library="images/16x16" name="remove.png" />
 				</a4j:commandLink>
 			</rich:column>

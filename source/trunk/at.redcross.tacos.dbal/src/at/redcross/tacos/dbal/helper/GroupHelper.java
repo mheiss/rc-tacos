@@ -9,6 +9,10 @@ import at.redcross.tacos.dbal.entity.Group;
 
 public class GroupHelper {
 
+	public static List<Group> list(EntityManager manager) {
+		return manager.createQuery("from Group", Group.class).getResultList();
+	}
+
 	public static List<Group> getByName(EntityManager manager, String group) {
 		String hqlQuery = "from Group g where g.name = :group";
 		TypedQuery<Group> query = manager.createQuery(hqlQuery, Group.class);

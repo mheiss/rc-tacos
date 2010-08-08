@@ -13,6 +13,7 @@ import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
+import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.expression.ExpressionUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,6 +23,7 @@ import at.redcross.tacos.dbal.helper.SecuredResourceHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.web.persitence.EntityManagerFactory;
 import at.redcross.tacos.web.security.WebAuthenticationTrustResolver;
+import at.redcross.tacos.web.security.WebAuthenticationVoter;
 import at.redcross.tacos.web.security.WebSecurityExpressionRoot;
 
 import com.ocpsoft.pretty.PrettyContext;
@@ -34,7 +36,8 @@ public class SecuredResourceBean {
 	private final static Logger log = LoggerFactory.getLogger(SecuredResourceBean.class);
 
 	private List<SecuredResource> cachedResources;
-	private ExpressionParser parser = new SpelExpressionParser();
+	private AccessDecisionVoter voter = new WebAuthenticationVoter();
+	private transient ExpressionParser parser;
 
 	@PostConstruct
 	protected void init() {
@@ -42,6 +45,7 @@ public class SecuredResourceBean {
 		try {
 			manager = EntityManagerFactory.createEntityManager();
 			cachedResources = SecuredResourceHelper.list(manager);
+			parser = new SpelExpressionParser();
 		} finally {
 			manager = EntityManagerHelper.close(manager);
 		}
@@ -120,6 +124,10 @@ public class SecuredResourceBean {
 	 */
 	private boolean canAccess(Expression expression) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		// check for super user
+		if (voter.vote(auth, null, null) == AccessDecisionVoter.ACCESS_GRANTED) {
+			return true;
+		}
 		WebSecurityExpressionRoot root = new WebSecurityExpressionRoot(auth);
 		root.setTrustResolver(new WebAuthenticationTrustResolver());
 		EvaluationContext ctx = new StandardEvaluationContext(root);

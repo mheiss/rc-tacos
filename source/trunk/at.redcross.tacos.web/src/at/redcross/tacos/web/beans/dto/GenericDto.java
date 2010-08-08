@@ -18,6 +18,9 @@ public class GenericDto<T extends EntityImpl> implements Serializable {
 	/** the object to be wrapped */
 	private final T entity;
 
+	/** this object is selected */
+	private boolean selected;
+
 	/** the current state of this DTO */
 	private DtoState state = DtoState.SYNC;
 
@@ -35,11 +38,19 @@ public class GenericDto<T extends EntityImpl> implements Serializable {
 		this.state = state;
 	}
 
+	public void setSelected(boolean selected) {
+		this.selected = selected;
+	}
+
 	public T getEntity() {
 		return entity;
 	}
 
 	public DtoState getState() {
 		return state;
+	}
+
+	public boolean isSelected() {
+		return selected;
 	}
 }
