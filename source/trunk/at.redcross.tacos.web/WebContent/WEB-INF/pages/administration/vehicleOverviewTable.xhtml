@@ -13,10 +13,10 @@
 				<f:facet name="header">
 					<h:outputText value="Status" title="Status" />
 				</f:facet>
-				<h:panelGroup rendered="#{not car.outOfOrder}">
+				<h:panelGroup rendered="#{car.outOfOrder}">
 					<h:graphicImage library="images/24x24" name="outOfOrder.png" title="Nicht verfügbar"/>
 				</h:panelGroup>
-				<h:panelGroup rendered="#{car.outOfOrder}">
+				<h:panelGroup rendered="#{not car.outOfOrder}">
 					<h:graphicImage library="images/24x24" name="check.png" title="Einsatzbereit" />
 				</h:panelGroup>
 			</rich:column>
