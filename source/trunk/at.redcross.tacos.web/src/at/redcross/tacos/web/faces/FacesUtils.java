@@ -29,6 +29,15 @@ public class FacesUtils {
 	private static Log log = LogFactory.getLog(FacesUtils.class);
 
 	// ---------------------------------
+	// Message Helper Methods
+	// ---------------------------------
+	public static FacesMessage createErrorMessage(String summary) {
+		FacesMessage message = new FacesMessage(summary);
+		message.setSeverity(FacesMessage.SEVERITY_ERROR);
+		return message;
+	}
+
+	// ---------------------------------
 	// Application Helper Methods
 	// ---------------------------------
 	public static String pretty(String url) {
@@ -149,8 +158,7 @@ public class FacesUtils {
 			target.append("&errorCode=" + resolver.resolve());
 			facesContext.responseComplete();
 			externalContext.redirect(target.toString());
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			log.fatal("Failed to redirect to the error page", e);
 		}
 	}
@@ -225,8 +233,7 @@ public class FacesUtils {
 			if (element.getFileName() != null) {
 				builder.append(element.getFileName()).append(":");
 				builder.append(element.getLineNumber());
-			}
-			else {
+			} else {
 				builder.append("Unknown Source");
 			}
 			builder.append(" ) ");

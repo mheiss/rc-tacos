@@ -12,7 +12,6 @@ import org.ajax4jsf.model.KeepAlive;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-
 import at.redcross.tacos.dbal.entity.Assignment;
 import at.redcross.tacos.dbal.helper.AssignmentHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
@@ -30,91 +29,87 @@ public class AssignmentMaintenanceBean extends BaseBean {
 
 	private final static Log logger = LogFactory.getLog(AssignmentMaintenanceBean.class);
 
-    /** the available assignments */
-    private List<GenericDto<Assignment>> assignments;
+	/** the available assignments */
+	private List<GenericDto<Assignment>> assignments;
 
-    /** the id of the selected assignment */
-    private long assignmentId;
+	/** the id of the selected assignment */
+	private long assignmentId;
 
-    @Override
-    protected void init() throws Exception {
-        EntityManager manager = null;
-        try {
-            manager = EntityManagerFactory.createEntityManager();
-            assignments = DtoHelper.fromList(Assignment.class, AssignmentHelper.list(manager));
-        }
-        finally {
-            manager = EntityManagerHelper.close(manager);
-        }
-    }
+	@Override
+	protected void init() throws Exception {
+		EntityManager manager = null;
+		try {
+			manager = EntityManagerFactory.createEntityManager();
+			assignments = DtoHelper.fromList(Assignment.class, AssignmentHelper.list(manager));
+		} finally {
+			manager = EntityManagerHelper.close(manager);
+		}
+	}
 
-    // ---------------------------------
-    // Actions
-    // ---------------------------------
-    public void removeAssignment(ActionEvent event) {
-        Iterator<GenericDto<Assignment>> iter = assignments.iterator();
-        while (iter.hasNext()) {
-            GenericDto<Assignment> dto = iter.next();
-            Assignment assignment = dto.getEntity();
-            if (assignment.getId() != assignmentId) {
-                continue;
-            }
-            if (dto.getState() == DtoState.NEW) {
-                iter.remove();
-            }
+	// ---------------------------------
+	// Actions
+	// ---------------------------------
+	public void removeAssignment(ActionEvent event) {
+		Iterator<GenericDto<Assignment>> iter = assignments.iterator();
+		while (iter.hasNext()) {
+			GenericDto<Assignment> dto = iter.next();
+			Assignment assignment = dto.getEntity();
+			if (assignment.getId() != assignmentId) {
+				continue;
+			}
+			if (dto.getState() == DtoState.NEW) {
+				iter.remove();
+			}
+			dto.setState(DtoState.DELETE);
+		}
+	}
 
-            dto.setState(DtoState.DELETE);
-        }
-    }
+	public void unremoveAssignment(ActionEvent event) {
+		for (GenericDto<Assignment> dto : assignments) {
+			Assignment assignment = dto.getEntity();
+			if (assignment.getId() != assignmentId) {
+				continue;
+			}
+			dto.setState(DtoState.SYNC);
+		}
+	}
 
-    public void unremoveAssignment(ActionEvent event) {
-        for (GenericDto<Assignment> dto : assignments) {
-            Assignment assignment = dto.getEntity();
-            if (assignment.getId() != assignmentId) {
-                continue;
-            }
-            dto.setState(DtoState.SYNC);
-        }
-    }
+	public void addAssignment(ActionEvent event) {
+		GenericDto<Assignment> dto = new GenericDto<Assignment>(new Assignment());
+		dto.setState(DtoState.NEW);
+		assignments.add(dto);
+	}
 
-    public void addAssignment(ActionEvent event) {
-        GenericDto<Assignment> dto = new GenericDto<Assignment>(new Assignment());
-        dto.setState(DtoState.NEW);
-        assignments.add(dto);
-    }
+	public void saveAssignments() {
+		EntityManager manager = null;
+		try {
+			manager = EntityManagerFactory.createEntityManager();
+			DtoHelper.syncronize(manager, assignments);
+			EntityManagerHelper.commit(manager);
+			DtoHelper.filter(assignments);
+		} catch (Exception ex) {
+			logger.error("Failed to persist assignments", ex);
+			FacesUtils.addErrorMessage("Die Änderungen konnten nicht gespeichert werden");
+		} finally {
+			EntityManagerHelper.close(manager);
+		}
+	}
 
-    public void saveAssignments() {
-        EntityManager manager = null;
-        try {
-            manager = EntityManagerFactory.createEntityManager();
-            DtoHelper.syncronize(manager, assignments);
-            EntityManagerHelper.commit(manager);
-            DtoHelper.filter(assignments);
-        }
-        catch (Exception ex) {
-            logger.error("Failed to remove assignment '" + assignmentId + "'", ex);
-            FacesUtils.addErrorMessage("Die Änderungen konnten nicht gespeichert werden");
-        }
-        finally {
-            EntityManagerHelper.close(manager);
-        }
-    }
+	// ---------------------------------
+	// Setters for the properties
+	// ---------------------------------
+	public void setAssignmentId(long assignmentId) {
+		this.assignmentId = assignmentId;
+	}
 
-    // ---------------------------------
-    // Setters for the properties
-    // ---------------------------------
-    public void setAssignmentId(long assignmentId) {
-        this.assignmentId = assignmentId;
-    }
+	// ---------------------------------
+	// Getters for the properties
+	// ---------------------------------
+	public long getAssignmentId() {
+		return assignmentId;
+	}
 
-    // ---------------------------------
-    // Getters for the properties
-    // ---------------------------------
-    public long getAssignmentId() {
-        return assignmentId;
-    }
-
-    public List<GenericDto<Assignment>> getAssignments() {
-        return assignments;
-    }
+	public List<GenericDto<Assignment>> getAssignments() {
+		return assignments;
+	}
 }

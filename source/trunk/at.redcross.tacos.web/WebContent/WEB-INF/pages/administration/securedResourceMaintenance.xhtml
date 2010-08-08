@@ -1,0 +1,100 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich" xmlns:pretty="http://ocpsoft.com/prettyfaces"
+	xmlns:c="http://java.sun.com/jstl/core">
+<body>
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+	<ui:param name="section" value="admin" />
+	<ui:param name="page" value="securedResourceMaintenance" />
+
+	<ui:define name="navigation">
+		<ui:include src="navigation.xhtml" />
+	</ui:define>
+
+	<ui:define name="page-title">
+		<h:graphicImage library="images/32x32" name="securedResource.png" />
+		<h2 class="title"><h:outputText value="Seiten Zugriffsrechte" /></h2>
+	</ui:define>
+
+	<ui:define name="page-toolbar">
+		<li>
+			<a4j:commandLink ajaxSingle="false" actionListener="#{securedResourceMaintenanceBean.saveSecuredResources}" reRender="securedResourceTable" title="Speichern">
+				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="save.png" />
+				<h:outputText styleClass="toolbarText" value="Änderungen speichern" />
+			</a4j:commandLink>
+		</li>
+		<li>
+			<a4j:commandLink actionListener="#{securedResourceMaintenanceBean.addSecuredResource}" reRender="securedResourceTable" title="Neue Resource anlegen">
+				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="add.png" />
+				<h:outputText styleClass="toolbarText" value="Resource anlegen" />
+			</a4j:commandLink>
+		</li>
+	</ui:define>
+
+	<ui:define name="content">
+		<rich:messages id="messages" errorClass="errorMessage" />
+		<rich:panel rendered="#{empty securedResourceMaintenanceBean.resources}" style="margin-top:10px;">
+			<h:outputText value="Keine Einträge gefunden" styleClass="italic" />
+		</rich:panel>
+		<rich:dataTable id="securedResourceTable" styleClass="editorTable" value="#{securedResourceMaintenanceBean.resources}" var="dto" rowKeyVar="row"
+			onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
+			<rich:column styleClass="smallColumn">
+				<f:facet name="header">
+					<rich:spacer />
+				</f:facet>
+				<h:outputText value="#{row+1}" />
+			</rich:column>
+			<rich:column styleClass="smallColumn">
+				<f:facet name="header">
+					<h:outputText value="Status" />
+				</f:facet>
+				<h:graphicImage library="images/16x16" name="data_new.png" rendered="#{dto.state.name eq 'new'}" title="Sync" />
+				<h:graphicImage library="images/16x16" name="data.png" rendered="#{dto.state.name eq 'sync'}" title="Neu" />
+				<h:graphicImage library="images/16x16" name="data_delete.png" rendered="#{dto.state.name eq 'delete'}" title="Zu löschen" />	
+			</rich:column>
+			<rich:column sortBy="#{dto.entity.expression}" styleClass="smallColumn">
+				<f:facet name="header">
+					<h:outputText value="Komplexes Zugriffsrecht" />
+				</f:facet>
+				<h:selectBooleanCheckbox value="#{dto.entity.expression}" />
+			</rich:column>
+			<rich:column sortBy="#{dto.entity.resource}" styleClass="mediumColumn">
+				<f:facet name="header">
+					<h:outputText value="Resource" />
+				</f:facet>
+				<rich:inplaceInput value="#{dto.entity.resource}" maxlength="100" layout="block"
+					required="true" requiredMessage="Zeile #{row+1}: Bitte geben Sie eine Resource ein">
+					<a4j:support event="onviewactivated" reRender="securedResourceTable, messages" />
+				</rich:inplaceInput>
+			</rich:column>
+			<rich:column sortBy="#{dto.entity.access}">
+				<f:facet name="header">
+					<h:outputText value="Zugriffsberechtigung" />
+				</f:facet>
+				<rich:inplaceInput value="#{dto.entity.access}" maxlength="100" layout="block"
+					required="true" requiredMessage="Zeile #{row+1}: Bitte geben Sie ein Zugriffsrecht ein"
+					validator="#{securedResourceMaintenanceBean.validateSecuredResource}"
+					validatorMessage="Zeile #{row+1}: Fehler beim parsen des Zugriffsrechts">
+					<a4j:support event="onviewactivated" reRender="securedResourceTable, messages" />
+				</rich:inplaceInput>
+			</rich:column>
+			<rich:column styleClass="smallColumn">
+				<f:facet name="header">
+					<rich:spacer />
+				</f:facet>
+				<a4j:commandLink reRender="securedResourceTable" rendered="#{dto.state.name ne 'delete'}" immediate="true">
+					<a4j:actionparam name="securedResourceId" assignTo="#{securedResourceMaintenanceBean.securedResourceId}" value="#{dto.entity.id}"
+						actionListener="#{securedResourceMaintenanceBean.removeSecuredResource}" />
+					<h:graphicImage library="images/16x16" name="remove.png" />
+				</a4j:commandLink>
+				<a4j:commandLink reRender="securedResourceTable" rendered="#{dto.state.name eq 'delete'}">
+					<a4j:actionparam name="securedResourceId" assignTo="#{securedResourceMaintenanceBean.securedResourceId}" value="#{dto.entity.id}"
+						actionListener="#{securedResourceMaintenanceBean.unremoveSecuredResource}" />
+					<h:graphicImage library="images/16x16" name="remove.png" />
+				</a4j:commandLink>
+			</rich:column>
+		</rich:dataTable>
+	</ui:define>
+</ui:composition>
+</body>
+</html>

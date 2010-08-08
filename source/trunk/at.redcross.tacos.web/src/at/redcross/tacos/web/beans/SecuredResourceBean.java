@@ -21,6 +21,7 @@ import at.redcross.tacos.dbal.entity.SecuredResource;
 import at.redcross.tacos.dbal.helper.SecuredResourceHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.web.persitence.EntityManagerFactory;
+import at.redcross.tacos.web.security.WebAuthenticationTrustResolver;
 import at.redcross.tacos.web.security.WebSecurityExpressionRoot;
 
 import com.ocpsoft.pretty.PrettyContext;
@@ -120,6 +121,7 @@ public class SecuredResourceBean {
 	private boolean canAccess(Expression expression) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		WebSecurityExpressionRoot root = new WebSecurityExpressionRoot(auth);
+		root.setTrustResolver(new WebAuthenticationTrustResolver());
 		EvaluationContext ctx = new StandardEvaluationContext(root);
 		return ExpressionUtils.evaluateAsBoolean(expression, ctx);
 	}
