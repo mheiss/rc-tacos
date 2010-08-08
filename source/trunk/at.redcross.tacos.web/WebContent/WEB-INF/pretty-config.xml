@@ -138,4 +138,11 @@
 		<action onPostback="false">#{locationMaintenanceBean.prettyInit}</action>
 	</url-mapping>
 	
+	<!-- ################ ADMINISTRATION - SECURED RESOURCE ####################### -->
+	<url-mapping id="admin-securedResourceMaintenance">
+		<pattern>/admin/securedResources</pattern>
+		<view-id>/WEB-INF/pages/administration/securedResourceMaintenance.faces</view-id>
+		<action onPostback="false">#{securedResourceMaintenanceBean.prettyInit}</action>
+	</url-mapping>
+	
 </pretty-config>
