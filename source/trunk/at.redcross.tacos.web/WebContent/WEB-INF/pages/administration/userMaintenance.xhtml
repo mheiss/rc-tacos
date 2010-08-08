@@ -88,6 +88,20 @@
 			<legend> <h:outputText value="Kontaktdaten und Adressdaten:" /> </legend>
 			<ol>
 				<li class="left">
+					<h:outputLabel for="location" value="Primäre Dienststelle" />
+					<div class="input">
+						<rich:comboBox id="location" value="#{userMaintenanceBean.systemUser.location}" 
+							selectFirstOnUpdate="false" defaultLabel="primäre Dienststelle"
+							required="true" requiredMessage="Bitte geben sie eine primäre Dienststelle an">
+							<f:selectItems value="#{userMaintenanceBean.locationItems}" />
+							<f:validator validatorId="validator.dropDown" />
+							<f:converter converterId="converter.dropDown" />
+							<rich:ajaxValidator event="onchange" />
+						</rich:comboBox> 
+						<rich:message for="location" errorClass="error" />
+					</div>
+				</li>
+				<li class="right">
 					<h:outputLabel for="mail" value="E-Mail" /> 
 					<div class="input largeInput">
 						<h:inputText id="mail" value="#{userMaintenanceBean.systemUser.address.email}"
@@ -117,20 +131,6 @@
 						<rich:message for="phone2" errorClass="error" />
 					</div>
 				</li>
-				<li class="right">
-					<h:outputLabel for="location" value="Primäre Dienststelle" />
-					<div class="input">
-						<rich:comboBox id="location" value="#{userMaintenanceBean.systemUser.location}" 
-							selectFirstOnUpdate="false" defaultLabel="primäre Dienststelle"
-							required="true" requiredMessage="Bitte geben sie eine primäre Dienststelle an">
-							<f:selectItems value="#{userMaintenanceBean.locationItems}" />
-							<f:validator validatorId="validator.dropDown" />
-							<f:converter converterId="converter.dropDown" />
-							<rich:ajaxValidator event="onchange" />
-						</rich:comboBox> 
-						<rich:message for="location" errorClass="error" />
-					</div>
-			</li>
 			</ol>
 		</fieldset>
 		

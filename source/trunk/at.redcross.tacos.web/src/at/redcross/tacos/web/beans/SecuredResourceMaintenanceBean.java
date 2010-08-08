@@ -48,7 +48,7 @@ public class SecuredResourceMaintenanceBean extends BaseBean {
 	private long securedResourceId;
 
 	/** parses the given expression (used during validation) */
-	private ExpressionParser parser = new SpelExpressionParser();
+	private transient ExpressionParser parser;
 
 	@Override
 	public void prettyInit() {
@@ -57,6 +57,7 @@ public class SecuredResourceMaintenanceBean extends BaseBean {
 			manager = EntityManagerFactory.createEntityManager();
 			resources = DtoHelper.fromList(SecuredResource.class, SecuredResourceHelper
 					.list(manager));
+			parser = new SpelExpressionParser();
 		} finally {
 			manager = EntityManagerHelper.close(manager);
 		}
@@ -99,6 +100,32 @@ public class SecuredResourceMaintenanceBean extends BaseBean {
 	public void saveSecuredResources() {
 		EntityManager manager = null;
 		try {
+			int errorCount = 0;
+			for (GenericDto<SecuredResource> dto : resources) {
+				// no validation for records that will be removed
+				if (dto.getState() == DtoState.DELETE) {
+					continue;
+				}
+				SecuredResource resource = dto.getEntity();
+				boolean expression = resource.isExpression();
+				String access = resource.getAccess();
+				int idx = resources.indexOf(dto) + 1;
+				if (expression & !isValidComplexExpression(access)) {
+					FacesUtils.addErrorMessage("Das Zugriffsrecht in Zeile '" + idx
+							+ "' ist fehlerhaft.");
+					errorCount++;
+				}
+				if (!expression &! isValidSimpleExpression(access)) {
+					FacesUtils.addErrorMessage("Das Zugriffsrecht in Zeile '" + idx
+							+ "' ist fehlerhaft.\n"
+							+ "Ein simpler Ausdruck muss mit 'ROLE_' beginnen.");
+					errorCount++;
+				}
+			}
+			// do commit the changes if we have errors
+			if (errorCount > 0) {
+				return;
+			}
 			manager = EntityManagerFactory.createEntityManager();
 			DtoHelper.syncronize(manager, resources);
 			EntityManagerHelper.commit(manager);
@@ -112,18 +139,16 @@ public class SecuredResourceMaintenanceBean extends BaseBean {
 	}
 
 	public void validateSecuredResource(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		WebSecurityExpressionRoot root = new WebSecurityExpressionRoot(auth);
-		root.setTrustResolver(new WebAuthenticationTrustResolver());
-		EvaluationContext ctx = new StandardEvaluationContext(root);
-
-		// we just try to execute the expression
-		try {
-			ExpressionUtils.evaluateAsBoolean(parser.parseExpression((String) value), ctx);
-		} catch (Exception ex) {
-			throw new ValidatorException(FacesUtils
-					.createErrorMessage("Failed to parse the given expression"));
+		String stringValue = (String) value;
+		// simple entry
+		if (isValidSimpleExpression(stringValue)) {
+			return;
 		}
+		// complex entry
+		if (isValidComplexExpression(stringValue)) {
+			return;
+		}
+		throw new ValidatorException(FacesUtils.createErrorMessage("No valid access definition"));
 	}
 
 	// ---------------------------------
@@ -143,4 +168,33 @@ public class SecuredResourceMaintenanceBean extends BaseBean {
 	public List<GenericDto<SecuredResource>> getResources() {
 		return resources;
 	}
+
+	// ---------------------------------
+	// Private helpers
+	// ---------------------------------
+	/** Returns a new context to validate expressions */
+	private EvaluationContext getEvaluationContext() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		WebSecurityExpressionRoot root = new WebSecurityExpressionRoot(auth);
+		root.setTrustResolver(new WebAuthenticationTrustResolver());
+		return new StandardEvaluationContext(root);
+	}
+
+	/** Returns whether or not the given string is a valid entry */
+	private boolean isValidSimpleExpression(String expression) {
+		// TODO: validation should be extended 
+		return expression.startsWith("ROLE_");
+	}
+
+	/** Returns whether or not the given string is a valid expression */
+	private boolean isValidComplexExpression(String expression) {
+		try {
+			ExpressionUtils.evaluateAsBoolean(parser.parseExpression(expression),
+					getEvaluationContext());
+			return true;
+		} catch (Exception ex) {
+			return false;
+		}
+	}
+
 }

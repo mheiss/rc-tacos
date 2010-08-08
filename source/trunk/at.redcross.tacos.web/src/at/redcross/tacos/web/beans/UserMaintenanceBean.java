@@ -49,7 +49,7 @@ public class UserMaintenanceBean extends BaseBean {
 	private String password2;
 
 	/** Encode passwords using SHA */
-	private PasswordEncoder encoder = new ShaPasswordEncoder(256);
+	private transient PasswordEncoder encoder;
 
 	@Override
 	public void init() throws Exception {
@@ -63,6 +63,7 @@ public class UserMaintenanceBean extends BaseBean {
 			genderItems.add(new DropDownItem("männlich", Gender.MALE).getItem());
 			genderItems.add(new DropDownItem("weiblich", Gender.FEMALE).getItem());
 			genderItems.add(new DropDownItem("unbekannt", Gender.UNKNOWN).getItem());
+			encoder = new ShaPasswordEncoder(256);
 		}
 		finally {
 			manager = EntityManagerHelper.close(manager);

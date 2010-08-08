@@ -47,6 +47,9 @@ public class Login extends EntityImpl {
 	@Column
 	private boolean locked;
 
+	@Column
+	private boolean superUser;
+
 	@OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
 	private SystemUser systemUser;
 
@@ -125,6 +128,10 @@ public class Login extends EntityImpl {
 		this.locked = locked;
 	}
 
+	public void setSuperUser(boolean superUser) {
+		this.superUser = superUser;
+	}
+
 	// ---------------------------------
 	// Getters for the properties
 	// ---------------------------------
@@ -146,6 +153,10 @@ public class Login extends EntityImpl {
 
 	public boolean isLocked() {
 		return locked;
+	}
+
+	public boolean isSuperUser() {
+		return superUser;
 	}
 
 	public SystemUser getSystemUser() {
