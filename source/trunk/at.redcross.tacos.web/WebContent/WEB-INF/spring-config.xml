@@ -1,41 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans	xmlns="http://www.springframework.org/schema/security" xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-				xmlns:context="http://www.springframework.org/schema/context" 
-				xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd
-                        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
-	<!-- ####################################################################################### -->
-	<http use-expressions="true">
-		<!-- Access to common pages are permitted for everybody  -->
-		<intercept-url pattern="/" access="permitAll" />
-		<intercept-url pattern="/login" access="permitAll" />
-		<intercept-url pattern="/logout" access="permitAll" />
-		<intercept-url pattern="/error" access="permitAll" />
-		<intercept-url pattern="/accessDenied" access="permitAll" />
+<beans:beans xmlns:sec="http://www.springframework.org/schema/security" 
+			xmlns:beans="http://www.springframework.org/schema/beans"
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xmlns:context="http://www.springframework.org/schema/context" 
+			xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+				http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd
+				http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+	<sec:http use-expressions="true" >
+		<!-- Resources (images,libraries, scripts ...) should never be restricted-->
+		<sec:intercept-url pattern="/resources/**" filters="none" />
+		<sec:intercept-url pattern="/a4j/**" filters="none" />
+		<sec:intercept-url pattern="/javax.faces.resource/**" filters="none" />
 
-		<!-- Resources (images,libraries, scripts ...) should never be restricted -->
-		<intercept-url pattern="/resources/**" filters="none" />
-		<intercept-url pattern="/a4j/**" filters="none" />
-		<intercept-url pattern="/javax.faces.resource/**" filters="none" />
-
-		<!-- All other pages are protected -->
-		<intercept-url pattern="/**" access="isAuthenticated()" />
-
-		<!-- We want a customized login and logout page -->
-		<form-login login-processing-url="/j_spring_security_check" login-page="/login" authentication-failure-url="/login" />
-		<logout logout-url="/logout" logout-success-url="/" />
+		<!-- We want a customized login, logout and error pages -->
+		<sec:form-login login-processing-url="/j_spring_security_check" login-page="/login" authentication-failure-url="/login" />
+		<sec:logout logout-url="/logout" logout-success-url="/" />
+		<sec:access-denied-handler error-page="/accessDenied"/>
 
 		<!-- No special session management as this causes problems -->
-		<session-management session-fixation-protection="none" />
-	</http>
-	<!-- ####################################################################################### -->
-
-	<!-- ####################################################################################### -->
+		<sec:session-management session-fixation-protection="none" />
+		
+		<!-- Extend the filters with the ones from the database -->
+		<sec:custom-filter ref="filterSecurityInterceptor" before="FILTER_SECURITY_INTERCEPTOR" />
+	</sec:http>
+	
+	<beans:bean id="webSecureResourceFilter" class="at.redcross.tacos.web.security.WebSecureResourceFilter" />
 	<beans:bean id="webUserDetailsService" class="at.redcross.tacos.web.security.WebUserDetailsService" />
-	<authentication-manager >
-		<authentication-provider user-service-ref="webUserDetailsService">
-			<password-encoder hash="sha-256" />
-		</authentication-provider>
-	</authentication-manager>
-	<!-- ####################################################################################### -->
+	
+	<sec:authentication-manager alias="authenticationManager">
+		<sec:authentication-provider user-service-ref="webUserDetailsService">
+			<sec:password-encoder hash="sha-256" />
+		</sec:authentication-provider>
+	</sec:authentication-manager>
+	
+	<beans:bean id="accessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
+		<beans:property name="decisionVoters">
+			<beans:list>
+				<beans:bean class="org.springframework.security.access.vote.RoleVoter" />
+				<beans:bean class="at.redcross.tacos.web.security.WebExpressionVoter" />
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+
+	<beans:bean id="filterSecurityInterceptor" class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor">
+		<beans:property name="authenticationManager" ref="authenticationManager"/>
+		<beans:property name="accessDecisionManager" ref="accessDecisionManager"/>
+		<beans:property name="securityMetadataSource" ref="webSecureResourceFilter"/>
+	</beans:bean>
 </beans:beans>
+
