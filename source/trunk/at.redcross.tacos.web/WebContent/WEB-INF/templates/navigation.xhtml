@@ -19,7 +19,7 @@
 			<li class="tab #{section eq 'help' ? 'active' : ''}">
 				<h:outputLink value="#"><h:outputText value="Hilfe" /></h:outputLink>
 			</li>
-			<h:panelGroup rendered="#{securedResourceBean.admin}">
+			<h:panelGroup rendered="#{securedResourceBean.adminLinkVisible}">
 				<li class="tab #{section eq 'admin' ? 'active' : ''}">
 					<pretty:link mappingId="admin-home" > <h:outputText value="Administration" /> </pretty:link>
 				</li>
