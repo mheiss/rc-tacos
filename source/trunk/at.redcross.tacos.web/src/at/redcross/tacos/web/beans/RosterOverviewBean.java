@@ -15,7 +15,7 @@ import at.redcross.tacos.dbal.entity.Location;
 import at.redcross.tacos.dbal.entity.RosterEntry;
 import at.redcross.tacos.dbal.helper.LocationHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
-import at.redcross.tacos.web.entity.LocationRosterEntry;
+import at.redcross.tacos.web.beans.dto.LocationRosterEntry;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.faces.combo.DropDownHelper;
 import at.redcross.tacos.web.persitence.EntityManagerFactory;
