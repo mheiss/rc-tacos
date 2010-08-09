@@ -28,65 +28,59 @@
 	<ui:define name="content">
 		<rich:messages errorClass="errorMessage" globalOnly="true" />
 		<fieldset class="defaultStyle">
-			<legend> <h:outputText value="Allgemeine Mitarbeiterdaten:" /> 
-		</legend>
-		<ol>
-			<li class="left">
-				<h:outputLabel for="pnr" value="Personalnummer" /> 
-				<div class="input">
-					<h:inputText id="pnr" value="#{userMaintenanceBean.systemUser.pnr}" required="true" requiredMessage="Bitte geben Sie eine gültige Personalnummer an">
-						<rich:ajaxValidator event="onblur" />
-					</h:inputText>
-					<rich:message for="pnr" errorClass="error" />
-				</div>
-			</li>
-			<li class="left">
-				<h:outputLabel for="lastName" value="Nachname" />
-				<div class="input">	
-					 <h:inputText id="lastName" value="#{userMaintenanceBean.systemUser.lastName}" required="true" requiredMessage="Bitte geben Sie einen Nachnamen an">
-						<rich:ajaxValidator event="onblur" />
-					</h:inputText>
-					<rich:message for="lastName" errorClass="error" />
-				</div>
-			</li>
-			<li class="right">
-				<h:outputLabel for="firstName" value="Vorname" />
-				<div class="input"> 
-					<h:inputText id="firstName" value="#{userMaintenanceBean.systemUser.firstName}" required="true" requiredMessage="Bitte geben Sie einen Vornamen an">
-						<rich:ajaxValidator event="onblur" />
-					</h:inputText>
-					<rich:message for="firstName" errorClass="error" />
-				</div>
-			</li>
-			<li class="left">
-				<h:outputLabel for="gender" value="Geschlecht" />
-				<div class="input">
-					<rich:comboBox id="gender" value="#{userMaintenanceBean.systemUser.gender}" selectFirstOnUpdate="false" defaultLabel="Geschlecht" required="true" requiredMessage="Bitte geben sie ein Geschlecht an">
-						<f:selectItems value="#{userMaintenanceBean.genderItems}" />
-						<f:validator validatorId="validator.dropDown" />
-						<f:converter converterId="converter.dropDown" />
-						<rich:ajaxValidator event="onchange" />
-					</rich:comboBox> 
-					<rich:message for="gender" errorClass="error" />
-				</div>
-			</li>
-			<li class="right">
-				<h:outputLabel for="birthday" value="Geburtsdatum" />
-					<div class="input">
-						<rich:calendar id="birthday" value="#{userMaintenanceBean.systemUser.birthday}" styleClass="rich-calendar" enableManualInput="true" converterMessage="Bitte geben Sie ein gültiges Geburtsdatum an" datePattern="dd.MM.yyyy" locale="#{localeBean.locale}"
-							timeZone="#{localeBean.timeZone}">
-							<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
-							<rich:ajaxValidator event="onchanged" />
-							<rich:ajaxValidator event="oninputblur" />
-						</rich:calendar> 
-					<rich:message for="birthday" errorClass="error" />
-				</div>
-			</li>
-		</ol>
-		</fieldset>
-		<fieldset class="defaultStyle">
-			<legend> <h:outputText value="Kontaktdaten und Adressdaten:" /> </legend>
+			<legend> <h:outputText value="Allgemeine Mitarbeiterdaten:" /> </legend>
 			<ol>
+				<li class="left">
+					<h:outputLabel for="pnr" value="Personalnummer" /> 
+					<div class="input">
+						<h:inputText id="pnr" value="#{userMaintenanceBean.systemUser.pnr}" required="true" requiredMessage="Bitte geben Sie eine gültige Personalnummer an">
+							<rich:ajaxValidator event="onblur" />
+						</h:inputText>
+						<rich:message for="pnr" errorClass="error" />
+					</div>
+				</li>
+				<li class="left">
+					<h:outputLabel for="lastName" value="Nachname" />
+					<div class="input">	
+						 <h:inputText id="lastName" value="#{userMaintenanceBean.systemUser.lastName}" required="true" requiredMessage="Bitte geben Sie einen Nachnamen an">
+							<rich:ajaxValidator event="onblur" />
+						</h:inputText>
+						<rich:message for="lastName" errorClass="error" />
+					</div>
+				</li>
+				<li class="right">
+					<h:outputLabel for="firstName" value="Vorname" />
+					<div class="input"> 
+						<h:inputText id="firstName" value="#{userMaintenanceBean.systemUser.firstName}" required="true" requiredMessage="Bitte geben Sie einen Vornamen an">
+							<rich:ajaxValidator event="onblur" />
+						</h:inputText>
+						<rich:message for="firstName" errorClass="error" />
+					</div>
+				</li>
+				<li class="left">
+					<h:outputLabel for="gender" value="Geschlecht" />
+					<div class="input">
+						<rich:comboBox id="gender" value="#{userMaintenanceBean.systemUser.gender}" selectFirstOnUpdate="false" defaultLabel="Geschlecht" required="true" requiredMessage="Bitte geben sie ein Geschlecht an">
+							<f:selectItems value="#{userMaintenanceBean.genderItems}" />
+							<f:validator validatorId="validator.dropDown" />
+							<f:converter converterId="converter.dropDown" />
+							<rich:ajaxValidator event="onchange" />
+						</rich:comboBox> 
+						<rich:message for="gender" errorClass="error" />
+					</div>
+				</li>
+				<li class="right">
+					<h:outputLabel for="birthday" value="Geburtsdatum" />
+						<div class="input">
+							<rich:calendar id="birthday" value="#{userMaintenanceBean.systemUser.birthday}" styleClass="rich-calendar" enableManualInput="true" converterMessage="Bitte geben Sie ein gültiges Geburtsdatum an" datePattern="dd.MM.yyyy" locale="#{localeBean.locale}"
+								timeZone="#{localeBean.timeZone}">
+								<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+								<rich:ajaxValidator event="onchanged" />
+								<rich:ajaxValidator event="oninputblur" />
+							</rich:calendar> 
+						<rich:message for="birthday" errorClass="error" />
+					</div>
+				</li>
 				<li class="left">
 					<h:outputLabel for="location" value="Primäre Dienststelle" />
 					<div class="input">
@@ -133,7 +127,6 @@
 				</li>
 			</ol>
 		</fieldset>
-		
 		<fieldset class="defaultStyle"> <legend> <h:outputText value="Logindaten:" /> </legend>
 			<ol>
 				<li class="left">
@@ -166,10 +159,128 @@
 					</div> 
 				</li>
 				<li class="right">
-				<h:outputLabel for="locked" value="Gesperrt" />
-				<div class="input">
-					<h:selectBooleanCheckbox id="locked" value="#{userMaintenanceBean.login.locked}" />
-				</div>
+					<h:outputLabel for="locked" value="Gesperrt" />
+					<div class="input">
+						<h:selectBooleanCheckbox id="locked" value="#{userMaintenanceBean.login.locked}" />
+					</div>
+				</li>
+			</ol>
+		</fieldset>
+		
+		<fieldset class="defaultStyle"> <legend> <h:outputText value="Zugewiesene Kompetenzen" /> </legend>
+			<ol>
+				<li>
+					<h:outputText value="Die zugewiesenen Kompetenzen definieren welche Ausbildung der Benutzer hat. Sie werden nicht weiter im System ausgewertet." />
+				</li>
+				<li>
+					<h:outputLabel for="competence" value="Kompetenz: " />
+					<div class="input">
+						<rich:comboBox id="competence" value="#{userMaintenanceBean.selectedCompetence}" 
+								selectFirstOnUpdate="false" defaultLabel="Kompetenz auswählen">
+								<f:selectItems value="#{userMaintenanceBean.competenceItems}" />
+								<f:validator validatorId="validator.dropDown" />
+								<f:converter converterId="converter.dropDown" />
+								<rich:ajaxValidator event="onchange" />
+								<a4j:support event="onchange" reRender="competenceButton" />
+						</rich:comboBox> 
+						<rich:message for="competence" errorClass="error" />
+					</div>
+					<a4j:commandLink id="competenceButton" styleClass="button" actionListener="#{userMaintenanceBean.addCompetence}" reRender="competence,competenceButton,competenceTable">
+						<h:graphicImage library="images/16x16" name="add.png" styleClass="buttonWithImage" />
+						<h:outputText value="Kompetenz hinzufügen" styleClass="buttonWithImage" /> 
+					</a4j:commandLink>
+				</li>
+				<li>
+					<h:panelGroup id="competenceTable">
+						<rich:panel rendered="#{empty userMaintenanceBean.systemUser.competences}" style="margin-top:10px;">
+							<h:outputText value="Keine Einträge gefunden" styleClass="italic" />
+						</rich:panel>				
+						<rich:dataTable styleClass="editorTable" value="#{userMaintenanceBean.systemUser.competences}" var="competence"
+							rendered="#{not empty userMaintenanceBean.systemUser.competences}"
+							onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
+							<rich:column sortBy="#{competence.name}" styleClass="mediumColumn">
+								<f:facet name="header">
+									<h:outputText value="Kompetenz" />
+								</f:facet>
+								<h:outputText value="#{competence.name}" />
+							</rich:column>
+							<rich:column sortBy="#{competence.description}">
+								<f:facet name="header">
+									<h:outputText value="Beschreibung" />
+								</f:facet>
+								<h:outputText value="#{competence.description}" />
+							</rich:column>
+							<rich:column styleClass="smallColumn">
+								<f:facet name="header">
+									<rich:spacer />
+								</f:facet>
+								<a4j:commandLink reRender="competenceTable" immediate="true">
+									<a4j:actionparam name="competenceIdParam" assignTo="#{userMaintenanceBean.selectedCompetenceId}" value="#{competence.id}"
+										actionListener="#{userMaintenanceBean.removeCompetence}" />
+									<h:graphicImage library="images/16x16" name="remove.png" />
+								</a4j:commandLink>
+							</rich:column>
+						</rich:dataTable>
+					</h:panelGroup>
+				</li>
+			</ol>
+		</fieldset>
+		
+		<fieldset class="defaultStyle"> <legend> <h:outputText value="Zugewiesene Benutzergruppen" /> </legend>
+			<ol>
+				<li>
+					<h:outputText value="Die zugewiesenen Gruppen definieren welche Aktionen der Benutzer druchführen kann und auf welche Seiten er Zugriff hat." />
+				</li>
+				<li>
+					<h:outputLabel for="group" value="Gruppe: " />
+					<div class="input">
+						<rich:comboBox id="group" value="#{userMaintenanceBean.selectedGroup}" 
+								selectFirstOnUpdate="false" defaultLabel="Gruppe auswählen">
+								<f:selectItems value="#{userMaintenanceBean.groupItems}" />
+								<f:validator validatorId="validator.dropDown" />
+								<f:converter converterId="converter.dropDown" />
+								<rich:ajaxValidator event="onchange" />
+								<a4j:support event="onchange" reRender="groupButton" />
+						</rich:comboBox> 
+						<rich:message for="group" errorClass="error" />
+					</div>
+					<a4j:commandLink id="groupButton" styleClass="button" actionListener="#{userMaintenanceBean.addGroup}" reRender="group,groupButton,groupTable">
+						<h:graphicImage library="images/16x16" name="add.png" styleClass="buttonWithImage" />
+						<h:outputText value="Gruppe hinzufügen" styleClass="buttonWithImage" /> 
+					</a4j:commandLink>
+				</li>
+				<li>
+					<h:panelGroup id="groupTable">
+						<rich:panel rendered="#{empty userMaintenanceBean.systemUser.groups}" style="margin-top:10px;">
+								<h:outputText value="Keine Einträge gefunden" styleClass="italic" />
+							</rich:panel>	
+						<rich:dataTable styleClass="editorTable" value="#{userMaintenanceBean.systemUser.groups}" var="group"
+							rendered="#{not empty userMaintenanceBean.systemUser.groups}"
+							onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
+							<rich:column sortBy="#{group.name}" styleClass="mediumColumn">
+								<f:facet name="header">
+									<h:outputText value="Gruppenname" />
+								</f:facet>
+								<h:outputText value="#{group.name}" />
+							</rich:column>
+							<rich:column sortBy="#{group.description}">
+								<f:facet name="header">
+									<h:outputText value="Beschreibung" />
+								</f:facet>
+								<h:outputText value="#{group.description}" />
+							</rich:column>
+							<rich:column styleClass="smallColumn">
+								<f:facet name="header">
+									<rich:spacer />
+								</f:facet>
+								<a4j:commandLink reRender="groupTable" immediate="true">
+									<a4j:actionparam name="groupIdParam" assignTo="#{userMaintenanceBean.selectedGroupId}" value="#{group.id}"
+										actionListener="#{userMaintenanceBean.removeGroup}" />
+									<h:graphicImage library="images/16x16" name="remove.png" />
+								</a4j:commandLink>
+							</rich:column>
+						</rich:dataTable>
+					</h:panelGroup>
 				</li>
 			</ol>
 		</fieldset>
