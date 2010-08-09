@@ -113,19 +113,6 @@ public class SystemUser extends EntityImpl {
 	}
 
 	// ---------------------------------
-	// Custom methods
-	// ---------------------------------
-	/**
-	 * Adds this user to the given group
-	 * 
-	 * @param group
-	 *            the group to add this user
-	 */
-	public void addGroup(Group group) {
-		getGroups().add(group);
-	}
-
-	// ---------------------------------
 	// Setters for the properties
 	// ---------------------------------
 	public void setLastName(String lastName) {

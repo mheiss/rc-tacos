@@ -205,6 +205,17 @@ fieldset.defaultStyle a.button:active span {
 	background-position: bottom left;
 }
 
+fieldset.defaultStyle a.button img.buttonWithImage {
+	float:left; 
+	padding-top:0.3em;
+	padding-left:0.9em;
+}
+
+fieldset.defaultStyle a.button span.buttonWithImage {
+	margin-left:0.4em;
+	padding: 5px 0 5px 25px;
+}
+
 /***********************************************************
  Tab styling
  **********************************************************/
