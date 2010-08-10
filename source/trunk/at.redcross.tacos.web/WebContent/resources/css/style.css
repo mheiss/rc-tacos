@@ -69,6 +69,7 @@ fieldset.defaultStyle {
 	width: 100%;
 	border-style: none;
 	margin-bottom: 1em;
+	background-color: #F5F5F5; 
 }
 
 fieldset.defaultStyle legend {
@@ -103,10 +104,20 @@ fieldset.defaultStyle label {
 	width: 10em;
 	color: #000;
 	padding-right:2em;
-	padding-top: 0.4em;
+	padding-top: 0.5em;
 	font-weight: bold;
 	font-size: 1.1em;
 	text-align:right;
+	position: relative;
+}
+
+fieldset.defaultStyle label em.required {   
+	left: 11em;        
+	top: 0.5em;
+	width:16px;
+	color:#fff;
+	position: absolute; 
+	background: transparent url("../images/custom/mandatory.png") no-repeat scroll center;
 }
 
 fieldset.defaultStyle label.leftAligned {
@@ -229,11 +240,16 @@ fieldset.defaultStyle .box {
 	clear:both;
 	position:relative;
 	top:1em;
-	padding:0.3em;
-	margin-top:1em;
+	padding:0.6em;
+	margin-top:1.2em;
 	margin-bottom:1em;
 	display:block;
-	border:1px solid #cdcdcd;
+	border-top:1px dashed #cdcdcd;
+}
+
+fieldset.defaultStyle .box .deleteImage {
+	position:relative;
+	top:0.25em;
 }
 
 /***********************************************************

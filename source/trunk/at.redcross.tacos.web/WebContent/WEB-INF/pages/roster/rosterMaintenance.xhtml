@@ -36,10 +36,11 @@
 	<!-- Render the content -->
 	<ui:define name="content">
 		<rich:messages errorClass="errorMessage" globalOnly="true" />
-		<fieldset class="defaultStyle"><legend><h:outputText value="Allgemeine Daten:" /></legend>
+		<fieldset class="defaultStyle">
+		<legend><h:outputText value="Allgemeine Daten:" /></legend>
 		<ol>
 			<li>
-				<h:outputLabel for="systemUser" value="Mitarbeiter" />
+				<h:outputLabel for="systemUser" value="Mitarbeiter"> <em class="required">*</em> </h:outputLabel>
 				<div class="input">
 					<rich:comboBox width="350px" id="systemUser" value="#{rosterMaintenanceBean.rosterEntry.systemUser}" 
 						selectFirstOnUpdate="false" defaultLabel="Mitarbeiter"
@@ -53,7 +54,7 @@
 				</div>
 			</li>
 			<li>
-				<h:outputLabel for="location" value="Ortsstelle" />
+				<h:outputLabel for="location" value="Ortsstelle"> <em class="required">*</em> </h:outputLabel>
 				<div class="input">
 					<rich:comboBox width="350px" id="location" value="#{rosterMaintenanceBean.rosterEntry.location}" 
 						selectFirstOnUpdate="false" defaultLabel="Orststelle"
@@ -67,7 +68,7 @@
 				</div>
 			</li>
 			<li>
-				<h:outputLabel for="assignment" value="Verwendung" />
+				<h:outputLabel for="assignment" value="Verwendung"> <em class="required">*</em> </h:outputLabel>
 				<div class="input">
 					<rich:comboBox width="350px" id="assignment" value="#{rosterMaintenanceBean.rosterEntry.assignment}" 
 						selectFirstOnUpdate="false" defaultLabel="Verwendung"
@@ -81,7 +82,7 @@
 				</div>
 			</li>
 			<li>
-				<h:outputLabel for="serviceType" value="Dienstverhältnis" />
+				<h:outputLabel for="serviceType" value="Dienstverhältnis"> <em class="required">*</em> </h:outputLabel>
 				<div class="input">
 					<rich:comboBox width="350px" id="serviceType"  value="#{rosterMaintenanceBean.rosterEntry.serviceType}" 
 						selectFirstOnUpdate="false" defaultLabel="Dienstverhältnis"
@@ -114,7 +115,7 @@
 		<fieldset class="defaultStyle"><legend><h:outputText value="Dienstzeiten" /></legend>
 		<ol>
 			<li>
-				<h:outputLabel for="startTime" value="Dienstzeit von" />
+				<h:outputLabel for="startTime" value="Dienstzeit von"> <em class="required">*</em> </h:outputLabel>
 				<div class="input">
 					<rich:calendar id="startDate" value="#{rosterMaintenanceBean.rosterEntry.plannedStartDate}" styleClass="rich-calendar" 
 						enableManualInput="true" converterMessage="Bitte geben Sie ein gültiges Datum an"
@@ -136,7 +137,7 @@
 				</div>
 			</li>
 			<li>
-				<h:outputLabel for="endTime" value="Dienstzeit bis" />
+				<h:outputLabel for="endTime" value="Dienstzeit bis"> <em class="required">*</em> </h:outputLabel>
 				<div class="input">
 					<rich:calendar id="endDate" value="#{rosterMaintenanceBean.rosterEntry.plannedEndDate}" styleClass="rich-calendar" 
 						enableManualInput="true" datePattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" 
