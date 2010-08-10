@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich" xmlns:pretty="http://ocpsoft.com/prettyfaces">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich" xmlns:pretty="http://ocpsoft.com/prettyfaces" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
 <body>
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
 	<ui:param name="section" value="admin" />
@@ -167,126 +167,81 @@
 			</ol>
 		</fieldset>
 		
-		<fieldset class="defaultStyle"> <legend> <h:outputText value="Zugewiesene Kompetenzen" /> </legend>
-			<ol>
-				<li>
-					<h:outputText value="Die zugewiesenen Kompetenzen definieren welche Ausbildung der Benutzer hat. Sie werden nicht weiter im System ausgewertet." />
-				</li>
-				<li>
-					<h:outputLabel for="competence" value="Kompetenz: " />
-					<div class="input">
-						<rich:comboBox id="competence" value="#{userMaintenanceBean.selectedCompetence}" 
-								selectFirstOnUpdate="false" defaultLabel="Kompetenz auswählen">
-								<f:selectItems value="#{userMaintenanceBean.competenceItems}" />
-								<f:validator validatorId="validator.dropDown" />
-								<f:converter converterId="converter.dropDown" />
-								<rich:ajaxValidator event="onchange" />
-								<a4j:support event="onchange" reRender="competenceButton" />
-						</rich:comboBox> 
-						<rich:message for="competence" errorClass="error" />
-					</div>
-					<a4j:commandLink id="competenceButton" styleClass="button" actionListener="#{userMaintenanceBean.addCompetence}" reRender="competence,competenceButton,competenceTable">
-						<h:graphicImage library="images/16x16" name="add.png" styleClass="buttonWithImage" />
-						<h:outputText value="Kompetenz hinzufügen" styleClass="buttonWithImage" /> 
-					</a4j:commandLink>
-				</li>
-				<li>
-					<h:panelGroup id="competenceTable">
-						<rich:panel rendered="#{empty userMaintenanceBean.systemUser.competences}" style="margin-top:10px;">
-							<h:outputText value="Keine Einträge gefunden" styleClass="italic" />
-						</rich:panel>				
-						<rich:dataTable styleClass="editorTable" value="#{userMaintenanceBean.systemUser.competences}" var="competence"
-							rendered="#{not empty userMaintenanceBean.systemUser.competences}"
-							onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
-							<rich:column sortBy="#{competence.name}" styleClass="mediumColumn">
-								<f:facet name="header">
-									<h:outputText value="Kompetenz" />
-								</f:facet>
-								<h:outputText value="#{competence.name}" />
-							</rich:column>
-							<rich:column sortBy="#{competence.description}">
-								<f:facet name="header">
-									<h:outputText value="Beschreibung" />
-								</f:facet>
-								<h:outputText value="#{competence.description}" />
-							</rich:column>
-							<rich:column styleClass="smallColumn">
-								<f:facet name="header">
-									<rich:spacer />
-								</f:facet>
-								<a4j:commandLink reRender="competenceTable" immediate="true">
-									<a4j:actionparam name="competenceIdParam" assignTo="#{userMaintenanceBean.selectedCompetenceId}" value="#{competence.id}"
-										actionListener="#{userMaintenanceBean.removeCompetence}" />
-									<h:graphicImage library="images/16x16" name="remove.png" />
-								</a4j:commandLink>
-							</rich:column>
-						</rich:dataTable>
-					</h:panelGroup>
-				</li>
-			</ol>
+		<fieldset class="defaultStyle"> 
+			<legend> <h:outputText value="Zugewiesene Kompetenzen" /> </legend>
+			<p>	<h:outputText value="Die zugewiesenen Kompetenzen definieren welche Ausbildung der Benutzer hat. Sie werden nicht weiter im System ausgewertet." /> </p>
+			<h:outputLabel for="competence" value="Kompetenz: " styleClass="leftAligned" />
+			<div class="input">
+				<rich:comboBox id="competence" value="#{userMaintenanceBean.selectedCompetence}" 
+					selectFirstOnUpdate="false" defaultLabel="Kompetenz auswählen"
+					disabled="#{empty userMaintenanceBean.competenceItems}">
+					<f:selectItems value="#{userMaintenanceBean.competenceItems}" />
+					<f:validator validatorId="validator.dropDown" />
+					<f:converter converterId="converter.dropDown" />
+					<rich:ajaxValidator event="onchange" />
+					<a4j:support event="onchange" reRender="competenceButton" />
+				</rich:comboBox> 
+				<rich:message for="competence" errorClass="error" />
+			</div>
+			<a4j:commandLink id="competenceButton" styleClass="button" actionListener="#{userMaintenanceBean.addCompetence}" reRender="competence,competenceButton,competenceTable">
+				<h:graphicImage library="images/16x16" name="add.png" styleClass="buttonWithImage" />
+				<h:outputText value="Kompetenz hinzufügen" styleClass="buttonWithImage" /> 
+			</a4j:commandLink>
+			<h:panelGroup id="competenceTable" class="box">
+				<h:outputText value="Keine Einträge gefunden" styleClass="italic" rendered="#{empty userMaintenanceBean.systemUser.competences}" />
+				<a4j:repeat value="#{userMaintenanceBean.systemUser.competences}" var="competence" rowKeyVar="rowIndex">
+					<h:outputText value="#{competence.name}" />
+					<h:outputText value=" ( " />
+					<a4j:commandLink reRender="competenceTable,competence" immediate="true">
+							<a4j:actionparam name="competenceIdParam" assignTo="#{userMaintenanceBean.selectedCompetenceId}" value="#{competence.id}"
+								actionListener="#{userMaintenanceBean.removeCompetence}" />
+							<h:graphicImage library="images/16x16" name="remove.png" />
+						</a4j:commandLink>
+					<h:outputText value=" ) " />
+					<h:outputText value=" , " rendered="#{rowIndex lt fn:length(userMaintenanceBean.systemUser.competences)-1}" />
+				</a4j:repeat>
+			</h:panelGroup>
 		</fieldset>
 		
 		<fieldset class="defaultStyle"> <legend> <h:outputText value="Zugewiesene Benutzergruppen" /> </legend>
-			<ol>
-				<li>
-					<h:outputText value="Die zugewiesenen Gruppen definieren welche Aktionen der Benutzer druchführen kann und auf welche Seiten er Zugriff hat." />
-				</li>
-				<li>
-					<h:outputLabel for="group" value="Gruppe: " />
-					<div class="input">
-						<rich:comboBox id="group" value="#{userMaintenanceBean.selectedGroup}" 
-								selectFirstOnUpdate="false" defaultLabel="Gruppe auswählen">
-								<f:selectItems value="#{userMaintenanceBean.groupItems}" />
-								<f:validator validatorId="validator.dropDown" />
-								<f:converter converterId="converter.dropDown" />
-								<rich:ajaxValidator event="onchange" />
-								<a4j:support event="onchange" reRender="groupButton" />
-						</rich:comboBox> 
-						<rich:message for="group" errorClass="error" />
-					</div>
-					<a4j:commandLink id="groupButton" styleClass="button" actionListener="#{userMaintenanceBean.addGroup}" reRender="group,groupButton,groupTable">
-						<h:graphicImage library="images/16x16" name="add.png" styleClass="buttonWithImage" />
-						<h:outputText value="Gruppe hinzufügen" styleClass="buttonWithImage" /> 
+			<p>	<h:outputText value="Die zugewiesenen Gruppen definieren welche Aktionen der Benutzer druchführen kann und auf welche Seiten er Zugriff hat." /> </p>
+			<h:outputLabel for="group" value="Gruppe: " styleClass="leftAligned" />
+			<div class="input">
+				<rich:comboBox id="group" value="#{userMaintenanceBean.selectedGroup}" 
+					selectFirstOnUpdate="false" defaultLabel="Gruppe auswählen"
+					disabled="#{empty userMaintenanceBean.groupItems}">
+					<f:selectItems value="#{userMaintenanceBean.groupItems}" />
+					<f:validator validatorId="validator.dropDown" />
+					<f:converter converterId="converter.dropDown" />
+					<rich:ajaxValidator event="onchange" />
+					<a4j:support event="onchange" reRender="groupButton" />
+				</rich:comboBox> 
+				<rich:message for="group" errorClass="error" />
+			</div>
+			<a4j:commandLink id="groupButton" styleClass="button" actionListener="#{userMaintenanceBean.addGroup}" reRender="group,groupButton,groupTable">
+				<h:graphicImage library="images/16x16" name="add.png" styleClass="buttonWithImage" />
+				<h:outputText value="Gruppe hinzufügen" styleClass="buttonWithImage" /> 
+			</a4j:commandLink>
+				
+			<h:panelGroup id="groupTable" class="box">
+				<h:outputText value="Keine Einträge gefunden" styleClass="italic" rendered="#{empty userMaintenanceBean.systemUser.groups}" />
+				<a4j:repeat value="#{userMaintenanceBean.systemUser.groups}" var="group" rowKeyVar="rowIndex">
+					<h:outputText value="#{group.name}" />
+					<h:outputText value=" ( " />
+					<a4j:commandLink reRender="group,groupTable" immediate="true">
+						<a4j:actionparam name="groupIdParam" assignTo="#{userMaintenanceBean.selectedGroupId}" value="#{group.id}"
+							actionListener="#{userMaintenanceBean.removeGroup}" />
+						<h:graphicImage library="images/16x16" name="remove.png" />
 					</a4j:commandLink>
-				</li>
-				<li>
-					<h:panelGroup id="groupTable">
-						<rich:panel rendered="#{empty userMaintenanceBean.systemUser.groups}" style="margin-top:10px;">
-								<h:outputText value="Keine Einträge gefunden" styleClass="italic" />
-							</rich:panel>	
-						<rich:dataTable styleClass="editorTable" value="#{userMaintenanceBean.systemUser.groups}" var="group"
-							rendered="#{not empty userMaintenanceBean.systemUser.groups}"
-							onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
-							<rich:column sortBy="#{group.name}" styleClass="mediumColumn">
-								<f:facet name="header">
-									<h:outputText value="Gruppenname" />
-								</f:facet>
-								<h:outputText value="#{group.name}" />
-							</rich:column>
-							<rich:column sortBy="#{group.description}">
-								<f:facet name="header">
-									<h:outputText value="Beschreibung" />
-								</f:facet>
-								<h:outputText value="#{group.description}" />
-							</rich:column>
-							<rich:column styleClass="smallColumn">
-								<f:facet name="header">
-									<rich:spacer />
-								</f:facet>
-								<a4j:commandLink reRender="groupTable" immediate="true">
-									<a4j:actionparam name="groupIdParam" assignTo="#{userMaintenanceBean.selectedGroupId}" value="#{group.id}"
-										actionListener="#{userMaintenanceBean.removeGroup}" />
-									<h:graphicImage library="images/16x16" name="remove.png" />
-								</a4j:commandLink>
-							</rich:column>
-						</rich:dataTable>
-					</h:panelGroup>
-				</li>
-			</ol>
+					<h:outputText value=" ) " />
+					<h:outputText value=" , " rendered="#{rowIndex lt fn:length(userMaintenanceBean.systemUser.groups)-1}" />
+				</a4j:repeat>
+			</h:panelGroup>
 		</fieldset>
 	
 		<fieldset class="defaultStyle">
 			<legend> <h:outputText value="Anmerkungen" /> </legend> 
+			<p>	<h:outputText value="Hier können Sie Anmerkungen zum Benutzer hinterlegen. Diese sind nur innerhalb des Administrationsbereiches einsichtlich." /> </p>
 			<rich:editor value="#{userMaintenanceBean.systemUser.notes}" theme="simple" oninit="smartEditor()" autoResize="true" language="de" />
 		</fieldset>
 

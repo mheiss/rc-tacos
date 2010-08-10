@@ -11,7 +11,7 @@ import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
 import at.redcross.tacos.web.faces.FacesUtils;
-import at.redcross.tacos.web.utils.DateUtils;
+import at.redcross.tacos.web.utils.TacosDateUtils;
 
 @FacesValidator("validator.fromTo")
 public class FromToValidator implements Validator {
@@ -31,8 +31,8 @@ public class FromToValidator implements Validator {
 			return;
 		}
 
-		Calendar startCal = DateUtils.mergeDateAndTime(startDate, startTime);
-		Calendar endCal = DateUtils.mergeDateAndTime(endDate, endTime);
+		Calendar startCal = TacosDateUtils.mergeDateAndTime(startDate, startTime);
+		Calendar endCal = TacosDateUtils.mergeDateAndTime(endDate, endTime);
 		if (startCal.after(endCal)) {
 			FacesMessage message = new FacesMessage("Das Startdatum muss vor dem Enddatum liegen.");
 			message.setSeverity(FacesMessage.SEVERITY_ERROR);

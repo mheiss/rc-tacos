@@ -10,7 +10,7 @@ import at.redcross.tacos.web.faces.FacesUtils;
  * The {@code DateUtils} provides static helper methods to work with
  * {@linkplain Date date and time}.
  */
-public class DateUtils {
+public class TacosDateUtils {
 
     /**
      * Creates a new date from the provided separate date and time values.
