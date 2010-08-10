@@ -32,7 +32,7 @@
 		</legend>
 		<ol>
 			<li class="left">
-				<h:outputLabel for="carName" value="Bezeichnung" /> 
+				<h:outputLabel for="carName" value="Bezeichnung"> <em class="required">*</em> </h:outputLabel>
 				<div class="input">
 					<h:inputText id="carName" value="#{vehicleMaintenanceBean.car.name}" required="true" requiredMessage="Bitte geben Sie eine gültige Fahrzeugbezeichnung an">
 						<rich:ajaxValidator event="onblur" />
@@ -41,7 +41,7 @@
 				</div>
 			</li>
 			<li class="right">
-				<h:outputLabel for="location" value="Dienststelle" />
+				<h:outputLabel for="location" value="Dienststelle"> <em class="required">*</em> </h:outputLabel>
 				<div class="input">
 					<rich:comboBox id="location" width="250" value="#{vehicleMaintenanceBean.car.location}" 
 						selectFirstOnUpdate="false" defaultLabel="aktuelle Dienststelle"
