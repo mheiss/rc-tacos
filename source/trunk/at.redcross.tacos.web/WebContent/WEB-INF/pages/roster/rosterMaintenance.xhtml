@@ -11,10 +11,10 @@
 	<!--  Dynamically resize the input fields -->
 	<ui:define name="javaScriptMethod">
 		jQuery(window).resize(function() {
-			smartColumns();
+			smartEditor();
 		});
 		jQuery(document).ready(function() {
-			smartColumns();
+			smartEditor();
 		});
 	</ui:define>
 
@@ -41,7 +41,7 @@
 			<li>
 				<h:outputLabel for="systemUser" value="Mitarbeiter" />
 				<div class="input">
-					<rich:comboBox id="systemUser" value="#{rosterMaintenanceBean.rosterEntry.systemUser}" 
+					<rich:comboBox width="350px" id="systemUser" value="#{rosterMaintenanceBean.rosterEntry.systemUser}" 
 						selectFirstOnUpdate="false" defaultLabel="Mitarbeiter"
 						required="true" requiredMessage="Bitte geben sie einen Mitarbeiter an">
 						<f:selectItems value="#{rosterMaintenanceBean.userItems}" />
@@ -55,7 +55,7 @@
 			<li>
 				<h:outputLabel for="location" value="Ortsstelle" />
 				<div class="input">
-					<rich:comboBox id="location" value="#{rosterMaintenanceBean.rosterEntry.location}" 
+					<rich:comboBox width="350px" id="location" value="#{rosterMaintenanceBean.rosterEntry.location}" 
 						selectFirstOnUpdate="false" defaultLabel="Orststelle"
 						required="true" requiredMessage="Bitte geben sie eine Dienststelle an">
 						<f:selectItems value="#{rosterMaintenanceBean.locationItems}" />
@@ -69,7 +69,7 @@
 			<li>
 				<h:outputLabel for="assignment" value="Verwendung" />
 				<div class="input">
-					<rich:comboBox id="assignment" value="#{rosterMaintenanceBean.rosterEntry.assignment}" 
+					<rich:comboBox width="350px" id="assignment" value="#{rosterMaintenanceBean.rosterEntry.assignment}" 
 						selectFirstOnUpdate="false" defaultLabel="Verwendung"
 						required="true"	requiredMessage="Bitte geben sie eine Verwendung an">
 						<f:selectItems value="#{rosterMaintenanceBean.assignmentItems}" />
@@ -83,7 +83,7 @@
 			<li>
 				<h:outputLabel for="serviceType" value="Dienstverhältnis" />
 				<div class="input">
-					<rich:comboBox id="serviceType"  value="#{rosterMaintenanceBean.rosterEntry.serviceType}" 
+					<rich:comboBox width="350px" id="serviceType"  value="#{rosterMaintenanceBean.rosterEntry.serviceType}" 
 						selectFirstOnUpdate="false" defaultLabel="Dienstverhältnis"
 						required="true" requiredMessage="Bitte geben sie ein Dienstverhältnis an">
 						<f:selectItems value="#{rosterMaintenanceBean.serviceTypeItems}" />
@@ -162,7 +162,7 @@
 		<fieldset class="defaultStyle">
 			<legend><h:outputText value="Anmerkungen" /></legend> 
 			<rich:editor value="#{rosterMaintenanceBean.rosterEntry.notes}" theme="simple" 
-				oninit="smartColumns()" autoResize="true" language="de" />
+				oninit="smartEditor()" autoResize="true" language="de" />
 		</fieldset>
 		
 		<fieldset class="defaultStyle last">

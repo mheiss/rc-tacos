@@ -1,6 +1,7 @@
 package at.redcross.tacos.web.beans;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import at.redcross.tacos.dbal.entity.Address;
 import at.redcross.tacos.dbal.entity.Competence;
+import at.redcross.tacos.dbal.entity.EntityImpl;
 import at.redcross.tacos.dbal.entity.Gender;
 import at.redcross.tacos.dbal.entity.Group;
 import at.redcross.tacos.dbal.entity.Login;
@@ -78,6 +80,9 @@ public class UserMaintenanceBean extends BaseBean {
 			genderItems.add(new DropDownItem("weiblich", Gender.FEMALE).getItem());
 			genderItems.add(new DropDownItem("unbekannt", Gender.UNKNOWN).getItem());
 			encoder = new ShaPasswordEncoder(256);
+			// filter duplicate elements
+			filterDuplicate(groupItems, systemUser.getGroups());
+			filterDuplicate(competenceItems, systemUser.getCompetences());
 		} finally {
 			manager = EntityManagerHelper.close(manager);
 		}
@@ -136,10 +141,10 @@ public class UserMaintenanceBean extends BaseBean {
 			return;
 		}
 		List<Group> groups = systemUser.getGroups();
-		if (groups.contains(selectedGroup)) {
-			return;
+		if (!groups.contains(selectedGroup)) {
+			groups.add(selectedGroup);
 		}
-		groups.add(selectedGroup);
+		filterDuplicate(groupItems, systemUser.getGroups());
 		selectedGroup = null;
 	}
 
@@ -150,10 +155,10 @@ public class UserMaintenanceBean extends BaseBean {
 			return;
 		}
 		List<Competence> competences = systemUser.getCompetences();
-		if (competences.contains(selectedCompetence)) {
-			return;
+		if (!competences.contains(selectedCompetence)) {
+			competences.add(selectedCompetence);
 		}
-		competences.add(selectedCompetence);
+		filterDuplicate(competenceItems, systemUser.getCompetences());
 		selectedCompetence = null;
 	}
 
@@ -164,17 +169,19 @@ public class UserMaintenanceBean extends BaseBean {
 			Group group = groupIter.next();
 			if (group.getId() == selectedGroupId) {
 				groupIter.remove();
+				groupItems.add(new DropDownItem(group).getItem());
 			}
 		}
 	}
 
-	/** Adds the currently selected competence to this user */
+	/** Removes the currently selected competence from this user */
 	public void removeCompetence(ActionEvent event) {
 		Iterator<Competence> comptIter = systemUser.getCompetences().iterator();
 		while (comptIter.hasNext()) {
 			Competence competence = comptIter.next();
 			if (competence.getId() == selectedCompetenceId) {
 				comptIter.remove();
+				competenceItems.add(new DropDownItem(competence).getItem());
 			}
 		}
 	}
@@ -193,6 +200,18 @@ public class UserMaintenanceBean extends BaseBean {
 			login.setSystemUser(systemUser);
 		}
 		login = systemUser.getLogin();
+	}
+
+	/** Removes all elements from the source list that are in the target list */
+	private void filterDuplicate(List<SelectItem> sourceList, Collection<? extends EntityImpl> targetList) {
+		Iterator<SelectItem> iter = sourceList.iterator();
+		while (iter.hasNext()) {
+			DropDownItem dropDown = (DropDownItem) iter.next().getValue();
+			EntityImpl impl = (EntityImpl) dropDown.getValue();
+			if (targetList.contains(impl)) {
+				iter.remove();
+			}
+		}
 	}
 
 	// ---------------------------------

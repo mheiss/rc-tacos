@@ -21,7 +21,7 @@ import at.redcross.tacos.web.faces.combo.DropDownHelper;
 import at.redcross.tacos.web.persitence.EntityManagerFactory;
 import at.redcross.tacos.web.reporting.ReportRenderer;
 import at.redcross.tacos.web.reporting.ReportRenderer.ReportRenderParameters;
-import at.redcross.tacos.web.utils.DateUtils;
+import at.redcross.tacos.web.utils.TacosDateUtils;
 
 /** Provide base functions for all roster beans */
 public abstract class RosterOverviewBean extends BaseBean {
@@ -47,7 +47,7 @@ public abstract class RosterOverviewBean extends BaseBean {
         EntityManager manager = null;
         try {
             manager = EntityManagerFactory.createEntityManager();
-            date = DateUtils.getCalendar(System.currentTimeMillis()).getTime();
+            date = TacosDateUtils.getCalendar(System.currentTimeMillis()).getTime();
             locationItems = DropDownHelper.convertToItems(LocationHelper.list(manager));
             loadfromDatabase(manager, location, date);
         }
@@ -64,7 +64,7 @@ public abstract class RosterOverviewBean extends BaseBean {
         try {
             // provide default value if date is null
             if (date == null) {
-                date = DateUtils.getCalendar(System.currentTimeMillis()).getTime();
+                date = TacosDateUtils.getCalendar(System.currentTimeMillis()).getTime();
             }
             manager = EntityManagerFactory.createEntityManager();
             loadfromDatabase(manager, location, date);

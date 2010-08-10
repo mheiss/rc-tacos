@@ -81,7 +81,7 @@ fieldset.defaultStyle legend {
 
 fieldset.defaultStyle li {
 	clear: both;
-	padding: 8px 10px;
+	padding:0.5em;
 }
 
 fieldset.defaultStyle ol li.left {
@@ -102,13 +102,21 @@ fieldset.defaultStyle label {
 	float: left;
 	width: 10em;
 	color: #000;
-	padding-top: 0.2em;
+	padding-right:2em;
+	padding-top: 0.4em;
 	font-weight: bold;
 	font-size: 1.1em;
+	text-align:right;
+}
+
+fieldset.defaultStyle label.leftAligned {
+	text-align:left;
+	width:5em;
 }
 
 fieldset.defaultStyle .input {
 	float: left;
+	padding:4px 2px;
 	margin-right: 0.5em;
 }
 
@@ -183,6 +191,7 @@ fieldset.defaultStyle a.button {
 	font-weight: bold;
 	margin-right: 6px;
 	padding-right: 18px;
+	margin-top:3px;
 	text-decoration: none;
 	background: transparent url("../images/custom/bg_button_a.png") no-repeat scroll top right;
 }
@@ -214,6 +223,17 @@ fieldset.defaultStyle a.button img.buttonWithImage {
 fieldset.defaultStyle a.button span.buttonWithImage {
 	margin-left:0.4em;
 	padding: 5px 0 5px 25px;
+}
+
+fieldset.defaultStyle .box {
+	clear:both;
+	position:relative;
+	top:1em;
+	padding:0.3em;
+	margin-top:1em;
+	margin-bottom:1em;
+	display:block;
+	border:1px solid #cdcdcd;
 }
 
 /***********************************************************

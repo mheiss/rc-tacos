@@ -9,15 +9,15 @@
 	</rich:panel>
 	<rich:panel rendered="#{not empty values}">
 		<rich:dataTable id="table-#{tabId}" styleClass="singleTable" value="#{values}" var="car" onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
-			<rich:column sortBy="#{car.outOfOrder}" styleClass="center smallColumn">
+			<rich:column sortBy="#{car.outOfOrder}" sortOrder="ASCENDING" styleClass="center smallColumn">
 				<f:facet name="header">
 					<h:outputText value="Status" title="Status" />
 				</f:facet>
 				<h:panelGroup rendered="#{car.outOfOrder}">
-					<h:graphicImage library="images/24x24" name="outOfOrder.png" title="Nicht verfügbar"/>
+					<h:graphicImage library="images/16x16" name="data_down.png" title="Nicht verfügbar"/>
 				</h:panelGroup>
 				<h:panelGroup rendered="#{not car.outOfOrder}">
-					<h:graphicImage library="images/24x24" name="check.png" title="Einsatzbereit" />
+					<h:graphicImage library="images/16x16" name="data_ok.png" title="Einsatzbereit" />
 				</h:panelGroup>
 			</rich:column>
 			<rich:column styleClass="mediumColumn bold" sortBy="#{car.name}" sortOrder="ASCENDING">

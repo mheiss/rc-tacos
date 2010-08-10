@@ -8,9 +8,6 @@ function smartColumns() {
 	jQuery("div.rich-combobox-shell input:first-child").css( {
 		'width' : inputWidth - 20
 	});
-	jQuery("table.mceLayout").css( {
-		'width' : legendWidth
-	});
 }
 
 function smartEditor() {
