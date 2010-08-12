@@ -28,6 +28,12 @@ public abstract class RosterOverviewBean extends BaseBean {
 
     private static final long serialVersionUID = -63594513702881676L;
 
+    /** the id of the selected roster entry */
+    private long entryId;
+    
+    /* the entry to remove*/
+    private RosterEntry rosterEntry;
+    
     // filter by location
     protected Location location;
     protected List<SelectItem> locationItems;
@@ -116,6 +122,38 @@ public abstract class RosterOverviewBean extends BaseBean {
             manager = EntityManagerHelper.close(manager);
         }
     }
+    
+    public String markToDelete(ActionEvent event) {
+		System.out.println("in markToDelete");		
+		EntityManager manager = null;
+		try {
+			manager = EntityManagerFactory.createEntityManager();
+			loadfromDatabase(manager, entryId);
+			rosterEntry.setToDelete(true);
+			manager.merge(rosterEntry);
+			EntityManagerHelper.commit(manager);
+			return FacesUtils.pretty("roster-dayOverview");
+		}
+		catch (Exception ex) {
+			FacesUtils.addErrorMessage("Der Dienstplaneintrag konnte nicht gespeichert werden");
+			return null;
+		}
+		finally {
+			manager = EntityManagerHelper.close(manager);
+		}
+	}
+    
+ // ---------------------------------
+	// Helper methods
+	// ---------------------------------
+	private void loadfromDatabase(EntityManager manager, long id) {
+		rosterEntry = manager.find(RosterEntry.class, id);
+		if (rosterEntry == null) {
+			entryId = -1;
+			rosterEntry = new RosterEntry();
+		}
+	}
+	
 
     /** Loads the roster entries using the given filter parameters */
     protected abstract List<RosterEntry> getEntries(EntityManager manager, Location location, Date date);
@@ -158,6 +196,10 @@ public abstract class RosterOverviewBean extends BaseBean {
     // ---------------------------------
     // Setters for the properties
     // ---------------------------------
+    public void setEntryId(long entryId) {
+        this.entryId = entryId;
+    }
+    
     public void setDate(Date date) {
         this.date = date;
     }
@@ -169,6 +211,10 @@ public abstract class RosterOverviewBean extends BaseBean {
     // ---------------------------------
     // Getters for the properties
     // ---------------------------------
+    public long getEntryId(){
+    	return entryId;
+    }
+    
     public Date getDate() {
         return date;
     }
