@@ -132,10 +132,16 @@
 				</pretty:link>
 			</rich:column>
 			<rich:column styleClass="center">
-				<pretty:link mappingId="roster-deleteMaintenance" title="Dienstplaneintrag löschen">
-					<f:param value="#{entry.id}" />
-					<h:graphicImage styleClass="actionImage" library="images/16x16" name="remove.png" />
-				</pretty:link>
+				
+				
+				<a4j:commandLink>
+					<a4j:actionparam name="entryId" assignTo="#{rosterDayOverviewBean.entryId}" value="#{entry.id}"
+						actionListener="#{rosterDayOverviewBean.markToDelete}" />
+					<h:graphicImage library="images/16x16" name="remove.png" />
+				</a4j:commandLink>
+				
+				
+				
 			</rich:column>
 		</rich:subTable>
 	</rich:dataTable>
