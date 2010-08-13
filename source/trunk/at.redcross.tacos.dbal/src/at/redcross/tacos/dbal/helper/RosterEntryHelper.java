@@ -19,7 +19,8 @@ public class RosterEntryHelper {
 
         StringBuilder builder = new StringBuilder();
         builder.append(" from RosterEntry entry ");
-        builder.append(" where :date >= entry.plannedStartDate AND :date <= entry.plannedEndDate ");
+        builder.append(" where :date >= entry.plannedStartDate AND :date <= entry.plannedEndDate");
+        builder.append(" AND entry.toDelete <> true ");
         if (location != null) {
             builder.append(" and entry.location.id = :locationId");
         }
@@ -47,8 +48,9 @@ public class RosterEntryHelper {
 
         StringBuilder builder = new StringBuilder();
         builder.append(" from RosterEntry entry ");
-        builder.append(" where entry.plannedStartDate between :start and :end ");
-        builder.append(" OR entry.plannedEndDate between :start and :end ");
+        builder.append(" where (entry.plannedStartDate between :start and :end ");
+        builder.append(" OR entry.plannedEndDate between :start and :end) ");
+        builder.append(" AND entry.toDelete <> true ");
         if (location != null) {
             builder.append(" and entry.location.id = :locationId");
         }
@@ -65,6 +67,7 @@ public class RosterEntryHelper {
        
     	StringBuilder builder = new StringBuilder();
         builder.append(" from RosterEntry entry ");
+        builder.append(" where entry.toDelete <> true ");
        
         TypedQuery<RosterEntry> query = manager.createQuery(builder.toString(), RosterEntry.class);
 
