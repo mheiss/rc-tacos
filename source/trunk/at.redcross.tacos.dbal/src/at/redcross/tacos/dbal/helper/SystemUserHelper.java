@@ -21,13 +21,15 @@ public class SystemUserHelper {
         return query.getSingleResult().getSystemUser();
     }
 
-    public static List<SystemUser> listByLocationName(EntityManager manager, String locationName) {
-        StringBuilder builder = new StringBuilder();
+    public static List<SystemUser> listByLocationName(EntityManager manager, String locationName, boolean locked) {
+    	StringBuilder builder = new StringBuilder();    	
         builder.append("from SystemUser user ");
+        builder.append(" where user.login.locked = :locked ");
         if (locationName != null) {
-            builder.append("where user.location.name = :locationName");
+            builder.append(" AND user.location.name = :locationName ");
         }
         TypedQuery<SystemUser> query = manager.createQuery(builder.toString(), SystemUser.class);
+        query.setParameter("locked", locked);
         if (locationName != null) {
             query.setParameter("locationName", locationName);
         }

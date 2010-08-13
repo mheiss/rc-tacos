@@ -25,10 +25,10 @@
 		</li>
 	</ui:define>
 
-	<ui:define name="content">
-		<rich:simpleTogglePanel id="filter" opened="false" label="Filter" bodyClass="defaultToggleBodyStyle" styleClass="defaultToggleStyle" switchType="client">
-			<fieldset class="defaultStyle"></fieldset>
-		</rich:simpleTogglePanel>
+	<ui:define name="content">		
+		<ui:decorate template="userFilter.xhtml">
+			<ui:param name="bean" value="#{userOverviewBean}" />
+		</ui:decorate>
 		<h:panelGroup id="d">
 			<rich:tabPanel selectedTab="#{userOverviewBean.locationName}" switchType="ajax" valueChangeListener="#{userOverviewBean.tabChanged}"
 				styleClass="defaultTabPanelStyle" tabClass="defaultTabStyle" headerClass="defaultTabHeaderStyle">
