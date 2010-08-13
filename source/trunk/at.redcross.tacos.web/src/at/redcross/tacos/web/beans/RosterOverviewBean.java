@@ -123,8 +123,7 @@ public abstract class RosterOverviewBean extends BaseBean {
         }
     }
     
-    public String markToDelete(ActionEvent event) {
-		System.out.println("in markToDelete");		
+    public String markToDelete(ActionEvent event) {	
 		EntityManager manager = null;
 		try {
 			manager = EntityManagerFactory.createEntityManager();
@@ -140,6 +139,7 @@ public abstract class RosterOverviewBean extends BaseBean {
 		}
 		finally {
 			manager = EntityManagerHelper.close(manager);
+			
 		}
 	}
     
