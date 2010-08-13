@@ -135,7 +135,7 @@
 				
 				
 				<a4j:commandLink>
-					<a4j:actionparam name="entryId" assignTo="#{rosterDayOverviewBean.entryId}" value="#{entry.id}"
+					<a4j:actionparam name="entryId" assignTo="#{rosterDayOverviewBean.entryId}" value="#{entry.id}" reRender="rosterTable"
 						actionListener="#{rosterDayOverviewBean.markToDelete}" />
 					<h:graphicImage library="images/16x16" name="remove.png" />
 				</a4j:commandLink>
