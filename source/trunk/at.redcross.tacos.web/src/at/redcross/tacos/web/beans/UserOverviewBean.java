@@ -1,9 +1,13 @@
 package at.redcross.tacos.web.beans;
 
+import java.util.ArrayList;
+
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
+import javax.faces.model.SelectItem;
 import javax.persistence.EntityManager;
 
 import org.ajax4jsf.model.KeepAlive;
@@ -13,6 +17,7 @@ import at.redcross.tacos.dbal.entity.SystemUser;
 import at.redcross.tacos.dbal.helper.LocationHelper;
 import at.redcross.tacos.dbal.helper.SystemUserHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
+import at.redcross.tacos.web.faces.combo.DropDownItem;
 import at.redcross.tacos.web.persitence.EntityManagerFactory;
 
 @KeepAlive
@@ -23,6 +28,12 @@ public class UserOverviewBean extends BaseBean {
 
     /** available locations */
     private List<Location> locations;
+    
+    /** filter by user status */
+    private boolean locked;
+    
+    /** the values for the drop down fields */
+	private List<SelectItem> stateItems;
 
     /** active location */
     private String locationName = "*";
@@ -40,7 +51,11 @@ public class UserOverviewBean extends BaseBean {
         try {
             manager = EntityManagerFactory.createEntityManager();
             locations = LocationHelper.list(manager);
-            loadfromDatabase(manager, getLocationByName(locationName));
+            stateItems = new ArrayList<SelectItem>();
+			stateItems.add(new DropDownItem("nicht gesperrt",false).getItem());
+			stateItems.add(new DropDownItem("gesperrt",true).getItem());
+			//load not locked users
+            loadfromDatabase(manager, getLocationByName(locationName), locked);
         }
         finally {
             manager = EntityManagerHelper.close(manager);
@@ -55,7 +70,18 @@ public class UserOverviewBean extends BaseBean {
         try {
             page = 1;
             manager = EntityManagerFactory.createEntityManager();
-            loadfromDatabase(manager, getLocationByName(locationName));
+            loadfromDatabase(manager, getLocationByName(locationName),locked);
+        }
+        finally {
+            manager = EntityManagerHelper.close(manager);
+        }
+    }
+
+    public void filterChanged(ActionEvent event) {
+        EntityManager manager = null;
+        try {
+            manager = EntityManagerFactory.createEntityManager();
+            loadfromDatabase(manager, getLocationByName(locationName), locked);
         }
         finally {
             manager = EntityManagerHelper.close(manager);
@@ -65,8 +91,8 @@ public class UserOverviewBean extends BaseBean {
     // ---------------------------------
     // Private API
     // ---------------------------------
-    private void loadfromDatabase(EntityManager manager, String locationId) {
-        users = SystemUserHelper.listByLocationName(manager, locationId);
+    private void loadfromDatabase(EntityManager manager, String locationId, boolean locked) {
+        users = SystemUserHelper.listByLocationName(manager, locationId, locked);
     }
 
     private String getLocationByName(String locationName) {
@@ -91,6 +117,11 @@ public class UserOverviewBean extends BaseBean {
     public void setLocationName(String locationName) {
         this.locationName = locationName;
     }
+    
+    public void setLocked(boolean locked){
+    	this.locked = locked;
+    }
+    
 
     // ---------------------------------
     // Getters for the properties
@@ -113,5 +144,13 @@ public class UserOverviewBean extends BaseBean {
 
     public int getPage() {
         return page;
+    }
+    
+    public boolean getLocked(){
+    	return locked;
+    }
+    
+    public List<SelectItem> getStateItems() {
+        return stateItems;
     }
 }
