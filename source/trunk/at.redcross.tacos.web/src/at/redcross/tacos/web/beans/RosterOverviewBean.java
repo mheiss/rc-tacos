@@ -131,10 +131,11 @@ public abstract class RosterOverviewBean extends BaseBean {
 			rosterEntry.setToDelete(true);
 			manager.merge(rosterEntry);
 			EntityManagerHelper.commit(manager);
+			loadfromDatabase(manager, location, date);
 			return FacesUtils.pretty("roster-dayOverview");
 		}
 		catch (Exception ex) {
-			FacesUtils.addErrorMessage("Der Dienstplaneintrag konnte nicht gespeichert werden");
+			FacesUtils.addErrorMessage("Der Dienstplaneintrag konnte nicht gelöscht werden");
 			return null;
 		}
 		finally {
@@ -171,7 +172,8 @@ public abstract class RosterOverviewBean extends BaseBean {
     // Private API
     // ---------------------------------
     protected void loadfromDatabase(EntityManager manager, Location filterLocation, Date date) {
-        // build a structure containing all results grouped by locations
+        System.out.println("in load from database man loc date");
+    	// build a structure containing all results grouped by locations
         entries = new ArrayList<RosterEntry>();
         Map<Location, List<RosterEntry>> mappedResult = new HashMap<Location, List<RosterEntry>>();
         for (RosterEntry entry : getEntries(manager, filterLocation, date)) {

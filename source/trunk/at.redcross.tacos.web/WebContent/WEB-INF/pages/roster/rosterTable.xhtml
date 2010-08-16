@@ -134,8 +134,8 @@
 			<rich:column styleClass="center">
 				
 				
-				<a4j:commandLink>
-					<a4j:actionparam name="entryId" assignTo="#{rosterDayOverviewBean.entryId}" value="#{entry.id}" reRender="resultList"
+				<a4j:commandLink reRender="resultList">
+					<a4j:actionparam name="entryId" assignTo="#{rosterDayOverviewBean.entryId}" value="#{entry.id}" 
 						actionListener="#{rosterDayOverviewBean.markToDelete}" />
 					<h:graphicImage library="images/16x16" name="remove.png" />
 				</a4j:commandLink>
