@@ -11,7 +11,7 @@
 		<ui:include src="navigation.xhtml" />
 	</ui:define>
 
-	<ui:define name="page-title">
+	<ui:define name="page-header">
 		<h:graphicImage library="images/32x32" name="profile.png" />
 		<h2 class="title"><h:outputText value="Dienstverhältnisse" /></h2>
 	</ui:define>
@@ -31,7 +31,7 @@
 		</li>
 	</ui:define>
 
-	<ui:define name="content">
+	<ui:define name="page-content">
 		<rich:messages id="messages" errorClass="errorMessage" />
 		<rich:panel rendered="#{empty serviceTypeMaintenanceBean.serviceTypes}" style="margin-top:10px;">
 			<h:outputText value="Keine Einträge gefunden" styleClass="italic" />

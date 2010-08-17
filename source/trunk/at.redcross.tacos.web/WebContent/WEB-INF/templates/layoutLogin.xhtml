@@ -3,7 +3,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" 
 	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j">
 	<head>
-		<ui:include src="/WEB-INF/templates/htmlHeader.xhtml" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link href="#{facesContext.externalContext.requestContextPath}/resources/images/favicon.ico" type="image/x-icon" rel="shortcut icon" />
+		<link rel="stylesheet" type="text/css" href="#{facesContext.externalContext.requestContextPath}/resources/css/reset.css" />
+		<link rel="stylesheet" type="text/css" href="#{facesContext.externalContext.requestContextPath}/resources/css/widgets.css" />
+		<link rel="stylesheet" type="text/css" href="#{facesContext.externalContext.requestContextPath}/resources/css/layout.css" />
+		<link rel="stylesheet" type="text/css" href="#{facesContext.externalContext.requestContextPath}/resources/css/style.css" />
+		<script type="text/javascript" src="#{facesContext.externalContext.requestContextPath}/resources/js/smartFunctions.js" />
+		<a4j:loadScript src="resource://jquery.js" />
+		<script type="text/javascript">
+			<ui:insert name="javaScriptMethod" />
+		</script>
+		<title><h:outputText value="TACOS - Online-Dienstplan" /></title>
 	</head>
 	<body>
 		<div id="page">

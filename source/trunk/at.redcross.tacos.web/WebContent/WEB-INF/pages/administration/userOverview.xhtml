@@ -11,7 +11,7 @@
 		<ui:include src="navigation.xhtml" />
 	</ui:define>
 
-	<ui:define name="page-title">
+	<ui:define name="page-header">
 		<h:graphicImage library="images/32x32" name="users.png" />
 		<h2 class="title"> <h:outputText value="Mitarbeiteransicht" /> </h2>
 	</ui:define>
@@ -25,7 +25,7 @@
 		</li>
 	</ui:define>
 
-	<ui:define name="content">		
+	<ui:define name="page-content">		
 		<ui:decorate template="userFilter.xhtml">
 			<ui:param name="bean" value="#{userOverviewBean}" />
 		</ui:decorate>

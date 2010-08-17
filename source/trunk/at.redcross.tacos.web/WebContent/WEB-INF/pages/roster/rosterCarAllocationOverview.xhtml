@@ -17,7 +17,7 @@
 		<ui:include src="navigation.xhtml" />
 	</ui:define>
 
-	<ui:define name="page-title">
+	<ui:define name="page-header">
 		<h:graphicImage library="images/32x32" name="calendar.png" />
 		<h2 class="title">
 			<h:outputText value="Fahrzeugzuweisung für " />
@@ -54,7 +54,7 @@
 		</li>
 	</ui:define>
 
-	<ui:define name="content">
+	<ui:define name="page-content">
 		<ui:decorate template="rosterFilter.xhtml">
 			<ui:param name="bean" value="#{rosterCarAllocationOverviewBean}" />
 		</ui:decorate>
