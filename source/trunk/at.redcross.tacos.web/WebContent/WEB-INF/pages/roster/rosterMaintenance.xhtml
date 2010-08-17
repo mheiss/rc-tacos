@@ -24,7 +24,7 @@
 	</ui:define>
 
 	<!-- Customize the title and image -->
-	<ui:define name="page-title">
+	<ui:define name="page-header">
 		<h:graphicImage rendered="#{rosterMaintenanceBean.new}" library="images/32x32" name="calendar_add.png" />
 		<h:graphicImage rendered="#{not rosterMaintenanceBean.new}" library="images/32x32" name="calendar_edit.png" />
 		<h2 class="title">
@@ -34,7 +34,7 @@
 	</ui:define>
 	
 	<!-- Render the content -->
-	<ui:define name="content">
+	<ui:define name="page-content">
 		<rich:messages errorClass="errorMessage" globalOnly="true" />
 		<fieldset class="defaultStyle">
 		<legend><h:outputText value="Allgemeine Daten:" /></legend>

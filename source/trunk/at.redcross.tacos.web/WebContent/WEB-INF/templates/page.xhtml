@@ -4,7 +4,7 @@
 <ui:composition>
 	<a4j:form id="page-content">
 		<div id="page-header">
-			<div id="page-title">
+			<div id="page-header">
 				<a4j:status>
 					<f:facet name="start">
 						<h:panelGroup>
@@ -14,7 +14,7 @@
 					</f:facet>
 					<f:facet name="stop">
 						<h:panelGroup>
-							<ui:insert name="page-title" />
+							<ui:insert name="page-header" />
 						</h:panelGroup>
 					</f:facet>
 				</a4j:status>
@@ -28,7 +28,7 @@
 			</div>
 		</div>
 		<div id="page-content">
-			<ui:insert name="content"> (Default Content) </ui:insert>
+			<ui:insert name="page-content"> (Default Content) </ui:insert>
 		</div>
 	</a4j:form>
 	<!-- additional panels must have a own form -->
