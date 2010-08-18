@@ -21,13 +21,6 @@ public class SecuredResourceStage implements DatasetupStage {
 	public void performImport(EntityManager manager) {
 		{
 			SecuredResource resource = new SecuredResource();
-			resource.setResource("/");
-			resource.setAccess("permitAll");
-			resource.setExpression(true);
-			manager.persist(resource);
-		}
-		{
-			SecuredResource resource = new SecuredResource();
 			resource.setResource("/login");
 			resource.setAccess("permitAll");
 			resource.setExpression(true);

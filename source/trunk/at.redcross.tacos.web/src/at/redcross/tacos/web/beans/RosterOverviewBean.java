@@ -172,7 +172,6 @@ public abstract class RosterOverviewBean extends BaseBean {
     // Private API
     // ---------------------------------
     protected void loadfromDatabase(EntityManager manager, Location filterLocation, Date date) {
-        System.out.println("in load from database man loc date");
     	// build a structure containing all results grouped by locations
         entries = new ArrayList<RosterEntry>();
         Map<Location, List<RosterEntry>> mappedResult = new HashMap<Location, List<RosterEntry>>();
