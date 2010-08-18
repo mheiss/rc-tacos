@@ -1,51 +1,67 @@
 <?xml version="1.0" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" 
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
+	<head>
+		<ui:include src="/WEB-INF/templates/htmlHeader.xhtml">
+			<ui:param name="siteTitle" value="Login" />
+		</ui:include>
+		<link rel="stylesheet" type="text/css" href="#{facesContext.externalContext.requestContextPath}/resources/css/login.css" />
+	</head>
 <body>
-<ui:composition template="/WEB-INF/templates/layout.xhtml">
-	<ui:param name="siteTitle" value="Login" />
-
-	<ui:define name="page-header">
-		<h:graphicImage library="images/32x32" name="login.png" />
-		<h2 class="title"><h:outputText value="Anmeldung" /></h2>
-	</ui:define>
-
-	<ui:define name="page-content">
-		<p> 
-			<h:outputText value="Bitte melden Sie sich mit Ihrem Benutzernamen und Ihrem Passwort an." />
-		</p>
-		<rich:messages errorClass="errorMessage" globalOnly="true" />
-		<fieldset class="defaultStyle">
-			<ol>
-				<li>
-					<h:outputLabel for="username"><h:outputText value="Benutzername:" /> </h:outputLabel>
-					<div class="input">
-						<h:inputText id="username" value="#{loginBean.username}"
-							required="true" requiredMessage="Bitte geben Sie einen Benutzernamen ein."/>
-						<rich:message for="username" errorClass="error" />
-					</div>
-				</li>
-				<li>
-				<h:outputLabel for="password"><h:outputText value="Passwort:" /> </h:outputLabel>
-				<div class="input">
-					<h:inputSecret id="password" value="#{loginBean.password}"
-						required="true" requiredMessage="Bitte geben Sie Ihr Passwort ein."/>
-					<rich:message for="password" errorClass="error" />
-				</div>
-				</li>
-			</ol>
-		</fieldset>
-		<fieldset class="defaultStyle last">
-			<ol>
-				<li>
-					<h:outputLabel><h:outputText value="" /></h:outputLabel>
-					<div class="input">
-						<a4j:commandButton id="login" type="submit" styleClass="loginButton" value="Anmelden" actionListener="#{loginBean.login}" />
-					</div>
-				</li>
-			</ol>
-		</fieldset>
-	</ui:define>
-</ui:composition>
+	<div class="start-container-center start-header">
+		<h:graphicImage library="images" name="tacosSplashLogo.png" />
+	</div>
+	<div class="start-container">
+		<div class="start-container-center">
+    		<div class="start-container-left">
+    			<h:graphicImage library="images" name="tacosSplashLogin.png" />
+    		</div>
+    		<div class="start-container-right">
+    			<a4j:form id="page-content" ajaxSubmit="true">
+		    		<fieldset class="loginStyle">
+		    			<h2> <h:outputText value="Anmelden" /> </h2>
+		    			<rich:messages errorClass="error" globalOnly="true" />
+						<ol>
+							<li>
+								<h:outputLabel for="username"><h:outputText value="Benutzername:" /> </h:outputLabel>
+								<div class="input">
+									<h:inputText id="username" value="#{loginBean.username}"
+										required="true" requiredMessage="Bitte geben Sie einen Benutzernamen ein."/>
+									<rich:message for="username" errorClass="error" />
+								</div>
+							</li>
+							<li>
+								<h:outputLabel for="password"><h:outputText value="Passwort:" /> </h:outputLabel>
+								<div class="input">
+									<h:inputSecret id="password" value="#{loginBean.password}"
+										required="true" requiredMessage="Bitte geben Sie Ihr Passwort ein."/>
+									<rich:message for="password" errorClass="error" />
+								</div>
+							</li>
+							<li style="margin-top:2.5em;">
+								<h:outputLabel><h:outputText value="" /></h:outputLabel>
+								<div class="input">
+									<a4j:commandLink id="login" type="submit" styleClass="button" actionListener="#{loginBean.login}">
+										<span> <h:outputText value="Anmelden" /> </span>
+									</a4j:commandLink>
+								</div>
+							</li>
+							<li style="margin-top:1.5em;">
+								<span class="center">
+									<a4j:commandLink styleClass="actionLink">
+										<h:outputText value="Passwort vergessen?" />
+									</a4j:commandLink>
+								</span>
+							</li>
+						</ol>
+					</fieldset>
+				</a4j:form>
+    		</div>
+    	</div>
+    </div>
+    <div class="start-container-center start-footer">
+    	<h:outputText styleClass="description" value="TACOS ist ein Service der Dienstelle BRUCK/KAPFENBERG zur Verwaltung der Dienstpläne." />
+	</div>
 </body>
 </html>

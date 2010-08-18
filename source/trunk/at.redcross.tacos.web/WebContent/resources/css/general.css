@@ -1,0 +1,28 @@
+/*******************************************************
+ 	General rules
+ *******************************************************/
+body {
+	background-color: #ffffff;
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	font-size: 75%;
+	color: #666666;
+}
+
+p {
+	font-size: 1em;
+	font-weight: normal;
+	line-height: 1.5;
+	margin: 10px 0;
+}
+
+a,a:link,a:visited {
+	color: #27638C;
+	margin: 0;
+	padding: 0;
+	text-decoration: none;
+}
+
+input, select, textarea {
+	-moz-border-radius:4px 4px 4px 4px;
+	border:1px solid #C0BCB7;
+}

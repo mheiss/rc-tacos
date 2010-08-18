@@ -7,42 +7,28 @@
 	</head>
 	<body>
 		<div id="page">
-			<!-- BEGINNING: HEADER -->
 			<div id="header">
 				<ui:include src="/WEB-INF/templates/header.xhtml" />
 			</div>
-			<!-- END: SIDEBAR -->
-			
-			<!-- BEGINNING: PRIMARY MENU -->
 			<div id="primary-menu-wrapper">
 				<ui:include src="/WEB-INF/templates/user.xhtml" />
 				<ui:include src="/WEB-INF/templates/navigation.xhtml" />
 			</div>
-			<!-- END: PRIMARY MENU -->
-			
-			<div id="spacer" class="clear" />
-			
+			<div id="spacer" class="bottom clear" />
 			<div id="main-wrapper" class="colmask leftmenu">
 				<div class="colleft">
-					<!-- BEGINNING: CONTENT -->
 					<div id="content-wrapper" class="col1">
 						<ui:include src="/WEB-INF/templates/page.xhtml" />
 					</div>
-					<!-- END: CONTENT -->
-				
-					<!-- BEGINNING: SIDEBAR -->
 					<div id="menu-wrapper" class="col2">
 						<ui:insert name="navigation" />
 					</div>
-					<!-- END: SIDEBAR -->
 				</div>
 			</div>
-			<div id="spacer" class="clear" />
-			<!-- BEGINNING: FOOTER -->
+			<div id="spacer" class="top clear" />
 			<div id="footer">
 				<ui:include src="/WEB-INF/templates/footer.xhtml" />
 			</div>
-			<!-- END: FOOTER -->
 		</div>
 	</body>
 </html>
