@@ -368,6 +368,27 @@ table.defaultStyle .center,table.singleTable .center {
 }
 
 /***********************************************************
+ Link styling
+ **********************************************************/
+ul.linkList li {
+	list-style: square; 
+	margin-bottom:1em;
+}
+ 
+ul.linkList a.linkUrl {
+	font-weight:bold;
+	display:block;
+	text-decoration: underline;
+}
+
+ul.linkList a.linkDescription {
+	display:block;
+	color:#c5c5c5;
+	padding-top:0.2em;
+}
+	
+
+/***********************************************************
  Tooltip styling
  **********************************************************/
 .tooltipDefault {

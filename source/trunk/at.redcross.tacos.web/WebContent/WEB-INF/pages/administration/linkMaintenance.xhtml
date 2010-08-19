@@ -52,7 +52,7 @@
 				<h:graphicImage library="images/16x16" name="data.png" rendered="#{dto.state.name eq 'sync'}" title="Neu" />
 				<h:graphicImage library="images/16x16" name="data_delete.png" rendered="#{dto.state.name eq 'delete'}" title="Zu löschen" />	
 			</rich:column>
-			<rich:column sortBy="#{dto.entity.name}" styleClass="mediumColumn">
+			<rich:column sortBy="#{dto.entity.name}">
 				<f:facet name="header">
 					<h:outputText value="Name" />
 				</f:facet>
