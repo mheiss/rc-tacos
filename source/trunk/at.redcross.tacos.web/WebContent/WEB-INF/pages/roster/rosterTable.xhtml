@@ -86,7 +86,9 @@
 				</h:outputText>
 			</rich:column>
 			<rich:column styleClass="center">
-				<a4j:commandLink title="Anmelden" oncomplete="#{rich:component('signInPanel')}.show();return false;">
+				<a4j:commandLink title="Anmelden" reRender = "resultList">
+					<a4j:actionparam name="entryId" assignTo="#{rosterDayOverviewBean.entryId}" value="#{entry.id}" 
+						actionListener="#{rosterDayOverviewBean.signIn}" />
 					<h:panelGroup rendered="#{empty entry.realStartDate}">
 						<h:graphicImage styleClass="actionImage" library="images/16x16" name="clock-into.png" />
 						<h:outputText styleClass="actionText" value="Anmelden" />
@@ -103,7 +105,9 @@
 				</a4j:commandLink>
 			</rich:column>
 			<rich:column styleClass="center">
-				<a4j:commandLink title="Abmelden" oncomplete="#{rich:component('signOutPanel')}.show();return false;">
+				<a4j:commandLink title="Abmelden" reRender = "resultList">
+				<a4j:actionparam name="entryId" assignTo="#{rosterDayOverviewBean.entryId}" value="#{entry.id}" 
+						actionListener="#{rosterDayOverviewBean.signOut}" />
 					<h:panelGroup rendered="#{empty entry.realEndDate}">
 						<h:graphicImage styleClass="actionImage" library="images/16x16" name="clock-out.png" />
 						<h:outputText styleClass="actionText" value="Abmelden" />
@@ -132,16 +136,11 @@
 				</pretty:link>
 			</rich:column>
 			<rich:column styleClass="center">
-				
-				
 				<a4j:commandLink reRender="resultList">
 					<a4j:actionparam name="entryId" assignTo="#{rosterDayOverviewBean.entryId}" value="#{entry.id}" 
 						actionListener="#{rosterDayOverviewBean.markToDelete}" />
 					<h:graphicImage library="images/16x16" name="remove.png" />
 				</a4j:commandLink>
-				
-				
-				
 			</rich:column>
 		</rich:subTable>
 	</rich:dataTable>

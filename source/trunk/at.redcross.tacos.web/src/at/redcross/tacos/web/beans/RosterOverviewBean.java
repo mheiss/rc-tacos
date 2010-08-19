@@ -11,6 +11,8 @@ import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 import javax.persistence.EntityManager;
 
+import com.ibm.icu.util.Calendar;
+
 import at.redcross.tacos.dbal.entity.Location;
 import at.redcross.tacos.dbal.entity.RosterEntry;
 import at.redcross.tacos.dbal.helper.LocationHelper;
@@ -44,6 +46,9 @@ public abstract class RosterOverviewBean extends BaseBean {
     // queried result
     protected List<RosterEntry> entries;
     protected List<LocationRosterEntry> locationEntry;
+    
+    // sign in and sign out date
+    protected Date now;
 
     // ---------------------------------
     // Initialization
@@ -129,6 +134,52 @@ public abstract class RosterOverviewBean extends BaseBean {
 			manager = EntityManagerFactory.createEntityManager();
 			loadfromDatabase(manager, entryId);
 			rosterEntry.setToDelete(true);
+			manager.merge(rosterEntry);
+			EntityManagerHelper.commit(manager);
+			loadfromDatabase(manager, location, date);
+			return FacesUtils.pretty("roster-dayOverview");
+		}
+		catch (Exception ex) {
+			FacesUtils.addErrorMessage("Der Dienstplaneintrag konnte nicht gelöscht werden");
+			return null;
+		}
+		finally {
+			manager = EntityManagerHelper.close(manager);
+			
+		}
+	}
+    
+    public String signIn(ActionEvent event) {	
+		EntityManager manager = null;
+		try {
+			manager = EntityManagerFactory.createEntityManager();
+			loadfromDatabase(manager, entryId);
+			now = Calendar.getInstance().getTime();
+			rosterEntry.setRealStartDate(now);
+			rosterEntry.setRealStartTime(now);
+			manager.merge(rosterEntry);
+			EntityManagerHelper.commit(manager);
+			loadfromDatabase(manager, location, date);
+			return FacesUtils.pretty("roster-dayOverview");
+		}
+		catch (Exception ex) {
+			FacesUtils.addErrorMessage("Der Dienstplaneintrag konnte nicht gelöscht werden");
+			return null;
+		}
+		finally {
+			manager = EntityManagerHelper.close(manager);
+			
+		}
+	}
+    
+    public String signOut(ActionEvent event) {	
+		EntityManager manager = null;
+		try {
+			manager = EntityManagerFactory.createEntityManager();
+			loadfromDatabase(manager, entryId);
+			now = Calendar.getInstance().getTime();
+			rosterEntry.setRealEndDate(now);
+			rosterEntry.setRealEndTime(now);
 			manager.merge(rosterEntry);
 			EntityManagerHelper.commit(manager);
 			loadfromDatabase(manager, location, date);
