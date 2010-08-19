@@ -145,11 +145,18 @@
 		<action onPostback="false">#{securedResourceMaintenanceBean.prettyInit}</action>
 	</url-mapping>
 	
-		<!-- ################ ADMINISTRATION - GROUP ####################### -->
+	<!-- ################ ADMINISTRATION - GROUP ####################### -->
 	<url-mapping id="admin-groupMaintenance">
 		<pattern>/admin/groups</pattern>
 		<view-id>/WEB-INF/pages/administration/groupMaintenance.faces</view-id>
 		<action onPostback="false">#{groupMaintenanceBean.prettyInit}</action>
+	</url-mapping>
+	
+	<!-- ################ ADMINISTRATION - LINK ####################### -->
+	<url-mapping id="admin-linkMaintenance">
+		<pattern>/admin/links</pattern>
+		<view-id>/WEB-INF/pages/administration/linkMaintenance.faces</view-id>
+		<action onPostback="false">#{linkMaintenanceBean.prettyInit}</action>
 	</url-mapping>
 	
 </pretty-config>
