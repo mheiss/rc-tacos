@@ -31,6 +31,7 @@
 	<url-mapping id="links">
 		<pattern>/links</pattern>
 		<view-id>/WEB-INF/pages/home/links.faces</view-id>
+		<action onPostback="false">#{linkOverviewBean.prettyInit}</action>
 	</url-mapping>
 	<url-mapping id="info">
 		<pattern>/info</pattern>
