@@ -82,6 +82,7 @@
         locked tinyint null,
         loginname varchar(255) not null unique,
         password varchar(255) null,
+        superuser tinyint null,
         systemuser_id numeric(19,0) null,
         primary key (id)
     );
@@ -109,6 +110,29 @@
         location_id numeric(19,0) null,
         servicetype_id numeric(19,0) null,
         systemuser_id numeric(19,0) null,
+        primary key (id)
+    );
+
+    create table SecuredAction (
+        id numeric(19,0) identity not null,
+        history_changedat datetime null,
+        history_changedby varchar(255) not null,
+        history_createdat datetime null,
+        history_createdby varchar(255) not null,
+        access varchar(255) not null,
+        actionexpression varchar(255) not null unique,
+        primary key (id)
+    );
+
+    create table SecuredResource (
+        id numeric(19,0) identity not null,
+        history_changedat datetime null,
+        history_changedby varchar(255) not null,
+        history_createdat datetime null,
+        history_createdby varchar(255) not null,
+        access varchar(255) not null,
+        expression tinyint not null,
+        resource varchar(255) not null unique,
         primary key (id)
     );
 

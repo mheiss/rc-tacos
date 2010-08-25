@@ -42,7 +42,6 @@ public class LinkOverviewBean extends BaseBean {
         links = LinkHelper.list(manager);
     }
 
-
     // ---------------------------------
     // Getters for the properties
     // ---------------------------------

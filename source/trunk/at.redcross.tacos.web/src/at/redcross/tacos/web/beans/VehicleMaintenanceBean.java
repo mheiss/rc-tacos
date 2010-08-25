@@ -20,7 +20,7 @@ import at.redcross.tacos.web.persitence.EntityManagerFactory;
 @Component
 @ManagedBean(name = "vehicleMaintenanceBean")
 public class VehicleMaintenanceBean extends BaseBean {
-	
+
 	private static final long serialVersionUID = 464932680405482944L;
 
 	/** the request parameter */
@@ -32,7 +32,6 @@ public class VehicleMaintenanceBean extends BaseBean {
 	/** the values for the drop down fields */
 	private List<SelectItem> locationItems;
 
-	
 	@Override
 	public void init() throws Exception {
 		EntityManager manager = null;
@@ -40,55 +39,45 @@ public class VehicleMaintenanceBean extends BaseBean {
 			manager = EntityManagerFactory.createEntityManager();
 			loadfromDatabase(manager, carId);
 			locationItems = DropDownHelper.convertToItems(LocationHelper.list(manager));
-		}
-		finally {
+		} finally {
 			manager = EntityManagerHelper.close(manager);
 		}
 	}
 
 	// ---------------------------------
-	// Actions
+	// Business methods
 	// ---------------------------------
-	/**
-	 * Persists the current entity in the database
-	 */
+	@Action
 	public String persist() {
 		EntityManager manager = null;
 		try {
 			manager = EntityManagerFactory.createEntityManager();
 			if (isNew()) {
 				manager.persist(car);
-			}
-			else {
+			} else {
 				manager.merge(car);
 			}
 			EntityManagerHelper.commit(manager);
 			return FacesUtils.pretty("admin-vehicleOverview");
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			FacesUtils.addErrorMessage("Der Fahrzeugeintrag konnte nicht gespeichert werden");
 			return null;
-		}
-		finally {
+		} finally {
 			manager = EntityManagerHelper.close(manager);
 		}
 	}
 
-	/**
-	 * Reverts any changes that may have been done
-	 */
+	@Action
 	public String revert() {
 		EntityManager manager = null;
 		try {
 			manager = EntityManagerFactory.createEntityManager();
 			loadfromDatabase(manager, car.getId());
 			return FacesUtils.pretty("admin-editCarView");
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			FacesUtils.addErrorMessage("Der Fahrzeugeintrag konnte nicht zurückgesetzt werden");
 			return null;
-		}
-		finally {
+		} finally {
 			manager = EntityManagerHelper.close(manager);
 		}
 	}
@@ -117,7 +106,7 @@ public class VehicleMaintenanceBean extends BaseBean {
 	public boolean isNew() {
 		return carId == -1;
 	}
-	
+
 	public long getCarId() {
 		return carId;
 	}
@@ -125,7 +114,6 @@ public class VehicleMaintenanceBean extends BaseBean {
 	public List<SelectItem> getLocationItems() {
 		return locationItems;
 	}
-
 
 	public Car getCar() {
 		return car;

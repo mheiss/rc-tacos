@@ -46,9 +46,10 @@ public class CompetenceMaintenanceBean extends BaseBean {
         }
     }
 
-    // ---------------------------------
-    // Actions
-    // ---------------------------------
+	// ---------------------------------
+	// Business methods
+	// ---------------------------------
+	@Action
     public void removeCompetence(ActionEvent event) {
         Iterator<GenericDto<Competence>> iter = competences.iterator();
         while (iter.hasNext()) {
@@ -65,6 +66,7 @@ public class CompetenceMaintenanceBean extends BaseBean {
         }
     }
 
+	@Action
     public void unremoveCompetence(ActionEvent event) {
         for (GenericDto<Competence> dto : competences) {
             Competence competence = dto.getEntity();
@@ -75,12 +77,14 @@ public class CompetenceMaintenanceBean extends BaseBean {
         }
     }
 
+	@Action
     public void addCompetence(ActionEvent event) {
         GenericDto<Competence> dto = new GenericDto<Competence>(new Competence());
         dto.setState(DtoState.NEW);
         competences.add(dto);
     }
 
+	@Action
     public void saveCompetences() {
         EntityManager manager = null;
         try {

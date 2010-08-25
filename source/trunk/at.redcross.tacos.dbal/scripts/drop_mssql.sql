@@ -57,6 +57,10 @@
 
     drop table RosterEntry;
 
+    drop table SecuredAction;
+
+    drop table SecuredResource;
+
     drop table ServiceType;
 
     drop table SystemUser;

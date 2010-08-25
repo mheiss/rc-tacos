@@ -82,6 +82,7 @@
         locked bit,
         loginname varchar(255) not null unique,
         password varchar(255),
+        superuser bit,
         systemuser_id bigint,
         primary key (id)
     );
@@ -109,6 +110,29 @@
         location_id bigint,
         servicetype_id bigint,
         systemuser_id bigint,
+        primary key (id)
+    );
+
+    create table SecuredAction (
+        id bigint not null auto_increment,
+        history_changedat datetime,
+        history_changedby varchar(255) not null,
+        history_createdat datetime,
+        history_createdby varchar(255) not null,
+        access varchar(255) not null,
+        actionexpression varchar(255) not null unique,
+        primary key (id)
+    );
+
+    create table SecuredResource (
+        id bigint not null auto_increment,
+        history_changedat datetime,
+        history_changedby varchar(255) not null,
+        history_createdat datetime,
+        history_createdby varchar(255) not null,
+        access varchar(255) not null,
+        expression bit not null,
+        resource varchar(255) not null unique,
         primary key (id)
     );
 

@@ -1,7 +1,6 @@
 package at.redcross.tacos.web.beans;
 
 import java.util.Iterator;
-
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -47,8 +46,9 @@ public class AssignmentMaintenanceBean extends BaseBean {
 	}
 
 	// ---------------------------------
-	// Actions
+	// Business methods
 	// ---------------------------------
+	@Action
 	public void removeAssignment(ActionEvent event) {
 		Iterator<GenericDto<Assignment>> iter = assignments.iterator();
 		while (iter.hasNext()) {
@@ -64,6 +64,7 @@ public class AssignmentMaintenanceBean extends BaseBean {
 		}
 	}
 
+	@Action
 	public void unremoveAssignment(ActionEvent event) {
 		for (GenericDto<Assignment> dto : assignments) {
 			Assignment assignment = dto.getEntity();
@@ -74,12 +75,14 @@ public class AssignmentMaintenanceBean extends BaseBean {
 		}
 	}
 
+	@Action
 	public void addAssignment(ActionEvent event) {
 		GenericDto<Assignment> dto = new GenericDto<Assignment>(new Assignment());
 		dto.setState(DtoState.NEW);
 		assignments.add(dto);
 	}
 
+	@Action
 	public void saveAssignments() {
 		EntityManager manager = null;
 		try {

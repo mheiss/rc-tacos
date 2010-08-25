@@ -44,55 +44,45 @@ public class RosterMaintenanceBean extends BaseBean {
 			locationItems = DropDownHelper.convertToItems(LocationHelper.list(manager));
 			serviceTypeItems = DropDownHelper.convertToItems(ServiceTypeHelper.list(manager));
 			assignmentItems = DropDownHelper.convertToItems(AssignmentHelper.list(manager));
-		}
-		finally {
+		} finally {
 			manager = EntityManagerHelper.close(manager);
 		}
 	}
 
 	// ---------------------------------
-	// Actions
+	// Business methods
 	// ---------------------------------
-	/**
-	 * Persists the current entity in the database
-	 */
+	@Action
 	public String persist() {
 		EntityManager manager = null;
 		try {
 			manager = EntityManagerFactory.createEntityManager();
 			if (isNew()) {
 				manager.persist(rosterEntry);
-			}
-			else {
+			} else {
 				manager.merge(rosterEntry);
 			}
 			EntityManagerHelper.commit(manager);
 			return FacesUtils.pretty("roster-dayOverview");
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			FacesUtils.addErrorMessage("Der Dienstplaneintrag konnte nicht gespeichert werden");
 			return null;
-		}
-		finally {
+		} finally {
 			manager = EntityManagerHelper.close(manager);
 		}
 	}
 
-	/**
-	 * Reverts any changes that may have been done
-	 */
+	@Action
 	public String revert() {
 		EntityManager manager = null;
 		try {
 			manager = EntityManagerFactory.createEntityManager();
 			loadfromDatabase(manager, rosterEntry.getId());
 			return FacesUtils.pretty("roster-editMaintenance");
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			FacesUtils.addErrorMessage("Der Dienstplaneintrag konnte nicht zurückgesetzt werden");
 			return null;
-		}
-		finally {
+		} finally {
 			manager = EntityManagerHelper.close(manager);
 		}
 	}
