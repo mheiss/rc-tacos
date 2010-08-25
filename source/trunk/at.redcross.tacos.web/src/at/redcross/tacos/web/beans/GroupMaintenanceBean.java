@@ -49,8 +49,9 @@ public class GroupMaintenanceBean extends BaseBean {
 	}
 
 	// ---------------------------------
-	// Actions
+	// Business methods
 	// ---------------------------------
+	@Action
 	public void removeGroup(ActionEvent event) {
 		Iterator<GenericDto<Group>> iter = groups.iterator();
 		while (iter.hasNext()) {
@@ -66,6 +67,7 @@ public class GroupMaintenanceBean extends BaseBean {
 		}
 	}
 
+	@Action
 	public void unremoveGroup(ActionEvent event) {
 		for (GenericDto<Group> dto : groups) {
 			Group group = dto.getEntity();
@@ -76,12 +78,14 @@ public class GroupMaintenanceBean extends BaseBean {
 		}
 	}
 
+	@Action
 	public void addGroup(ActionEvent event) {
 		GenericDto<Group> dto = new GenericDto<Group>(new Group());
 		dto.setState(DtoState.NEW);
 		groups.add(dto);
 	}
 
+	@Action
 	public void saveGroups() {
 		EntityManager manager = null;
 		try {
@@ -97,6 +101,9 @@ public class GroupMaintenanceBean extends BaseBean {
 		}
 	}
 
+	// ---------------------------------
+	// Business validation
+	// ---------------------------------
 	public void validateGroup(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 		String stringValue = (String) value;
 

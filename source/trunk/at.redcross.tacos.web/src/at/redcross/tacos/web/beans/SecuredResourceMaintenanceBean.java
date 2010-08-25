@@ -64,8 +64,9 @@ public class SecuredResourceMaintenanceBean extends BaseBean {
 	}
 
 	// ---------------------------------
-	// Actions
+	// Business methods
 	// ---------------------------------
+	@Action
 	public void removeSecuredResource(ActionEvent event) {
 		Iterator<GenericDto<SecuredResource>> iter = resources.iterator();
 		while (iter.hasNext()) {
@@ -81,6 +82,7 @@ public class SecuredResourceMaintenanceBean extends BaseBean {
 		}
 	}
 
+	@Action
 	public void unremoveSecuredResource(ActionEvent event) {
 		for (GenericDto<SecuredResource> dto : resources) {
 			SecuredResource securedResource = dto.getEntity();
@@ -91,12 +93,14 @@ public class SecuredResourceMaintenanceBean extends BaseBean {
 		}
 	}
 
+	@Action
 	public void addSecuredResource(ActionEvent event) {
 		GenericDto<SecuredResource> dto = new GenericDto<SecuredResource>(new SecuredResource());
 		dto.setState(DtoState.NEW);
 		resources.add(dto);
 	}
 
+	@Action
 	public void saveSecuredResources() {
 		EntityManager manager = null;
 		try {
@@ -182,7 +186,6 @@ public class SecuredResourceMaintenanceBean extends BaseBean {
 
 	/** Returns whether or not the given string is a valid entry */
 	private boolean isValidSimpleExpression(String expression) {
-		// TODO: validation should be extended 
 		return expression.startsWith("ROLE_");
 	}
 

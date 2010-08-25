@@ -50,11 +50,9 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
 	}
 
 	// ---------------------------------
-	// Actions
+	// Business methods
 	// ---------------------------------
-	/**
-	 * Persists the current entity in the database
-	 */
+	@Action
 	public void saveEntries() {
 		EntityManager manager = null;
 		try {

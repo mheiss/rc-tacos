@@ -57,6 +57,10 @@
 
     drop table RosterEntry if exists;
 
+    drop table SecuredAction if exists;
+
+    drop table SecuredResource if exists;
+
     drop table ServiceType if exists;
 
     drop table SystemUser if exists;

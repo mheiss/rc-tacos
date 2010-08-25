@@ -46,9 +46,10 @@ public class LinkMaintenanceBean extends BaseBean {
         }
     }
 
-    // ---------------------------------
-    // Actions
-    // ---------------------------------
+	// ---------------------------------
+	// Business methods
+	// ---------------------------------
+	@Action
     public void removeLink(ActionEvent event) {
         Iterator<GenericDto<Link>> iter = links.iterator();
         while (iter.hasNext()) {
@@ -65,6 +66,7 @@ public class LinkMaintenanceBean extends BaseBean {
         }
     }
 
+	@Action
     public void unremoveLink(ActionEvent event) {
         for (GenericDto<Link> dto : links) {
             Link link = dto.getEntity();
@@ -75,12 +77,14 @@ public class LinkMaintenanceBean extends BaseBean {
         }
     }
 
+	@Action
     public void addLink(ActionEvent event) {
         GenericDto<Link> dto = new GenericDto<Link>(new Link());
         dto.setState(DtoState.NEW);
         links.add(dto);
     }
 
+	@Action
     public void saveLinks() {
         EntityManager manager = null;
         try {

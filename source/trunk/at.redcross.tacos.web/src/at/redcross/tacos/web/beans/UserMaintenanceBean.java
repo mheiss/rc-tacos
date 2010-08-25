@@ -89,9 +89,9 @@ public class UserMaintenanceBean extends BaseBean {
 	}
 
 	// ---------------------------------
-	// Actions
+	// Business methods
 	// ---------------------------------
-	/** Persists the current entity in the database */
+	@Action
 	public String persist() {
 		EntityManager manager = null;
 		try {
@@ -119,7 +119,7 @@ public class UserMaintenanceBean extends BaseBean {
 		}
 	}
 
-	/** Reverts any changes that may have been done */
+	@Action
 	public String revert() {
 		EntityManager manager = null;
 		try {
@@ -134,7 +134,7 @@ public class UserMaintenanceBean extends BaseBean {
 		}
 	}
 
-	/** Adds the currently selected group to this user */
+	@Action
 	public void addGroup(ActionEvent event) {
 		// silently ignore invalid requests
 		if (selectedGroup == null) {
@@ -148,7 +148,7 @@ public class UserMaintenanceBean extends BaseBean {
 		selectedGroup = null;
 	}
 
-	/** Adds the currently selected competence to this user */
+	@Action
 	public void addCompetence(ActionEvent event) {
 		// silently ignore invalid requests
 		if (selectedCompetence == null) {
@@ -162,7 +162,7 @@ public class UserMaintenanceBean extends BaseBean {
 		selectedCompetence = null;
 	}
 
-	/** Removes the currently selected group from this user */
+	@Action
 	public void removeGroup(ActionEvent event) {
 		Iterator<Group> groupIter = systemUser.getGroups().iterator();
 		while (groupIter.hasNext()) {
@@ -174,7 +174,7 @@ public class UserMaintenanceBean extends BaseBean {
 		}
 	}
 
-	/** Removes the currently selected competence from this user */
+	@Action
 	public void removeCompetence(ActionEvent event) {
 		Iterator<Competence> comptIter = systemUser.getCompetences().iterator();
 		while (comptIter.hasNext()) {

@@ -28,91 +28,92 @@ public class ServiceTypeMaintenanceBean extends BaseBean {
 
 	private final static Log logger = LogFactory.getLog(ServiceTypeMaintenanceBean.class);
 
-    /** the available serviceTypes */
-    private List<GenericDto<ServiceType>>serviceTypes;
+	/** the available serviceTypes */
+	private List<GenericDto<ServiceType>> serviceTypes;
 
-    /** the id of the selected serviceTypes */
-    private long serviceTypeId;
+	/** the id of the selected serviceTypes */
+	private long serviceTypeId;
 
-    @Override
-    protected void init() throws Exception {
-        EntityManager manager = null;
-        try {
-            manager = EntityManagerFactory.createEntityManager();
-            serviceTypes = DtoHelper.fromList(ServiceType.class, ServiceTypeHelper.list(manager));
-        }
-        finally {
-            manager = EntityManagerHelper.close(manager);
-        }
-    }
+	@Override
+	protected void init() throws Exception {
+		EntityManager manager = null;
+		try {
+			manager = EntityManagerFactory.createEntityManager();
+			serviceTypes = DtoHelper.fromList(ServiceType.class, ServiceTypeHelper.list(manager));
+		} finally {
+			manager = EntityManagerHelper.close(manager);
+		}
+	}
 
-    // ---------------------------------
-    // Actions
-    // ---------------------------------
-    public void removeServiceType(ActionEvent event) {
-        Iterator<GenericDto<ServiceType>> iter = serviceTypes.iterator();
-        while (iter.hasNext()) {
-            GenericDto<ServiceType> dto = iter.next();
-            ServiceType serviceType = dto.getEntity();
-            if (serviceType.getId() != serviceTypeId) {
-                continue;
-            }
-            if (dto.getState() == DtoState.NEW) {
-                iter.remove();
-            }
+	// ---------------------------------
+	// Business methods
+	// ---------------------------------
+	@Action
+	public void removeServiceType(ActionEvent event) {
+		Iterator<GenericDto<ServiceType>> iter = serviceTypes.iterator();
+		while (iter.hasNext()) {
+			GenericDto<ServiceType> dto = iter.next();
+			ServiceType serviceType = dto.getEntity();
+			if (serviceType.getId() != serviceTypeId) {
+				continue;
+			}
+			if (dto.getState() == DtoState.NEW) {
+				iter.remove();
+			}
 
-            dto.setState(DtoState.DELETE);
-        }
-    }
+			dto.setState(DtoState.DELETE);
+		}
+	}
 
-    public void unremoveServiceType(ActionEvent event) {
-        for (GenericDto<ServiceType> dto : serviceTypes) {
-        	ServiceType serviceType = dto.getEntity();
-            if (serviceType.getId() != serviceTypeId) {
-                continue;
-            }
-            dto.setState(DtoState.SYNC);
-        }
-    }
+	@Action
+	public void unremoveServiceType(ActionEvent event) {
+		for (GenericDto<ServiceType> dto : serviceTypes) {
+			ServiceType serviceType = dto.getEntity();
+			if (serviceType.getId() != serviceTypeId) {
+				continue;
+			}
+			dto.setState(DtoState.SYNC);
+		}
+	}
 
-    public void addServiceType(ActionEvent event) {
-        GenericDto<ServiceType> dto = new GenericDto<ServiceType>(new ServiceType());
-        dto.setState(DtoState.NEW);
-        serviceTypes.add(dto);
-    }
+	@Action
+	public void addServiceType(ActionEvent event) {
+		GenericDto<ServiceType> dto = new GenericDto<ServiceType>(new ServiceType());
+		dto.setState(DtoState.NEW);
+		serviceTypes.add(dto);
+	}
 
-    public void saveServiceTypes() {
-        EntityManager manager = null;
-        try {
-            manager = EntityManagerFactory.createEntityManager();
-            DtoHelper.syncronize(manager, serviceTypes);
-            EntityManagerHelper.commit(manager);
-            DtoHelper.filter(serviceTypes);
-        }
-        catch (Exception ex) {
-            logger.error("Failed to remove serviceType '" + serviceTypeId + "'", ex);
-            FacesUtils.addErrorMessage("Die Änderungen konnten nicht gespeichert werden");
-        }
-        finally {
-            EntityManagerHelper.close(manager);
-        }
-    }
+	@Action
+	public void saveServiceTypes() {
+		EntityManager manager = null;
+		try {
+			manager = EntityManagerFactory.createEntityManager();
+			DtoHelper.syncronize(manager, serviceTypes);
+			EntityManagerHelper.commit(manager);
+			DtoHelper.filter(serviceTypes);
+		} catch (Exception ex) {
+			logger.error("Failed to remove serviceType '" + serviceTypeId + "'", ex);
+			FacesUtils.addErrorMessage("Die Änderungen konnten nicht gespeichert werden");
+		} finally {
+			EntityManagerHelper.close(manager);
+		}
+	}
 
-    // ---------------------------------
-    // Setters for the properties
-    // ---------------------------------
-    public void setServiceTypeId(long serviceTypeId) {
-        this.serviceTypeId = serviceTypeId;
-    }
+	// ---------------------------------
+	// Setters for the properties
+	// ---------------------------------
+	public void setServiceTypeId(long serviceTypeId) {
+		this.serviceTypeId = serviceTypeId;
+	}
 
-    // ---------------------------------
-    // Getters for the properties
-    // ---------------------------------
-    public long getServiceTypeId() {
-        return serviceTypeId;
-    }
+	// ---------------------------------
+	// Getters for the properties
+	// ---------------------------------
+	public long getServiceTypeId() {
+		return serviceTypeId;
+	}
 
-    public List<GenericDto<ServiceType>> getServiceTypes() {
-        return serviceTypes;
-    }
+	public List<GenericDto<ServiceType>> getServiceTypes() {
+		return serviceTypes;
+	}
 }

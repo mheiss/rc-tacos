@@ -82,6 +82,7 @@
         locked number(1,0),
         loginname varchar2(255 char) not null unique,
         password varchar2(255 char),
+        superuser number(1,0),
         systemuser_id number(19,0),
         primary key (id)
     );
@@ -109,6 +110,29 @@
         location_id number(19,0),
         servicetype_id number(19,0),
         systemuser_id number(19,0),
+        primary key (id)
+    );
+
+    create table SecuredAction (
+        id number(19,0) not null,
+        history_changedat timestamp,
+        history_changedby varchar2(255 char) not null,
+        history_createdat timestamp,
+        history_createdby varchar2(255 char) not null,
+        access varchar2(255 char) not null,
+        actionexpression varchar2(255 char) not null unique,
+        primary key (id)
+    );
+
+    create table SecuredResource (
+        id number(19,0) not null,
+        history_changedat timestamp,
+        history_changedby varchar2(255 char) not null,
+        history_createdat timestamp,
+        history_createdby varchar2(255 char) not null,
+        access varchar2(255 char) not null,
+        expression number(1,0) not null,
+        resource varchar2(255 char) not null unique,
         primary key (id)
     );
 

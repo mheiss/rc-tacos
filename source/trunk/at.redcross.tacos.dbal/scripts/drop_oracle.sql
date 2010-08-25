@@ -15,6 +15,10 @@
 
     drop table RosterEntry cascade constraints;
 
+    drop table SecuredAction cascade constraints;
+
+    drop table SecuredResource cascade constraints;
+
     drop table ServiceType cascade constraints;
 
     drop table SystemUser cascade constraints;

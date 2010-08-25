@@ -11,30 +11,27 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 @Entity
-@Table(name = "SecuredResource")
-public class SecuredResource extends EntityImpl {
+@Table(name = "SecuredAction")
+public class SecuredAction extends EntityImpl {
 
-	private static final long serialVersionUID = 3737367770088547120L;
+	private static final long serialVersionUID = -755171555871540438L;
 
 	@Id
 	@GeneratedValue
 	private long id;
 
 	@Column(nullable = false, unique = true)
-	private String resource;
+	private String actionExpression;
 
 	@Column(nullable = false)
 	private String access;
-
-	@Column(nullable = false)
-	private boolean expression;
 
 	// ---------------------------------
 	// EntityImpl
 	// ---------------------------------
 	@Override
 	public String getDisplayString() {
-		return resource;
+		return actionExpression;
 	}
 
 	// ---------------------------------
@@ -42,7 +39,7 @@ public class SecuredResource extends EntityImpl {
 	// ---------------------------------
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this).append("resource", resource).toString();
+		return new ToStringBuilder(this).append("actionExpression", actionExpression).toString();
 	}
 
 	@Override
@@ -61,23 +58,19 @@ public class SecuredResource extends EntityImpl {
 		if (obj.getClass() != getClass()) {
 			return false;
 		}
-		SecuredResource rhs = (SecuredResource) obj;
+		SecuredAction rhs = (SecuredAction) obj;
 		return new EqualsBuilder().append(id, rhs.id).isEquals();
 	}
 
 	// ---------------------------------
 	// Setters for the properties
 	// ---------------------------------
-	public void setResource(String resource) {
-		this.resource = resource;
-	}
-
-	public void setExpression(boolean expression) {
-		this.expression = expression;
-	}
-
 	public void setAccess(String access) {
 		this.access = access;
+	}
+
+	public void setActionExpression(String actionExpression) {
+		this.actionExpression = actionExpression;
 	}
 
 	// ---------------------------------
@@ -87,15 +80,11 @@ public class SecuredResource extends EntityImpl {
 		return id;
 	}
 
-	public String getResource() {
-		return resource;
-	}
-
 	public String getAccess() {
 		return access;
 	}
 
-	public boolean isExpression() {
-		return expression;
+	public String getActionExpression() {
+		return actionExpression;
 	}
 }

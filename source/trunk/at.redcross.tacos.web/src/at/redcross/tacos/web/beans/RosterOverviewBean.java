@@ -84,7 +84,11 @@ public abstract class RosterOverviewBean extends BaseBean {
             manager = EntityManagerHelper.close(manager);
         }
     }
-
+    
+	// ---------------------------------
+	// Business methods
+	// ---------------------------------
+    @Action
     public void createPdfReport(ActionEvent event) {
         try {
             // define the parameters for the report
@@ -98,6 +102,7 @@ public abstract class RosterOverviewBean extends BaseBean {
         }
     }
 
+    @Action
     public void navigateNext(ActionEvent event) {
         EntityManager manager = null;
         try {
@@ -113,6 +118,7 @@ public abstract class RosterOverviewBean extends BaseBean {
         }
     }
 
+    @Action
     public void navigatePrevious(ActionEvent event) {
         EntityManager manager = null;
         try {
@@ -128,6 +134,7 @@ public abstract class RosterOverviewBean extends BaseBean {
         }
     }
     
+    @Action
     public String markToDelete(ActionEvent event) {	
 		EntityManager manager = null;
 		try {
@@ -149,6 +156,7 @@ public abstract class RosterOverviewBean extends BaseBean {
 		}
 	}
     
+    @Action
     public String signIn(ActionEvent event) {	
 		EntityManager manager = null;
 		try {
@@ -172,6 +180,7 @@ public abstract class RosterOverviewBean extends BaseBean {
 		}
 	}
     
+    @Action
     public String signOut(ActionEvent event) {	
 		EntityManager manager = null;
 		try {
