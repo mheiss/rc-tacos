@@ -18,35 +18,32 @@ public class LinkOverviewBean extends BaseBean {
 
 	private static final long serialVersionUID = 1L;
 
+	/** queried results for visualization / reporting */
+	private List<Link> links;
 
-    /** queried results for visualization / reporting */
-    private List<Link> links;
+	@Override
+	protected void init() throws Exception {
+		EntityManager manager = null;
+		try {
+			manager = EntityManagerFactory.createEntityManager();
+			loadFromDatabase(manager);
+		} finally {
+			manager = EntityManagerHelper.close(manager);
+		}
+	}
 
-    @Override
-    protected void init() throws Exception {
-        EntityManager manager = null;
-        try {
-            manager = EntityManagerFactory.createEntityManager();
-            loadFromDatabase(manager);
-        }
-        finally {
-            manager = EntityManagerHelper.close(manager);
-        }
-    }
+	// ---------------------------------
+	// Private API
+	// ---------------------------------
+	private void loadFromDatabase(EntityManager manager) {
+		links = LinkHelper.list(manager);
+	}
 
+	// ---------------------------------
+	// Getters for the properties
+	// ---------------------------------
+	public List<Link> getLinks() {
+		return links;
+	}
 
-    // ---------------------------------
-    // Private API
-    // ---------------------------------
-    private void loadFromDatabase(EntityManager manager) {
-        links = LinkHelper.list(manager);
-    }
-
-    // ---------------------------------
-    // Getters for the properties
-    // ---------------------------------
-    public List<Link> getLinks() {
-        return links;
-    }
-    
 }

@@ -5,39 +5,39 @@
 <body>
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
 	<ui:param name="section" value="admin" />
-	<ui:param name="page" value="securedResourceMaintenance" />
+	<ui:param name="page" value="securedActionMaintenance" />
 
 	<ui:define name="navigation">
 		<ui:include src="navigation.xhtml" />
 	</ui:define>
 
 	<ui:define name="page-header">
-		<h:graphicImage library="images/32x32" name="securedResource.png" />
-		<h2 class="title"><h:outputText value="Seiten Zugriffsrechte" /></h2>
+		<h:graphicImage library="images/32x32" name="securedAction.png" />
+		<h2 class="title"><h:outputText value="Aktions Zugriffsrechte" /></h2>
 	</ui:define>
 
 	<ui:define name="page-toolbar">
 		<li>
-			<a4j:commandLink ajaxSingle="false" actionListener="#{securedResourceMaintenanceBean.saveSecuredResources}" reRender="securedResourceTable" title="Speichern">
+			<a4j:commandLink ajaxSingle="false" actionListener="#{securedActionMaintenanceBean.saveSecuredResources}" reRender="page-content" title="Speichern">
 				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="save.png" />
 				<h:outputText styleClass="toolbarText" value="Änderungen speichern" />
 			</a4j:commandLink>
 		</li>
 		<li>
-			<a4j:commandLink actionListener="#{securedResourceMaintenanceBean.addSecuredResource}" reRender="securedResourceTable" title="Neue Resource anlegen">
+			<a4j:commandLink actionListener="#{securedActionMaintenanceBean.addSecuredAction}" reRender="page-content" title="Neue Aktion anlegen">
 				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="add.png" />
-				<h:outputText styleClass="toolbarText" value="Resource anlegen" />
+				<h:outputText styleClass="toolbarText" value="Aktion anlegen" />
 			</a4j:commandLink>
 		</li>
 	</ui:define>
 
 	<ui:define name="page-content">
-		<rich:messages id="messages" errorClass="errorMessage" />
-		<rich:panel rendered="#{empty securedResourceMaintenanceBean.resources}" style="margin-top:10px;">
+		<rich:messages id="messages" errorClass="errorMessage" globalOnly="false" />
+		<rich:panel rendered="#{empty securedActionMaintenanceBean.actions}" style="margin-top:10px;">
 			<h:outputText value="Keine Einträge gefunden" styleClass="italic" />
 		</rich:panel>
-		<rich:dataTable id="securedResourceTable" styleClass="editorTable" value="#{securedResourceMaintenanceBean.resources}" var="dto" rowKeyVar="row"
-			rendered="#{not empty securedResourceMaintenanceBean.resources}"
+		<rich:dataTable id="securedActionTable" styleClass="editorTable" value="#{securedActionMaintenanceBean.actions}" var="dto" rowKeyVar="row"
+			rendered="#{not empty securedActionMaintenanceBean.actions}"
 			onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
 			<rich:column styleClass="smallColumn">
 				<f:facet name="header">
@@ -53,20 +53,18 @@
 				<h:graphicImage library="images/16x16" name="data.png" rendered="#{dto.state.name eq 'sync'}" title="Neu" />
 				<h:graphicImage library="images/16x16" name="data_delete.png" rendered="#{dto.state.name eq 'delete'}" title="Zu löschen" />	
 			</rich:column>
-			<rich:column sortBy="#{dto.entity.expression}" styleClass="smallColumn">
+			<rich:column sortBy="#{dto.entity.actionExpression}" styleClass="mediumColumn">
 				<f:facet name="header">
-					<h:outputText value="Komplex" />
+					<h:outputText value="Aktion" />
 				</f:facet>
-				<h:selectBooleanCheckbox value="#{dto.entity.expression}" />
-			</rich:column>
-			<rich:column sortBy="#{dto.entity.resource}" styleClass="mediumColumn">
-				<f:facet name="header">
-					<h:outputText value="Resource" />
-				</f:facet>
-				<rich:inplaceInput value="#{dto.entity.resource}" maxlength="100" layout="block"
-					required="true" requiredMessage="Zeile #{row+1}: Bitte geben Sie eine Resource ein">
-					<a4j:support event="onviewactivated" reRender="securedResourceTable, messages" />
-				</rich:inplaceInput>
+				<rich:comboBox width="250px" id="systemUser" value="#{dto.entity.actionExpression}" 
+					selectFirstOnUpdate="false" defaultLabel="Mitarbeiter"
+					required="true" requiredMessage="Zeile #{row+1}: Bitte geben Sie eine Aktion ein">
+					<f:selectItems value="#{securedActionMaintenanceBean.definitions}" />
+					<f:validator validatorId="validator.dropDown" />
+					<f:converter converterId="converter.dropDown" />
+					<rich:ajaxValidator event="onchange" />
+				</rich:comboBox> 
 			</rich:column>
 			<rich:column sortBy="#{dto.entity.access}">
 				<f:facet name="header">
@@ -74,23 +72,23 @@
 				</f:facet>
 				<rich:inplaceInput value="#{dto.entity.access}" maxlength="100" layout="block"
 					required="true" requiredMessage="Zeile #{row+1}: Bitte geben Sie ein Zugriffsrecht ein"
-					validator="#{securedResourceMaintenanceBean.validateSecuredResource}"
+					validator="#{securedActionMaintenanceBean.validateSecuredAction}"
 					validatorMessage="Zeile #{row+1}: Fehler beim parsen des Zugriffsrechts">
-					<a4j:support event="onviewactivated" reRender="securedResourceTable, messages" />
+					<a4j:support event="onviewactivated" reRender="securedActionTable, messages" />
 				</rich:inplaceInput>
 			</rich:column>
 			<rich:column styleClass="smallColumn">
 				<f:facet name="header">
 					<rich:spacer />
 				</f:facet>
-				<a4j:commandLink reRender="securedResourceTable" rendered="#{dto.state.name ne 'delete'}" immediate="true">
-					<a4j:actionparam name="securedResourceId" assignTo="#{securedResourceMaintenanceBean.securedResourceId}" value="#{dto.entity.id}"
-						actionListener="#{securedResourceMaintenanceBean.removeSecuredResource}" />
+				<a4j:commandLink reRender="securedActionTable" rendered="#{dto.state.name ne 'delete'}" immediate="true">
+					<a4j:actionparam name="securedActionId" assignTo="#{securedActionMaintenanceBean.securedActionId}" value="#{dto.entity.id}"
+						actionListener="#{securedActionMaintenanceBean.removeSecuredAction}" />
 					<h:graphicImage library="images/16x16" name="remove.png" />
 				</a4j:commandLink>
-				<a4j:commandLink reRender="securedResourceTable" rendered="#{dto.state.name eq 'delete'}">
-					<a4j:actionparam name="securedResourceId" assignTo="#{securedResourceMaintenanceBean.securedResourceId}" value="#{dto.entity.id}"
-						actionListener="#{securedResourceMaintenanceBean.unremoveSecuredResource}" />
+				<a4j:commandLink reRender="securedActionTable" rendered="#{dto.state.name eq 'delete'}">
+					<a4j:actionparam name="securedActionId" assignTo="#{securedActionMaintenanceBean.securedActionId}" value="#{dto.entity.id}"
+						actionListener="#{securedActionMaintenanceBean.unremoveSecuredAction}" />
 					<h:graphicImage library="images/16x16" name="remove.png" />
 				</a4j:commandLink>
 			</rich:column>

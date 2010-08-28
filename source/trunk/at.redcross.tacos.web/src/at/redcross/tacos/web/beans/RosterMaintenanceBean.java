@@ -52,7 +52,7 @@ public class RosterMaintenanceBean extends BaseBean {
 	// ---------------------------------
 	// Business methods
 	// ---------------------------------
-	@Action
+
 	public String persist() {
 		EntityManager manager = null;
 		try {
@@ -72,7 +72,6 @@ public class RosterMaintenanceBean extends BaseBean {
 		}
 	}
 
-	@Action
 	public String revert() {
 		EntityManager manager = null;
 		try {

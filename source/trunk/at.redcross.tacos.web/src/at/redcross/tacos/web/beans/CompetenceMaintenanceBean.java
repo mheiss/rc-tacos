@@ -24,99 +24,93 @@ import at.redcross.tacos.web.persitence.EntityManagerFactory;
 @ManagedBean(name = "competenceMaintenanceBean")
 public class CompetenceMaintenanceBean extends BaseBean {
 
-    private static final long serialVersionUID = -944190177115092754L;
+	private static final long serialVersionUID = -944190177115092754L;
 
-    private final static Log logger = LogFactory.getLog(CompetenceMaintenanceBean.class);
+	private final static Log logger = LogFactory.getLog(CompetenceMaintenanceBean.class);
 
-    /** the available competences */
-    private List<GenericDto<Competence>> competences;
+	/** the available competences */
+	private List<GenericDto<Competence>> competences;
 
-    /** the id of the selected competence */
-    private long competenceId;
+	/** the id of the selected competence */
+	private long competenceId;
 
-    @Override
-    protected void init() throws Exception {
-        EntityManager manager = null;
-        try {
-            manager = EntityManagerFactory.createEntityManager();
-            competences = DtoHelper.fromList(Competence.class, CompetenceHelper.list(manager));
-        }
-        finally {
-            manager = EntityManagerHelper.close(manager);
-        }
-    }
+	@Override
+	protected void init() throws Exception {
+		EntityManager manager = null;
+		try {
+			manager = EntityManagerFactory.createEntityManager();
+			competences = DtoHelper.fromList(Competence.class, CompetenceHelper.list(manager));
+		} finally {
+			manager = EntityManagerHelper.close(manager);
+		}
+	}
 
 	// ---------------------------------
 	// Business methods
 	// ---------------------------------
-	@Action
-    public void removeCompetence(ActionEvent event) {
-        Iterator<GenericDto<Competence>> iter = competences.iterator();
-        while (iter.hasNext()) {
-            GenericDto<Competence> dto = iter.next();
-            Competence competence = dto.getEntity();
-            if (competence.getId() != competenceId) {
-                continue;
-            }
-            if (dto.getState() == DtoState.NEW) {
-                iter.remove();
-            }
 
-            dto.setState(DtoState.DELETE);
-        }
-    }
+	public void removeCompetence(ActionEvent event) {
+		Iterator<GenericDto<Competence>> iter = competences.iterator();
+		while (iter.hasNext()) {
+			GenericDto<Competence> dto = iter.next();
+			Competence competence = dto.getEntity();
+			if (competence.getId() != competenceId) {
+				continue;
+			}
+			if (dto.getState() == DtoState.NEW) {
+				iter.remove();
+			}
 
-	@Action
-    public void unremoveCompetence(ActionEvent event) {
-        for (GenericDto<Competence> dto : competences) {
-            Competence competence = dto.getEntity();
-            if (competence.getId() != competenceId) {
-                continue;
-            }
-            dto.setState(DtoState.SYNC);
-        }
-    }
+			dto.setState(DtoState.DELETE);
+		}
+	}
 
-	@Action
-    public void addCompetence(ActionEvent event) {
-        GenericDto<Competence> dto = new GenericDto<Competence>(new Competence());
-        dto.setState(DtoState.NEW);
-        competences.add(dto);
-    }
+	public void unremoveCompetence(ActionEvent event) {
+		for (GenericDto<Competence> dto : competences) {
+			Competence competence = dto.getEntity();
+			if (competence.getId() != competenceId) {
+				continue;
+			}
+			dto.setState(DtoState.SYNC);
+		}
+	}
 
-	@Action
-    public void saveCompetences() {
-        EntityManager manager = null;
-        try {
-            manager = EntityManagerFactory.createEntityManager();
-            DtoHelper.syncronize(manager, competences);
-            EntityManagerHelper.commit(manager);
-            DtoHelper.filter(competences);
-        }
-        catch (Exception ex) {
-            logger.error("Failed to remove competence '" + competenceId + "'", ex);
-            FacesUtils.addErrorMessage("Die Änderungen konnten nicht gespeichert werden");
-        }
-        finally {
-            EntityManagerHelper.close(manager);
-        }
-    }
+	public void addCompetence(ActionEvent event) {
+		GenericDto<Competence> dto = new GenericDto<Competence>(new Competence());
+		dto.setState(DtoState.NEW);
+		competences.add(dto);
+	}
 
-    // ---------------------------------
-    // Setters for the properties
-    // ---------------------------------
-    public void setCompetenceId(long competenceId) {
-        this.competenceId = competenceId;
-    }
+	public void saveCompetences() {
+		EntityManager manager = null;
+		try {
+			manager = EntityManagerFactory.createEntityManager();
+			DtoHelper.syncronize(manager, competences);
+			EntityManagerHelper.commit(manager);
+			DtoHelper.filter(competences);
+		} catch (Exception ex) {
+			logger.error("Failed to remove competence '" + competenceId + "'", ex);
+			FacesUtils.addErrorMessage("Die Änderungen konnten nicht gespeichert werden");
+		} finally {
+			EntityManagerHelper.close(manager);
+		}
+	}
 
-    // ---------------------------------
-    // Getters for the properties
-    // ---------------------------------
-    public long getCompetenceId() {
-        return competenceId;
-    }
+	// ---------------------------------
+	// Setters for the properties
+	// ---------------------------------
+	public void setCompetenceId(long competenceId) {
+		this.competenceId = competenceId;
+	}
 
-    public List<GenericDto<Competence>> getCompetences() {
-        return competences;
-    }
+	// ---------------------------------
+	// Getters for the properties
+	// ---------------------------------
+	public long getCompetenceId() {
+		return competenceId;
+	}
+
+	public List<GenericDto<Competence>> getCompetences() {
+		return competences;
+	}
 }

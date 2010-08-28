@@ -13,54 +13,59 @@ import at.redcross.tacos.web.faces.FacesMessageExt;
 @ManagedBean(name = "errorBean")
 public class ErrorBean extends BaseBean {
 
-    private static final long serialVersionUID = -8228546063540602086L;
+	private static final long serialVersionUID = -8228546063540602086L;
 
-    // the injected URI
-    private String cameFrom;
+	// the injected URI
+	private String cameFrom;
 
-    // the injected error code;
-    private String errorCode;
+	// the injected error code;
+	private String errorCode;
 
-    /**
-     * Returns all currently registered error and warning messages.
-     * 
-     * @return a list of error messages
-     */
-    public List<FacesMessageExt> getErrorMessages() {
-        List<FacesMessageExt> messages = new ArrayList<FacesMessageExt>();
-        Iterator<FacesMessage> messageIter = FacesContext.getCurrentInstance().getMessages(null);
-        while (messageIter.hasNext()) {
-            FacesMessage next = messageIter.next();
-            if (next.getSeverity() == FacesMessage.SEVERITY_INFO) {
-                continue;
-            }
-            if (next.getSeverity() == FacesMessage.SEVERITY_WARN) {
-                continue;
-            }
-            messages.add(new FacesMessageExt(next));
-        }
-        return messages;
-    }
+	@Override
+	protected void init() throws Exception {
+		// no initialization required
+	}
 
-    // ---------------------------------
-    // Setters for the properties
-    // ---------------------------------
-    public void setCameFrom(String cameFrom) {
-        this.cameFrom = cameFrom;
-    }
+	/**
+	 * Returns all currently registered error and warning messages.
+	 * 
+	 * @return a list of error messages
+	 */
+	public List<FacesMessageExt> getErrorMessages() {
+		List<FacesMessageExt> messages = new ArrayList<FacesMessageExt>();
+		Iterator<FacesMessage> messageIter = FacesContext.getCurrentInstance().getMessages(null);
+		while (messageIter.hasNext()) {
+			FacesMessage next = messageIter.next();
+			if (next.getSeverity() == FacesMessage.SEVERITY_INFO) {
+				continue;
+			}
+			if (next.getSeverity() == FacesMessage.SEVERITY_WARN) {
+				continue;
+			}
+			messages.add(new FacesMessageExt(next));
+		}
+		return messages;
+	}
 
-    public void setErrorCode(String errorCode) {
-        this.errorCode = errorCode;
-    }
+	// ---------------------------------
+	// Setters for the properties
+	// ---------------------------------
+	public void setCameFrom(String cameFrom) {
+		this.cameFrom = cameFrom;
+	}
 
-    // ---------------------------------
-    // Getters for the properties
-    // ---------------------------------
-    public String getCameFrom() {
-        return cameFrom;
-    }
+	public void setErrorCode(String errorCode) {
+		this.errorCode = errorCode;
+	}
 
-    public String getErrorCode() {
-        return errorCode;
-    }
+	// ---------------------------------
+	// Getters for the properties
+	// ---------------------------------
+	public String getCameFrom() {
+		return cameFrom;
+	}
+
+	public String getErrorCode() {
+		return errorCode;
+	}
 }

@@ -19,33 +19,33 @@ import at.redcross.tacos.web.reporting.ReportRenderer.ReportRenderParameters;
 @ManagedBean(name = "rosterDayOverviewBean")
 public class RosterDayOverviewBean extends RosterOverviewBean {
 
-    private static final long serialVersionUID = 8817078489086816724L;
+	private static final long serialVersionUID = 8817078489086816724L;
 
-    private final SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
+	private final SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
 
-    @Override
-    protected Date getPreviousDate(Date date) {
-        return DateUtils.addDays(date, -1);
-    }
+	@Override
+	protected Date getPreviousDate(Date date) {
+		return DateUtils.addDays(date, -1);
+	}
 
-    @Override
-    protected Date getNextDate(Date date) {
-        return DateUtils.addDays(date, +1);
-    }
+	@Override
+	protected Date getNextDate(Date date) {
+		return DateUtils.addDays(date, +1);
+	}
 
-    @Override
-    protected List<RosterEntry> getEntries(EntityManager manager, Location location, Date date) {
-        return RosterEntryHelper.listByDay(manager, location, date);
-    }
+	@Override
+	protected List<RosterEntry> getEntries(EntityManager manager, Location location, Date date) {
+		return RosterEntryHelper.listByDay(manager, location, date);
+	}
 
-    @Override
-    protected ReportRenderParameters getReportParams() {
-        ReportRenderParameters params = new ReportRenderParameters();
-        params.reportName = "Dienstplan_" + sdf.format(date) + ".pdf";
-        params.reportFile = "rosterDayReport.rptdesign";
-        params.arguments.put("rosterList", entries);
-        params.arguments.put("reportDate", date);
-        return params;
-    }
+	@Override
+	protected ReportRenderParameters getReportParams() {
+		ReportRenderParameters params = new ReportRenderParameters();
+		params.reportName = "Dienstplan_" + sdf.format(date) + ".pdf";
+		params.reportFile = "rosterDayReport.rptdesign";
+		params.arguments.put("rosterList", entries);
+		params.arguments.put("reportDate", date);
+		return params;
+	}
 
 }

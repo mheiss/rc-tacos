@@ -48,7 +48,7 @@ public class LocationMaintenanceBean extends BaseBean {
 	// ---------------------------------
 	// Business methods
 	// ---------------------------------
-	@Action
+
 	public void removeLocation(ActionEvent event) {
 		Iterator<GenericDto<Location>> iter = locations.iterator();
 		while (iter.hasNext()) {
@@ -65,7 +65,6 @@ public class LocationMaintenanceBean extends BaseBean {
 		}
 	}
 
-	@Action
 	public void unremoveLocation(ActionEvent event) {
 		for (GenericDto<Location> dto : locations) {
 			Location location = dto.getEntity();
@@ -76,14 +75,12 @@ public class LocationMaintenanceBean extends BaseBean {
 		}
 	}
 
-	@Action
 	public void addLocation(ActionEvent event) {
 		GenericDto<Location> dto = new GenericDto<Location>(new Location());
 		dto.setState(DtoState.NEW);
 		locations.add(dto);
 	}
 
-	@Action
 	public void saveLocations() {
 		EntityManager manager = null;
 		try {

@@ -146,6 +146,13 @@
 		<action onPostback="false">#{securedResourceMaintenanceBean.prettyInit}</action>
 	</url-mapping>
 	
+		<!-- ################ ADMINISTRATION - SECURED ACTION ####################### -->
+	<url-mapping id="admin-securedActionMaintenance">
+		<pattern>/admin/securedActions</pattern>
+		<view-id>/WEB-INF/pages/administration/securedActionMaintenance.faces</view-id>
+		<action onPostback="false">#{securedActionMaintenanceBean.prettyInit}</action>
+	</url-mapping>
+	
 	<!-- ################ ADMINISTRATION - GROUP ####################### -->
 	<url-mapping id="admin-groupMaintenance">
 		<pattern>/admin/groups</pattern>

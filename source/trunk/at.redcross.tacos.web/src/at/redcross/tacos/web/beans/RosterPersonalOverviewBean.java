@@ -16,26 +16,26 @@ import at.redcross.tacos.web.reporting.ReportRenderer.ReportRenderParameters;
 @ManagedBean(name = "rosterPersonalOverviewBean")
 public class RosterPersonalOverviewBean extends RosterOverviewBean {
 
-    private static final long serialVersionUID = 8817078489086816724L;
+	private static final long serialVersionUID = 8817078489086816724L;
 
-    @Override
-    protected List<RosterEntry> getEntries(EntityManager manager, Location location, Date date) {
-        return null;
-    }
+	@Override
+	protected List<RosterEntry> getEntries(EntityManager manager, Location location, Date date) {
+		return null;
+	}
 
-    @Override
-    protected Date getNextDate(Date date) {
-        return null;
-    }
+	@Override
+	protected Date getNextDate(Date date) {
+		return null;
+	}
 
-    @Override
-    protected Date getPreviousDate(Date date) {
-        return null;
-    }
+	@Override
+	protected Date getPreviousDate(Date date) {
+		return null;
+	}
 
-    @Override
-    protected ReportRenderParameters getReportParams() {
-        return null;
-    }
+	@Override
+	protected ReportRenderParameters getReportParams() {
+		return null;
+	}
 
 }
