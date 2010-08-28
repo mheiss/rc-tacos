@@ -61,6 +61,7 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
 				manager.merge(entry);
 			}
 			EntityManagerHelper.commit(manager);
+			loadfromDatabase(manager, location, date);
 		} catch (Exception ex) {
 			FacesUtils.addErrorMessage("Die Fahrzeugzuweisung konnte nicht gespeichert werden");
 		} finally {
@@ -80,7 +81,7 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
 
 	@Override
 	protected List<RosterEntry> getEntries(EntityManager manager, Location location, Date date) {
-		return RosterEntryHelper.listByDay(manager, location, date);
+		return RosterEntryHelper.listByDayOrderByCar(manager, location, date);
 	}
 
 	@Override

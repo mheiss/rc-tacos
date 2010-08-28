@@ -63,6 +63,26 @@ public class RosterEntryHelper {
         return query.getResultList();
     }
     
+    public static List<RosterEntry> listByDayOrderByCar(EntityManager manager, Location location, Date date) {
+        Date start = DateUtils.truncate(date, Calendar.DAY_OF_MONTH);
+
+        StringBuilder builder = new StringBuilder();
+        builder.append(" from RosterEntry entry ");
+        builder.append(" where :date >= entry.plannedStartDate AND :date <= entry.plannedEndDate");
+        builder.append(" AND entry.toDelete <> true ");
+        if (location != null) {
+            builder.append(" and entry.location.id = :locationId");
+        }
+        builder.append(" order by entry.car, entry.plannedStartTime, entry.systemUser.lastName");
+
+        TypedQuery<RosterEntry> query = manager.createQuery(builder.toString(), RosterEntry.class);
+        query.setParameter("date", start);
+        if (location != null) {
+            query.setParameter("locationId", location.getId());
+        }
+        return query.getResultList();
+    }
+    
     public static List<RosterEntry> list(EntityManager manager) {
        
     	StringBuilder builder = new StringBuilder();
