@@ -91,7 +91,7 @@ public class UserMaintenanceBean extends BaseBean {
 	// ---------------------------------
 	// Business methods
 	// ---------------------------------
-	@Action
+
 	public String persist() {
 		EntityManager manager = null;
 		try {
@@ -119,7 +119,6 @@ public class UserMaintenanceBean extends BaseBean {
 		}
 	}
 
-	@Action
 	public String revert() {
 		EntityManager manager = null;
 		try {
@@ -134,7 +133,6 @@ public class UserMaintenanceBean extends BaseBean {
 		}
 	}
 
-	@Action
 	public void addGroup(ActionEvent event) {
 		// silently ignore invalid requests
 		if (selectedGroup == null) {
@@ -148,7 +146,6 @@ public class UserMaintenanceBean extends BaseBean {
 		selectedGroup = null;
 	}
 
-	@Action
 	public void addCompetence(ActionEvent event) {
 		// silently ignore invalid requests
 		if (selectedCompetence == null) {
@@ -162,7 +159,6 @@ public class UserMaintenanceBean extends BaseBean {
 		selectedCompetence = null;
 	}
 
-	@Action
 	public void removeGroup(ActionEvent event) {
 		Iterator<Group> groupIter = systemUser.getGroups().iterator();
 		while (groupIter.hasNext()) {
@@ -174,7 +170,6 @@ public class UserMaintenanceBean extends BaseBean {
 		}
 	}
 
-	@Action
 	public void removeCompetence(ActionEvent event) {
 		Iterator<Competence> comptIter = systemUser.getCompetences().iterator();
 		while (comptIter.hasNext()) {

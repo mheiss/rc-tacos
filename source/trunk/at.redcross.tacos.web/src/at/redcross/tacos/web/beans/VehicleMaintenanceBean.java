@@ -47,7 +47,7 @@ public class VehicleMaintenanceBean extends BaseBean {
 	// ---------------------------------
 	// Business methods
 	// ---------------------------------
-	@Action
+
 	public String persist() {
 		EntityManager manager = null;
 		try {
@@ -67,7 +67,6 @@ public class VehicleMaintenanceBean extends BaseBean {
 		}
 	}
 
-	@Action
 	public String revert() {
 		EntityManager manager = null;
 		try {

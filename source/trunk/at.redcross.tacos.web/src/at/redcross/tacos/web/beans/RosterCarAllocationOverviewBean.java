@@ -52,7 +52,7 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
 	// ---------------------------------
 	// Business methods
 	// ---------------------------------
-	@Action
+
 	public void saveEntries() {
 		EntityManager manager = null;
 		try {

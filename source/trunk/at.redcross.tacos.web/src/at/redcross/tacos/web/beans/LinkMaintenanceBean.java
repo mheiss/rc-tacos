@@ -23,100 +23,94 @@ import at.redcross.tacos.web.persitence.EntityManagerFactory;
 @KeepAlive
 @ManagedBean(name = "linkMaintenanceBean")
 public class LinkMaintenanceBean extends BaseBean {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	private final static Log logger = LogFactory.getLog(LinkMaintenanceBean.class);
 
-    /** the available links */
-    private List<GenericDto<Link>> links;
+	/** the available links */
+	private List<GenericDto<Link>> links;
 
-    /** the id of the selected link */
-    private long linkId;
+	/** the id of the selected link */
+	private long linkId;
 
-    @Override
-    protected void init() throws Exception {
-        EntityManager manager = null;
-        try {
-            manager = EntityManagerFactory.createEntityManager();
-            links = DtoHelper.fromList(Link.class, LinkHelper.list(manager));
-        }
-        finally {
-            manager = EntityManagerHelper.close(manager);
-        }
-    }
+	@Override
+	protected void init() throws Exception {
+		EntityManager manager = null;
+		try {
+			manager = EntityManagerFactory.createEntityManager();
+			links = DtoHelper.fromList(Link.class, LinkHelper.list(manager));
+		} finally {
+			manager = EntityManagerHelper.close(manager);
+		}
+	}
 
 	// ---------------------------------
 	// Business methods
 	// ---------------------------------
-	@Action
-    public void removeLink(ActionEvent event) {
-        Iterator<GenericDto<Link>> iter = links.iterator();
-        while (iter.hasNext()) {
-            GenericDto<Link> dto = iter.next();
-            Link link = dto.getEntity();
-            if (link.getId() != linkId) {
-                continue;
-            }
-            if (dto.getState() == DtoState.NEW) {
-                iter.remove();
-            }
 
-            dto.setState(DtoState.DELETE);
-        }
-    }
+	public void removeLink(ActionEvent event) {
+		Iterator<GenericDto<Link>> iter = links.iterator();
+		while (iter.hasNext()) {
+			GenericDto<Link> dto = iter.next();
+			Link link = dto.getEntity();
+			if (link.getId() != linkId) {
+				continue;
+			}
+			if (dto.getState() == DtoState.NEW) {
+				iter.remove();
+			}
 
-	@Action
-    public void unremoveLink(ActionEvent event) {
-        for (GenericDto<Link> dto : links) {
-            Link link = dto.getEntity();
-            if (link.getId() != linkId) {
-                continue;
-            }
-            dto.setState(DtoState.SYNC);
-        }
-    }
+			dto.setState(DtoState.DELETE);
+		}
+	}
 
-	@Action
-    public void addLink(ActionEvent event) {
-        GenericDto<Link> dto = new GenericDto<Link>(new Link());
-        dto.setState(DtoState.NEW);
-        links.add(dto);
-    }
+	public void unremoveLink(ActionEvent event) {
+		for (GenericDto<Link> dto : links) {
+			Link link = dto.getEntity();
+			if (link.getId() != linkId) {
+				continue;
+			}
+			dto.setState(DtoState.SYNC);
+		}
+	}
 
-	@Action
-    public void saveLinks() {
-        EntityManager manager = null;
-        try {
-            manager = EntityManagerFactory.createEntityManager();
-            DtoHelper.syncronize(manager, links);
-            EntityManagerHelper.commit(manager);
-            DtoHelper.filter(links);
-        }
-        catch (Exception ex) {
-            logger.error("Failed to remove link '" + linkId + "'", ex);
-            FacesUtils.addErrorMessage("Die Änderungen konnten nicht gespeichert werden");
-        }
-        finally {
-            EntityManagerHelper.close(manager);
-        }
-    }
+	public void addLink(ActionEvent event) {
+		GenericDto<Link> dto = new GenericDto<Link>(new Link());
+		dto.setState(DtoState.NEW);
+		links.add(dto);
+	}
 
-    // ---------------------------------
-    // Setters for the properties
-    // ---------------------------------
-    public void setLinkId(long linkId) {
-        this.linkId = linkId;
-    }
+	public void saveLinks() {
+		EntityManager manager = null;
+		try {
+			manager = EntityManagerFactory.createEntityManager();
+			DtoHelper.syncronize(manager, links);
+			EntityManagerHelper.commit(manager);
+			DtoHelper.filter(links);
+		} catch (Exception ex) {
+			logger.error("Failed to remove link '" + linkId + "'", ex);
+			FacesUtils.addErrorMessage("Die Änderungen konnten nicht gespeichert werden");
+		} finally {
+			EntityManagerHelper.close(manager);
+		}
+	}
 
-    // ---------------------------------
-    // Getters for the properties
-    // ---------------------------------
-    public long getLinkId() {
-        return linkId;
-    }
+	// ---------------------------------
+	// Setters for the properties
+	// ---------------------------------
+	public void setLinkId(long linkId) {
+		this.linkId = linkId;
+	}
 
-    public List<GenericDto<Link>> getLinks() {
-        return links;
-    }
+	// ---------------------------------
+	// Getters for the properties
+	// ---------------------------------
+	public long getLinkId() {
+		return linkId;
+	}
+
+	public List<GenericDto<Link>> getLinks() {
+		return links;
+	}
 }

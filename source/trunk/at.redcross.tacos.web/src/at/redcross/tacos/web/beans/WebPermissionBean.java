@@ -18,25 +18,34 @@ import org.springframework.security.access.expression.ExpressionUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import at.redcross.tacos.dbal.entity.SecuredAction;
 import at.redcross.tacos.dbal.entity.SecuredResource;
+import at.redcross.tacos.dbal.entity.SystemUser;
+import at.redcross.tacos.dbal.helper.SecuredActionHelper;
 import at.redcross.tacos.dbal.helper.SecuredResourceHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.web.persitence.EntityManagerFactory;
 import at.redcross.tacos.web.security.WebAuthenticationTrustResolver;
 import at.redcross.tacos.web.security.WebAuthenticationVoter;
 import at.redcross.tacos.web.security.WebSecurityExpressionRoot;
+import at.redcross.tacos.web.security.WebUserDetails;
 
 import com.ocpsoft.pretty.PrettyContext;
 import com.ocpsoft.pretty.config.PrettyConfig;
 import com.ocpsoft.pretty.config.PrettyUrlMapping;
 
-@ManagedBean(name = "securedResourceBean")
-public class SecuredResourceBean {
+@ManagedBean(name = "permissionBean")
+public class WebPermissionBean {
 
-	private final static Logger log = LoggerFactory.getLogger(SecuredResourceBean.class);
+	private final static Logger log = LoggerFactory.getLogger(WebPermissionBean.class);
 
-	private List<SecuredResource> cachedResources;
-	private AccessDecisionVoter voter = new WebAuthenticationVoter();
+	/** the available resources */
+	private List<SecuredResource> securedResources;
+
+	/** the available actions */
+	private List<SecuredAction> securedActions;
+
+	/** parser for the action / resource expressions */
 	private transient ExpressionParser parser;
 
 	@PostConstruct
@@ -44,7 +53,8 @@ public class SecuredResourceBean {
 		EntityManager manager = null;
 		try {
 			manager = EntityManagerFactory.createEntityManager();
-			cachedResources = SecuredResourceHelper.list(manager);
+			securedResources = SecuredResourceHelper.list(manager);
+			securedActions = SecuredActionHelper.list(manager);
 			parser = new SpelExpressionParser();
 		} finally {
 			manager = EntityManagerHelper.close(manager);
@@ -52,17 +62,67 @@ public class SecuredResourceBean {
 	}
 
 	// ---------------------------------
-	// Resource request links
+	// Principal requests
 	// ---------------------------------
-	public boolean isAdminLinkVisible() {
-		return canAccess("admin-home");
+	public SystemUser getSystemUser() {
+		WebUserDetails principal = getPrincipal();
+		if (principal == null) {
+			return null;
+		}
+		return principal.getLogin().getSystemUser();
+	}
+
+	public WebUserDetails getPrincipal() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Object principal = auth.getPrincipal();
+		if (principal instanceof WebUserDetails) {
+			return (WebUserDetails) principal;
+		}
+		return null;
+	}
+
+	// ---------------------------------
+	// Resource requests
+	// ---------------------------------
+	public boolean isAuthorizedToAccessAdminArea() {
+		return canAccessResource("admin-home");
+	}
+
+	public boolean isAuthorizedToAccessRosterArea() {
+		return canAccessResource("roster-dayOverview");
+	}
+
+	// ---------------------------------
+	// Action requests
+	// ---------------------------------
+	public boolean isAuthorizedToDeleteRoster() {
+		return canExecuteAction("roster-deleteEntry");
+	}
+
+	public boolean isAuthorizedToEditRoster() {
+		return canExecuteAction("roster-editEntry");
+	}
+
+	public boolean isAuthorizedToAssignCar() {
+		return canExecuteAction("roster-assignCar");
 	}
 
 	// ---------------------------------
 	// Helper methods
 	// ---------------------------------
+	/** Returns whether or not the current user can execute the given action */
+	private boolean canExecuteAction(String actionId) {
+		// if no restriction is defined we permit the execution
+		String actionExpression = findActionById(actionId);
+		if (actionExpression == null) {
+			return true;
+		}
+		Expression expression = getExpressionByAction(actionExpression);
+		return evaluateExpression(expression);
+	}
+
 	/** Returns whether or not the current user can access the given URL */
-	private boolean canAccess(String prettyMappingId) {
+	private boolean canAccessResource(String prettyMappingId) {
 		String mappedUrl = findMappingById(prettyMappingId);
 		if (mappedUrl == null) {
 			log.error("Mapping for '" + prettyMappingId + "' not found");
@@ -73,7 +133,17 @@ public class SecuredResourceBean {
 			log.error("Expression for '" + mappedUrl + "' not found");
 			return false;
 		}
-		return canAccess(expression);
+		return evaluateExpression(expression);
+	}
+
+	/** Returns the first matching action based on the given id */
+	private String findActionById(String actionId) {
+		for (SecuredAction securedAction : securedActions) {
+			if (securedAction.getActionExpression().equals(actionId)) {
+				return securedAction.getAccess();
+			}
+		}
+		return null;
 	}
 
 	/** Returns the first matching resource based on the given page */
@@ -85,6 +155,11 @@ public class SecuredResourceBean {
 			}
 		}
 		return null;
+	}
+
+	/** Finds the according expression based on the action */
+	private Expression getExpressionByAction(String actionExpression) {
+		return parser.parseExpression(actionExpression);
 	}
 
 	/** Finds the according expression based on the resource */
@@ -111,7 +186,7 @@ public class SecuredResourceBean {
 
 	/** Finds the best matching secured resource according to the given URL */
 	private SecuredResource getResourceByUrl(String url) {
-		for (SecuredResource resource : cachedResources) {
+		for (SecuredResource resource : securedResources) {
 			if (resource.getResource().equals(url)) {
 				return resource;
 			}
@@ -120,11 +195,19 @@ public class SecuredResourceBean {
 	}
 
 	/**
-	 * Returns whether or not the user can access the given resource
+	 * Evaluates the given expression and returns whether or not the user has
+	 * the given permissions. The expression will be evaluated against the
+	 * currently authenticated user principal.
+	 * 
+	 * @param expression
+	 *            the expression to evaluate
+	 * @return {@code true} it the user has the given permission or {@code
+	 *         false} if not
 	 */
-	private boolean canAccess(Expression expression) {
+	private boolean evaluateExpression(Expression expression) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		// check for super user
+		AccessDecisionVoter voter = new WebAuthenticationVoter();
 		if (voter.vote(auth, null, null) == AccessDecisionVoter.ACCESS_GRANTED) {
 			return true;
 		}

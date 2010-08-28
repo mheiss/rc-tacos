@@ -48,7 +48,7 @@ public class ServiceTypeMaintenanceBean extends BaseBean {
 	// ---------------------------------
 	// Business methods
 	// ---------------------------------
-	@Action
+
 	public void removeServiceType(ActionEvent event) {
 		Iterator<GenericDto<ServiceType>> iter = serviceTypes.iterator();
 		while (iter.hasNext()) {
@@ -65,7 +65,6 @@ public class ServiceTypeMaintenanceBean extends BaseBean {
 		}
 	}
 
-	@Action
 	public void unremoveServiceType(ActionEvent event) {
 		for (GenericDto<ServiceType> dto : serviceTypes) {
 			ServiceType serviceType = dto.getEntity();
@@ -76,14 +75,12 @@ public class ServiceTypeMaintenanceBean extends BaseBean {
 		}
 	}
 
-	@Action
 	public void addServiceType(ActionEvent event) {
 		GenericDto<ServiceType> dto = new GenericDto<ServiceType>(new ServiceType());
 		dto.setState(DtoState.NEW);
 		serviceTypes.add(dto);
 	}
 
-	@Action
 	public void saveServiceTypes() {
 		EntityManager manager = null;
 		try {

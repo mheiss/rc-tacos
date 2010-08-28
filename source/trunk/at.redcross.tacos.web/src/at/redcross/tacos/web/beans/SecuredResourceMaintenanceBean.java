@@ -13,13 +13,6 @@ import javax.persistence.EntityManager;
 import org.ajax4jsf.model.KeepAlive;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.expression.EvaluationContext;
-import org.springframework.expression.ExpressionParser;
-import org.springframework.expression.spel.standard.SpelExpressionParser;
-import org.springframework.expression.spel.support.StandardEvaluationContext;
-import org.springframework.security.access.expression.ExpressionUtils;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import at.redcross.tacos.dbal.entity.SecuredResource;
 import at.redcross.tacos.dbal.helper.SecuredResourceHelper;
@@ -29,12 +22,10 @@ import at.redcross.tacos.web.beans.dto.DtoState;
 import at.redcross.tacos.web.beans.dto.GenericDto;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.persitence.EntityManagerFactory;
-import at.redcross.tacos.web.security.WebAuthenticationTrustResolver;
-import at.redcross.tacos.web.security.WebSecurityExpressionRoot;
 
 @KeepAlive
 @ManagedBean(name = "securedResourceMaintenanceBean")
-public class SecuredResourceMaintenanceBean extends BaseBean {
+public class SecuredResourceMaintenanceBean extends SecuredBean {
 
 	private static final long serialVersionUID = -8165438157429138118L;
 
@@ -47,17 +38,14 @@ public class SecuredResourceMaintenanceBean extends BaseBean {
 	/** the id of the selected resources */
 	private long securedResourceId;
 
-	/** parses the given expression (used during validation) */
-	private transient ExpressionParser parser;
-
 	@Override
-	public void prettyInit() {
+	public void init() throws Exception {
+		super.init();
 		EntityManager manager = null;
 		try {
 			manager = EntityManagerFactory.createEntityManager();
 			resources = DtoHelper.fromList(SecuredResource.class, SecuredResourceHelper
 					.list(manager));
-			parser = new SpelExpressionParser();
 		} finally {
 			manager = EntityManagerHelper.close(manager);
 		}
@@ -66,7 +54,6 @@ public class SecuredResourceMaintenanceBean extends BaseBean {
 	// ---------------------------------
 	// Business methods
 	// ---------------------------------
-	@Action
 	public void removeSecuredResource(ActionEvent event) {
 		Iterator<GenericDto<SecuredResource>> iter = resources.iterator();
 		while (iter.hasNext()) {
@@ -82,7 +69,6 @@ public class SecuredResourceMaintenanceBean extends BaseBean {
 		}
 	}
 
-	@Action
 	public void unremoveSecuredResource(ActionEvent event) {
 		for (GenericDto<SecuredResource> dto : resources) {
 			SecuredResource securedResource = dto.getEntity();
@@ -93,14 +79,12 @@ public class SecuredResourceMaintenanceBean extends BaseBean {
 		}
 	}
 
-	@Action
 	public void addSecuredResource(ActionEvent event) {
 		GenericDto<SecuredResource> dto = new GenericDto<SecuredResource>(new SecuredResource());
 		dto.setState(DtoState.NEW);
 		resources.add(dto);
 	}
 
-	@Action
 	public void saveSecuredResources() {
 		EntityManager manager = null;
 		try {
@@ -114,12 +98,12 @@ public class SecuredResourceMaintenanceBean extends BaseBean {
 				boolean expression = resource.isExpression();
 				String access = resource.getAccess();
 				int idx = resources.indexOf(dto) + 1;
-				if (expression & !isValidComplexExpression(access)) {
+				if (expression & !isValidExpression(access)) {
 					FacesUtils.addErrorMessage("Das Zugriffsrecht in Zeile '" + idx
 							+ "' ist fehlerhaft.");
 					errorCount++;
 				}
-				if (!expression &! isValidSimpleExpression(access)) {
+				if (!expression & !isValidSimpleExpression(access)) {
 					FacesUtils.addErrorMessage("Das Zugriffsrecht in Zeile '" + idx
 							+ "' ist fehlerhaft.\n"
 							+ "Ein simpler Ausdruck muss mit 'ROLE_' beginnen.");
@@ -149,7 +133,7 @@ public class SecuredResourceMaintenanceBean extends BaseBean {
 			return;
 		}
 		// complex entry
-		if (isValidComplexExpression(stringValue)) {
+		if (isValidExpression(stringValue)) {
 			return;
 		}
 		throw new ValidatorException(FacesUtils.createErrorMessage("No valid access definition"));
@@ -176,28 +160,8 @@ public class SecuredResourceMaintenanceBean extends BaseBean {
 	// ---------------------------------
 	// Private helpers
 	// ---------------------------------
-	/** Returns a new context to validate expressions */
-	private EvaluationContext getEvaluationContext() {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		WebSecurityExpressionRoot root = new WebSecurityExpressionRoot(auth);
-		root.setTrustResolver(new WebAuthenticationTrustResolver());
-		return new StandardEvaluationContext(root);
-	}
-
 	/** Returns whether or not the given string is a valid entry */
 	private boolean isValidSimpleExpression(String expression) {
 		return expression.startsWith("ROLE_");
 	}
-
-	/** Returns whether or not the given string is a valid expression */
-	private boolean isValidComplexExpression(String expression) {
-		try {
-			ExpressionUtils.evaluateAsBoolean(parser.parseExpression(expression),
-					getEvaluationContext());
-			return true;
-		} catch (Exception ex) {
-			return false;
-		}
-	}
-
 }
