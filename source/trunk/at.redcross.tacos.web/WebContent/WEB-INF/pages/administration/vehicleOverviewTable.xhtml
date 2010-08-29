@@ -4,11 +4,13 @@
 	xmlns:birt="http://jsf4birt.components">
 <body>
 <ui:composition>
-	<rich:panel rendered="#{empty values}" style="margin-top:10px;">
-		<h:outputText value="Keine Einträge gefunden" styleClass="italic" />
-	</rich:panel>
+	<h:panelGroup rendered="#{empty values}">
+		<div class="emptyBox italic">
+			<h:outputText value="Keine Einträge gefunden" />
+		</div>
+	</h:panelGroup>
 	<rich:panel rendered="#{not empty values}">
-		<rich:dataTable id="table-#{tabId}" styleClass="singleTable" value="#{values}" var="car" onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
+		<rich:dataTable id="table-#{tabId}" styleClass="defaultStyle" value="#{values}" var="car" onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
 			<rich:column sortBy="#{car.outOfOrder}" sortOrder="ASCENDING" styleClass="center smallColumn">
 				<f:facet name="header">
 					<h:outputText value="Status" title="Status" />
