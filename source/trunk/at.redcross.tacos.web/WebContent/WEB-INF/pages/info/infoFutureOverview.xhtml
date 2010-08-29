@@ -11,25 +11,23 @@
 <body>
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
 	<ui:param name="section" value="info" />
-	<ui:param name="page" value="infoCurrentOverview" />
+	<ui:param name="page" value="infoFutureOverview" />
 
 	<ui:define name="navigation">
 		<ui:include src="navigation.xhtml" />
 	</ui:define>
-
 	<ui:define name="page-header">
 		<h:graphicImage library="images/32x32" name="info.png" />
 		<h2 class="title">
-			<h:outputText value="Aktuelle Informationen" />
+			<h:outputText value="Künftige Informationen" />
 		</h2>
 	</ui:define>
-
 	<ui:define name="page-content">
 		<ui:decorate template="infoFilter.xhtml">
-			<ui:param name="bean" value="#{infoCurrentOverviewBean}" />
+			<ui:param name="bean" value="#{infoFutureOverviewBean}" />
 		</ui:decorate>
 		<ui:decorate template="infoTable.xhtml">
-			<ui:param name="values" value="#{infoCurrentOverviewBean.locationInfo}" />
+			<ui:param name="values" value="#{infoFutureOverviewBean.locationInfo}" />
 		</ui:decorate>
 	</ui:define>
 </ui:composition>
