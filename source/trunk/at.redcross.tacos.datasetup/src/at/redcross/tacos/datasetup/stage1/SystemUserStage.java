@@ -66,6 +66,7 @@ public class SystemUserStage implements DatasetupStage {
 			Login login = new Login();
 			login.setSystemUser(sysUser);
 			login.setLoginName("b.thek");
+			login.setSuperUser(true);
 			login.setPassword("f27fe25460cdb4bcd43f51c3d4fed2084996c21664898f7425ccea2f5dc156a3");
 
 			sysUser.setLocation(LocationHelper.getByName(manager, "Kapfenberg"));

@@ -20,18 +20,21 @@ public class SecuredAction extends EntityImpl {
 	@GeneratedValue
 	private long id;
 
-	@Column(nullable = false, unique = true)
-	private String actionExpression;
+	@Column(nullable = false,unique = true)
+	private String name;
+
+	@Column(length = 255)
+	private String description;
 
 	@Column(nullable = false)
-	private String access;
+	private String accessExpression;
 
 	// ---------------------------------
 	// EntityImpl
 	// ---------------------------------
 	@Override
 	public String getDisplayString() {
-		return actionExpression;
+		return name;
 	}
 
 	// ---------------------------------
@@ -39,7 +42,7 @@ public class SecuredAction extends EntityImpl {
 	// ---------------------------------
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this).append("actionExpression", actionExpression).toString();
+		return new ToStringBuilder(this).append("actioName", name).toString();
 	}
 
 	@Override
@@ -65,12 +68,16 @@ public class SecuredAction extends EntityImpl {
 	// ---------------------------------
 	// Setters for the properties
 	// ---------------------------------
-	public void setAccess(String access) {
-		this.access = access;
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public void setActionExpression(String actionExpression) {
-		this.actionExpression = actionExpression;
+		this.accessExpression = actionExpression;
 	}
 
 	// ---------------------------------
@@ -80,11 +87,15 @@ public class SecuredAction extends EntityImpl {
 		return id;
 	}
 
-	public String getAccess() {
-		return access;
+	public String getName() {
+		return name;
+	}
+
+	public String getDescription() {
+		return description;
 	}
 
 	public String getActionExpression() {
-		return actionExpression;
+		return accessExpression;
 	}
 }

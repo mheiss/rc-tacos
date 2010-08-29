@@ -13,6 +13,9 @@ public class WebHistoryInterceptor extends HistoryInterceptor {
 	@Override
 	protected String getAuthenticatedUserId() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth == null) {
+			return "(TacosServer)";
+		}
 		WebUserDetails details = (WebUserDetails) auth.getPrincipal();
 		return details.getUsername();
 	}

@@ -111,9 +111,9 @@ public class WebPermissionBean {
 	// Helper methods
 	// ---------------------------------
 	/** Returns whether or not the current user can execute the given action */
-	private boolean canExecuteAction(String actionId) {
+	private boolean canExecuteAction(String actionName) {
 		// if no restriction is defined we permit the execution
-		String actionExpression = findActionById(actionId);
+		String actionExpression = findActionByName(actionName);
 		if (actionExpression == null) {
 			return true;
 		}
@@ -136,11 +136,11 @@ public class WebPermissionBean {
 		return evaluateExpression(expression);
 	}
 
-	/** Returns the first matching action based on the given id */
-	private String findActionById(String actionId) {
+	/** Returns the first matching action based on the given name */
+	private String findActionByName(String actionName) {
 		for (SecuredAction securedAction : securedActions) {
-			if (securedAction.getActionExpression().equals(actionId)) {
-				return securedAction.getAccess();
+			if (securedAction.getName().equals(actionName)) {
+				return securedAction.getActionExpression();
 			}
 		}
 		return null;

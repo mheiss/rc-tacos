@@ -15,6 +15,14 @@
 		<param-name>facelets.BUILD_BEFORE_RESTORE</param-name>
 		<param-value>false</param-value>
 	</context-param>
+	
+	<!-- TACOS configuration -->
+	<servlet>
+		<servlet-name>TacosActionServlet</servlet-name>
+		<servlet-class>at.redcross.tacos.web.security.WebActionDefinitionServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
 
 	<!-- SPRING security configuration -->
 	<context-param>

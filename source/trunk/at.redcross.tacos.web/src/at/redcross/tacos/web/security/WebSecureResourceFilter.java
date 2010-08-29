@@ -11,7 +11,6 @@ import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.security.access.ConfigAttribute;
-import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 
@@ -79,12 +78,8 @@ public class WebSecureResourceFilter implements FilterInvocationSecurityMetadata
 	/** Appends all groups in the given resources to the given list */
 	private void addAccess(List<ConfigAttribute> attributes, List<SecuredResource> resources) {
 		for (SecuredResource resource : resources) {
-			if (resource.isExpression()) {
-				Expression ex = parser.parseExpression(resource.getAccess());
-				attributes.add(new WebExpressionConfigAttribute(resource.getResource(), ex));
-			} else {
-				attributes.addAll(SecurityConfig.createSingleAttributeList(resource.getAccess()));
-			}
+			Expression ex = parser.parseExpression(resource.getAccess());
+			attributes.add(new WebExpressionConfigAttribute(resource.getResource(), ex));
 		}
 	}
 }

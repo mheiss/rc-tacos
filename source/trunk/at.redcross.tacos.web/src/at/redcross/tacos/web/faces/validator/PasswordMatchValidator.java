@@ -1,6 +1,5 @@
 package at.redcross.tacos.web.faces.validator;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.FacesValidator;
@@ -25,10 +24,8 @@ public class PasswordMatchValidator implements Validator {
 			return;
 		}
 		if (!password.equals(password2)) {
-			FacesMessage message = new FacesMessage(
-					"Die eingegebenen Kennwörter stimmen nicht überein");
-			message.setSeverity(FacesMessage.SEVERITY_ERROR);
-			throw new ValidatorException(message);
+			throw new ValidatorException(FacesUtils
+					.createErrorMessage("Die Kennwörter stimmen nicht überein"));
 		}
 	}
 
