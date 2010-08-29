@@ -69,9 +69,19 @@
 	
 	<!-- ################ INFO ####################### -->
 	<url-mapping id="info-currentOverview">
-		<pattern>/info</pattern>
+		<pattern>/info/current</pattern>
 		<view-id>/WEB-INF/pages/info/infoCurrentOverview.faces</view-id>
 		<action onPostback="false">#{infoCurrentOverviewBean.prettyInit}</action>
+	</url-mapping>
+	<url-mapping id="info-expiredOverview">
+		<pattern>/info/expired</pattern>
+		<view-id>/WEB-INF/pages/info/infoExpiredOverview.faces</view-id>
+		<action onPostback="false">#{infoExpiredOverviewBean.prettyInit}</action>
+	</url-mapping>
+	<url-mapping id="info-futureOverview">
+		<pattern>/info/future</pattern>
+		<view-id>/WEB-INF/pages/info/infoFutureOverview.faces</view-id>
+		<action onPostback="false">#{infoFutureOverviewBean.prettyInit}</action>
 	</url-mapping>
 	<url-mapping id="info-createMaintenance">
 		<pattern>/info/create</pattern>

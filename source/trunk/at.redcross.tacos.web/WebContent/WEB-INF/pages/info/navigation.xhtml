@@ -16,6 +16,12 @@
 			<li class="menu-item #{page eq 'currentOverview' ? 'selected' : ''}">
 				<pretty:link mappingId="info-currentOverview"><h:outputText value="Aktuelle Informationen" /> </pretty:link>
 			</li>
+			<li class="menu-item #{page eq 'expiredOverview' ? 'selected' : ''}">
+				<pretty:link mappingId="info-expiredOverview"><h:outputText value="Abgelaufene Informationen" /> </pretty:link>
+			</li>
+			<li class="menu-item #{page eq 'futureOverview' ? 'selected' : ''}">
+				<pretty:link mappingId="info-futureOverview"><h:outputText value="Künftige Informationen" /> </pretty:link>
+			</li>
 			<li class="menu-item #{page eq 'maintenance' ? 'selected' : ''}">
 				<pretty:link mappingId="info-createMaintenance"> <h:outputText value="Neuer Eintrag" /> </pretty:link>
 			</li>

@@ -98,7 +98,6 @@ public abstract class InfoOverviewBean extends BaseBean {
 
 	public String markToDelete(ActionEvent event) {
 		EntityManager manager = null;
-		System.out.println("in mark to delete info");
 		try {
 			manager = EntityManagerFactory.createEntityManager();
 			loadfromDatabase(manager, infoId);
