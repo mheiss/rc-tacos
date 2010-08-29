@@ -4,147 +4,152 @@
 	xmlns:birt="http://jsf4birt.components">
 <body>
 <ui:composition>
-<h:panelGroup id="resultList">
-	<rich:panel rendered="#{empty values}" styleClass="border:1px">
-		<h:outputText value="Keine Einträge gefunden" styleClass="italic" />
-	</rich:panel>
-	<rich:dataTable styleClass="defaultStyle" rendered="#{not empty values}" value="#{values}" var="locationEntry">
-		<f:facet name="header">
-			<rich:columnGroup>
-				<rich:column rowspan="2" styleClass="mediumColumn">
+	<h:panelGroup rendered="#{empty values}">
+		<div class="emptyBox italic">
+			<h:outputText value="Keine Einträge gefunden" />
+		</div>
+	</h:panelGroup>
+	<rich:panel rendered="#{not empty values}">
+		<rich:dataTable id="table-#{tabId}"  styleClass="defaultStyle" rendered="#{not empty values}" value="#{values}" var="rosterEntry"
+			onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
+			<rich:column styleClass="bold" sortBy="#{rosterEntry.systemUser.lastName}">
+				<f:facet name="header">
 					<h:outputText value="Mitarbeiter" />
-				</rich:column>
-				<rich:column rowspan="2" title="Anmerkungen" styleClass="smallColumn">
-					<rich:spacer />
-				</rich:column>
-				<rich:column colspan="2" styleClass="largeColumn">
-					<h:outputText value="Geplante Dienstzeit" />
-				</rich:column>
-				<rich:column colspan="2" styleClass="largeColumn">
-					<h:outputText value="Reale Dienstzeit" />
-				</rich:column>
-				<rich:column rowspan="2" styleClass="smallColumn">
-					<h:outputText value="Verwendung" />
-				</rich:column>
-				<rich:column rowspan="2" styleClass="smallColumn">
-					<h:outputText value="Dienstverhältnis" />
-				</rich:column>
-				<rich:column rowspan="2" title="Bearbeiten" styleClass="smallColumn">
-					<rich:spacer />
-				</rich:column>
-				<rich:column rowspan="2" title="Löschen" styleClass="smallColumn">
-					<rich:spacer />
-				</rich:column>
-				<rich:column breakBefore="true">
-					<h:outputText value="Start" />
-				</rich:column>
-				<rich:column>
-					<h:outputText value="Ende" />
-				</rich:column>
-				<rich:column>
-					<h:outputText value="Start" />
-				</rich:column>
-				<rich:column>
-					<h:outputText value="Ende" />
-				</rich:column>
-			</rich:columnGroup>
-		</f:facet>
-
-		<rich:column colspan="10">
-			<h:outputText value="#{locationEntry.location.name}" />
-		</rich:column>
-
-		<rich:subTable onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'" value="#{locationEntry.entries}" var="entry">
-			<rich:column styleClass="bold">
-				<h:outputText value="#{entry.systemUser.lastName} #{entry.systemUser.firstName}" />
+				</f:facet>
+				<h:outputText value="#{rosterEntry.systemUser.lastName} #{rosterEntry.systemUser.firstName}" />
 			</rich:column>
-			<rich:column styleClass="center">
+			<rich:column styleClass="smallColumn">
+				<f:facet name="header">
+					<rich:spacer />
+				</f:facet>
 				<a4j:outputPanel layout="block">
 					<rich:toolTip styleClass="tooltipDefault" followMouse="false" direction="top-right" layout="block" verticalOffset="35">
-						<h:outputText value="#{entry.notes}" escape="false" />
+						<h:outputText value="#{rosterEntry.notes}" escape="false" />
 						<div class="tooltip-image" />
 					</rich:toolTip>
-					<h:graphicImage library="images/16x16" name="notes.png" rendered="#{not empty entry.notes}" />
+					<h:graphicImage library="images/16x16" name="notes.png" rendered="#{not empty rosterEntry.notes}" />
 				</a4j:outputPanel>
 			</rich:column>
-			<rich:column styleClass="center">
-				<h:outputText value="#{entry.plannedStartDate}">
+			<rich:column styleClass="mediumColumn" sortBy="#{rosterEntry.location.name}">
+				<f:facet name="header">
+					<h:outputText value="Dienststelle" />
+				</f:facet>
+				<h:outputText value="#{rosterEntry.location.name}" />
+			</rich:column>
+			<rich:column styleClass="center" sortBy="#{rosterEntry.plannedStartTime}">
+				<f:facet name="header">
+					<h:panelGroup>
+						<h:outputText value="Dienstzeit von" />
+						<br />
+						<h:outputText value="[geplant]" />
+					</h:panelGroup>
+				</f:facet>
+				<h:outputText value="#{rosterEntry.plannedStartDate}">
 					<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 				</h:outputText>
 				<h:outputText value=" " />
-				<h:outputText value="#{entry.plannedStartTime}">
+				<h:outputText value="#{rosterEntry.plannedStartTime}">
 					<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 				</h:outputText>
 			</rich:column>
-			<rich:column styleClass="center">
-				<h:outputText value="#{entry.plannedEndDate}">
-					<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
-				</h:outputText>
-				<h:outputText value=" " />
-				<h:outputText value="#{entry.plannedEndTime}">
-					<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
-				</h:outputText>
+			<rich:column styleClass="center" sortBy="#{rosterEntry.plannedEndTime}">
+				<f:facet name="header">
+					<h:panelGroup>
+						<h:outputText value="Dienstzeit bis" />
+						<br />
+						<h:outputText value="[geplant]" />
+					</h:panelGroup>
+				</f:facet>
+				<h:panelGroup>
+					<h:outputText value="#{rosterEntry.plannedEndDate}">
+						<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+					</h:outputText>
+					<h:outputText value=" " />
+					<h:outputText value="#{rosterEntry.plannedEndTime}">
+						<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+					</h:outputText>
+				</h:panelGroup>
 			</rich:column>
-			<rich:column styleClass="center">
-				<a4j:commandLink title="Anmelden" reRender = "resultList">
-					<a4j:actionparam name="entryId" assignTo="#{rosterDayOverviewBean.entryId}" value="#{entry.id}" 
-						actionListener="#{rosterDayOverviewBean.signIn}" />
-					<h:panelGroup rendered="#{empty entry.realStartDate}">
+			<rich:column styleClass="center" sortBy="#{rosterEntry.realStartDate}">
+				<f:facet name="header">
+					<h:panelGroup>
+						<h:outputText value="Dienstzeit von" />
+						<br />
+						<h:outputText value="[real]" />
+					</h:panelGroup>
+				</f:facet>
+				<h:panelGroup rendered="#{empty rosterEntry.realStartDate and not rosterEntry.toDelete}">
+					<a4j:commandLink title="Anmelden" reRender="table-#{tabId}">
+						<a4j:actionparam name="entryId" assignTo="#{bean.entryId}" value="#{rosterEntry.id}" 
+							actionListener="#{bean.signIn}" />
 						<h:graphicImage styleClass="actionImage" library="images/16x16" name="clock-into.png" />
 						<h:outputText styleClass="actionText" value="Anmelden" />
-					</h:panelGroup>
-					<h:panelGroup rendered="#{not empty entry.realStartDate}">
-						<h:outputText value="#{entry.realStartDate}">
-							<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
-						</h:outputText>
-						<h:outputText value=" " />
-						<h:outputText value="#{entry.realStartTime}">
-							<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
-						</h:outputText>
-					</h:panelGroup>
-				</a4j:commandLink>
+					</a4j:commandLink>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{not empty rosterEntry.realStartDate}">
+					<h:outputText value="#{rosterEntry.realStartDate}">
+						<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+					</h:outputText>
+					<h:outputText value=" " />
+					<h:outputText value="#{rosterEntry.realStartTime}">
+						<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+					</h:outputText>
+				</h:panelGroup>
 			</rich:column>
-			<rich:column styleClass="center">
-				<a4j:commandLink title="Abmelden" reRender = "resultList">
-				<a4j:actionparam name="entryId" assignTo="#{rosterDayOverviewBean.entryId}" value="#{entry.id}" 
-						actionListener="#{rosterDayOverviewBean.signOut}" />
-					<h:panelGroup rendered="#{empty entry.realEndDate}">
+			<rich:column styleClass="center" sortBy="#{rosterEntry.realEndDate}">
+				<f:facet name="header">
+					<h:panelGroup>
+						<h:outputText value="Dienstzeit bis" />
+						<br />
+						<h:outputText value="[real]" />
+					</h:panelGroup>
+				</f:facet>
+				<h:panelGroup rendered="#{empty rosterEntry.realEndDate and not rosterEntry.toDelete}">
+					<a4j:commandLink title="Abmelden" reRender="table-#{tabId}">
+						<a4j:actionparam name="entryId" assignTo="#{bean.entryId}" value="#{rosterEntry.id}" 
+							actionListener="#{bean.signOut}" />
 						<h:graphicImage styleClass="actionImage" library="images/16x16" name="clock-out.png" />
 						<h:outputText styleClass="actionText" value="Abmelden" />
-					</h:panelGroup>
-					<h:panelGroup rendered="#{not empty entry.realEndDate}">
-						<h:outputText value="#{entry.realEndDate}">
-							<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
-						</h:outputText>
-						<h:outputText value=" " />
-						<h:outputText value="#{entry.realEndTime}">
-							<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
-						</h:outputText>
-					</h:panelGroup>
-				</a4j:commandLink>
+					</a4j:commandLink>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{not empty rosterEntry.realEndDate}">
+					<h:outputText value="#{rosterEntry.realEndDate}">
+						<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+					</h:outputText>
+					<h:outputText value=" " />
+					<h:outputText value="#{rosterEntry.realEndTime}">
+						<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+					</h:outputText>
+				</h:panelGroup>
 			</rich:column>
-			<rich:column>
-				<h:outputText value="#{entry.assignment.name}" />
+			<rich:column sortBy="#{rosterEntry.assignment.name}">
+				<f:facet name="header">
+					<h:outputText value="Verwendung" />
+				</f:facet>
+				<h:outputText value="#{rosterEntry.assignment.name}" />
 			</rich:column>
-			<rich:column>
-				<h:outputText value="#{entry.serviceType.name}" />
+			<rich:column sortBy="#{rosterEntry.serviceType.name}">
+				<f:facet name="header">
+					<h:outputText value="Dienstverhältnis" />
+				</f:facet>
+				<h:outputText value="#{rosterEntry.serviceType.name}" />
 			</rich:column>
-			<rich:column styleClass="center">
-				<pretty:link mappingId="roster-editMaintenance" title="Dienstplaneintrag bearbeiten">
-					<f:param value="#{entry.id}" />
+			<rich:column styleClass="smallColumn">
+				<f:facet name="header">
+					<h:outputText value="Aktionen" />
+				</f:facet>
+				<pretty:link rendered="#{not rosterEntry.toDelete}" mappingId="roster-editMaintenance" title="Dienstplaneintrag bearbeiten">
+					<f:param value="#{rosterEntry.id}" />
 					<h:graphicImage styleClass="actionImage" library="images/16x16" name="edit.png" />
 				</pretty:link>
-			</rich:column>
-			<rich:column styleClass="center" rendered="#{permissionBean.authorizedToDeleteRoster}">
-				<a4j:commandLink reRender="resultList">
-					<a4j:actionparam name="entryId" assignTo="#{rosterDayOverviewBean.entryId}" value="#{entry.id}" 
+				<a4j:commandLink rendered="#{not rosterEntry.toDelete}" reRender="table-#{tabId}" title="Dienstplaneintrag löschen">
+					<a4j:actionparam name="entryId" assignTo="#{bean.entryId}" value="#{rosterEntry.id}" 
 						actionListener="#{rosterDayOverviewBean.markToDelete}" />
 					<h:graphicImage library="images/16x16" name="remove.png" />
 				</a4j:commandLink>
 			</rich:column>
-		</rich:subTable>
 	</rich:dataTable>
-</h:panelGroup>
+	</rich:panel>
 </ui:composition>
 </body>
 </html>

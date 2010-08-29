@@ -29,7 +29,7 @@
     
     <ui:define name="page-toolbar">
 		<li>
-			<a4j:commandLink actionListener="#{rosterWeekOverviewBean.navigateNext}" reRender="dateTitle,filter,resultList">
+			<a4j:commandLink actionListener="#{rosterWeekOverviewBean.navigateNext}" reRender="dateTitle,filter,rosterTab">
 				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="next.png" />
 				<h:outputText styleClass="toolbarText" value="Nächste Woche"  />
 			</a4j:commandLink>
@@ -41,7 +41,7 @@
 			</a4j:htmlCommandLink>
 		</li>
 		<li>
-			<a4j:commandLink actionListener="#{rosterWeekOverviewBean.navigatePrevious}" reRender="dateTitle,filter,resultList">
+			<a4j:commandLink actionListener="#{rosterWeekOverviewBean.navigatePrevious}" reRender="dateTitle,filter,rosterTab">
 				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="back.png" />
 				<h:outputText styleClass="toolbarText" value="Vorherige Woche"  />
 			</a4j:commandLink>
@@ -52,8 +52,8 @@
 		<ui:decorate template="rosterFilter.xhtml">
 			<ui:param name="bean" value="#{rosterWeekOverviewBean}" />
 		</ui:decorate>
-		<ui:decorate template="rosterTable.xhtml">
-			<ui:param name="values" value="#{rosterWeekOverviewBean.locationEntry}" />
+		<ui:decorate template="rosterTabPanel.xhtml">
+			<ui:param name="bean" value="#{rosterWeekOverviewBean}" />
 		</ui:decorate>
 	</ui:define>
 

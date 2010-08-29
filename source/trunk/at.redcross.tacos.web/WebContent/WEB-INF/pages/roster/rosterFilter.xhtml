@@ -8,34 +8,29 @@
 		<fieldset class="defaultStyle">
 			<ol>
 				<li class="left">
-					<h:outputLabel for="location" value="Ortsstelle" />
-					<div class="input">
-						<rich:comboBox id="location" value="#{bean.location}" width="250" selectFirstOnUpdate="false" defaultLabel="Filter nach Orststelle">
-							<f:selectItems value="#{bean.locationItems}" />
-							<f:validator validatorId="validator.dropDown" />
-							<f:converter converterId="converter.dropDown" />
-							<rich:ajaxValidator event="onchange" />
-							<a4j:support event="onselect" actionListener="#{bean.filterChanged}" reRender="resultList" />
-						</rich:comboBox> 
-						<rich:message for="location" errorClass="error" />
-					</div>
-				</li>
-				<li class="right">
 					<h:outputLabel for="date" value="Datum" />
 					<div class="input left">
 						<rich:calendar id="date" value="#{bean.date}" styleClass="rich-calendar" defaultTime="#{localeBean.date}" datePattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" converterMessage="Bitte geben Sie ein gültiges Datum an.">
 							<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 							<rich:ajaxValidator event="onchanged" />
 							<rich:ajaxValidator event="oninputblur" />
-							<a4j:support event="onchanged" actionListener="#{bean.filterChanged}" reRender="dateTitle,filter,resultList" />
+							<a4j:support event="onchanged" actionListener="#{bean.filterChanged}" reRender="dateTitle,filter,rosterTab" />
 						</rich:calendar> 
 						<rich:message for="date" errorClass="error" />
 					</div>
 					<div class="leftDateDecorator">
-						<a4j:commandLink reRender="dateTitle,filter,resultList" title="Filter zurücksetzen">
+						<a4j:commandLink reRender="dateTitle,filter,rosterTab" title="Filter zurücksetzen">
 							<a4j:actionparam name="dateFilter" value="#{null}" assignTo="#{bean.date}" actionListener="#{bean.filterChanged}" />
 							<h:graphicImage library="images" name="edit-clear.png" />
 						</a4j:commandLink>
+					</div>
+				</li>
+				<li class="right">
+					<h:outputLabel for="delete" value="Zeige gelöschte" />
+					<div class="input right">
+						<h:selectBooleanCheckbox id="delete" value="#{bean.showDeleted}">
+							<a4j:support event="onclick" actionListener="#{bean.filterChanged}" reRender="dateTitle,filter,rosterTab" />
+						</h:selectBooleanCheckbox>
 					</div>
 				</li>
 			</ol>

@@ -1,23 +1,21 @@
 package at.redcross.tacos.web.beans;
 
-import java.util.ArrayList;
-
+import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 import javax.persistence.EntityManager;
 
-import com.ibm.icu.util.Calendar;
+import org.ajax4jsf.model.KeepAlive;
 
 import at.redcross.tacos.dbal.entity.Location;
 import at.redcross.tacos.dbal.entity.RosterEntry;
 import at.redcross.tacos.dbal.helper.LocationHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
-import at.redcross.tacos.web.beans.dto.LocationRosterEntry;
+import at.redcross.tacos.dbal.query.RosterQueryParam;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.faces.combo.DropDownHelper;
 import at.redcross.tacos.web.persitence.EntityManagerFactory;
@@ -26,6 +24,7 @@ import at.redcross.tacos.web.reporting.ReportRenderer.ReportRenderParameters;
 import at.redcross.tacos.web.utils.TacosDateUtils;
 
 /** Provide base functions for all roster beans */
+@KeepAlive
 public abstract class RosterOverviewBean extends BaseBean {
 
 	private static final long serialVersionUID = -63594513702881676L;
@@ -33,22 +32,23 @@ public abstract class RosterOverviewBean extends BaseBean {
 	/** the id of the selected roster entry */
 	private long entryId;
 
-	/* the entry to remove */
-	private RosterEntry rosterEntry;
+	/** query result */
+	protected List<RosterEntry> entries;
 
-	// filter by location
-	protected Location location;
+	/** the available locations */
+	protected List<Location> locations;
+
+	/** filter by location name */
+	protected String locationName = "*";
+
+	/** filter by location */
 	protected List<SelectItem> locationItems;
 
-	// filter by date
+	/** filter by delete flag */
+	protected boolean showDeleted;
+
+	/** filter by date */
 	protected Date date;
-
-	// queried result
-	protected List<RosterEntry> entries;
-	protected List<LocationRosterEntry> locationEntry;
-
-	// sign in and sign out date
-	protected Date now;
 
 	// ---------------------------------
 	// Initialization
@@ -59,8 +59,9 @@ public abstract class RosterOverviewBean extends BaseBean {
 		try {
 			manager = EntityManagerFactory.createEntityManager();
 			date = TacosDateUtils.getCalendar(System.currentTimeMillis()).getTime();
-			locationItems = DropDownHelper.convertToItems(LocationHelper.list(manager));
-			loadfromDatabase(manager, location, date);
+			locations = LocationHelper.list(manager);
+			locationItems = DropDownHelper.convertToItems(locations);
+			entries = getEntries(manager, getParamForQuery());
 		} finally {
 			manager = EntityManagerHelper.close(manager);
 		}
@@ -77,7 +78,17 @@ public abstract class RosterOverviewBean extends BaseBean {
 				date = TacosDateUtils.getCalendar(System.currentTimeMillis()).getTime();
 			}
 			manager = EntityManagerFactory.createEntityManager();
-			loadfromDatabase(manager, location, date);
+			entries = getEntries(manager, getParamForQuery());
+		} finally {
+			manager = EntityManagerHelper.close(manager);
+		}
+	}
+
+	public void tabChanged(ValueChangeEvent event) {
+		EntityManager manager = null;
+		try {
+			manager = EntityManagerFactory.createEntityManager();
+			entries = getEntries(manager, getParamForQuery());
 		} finally {
 			manager = EntityManagerHelper.close(manager);
 		}
@@ -106,7 +117,7 @@ public abstract class RosterOverviewBean extends BaseBean {
 			}
 			date = getNextDate(date);
 			manager = EntityManagerFactory.createEntityManager();
-			loadfromDatabase(manager, location, date);
+			entries = getEntries(manager, getParamForQuery());
 		} finally {
 			manager = EntityManagerHelper.close(manager);
 		}
@@ -120,86 +131,76 @@ public abstract class RosterOverviewBean extends BaseBean {
 			}
 			date = getPreviousDate(date);
 			manager = EntityManagerFactory.createEntityManager();
-			loadfromDatabase(manager, location, date);
+			entries = getEntries(manager, getParamForQuery());
 		} finally {
 			manager = EntityManagerHelper.close(manager);
 		}
 	}
 
-	public String markToDelete(ActionEvent event) {
+	public void markToDelete(ActionEvent event) {
 		EntityManager manager = null;
 		try {
 			manager = EntityManagerFactory.createEntityManager();
-			loadfromDatabase(manager, entryId);
-			rosterEntry.setToDelete(true);
-			manager.merge(rosterEntry);
+			for (RosterEntry entry : entries) {
+				if (entry.getId() != entryId) {
+					continue;
+				}
+				entry.setToDelete(true);
+				entries.remove(entry);
+				manager.merge(entry);
+			}
 			EntityManagerHelper.commit(manager);
-			loadfromDatabase(manager, location, date);
-			return FacesUtils.pretty("roster-dayOverview");
 		} catch (Exception ex) {
 			FacesUtils.addErrorMessage("Der Dienstplaneintrag konnte nicht gelöscht werden");
-			return null;
 		} finally {
 			manager = EntityManagerHelper.close(manager);
-
 		}
 	}
 
-	public String signIn(ActionEvent event) {
+	public void signIn(ActionEvent event) {
 		EntityManager manager = null;
 		try {
 			manager = EntityManagerFactory.createEntityManager();
-			loadfromDatabase(manager, entryId);
-			now = Calendar.getInstance().getTime();
-			rosterEntry.setRealStartDate(now);
-			rosterEntry.setRealStartTime(now);
-			manager.merge(rosterEntry);
+			for (RosterEntry entry : entries) {
+				if (entry.getId() != entryId) {
+					continue;
+				}
+				Date now = Calendar.getInstance().getTime();
+				entry.setRealStartDate(now);
+				entry.setRealStartTime(now);
+				manager.merge(entry);
+			}
 			EntityManagerHelper.commit(manager);
-			loadfromDatabase(manager, location, date);
-			return FacesUtils.pretty("roster-dayOverview");
 		} catch (Exception ex) {
 			FacesUtils.addErrorMessage("Der Dienstplaneintrag konnte nicht gelöscht werden");
-			return null;
 		} finally {
 			manager = EntityManagerHelper.close(manager);
-
 		}
 	}
 
-	public String signOut(ActionEvent event) {
+	public void signOut(ActionEvent event) {
 		EntityManager manager = null;
 		try {
 			manager = EntityManagerFactory.createEntityManager();
-			loadfromDatabase(manager, entryId);
-			now = Calendar.getInstance().getTime();
-			rosterEntry.setRealEndDate(now);
-			rosterEntry.setRealEndTime(now);
-			manager.merge(rosterEntry);
+			for (RosterEntry entry : entries) {
+				if (entry.getId() != entryId) {
+					continue;
+				}
+				Date now = Calendar.getInstance().getTime();
+				entry.setRealEndDate(now);
+				entry.setRealEndTime(now);
+				manager.merge(entry);
+			}
 			EntityManagerHelper.commit(manager);
-			loadfromDatabase(manager, location, date);
-			return FacesUtils.pretty("roster-dayOverview");
 		} catch (Exception ex) {
 			FacesUtils.addErrorMessage("Der Dienstplaneintrag konnte nicht gelöscht werden");
-			return null;
 		} finally {
 			manager = EntityManagerHelper.close(manager);
-
-		}
-	}
-
-	// ---------------------------------
-	// Helper methods
-	// ---------------------------------
-	private void loadfromDatabase(EntityManager manager, long id) {
-		rosterEntry = manager.find(RosterEntry.class, id);
-		if (rosterEntry == null) {
-			entryId = -1;
-			rosterEntry = new RosterEntry();
 		}
 	}
 
 	/** Loads the roster entries using the given filter parameters */
-	protected abstract List<RosterEntry> getEntries(EntityManager manager, Location location, Date date);
+	protected abstract List<RosterEntry> getEntries(EntityManager manager, RosterQueryParam param);
 
 	/** Returns the parameters for the report generation */
 	protected abstract ReportRenderParameters getReportParams();
@@ -211,29 +212,26 @@ public abstract class RosterOverviewBean extends BaseBean {
 	protected abstract Date getPreviousDate(Date date);
 
 	// ---------------------------------
-	// Private API
+	// Helper methods
 	// ---------------------------------
-	protected void loadfromDatabase(EntityManager manager, Location filterLocation, Date date) {
-		// build a structure containing all results grouped by locations
-		entries = new ArrayList<RosterEntry>();
-		Map<Location, List<RosterEntry>> mappedResult = new HashMap<Location, List<RosterEntry>>();
-		for (RosterEntry entry : getEntries(manager, filterLocation, date)) {
-			entries.add(entry);
+	protected RosterQueryParam getParamForQuery() {
+		RosterQueryParam param = new RosterQueryParam();
+		param.date = date;
+		param.location = getLocationByName(locationName);
+		param.toDelete = showDeleted;
+		return param;
+	}
 
-			Location location = entry.getLocation();
-			List<RosterEntry> list = mappedResult.get(location);
-			if (list == null) {
-				list = new ArrayList<RosterEntry>();
-				mappedResult.put(location, list);
+	protected Location getLocationByName(String locationName) {
+		if (locationName == null || "*".equals(locationName)) {
+			return null;
+		}
+		for (Location location : locations) {
+			if (location.getName().equals(locationName)) {
+				return location;
 			}
-			list.add(entry);
 		}
-		// map this structure again for visualization
-		locationEntry = new ArrayList<LocationRosterEntry>();
-		for (Map.Entry<Location, List<RosterEntry>> entry : mappedResult.entrySet()) {
-			LocationRosterEntry value = new LocationRosterEntry(entry.getKey(), entry.getValue());
-			locationEntry.add(value);
-		}
+		return null;
 	}
 
 	// ---------------------------------
@@ -247,8 +245,12 @@ public abstract class RosterOverviewBean extends BaseBean {
 		this.date = date;
 	}
 
-	public void setLocation(Location location) {
-		this.location = location;
+	public void setShowDeleted(boolean showDeleted) {
+		this.showDeleted = showDeleted;
+	}
+
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
 	}
 
 	// ---------------------------------
@@ -262,19 +264,23 @@ public abstract class RosterOverviewBean extends BaseBean {
 		return date;
 	}
 
-	public Location getLocation() {
-		return location;
+	public boolean isShowDeleted() {
+		return showDeleted;
+	}
+
+	public String getLocationName() {
+		return locationName;
 	}
 
 	public List<RosterEntry> getEntries() {
 		return entries;
 	}
 
-	public List<SelectItem> getLocationItems() {
-		return locationItems;
+	public List<Location> getLocations() {
+		return locations;
 	}
 
-	public List<LocationRosterEntry> getLocationEntry() {
-		return locationEntry;
+	public List<SelectItem> getLocationItems() {
+		return locationItems;
 	}
 }

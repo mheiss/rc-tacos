@@ -68,8 +68,9 @@ fieldset.defaultStyle {
 	clear: both;
 	width: 100%;
 	border-style: none;
-	margin-bottom: 1em;
-	background-color: #F5F5F5; 
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+	background-color: #F5F5F5;
 }
 
 fieldset.defaultStyle legend {
@@ -82,7 +83,7 @@ fieldset.defaultStyle legend {
 
 fieldset.defaultStyle li {
 	clear: both;
-	padding:0.5em;
+	padding: 0.5em;
 }
 
 fieldset.defaultStyle ol li.left {
@@ -103,31 +104,32 @@ fieldset.defaultStyle label {
 	float: left;
 	width: 10em;
 	color: #000;
-	padding-right:2em;
+	padding-right: 2em;
 	padding-top: 0.5em;
 	font-weight: bold;
 	font-size: 1.1em;
-	text-align:right;
+	text-align: right;
 	position: relative;
 }
 
-fieldset.defaultStyle label em.required {   
-	left: 11em;        
+fieldset.defaultStyle label em.required {
+	left: 11em;
 	top: 0.5em;
-	width:16px;
-	color:#fff;
-	position: absolute; 
-	background: transparent url("../images/custom/mandatory.png") no-repeat scroll center;
+	width: 16px;
+	color: #fff;
+	position: absolute;
+	background: transparent url("../images/custom/mandatory.png") no-repeat
+		scroll center;
 }
 
 fieldset.defaultStyle label.leftAligned {
-	text-align:left;
-	width:5em;
+	text-align: left;
+	width: 5em;
 }
 
 fieldset.defaultStyle .input {
 	float: left;
-	padding:4px 2px;
+	padding: 4px 2px;
 	margin-right: 0.5em;
 }
 
@@ -164,7 +166,8 @@ fieldset.defaultStyle .rich-calendar-button {
 	margin-right: 1.5em;
 }
 
-fieldset.defaultStyle .rich-calendar-input,fieldset.defaultStyle .rich-calendar-button {
+fieldset.defaultStyle .rich-calendar-input,fieldset.defaultStyle .rich-calendar-button
+	{
 	margin-top: -0.3em;
 }
 
@@ -202,16 +205,18 @@ fieldset.defaultStyle a.button {
 	font-weight: bold;
 	margin-right: 6px;
 	padding-right: 18px;
-	margin-top:3px;
+	margin-top: 3px;
 	text-decoration: none;
-	background: transparent url("../images/custom/bg_button_a.png") no-repeat scroll top right;
+	background: transparent url("../images/custom/bg_button_a.png")
+		no-repeat scroll top right;
 }
 
 fieldset.defaultStyle a.button span {
 	display: block;
 	line-height: 14px;
 	padding: 5px 0 5px 18px;
-	background: transparent url("../images/custom/bg_button_b.png") no-repeat;
+	background: transparent url("../images/custom/bg_button_b.png")
+		no-repeat;
 }
 
 fieldset.defaultStyle a.button:active {
@@ -226,30 +231,30 @@ fieldset.defaultStyle a.button:active span {
 }
 
 fieldset.defaultStyle a.button img.buttonWithImage {
-	float:left; 
-	padding-top:0.3em;
-	padding-left:0.9em;
+	float: left;
+	padding-top: 0.3em;
+	padding-left: 0.9em;
 }
 
 fieldset.defaultStyle a.button span.buttonWithImage {
-	margin-left:0.4em;
+	margin-left: 0.4em;
 	padding: 5px 0 5px 25px;
 }
 
 fieldset.defaultStyle .box {
-	clear:both;
-	position:relative;
-	top:1em;
-	padding:0.6em;
-	margin-top:1.2em;
-	margin-bottom:1em;
-	display:block;
-	border-top:1px dashed #cdcdcd;
+	clear: both;
+	position: relative;
+	top: 1em;
+	padding: 0.6em;
+	margin-top: 1.2em;
+	margin-bottom: 1em;
+	display: block;
+	border-top: 1px dashed #cdcdcd;
 }
 
 fieldset.defaultStyle .box .deleteImage {
-	position:relative;
-	top:0.25em;
+	position: relative;
+	top: 0.25em;
 }
 
 /***********************************************************
@@ -261,7 +266,8 @@ fieldset.defaultStyle .box .deleteImage {
 	padding: 0px;
 }
 
-.defaultTabHeaderStyle .rich-tabhdr-cell-active,.defaultTabHeaderStyle .rich-tabhdr-cell-inactive {
+.defaultTabHeaderStyle .rich-tabhdr-cell-active,.defaultTabHeaderStyle .rich-tabhdr-cell-inactive
+	{
 	padding-right: 2px;
 }
 
@@ -300,13 +306,15 @@ fieldset.defaultStyle .box .deleteImage {
 	border-bottom: 2px solid #000;
 }
 
-table.singleTable, table.defaultStyle, table.bigTable, table.editorTable {
+table.defaultStyle,table.bigTable,table.editorTable {
 	width: 100%;
 }
 
 table.defaultStyle th {
-	text-align: left;
 	text-align: center;
+	font-weight: bold;
+	padding:0.6em;
+	background-color:#BED6F8;
 }
 
 table.defaultStyle tr {
@@ -314,21 +322,9 @@ table.defaultStyle tr {
 	padding: 3px 4px;
 }
 
-table.defaultStyle td,table.singleTable td {
+table.defaultStyle td {
 	border: 0px;
 	border-bottom: 1px solid #BBBBBB;
-}
-
-table.defaultStyle .rich-table-row {
-	height: 3em;
-	font-weight: bold;
-	text-align: center;
-	background: #636363;
-}
-
-table.defaultStyle .rich-table-row td {
-	color: #fff;
-	font-size: 1.2em;
 }
 
 td.smallColumn {
@@ -344,7 +340,7 @@ td.largeColumn {
 	width: 30%;
 }
 
-table.defaultStyle .center,table.singleTable .center {
+table.defaultStyle .center {
 	text-align: center;
 }
 
@@ -368,25 +364,42 @@ table.defaultStyle .center,table.singleTable .center {
 }
 
 /***********************************************************
+  Panel styling
+ **********************************************************/
+.rich-stglpanel-body {
+	margin:0px;
+	padding:0px;
+}
+
+/***********************************************************
+ Tab panel styling
+ **********************************************************/
+.emptyBox {
+	padding:0.8em;
+	border-left:1px solid #BBBBBB;
+	border-right:1px solid #BBBBBB;
+	border-bottom:1px solid #BBBBBB;
+}
+
+/***********************************************************
  Link styling
  **********************************************************/
 ul.linkList li {
-	list-style: square; 
-	margin-bottom:1em;
+	list-style: square;
+	margin-bottom: 1em;
 }
- 
+
 ul.linkList a.linkUrl {
-	font-weight:bold;
-	display:block;
+	font-weight: bold;
+	display: block;
 	text-decoration: underline;
 }
 
 ul.linkList a.linkDescription {
-	display:block;
-	color:#c5c5c5;
-	padding-top:0.2em;
+	display: block;
+	color: #c5c5c5;
+	padding-top: 0.2em;
 }
-	
 
 /***********************************************************
  Tooltip styling
@@ -407,7 +420,8 @@ ul.linkList a.linkDescription {
 	width: 20px;
 	bottom: -20px;
 	position: absolute;
-	background: url("../images/custom/arrow.png") no-repeat scroll 0 0 transparent;
+	background: url("../images/custom/arrow.png") no-repeat scroll 0 0
+		transparent;
 }
 
 .tooltipDefault ul,.tooltipDefault ol {

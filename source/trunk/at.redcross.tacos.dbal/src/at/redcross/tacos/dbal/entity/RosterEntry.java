@@ -85,7 +85,6 @@ public class RosterEntry extends EntityImpl {
     @Column
     private boolean toDelete;
     
-    
 
     // ---------------------------------
     // EntityImpl

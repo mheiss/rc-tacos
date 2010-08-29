@@ -8,8 +8,8 @@ import javax.persistence.EntityManager;
 
 import org.ajax4jsf.model.KeepAlive;
 
-import at.redcross.tacos.dbal.entity.Location;
 import at.redcross.tacos.dbal.entity.RosterEntry;
+import at.redcross.tacos.dbal.query.RosterQueryParam;
 import at.redcross.tacos.web.reporting.ReportRenderer.ReportRenderParameters;
 
 @KeepAlive
@@ -19,7 +19,7 @@ public class RosterPersonalOverviewBean extends RosterOverviewBean {
 	private static final long serialVersionUID = 8817078489086816724L;
 
 	@Override
-	protected List<RosterEntry> getEntries(EntityManager manager, Location location, Date date) {
+	protected List<RosterEntry> getEntries(EntityManager manager, RosterQueryParam params) {
 		return null;
 	}
 

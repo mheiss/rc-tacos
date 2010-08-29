@@ -61,7 +61,7 @@
 		<view-id>/WEB-INF/pages/roster/rosterMaintenance.faces</view-id>
 		<action onPostback="false">#{rosterMaintenanceBean.prettyInit}</action>
 	</url-mapping>
-		<url-mapping id="roster-assignCar">
+	<url-mapping id="roster-assignCar">
 		<pattern>/roster/assignCar</pattern>
 		<view-id>/WEB-INF/pages/roster/rosterCarAllocationOverview.faces</view-id>
 		<action onPostback="false">#{rosterCarAllocationOverviewBean.prettyInit}</action>

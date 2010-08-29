@@ -5,18 +5,19 @@ import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 import javax.persistence.EntityManager;
 
 import org.ajax4jsf.model.KeepAlive;
 import org.apache.commons.lang.time.DateUtils;
 
-import at.redcross.tacos.dbal.entity.Location;
 import at.redcross.tacos.dbal.entity.RosterEntry;
 import at.redcross.tacos.dbal.helper.CarHelper;
 import at.redcross.tacos.dbal.helper.LocationHelper;
 import at.redcross.tacos.dbal.helper.RosterEntryHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
+import at.redcross.tacos.dbal.query.RosterQueryParam;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.faces.combo.DropDownHelper;
 import at.redcross.tacos.web.persitence.EntityManagerFactory;
@@ -41,9 +42,10 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
 		try {
 			manager = EntityManagerFactory.createEntityManager();
 			date = TacosDateUtils.getCalendar(System.currentTimeMillis()).getTime();
-			locationItems = DropDownHelper.convertToItems(LocationHelper.list(manager));
+			locations = LocationHelper.list(manager);
+			locationItems = DropDownHelper.convertToItems(locations);
 			carItems = DropDownHelper.convertToItems(CarHelper.list(manager, false));
-			loadfromDatabase(manager, location, date);
+			entries = getEntries(manager, getParamForQuery());
 		} finally {
 			manager = EntityManagerHelper.close(manager);
 		}
@@ -52,8 +54,7 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
 	// ---------------------------------
 	// Business methods
 	// ---------------------------------
-
-	public void saveEntries() {
+	public void saveEntries(ActionEvent event) {
 		EntityManager manager = null;
 		try {
 			manager = EntityManagerFactory.createEntityManager();
@@ -61,7 +62,6 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
 				manager.merge(entry);
 			}
 			EntityManagerHelper.commit(manager);
-			loadfromDatabase(manager, location, date);
 		} catch (Exception ex) {
 			FacesUtils.addErrorMessage("Die Fahrzeugzuweisung konnte nicht gespeichert werden");
 		} finally {
@@ -80,8 +80,8 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
 	}
 
 	@Override
-	protected List<RosterEntry> getEntries(EntityManager manager, Location location, Date date) {
-		return RosterEntryHelper.listByDayOrderByCar(manager, location, date);
+	protected List<RosterEntry> getEntries(EntityManager manager, RosterQueryParam param) {
+		return RosterEntryHelper.listByDay(manager, param);
 	}
 
 	@Override

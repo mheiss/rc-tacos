@@ -29,7 +29,7 @@
 	
 	<ui:define name="page-toolbar">
 		<li>
-			<a4j:commandLink actionListener="#{rosterDayOverviewBean.navigateNext}" reRender="dateTitle,filter,resultList">
+			<a4j:commandLink actionListener="#{rosterDayOverviewBean.navigateNext}" reRender="dateTitle,filter,rosterTab">
 				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="next.png" />
 				<h:outputText styleClass="toolbarText" value="Nächster Tag"  />
 			</a4j:commandLink>
@@ -41,7 +41,7 @@
 			</a4j:htmlCommandLink>
 		</li>
 		<li>
-			<a4j:commandLink actionListener="#{rosterDayOverviewBean.navigatePrevious}" reRender="dateTitle,filter,resultList">
+			<a4j:commandLink actionListener="#{rosterDayOverviewBean.navigatePrevious}" reRender="dateTitle,filter,rosterTab">
 				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="back.png" />
 				<h:outputText styleClass="toolbarText" value="Vorheriger Tag"  />
 			</a4j:commandLink>
@@ -52,24 +52,8 @@
 		<ui:decorate template="rosterFilter.xhtml">
 			<ui:param name="bean" value="#{rosterDayOverviewBean}" />
 		</ui:decorate>
-		<ui:decorate template="rosterTable.xhtml">
-			<ui:param name="values" value="#{rosterDayOverviewBean.locationEntry}" />
-		</ui:decorate>
-	</ui:define>
-	<ui:define name="panel">
-		<ui:decorate template="/WEB-INF/templates/widgets/modalPanel.xhtml">
-			<ui:param name="panelId" value="signInPanel" />
-			<ui:param name="panelHeader" value="Zum Dienst anmelden" />
-			<ui:define name="panelContent">
-				<h:outputText value="TODO"></h:outputText>
-			</ui:define>
-		</ui:decorate>
-		<ui:decorate template="/WEB-INF/templates/widgets/modalPanel.xhtml">
-			<ui:param name="panelId" value="signOutPanel" />
-			<ui:param name="panelHeader" value="Vom Dienst abmelden" />
-			<ui:define name="panelContent">
-				<h:outputText value="TODO"></h:outputText>
-			</ui:define>
+		<ui:decorate template="rosterTabPanel.xhtml">
+			<ui:param name="bean" value="#{rosterDayOverviewBean}" />
 		</ui:decorate>
 	</ui:define>
 </ui:composition>
