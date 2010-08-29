@@ -33,10 +33,7 @@
 		<view-id>/WEB-INF/pages/home/links.faces</view-id>
 		<action onPostback="false">#{linkOverviewBean.prettyInit}</action>
 	</url-mapping>
-	<url-mapping id="info">
-		<pattern>/info</pattern>
-		<view-id>/WEB-INF/pages/home/info.faces</view-id>
-	</url-mapping>
+
 
 	<!-- ################ ROSTER ####################### -->
 	<url-mapping id="roster-dayOverview">
@@ -70,6 +67,22 @@
 		<action onPostback="false">#{rosterCarAllocationOverviewBean.prettyInit}</action>
 	</url-mapping>
 	
+	<!-- ################ INFO ####################### -->
+	<url-mapping id="info-currentOverview">
+		<pattern>/info</pattern>
+		<view-id>/WEB-INF/pages/info/infoCurrentOverview.faces</view-id>
+		<action onPostback="false">#{infoCurrentOverviewBean.prettyInit}</action>
+	</url-mapping>
+	<url-mapping id="info-createMaintenance">
+		<pattern>/info/create</pattern>
+		<view-id>/WEB-INF/pages/info/infoMaintenance.faces</view-id>
+		<action onPostback="false">#{infoMaintenanceBean.prettyInit}</action>
+	</url-mapping>
+	<url-mapping id="info-editMaintenance">
+		<pattern>/info/edit/#{infoMaintenanceBean.infoId}</pattern>
+		<view-id>/WEB-INF/pages/info/infoMaintenance.faces</view-id>
+		<action onPostback="false">#{infoMaintenanceBean.prettyInit}</action>
+	</url-mapping>
 	
 	<!-- ################ ADMINISTRATION ####################### -->
 	<url-mapping id="admin-home">
@@ -165,6 +178,13 @@
 		<pattern>/admin/links</pattern>
 		<view-id>/WEB-INF/pages/administration/linkMaintenance.faces</view-id>
 		<action onPostback="false">#{linkMaintenanceBean.prettyInit}</action>
+	</url-mapping>
+	
+	<!-- ################ ADMINISTRATION - KATEGORIEN ####################### -->
+	<url-mapping id="admin-categoryMaintenance">
+		<pattern>/admin/categories</pattern>
+		<view-id>/WEB-INF/pages/administration/categoryMaintenance.faces</view-id>
+		<action onPostback="false">#{categoryMaintenanceBean.prettyInit}</action>
 	</url-mapping>
 	
 </pretty-config>
