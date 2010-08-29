@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import at.redcross.tacos.datasetup.persistence.EntityManagerFactory;
 import at.redcross.tacos.datasetup.stage1.AssignmentStage;
 import at.redcross.tacos.datasetup.stage1.CarStage;
+import at.redcross.tacos.datasetup.stage1.CategoryStage;
 import at.redcross.tacos.datasetup.stage1.CompetenceStage;
 import at.redcross.tacos.datasetup.stage1.DistrictStage;
 import at.redcross.tacos.datasetup.stage1.GroupStage;
@@ -118,6 +119,7 @@ public class DatasetupApplication {
 		app.registerStage(new SystemUserStage());
 		app.registerStage(new CarStage());
 		app.registerStage(new LinkStage());
+		app.registerStage(new CategoryStage());
 		app.execute();
 	}
 }
