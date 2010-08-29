@@ -55,6 +55,26 @@
 				</div>
 			</li>
 			<li class="left">
+				<h:outputLabel for="carType" value="Fahrzeugtyp"> </h:outputLabel>
+				<div class="input">
+					<h:inputText id="carType" value="#{vehicleMaintenanceBean.car.type}">
+					</h:inputText>
+					<rich:message for="carType" errorClass="error" />
+				</div>
+			</li>
+			<li class="right">
+				<h:outputLabel for="carRegistrationDate" value="Erstzulassung" />
+					<div class="input">
+						<rich:calendar id="carRegistrationDate" value="#{vehicleMaintenanceBean.car.registrationDate}" styleClass="rich-calendar" enableManualInput="true" converterMessage="Bitte geben Sie ein gültiges Zulassungsdatum an" datePattern="dd.MM.yyyy" locale="#{localeBean.locale}"
+							timeZone="#{localeBean.timeZone}">
+							<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+							<rich:ajaxValidator event="onchanged" />
+							<rich:ajaxValidator event="oninputblur" />
+						</rich:calendar> 
+					<rich:message for="carRegistrationDate" errorClass="error" />
+				</div>
+			</li>
+			<li class="left">
 				<h:outputLabel for="outOfOrder" value="Außer Dienst" />
 				<div class="input">
 					<h:selectBooleanCheckbox id="outOfOrder" value="#{vehicleMaintenanceBean.car.outOfOrder}" />
