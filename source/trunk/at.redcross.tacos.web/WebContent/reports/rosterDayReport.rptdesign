@@ -15,133 +15,111 @@
             <list-property name="resultSetHints">
                 <structure>
                     <property name="position">1</property>
-                    <property name="name">firstName</property>
+                    <property name="name">name</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
                     <property name="position">2</property>
-                    <property name="name">lastName</property>
-                    <property name="dataType">string</property>
-                </structure>
-                <structure>
-                    <property name="position">3</property>
-                    <property name="name">plannedStart</property>
-                    <property name="dataType">date-time</property>
-                </structure>
-                <structure>
-                    <property name="position">4</property>
-                    <property name="name">plannedEnd</property>
-                    <property name="dataType">date-time</property>
-                </structure>
-                <structure>
-                    <property name="position">5</property>
-                    <property name="name">realStart</property>
-                    <property name="dataType">date-time</property>
-                </structure>
-                <structure>
-                    <property name="position">6</property>
-                    <property name="name">realEnd</property>
-                    <property name="dataType">date-time</property>
-                </structure>
-                <structure>
-                    <property name="position">7</property>
                     <property name="name">assignment</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">8</property>
+                    <property name="position">3</property>
                     <property name="name">serviceType</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">9</property>
-                    <property name="name">notes</property>
+                    <property name="position">4</property>
+                    <property name="name">location</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">plannedStartTime</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">realStartTime</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">plannedEndTime</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">realEndTime</property>
                     <property name="dataType">string</property>
                 </structure>
             </list-property>
             <list-property name="columnHints">
                 <structure>
-                    <property name="columnName">firstName</property>
-                    <text-property name="displayName">Vorname</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">lastName</property>
-                    <text-property name="displayName">Nachname</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">plannedStart</property>
-                    <text-property name="displayName">Dienstbegin [geplant]</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">plannedEnd</property>
-                    <text-property name="displayName">Dienstende [geplant]</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">realStart</property>
-                    <text-property name="displayName">Dienstbegin [real]</text-property>
-                </structure>
-                <structure>
-                    <property name="columnName">realEnd</property>
-                    <text-property name="displayName">Dienstende [real]</text-property>
+                    <property name="columnName">name</property>
                 </structure>
                 <structure>
                     <property name="columnName">assignment</property>
-                    <text-property name="displayName">Verwendung</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">serviceType</property>
-                    <text-property name="displayName">Dienstverhältnis</text-property>
                 </structure>
                 <structure>
-                    <property name="columnName">notes</property>
-                    <text-property name="displayName">Anmerkungen</text-property>
+                    <property name="columnName">location</property>
+                </structure>
+                <structure>
+                    <property name="columnName">plannedStartTime</property>
+                </structure>
+                <structure>
+                    <property name="columnName">realStartTime</property>
+                </structure>
+                <structure>
+                    <property name="columnName">plannedEndTime</property>
+                </structure>
+                <structure>
+                    <property name="columnName">realEndTime</property>
                 </structure>
             </list-property>
             <structure name="cachedMetaData">
                 <list-property name="resultSet">
                     <structure>
                         <property name="position">1</property>
-                        <property name="name">firstName</property>
+                        <property name="name">name</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
                         <property name="position">2</property>
-                        <property name="name">lastName</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">3</property>
-                        <property name="name">plannedStart</property>
-                        <property name="dataType">date-time</property>
-                    </structure>
-                    <structure>
-                        <property name="position">4</property>
-                        <property name="name">plannedEnd</property>
-                        <property name="dataType">date-time</property>
-                    </structure>
-                    <structure>
-                        <property name="position">5</property>
-                        <property name="name">realStart</property>
-                        <property name="dataType">date-time</property>
-                    </structure>
-                    <structure>
-                        <property name="position">6</property>
-                        <property name="name">realEnd</property>
-                        <property name="dataType">date-time</property>
-                    </structure>
-                    <structure>
-                        <property name="position">7</property>
                         <property name="name">assignment</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">8</property>
+                        <property name="position">3</property>
                         <property name="name">serviceType</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">9</property>
-                        <property name="name">notes</property>
+                        <property name="position">4</property>
+                        <property name="name">location</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">plannedStartTime</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">realStartTime</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">plannedEndTime</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">realEndTime</property>
                         <property name="dataType">string</property>
                     </structure>
                 </list-property>
@@ -150,22 +128,22 @@
             <method name="open"><![CDATA[// tmp var for looping during the fetch script
 count = 0;
 
-// the list of roster entries is passed in as parameter
-rosterList = params["rosterList"];
+// the list of report parameters
+rosterList = params["reportParam"];
 
 
 ]]></method>
             <method name="fetch"><![CDATA[// loop and fill the result list
 if(count < rosterList.size()){
 	entry = rosterList.get(count);
-	row["firstName"] = entry.getSystemUser().getFirstName();
-	row["lastName"] = entry.getSystemUser().getLastName();
-	row["plannedStart"] = entry.getPlannedStart();
-	row["plannedEnd"] = entry.getPlannedEnd();
-	row["realStart"] = entry.getRealStart();
-	row["realEnd"] = entry.getRealEnd();
-	row["assignment"] = entry.getAssignment().getId();
-	row["serviceType"] = entry.getServiceType().getName();
+	row["name"] = entry.getStaffMember();
+	row["location"] = entry.getLocation();
+	row["plannedStartTime"] = entry.getPlannedStartTime();
+	row["plannedEndTime"] = entry.getPlannedEndTime();
+	row["realStartTime"] = entry.getRealStartTime();
+	row["realEndTime"] = entry.getRealEndTime();
+	row["assignment"] = entry.getAssignment();
+	row["serviceType"] = entry.getServiceType();
 	count++;
 	return true;
 }
@@ -211,59 +189,115 @@ rosterList=null;]]></method>
         </style>
     </styles>
     <page-setup>
-        <simple-master-page name="Simple MasterPage" id="2">
+        <simple-master-page name="TacosMasterPage" id="2">
             <property name="type">a4</property>
+            <page-header>
+                <grid id="427">
+                    <column id="428">
+                        <property name="width">0.6458333333333334in</property>
+                    </column>
+                    <column id="429">
+                        <property name="width">7.09375in</property>
+                    </column>
+                    <row id="430">
+                        <cell id="431">
+                            <image id="433">
+                                <property name="height">50px</property>
+                                <property name="width">50px</property>
+                                <property name="source">embed</property>
+                                <property name="imageName">tacosLogo.png</property>
+                            </image>
+                        </cell>
+                        <cell id="432">
+                            <text id="434">
+                                <property name="fontSize">16pt</property>
+                                <property name="fontWeight">bold</property>
+                                <property name="marginTop">0pt</property>
+                                <property name="paddingTop">1pt</property>
+                                <property name="textAlign">left</property>
+                                <property name="contentType">auto</property>
+                                <text-property name="content"><![CDATA[TACOS - OnlineDienstplan]]></text-property>
+                            </text>
+                            <text id="614">
+                                <property name="backgroundColor">#FFFFFF</property>
+                                <property name="color">#666666</property>
+                                <property name="contentType">auto</property>
+                                <text-property name="content"><![CDATA[Online Dienstplan des Roten Kreuz BRUCK/KAPFENBERG]]></text-property>
+                            </text>
+                        </cell>
+                    </row>
+                </grid>
+            </page-header>
             <page-footer>
-                <text id="3">
-                    <property name="contentType">html</property>
-                    <text-property name="content"><![CDATA[<value-of>new Date()</value-of>]]></text-property>
-                </text>
+                <grid id="623">
+                    <property name="borderTopColor">#000000</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">medium</property>
+                    <property name="verticalAlign">middle</property>
+                    <property name="height">0.4166666666666667in</property>
+                    <column id="624"/>
+                    <column id="625"/>
+                    <column id="626"/>
+                    <row id="627">
+                        <property name="height">0.4166666666666667in</property>
+                        <property name="verticalAlign">middle</property>
+                        <cell id="628">
+                            <label id="631"/>
+                        </cell>
+                        <cell id="629">
+                            <label id="632"/>
+                        </cell>
+                        <cell id="630">
+                            <text id="3">
+                                <property name="textAlign">right</property>
+                                <property name="contentType">html</property>
+                                <text-property name="content"><![CDATA[<value-of>new Date()</value-of>]]></text-property>
+                            </text>
+                        </cell>
+                    </row>
+                </grid>
             </page-footer>
         </simple-master-page>
     </page-setup>
     <body>
         <text id="424">
-            <property name="backgroundColor">#808080</property>
+            <property name="backgroundColor">#9A0000</property>
             <property name="fontSize">16pt</property>
             <property name="fontWeight">bold</property>
             <property name="color">#FFFFFF</property>
+            <property name="borderBottomColor">#000000</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">4px</property>
+            <property name="borderTopColor">#000000</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">4px</property>
+            <property name="marginTop">10pt</property>
             <property name="marginBottom">10pt</property>
+            <property name="paddingTop">5pt</property>
+            <property name="paddingBottom">5pt</property>
             <property name="textAlign">center</property>
             <property name="contentType">html</property>
             <text-property name="content"><![CDATA[ Dienstplan für <value-of format="Long Date">params["reportDate"]</value-of> ]]></text-property>
         </text>
-        <table id="382">
+        <table id="555">
+            <property name="borderBottomColor">#000000</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">medium</property>
+            <property name="borderLeftColor">#000000</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">medium</property>
+            <property name="borderRightColor">#000000</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">medium</property>
+            <property name="borderTopColor">#000000</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">medium</property>
             <property name="dataSet">rosterSet</property>
             <list-property name="boundDataColumns">
                 <structure>
-                    <property name="name">firstName</property>
-                    <expression name="expression" type="javascript">dataSetRow["firstName"]</expression>
+                    <property name="name">name</property>
+                    <expression name="expression" type="javascript">dataSetRow["name"]</expression>
                     <property name="dataType">string</property>
-                </structure>
-                <structure>
-                    <property name="name">lastName</property>
-                    <expression name="expression" type="javascript">dataSetRow["lastName"]</expression>
-                    <property name="dataType">string</property>
-                </structure>
-                <structure>
-                    <property name="name">plannedStart</property>
-                    <expression name="expression" type="javascript">dataSetRow["plannedStart"]</expression>
-                    <property name="dataType">date-time</property>
-                </structure>
-                <structure>
-                    <property name="name">plannedEnd</property>
-                    <expression name="expression" type="javascript">dataSetRow["plannedEnd"]</expression>
-                    <property name="dataType">date-time</property>
-                </structure>
-                <structure>
-                    <property name="name">realStart</property>
-                    <expression name="expression" type="javascript">dataSetRow["realStart"]</expression>
-                    <property name="dataType">date-time</property>
-                </structure>
-                <structure>
-                    <property name="name">realEnd</property>
-                    <expression name="expression" type="javascript">dataSetRow["realEnd"]</expression>
-                    <property name="dataType">date-time</property>
                 </structure>
                 <structure>
                     <property name="name">assignment</property>
@@ -276,177 +310,273 @@ rosterList=null;]]></method>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="name">notes</property>
-                    <expression name="expression" type="javascript">dataSetRow["notes"]</expression>
+                    <property name="name">location</property>
+                    <expression name="expression" type="javascript">dataSetRow["location"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">plannedStartTime</property>
+                    <expression name="expression" type="javascript">dataSetRow["plannedStartTime"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">realStartTime</property>
+                    <expression name="expression" type="javascript">dataSetRow["realStartTime"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">plannedEndTime</property>
+                    <expression name="expression" type="javascript">dataSetRow["plannedEndTime"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">realEndTime</property>
+                    <expression name="expression" type="javascript">dataSetRow["realEndTime"]</expression>
                     <property name="dataType">string</property>
                 </structure>
             </list-property>
-            <column id="410"/>
-            <column id="411"/>
-            <column id="412"/>
-            <column id="413"/>
-            <column id="414"/>
-            <column id="415"/>
-            <column id="416"/>
-            <column id="417"/>
+            <column id="592">
+                <property name="width">1.1666666666666667in</property>
+            </column>
+            <column id="593">
+                <property name="width">1.0416666666666667in</property>
+            </column>
+            <column id="594">
+                <property name="width">1.25in</property>
+            </column>
+            <column id="595">
+                <property name="width">1.4583333333333333in</property>
+            </column>
+            <column id="596">
+                <property name="width">1.25in</property>
+            </column>
+            <column id="597">
+                <property name="width">1.5729166666666667in</property>
+            </column>
             <header>
-                <row id="383">
-                    <cell id="384">
-                        <property name="backgroundColor">#9A0000</property>
-                        <property name="textAlign">center</property>
+                <row id="556">
+                    <property name="height">0.5729166666666666in</property>
+                    <property name="backgroundColor">#BED6F8</property>
+                    <property name="fontSize">10pt</property>
+                    <property name="fontWeight">bold</property>
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">3px</property>
+                    <property name="textAlign">center</property>
+                    <cell id="557">
+                        <property name="fontWeight">bold</property>
+                        <property name="paddingTop">1pt</property>
                         <property name="verticalAlign">middle</property>
-                        <text id="339">
-                            <property name="fontWeight">bold</property>
-                            <property name="color">#FFFFFF</property>
-                            <property name="textAlign">center</property>
-                            <property name="contentType">auto</property>
-                            <text-property name="content"><![CDATA[Vorname]]></text-property>
-                        </text>
+                        <label id="600">
+                            <property name="fontSize">12pt</property>
+                            <text-property name="text">Mitarbeiter</text-property>
+                        </label>
                     </cell>
-                    <cell id="385">
-                        <property name="backgroundColor">#9A0000</property>
+                    <cell id="558">
+                        <property name="fontWeight">bold</property>
+                        <property name="paddingTop">1pt</property>
                         <property name="textAlign">center</property>
                         <property name="verticalAlign">middle</property>
-                        <text id="340">
-                            <property name="fontWeight">bold</property>
-                            <property name="color">#FFFFFF</property>
-                            <property name="textAlign">center</property>
-                            <property name="contentType">auto</property>
-                            <text-property name="content"><![CDATA[Nachname]]></text-property>
-                        </text>
+                        <label id="601">
+                            <property name="fontSize">12pt</property>
+                            <text-property name="text">Dienststelle</text-property>
+                        </label>
                     </cell>
-                    <cell id="386">
-                        <property name="backgroundColor">#9A0000</property>
-                        <property name="textAlign">center</property>
+                    <cell id="559">
+                        <property name="borderBottomColor">#000000</property>
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">medium</property>
+                        <property name="paddingTop">1pt</property>
                         <property name="verticalAlign">middle</property>
-                        <text id="341">
-                            <property name="fontWeight">bold</property>
-                            <property name="color">#FFFFFF</property>
-                            <property name="textAlign">center</property>
-                            <property name="contentType">auto</property>
-                            <text-property name="content"><![CDATA[Dienstbegin 
-[geplant]]]></text-property>
-                        </text>
+                        <label id="602">
+                            <property name="fontSize">12pt</property>
+                            <text-property name="text">Dienstzeit &#13;
+[geplant]</text-property>
+                        </label>
                     </cell>
-                    <cell id="387">
-                        <property name="backgroundColor">#9A0000</property>
-                        <property name="textAlign">center</property>
+                    <cell id="560">
+                        <property name="borderBottomColor">#000000</property>
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">medium</property>
+                        <property name="paddingTop">1pt</property>
                         <property name="verticalAlign">middle</property>
-                        <text id="344">
-                            <property name="fontWeight">bold</property>
-                            <property name="color">#FFFFFF</property>
-                            <property name="textAlign">center</property>
-                            <property name="contentType">auto</property>
-                            <text-property name="content"><![CDATA[Dienstende
-[geplant]]]></text-property>
-                        </text>
+                        <label id="603">
+                            <property name="fontSize">12pt</property>
+                            <text-property name="text">Dienstzeit &#13;
+[real]</text-property>
+                        </label>
                     </cell>
-                    <cell id="388">
-                        <property name="backgroundColor">#9A0000</property>
-                        <property name="textAlign">center</property>
+                    <cell id="561">
+                        <property name="paddingTop">1pt</property>
                         <property name="verticalAlign">middle</property>
-                        <text id="345">
-                            <property name="fontWeight">bold</property>
-                            <property name="color">#FFFFFF</property>
-                            <property name="textAlign">center</property>
-                            <property name="contentType">auto</property>
-                            <text-property name="content"><![CDATA[Dienstbegin 
-[real]]]></text-property>
-                        </text>
+                        <label id="604">
+                            <property name="fontSize">12pt</property>
+                            <text-property name="text">Verwendung</text-property>
+                        </label>
                     </cell>
-                    <cell id="389">
-                        <property name="backgroundColor">#9A0000</property>
-                        <property name="textAlign">center</property>
+                    <cell id="562">
+                        <property name="paddingTop">1pt</property>
                         <property name="verticalAlign">middle</property>
-                        <text id="347">
-                            <property name="fontWeight">bold</property>
-                            <property name="color">#FFFFFF</property>
-                            <property name="textAlign">center</property>
-                            <property name="contentType">auto</property>
-                            <text-property name="content"><![CDATA[Dienstende
-[real]]]></text-property>
-                        </text>
-                    </cell>
-                    <cell id="390">
-                        <property name="backgroundColor">#9A0000</property>
-                        <property name="textAlign">center</property>
-                        <property name="verticalAlign">middle</property>
-                        <text id="369">
-                            <property name="fontWeight">bold</property>
-                            <property name="color">#FFFFFF</property>
-                            <property name="contentType">auto</property>
-                            <text-property name="content"><![CDATA[Verwendung]]></text-property>
-                        </text>
-                    </cell>
-                    <cell id="391">
-                        <property name="backgroundColor">#9A0000</property>
-                        <property name="textAlign">center</property>
-                        <property name="verticalAlign">middle</property>
-                        <text id="370">
-                            <property name="fontWeight">bold</property>
-                            <property name="color">#FFFFFF</property>
-                            <property name="contentType">auto</property>
-                            <text-property name="content"><![CDATA[Dienstverhältnis]]></text-property>
-                        </text>
+                        <label id="605">
+                            <property name="fontSize">12pt</property>
+                            <text-property name="text">Dienstverhältniss</text-property>
+                        </label>
                     </cell>
                 </row>
             </header>
             <detail>
-                <row id="392">
-                    <cell id="393">
-                        <data id="312">
-                            <property name="resultSetColumn">firstName</property>
+                <row id="565">
+                    <property name="height">0.3645833333333333in</property>
+                    <property name="verticalAlign">middle</property>
+                    <cell id="566">
+                        <property name="colSpan">1</property>
+                        <property name="rowSpan">2</property>
+                        <property name="textAlign">center</property>
+                        <data id="606">
+                            <property name="fontWeight">bold</property>
+                            <property name="textAlign">left</property>
+                            <property name="resultSetColumn">name</property>
                         </data>
                     </cell>
-                    <cell id="394">
-                        <data id="313">
-                            <property name="resultSetColumn">lastName</property>
+                    <cell id="567">
+                        <property name="colSpan">1</property>
+                        <property name="rowSpan">2</property>
+                        <property name="textAlign">center</property>
+                        <data id="611">
+                            <property name="textAlign">left</property>
+                            <property name="resultSetColumn">location</property>
                         </data>
                     </cell>
-                    <cell id="395">
-                        <data id="314">
-                            <property name="resultSetColumn">plannedStart</property>
+                    <cell id="568">
+                        <data id="607">
+                            <property name="textAlign">center</property>
+                            <property name="resultSetColumn">plannedStartTime</property>
                         </data>
                     </cell>
-                    <cell id="396">
-                        <data id="315">
-                            <property name="resultSetColumn">plannedEnd</property>
+                    <cell id="569">
+                        <data id="609">
+                            <property name="textAlign">center</property>
+                            <property name="resultSetColumn">realStartTime</property>
                         </data>
                     </cell>
-                    <cell id="397">
-                        <data id="316">
-                            <property name="resultSetColumn">realStart</property>
+                    <cell id="570">
+                        <property name="colSpan">1</property>
+                        <property name="rowSpan">2</property>
+                        <property name="textAlign">center</property>
+                        <data id="613">
+                            <property name="textAlign">left</property>
+                            <property name="resultSetColumn">assignment</property>
                         </data>
                     </cell>
-                    <cell id="398">
-                        <data id="317">
-                            <property name="resultSetColumn">realEnd</property>
-                        </data>
-                    </cell>
-                    <cell id="399">
-                        <data id="318">
+                    <cell id="571">
+                        <property name="colSpan">1</property>
+                        <property name="rowSpan">2</property>
+                        <property name="textAlign">center</property>
+                        <data id="612">
+                            <property name="textAlign">left</property>
                             <property name="resultSetColumn">serviceType</property>
                         </data>
                     </cell>
-                    <cell id="400">
-                        <data id="319">
-                            <property name="resultSetColumn">assignment</property>
+                </row>
+                <row id="574">
+                    <property name="height">0.3645833333333333in</property>
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">dashed</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="verticalAlign">middle</property>
+                    <cell id="577">
+                        <data id="608">
+                            <property name="textAlign">center</property>
+                            <property name="resultSetColumn">plannedEndTime</property>
+                        </data>
+                    </cell>
+                    <cell id="578">
+                        <data id="610">
+                            <property name="textAlign">center</property>
+                            <property name="resultSetColumn">realEndTime</property>
                         </data>
                     </cell>
                 </row>
             </detail>
-            <footer>
-                <row id="401">
-                    <cell id="402"/>
-                    <cell id="403"/>
-                    <cell id="404"/>
-                    <cell id="405"/>
-                    <cell id="406"/>
-                    <cell id="407"/>
-                    <cell id="408"/>
-                    <cell id="409"/>
-                </row>
-            </footer>
         </table>
     </body>
+    <list-property name="images">
+        <structure>
+            <property name="name">tacosLogo.png</property>
+            <property name="type">image/png</property>
+            <property name="data">
+                iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+                YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAZdEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My41LjVJivzg
+                AAAQCklEQVRoQ92aeZBU5bnGmWGLS26Wm81EQUBAEJA1CIgxpEqjFbOVmtwYq4xaiRjFBTVValRKxdTV
+                m+tNRSGp601FkyqTmIUgRhAiIgLCgMgSGGbtvad7pvf1dJ9+7/N8S/fpGWQm/1B171Bvne6m+5z318/z
+                vt93vq9Hjfr//uc4zpnFYnF+oVD4bTabfSuTyfgY6XT6tAWvx2vn8/k1zIU5jfh7x5tbyuXy13GSw5FI
+                RLq6uqSnp0d6e3tPW/h8PmH4/X51ze7ubmEugDpcKpVmI7+WYYGgwI/j8bh0d3VLNBoVAPEEOnLmaJ/X
+                jznJ5UYa+Q98L755OVnk8jmJxZBTT7fE4zFhjh8IUnUqLUW8IRKNVH0+v6TTGclE+yS7YYNkH3xQMj/4
+                geQffVScA++J815zVMzz0sMPS/m220yslNLKlVK+/wGpvH9QKgcPSvXg+zoOHJDKY49J9Y47VLgq7pQa
+                Qh3vxPHOVeLee69Un/kPKe3eLYV0Sn0BgUBQmCOs9iunUm0dAlR2nNkDAwOQtEfSmaxk9u2TzLXXSXrB
+                fMnOmye5+QukcMN3peZWRWo1GfxXc10p3367lBYvlvLiS6R8yRJxGDhHreY2hVsqSfV7N4l76aXiLtdR
+                W75capfqED6+bLm4l12mX//iF6X6wANS6O6SLBxCuzFXWGzmEJB8obCjpxsQqbRkDrRJctkySc2dJxlA
+                pBCZefMld81XpAZ7gWQICOHKax6T4uc/DxiAIHh0vvFNwANEDAyPFUeqt9wiVVxDwXhCwTB5FQAxMO65
+                54o7ZbJkOzolmUqhbrpgw9yvm0BQ4BMTiYTD4sqiPlI33CCpiy9GzJX0xYAwQJlLl4obiw2FIBpAnBf+
+                WwqLFgNmsZQYhLnySvV/6h+V5ONKRdzbVkplyTKpLF0GIMAwAMGgGnUYQn7uXKm1tIqLcG74jmQBwlyZ
+                M3Ovw6ATXB0OhVFIcUlv2SLJuXMlOWeOAiFQmkDzEIsWKa8zqaY/9bQm1a3bpABFiosQFgaJ1qoV/RkD
+                BImkAhtWluKLoSqAIEwDCMkTBhDV8yZItXU0IFoUiPvhf5HckaMo/piEQiEW/nQvyBq2WIwRklq7VgYA
+                kZwDRRgKBhCAS8Ni5Vf+YDA8MMyRIJ2dkoff8wRBUJUikq2hu9XVAASBqg8+JJVlS1XQYt5wly3Xz887
+                TyoAqBJilFaEUfyfX0kKqjBniLCmDoIOsIbjBQspuXq1DMyeI4lZs40qBgggKUThkUeQR1VbpS4LH+F5
+                IS/Fr34NIItgMaqilamhjSt7KQjWCkD+/Wlxli5Rqqha4XGpVWaZOIAot7ZKeVSLOAiC1BCEKq39iRoW
+                mDNzHwqShSL33AuQ2QokAaAkrEV1eKTNstdfL7Vyqf4NWxadaE2Kd99dBykAqLhwEdrtfv1+ay88rL7w
+                gjhL0NUAwKguoTpQgc8nTpQCvvkSk0YQpKICIDiWnnzyFCCwRTabkcQ990h81iwNwmCtEASRptWQXDUY
+                0C3Y04ZtMTsvviT5BVAEACqgTHXTpkaNmM9VN27UICaUMoApTZggOSSfRxSZ9KhRUjYwDuAIUnxyrQLp
+                RM5DFOGLHL0T+EbjF10kAxaEqphQNTNnrpReeUUX7qDxhM/dw4clh6TyCxbWYZznft7oWkpCvG/vu2qc
+                KVsY2KwEJbJIOodkcwDIIwoto6CKhUHXIsgTWpFhQO4CyCzpRwwgrMVoM6UM7JVbtUp3opMNjPgy8tdd
+                r0GMMqUf/UhcU+SmwYkLVcvoVOVLOHheIvkJ50sK37gCQeIE8cLYWhkxyMDdBmTmRdKPIAzVsaqoboZB
+                qhoKDlWENcAR/ulnFEhuwQLJLwTQt78ttWLBtAfdJGqFghS/tELNBHITJ8kAAFL4thlDYABGZYrGZoUn
+                nhhekf677pKYgSAIlbHqJAGkOhrqpvTy70wn8vYubbdqW5tkURv5hQskS2UA7vb1NYNXq1K+6SbJTDxf
+                +tGdEgBIAoaRQsJZjypaGdYLbEWokYGsUiDxGTOVInEDo5UxVgNI5sYbYS/Muzx/tsW6nMV+/ZtQZKFk
+                AUN1Krt3NUBUn6hJ7h7UY+sYicNS/UhyAAknEEk8TitlGhYjTAGvFQBaOFWNsCdzdtkP//cBIoaIz2RQ
+                FWsxwKA1c8BMwDKV/ftN5zLjiBldaJ7S889LFhNNTjapSvmXv2i0YAOfQxOIAiKGiCPJuAUxNlMwpla8
+                NZM37fcDi70BMgMwM+qqKItBjbrNlMVmSxZFbIteDXaeIbLa2SEZWCqDOlEz51tvwRyLA6l+FxUpv/OO
+                RMaPlz4DE0Pi/YNgWDPpwTYbMciFF0p0xoUSu3CGUkbXig1d/Mpm6DaVEyfqU/T64Ehl0NUK966WzHzc
+                BlCZFV8SNxyuwxLGTScl+tnPSgQKKBgkzbDKKJsZdZpsNlyNUJE4bmqiBEH0KRCtjLIYa4ZAs3QTIFD2
+                kUcx62ArpiKNP05jnD27MdFEnWCOloUVyxtfbSp4fqb/y1dJCBARJN2HpC0MlWHNJBFKFTYAa7ORgPTd
+                eYdEp0+XvukAQVAVAikYUze2LVMlquIcxox48EiPJN1SQfLf/76koEoU3Sl67bV19eyUJvPTn0oAACEk
+                GUWwXgYrY1WpN4Anh2m/VIQgEQ+IAgJIFMrEUPwMrY4eMFk7GdyWcv7lrRGbqLPjLYlOniwdo8dI50c+
+                ItVEf71tqzrZ3yaBD50BkFYNQ1XQjmNGHa/NtDJoACNRJAZrEYRBZaIAYdh6sUfCqKDNUAPlbVt1gvaf
+                me3WymXxX75C2pHoCSSXwc0XZ8BqokLVMBOIzJktQQXSImFrsUE2021Z2yw73BRFKYKb/zAAQtOnSXSa
+                thhBrM0I4rVYDIrEOS+76mpxB+Ke6bqeU6nx4s03pf2ss+Q4kgtcfrm4ZvbMaYuL/0/cd5/48H9B2IrK
+                nAyGythxJjNikGnTJDhtqkRwJEyTKmwABkaNNagTNYCy8J9aK67j6DqwrZizFrwWuvG7cgzJto8/Q4qY
+                MHqVK2Kw9GFg9AOE9RL0KONtABxrBhCZkVgriqWZ0NSpEgIEQcIE8Sij1DENgCCEUCDsYrTYls2eqYtW
+                hGClY8ek45xzFEz45lvUnMxa0S0VJQRle/F/VCaAZLXNWppqhiCcAaRHAhK544cSumCqBAETngoQExGj
+                jC1+1ZqbupkeNEOcyR4/ov3PO0lbK0i8/7nn5B+jx0r7Rz8qxSOH1YxYLxXVJAU1ewiCRBmqZgjtbQBm
+                nEmNFCRoQXD0ghDGtuUhNQN1fBMmStuYsXIM99yVxEBDGQPjYsbru+JKOcoEb7213ooJ5GAVsReAVKUX
+                yROmoQxbM7qZaQDJxx8/9eyXxR754e0SvOACCSCoTNgGlCGIUsaqg0EzgojNnCE+3BTtBcQe+Hxvy2jp
+                wczWxT28bcP2WDp6RNrP+ZwcO+tsqHLIKKeViX7n36TbgFgY1kuTMpwhPz6CcYQggSkaxI8I02IGJmJs
+                5m0ArJmeiRNk1+jRsgsX2Y0L70HsA5T//vul5pTr9rE2S730khwdN14CXLzj+MM7S4AUd+6UHowpPZhb
+                9TKUMqO0MspmumaSI7IWQSZPUTB+RIgwXlUAQxA9zgAC607vYLB7Gxd4GxfaBUV24/G7OO4b9yEJYY23
+                5tgpjC5+F2NL3+r75OjY8ZL5458adYTXQ1ddJZ34fA8ACNIEY7pZYqQg/ilTlBqMIGEUkFaGqliLdQPi
+                bUDswIV34KKMnbjYOyjU3QBRNhs7TsKYUrAz6WVT3cWqmbT0XnGFdMKalXBIDZJUJb/1DekcM0a6CIPP
+                W2X89ZrBPcuIQLAC6AOIDYIoGEBYoCBgOrDutB12+juS364gNMzbKgCjlAEMbQYY/2qsrKPY1ZqY6Vbl
+                YFA60bIDGGNcrAerTgcrhq65RjoAomDwea2M7ma0WeJUxc4bK+5NhG9fqSCoCo+0mYWx6pwAxJv41rbB
+                x9twEQvzFp43K6OttgcJsRF0XHedOLjl1W1ZL9YVUfydnLP97Gd6sZtrY/v3SefZZyuLdeGcqmaMzfx4
+                beBUxd7F5U6CYE+jF6veVhECBS0MrNaBVfFtUGIzTvyGia1eGGMxqqJthgaAi++B3Vg3R3kv/94BtT1h
+                lSlgv6QDM4Q017+MWtG7VkGVVhVNMDhX/Ilh2q8F8WG2yug1R78q/ilyAhBvQInXkayNzUiUICeD0VbT
+                MEoZwOzF8cAnPimRZ58VlysrZuAsYLOom+th27crxZy+qHRjxqBBrM10N+s/VY1Ya4VgLf+kSeKbZEBo
+                MQC1Y2l/CyBew0n/hpN5Qd4gDF6n1Ro107AZ62aXaQBUhTBtONeJK78subZ95nbZlQIW93pwo5XdukXV
+                Uvb116Qd7bgd5+1AdNFeShE9jgxZ++WKNjd5crm8RFGUhLCqKAgosXnsWNmIhF/FiQjzOsOjzBajjK2Z
+                N43FbM1oZXQDeBef3Ydow+ODH/tXCWB+V8bITrs5fmyCfutbknr5ZTVLjj/0kBwfzVsAA4PP9T/ztNo5
+                4CZp02o8trBuDqKDJJMpiWH1oxeKKFudP0naUdh/Q9f5KxLZiJO8ShjEJiRKZbzqEIbqeGHeMt1M26xV
+                DZp78PhdhIVpw0zg/U9+SkJYd84fOiRV3MuHMbWPYEB1sCIZuPpqdQtwgjWDvZLE5i1qLycQCBDk5vpq
+                PEAm9/f3SxiLA2nMUn1YTaS9jsNOr0GJv+AEf8GF/4rEvTCvDQKhQlqZBsx2D4itmV14jW1ZK4OBU0WL
+                7CfQmWdKJxYq4uvXSewnT0nPF74g/c/+p3Rjgnoc72PdpLDBQwjCAGRyHaRSqYzLZnM7eyBvLpuT6FNP
+                yXHYiRB/JoSJDbiYV5lNSKauiKkbggynDLuZbsu2AWib7YdiPB5AvIfb3aMf+7gcO+czcuyMM+QEFDsO
+                Z8RffFGStBW2z7HovpO5N+0jYnl+BffVw9iYz2HmuhcbNn/CCRmEUUBIYAOiDgMwC9PUAPD6FoRqAp7W
+                bAfNxgyArRk1w0HT1EybUoYwLXIQx0OII3h8FF9q5MGHVW0EYLdoNMJd3RVDdnVB1looFDdykzECoDQW
+                Cf6Be4TNGNH/DF82YFphMcLQarr4N+GbPBnQUJs1OtkOKKjmZqoBDK0bqsI4NG6ctGPXK/77P0gGELQ/
+                c8RvAvZUKuWh++wk4289YLENoWAI++292DVNSRJNIIz1qe7f/EY61z0vnc+vGxLd69YJo2dQ9OJ577r1
+                iHXiw9GHox/e9/NoIrh+vdgI4TEjggiv/4XEMKFM4McGafzqIQGX8GcdQeSWzxeOOE75M27V+eCfcpgf
+                0/wXN+S52cgWx8LiDio72+kOXps5MBfmhEF7FSz1T/24ZiI+tBoDzw7sZ8fZ1U5nsCPxerw2c8A29GrY
+                f2hNDPvrGs8boNKnEZNPdyDxyYhP/zO5/p9/7/8CJDZ9cT75FKwAAAAASUVORK5CYII=
+            </property>
+        </structure>
+    </list-property>
 </report>

@@ -89,7 +89,7 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
 		ReportRenderParameters params = new ReportRenderParameters();
 		params.reportName = "Dienstplan_" + sdf.format(date) + ".pdf";
 		params.reportFile = "rosterDayReport.rptdesign";
-		params.arguments.put("rosterList", entries);
+		params.arguments.put("reportParam", getParamForReport());
 		params.arguments.put("reportDate", date);
 		return params;
 	}
