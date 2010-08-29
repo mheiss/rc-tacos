@@ -23,42 +23,36 @@ public class SecuredResourceStage implements DatasetupStage {
 			SecuredResource resource = new SecuredResource();
 			resource.setResource("/login");
 			resource.setAccess("permitAll");
-			resource.setExpression(true);
 			manager.persist(resource);
 		}
 		{
 			SecuredResource resource = new SecuredResource();
 			resource.setResource("/logout");
-			resource.setAccess("permitAll");
-			resource.setExpression(true);
+			resource.setAccess("isAuthenticated()");
 			manager.persist(resource);
 		}
 		{
 			SecuredResource resource = new SecuredResource();
 			resource.setResource("/error");
-			resource.setAccess("permitAll");
-			resource.setExpression(true);
+			resource.setAccess("isAuthenticated()");
 			manager.persist(resource);
 		}
 		{
 			SecuredResource resource = new SecuredResource();
 			resource.setResource("/accessDenied");
-			resource.setAccess("permitAll");
-			resource.setExpression(true);
+			resource.setAccess("isAuthenticated()");
 			manager.persist(resource);
 		}
 		{
 			SecuredResource resource = new SecuredResource();
 			resource.setResource("/**");
 			resource.setAccess("isAuthenticated()");
-			resource.setExpression(true);
 			manager.persist(resource);
 		}
 		{
 			SecuredResource resource = new SecuredResource();
 			resource.setResource("/admin/**");
 			resource.setAccess("hasRole('ROLE_ADMIN')");
-			resource.setExpression(true);
 			manager.persist(resource);
 		}
 	}

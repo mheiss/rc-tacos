@@ -20,6 +20,15 @@ public class WebExpressionVoter implements AccessDecisionVoter {
 		FilterInvocation fi = (FilterInvocation) object;
 		EvaluationContext ctx = expressionHandler.createEvaluationContext(authentication, fi);
 
+		// super use has access to all pages
+		Object principal = authentication.getPrincipal();
+		if (principal instanceof WebUserDetails) {
+			WebUserDetails details = (WebUserDetails) principal;
+			if (details.getLogin().isSuperUser()) {
+				return ACCESS_GRANTED;
+			}
+		}
+
 		WebExpressionConfigAttribute attribute = findConfigAttribute(attributes);
 		if (attribute == null) {
 			return ACCESS_ABSTAIN;

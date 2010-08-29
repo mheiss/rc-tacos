@@ -53,12 +53,6 @@
 				<h:graphicImage library="images/16x16" name="data.png" rendered="#{dto.state.name eq 'sync'}" title="Neu" />
 				<h:graphicImage library="images/16x16" name="data_delete.png" rendered="#{dto.state.name eq 'delete'}" title="Zu löschen" />	
 			</rich:column>
-			<rich:column sortBy="#{dto.entity.expression}" styleClass="smallColumn">
-				<f:facet name="header">
-					<h:outputText value="Komplex" />
-				</f:facet>
-				<h:selectBooleanCheckbox value="#{dto.entity.expression}" />
-			</rich:column>
 			<rich:column sortBy="#{dto.entity.resource}" styleClass="mediumColumn">
 				<f:facet name="header">
 					<h:outputText value="Resource" />

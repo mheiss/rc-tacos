@@ -158,6 +158,15 @@
 						<rich:message for="password2" errorClass="error" />
 					</div> 
 				</li>
+				<h:panelGroup rendered="#{permissionBean.principal.login.superUser}">
+					<li class="left" >
+						<h:outputLabel for="superUser" value="SuperUser" />
+						<div class="input">
+							<h:selectBooleanCheckbox id="superUser" value="#{userMaintenanceBean.login.superUser}"
+								disabled="#{permissionBean.systemUser.id == userMaintenanceBean.systemUser.id}" />
+						</div>
+					</li>
+				</h:panelGroup>
 				<li class="right">
 					<h:outputLabel for="locked" value="Gesperrt" />
 					<div class="input">

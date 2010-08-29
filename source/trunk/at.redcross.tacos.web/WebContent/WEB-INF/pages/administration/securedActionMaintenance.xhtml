@@ -23,12 +23,6 @@
 				<h:outputText styleClass="toolbarText" value="Änderungen speichern" />
 			</a4j:commandLink>
 		</li>
-		<li>
-			<a4j:commandLink actionListener="#{securedActionMaintenanceBean.addSecuredAction}" reRender="page-content" title="Neue Aktion anlegen">
-				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="add.png" />
-				<h:outputText styleClass="toolbarText" value="Aktion anlegen" />
-			</a4j:commandLink>
-		</li>
 	</ui:define>
 
 	<ui:define name="page-content">
@@ -53,44 +47,28 @@
 				<h:graphicImage library="images/16x16" name="data.png" rendered="#{dto.state.name eq 'sync'}" title="Neu" />
 				<h:graphicImage library="images/16x16" name="data_delete.png" rendered="#{dto.state.name eq 'delete'}" title="Zu löschen" />	
 			</rich:column>
-			<rich:column sortBy="#{dto.entity.actionExpression}" styleClass="mediumColumn">
+			<rich:column sortBy="#{dto.entity.name}" styleClass="mediumColumn">
 				<f:facet name="header">
 					<h:outputText value="Aktion" />
 				</f:facet>
-				<rich:comboBox width="250px" id="systemUser" value="#{dto.entity.actionExpression}" 
-					selectFirstOnUpdate="false" defaultLabel="Mitarbeiter"
-					required="true" requiredMessage="Zeile #{row+1}: Bitte geben Sie eine Aktion ein">
-					<f:selectItems value="#{securedActionMaintenanceBean.definitions}" />
-					<f:validator validatorId="validator.dropDown" />
-					<f:converter converterId="converter.dropDown" />
-					<rich:ajaxValidator event="onchange" />
-				</rich:comboBox> 
+				<h:outputText value="#{dto.entity.name}" styleClass="bold" />
 			</rich:column>
-			<rich:column sortBy="#{dto.entity.access}">
+			<rich:column sortBy="#{dto.entity.actionExpression}">
 				<f:facet name="header">
 					<h:outputText value="Zugriffsberechtigung" />
 				</f:facet>
-				<rich:inplaceInput value="#{dto.entity.access}" maxlength="100" layout="block"
+				<rich:inplaceInput value="#{dto.entity.actionExpression}" maxlength="100" layout="block"
 					required="true" requiredMessage="Zeile #{row+1}: Bitte geben Sie ein Zugriffsrecht ein"
 					validator="#{securedActionMaintenanceBean.validateSecuredAction}"
 					validatorMessage="Zeile #{row+1}: Fehler beim parsen des Zugriffsrechts">
 					<a4j:support event="onviewactivated" reRender="securedActionTable, messages" />
 				</rich:inplaceInput>
 			</rich:column>
-			<rich:column styleClass="smallColumn">
+			<rich:column sortBy="#{dto.entity.description}">
 				<f:facet name="header">
-					<rich:spacer />
+					<h:outputText value="Beschreibung" />
 				</f:facet>
-				<a4j:commandLink reRender="securedActionTable" rendered="#{dto.state.name ne 'delete'}" immediate="true">
-					<a4j:actionparam name="securedActionId" assignTo="#{securedActionMaintenanceBean.securedActionId}" value="#{dto.entity.id}"
-						actionListener="#{securedActionMaintenanceBean.removeSecuredAction}" />
-					<h:graphicImage library="images/16x16" name="remove.png" />
-				</a4j:commandLink>
-				<a4j:commandLink reRender="securedActionTable" rendered="#{dto.state.name eq 'delete'}">
-					<a4j:actionparam name="securedActionId" assignTo="#{securedActionMaintenanceBean.securedActionId}" value="#{dto.entity.id}"
-						actionListener="#{securedActionMaintenanceBean.unremoveSecuredAction}" />
-					<h:graphicImage library="images/16x16" name="remove.png" />
-				</a4j:commandLink>
+				<rich:inplaceInput maxlength="255" layout="block" value="#{dto.entity.description}" />
 			</rich:column>
 		</rich:dataTable>
 	</ui:define>

@@ -95,22 +95,13 @@ public class SecuredResourceMaintenanceBean extends SecuredBean {
 					continue;
 				}
 				SecuredResource resource = dto.getEntity();
-				boolean expression = resource.isExpression();
 				String access = resource.getAccess();
-				int idx = resources.indexOf(dto) + 1;
-				if (expression & !isValidExpression(access)) {
-					FacesUtils.addErrorMessage("Das Zugriffsrecht in Zeile '" + idx
-							+ "' ist fehlerhaft.");
-					errorCount++;
-				}
-				if (!expression & !isValidSimpleExpression(access)) {
-					FacesUtils.addErrorMessage("Das Zugriffsrecht in Zeile '" + idx
-							+ "' ist fehlerhaft.\n"
-							+ "Ein simpler Ausdruck muss mit 'ROLE_' beginnen.");
+				if (!isValidExpression(access)) {
+					FacesUtils.addErrorMessage("No valid access definition");
 					errorCount++;
 				}
 			}
-			// do commit the changes if we have errors
+			// do commit the changes if we have no errors
 			if (errorCount > 0) {
 				return;
 			}
@@ -128,11 +119,6 @@ public class SecuredResourceMaintenanceBean extends SecuredBean {
 
 	public void validateSecuredResource(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 		String stringValue = (String) value;
-		// simple entry
-		if (isValidSimpleExpression(stringValue)) {
-			return;
-		}
-		// complex entry
 		if (isValidExpression(stringValue)) {
 			return;
 		}
@@ -155,13 +141,5 @@ public class SecuredResourceMaintenanceBean extends SecuredBean {
 
 	public List<GenericDto<SecuredResource>> getResources() {
 		return resources;
-	}
-
-	// ---------------------------------
-	// Private helpers
-	// ---------------------------------
-	/** Returns whether or not the given string is a valid entry */
-	private boolean isValidSimpleExpression(String expression) {
-		return expression.startsWith("ROLE_");
 	}
 }

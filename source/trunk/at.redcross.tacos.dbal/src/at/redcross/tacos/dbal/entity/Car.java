@@ -1,6 +1,6 @@
 package at.redcross.tacos.dbal.entity;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -3,25 +3,52 @@ package at.redcross.tacos.web.security;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.annotation.PostConstruct;
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
-
 import at.redcross.tacos.dbal.entity.SecuredAction;
 
 /**
  * The {@code WebActionDefinitionRegistry} is the global registry where all
  * available {@linkplain SecuredAction actions} are registered.
  */
-@ManagedBean(name = "actionDefinitionRegistry")
-@ApplicationScoped
 public class WebActionDefinitionRegistry {
+
+	/** the one and only instance */
+	private static WebActionDefinitionRegistry instance;
 
 	/** the list of available actions */
 	private Set<WebActionDefinition> definitions = new HashSet<WebActionDefinition>();
 
-	@PostConstruct
-	protected void registerActions() {
+	/**
+	 * Creates a new instance and registers the available actions
+	 */
+	protected WebActionDefinitionRegistry() {
+		initializeActions();
+	}
+
+	/**
+	 * Returns the shared registry instance.
+	 * 
+	 * @return the registry
+	 */
+	public static synchronized WebActionDefinitionRegistry getInstance() {
+		if (instance == null) {
+			instance = new WebActionDefinitionRegistry();
+		}
+		return instance;
+	}
+
+	/**
+	 * Returns a list of all available definitions
+	 * 
+	 * @return the available action definitions.
+	 */
+	protected Set<WebActionDefinition> getDefinitions() {
+		return definitions;
+	}
+
+	/**
+	 * Initializes all available actions
+	 */
+	protected void initializeActions() {
 		// delete a roster entry
 		{
 			WebActionDefinition definition = new WebActionDefinition("roster-deleteEntry");
@@ -40,14 +67,5 @@ public class WebActionDefinitionRegistry {
 			definition.setDescription("Fahrzeugzuweisung durchführen");
 			definitions.add(definition);
 		}
-	}
-
-	/**
-	 * Returns a list of all available definitions
-	 * 
-	 * @return the available action definitions.
-	 */
-	public Set<WebActionDefinition> getDefinitions() {
-		return definitions;
 	}
 }

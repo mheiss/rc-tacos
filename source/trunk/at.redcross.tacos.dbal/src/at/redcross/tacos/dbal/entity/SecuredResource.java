@@ -26,9 +26,6 @@ public class SecuredResource extends EntityImpl {
 	@Column(nullable = false)
 	private String access;
 
-	@Column(nullable = false)
-	private boolean expression;
-
 	// ---------------------------------
 	// EntityImpl
 	// ---------------------------------
@@ -72,10 +69,6 @@ public class SecuredResource extends EntityImpl {
 		this.resource = resource;
 	}
 
-	public void setExpression(boolean expression) {
-		this.expression = expression;
-	}
-
 	public void setAccess(String access) {
 		this.access = access;
 	}
@@ -93,9 +86,5 @@ public class SecuredResource extends EntityImpl {
 
 	public String getAccess() {
 		return access;
-	}
-
-	public boolean isExpression() {
-		return expression;
 	}
 }
