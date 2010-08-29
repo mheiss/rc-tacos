@@ -16,7 +16,7 @@
 				</li>
 			</h:panelGroup>
 			<li class="tab #{section eq 'info' ? 'active' : ''}">
-				<h:outputLink value="#"><h:outputText value="Informationen" /></h:outputLink>
+				<pretty:link mappingId="info-currentOverview"><h:outputText value="Informationen" /></pretty:link>
 			</li>
 			<li class="tab #{section eq 'help' ? 'active' : ''}">
 				<h:outputLink value="#"><h:outputText value="Hilfe" /></h:outputLink>

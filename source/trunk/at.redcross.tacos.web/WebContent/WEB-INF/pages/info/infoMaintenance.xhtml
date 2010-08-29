@@ -1,0 +1,132 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces">
+<body>
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+	<ui:param name="section" value="info" />
+	<ui:param name="page" value="maintenance" />
+
+	<!--  Dynamically resize the input fields -->
+	<ui:define name="javaScriptMethod">
+		jQuery(window).resize(function() {
+			smartEditor();
+		});
+		jQuery(document).ready(function() {
+			smartEditor();
+		});
+	</ui:define>
+
+	<!-- Include the navigation of the page -->
+	<ui:define name="navigation">
+		<ui:include src="navigation.xhtml" />
+	</ui:define>
+
+	<!-- Customize the title and image -->
+	<ui:define name="page-header">
+		<h:graphicImage rendered="#{infoMaintenanceBean.new}" library="images/32x32" name="calendar_add.png" />
+		<h:graphicImage rendered="#{not infoMaintenanceBean.new}" library="images/32x32" name="calendar_edit.png" />
+		<h2 class="title">
+			<h:outputText value="Neue Information" rendered="#{infoMaintenanceBean.new}" />
+			<h:outputText value="Information bearbeiten" rendered="#{not infoMaintenanceBean.new}" />
+		</h2>
+	</ui:define>
+	
+	<!-- Render the content -->
+	<ui:define name="page-content">
+		<rich:messages errorClass="errorMessage" globalOnly="true" />
+		<fieldset class="defaultStyle">
+		<legend><h:outputText value="Allgemeine Daten:" /></legend>
+		<ol>
+			<li class="left">
+					<h:outputLabel for="shortName" value="Titel"> <em class="required">*</em> </h:outputLabel>
+					<div class="input">
+						<h:inputText id="shortName" value="#{infoMaintenanceBean.info.shortName}" required="true" requiredMessage="Bitte geben Sie einen Titel für die Information an">
+							<rich:ajaxValidator event="onblur" />
+						</h:inputText>
+						<rich:message for="shortName" errorClass="error" />
+					</div>
+			</li>
+			<li>
+				<h:outputLabel for="location" value="Ortsstelle"> <em class="required">*</em> </h:outputLabel>
+				<div class="input">
+					<rich:comboBox width="350px" id="location" value="#{infoMaintenanceBean.info.location}" 
+						selectFirstOnUpdate="false" defaultLabel="Orststelle"
+						required="true" requiredMessage="Bitte geben sie eine Dienststelle an">
+						<f:selectItems value="#{infoMaintenanceBean.locationItems}" />
+						<f:validator validatorId="validator.dropDown" />
+						<f:converter converterId="converter.dropDown" />
+						<rich:ajaxValidator event="onchange" />
+					</rich:comboBox> 
+					<rich:message for="location" errorClass="error" />
+				</div>
+			</li>
+			<li>
+				<h:outputLabel for="category" value="Kategorie"> <em class="required">*</em> </h:outputLabel>
+				<div class="input">
+					<rich:comboBox width="350px" id="category" value="#{infoMaintenanceBean.info.category}" 
+						selectFirstOnUpdate="false" defaultLabel="Kategorie"
+						required="true" requiredMessage="Bitte geben sie eine Kategorie an">
+						<f:selectItems value="#{infoMaintenanceBean.categoryItems}" />
+						<f:validator validatorId="validator.dropDown" />
+						<f:converter converterId="converter.dropDown" />
+						<rich:ajaxValidator event="onchange" />
+					</rich:comboBox> 
+					<rich:message for="location" errorClass="error" />
+				</div>
+			</li>
+		</ol>
+		</fieldset>
+		<fieldset class="defaultStyle"><legend><h:outputText value="Anzeigezeitraum" /></legend>
+		<ol>
+			<li>
+				<h:outputLabel for="startDate" value="Anzeige ab"> <em class="required">*</em> </h:outputLabel>
+				<div class="input">
+					<rich:calendar id="startDate" value="#{infoMaintenanceBean.info.displayStartDate}" styleClass="rich-calendar" 
+						enableManualInput="true" converterMessage="Bitte geben Sie ein gültiges Datum an"
+						datePattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}"
+						required="true" requiredMessage="Bitte geben Sie ein Startdatum für die Anzeige an">
+						<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+						<rich:ajaxValidator event="onchanged" />
+						<rich:ajaxValidator event="oninputblur" />
+					</rich:calendar> 
+					<rich:message for="startDate" errorClass="error" />
+				</div>
+			</li>
+			<li>
+				<h:outputLabel for="endDate" value="Anzeige bis"> <em class="required">*</em> </h:outputLabel>
+				<div class="input">
+					<rich:calendar id="endDate" value="#{infoMaintenanceBean.info.displayEndDate}" styleClass="rich-calendar" 
+						enableManualInput="true" converterMessage="Bitte geben Sie ein gültiges Datum an"
+						datePattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}"
+						required="true" requiredMessage="Bitte geben Sie ein Enddatum für die Anzeige an">
+						<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+						<rich:ajaxValidator event="onchanged" />
+						<rich:ajaxValidator event="oninputblur" />
+					</rich:calendar> 
+					<rich:message for="endDate" errorClass="error" />
+				</div>
+			</li>
+		</ol>
+		</fieldset>
+		<fieldset class="defaultStyle">
+			<legend><h:outputText value="Beschreibung" /></legend> 
+			<rich:editor value="#{infoMaintenanceBean.info.description}" theme="simple" 
+				oninit="smartEditor()" autoResize="true" language="de" />
+		</fieldset>
+		
+		<fieldset class="defaultStyle last">
+			<div class="actionBar">
+				<a4j:commandLink immediate="true" reRender="content-wrapper" styleClass="button" action="#{infoMaintenanceBean.revert}">
+					<span><h:outputText value="Zurücksetzen" /> </span>
+				</a4j:commandLink>
+				<a4j:commandLink styleClass="button" action="#{infoMaintenanceBean.persist}">
+					<span><h:outputText value="Information speichern" /></span>
+				</a4j:commandLink>
+			</div>
+		</fieldset>
+	</ui:define>
+</ui:composition>
+</body>
+</html>
