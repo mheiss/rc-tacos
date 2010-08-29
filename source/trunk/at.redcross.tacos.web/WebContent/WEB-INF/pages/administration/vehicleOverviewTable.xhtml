@@ -26,6 +26,12 @@
 				</f:facet>
 				<h:outputText value="#{car.name}" />
 			</rich:column>
+			<rich:column styleClass="smallColumn" sortBy="#{car.type}" sortOrder="ASCENDING">
+				<f:facet name="header">
+					<h:outputText value="Typ" title="Typ" />
+				</f:facet>
+				<h:outputText value="#{car.type}" />
+			</rich:column>
 			<rich:column styleClass="mediumColumn" sortBy="#{car.location.name}">
 				<f:facet name="header">
 					<h:outputText value="Dienststelle" />
@@ -37,6 +43,12 @@
 					<h:outputText value="Anmerkungen" />
 				</f:facet>
 				<h:outputText value="#{car.notes}" escape="false"/>
+			</rich:column>
+			<rich:column styleClass="smallColumn" sortBy="#{car.registrationDate}" sortOrder="ASCENDING">
+				<f:facet name="header">
+					<h:outputText value="Erstzulassung" title="Erstzulassung" />
+				</f:facet>
+				<h:outputText value="#{car.registrationDate}" />
 			</rich:column>
 			<rich:column title="Bearbeiten" styleClass="smallColumn">
 				<f:facet name="header">

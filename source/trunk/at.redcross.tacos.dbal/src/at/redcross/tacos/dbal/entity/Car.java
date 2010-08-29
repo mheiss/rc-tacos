@@ -1,5 +1,7 @@
 package at.redcross.tacos.dbal.entity;
 
+import java.sql.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,6 +37,12 @@ public class Car extends EntityImpl {
 
 	@Column
     private boolean toDelete;
+	
+	@Column
+	private String type;
+	
+	@Column
+	private Date registrationDate;
     
 
     // ---------------------------------
@@ -95,6 +103,14 @@ public class Car extends EntityImpl {
 	public void setToDelete(boolean toDelete) {
 		this.toDelete = toDelete;
 	}
+	
+	public void setType(String type){
+		this.type = type;
+	}
+	
+	public void setRegistrationDate(Date registrationDate) {
+		this.registrationDate = registrationDate;
+	}
 
     // ---------------------------------
     // Getters for the properties
@@ -122,5 +138,13 @@ public class Car extends EntityImpl {
     public boolean isToDelete() {
 		return toDelete;
 	}
+    
+    public String getType(){
+    	return type;
+    }
+    
+    public Date getRegistrationDate(){
+    	return registrationDate;
+    }
 
 }
