@@ -1,5 +1,6 @@
 package at.redcross.tacos.web.beans;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +17,7 @@ import at.redcross.tacos.dbal.entity.RosterEntry;
 import at.redcross.tacos.dbal.helper.LocationHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.dbal.query.RosterQueryParam;
+import at.redcross.tacos.web.beans.dto.RosterReportParam;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.faces.combo.DropDownHelper;
 import at.redcross.tacos.web.persitence.EntityManagerFactory;
@@ -214,6 +216,14 @@ public abstract class RosterOverviewBean extends BaseBean {
 	// ---------------------------------
 	// Helper methods
 	// ---------------------------------
+	protected List<RosterReportParam> getParamForReport() {
+		List<RosterReportParam> params = new ArrayList<RosterReportParam>();
+		for (RosterEntry entry : entries) {
+			params.add(new RosterReportParam(entry));
+		}
+		return params;
+	}
+
 	protected RosterQueryParam getParamForQuery() {
 		RosterQueryParam param = new RosterQueryParam();
 		param.date = date;
