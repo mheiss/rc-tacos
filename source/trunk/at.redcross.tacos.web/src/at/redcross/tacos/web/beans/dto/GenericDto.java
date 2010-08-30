@@ -16,13 +16,13 @@ public class GenericDto<T extends EntityImpl> implements Serializable {
 	private static final long serialVersionUID = 7715478489903222917L;
 
 	/** the object to be wrapped */
-	private final T entity;
+	protected final T entity;
 
 	/** this object is selected */
-	private boolean selected;
+	protected boolean selected;
 
 	/** the current state of this DTO */
-	private DtoState state = DtoState.SYNC;
+	protected DtoState state = DtoState.SYNC;
 
 	/**
 	 * Creates a new generic DTO object wrapping the given entity

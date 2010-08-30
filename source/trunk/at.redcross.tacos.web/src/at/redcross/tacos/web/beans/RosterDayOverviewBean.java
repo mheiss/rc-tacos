@@ -10,9 +10,9 @@ import javax.persistence.EntityManager;
 import org.ajax4jsf.model.KeepAlive;
 import org.apache.commons.lang.time.DateUtils;
 
-import at.redcross.tacos.dbal.entity.RosterEntry;
 import at.redcross.tacos.dbal.helper.RosterEntryHelper;
 import at.redcross.tacos.dbal.query.RosterQueryParam;
+import at.redcross.tacos.web.beans.dto.RosterDto;
 import at.redcross.tacos.web.reporting.ReportRenderer.ReportRenderParameters;
 
 @KeepAlive
@@ -34,8 +34,8 @@ public class RosterDayOverviewBean extends RosterOverviewBean {
 	}
 
 	@Override
-	protected List<RosterEntry> getEntries(EntityManager manager, RosterQueryParam params) {
-		return RosterEntryHelper.listByDay(manager, params);
+	protected List<RosterDto> getEntries(EntityManager manager, RosterQueryParam params) {
+		return RosterDto.fromList(RosterEntryHelper.listByDay(manager, params));
 	}
 
 	@Override

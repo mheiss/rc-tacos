@@ -18,11 +18,12 @@ import at.redcross.tacos.dbal.entity.RosterEntry;
 import at.redcross.tacos.dbal.helper.LocationHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.dbal.query.RosterQueryParam;
-import at.redcross.tacos.web.beans.dto.RosterReportParam;
+import at.redcross.tacos.web.beans.dto.RosterDto;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.faces.combo.DropDownHelper;
 import at.redcross.tacos.web.persitence.EntityManagerFactory;
 import at.redcross.tacos.web.reporting.ReportRenderer;
+import at.redcross.tacos.web.reporting.RosterReportParam;
 import at.redcross.tacos.web.reporting.ReportRenderer.ReportRenderParameters;
 import at.redcross.tacos.web.utils.TacosDateUtils;
 
@@ -36,7 +37,7 @@ public abstract class RosterOverviewBean extends BaseBean {
 	private long entryId;
 
 	/** query result */
-	protected List<RosterEntry> entries;
+	protected List<RosterDto> entries;
 
 	/** the available locations */
 	protected List<Location> locations;
@@ -145,9 +146,9 @@ public abstract class RosterOverviewBean extends BaseBean {
 		EntityManager manager = null;
 		try {
 			manager = EntityManagerFactory.createEntityManager();
-			Iterator<RosterEntry> iter = entries.iterator();
+			Iterator<RosterDto> iter = entries.iterator();
 			while (iter.hasNext()) {
-				RosterEntry entry = iter.next();
+				RosterEntry entry = iter.next().getEntity();
 				if (entry.getId() != entryId) {
 					continue;
 				}
@@ -167,7 +168,8 @@ public abstract class RosterOverviewBean extends BaseBean {
 		EntityManager manager = null;
 		try {
 			manager = EntityManagerFactory.createEntityManager();
-			for (RosterEntry entry : entries) {
+			for (RosterDto entryDto : entries) {
+				RosterEntry entry = entryDto.getEntity();
 				if (entry.getId() != entryId) {
 					continue;
 				}
@@ -188,7 +190,8 @@ public abstract class RosterOverviewBean extends BaseBean {
 		EntityManager manager = null;
 		try {
 			manager = EntityManagerFactory.createEntityManager();
-			for (RosterEntry entry : entries) {
+			for (RosterDto entryDto : entries) {
+				RosterEntry entry = entryDto.getEntity();
 				if (entry.getId() != entryId) {
 					continue;
 				}
@@ -206,7 +209,7 @@ public abstract class RosterOverviewBean extends BaseBean {
 	}
 
 	/** Loads the roster entries using the given filter parameters */
-	protected abstract List<RosterEntry> getEntries(EntityManager manager, RosterQueryParam param);
+	protected abstract List<RosterDto> getEntries(EntityManager manager, RosterQueryParam param);
 
 	/** Returns the parameters for the report generation */
 	protected abstract ReportRenderParameters getReportParams();
@@ -222,8 +225,8 @@ public abstract class RosterOverviewBean extends BaseBean {
 	// ---------------------------------
 	protected List<RosterReportParam> getParamForReport() {
 		List<RosterReportParam> params = new ArrayList<RosterReportParam>();
-		for (RosterEntry entry : entries) {
-			params.add(new RosterReportParam(entry));
+		for (RosterDto entryDto : entries) {
+			params.add(new RosterReportParam(entryDto.getEntity()));
 		}
 		return params;
 	}
@@ -286,7 +289,7 @@ public abstract class RosterOverviewBean extends BaseBean {
 		return locationName;
 	}
 
-	public List<RosterEntry> getEntries() {
+	public List<RosterDto> getEntries() {
 		return entries;
 	}
 

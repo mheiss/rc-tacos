@@ -1,4 +1,4 @@
-package at.redcross.tacos.web.beans.dto;
+package at.redcross.tacos.web.reporting;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
