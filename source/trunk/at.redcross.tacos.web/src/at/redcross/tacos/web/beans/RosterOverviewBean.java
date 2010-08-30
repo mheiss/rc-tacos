@@ -3,6 +3,7 @@ package at.redcross.tacos.web.beans;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.faces.event.ActionEvent;
@@ -143,13 +144,15 @@ public abstract class RosterOverviewBean extends BaseBean {
 		EntityManager manager = null;
 		try {
 			manager = EntityManagerFactory.createEntityManager();
-			for (RosterEntry entry : entries) {
+			Iterator<RosterEntry> iter = entries.iterator();
+			while (iter.hasNext()) {
+				RosterEntry entry = iter.next();
 				if (entry.getId() != entryId) {
 					continue;
 				}
 				entry.setToDelete(true);
-				entries.remove(entry);
 				manager.merge(entry);
+				iter.remove();
 			}
 			EntityManagerHelper.commit(manager);
 		} catch (Exception ex) {
