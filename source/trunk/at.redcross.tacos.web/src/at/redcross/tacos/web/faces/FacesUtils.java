@@ -138,7 +138,7 @@ public class FacesUtils {
 	}
 
 	/**
-	 * Logs the current error and redirect to the 'error.faces' page
+	 * Logs the current error and redirect to the 'error' page
 	 */
 	public static void redirectError(Throwable t) {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -172,6 +172,36 @@ public class FacesUtils {
 			externalContext.redirect(target.toString());
 		} catch (Exception e) {
 			log.fatal("Failed to redirect to the error page", e);
+		}
+	}
+
+	/**
+	 * Logs the current error and redirects to the 'accessDenied' page
+	 */
+	public static void redirectAccessDenied(String cause) {
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		ExternalContext externalContext = facesContext.getExternalContext();
+		try {
+			// log the error message and the request URL
+			PrettyContext prettyContext = PrettyContext.getCurrentInstance();
+			PrettyConfig prettyConfig = prettyContext.getConfig();
+			String requestedUri = prettyContext.getOriginalRequestUrl();
+			requestedUri = requestedUri.replace(externalContext.getRequestContextPath(), "");
+			requestedUri = requestedUri.replaceFirst("/", "");
+			if (log.isErrorEnabled()) {
+				String message = "The access to the page %1$s is denied (%2$s)";
+				log.error(String.format(message, requestedUri, cause));
+			}
+
+			// redirect the user to the error page
+			PrettyUrlMapping mapping = prettyConfig.getMappingById("accessDenied");
+			StringBuffer target = new StringBuffer();
+			target.append(externalContext.getRequestContextPath());
+			target.append(mapping.getPattern());
+			facesContext.responseComplete();
+			externalContext.redirect(target.toString());
+		} catch (Exception e) {
+			log.fatal("Failed to redirect to the access denied page", e);
 		}
 	}
 

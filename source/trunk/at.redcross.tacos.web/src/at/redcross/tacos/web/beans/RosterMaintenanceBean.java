@@ -14,6 +14,7 @@ import at.redcross.tacos.dbal.helper.LocationHelper;
 import at.redcross.tacos.dbal.helper.ServiceTypeHelper;
 import at.redcross.tacos.dbal.helper.SystemUserHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
+import at.redcross.tacos.web.beans.dto.RosterDto;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.faces.combo.DropDownHelper;
 import at.redcross.tacos.web.persitence.EntityManagerFactory;
@@ -39,7 +40,11 @@ public class RosterMaintenanceBean extends BaseBean {
 		EntityManager manager = null;
 		try {
 			manager = EntityManagerFactory.createEntityManager();
-			loadfromDatabase(manager, rosterId);
+			rosterEntry = loadfromDatabase(manager, rosterId);
+			RosterDto dto = new RosterDto(rosterEntry);
+			if (!dto.isEditEnabled()) {
+				FacesUtils.redirectAccessDenied("Entry '" + rosterEntry + "' cannot be edited");
+			}
 			userItems = DropDownHelper.convertToItems(SystemUserHelper.list(manager));
 			locationItems = DropDownHelper.convertToItems(LocationHelper.list(manager));
 			serviceTypeItems = DropDownHelper.convertToItems(ServiceTypeHelper.list(manager));
@@ -89,12 +94,13 @@ public class RosterMaintenanceBean extends BaseBean {
 	// ---------------------------------
 	// Helper methods
 	// ---------------------------------
-	private void loadfromDatabase(EntityManager manager, long id) {
-		rosterEntry = manager.find(RosterEntry.class, id);
-		if (rosterEntry == null) {
-			rosterId = -1;
-			rosterEntry = new RosterEntry();
+	private RosterEntry loadfromDatabase(EntityManager manager, long id) {
+		RosterEntry rosterEntry = manager.find(RosterEntry.class, id);
+		if (rosterEntry != null) {
+			return rosterEntry;
 		}
+		rosterId = -1;
+		return new RosterEntry();
 	}
 
 	// ---------------------------------
