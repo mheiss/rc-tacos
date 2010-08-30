@@ -60,6 +60,7 @@ public abstract class RosterOverviewBean extends BaseBean {
 	protected void init() throws Exception {
 		EntityManager manager = null;
 		try {
+			// query data from the database
 			manager = EntityManagerFactory.createEntityManager();
 			date = TacosDateUtils.getCalendar(System.currentTimeMillis()).getTime();
 			locations = LocationHelper.list(manager);
