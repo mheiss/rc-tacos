@@ -26,3 +26,7 @@ input, select, textarea {
 	-moz-border-radius:4px 4px 4px 4px;
 	border:1px solid #C0BCB7;
 }
+
+input[type=checkbox] {
+	border:0px;
+}

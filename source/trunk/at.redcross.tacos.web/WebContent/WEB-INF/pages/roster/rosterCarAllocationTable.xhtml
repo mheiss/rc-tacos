@@ -1,7 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich" xmlns:pretty="http://ocpsoft.com/prettyfaces"
-	xmlns:birt="http://jsf4birt.components">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich" xmlns:pretty="http://ocpsoft.com/prettyfaces">
 <body>
 <ui:composition>
 	<h:panelGroup rendered="#{empty values}">
@@ -10,14 +9,14 @@
 		</div>
 	</h:panelGroup>
 	<rich:panel rendered="#{not empty values}">
-		<rich:dataTable id="table-#{tabId}"  styleClass="defaultStyle" rendered="#{not empty values}" value="#{values}" var="rosterEntry"
+		<rich:dataTable id="table-#{tabId}"  styleClass="defaultStyle" rendered="#{not empty values}" value="#{values}" var="rosterDto"
 			onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
 			<rich:column styleClass="smallColumn bold">
 				<f:facet name="header">
 					<h:outputText value="Fahrzeug" />
 				</f:facet>
-				<h:outputText value="#{rosterEntry.car.name}" rendered="#{rosterEntry.toDelete}" />
-				<rich:comboBox value="#{rosterEntry.car}" rendered="#{not rosterEntry.toDelete}"
+				<h:outputText value="#{rosterDto.entity.car.name}" rendered="#{not rosterDto.assignCarEnabled}" />
+				<rich:comboBox value="#{rosterDto.entity.car}" rendered="#{rosterDto.assignCarEnabled}"
 					selectFirstOnUpdate="false" defaultLabel="Fahrzeug">
 					<f:selectItems value="#{rosterCarAllocationOverviewBean.carItems}" />
 					<f:validator validatorId="validator.dropDown" />
@@ -29,7 +28,7 @@
 				<f:facet name="header">
 					<h:outputText value="Mitarbeiter" />
 				</f:facet>
-				<h:outputText value="#{rosterEntry.systemUser.lastName} #{rosterEntry.systemUser.firstName}" />
+				<h:outputText value="#{rosterDto.entity.systemUser.lastName} #{rosterDto.entity.systemUser.firstName}" />
 			</rich:column>
 			<rich:column styleClass="center">
 				<f:facet name="header">
@@ -37,10 +36,10 @@
 				</f:facet>
 				<a4j:outputPanel layout="block">
 					<rich:toolTip styleClass="tooltipDefault" followMouse="false" direction="top-right" layout="block" verticalOffset="35">
-						<h:outputText value="#{rosterEntry.notes}" escape="false" />
+						<h:outputText value="#{rosterDto.entity.notes}" escape="false" />
 						<div class="tooltip-image" />
 					</rich:toolTip>
-					<h:graphicImage library="images/16x16" name="notes.png" rendered="#{not empty rosterEntry.notes}" />
+					<h:graphicImage library="images/16x16" name="notes.png" rendered="#{not empty rosterDto.entity.notes}" />
 				</a4j:outputPanel>
 			</rich:column>
 			<rich:column styleClass="center">
@@ -51,11 +50,11 @@
 						<h:outputText value="[geplant]" />
 					</h:panelGroup>
 				</f:facet>
-				<h:outputText value="#{rosterEntry.plannedStartDate}">
+				<h:outputText value="#{rosterDto.entity.plannedStartDate}">
 					<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 				</h:outputText>
 				<h:outputText value=" " />
-				<h:outputText value="#{rosterEntry.plannedStartTime}">
+				<h:outputText value="#{rosterDto.entity.plannedStartTime}">
 					<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 				</h:outputText>
 			</rich:column>
@@ -67,11 +66,11 @@
 						<h:outputText value="[geplant]" />
 					</h:panelGroup>
 				</f:facet>
-				<h:outputText value="#{rosterEntry.plannedEndDate}">
+				<h:outputText value="#{rosterDto.entity.plannedEndDate}">
 					<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 				</h:outputText>
 				<h:outputText value=" " />
-				<h:outputText value="#{rosterEntry.plannedEndTime}">
+				<h:outputText value="#{rosterDto.entity.plannedEndTime}">
 					<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 				</h:outputText>
 			</rich:column>
@@ -79,24 +78,24 @@
 				<f:facet name="header">
 					<h:outputText value="Verwendung" />
 				</f:facet>
-				<h:outputText value="#{rosterEntry.assignment.name}" />
+				<h:outputText value="#{rosterDto.entity.assignment.name}" />
 			</rich:column>
 			<rich:column>
 				<f:facet name="header">
 					<h:outputText value="Dienstverhältnis" />
 				</f:facet>
-				<h:outputText value="#{rosterEntry.serviceType.name}" />
+				<h:outputText value="#{rosterDto.entity.serviceType.name}" />
 			</rich:column>
 			<rich:column styleClass="smallColumn">
 				<f:facet name="header">
 					<h:outputText value="Aktionen" />
 				</f:facet>
-				<pretty:link rendered="#{not rosterEntry.toDelete}" mappingId="roster-editMaintenance" title="Dienstplaneintrag bearbeiten">
-					<f:param value="#{rosterEntry.id}" />
+				<pretty:link rendered="#{rosterDto.editEnabled}" mappingId="roster-editMaintenance" title="Dienstplaneintrag bearbeiten">
+					<f:param value="#{rosterDto.entity.id}" />
 					<h:graphicImage styleClass="actionImage" library="images/16x16" name="edit.png" />
 				</pretty:link>
-				<a4j:commandLink rendered="#{not rosterEntry.toDelete}" reRender="rosterTab" title="Dienstplaneintrag löschen">
-					<a4j:actionparam name="rosterId" assignTo="#{bean.entryId}" value="#{rosterEntry.id}"
+				<a4j:commandLink rendered="#{rosterDto.deleteEnabled}" reRender="rosterTab" title="Dienstplaneintrag löschen">
+					<a4j:actionparam name="rosterId" assignTo="#{bean.entryId}" value="#{rosterDto.entity.id}"
 						actionListener="#{bean.markToDelete}" />
 					<h:graphicImage library="images/16x16" name="remove.png" />
 				</a4j:commandLink>

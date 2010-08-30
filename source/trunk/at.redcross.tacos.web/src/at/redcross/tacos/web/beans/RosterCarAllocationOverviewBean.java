@@ -12,12 +12,12 @@ import javax.persistence.EntityManager;
 import org.ajax4jsf.model.KeepAlive;
 import org.apache.commons.lang.time.DateUtils;
 
-import at.redcross.tacos.dbal.entity.RosterEntry;
 import at.redcross.tacos.dbal.helper.CarHelper;
 import at.redcross.tacos.dbal.helper.LocationHelper;
 import at.redcross.tacos.dbal.helper.RosterEntryHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.dbal.query.RosterQueryParam;
+import at.redcross.tacos.web.beans.dto.RosterDto;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.faces.combo.DropDownHelper;
 import at.redcross.tacos.web.persitence.EntityManagerFactory;
@@ -58,8 +58,8 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
 		EntityManager manager = null;
 		try {
 			manager = EntityManagerFactory.createEntityManager();
-			for (RosterEntry entry : entries) {
-				manager.merge(entry);
+			for (RosterDto entryDto : entries) {
+				manager.merge(entryDto.getEntity());
 			}
 			EntityManagerHelper.commit(manager);
 		} catch (Exception ex) {
@@ -80,8 +80,8 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
 	}
 
 	@Override
-	protected List<RosterEntry> getEntries(EntityManager manager, RosterQueryParam param) {
-		return RosterEntryHelper.listByDay(manager, param);
+	protected List<RosterDto> getEntries(EntityManager manager, RosterQueryParam param) {
+		return RosterDto.fromList(RosterEntryHelper.listByDay(manager, param));
 	}
 
 	@Override

@@ -18,12 +18,6 @@
 						</rich:calendar> 
 						<rich:message for="date" errorClass="error" />
 					</div>
-					<div class="leftDateDecorator">
-						<a4j:commandLink reRender="dateTitle,filter,rosterTab" title="Filter zurücksetzen">
-							<a4j:actionparam name="dateFilter" value="#{null}" assignTo="#{bean.date}" actionListener="#{bean.filterChanged}" />
-							<h:graphicImage library="images" name="edit-clear.png" />
-						</a4j:commandLink>
-					</div>
 				</li>
 				<li class="right">
 					<h:outputLabel for="delete" value="Zeige gelöschte" />

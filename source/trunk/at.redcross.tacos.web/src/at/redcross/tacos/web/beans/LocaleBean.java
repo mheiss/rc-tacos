@@ -22,8 +22,12 @@ public class LocaleBean {
 		timeZone = TimeZone.getTimeZone("Europe/Berlin");
 	}
 
+	public Calendar getCalendar() {
+		return Calendar.getInstance(timeZone, locale);
+	}
+
 	public Date getDate() {
-		return Calendar.getInstance(timeZone, locale).getTime();
+		return getCalendar().getTime();
 	}
 
 	public Locale getLocale() {
