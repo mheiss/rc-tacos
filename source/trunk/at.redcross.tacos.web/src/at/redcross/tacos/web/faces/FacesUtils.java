@@ -5,6 +5,7 @@ import javax.el.ELResolver;
 import javax.el.MethodExpression;
 import javax.el.ValueExpression;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.ExternalContext;
@@ -116,13 +117,24 @@ public class FacesUtils {
 	 * 
 	 * @param beanName
 	 *            the name of the bean e.g.: myBean
+	 * @param <T>
+	 *            the type of the bean
 	 * @return the created bean
 	 */
-	public static Object lookupBean(String beanName) {
+	@SuppressWarnings("unchecked")
+	public static <T> T lookupBean(Class<T> type) {
+		if (!(type instanceof Class<?>)) {
+			throw new IllegalArgumentException("A bean class must be specified");
+		}
+		Class<T> clazz = (Class<T>) type;
+		ManagedBean managedBean = clazz.getAnnotation(ManagedBean.class);
+		if (managedBean == null) {
+			throw new IllegalArgumentException("'" + type + "' is not a managed bean");
+		}
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 		ELContext elContext = facesContext.getELContext();
 		ELResolver elResolver = elContext.getELResolver();
-		return elResolver.getValue(elContext, null, beanName);
+		return (T) elResolver.getValue(elContext, null, managedBean.name());
 	}
 
 	/**
