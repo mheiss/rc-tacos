@@ -67,5 +67,11 @@ public class WebActionDefinitionRegistry {
 			definition.setDescription("Fahrzeugzuweisung durchführen");
 			definitions.add(definition);
 		}
+		// create a roster entry that is in the past
+		{
+			WebActionDefinition definition = new WebActionDefinition("roster-createOutdated");
+			definition.setDescription("Dienstplaneinträge für die Vergangenheit anlegen");
+			definitions.add(definition);
+		}
 	}
 }

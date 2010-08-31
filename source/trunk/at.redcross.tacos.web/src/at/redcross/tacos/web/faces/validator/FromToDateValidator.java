@@ -14,7 +14,7 @@ import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.utils.TacosDateUtils;
 
 @FacesValidator("validator.fromTo")
-public class FromToValidator implements Validator {
+public class FromToDateValidator implements Validator {
 
 	@Override
 	public void validate(FacesContext context, UIComponent comp, Object values) throws ValidatorException {
