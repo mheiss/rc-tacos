@@ -42,7 +42,7 @@ public class RosterMaintenanceBean extends BaseBean {
 			manager = EntityManagerFactory.createEntityManager();
 			rosterEntry = loadfromDatabase(manager, rosterId);
 			RosterDto dto = new RosterDto(rosterEntry);
-			if (!dto.isEditEnabled()) {
+			if (!isNew() && !dto.isEditEnabled()) {
 				FacesUtils.redirectAccessDenied("Entry '" + rosterEntry + "' cannot be edited");
 			}
 			userItems = DropDownHelper.convertToItems(SystemUserHelper.list(manager));

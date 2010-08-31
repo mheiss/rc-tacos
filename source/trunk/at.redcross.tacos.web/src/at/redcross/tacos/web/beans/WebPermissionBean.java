@@ -106,6 +106,10 @@ public class WebPermissionBean {
 	public boolean isAuthorizedToAssignCar() {
 		return canExecuteAction("roster-assignCar");
 	}
+	
+	public boolean isAuthorizedToCreateOutdatedRoster() {
+		return canExecuteAction("roster-createOutdated");
+	}
 
 	// ---------------------------------
 	// Helper methods
