@@ -313,8 +313,8 @@ table.defaultStyle,table.bigTable,table.editorTable {
 table.defaultStyle th {
 	text-align: center;
 	font-weight: bold;
-	padding:0.6em;
-	background-color:#BED6F8;
+	padding: 0.6em;
+	background-color: #BED6F8;
 }
 
 table.defaultStyle tr {
@@ -367,18 +367,18 @@ table.defaultStyle .center {
   Panel styling
  **********************************************************/
 .rich-stglpanel-body {
-	margin:0px;
-	padding:0px;
+	margin: 0px;
+	padding: 0px;
 }
 
 /***********************************************************
  Tab panel styling
  **********************************************************/
 .emptyBox {
-	padding:0.8em;
-	border-left:1px solid #BBBBBB;
-	border-right:1px solid #BBBBBB;
-	border-bottom:1px solid #BBBBBB;
+	padding: 0.8em;
+	border-left: 1px solid #BBBBBB;
+	border-right: 1px solid #BBBBBB;
+	border-bottom: 1px solid #BBBBBB;
 }
 
 /***********************************************************
@@ -399,6 +399,93 @@ ul.linkList a.linkDescription {
 	display: block;
 	color: #c5c5c5;
 	padding-top: 0.2em;
+}
+
+/***********************************************************
+ Service styling
+ **********************************************************/
+div#serviceCaption {
+	padding-top: 1em;
+	padding-bottom: 1em;
+	border-bottom: 1px solid #CCCCCC;
+}
+
+div#serviceSection ul.column {
+	width: 100%;
+	padding: 0;
+	margin-top: 2em;
+	list-style: none;
+}
+
+div#serviceSection ul.column li {
+	float: left;
+	width: 280px;
+	margin-bottom: 1.5em;
+	padding-bottom:0.5em;
+	display: inline;
+	border-bottom:dashed 1px #545454;
+}
+
+div#serviceSection .block {
+	font-size: 1em;
+	height: 100px;
+	margin-right:2em;
+	padding:0 0.5em 0 4em;
+}
+
+div#serviceSection .block h4 {
+	font-size: 1.8em;
+	font-weight:bold;
+	color:#545454;
+	text-decoration:underline;
+}
+
+div#serviceSection .userImage {
+	background:url(../images/32x32/users.png) no-repeat scroll left top;
+}
+
+div#serviceSection .vehicleImage {
+	background:url(../images/32x32/vehicle.png) no-repeat scroll left top;
+}
+
+div#serviceSection .competenceImage {
+	background:url(../images/32x32/books.png) no-repeat scroll left top;
+}
+
+div#serviceSection .assignmentImage {
+	background:url(../images/32x32/components.png) no-repeat scroll left top;
+}
+
+div#serviceSection .serviceTypeImage {
+	background:url(../images/32x32/profile.png) no-repeat scroll left top;
+}
+
+div#serviceSection .locationImage {
+	background:url(../images/32x32/building.png) no-repeat scroll left top;
+}
+
+div#serviceSection .securedResourceImage {
+	background:url(../images/32x32/securedResource.png) no-repeat scroll left top;
+}
+
+div#serviceSection .securedActionImage {
+	background:url(../images/32x32/securedAction.png) no-repeat scroll left top;
+}
+
+div#serviceSection .groupImage {
+	background:url(../images/32x32/users.png) no-repeat scroll left top;
+}
+
+div#serviceSection .usersImage {
+	background:url(../images/32x32/users.png) no-repeat scroll left top;
+}
+
+div#serviceSection .linkImage {
+	background:url(../images/32x32/web.png) no-repeat scroll left top;
+}
+
+div#serviceSection .categoryImage {
+	background:url(../images/32x32/profile.png) no-repeat scroll left top;
 }
 
 /***********************************************************
