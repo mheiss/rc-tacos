@@ -77,7 +77,7 @@ public class CompetenceStage implements DatasetupStage {
         }
         {
             Competence competence = new Competence();
-            competence.setName("Zivieldiener");
+            competence.setName("Zivildiener");
             competence.setShortName("ZD");
             manager.persist(competence);
         }

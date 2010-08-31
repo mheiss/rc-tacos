@@ -1,11 +1,22 @@
 <?xml version="1.0" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich"
+	xmlns:pretty="http://ocpsoft.com/prettyfaces">
 <body>
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
 	<ui:param name="htmlTitle" value="Administration" />
 	<ui:param name="section" value="admin" />
 	<ui:param name="page" value="home" />
+	
+	<!--  Dynamically resize the columns -->
+	<ui:define name="javaScriptMethod">
+		jQuery(window).resize(function() {
+			smartGrid();
+		});
+		jQuery(document).ready(function() {
+			smartGrid();
+		});
+	</ui:define>
 	
 	<ui:define name="navigation">
 		<ui:include src="navigation.xhtml" />
@@ -17,7 +28,101 @@
 	</ui:define>
 
 	<ui:define name="page-content">
-
+		<div id="serviceCaption">
+			<h:outputText styleClass="bold" value="Im Administrationsbereich können Sie verschiedene Einstellungen und Stammdaten des TACOS-Systems nach Ihren Wünschen anpassen." /> <br /><br />
+		</div>
+		<div id="serviceSection">
+			<ul class="column">
+				<li>
+					<div class="block userImage">
+						<pretty:link mappingId="admin-userOverview" title="Mitarbeiter pflegen" ><h4><h:outputText value="Mitarbeiter" /></h4></pretty:link>
+						<p>
+							<h:outputText value="Übersicht sowie Pflege aller Mitarbeiter die im System vorhanden sind." />	
+						</p>
+					</div>
+				</li>
+				<li>
+					<div class="block vehicleImage">
+						<pretty:link mappingId="admin-vehicleOverview" title="Fahrzeuge pflegen" ><h4><h:outputText value="Fahrzeuge" /></h4></pretty:link>
+						<p>
+							<h:outputText value="Übersicht sowie Pflege aller Fahrzeuge die im System vorhanden sind." />	
+						</p>
+					</div>
+				</li>
+				<li>
+					<div class="block locationImage">
+						<pretty:link mappingId="admin-locationMaintenance" title="Ortsstellen pflegen" ><h4><h:outputText value="Ortsstellen" /></h4></pretty:link>
+						<p>
+							<h:outputText value="Übersicht sowie Pflege aller Ortsstellen die im System vorhanden sind." />	
+						</p>
+					</div>
+				</li>
+				<li>
+					<div class="block competenceImage">
+						<pretty:link mappingId="admin-competenceMaintenance" title="Kompetenzen pflegen" ><h4><h:outputText value="Kompetenzen" /></h4></pretty:link>
+						<p>
+							<h:outputText value="Kompetenzen geben Auskunft darüber, welche Ausbildung ein Mitarbeiter hat." />	
+						</p>
+					</div>
+				</li>
+				<li>
+					<div class="block assignmentImage">
+						<pretty:link mappingId="admin-assignmentMaintenance" title="Verwendungen pflegen" ><h4><h:outputText value="Verwendungen" /></h4></pretty:link>
+						<p>
+							<h:outputText value="Die Verwendung gibt die Funktion an, die er bei einem Dienst ausüben will." />	
+						</p>
+					</div>
+				</li>
+				<li>
+					<div class="block serviceTypeImage">
+						<pretty:link mappingId="admin-serviceTypeMaintenance" title="Dienstverhältnisse pflegen" ><h4><h:outputText value="Dienstverhältnisse" /></h4></pretty:link>
+						<p>
+							<h:outputText value="Dienstverhältnisse pflegen die für einen Dienstplaneintrag zur Verfügung stehen." />	
+						</p>
+					</div>
+				</li>
+				<li>
+					<div class="block securedResourceImage">
+						<pretty:link mappingId="admin-securedResourceMaintenance" title="Seiten Zugriffsrechte pflegen" ><h4><h:outputText value="Seiten Zugriffsrechte" /></h4></pretty:link>
+						<p>
+							<h:outputText value="Welche Berechtigung ist notwendig, um auf eine Seite zugreifen zu können?" />	
+						</p>
+					</div>
+				</li>
+				<li>
+					<div class="block securedActionImage">
+						<pretty:link mappingId="admin-securedActionMaintenance" title="Aktions Zugriffsrechte pflegen" ><h4><h:outputText value="Aktions Zugriffsrechte" /></h4></pretty:link>
+						<p>
+							<h:outputText value="Welche Gruppe darf eine bestimmte Aktion (Dienstplaneintrag löschen,...) ausführen." />	
+						</p>
+					</div>
+				</li>
+				<li>
+					<div class="block groupImage">
+						<pretty:link mappingId="admin-groupMaintenance" title="Gruppen pflegen" ><h4><h:outputText value="Gruppen" /></h4></pretty:link>
+						<p>
+							<h:outputText value="Mit der Zugehörigkeit eines Benutzers zu einer Gruppe wird festgelegt welche Berechtigungen er im System hat." />	
+						</p>
+					</div>
+				</li>
+				<li>
+					<div class="block linkImage">
+						<pretty:link mappingId="admin-linkMaintenance" title="Links pflegen" ><h4><h:outputText value="Links" /></h4></pretty:link>
+						<p>
+							<h:outputText value="Nützliche Links pflegen damit die Mitarbeiter schneller auf online Resourcen zugreifen zu können. " />	
+						</p>
+					</div>
+				</li>
+				<li>
+					<div class="block categoryImage">
+						<pretty:link mappingId="admin-categoryMaintenance" title="Kategorien pflegen" ><h4><h:outputText value="Kategorien" /></h4></pretty:link>
+						<p>
+							<h:outputText value="Kategorien werden zur thematischen Gruppierung von Informationen verwendet." />	
+						</p>
+					</div>
+				</li>
+			</ul>
+		</div>
 	</ui:define>
 	
 </ui:composition>
