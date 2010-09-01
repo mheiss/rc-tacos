@@ -94,9 +94,8 @@
 					<f:param value="#{rosterDto.entity.id}" />
 					<h:graphicImage styleClass="actionImage" library="images/16x16" name="edit.png" />
 				</pretty:link>
-				<a4j:commandLink rendered="#{rosterDto.deleteEnabled}" reRender="rosterTab" title="Dienstplaneintrag löschen">
-					<a4j:actionparam name="rosterId" assignTo="#{bean.entryId}" value="#{rosterDto.entity.id}"
-						actionListener="#{bean.markToDelete}" />
+				<a4j:commandLink rendered="#{rosterDto.deleteEnabled}" reRender="page-panels" oncomplete="#{rich:component('confirmDeleteRosterPanel')}.show();return false;" title="Dienstplaneintrag löschen">
+					<a4j:actionparam name="entryId" assignTo="#{bean.entryId}" value="#{rosterDto.entity.id}" />
 					<h:graphicImage library="images/16x16" name="remove.png" />
 				</a4j:commandLink>
 			</rich:column>

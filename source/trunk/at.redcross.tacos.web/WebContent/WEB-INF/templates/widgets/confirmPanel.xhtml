@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:t="http://myfaces.apache.org/tomahawk" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:jstl="http://java.sun.com/jsp/jstl/functions">
+<body>
+<ui:composition template="/WEB-INF/templates/widgets/modalPanel.xhtml">
+	<ui:param name="panelWidth" value="350" />
+	<ui:param name="panelHeight" value="250" />
+
+	<ui:define name="panelFooter">
+		<div class="left">
+			<div class="center">
+				<h:graphicImage library="images/16x16" name="success.png" styleClass="linkImage" />
+				<h:outputLink onclick="#{rich:component(panelId)}.hide();submit();return false" styleClass="linkText">
+						<h:outputText value="Löschen" />
+				</h:outputLink>
+			</div>
+		</div>
+		<div class="right">
+			<div class="center">
+				<h:graphicImage library="images/16x16" name="error.png" styleClass="linkImage" />
+				<h:outputLink onclick="#{rich:component(panelId)}.hide();return false" styleClass="linkText">
+					<h:outputText value="Abbrechen" />
+				</h:outputLink>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>
+</body>
+</html>

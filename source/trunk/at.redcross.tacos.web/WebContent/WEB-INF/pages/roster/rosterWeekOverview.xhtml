@@ -51,6 +51,12 @@
 			<ui:param name="bean" value="#{rosterWeekOverviewBean}" />
 		</ui:decorate>
 	</ui:define>
+	
+	<ui:define name="page-panels">
+		<ui:decorate template="rosterModalPanel.xhtml">
+			<ui:param name="bean" value="#{rosterWeekOverviewBean}" />
+		</ui:decorate>
+	</ui:define>
 
 </ui:composition>
 </body>

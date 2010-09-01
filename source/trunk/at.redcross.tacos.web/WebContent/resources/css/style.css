@@ -17,6 +17,10 @@ strong,.bold {
 	float: left;
 }
 
+.right {
+	float: right;
+}
+
 /*******************************************************
  	General
  *******************************************************/
@@ -421,71 +425,74 @@ div#serviceSection ul.column li {
 	float: left;
 	width: 280px;
 	margin-bottom: 1.5em;
-	padding-bottom:0.5em;
+	padding-bottom: 0.5em;
 	display: inline;
-	border-bottom:dashed 1px #545454;
+	border-bottom: dashed 1px #545454;
 }
 
 div#serviceSection .block {
 	font-size: 1em;
 	height: 100px;
-	margin-right:2em;
-	padding:0 0.5em 0 4em;
+	margin-right: 2em;
+	padding: 0 0.5em 0 4em;
 }
 
 div#serviceSection .block h4 {
 	font-size: 1.8em;
-	font-weight:bold;
-	color:#545454;
-	text-decoration:underline;
+	font-weight: bold;
+	color: #545454;
+	text-decoration: underline;
 }
 
 div#serviceSection .userImage {
-	background:url(../images/32x32/users.png) no-repeat scroll left top;
+	background: url(../images/32x32/users.png) no-repeat scroll left top;
 }
 
 div#serviceSection .vehicleImage {
-	background:url(../images/32x32/vehicle.png) no-repeat scroll left top;
+	background: url(../images/32x32/vehicle.png) no-repeat scroll left top;
 }
 
 div#serviceSection .competenceImage {
-	background:url(../images/32x32/books.png) no-repeat scroll left top;
+	background: url(../images/32x32/books.png) no-repeat scroll left top;
 }
 
 div#serviceSection .assignmentImage {
-	background:url(../images/32x32/components.png) no-repeat scroll left top;
+	background: url(../images/32x32/components.png) no-repeat scroll left
+		top;
 }
 
 div#serviceSection .serviceTypeImage {
-	background:url(../images/32x32/profile.png) no-repeat scroll left top;
+	background: url(../images/32x32/profile.png) no-repeat scroll left top;
 }
 
 div#serviceSection .locationImage {
-	background:url(../images/32x32/building.png) no-repeat scroll left top;
+	background: url(../images/32x32/building.png) no-repeat scroll left top;
 }
 
 div#serviceSection .securedResourceImage {
-	background:url(../images/32x32/securedResource.png) no-repeat scroll left top;
+	background: url(../images/32x32/securedResource.png) no-repeat scroll
+		left top;
 }
 
 div#serviceSection .securedActionImage {
-	background:url(../images/32x32/securedAction.png) no-repeat scroll left top;
+	background: url(../images/32x32/securedAction.png) no-repeat scroll left
+		top;
 }
 
 div#serviceSection .groupImage {
-	background:url(../images/32x32/users.png) no-repeat scroll left top;
+	background: url(../images/32x32/users.png) no-repeat scroll left top;
 }
 
 div#serviceSection .usersImage {
-	background:url(../images/32x32/users.png) no-repeat scroll left top;
+	background: url(../images/32x32/users.png) no-repeat scroll left top;
 }
 
 div#serviceSection .linkImage {
-	background:url(../images/32x32/web.png) no-repeat scroll left top;
+	background: url(../images/32x32/web.png) no-repeat scroll left top;
 }
 
 div#serviceSection .categoryImage {
-	background:url(../images/32x32/profile.png) no-repeat scroll left top;
+	background: url(../images/32x32/profile.png) no-repeat scroll left top;
 }
 
 /***********************************************************
@@ -566,10 +573,69 @@ div#serviceSection .categoryImage {
  **********************************************************/
 .rich-mpnl-header {
 	border: 0px;
-	padding-top: 1em;
+	color: #fff;
+	height: 2em;
+	font-size: 1.1em; padding-top : 1em;
 	padding-left: 0.5em;
 	font-weight: bold;
-	color: #fff;
 	background: #9A0000;
 	border-bottom: 1px solid #000;
+	padding-top: 1em;
+}
+
+.rich-mpnl-body {
+	padding: 0px;
+}
+
+.tacos-mpnl-wrapper {
+	position: relative;
+}
+
+.tacos-mpnl-wrapper .label {
+	width: 8em;
+	float: left;
+	clear: both;
+	display: block;
+	padding-right: 1em; text-align : right;
+	font-weight: bold;
+	text-align: right;
+}
+
+.tacos-mpnl-wrapper .linkText {
+	margin-left: 0.4em;
+}
+
+.tacos-mpnl-wrapper .linkImage {
+	position: relative;
+	top: 0.3em;
+}
+
+.tacos-mpnl-body {
+	padding: 1em;
+}
+
+.tacos-mpnl-footer {
+	bottom: 0px;
+	width: 100%;
+	position: absolute;
+	padding-top: 0.5em;
+	padding-bottom: 1em;
+	background: #9A0000;
+	border-top: 1px solid #000;
+}
+
+.tacos-mpnl-footer .left {
+	padding-left: 1em;
+}
+
+.tacos-mpnl-footer .right {
+	padding-right: 1em;
+}
+
+.tacos-mpnl-footer a {
+	color: #fff;
+}
+
+.tacos-mpnl-footer a:hover {
+	text-decoration: underline
 }

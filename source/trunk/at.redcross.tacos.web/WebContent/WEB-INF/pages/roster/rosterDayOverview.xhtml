@@ -52,6 +52,11 @@
 		</ui:decorate>
 	</ui:define>
 	
+	<ui:define name="page-panels">
+		<ui:decorate template="rosterModalPanel.xhtml">
+			<ui:param name="bean" value="#{rosterDayOverviewBean}" />
+		</ui:decorate>
+	</ui:define>
 </ui:composition>
 </body>
 </html>
