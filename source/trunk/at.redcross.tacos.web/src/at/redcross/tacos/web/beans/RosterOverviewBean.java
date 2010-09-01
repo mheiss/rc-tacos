@@ -277,6 +277,16 @@ public abstract class RosterOverviewBean extends BaseBean {
 		return entryId;
 	}
 
+	public RosterDto getEntry() {
+		for (RosterDto dto : entries) {
+			if (dto.getEntity().getId() != entryId) {
+				continue;
+			}
+			return dto;
+		}
+		return null;
+	}
+
 	public Date getDate() {
 		return date;
 	}

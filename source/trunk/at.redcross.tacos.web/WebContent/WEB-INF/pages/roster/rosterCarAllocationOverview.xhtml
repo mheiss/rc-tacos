@@ -58,6 +58,7 @@
 			<rich:tab label="Alle Dienststellen" name="*">
 				<ui:decorate template="rosterCarAllocationTable.xhtml">
 					<ui:param name="tabId" value="all" />
+					<ui:param name="bean" value="#{rosterCarAllocationOverviewBean}" />
 					<ui:param name="values" value="#{rosterCarAllocationOverviewBean.entries}" />
 				</ui:decorate>
 			</rich:tab>
@@ -65,12 +66,20 @@
 				<rich:tab label="#{location.name}" name="#{location.name}">
 					<ui:decorate template="rosterCarAllocationTable.xhtml">
 						<ui:param name="tabId" value="#{location.id}" />
+						<ui:param name="bean" value="#{rosterCarAllocationOverviewBean}" />
 						<ui:param name="values" value="#{rosterCarAllocationOverviewBean.entries}" />
 					</ui:decorate>
 				</rich:tab>
 			</c:forEach>
 		</rich:tabPanel>
 	</ui:define>
+	
+	<ui:define name="page-panels">
+		<ui:decorate template="rosterModalPanel.xhtml">
+			<ui:param name="bean" value="#{rosterCarAllocationOverviewBean}" />
+		</ui:decorate>
+	</ui:define>
+	
 </ui:composition>
 </body>
 </html>
