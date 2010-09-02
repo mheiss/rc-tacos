@@ -1,22 +1,72 @@
 <?xml version="1.0" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich"
+xmlns:pretty="http://ocpsoft.com/prettyfaces">
 <body>
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
 	<ui:param name="htmlTitle" value="OnlineDienstplan" />
 	<ui:param name="section" value="home" />
 	<ui:param name="page" value="home" />
 		
+	<!--  Dynamically resize the columns -->
+	<ui:define name="javaScriptMethod">
+		jQuery(window).resize(function() {
+			smartGrid();
+		});
+		jQuery(document).ready(function() {
+			smartGrid();
+		});
+	</ui:define>
+	
 	<ui:define name="navigation">
 		<ui:include src="navigation.xhtml" />
 	</ui:define>
 
-	<ui:define name="page-header">
+		<ui:define name="page-header">
 		<h:graphicImage library="images/32x32" name="home.png" />
-		<h2 class="title"><h:outputText value="Willkommen bei TACOS" /></h2>
+		<h2 class="title"> <h:outputText value="Home" /> </h2>
 	</ui:define>
 
 	<ui:define name="page-content">
+		<div id="serviceCaption">
+			<h:outputText styleClass="bold" value="Herzlich Willkommen bei TACOS" /> <br /><br />
+		</div>
+		<div id="serviceSection">
+			<ul class="column">
+				<li>
+					<div class="block rosterImage">
+						<pretty:link mappingId="roster-dayOverview" title="Dienstplan Tagesansicht" ><h4><h:outputText value="Tagesansicht" /></h4></pretty:link>
+						<p>
+							<h:outputText value="Anzeige der Dienstplan Tageslisten." />	
+						</p>
+					</div>
+				</li>
+				<li>
+					<div class="block vehicleImage">
+						<pretty:link mappingId="roster-assignCar" title="Fahrzeugzuweisung" ><h4><h:outputText value="Fahrzeugzuweisung" /></h4></pretty:link>
+						<p>
+							<h:outputText value="Anzeige der Fahrzeugzuweisung." />	
+						</p>
+					</div>
+				</li>
+				<li>
+					<div class="block infoImage">
+						<pretty:link mappingId="info-currentOverview" title="Aktuelle Informationen" ><h4><h:outputText value="Aktuelle Informationen" /></h4></pretty:link>
+						<p>
+							<h:outputText value="Anzeige von aktuellen Informationen (Ambulanzdienste, Aus- und Fortbildungstermine, ...)" />	
+						</p>
+					</div>
+				</li>
+				<li>
+					<div class="block linkImage">
+						<pretty:link mappingId="admin-linkMaintenance" title="Links pflegen" ><h4><h:outputText value="Links" /></h4></pretty:link>
+						<p>
+							<h:outputText value="Nützliche Links pflegen damit die Mitarbeiter schneller auf online Resourcen zugreifen zu können. " />	
+						</p>
+					</div>
+				</li>
+			</ul>
+		</div>
 	</ui:define>
 
 </ui:composition>

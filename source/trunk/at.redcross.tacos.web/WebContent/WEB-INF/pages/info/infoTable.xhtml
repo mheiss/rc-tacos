@@ -33,14 +33,14 @@
 		</rich:column>
 
 		<rich:subTable onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'" value="#{locationInfo.infos}" var="info">
-			<rich:column styleClass="bold">
+			<rich:column styleClass="bold" sortBy="#{info.category.name}">
 				<h:outputText value="#{info.category.name}" />
 			</rich:column>
-			<rich:column styleClass="bold">
+			<rich:column styleClass="bold" sortBy="#{info.shortName}">
 				<h:outputText value="#{info.shortName}" />
 			</rich:column>
-			<rich:column styleClass="bold">
-				<h:outputText value="#{info.description}" />
+			<rich:column styleClass="bold" sortBy="#{info.description}">
+				<h:outputText escape = "false" value="#{info.description}" />
 			</rich:column>
 			<rich:column styleClass="center">
 				<pretty:link mappingId="info-editMaintenance" title="Information bearbeiten">
