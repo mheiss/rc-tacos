@@ -18,6 +18,7 @@ import at.redcross.tacos.datasetup.stage1.GroupStage;
 import at.redcross.tacos.datasetup.stage1.InfoStage;
 import at.redcross.tacos.datasetup.stage1.LinkStage;
 import at.redcross.tacos.datasetup.stage1.LocationStage;
+import at.redcross.tacos.datasetup.stage1.NotificationStage;
 import at.redcross.tacos.datasetup.stage1.RosterEntryStage;
 import at.redcross.tacos.datasetup.stage1.SecuredResourceStage;
 import at.redcross.tacos.datasetup.stage1.ServiceTypeStage;
@@ -124,6 +125,7 @@ public class DatasetupApplication {
 		app.registerStage(new LinkStage());
 		app.registerStage(new InfoStage());
 		app.registerStage(new CategoryStage());
+		app.registerStage(new NotificationStage());
 		app.execute();
 	}
 }
