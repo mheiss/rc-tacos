@@ -12,8 +12,10 @@ import javax.persistence.EntityManager;
 import org.ajax4jsf.model.KeepAlive;
 import org.apache.commons.lang.time.DateUtils;
 
+import at.redcross.tacos.dbal.entity.Notification;
 import at.redcross.tacos.dbal.helper.CarHelper;
 import at.redcross.tacos.dbal.helper.LocationHelper;
+import at.redcross.tacos.dbal.helper.NotificationHelper;
 import at.redcross.tacos.dbal.helper.RosterEntryHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.dbal.query.RosterQueryParam;
@@ -35,6 +37,9 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
 	// the suggested values for the drop down boxes
 	private List<SelectItem> carItems;
 	private List<SelectItem> locationItems;
+	
+	//the notification of the day
+	private Notification notification;
 
 	@Override
 	public void init() throws Exception {
@@ -46,6 +51,7 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
 			locationItems = DropDownHelper.convertToItems(locations);
 			carItems = DropDownHelper.convertToItems(CarHelper.list(manager, false));
 			entries = getEntries(manager, getParamForQuery());
+			notification= NotificationHelper.getByDate(manager, date);
 		} finally {
 			manager = EntityManagerHelper.close(manager);
 		}
@@ -103,5 +109,9 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
 
 	public List<SelectItem> getLocationItems() {
 		return locationItems;
+	}
+	
+	public Notification getNotification(){
+		return notification;
 	}
 }
