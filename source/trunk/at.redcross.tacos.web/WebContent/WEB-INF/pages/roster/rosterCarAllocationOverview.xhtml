@@ -47,6 +47,17 @@
 				<h:outputText styleClass="toolbarText" value="Speichern" />
 			</a4j:commandLink>
 		</li>
+		<li>
+			<a4j:commandLink ajaxSingle="false" actionListener="#{rosterCarAllocationOverviewBean.saveEntries}" reRender="dateTitle,filter,rosterTab" title="Speichern">
+				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="save.png" />
+				<h:outputText styleClass="toolbarText" value="Speichern" />
+			</a4j:commandLink>
+		</li>
+		<fieldset class="defaultStyle">
+			<legend><h:outputText value="Anmerkungen" /></legend> 
+			<rich:editor value="#{rosterCarAllocationOverviewBean.notification.notes}" theme="simple" 
+				oninit="smartEditor()" autoResize="true" language="de" />
+		</fieldset>
 	</ui:define>
 
 	<ui:define name="page-content">
