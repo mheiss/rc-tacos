@@ -20,8 +20,21 @@
         name varchar(255) not null unique,
         notes varchar(255),
         outoforder bit,
+        registrationdate datetime,
         todelete bit,
+        type varchar(255),
         location_id bigint,
+        primary key (id)
+    );
+
+    create table Category (
+        id bigint not null auto_increment,
+        history_changedat datetime,
+        history_changedby varchar(255) not null,
+        history_createdat datetime,
+        history_createdby varchar(255) not null,
+        description varchar(255),
+        name varchar(255) not null,
         primary key (id)
     );
 
@@ -45,6 +58,22 @@
         history_createdby varchar(255) not null,
         name varchar(255) not null unique,
         shortname varchar(255),
+        primary key (id)
+    );
+
+    create table Info (
+        id bigint not null auto_increment,
+        history_changedat datetime,
+        history_changedby varchar(255) not null,
+        history_createdat datetime,
+        history_createdby varchar(255) not null,
+        description varchar(255),
+        displayenddate date not null,
+        displaystartdate date not null,
+        shortname varchar(255),
+        todelete bit,
+        category_id bigint,
+        location_id bigint,
         primary key (id)
     );
 
@@ -87,6 +116,17 @@
         primary key (id)
     );
 
+    create table Notification (
+        id bigint not null auto_increment,
+        history_changedat datetime,
+        history_changedby varchar(255) not null,
+        history_createdat datetime,
+        history_createdby varchar(255) not null,
+        entrydate date not null unique,
+        notes varchar(255),
+        primary key (id)
+    );
+
     create table RosterEntry (
         id bigint not null auto_increment,
         history_changedat datetime,
@@ -119,8 +159,9 @@
         history_changedby varchar(255) not null,
         history_createdat datetime,
         history_createdby varchar(255) not null,
-        access varchar(255) not null,
-        actionexpression varchar(255) not null unique,
+        accessexpression varchar(255) not null,
+        description varchar(255),
+        name varchar(255) not null unique,
         primary key (id)
     );
 
@@ -131,7 +172,6 @@
         history_createdat datetime,
         history_createdby varchar(255) not null,
         access varchar(255) not null,
-        expression bit not null,
         resource varchar(255) not null unique,
         primary key (id)
     );
@@ -197,6 +237,18 @@
         add constraint FK107B4716F1CD8 
         foreign key (location_id) 
         references Location (id);
+
+    alter table Info 
+        add index FK22D8CE716F1CD8 (location_id), 
+        add constraint FK22D8CE716F1CD8 
+        foreign key (location_id) 
+        references Location (id);
+
+    alter table Info 
+        add index FK22D8CE3DDF2C38 (category_id), 
+        add constraint FK22D8CE3DDF2C38 
+        foreign key (category_id) 
+        references Category (id);
 
     alter table Location 
         add index FK752A03D54004E1E2 (District_Fk), 
