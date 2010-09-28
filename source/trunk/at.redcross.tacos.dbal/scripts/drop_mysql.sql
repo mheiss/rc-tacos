@@ -3,6 +3,14 @@
         drop 
         foreign key FK107B4716F1CD8;
 
+    alter table Info 
+        drop 
+        foreign key FK22D8CE716F1CD8;
+
+    alter table Info 
+        drop 
+        foreign key FK22D8CE3DDF2C38;
+
     alter table Location 
         drop 
         foreign key FK752A03D54004E1E2;
@@ -59,15 +67,21 @@
 
     drop table if exists Car;
 
+    drop table if exists Category;
+
     drop table if exists Competence;
 
     drop table if exists District;
+
+    drop table if exists Info;
 
     drop table if exists Link;
 
     drop table if exists Location;
 
     drop table if exists Login;
+
+    drop table if exists Notification;
 
     drop table if exists RosterEntry;
 

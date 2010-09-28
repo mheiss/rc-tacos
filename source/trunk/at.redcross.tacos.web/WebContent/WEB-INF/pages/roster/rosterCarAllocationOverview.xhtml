@@ -24,7 +24,7 @@
 	
 	<ui:define name="page-toolbar">
 		<li>
-			<a4j:commandLink actionListener="#{rosterCarAllocationOverviewBean.navigateNext}" reRender="dateTitle,filter,rosterTab">
+			<a4j:commandLink actionListener="#{rosterCarAllocationOverviewBean.navigateNext}" reRender="dateTitle,filter,rosterTab,notification">
 				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="next.png" />
 				<h:outputText styleClass="toolbarText" value="Nächster Tag"  />
 			</a4j:commandLink>
@@ -36,7 +36,7 @@
 			</a4j:htmlCommandLink>
 		</li>
 		<li>
-			<a4j:commandLink actionListener="#{rosterCarAllocationOverviewBean.navigatePrevious}" reRender="dateTitle,filter,rosterTab">
+			<a4j:commandLink actionListener="#{rosterCarAllocationOverviewBean.navigatePrevious}" reRender="dateTitle,filter,rosterTab,notification">
 				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="back.png" />
 				<h:outputText styleClass="toolbarText" value="Vorheriger Tag"  />
 			</a4j:commandLink>
@@ -47,17 +47,6 @@
 				<h:outputText styleClass="toolbarText" value="Speichern" />
 			</a4j:commandLink>
 		</li>
-		<li>
-			<a4j:commandLink ajaxSingle="false" actionListener="#{rosterCarAllocationOverviewBean.saveEntries}" reRender="dateTitle,filter,rosterTab" title="Speichern">
-				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="save.png" />
-				<h:outputText styleClass="toolbarText" value="Speichern" />
-			</a4j:commandLink>
-		</li>
-		<fieldset class="defaultStyle">
-			<legend><h:outputText value="Anmerkungen" /></legend> 
-			<rich:editor value="#{rosterCarAllocationOverviewBean.notification.notes}" theme="simple" 
-				oninit="smartEditor()" autoResize="true" language="de" />
-		</fieldset>
 	</ui:define>
 
 	<ui:define name="page-content">
@@ -83,6 +72,13 @@
 				</rich:tab>
 			</c:forEach>
 		</rich:tabPanel>
+		<h:panelGroup id="notification">
+			<fieldset class="defaultStyle">
+				<legend><h:outputText value="Anmerkungen" /></legend> 
+				<rich:editor height="50" value="#{rosterCarAllocationOverviewBean.notification.notes}" theme="simple" 
+					oninit="smartEditor()" autoResize="true" language="de" />
+			</fieldset>
+		</h:panelGroup>
 	</ui:define>
 	
 	<ui:define name="page-panels">

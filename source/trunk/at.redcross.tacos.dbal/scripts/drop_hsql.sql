@@ -2,6 +2,12 @@
     alter table Car 
         drop constraint FK107B4716F1CD8;
 
+    alter table Info 
+        drop constraint FK22D8CE716F1CD8;
+
+    alter table Info 
+        drop constraint FK22D8CE3DDF2C38;
+
     alter table Location 
         drop constraint FK752A03D54004E1E2;
 
@@ -45,15 +51,21 @@
 
     drop table Car if exists;
 
+    drop table Category if exists;
+
     drop table Competence if exists;
 
     drop table District if exists;
+
+    drop table Info if exists;
 
     drop table Link if exists;
 
     drop table Location if exists;
 
     drop table Login if exists;
+
+    drop table Notification if exists;
 
     drop table RosterEntry if exists;
 

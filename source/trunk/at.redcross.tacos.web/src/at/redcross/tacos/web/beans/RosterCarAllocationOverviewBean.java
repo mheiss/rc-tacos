@@ -37,8 +37,8 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
 	// the suggested values for the drop down boxes
 	private List<SelectItem> carItems;
 	private List<SelectItem> locationItems;
-	
-	//the notification of the day
+
+	// the notification of the day
 	private Notification notification;
 
 	@Override
@@ -51,7 +51,7 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
 			locationItems = DropDownHelper.convertToItems(locations);
 			carItems = DropDownHelper.convertToItems(CarHelper.list(manager, false));
 			entries = getEntries(manager, getParamForQuery());
-			notification= NotificationHelper.getByDate(manager, date);
+			notification = getNotification(manager, date);
 		} finally {
 			manager = EntityManagerHelper.close(manager);
 		}
@@ -67,6 +67,7 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
 			for (RosterDto entryDto : entries) {
 				manager.merge(entryDto.getEntity());
 			}
+			manager.merge(notification);
 			EntityManagerHelper.commit(manager);
 		} catch (Exception ex) {
 			FacesUtils.addErrorMessage("Die Fahrzeugzuweisung konnte nicht gespeichert werden");
@@ -87,6 +88,7 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
 
 	@Override
 	protected List<RosterDto> getEntries(EntityManager manager, RosterQueryParam param) {
+		notification = getNotification(manager, date);
 		return RosterDto.fromList(RosterEntryHelper.listByDay(manager, param));
 	}
 
@@ -100,6 +102,16 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
 		return params;
 	}
 
+	protected Notification getNotification(EntityManager manager, Date date) {
+		notification = NotificationHelper.getByDate(manager, date);
+		if (notification != null) {
+			return notification;
+		}
+		Notification notification = new Notification();
+		notification.setDate(date);
+		return notification;
+	}
+
 	// ---------------------------------
 	// Getters for the properties
 	// ---------------------------------
@@ -110,8 +122,8 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
 	public List<SelectItem> getLocationItems() {
 		return locationItems;
 	}
-	
-	public Notification getNotification(){
+
+	public Notification getNotification() {
 		return notification;
 	}
 }

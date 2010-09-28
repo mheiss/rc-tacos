@@ -27,6 +27,7 @@ public class NotificationStage implements DatasetupStage {
             Date today = Calendar.getInstance().getTime();
             notification.setDate(today);
             notification.setNotes("Anmerkungen zu heute");
+            manager.persist(notification);
         }
     }
 }

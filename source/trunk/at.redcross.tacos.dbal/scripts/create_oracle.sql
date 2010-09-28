@@ -20,8 +20,21 @@
         name varchar2(255 char) not null unique,
         notes varchar2(255 char),
         outoforder number(1,0),
+        registrationdate timestamp,
         todelete number(1,0),
+        type varchar2(255 char),
         location_id number(19,0),
+        primary key (id)
+    );
+
+    create table Category (
+        id number(19,0) not null,
+        history_changedat timestamp,
+        history_changedby varchar2(255 char) not null,
+        history_createdat timestamp,
+        history_createdby varchar2(255 char) not null,
+        description varchar2(255 char),
+        name varchar2(255 char) not null,
         primary key (id)
     );
 
@@ -45,6 +58,22 @@
         history_createdby varchar2(255 char) not null,
         name varchar2(255 char) not null unique,
         shortname varchar2(255 char),
+        primary key (id)
+    );
+
+    create table Info (
+        id number(19,0) not null,
+        history_changedat timestamp,
+        history_changedby varchar2(255 char) not null,
+        history_createdat timestamp,
+        history_createdby varchar2(255 char) not null,
+        description varchar2(255 char),
+        displayenddate date not null,
+        displaystartdate date not null,
+        shortname varchar2(255 char),
+        todelete number(1,0),
+        category_id number(19,0),
+        location_id number(19,0),
         primary key (id)
     );
 
@@ -87,6 +116,17 @@
         primary key (id)
     );
 
+    create table Notification (
+        id number(19,0) not null,
+        history_changedat timestamp,
+        history_changedby varchar2(255 char) not null,
+        history_createdat timestamp,
+        history_createdby varchar2(255 char) not null,
+        entrydate date not null unique,
+        notes varchar2(255 char),
+        primary key (id)
+    );
+
     create table RosterEntry (
         id number(19,0) not null,
         history_changedat timestamp,
@@ -119,8 +159,9 @@
         history_changedby varchar2(255 char) not null,
         history_createdat timestamp,
         history_createdby varchar2(255 char) not null,
-        access varchar2(255 char) not null,
-        actionexpression varchar2(255 char) not null unique,
+        accessexpression varchar2(255 char) not null,
+        description varchar2(255 char),
+        name varchar2(255 char) not null unique,
         primary key (id)
     );
 
@@ -131,7 +172,6 @@
         history_createdat timestamp,
         history_createdby varchar2(255 char) not null,
         access varchar2(255 char) not null,
-        expression number(1,0) not null,
         resource varchar2(255 char) not null unique,
         primary key (id)
     );
@@ -196,6 +236,16 @@
         add constraint FK107B4716F1CD8 
         foreign key (location_id) 
         references Location;
+
+    alter table Info 
+        add constraint FK22D8CE716F1CD8 
+        foreign key (location_id) 
+        references Location;
+
+    alter table Info 
+        add constraint FK22D8CE3DDF2C38 
+        foreign key (category_id) 
+        references Category;
 
     alter table Location 
         add constraint FK752A03D54004E1E2 
