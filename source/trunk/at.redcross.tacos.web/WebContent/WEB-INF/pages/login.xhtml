@@ -19,6 +19,12 @@
     		</div>
     		<div class="start-container-right">
     			<a4j:form id="page-content" ajaxSubmit="true">
+    				<a4j:jsFunction name="doLogin" actionListener="#{loginBean.login}" />
+    				
+    				<!-- the default actions for the 'onEnter' key events -->
+					<rich:hotKey key="return" disableInInput="false" handler="alert('1');" />
+					<rich:hotKey key="esc" disableInInput="false" handler="alert('1');" />
+    				
 		    		<fieldset class="loginStyle">
 		    			<h2> <h:outputText value="Anmelden" /> </h2>
 		    			<rich:messages errorClass="error" globalOnly="true" />
@@ -56,7 +62,6 @@
 							</li>
 						</ol>
 					</fieldset>	
-					<rich:hotKey key="return" selector="#page-content" handler="#{rich:component('page-content')}.submit();" />
 				</a4j:form>
     		</div>
     	</div>
