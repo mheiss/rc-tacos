@@ -16,9 +16,7 @@ p {
 }
 
 a,a:link,a:visited {
-	color: #27638C;
-	margin: 0;
-	padding: 0;
+	color:#355491;
 	text-decoration: none;
 }
 
@@ -30,3 +28,16 @@ input, select, textarea {
 input[type=checkbox] {
 	border:0px;
 }
+
+.left {
+	float: left;
+}
+
+.right {
+	float: right;
+}
+
+.clear {
+	clear:both;
+}
+
