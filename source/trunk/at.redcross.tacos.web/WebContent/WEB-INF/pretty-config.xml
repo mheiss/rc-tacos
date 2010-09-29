@@ -18,6 +18,14 @@
 		<pattern>/accessDenied</pattern>
 		<view-id>/WEB-INF/pages/accessDenied.faces</view-id>
 	</url-mapping>
+	<url-mapping id="forgotPassword">
+		<pattern>/public/forgotPassword</pattern>
+		<view-id>/WEB-INF/pages/public/forgotPassword.faces</view-id>
+	</url-mapping>
+	<url-mapping id="resetPassword">
+		<pattern>/public/resetPassword</pattern>
+		<view-id>/WEB-INF/pages/public/resetPassword.faces</view-id>
+	</url-mapping>
 
 	<!-- ################ HOME ####################### -->
 	<url-mapping id="home">

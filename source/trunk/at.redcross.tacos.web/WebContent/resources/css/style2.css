@@ -1,7 +1,7 @@
 /*******************************************************
- 	Layout style for the login page
+ 	Alternative layout style
  *******************************************************/
-.start-header {
+.header {
 	margin-top: 2.5em;
 	margin-bottom: 1em;
 }
@@ -10,22 +10,21 @@
 	font-size: 2.4em;
 }
 
-.start-container {
+.container {
 	clear: both;
 	width: 100%;
-	height: 25em;
 	border-top: 30px solid #9A0000;
 	border-bottom: 30px solid #9A0000;
 	background-color: #DBDBDB;
 }
 
-.start-container-center {
+.container-center {
 	width: 70%;
 	margin-left: auto;
 	margin-right: auto;
 }
 
-.start-container-left {
+.container-left {
 	position: relative;
 	float: left;
 	left: -6em;
@@ -33,7 +32,7 @@
 	width: 35em;
 }
 
-.start-container-right {
+.container-right {
 	position: relative;
 	float: right;
 	padding: 3em;
@@ -45,25 +44,48 @@
 	-moz-border-radius: 10px;
 }
 
-.start-footer {
+.container-text {
+	padding: 3em;
+	margin-top: 1.5em;
+	margin-bottom: 1.5em; background : #fff;
+	border: 2px solid #9A0000;
+	background: #fff;
+}
+
+.footer {
 	clear: both;
 	margin-top: 2em;
 }
 
-.start-footer .description {
+.footer .description {
 	color: #000;
 	font-size: 1.4em;
 	font-weight: bold;
 	line-height: 1.8em;
 }
 
-fieldset.loginStyle dt {
+.actionBar {
+	clear: both;
+	display: block;
+	padding-top:1em;
+}
+
+.actionBar input {
+	padding:0.2em 1.5em;
+	margin-right:0.8em;
+}
+
+.helpBar {
+	margin-top:1.5em;
+}
+
+fieldset.defaultStyle dt {
 	display: block;
 	margin-top: 0.8em;
 	margin-bottom: 0.8em;
 }
 
-fieldset.loginStyle dt.error span {
+fieldset.defaultStyle dt.error span {
 	color: #9A0000;
 	font-size: 0.9em;
 	font-weight: bold;
@@ -71,17 +93,17 @@ fieldset.loginStyle dt.error span {
 	background: url("../images/16x16/error.png") no-repeat left center;
 }
 
-fieldset.loginStyle .actionLink {
+fieldset.defaultStyle .actionLink {
 	display: block;
 	font-weight: bold;
 	text-align: center;
 }
 
-fieldset.loginStyle li {
+fieldset.defaultStyle li {
 	margin-bottom: 0.6em;
 }
 
-fieldset.loginStyle h2 {
+fieldset.defaultStyle h2 {
 	color: #000;
 	font-size: 1.6em;
 	font-weight: bold;
@@ -89,7 +111,7 @@ fieldset.loginStyle h2 {
 	text-align: center;
 }
 
-fieldset.loginStyle label {
+fieldset.defaultStyle label {
 	display: block;
 	font-weight: bold;
 	margin-top: 3px;
@@ -97,13 +119,13 @@ fieldset.loginStyle label {
 	font-size: 1em;
 }
 
-fieldset.loginStyle .input {
+fieldset.defaultStyle .input {
 	display: block;
 	margin-top: 0.3em;
 	margin-bottom: 0.5em;
 }
 
-fieldset.loginStyle .input input[type="text"],fieldset.loginStyle .input input[type="password"]
+fieldset.defaultStyle .input input[type="text"],fieldset.defaultStyle .input input[type="password"]
 	{
 	width: 21em;
 	margin-bottom: 5px;
@@ -112,7 +134,7 @@ fieldset.loginStyle .input input[type="text"],fieldset.loginStyle .input input[t
 	border: solid 1px #cfcfcf;
 }
 
-fieldset.loginStyle .input span.error {
+fieldset.defaultStyle .input span.error {
 	color: #9A0000;
 	display: block;
 	margin-top: 0.8em;
@@ -120,21 +142,20 @@ fieldset.loginStyle .input span.error {
 	font-weight: bold;
 }
 
-fieldset.loginStyle a.button {
+fieldset.defaultStyle a.button {
 	color: #000;
 	display: block;
-	height: 24px;
-	font-weight: bold;
+	height: 24px; font-weight : bold;
 	margin-right: 6px;
 	padding-right: 18px;
 	margin-top: 3px;
 	text-decoration: none;
 	background: transparent url("../images/custom/bg_button_a.png")
 		no-repeat scroll top right;
+	font-weight: bold;
 }
 
-fieldset.loginStyle a.button span {
-	display: block;
+fieldset.defaultStyle a.button span {
 	line-height: 14px;
 	padding: 5px 0 5px 18px;
 	text-align: center;
