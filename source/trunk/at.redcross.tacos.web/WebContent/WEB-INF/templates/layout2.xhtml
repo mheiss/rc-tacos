@@ -14,8 +14,10 @@
 		</div>
 		<div class="container">
 			<div class="container-center">
-	    		<ui:insert name="page-content" />
-	    		<div class="clear" />
+				<a4j:form id="page-content" ajaxSubmit="true">
+	    			<ui:insert name="page-content" />
+	    			<div class="clear" />
+	    		</a4j:form>
 	    	</div>
 	    </div>
 	    <div class="container-center footer">

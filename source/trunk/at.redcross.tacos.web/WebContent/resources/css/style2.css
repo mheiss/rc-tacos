@@ -47,7 +47,8 @@
 .container-text {
 	padding: 3em;
 	margin-top: 1.5em;
-	margin-bottom: 1.5em; background : #fff;
+	margin-bottom: 1.5em;
+	background: #fff;
 	border: 2px solid #9A0000;
 	background: #fff;
 }
@@ -67,16 +68,23 @@
 .actionBar {
 	clear: both;
 	display: block;
-	padding-top:1em;
+	padding-top: 1em;
 }
 
 .actionBar input {
-	padding:0.2em 1.5em;
-	margin-right:0.8em;
+	padding: 0.2em 1.5em;
+	margin-right: 0.8em;
 }
 
 .helpBar {
-	margin-top:1.5em;
+	margin-top: 1.5em;
+}
+
+fieldset.defaultStyle .rich-messages {
+	padding: 0.5em;
+	margin-bottom:1em;
+	background-color: #F9DDD9;
+	border: 1px solid #E4978C;
 }
 
 fieldset.defaultStyle dt {
@@ -145,7 +153,8 @@ fieldset.defaultStyle .input span.error {
 fieldset.defaultStyle a.button {
 	color: #000;
 	display: block;
-	height: 24px; font-weight : bold;
+	height: 24px;
+	font-weight: bold;
 	margin-right: 6px;
 	padding-right: 18px;
 	margin-top: 3px;
