@@ -24,6 +24,8 @@
 	</url-mapping>
 	<url-mapping id="resetPassword">
 		<pattern>/public/resetPassword</pattern>
+		<query-param name="username" decode="false">#{resetPasswordBean.username}</query-param>
+		<query-param name="token" decode="false">#{resetPasswordBean.token}</query-param>
 		<view-id>/WEB-INF/pages/public/resetPassword.faces</view-id>
 	</url-mapping>
 
