@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -13,20 +15,28 @@ import javax.persistence.TypedQuery;
 import org.ajax4jsf.model.KeepAlive;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.commons.mail.SimpleEmail;
 
 import at.redcross.tacos.dbal.entity.Login;
 import at.redcross.tacos.dbal.entity.RestoreLogin;
 import at.redcross.tacos.dbal.entity.SystemUser;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
+import at.redcross.tacos.web.config.MailProvider;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.persitence.EntityManagerFactory;
 import at.redcross.tacos.web.utils.StringUtils;
+
+import com.ocpsoft.pretty.PrettyContext;
 
 @KeepAlive
 @ManagedBean(name = "forgotPasswordBean")
 public class ForgotPasswordBean extends PasswordBean {
 
 	private static final long serialVersionUID = 8569615171346893598L;
+
+	private final static Log logger = LogFactory.getLog(ForgotPasswordBean.class);
 
 	/** cached query string for MAIL */
 	private final static String MAIL_QUERY = "from SystemUser user where user.address.email like :email";
@@ -96,8 +106,44 @@ public class ForgotPasswordBean extends PasswordBean {
 			restoreLogin.setToken(RandomStringUtils.random(16, true, true));
 			manager.persist(restoreLogin);
 
+			FacesContext facesContext = FacesContext.getCurrentInstance();
+			ExternalContext externalContext = facesContext.getExternalContext();
+			PrettyContext prettyContext = PrettyContext.getCurrentInstance();
+
+			// send the mail to the user
+			SimpleEmail mail = MailProvider.configureMail(new SimpleEmail());
+			mail.addTo(user.getAddress().getEmail());
+			mail.setSubject("TACOS - Anfrage zum Zurücksetzen des Passwortes");
+
+			StringBuilder builder = new StringBuilder();
+			builder.append("Hallo ");
+			builder.append(user.getFirstName() + " " + user.getLastName() + ",");
+			builder.append("\n\r");
+			builder.append("Wir haben eine Anfrage zum Zurücksetzen Ihres Passwortes erhalten. ");
+			builder.append("Sollten Sie diese Anfrage abgeschickt haben, ");
+			builder.append("dann folgen Sie bitte den nachfolgenden Anweisungen.\n");
+			builder.append("Wenn sie nicht wollen das Ihr Passwort zurückgesetzt wird, ");
+			builder.append("dann ignorieren Sie einfach diese Nachricht.");
+			builder.append("\n\n");
+			builder
+					.append("Bitte klicken Sie auf den folgenden Link um Ihr Passwort zurückzusetzen:");
+			builder.append("\n\n");
+			builder.append(externalContext.getRequestScheme()).append("://");
+			builder.append(externalContext.getRequestServerName()).append(":");
+			builder.append(externalContext.getRequestServerPort());
+			builder.append(externalContext.getRequestContextPath());
+			builder.append(prettyContext.getConfig().getMappingById("resetPassword").getPattern());
+			builder.append("?username=" + restoreLogin.getUsername());
+			builder.append("&token=" + restoreLogin.getToken());
+
+			mail.setMsg(builder.toString());
+			mail.send();
+
 			EntityManagerHelper.commit(manager);
 			requestSend = true;
+		} catch (Exception ex) {
+			logger.fatal("Failed to reset password '" + username + " | " + email + "'", ex);
+			FacesUtils.addErrorMessage("Interner Fehler beim Zurücksetzen des Passwortes");
 		} finally {
 			manager = EntityManagerHelper.close(manager);
 		}

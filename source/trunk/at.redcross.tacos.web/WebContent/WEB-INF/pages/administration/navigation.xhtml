@@ -34,12 +34,6 @@
 			<li class="menu-item #{page eq 'locationMaintenance' ? 'selected' : ''}">
 				<pretty:link mappingId="admin-locationMaintenance"> <h:outputText value="Ortsstellen" /> </pretty:link>
 			</li>
-			<li class="menu-item #{page eq 'securedResourceMaintenance' ? 'selected' : ''}">
-				<pretty:link mappingId="admin-securedResourceMaintenance"> <h:outputText value="Seiten Zugriffsrechte" /> </pretty:link>
-			</li>
-			<li class="menu-item #{page eq 'securedActionMaintenance' ? 'selected' : ''}">
-				<pretty:link mappingId="admin-securedActionMaintenance"> <h:outputText value="Aktions Zugriffsrechte" /> </pretty:link>
-			</li>
 			<li class="menu-item #{page eq 'groupMaintenance' ? 'selected' : ''}">
 				<pretty:link mappingId="admin-groupMaintenance"> <h:outputText value="Gruppen" /> </pretty:link>
 			</li>
@@ -48,6 +42,15 @@
 			</li>
 			<li class="menu-item #{page eq 'categoryMaintenance' ? 'selected' : ''}">
 				<pretty:link mappingId="admin-categoryMaintenance"> <h:outputText value="Kategorien" /> </pretty:link>
+			</li>
+			<li class="menu-item #{page eq 'securedResourceMaintenance' ? 'selected' : ''}">
+				<pretty:link mappingId="admin-securedResourceMaintenance"> <h:outputText value="Seiten Zugriffsrechte" /> </pretty:link>
+			</li>
+			<li class="menu-item #{page eq 'securedActionMaintenance' ? 'selected' : ''}">
+				<pretty:link mappingId="admin-securedActionMaintenance"> <h:outputText value="Aktions Zugriffsrechte" /> </pretty:link>
+			</li>
+			<li class="menu-item #{page eq 'systemMaintenance' ? 'selected' : ''}">
+				<pretty:link mappingId="admin-systemMaintenance"> <h:outputText value="Systemeinstellungen" /> </pretty:link>
 			</li>
 		</ul>
 	</ui:define>
