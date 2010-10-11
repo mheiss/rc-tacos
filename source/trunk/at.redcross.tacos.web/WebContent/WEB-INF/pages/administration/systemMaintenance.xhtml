@@ -1,0 +1,101 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich" xmlns:pretty="http://ocpsoft.com/prettyfaces" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+<body>
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+	<ui:param name="htmlTitle" value="Systemeinstellungen" />
+	<ui:param name="section" value="admin" />
+	<ui:param name="page" value="systemMaintenance" />
+	
+	<ui:define name="navigation">
+		<ui:include src="navigation.xhtml" />
+	</ui:define>
+
+	<ui:define name="page-header">
+		<h:graphicImage library="images/32x32" name="preferences.png" />
+		<h2 class="title">
+			<h:outputText value="Systemeinstellunge bearbeiten" />
+		</h2>
+	</ui:define>
+
+	<ui:define name="page-content">
+		<rich:messages errorClass="errorMessage" globalOnly="true" />
+		<fieldset class="defaultStyle">
+			<legend> <h:outputText value="Mailserver" /> </legend>
+			<p> <h:outputText value="Einstellungen für den Versandt von eMails" /> </p>
+			<ol>
+				<li class="left" >
+					<h:outputLabel for="smtpFromMail" value="Absender (Mail)"> <em class="required">*</em> </h:outputLabel>
+					<div class="largeInput">
+						<h:inputText id="smtpFromMail" value="#{systemMaintenanceBean.settings.smtpFromMail}" required="true" requiredMessage="Bitte geben Sie eine Absendeadresse ein">
+							<rich:ajaxValidator event="onblur" />
+						</h:inputText>
+						<rich:message for="smtpFromMail" errorClass="error" />
+					</div>
+				</li>
+				<li class="right" >
+					<h:outputLabel for="smtpFromUser" value="Absender (Name)"> </h:outputLabel>
+					<div class="largeInput">
+						<h:inputText id="smtpFromUser" value="#{systemMaintenanceBean.settings.smtpFromUser}">
+							<rich:ajaxValidator event="onblur" />
+						</h:inputText>
+						<rich:message for="smtpFromUser" errorClass="error" />
+					</div>
+				</li>
+				<li class="left">
+					<h:outputLabel for="smtpHost" value="SMTP-Host"> <em class="required">*</em> </h:outputLabel>
+					<div class="largeInput">
+						<h:inputText id="smtpHost" value="#{systemMaintenanceBean.settings.smtpHost}" required="true" requiredMessage="Bitte geben Sie einen Hostname ein">
+							<rich:ajaxValidator event="onblur" />
+						</h:inputText>
+						<rich:message for="smtpHost" errorClass="error" />
+					</div>
+				</li>
+				<li class="right">
+					<h:outputLabel for="smtpPort" value="SMTP-Port"> <em class="required">*</em> </h:outputLabel>
+					<div class="input">	
+						 <h:inputText id="smtpPort" value="#{systemMaintenanceBean.settings.smtpPort}" required="true" requiredMessage="Bitte geben Sie eine Portnummer an">
+							<rich:ajaxValidator event="onblur" />
+							<f:convertNumber type="number" maxIntegerDigits="5"/>
+						</h:inputText>
+						<rich:message for="smtpPort" errorClass="error" />
+					</div>
+				</li>
+				<li class="left">
+					<h:outputLabel for="smtpUser" value="SMTP-Benutzername"> <em class="required">*</em> </h:outputLabel>
+					<div class="largeInput"> 
+						<h:inputText id="smtpUser" value="#{systemMaintenanceBean.settings.smtpUser}" required="true" requiredMessage="Bitte geben Sie einen Benutzernamen an">
+							<rich:ajaxValidator event="onblur" />
+						</h:inputText>
+						<rich:message for="smtpUser" errorClass="error" />
+					</div>
+				</li>
+				<li class="right">
+					<h:outputLabel for="smtpPwd" value="SMTP-Passwort"> <em class="required">*</em> </h:outputLabel>
+					<div class="largeInput">
+						<h:inputSecret id="smtpPwd" value="#{systemMaintenanceBean.settings.smtpPassword}" required="true" requiredMessage="Bitte geben Sie ein Passwort an">
+							<rich:ajaxValidator event="onblur" />
+						</h:inputSecret>
+						<rich:message for="smtpPwd" errorClass="error" />
+					</div>
+				</li>
+				<li class="left" >
+					<h:outputLabel for="smtpTsl" value="TSL-Verschlüsselung" />
+					<div class="input">
+						<h:selectBooleanCheckbox id="smtpTsl" value="#{systemMaintenanceBean.settings.smtpTsl}" />
+					</div>
+				</li>
+			</ol>
+		</fieldset>
+		
+		<fieldset class="defaultStyle last">
+			<div class="actionBar">
+				<a4j:commandLink styleClass="button" actionListener="#{systemMaintenanceBean.saveSettings}">
+					<span> <h:outputText value="Einstelungen speichern" /> </span>
+				</a4j:commandLink>
+			</div>
+		</fieldset>
+	</ui:define>
+</ui:composition>
+</body>
+</html>

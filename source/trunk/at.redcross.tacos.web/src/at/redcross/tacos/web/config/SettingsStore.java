@@ -1,14 +1,12 @@
 package at.redcross.tacos.web.config;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import at.redcross.tacos.web.utils.XmlFile;
 
 /**
  * The {@code SettingsStore} provides access to configuration files that are
@@ -30,8 +28,10 @@ public class SettingsStore {
 	/** the current home-directory */
 	private File homeDir;
 
+	/** Default constructor */
 	private SettingsStore() {
 		init();
+		initFiles();
 	}
 
 	/**
@@ -47,33 +47,6 @@ public class SettingsStore {
 	}
 
 	/**
-	 * Reads and returns the given property file that is located inside the home
-	 * directory.
-	 * 
-	 * @param file
-	 *            the file to read
-	 * @return the property file initialized with the values from the file
-	 */
-	public Properties getProperties(String fileName) {
-		fileName = FilenameUtils.separatorsToUnix(fileName);
-		if (!fileName.startsWith("/")) {
-			fileName = "/" + fileName;
-		}
-		Properties properties = new Properties();
-		FileInputStream in = null;
-		try {
-			in = new FileInputStream(new File(homeDir, fileName));
-			properties.load(in);
-			return properties;
-		} catch (Exception ex) {
-			logger.error("Failed to read property file '" + fileName + "'", ex);
-			return properties;
-		} finally {
-			IOUtils.closeQuietly(in);
-		}
-	}
-
-	/**
 	 * Returns the current home directory where settings and property files can
 	 * be stored.
 	 * 
@@ -81,6 +54,16 @@ public class SettingsStore {
 	 */
 	public File getHome() {
 		return homeDir;
+	}
+
+	/**
+	 * Returns the current file name where the system settings configuration is
+	 * located.
+	 * 
+	 * @return the path to the system settings file
+	 */
+	public File getSettings() {
+		return new File(homeDir, "tacos.config");
 	}
 
 	/** Initialize the store and set the directory */
@@ -107,6 +90,18 @@ public class SettingsStore {
 		logger.warn("Using temporary directory to store files");
 		homeDir = new File(System.getProperty("java.io.tmpdir"), ".tacos");
 		initHome(homeDir);
+	}
+
+	/** Initializes the configuration files and ensures that they are existing */
+	private void initFiles() {
+		try {
+			File file = getSettings();
+			if (!file.exists()) {
+				XmlFile.write(file, new SystemSettings());
+			}
+		} catch (Exception ex) {
+			logger.error("Failed to initialize settings file", ex);
+		}
 	}
 
 	/** Tries to initialize the given home directory */

@@ -207,4 +207,11 @@
 		<action onPostback="false">#{categoryMaintenanceBean.prettyInit}</action>
 	</url-mapping>
 	
+		<!-- ################ ADMINISTRATION - SYSTEM ####################### -->
+	<url-mapping id="admin-systemMaintenance">
+		<pattern>/admin/system</pattern>
+		<view-id>/WEB-INF/pages/administration/systemMaintenance.faces</view-id>
+		<action onPostback="false">#{systemMaintenanceBean.prettyInit}</action>
+	</url-mapping>
+	
 </pretty-config>
