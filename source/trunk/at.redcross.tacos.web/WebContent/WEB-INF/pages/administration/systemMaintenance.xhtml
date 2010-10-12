@@ -73,7 +73,7 @@
 				<li class="right">
 					<h:outputLabel for="smtpPwd" value="SMTP-Passwort"> <em class="required">*</em> </h:outputLabel>
 					<div class="largeInput">
-						<h:inputSecret id="smtpPwd" value="#{systemMaintenanceBean.settings.smtpPassword}" required="true" requiredMessage="Bitte geben Sie ein Passwort an">
+						<h:inputSecret id="smtpPwd" redisplay="true" value="#{systemMaintenanceBean.settings.smtpPassword}" required="true" requiredMessage="Bitte geben Sie ein Passwort an">
 							<rich:ajaxValidator event="onblur" />
 						</h:inputSecret>
 						<rich:message for="smtpPwd" errorClass="error" />

@@ -1,7 +1,6 @@
 package at.redcross.tacos.web.beans;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.ExternalContext;
@@ -10,7 +9,6 @@ import javax.faces.event.ActionEvent;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 
 import org.ajax4jsf.model.KeepAlive;
 import org.apache.commons.lang.RandomStringUtils;
@@ -19,7 +17,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.mail.SimpleEmail;
 
-import at.redcross.tacos.dbal.entity.Login;
 import at.redcross.tacos.dbal.entity.RestoreLogin;
 import at.redcross.tacos.dbal.entity.SystemUser;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
@@ -38,109 +35,28 @@ public class ForgotPasswordBean extends PasswordBean {
 
 	private final static Log logger = LogFactory.getLog(ForgotPasswordBean.class);
 
-	/** cached query string for MAIL */
-	private final static String MAIL_QUERY = "from SystemUser user where user.address.email like :email";
-
-	/** cached query string for USERNAME */
-	private final static String USER_QUERY = "from Login login where login.loginName like :username";
-
-	/** cached remove existing entries */
-	private final static String CLEAR_QUERY = "delete from RestoreLogin rl where rl.username like :username";
-
 	/** reset password by mail */
 	private String email;
 
 	/** reset password by name */
 	private String username;
 
-	/** flag if the operation was successfully */
-	private boolean requestSend = false;
-
 	// ---------------------------------
 	// Business methods
 	// ---------------------------------
 	/** sends the request by mail */
 	public void requestPassword(ActionEvent ae) {
-		requestSend = false;
+		setRequestSend(false);
 		// validate that something is given
 		if (StringUtils.saveString(email).isEmpty() && StringUtils.saveString(username).isEmpty()) {
 			String msg = "Um fortzufahren geben Sie Ihren Benutzernamen oder Ihre E-Mail an.";
 			FacesUtils.addErrorMessage(msg);
 			return;
 		}
-		// validate that the user is existing
 		EntityManager manager = null;
 		try {
-			SystemUser user = null;
 			manager = EntityManagerFactory.createEntityManager();
-			if (!StringUtils.saveString(email).isEmpty()) {
-				user = findByMail(manager, email);
-				if (user == null) {
-					String message = "Es gibt leider keinen Benutzer mit der E-Mail-Adresse '"
-							+ email + "'";
-					FacesUtils.addErrorMessage(message);
-					return;
-				}
-			}
-			if (!StringUtils.saveString(username).isEmpty()) {
-				user = findByUsername(manager, username);
-				if (user == null) {
-					String message = "Der angegebene Benutzername '" + username
-							+ "' wurde nicht gefunden.";
-					FacesUtils.addErrorMessage(message);
-					return;
-				}
-			}
-			// remove existing requests from this user
-			Query query = manager.createQuery(CLEAR_QUERY);
-			query.setParameter("username", user.getLogin().getLoginName());
-			EntityTransaction transaction = manager.getTransaction();
-			transaction.begin();
-			query.executeUpdate();
-			transaction.commit();
-
-			// create the new entry
-			RestoreLogin restoreLogin = new RestoreLogin();
-			restoreLogin.setUsername(user.getLogin().getLoginName());
-			restoreLogin.setExpireAt(DateUtils.addHours(new Date(), 72));
-			restoreLogin.setToken(RandomStringUtils.random(16, true, true));
-			manager.persist(restoreLogin);
-
-			FacesContext facesContext = FacesContext.getCurrentInstance();
-			ExternalContext externalContext = facesContext.getExternalContext();
-			PrettyContext prettyContext = PrettyContext.getCurrentInstance();
-
-			// send the mail to the user
-			SimpleEmail mail = MailProvider.configureMail(new SimpleEmail());
-			mail.addTo(user.getAddress().getEmail());
-			mail.setSubject("TACOS - Anfrage zum Zurücksetzen des Passwortes");
-
-			StringBuilder builder = new StringBuilder();
-			builder.append("Hallo ");
-			builder.append(user.getFirstName() + " " + user.getLastName() + ",");
-			builder.append("\n\r");
-			builder.append("Wir haben eine Anfrage zum Zurücksetzen Ihres Passwortes erhalten. ");
-			builder.append("Sollten Sie diese Anfrage abgeschickt haben, ");
-			builder.append("dann folgen Sie bitte den nachfolgenden Anweisungen.\n");
-			builder.append("Wenn sie nicht wollen das Ihr Passwort zurückgesetzt wird, ");
-			builder.append("dann ignorieren Sie einfach diese Nachricht.");
-			builder.append("\n\n");
-			builder
-					.append("Bitte klicken Sie auf den folgenden Link um Ihr Passwort zurückzusetzen:");
-			builder.append("\n\n");
-			builder.append(externalContext.getRequestScheme()).append("://");
-			builder.append(externalContext.getRequestServerName()).append(":");
-			builder.append(externalContext.getRequestServerPort());
-			builder.append(externalContext.getRequestContextPath());
-			builder.append(prettyContext.getConfig().getMappingById("resetPassword").getPattern());
-			builder.append("?username=" + restoreLogin.getUsername());
-			builder.append("&token=" + restoreLogin.getToken());
-
-			mail.setMsg(builder.toString());
-			mail.send();
-
-			EntityManagerHelper.commit(manager);
-			requestSend = true;
+			handleRequest(manager);
 		} catch (Exception ex) {
 			logger.fatal("Failed to reset password '" + username + " | " + email + "'", ex);
 			FacesUtils.addErrorMessage("Interner Fehler beim Zurücksetzen des Passwortes");
@@ -149,26 +65,77 @@ public class ForgotPasswordBean extends PasswordBean {
 		}
 	}
 
-	/** Returns the system-user object using the given query */
-	private SystemUser findByUsername(EntityManager manager, String username) {
-		TypedQuery<Login> query = manager.createQuery(USER_QUERY, Login.class);
-		query.setParameter("username", username);
-		List<Login> logins = query.getResultList();
-		if (logins.isEmpty()) {
-			return null;
+	/** process the reset request */
+	private void handleRequest(EntityManager manager) throws Exception {
+		SystemUser user = null;
+		if (!StringUtils.saveString(email).isEmpty()) {
+			user = findByMail(manager, email);
+			if (user == null) {
+				String message = "Es konnte keinen Benutzer mit der E-Mail Adresse '" + email
+						+ "' gefunden werden";
+				FacesUtils.addErrorMessage(message);
+				return;
+			}
 		}
-		return logins.iterator().next().getSystemUser();
-	}
+		if (!StringUtils.saveString(username).isEmpty()) {
+			user = findByUsername(manager, username);
+			if (user == null) {
+				String message = "Der angegebene Benutzername '" + username
+						+ "' wurde nicht gefunden.";
+				FacesUtils.addErrorMessage(message);
+				return;
+			}
+		}
 
-	/** Returns the system-user object using the given query */
-	private SystemUser findByMail(EntityManager manager, String email) {
-		TypedQuery<SystemUser> query = manager.createQuery(MAIL_QUERY, SystemUser.class);
-		query.setParameter("email", email);
-		List<SystemUser> users = query.getResultList();
-		if (users.isEmpty()) {
-			return null;
-		}
-		return users.iterator().next();
+		// remove existing requests from this user
+		Query query = manager.createQuery(CLEAR_QUERY);
+		query.setParameter("username", user.getLogin().getLoginName());
+		EntityTransaction transaction = manager.getTransaction();
+		transaction.begin();
+		query.executeUpdate();
+		transaction.commit();
+
+		// create the new entry
+		RestoreLogin restoreLogin = new RestoreLogin();
+		restoreLogin.setUsername(user.getLogin().getLoginName());
+		restoreLogin.setExpireAt(DateUtils.addHours(new Date(), 72));
+		restoreLogin.setToken(RandomStringUtils.random(16, true, true));
+		manager.persist(restoreLogin);
+
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		ExternalContext externalContext = facesContext.getExternalContext();
+		PrettyContext prettyContext = PrettyContext.getCurrentInstance();
+
+		// send the mail to the user
+		SimpleEmail mail = MailProvider.configureMail(new SimpleEmail());
+		mail.addTo(user.getAddress().getEmail());
+		mail.setSubject("TACOS - Anfrage zum Zurücksetzen des Passwortes");
+
+		StringBuilder builder = new StringBuilder();
+		builder.append("Hallo ");
+		builder.append(user.getFirstName() + " " + user.getLastName() + ",");
+		builder.append("\n\r");
+		builder.append("Wir haben eine Anfrage zum Zurücksetzen Ihres Passwortes erhalten. ");
+		builder.append("Sollten Sie diese Anfrage abgeschickt haben, ");
+		builder.append("dann folgen Sie bitte den nachfolgenden Anweisungen.\n");
+		builder.append("Wenn sie nicht wollen das Ihr Passwort zurückgesetzt wird, ");
+		builder.append("dann ignorieren Sie einfach diese Nachricht.");
+		builder.append("\n\n");
+		builder.append("Bitte klicken Sie auf den folgenden Link um Ihr Passwort zurückzusetzen:");
+		builder.append("\n\n");
+		builder.append(externalContext.getRequestScheme()).append("://");
+		builder.append(externalContext.getRequestServerName()).append(":");
+		builder.append(externalContext.getRequestServerPort());
+		builder.append(externalContext.getRequestContextPath());
+		builder.append(prettyContext.getConfig().getMappingById("resetPassword").getPattern());
+		builder.append("?username=" + restoreLogin.getUsername());
+		builder.append("&token=" + restoreLogin.getToken());
+
+		mail.setMsg(builder.toString());
+		mail.send();
+
+		EntityManagerHelper.commit(manager);
+		setRequestSend(true);
 	}
 
 	// ---------------------------------
@@ -191,9 +158,5 @@ public class ForgotPasswordBean extends PasswordBean {
 
 	public String getEmail() {
 		return email;
-	}
-
-	public boolean isRequestSend() {
-		return requestSend;
 	}
 }

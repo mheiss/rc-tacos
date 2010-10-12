@@ -18,9 +18,6 @@
 			<li class="tab #{section eq 'info' ? 'active' : ''}">
 				<pretty:link mappingId="info-currentOverview"><h:outputText value="Informationen" /></pretty:link>
 			</li>
-			<li class="tab #{section eq 'help' ? 'active' : ''}">
-				<h:outputLink value="#"><h:outputText value="Hilfe" /></h:outputLink>
-			</li>
 			<h:panelGroup rendered="#{permissionBean.authorizedToAccessAdminArea}">
 				<li class="tab #{section eq 'admin' ? 'active' : ''}">
 					<pretty:link mappingId="admin-home" > <h:outputText value="Administration" /> </pretty:link>
