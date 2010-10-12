@@ -41,3 +41,9 @@ input[type=checkbox] {
 	clear:both;
 }
 
+.imageAndText img  {
+	top:0.5em;
+	margin-right:1.5em;
+	position:relative;
+}
+
