@@ -5,15 +5,15 @@
 <body>
 <ui:composition template="/WEB-INF/templates/widgets/modalPanel.xhtml">
 	<ui:param name="panelWidth" value="350" />
-	<ui:param name="panelHeight" value="250" />
+	<ui:param name="panelHeight" value="300" />
 
 	<ui:define name="panelFooter">
 		<div class="left">
 			<div class="center">
 				<h:graphicImage library="images/16x16" name="success.png" styleClass="linkImage" />
-				<h:outputLink onclick="#{rich:component(panelId)}.hide();submit();return false" styleClass="linkText">
-						<h:outputText value="Löschen" />
-				</h:outputLink>
+				<a4j:commandLink onclick="submitPanel(); return false" styleClass="linkText">
+					<h:outputText value="Bestätigen" />
+				</a4j:commandLink>
 			</div>
 		</div>
 		<div class="right">
