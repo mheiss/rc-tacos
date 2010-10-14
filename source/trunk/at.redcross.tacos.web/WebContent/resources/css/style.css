@@ -120,6 +120,12 @@ fieldset.defaultStyle .largeInput {
 	margin-right: 0.8em;
 }
 
+fieldset.defaultStyle .output {
+	float: left;
+	padding-top:0.6em;
+}
+
+
 fieldset.defaultStyle .leftDecorator {
 	position: relative;
 	top: 0.3em;

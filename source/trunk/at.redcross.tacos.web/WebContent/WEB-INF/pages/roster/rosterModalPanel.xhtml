@@ -12,7 +12,7 @@
 			<h:outputText value="Wollen sie wirklich den folgenden Dienstplaneintrag löschen?" />
 			<p>
 				<h:outputLabel value="Mitarbeiter:" styleClass="label" /> 
-				<h:outputText value="#{bean.entry.entity.systemUser.lastName} #{bean.entry.entity.systemUser.firstName}" />
+				<h:inputText value="#{loginBean.currentPassword}" required="true" requiredMessage="Bitte geben Sie Ihr aktuelles Kennwort ein." />
 			</p>
 			<p>
 				<h:outputLabel value="Datum:" styleClass="label" />
@@ -29,7 +29,6 @@
 				<h:outputText value="Diese Aktion kann nicht mehr Rückgängig gemacht werden" styleClass="linkText" />
 			</p>
 		</ui:define>
-		
 	</ui:decorate>
 </ui:composition>
 </body>
