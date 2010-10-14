@@ -24,17 +24,18 @@
 
 		<ui:define name="page-header">
 		<h:graphicImage library="images/32x32" name="home.png" />
-		<h2 class="title"> <h:outputText value="Home" /> </h2>
+		<h2 class="title"> <h:outputText value="Willkommen auf der Startseite von TACOS" /> </h2>
 	</ui:define>
 
 	<ui:define name="page-content">
 		<div id="serviceSection">
+			<p><h:outputText value="Die folgende Links bieten Ihnene einen schnellen Zugriff auf die gewünschten Informationen:" /> </p>
 			<ul class="column">
 				<li>
 					<div class="block rosterImage">
 						<pretty:link mappingId="roster-dayOverview" title="Dienstplan Tagesansicht" ><h4><h:outputText value="Tagesansicht" /></h4></pretty:link>
 						<p>
-							<h:outputText value="Anzeige der Dienstplan Tageslisten." />	
+							<h:outputText value="Der Dienstplan für den aktuellen Tag." />	
 						</p>
 					</div>
 				</li>
@@ -42,7 +43,7 @@
 					<div class="block vehicleImage">
 						<pretty:link mappingId="roster-assignCar" title="Fahrzeugzuweisung" ><h4><h:outputText value="Fahrzeugzuweisung" /></h4></pretty:link>
 						<p>
-							<h:outputText value="Anzeige der Fahrzeugzuweisung." />	
+							<h:outputText value="Die Fahrzeugzuweisung für den aktuellen Tag" />	
 						</p>
 					</div>
 				</li>
@@ -58,7 +59,7 @@
 					<div class="block linkImage">
 						<pretty:link mappingId="admin-linkMaintenance" title="Links pflegen" ><h4><h:outputText value="Links" /></h4></pretty:link>
 						<p>
-							<h:outputText value="Nützliche Links pflegen damit die Mitarbeiter schneller auf online Resourcen zugreifen zu können. " />	
+							<h:outputText value="Nützliche Links damit Sie schneller auf online Resourcen zugreifen können. " />	
 						</p>
 					</div>
 				</li>
