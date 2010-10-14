@@ -72,13 +72,19 @@
 				</rich:tab>
 			</c:forEach>
 		</rich:tabPanel>
-		<h:panelGroup id="notification">
-			<fieldset class="defaultStyle">
-				<legend><h:outputText value="Anmerkungen" /></legend> 
+		<br />
+		<rich:simpleTogglePanel id="notification" opened="false" label="Anmerkungen" bodyClass="defaultToggleBodyStyle" styleClass="defaultToggleStyle" switchType="client">
+			<h:panelGroup rendered="#{permissionBean.authorizedToAssignCar}">
 				<rich:editor height="50" value="#{rosterCarAllocationOverviewBean.notification.notes}" theme="simple" 
 					oninit="smartEditor()" autoResize="true" language="de" />
-			</fieldset>
-		</h:panelGroup>
+			</h:panelGroup>
+			<h:panelGroup rendered="#{not permissionBean.authorizedToAssignCar}">
+				<p>
+				<h:outputText escape="false" value="#{rosterCarAllocationOverviewBean.notification.notes}" rendered="#{not empty rosterCarAllocationOverviewBean.notification.notes}" />
+				<h:outputText styleClass="italic" value="Keine Anmerkungen vorhanden" rendered="#{empty rosterCarAllocationOverviewBean.notification.notes}" />
+				</p>
+			</h:panelGroup>
+		</rich:simpleTogglePanel>
 	</ui:define>
 	
 	<ui:define name="page-panels">
