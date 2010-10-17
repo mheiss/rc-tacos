@@ -3,6 +3,15 @@
 	
 	<!-- Basic initializsation -->
 	<target name="init">
+		<!-- Check required files -->
+		<available file="config/build.properties" property="build.file" />
+		<available file="config/log4j.properties" property="log.file" />
+		<available file="config/persistence.xml" property="jpa.file" />
+		<fail unless="build.file" message="Please provide a configuration file for the build." />
+		<fail unless="log.file" message="Please provide a log file for the application." />
+		<fail unless="build.file" message="Please provide a JPA file for the application." />
+		
+		<!-- Common properties for the build script -->
 		<property name="project.name" value="tacos" />
 		<property name="tacos.web" value="at.redcross.tacos.web" />
 		<property name="tacos.dbal" value="at.redcross.tacos.dbal" />
@@ -10,6 +19,11 @@
 		<property name="tacos.hibernate" value="at.redcross.tacos.hibernate" />
 		<property name="tacos.builder" value="at.redcross.tacos.build" />
 		<property name="builder.dir" value="${base.dir}/${tacos.builder}/builder" />
+		
+		<!-- Configuration files needed for the application -->
+		<property name="config.version" value="${base.dir}/versions.properties" />
+		<property name="config.jpa" value="${base.dir}/config/persistence.xml" />
+		<property name="config.log4j" value="${base.dir}/config/log4j.properties" />
 	</target>
 	
 	<!-- cleanup the builder -->
@@ -44,9 +58,9 @@
 			<fileset dir="${base.dir}/${tacos.web}/WebContent" excludes="WEB-INF/lib/*.jar" />
 			<lib dir="${builder.dir}/libs" includes="*.jar" />
 			<classes dir="${builder.dir}/classes" includes="*/**" />
-			<zipfileset file="${base.dir}/${tacos.builder}/log4j.properties" prefix="WEB-INF/classes" /> 
-			<zipfileset file="${base.dir}/${tacos.builder}/versions.properties" prefix="WEB-INF/classes" /> 
-			<zipfileset file="${base.dir}/${tacos.builder}/persistence.xml" prefix="META-INF" /> 
+			<zipfileset file="${config.jpa}" prefix="META-INF" /> 
+			<zipfileset file="${config.log4j}" prefix="WEB-INF/classes" /> 
+			<zipfileset file="${config.version}" prefix="WEB-INF/classes" /> 
 		</war>
 	</target>
 		
