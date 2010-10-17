@@ -41,7 +41,7 @@
 		
 		<!-- Create the war file -->
 		<war destfile="${builder.dir}/${project.name}.war" webxml="${base.dir}/${tacos.web}/WebContent/WEB-INF/web.xml">
-			<fileset dir="${base.dir}/${tacos.web}/WebContent" />
+			<fileset dir="${base.dir}/${tacos.web}/WebContent" excludes="WEB-INF/lib/*.jar" />
 			<lib dir="${builder.dir}/libs" includes="*.jar" />
 			<classes dir="${builder.dir}/classes" includes="*/**" />
 			<zipfileset file="${base.dir}/${tacos.builder}/log4j.properties" prefix="WEB-INF/classes" /> 
