@@ -28,7 +28,7 @@ public class VersionBean extends BaseBean {
         InputStream in = null;
         try {
             ExternalContext ext = FacesContext.getCurrentInstance().getExternalContext();
-            in = ext.getResourceAsStream("/WEB-INF/classes/versions.properties");
+            in = ext.getResourceAsStream("/WEB-INF/classes/version.properties");
             Properties p = new Properties();
             p.load(in);
             systemVersion = p.getProperty("tacos.version", "");
