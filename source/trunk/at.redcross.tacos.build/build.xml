@@ -21,9 +21,9 @@
 		<property name="builder.dir" value="${base.dir}/${tacos.builder}/builder" />
 		
 		<!-- Configuration files needed for the application -->
-		<property name="config.version" value="${base.dir}/versions.properties" />
-		<property name="config.jpa" value="${base.dir}/config/persistence.xml" />
-		<property name="config.log4j" value="${base.dir}/config/log4j.properties" />
+		<property name="config.version" value="${base.dir}/${tacos.builder}/version.properties" />
+		<property name="config.jpa" value="${base.dir}/${tacos.builder}/config/persistence.xml" />
+		<property name="config.log4j" value="${base.dir}/${tacos.builder}/config/log4j.properties" />
 	</target>
 	
 	<!-- cleanup the builder -->
