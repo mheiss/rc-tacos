@@ -9,20 +9,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import at.redcross.tacos.datasetup.persistence.EntityManagerFactory;
+import at.redcross.tacos.datasetup.stage0.GroupStage;
+import at.redcross.tacos.datasetup.stage0.LocationStage;
+import at.redcross.tacos.datasetup.stage0.SecuredResourceStage;
+import at.redcross.tacos.datasetup.stage0.SystemUserStage;
 import at.redcross.tacos.datasetup.stage1.AssignmentStage;
 import at.redcross.tacos.datasetup.stage1.CarStage;
 import at.redcross.tacos.datasetup.stage1.CategoryStage;
 import at.redcross.tacos.datasetup.stage1.CompetenceStage;
-import at.redcross.tacos.datasetup.stage1.DistrictStage;
-import at.redcross.tacos.datasetup.stage1.GroupStage;
 import at.redcross.tacos.datasetup.stage1.InfoStage;
 import at.redcross.tacos.datasetup.stage1.LinkStage;
-import at.redcross.tacos.datasetup.stage1.LocationStage;
 import at.redcross.tacos.datasetup.stage1.NotificationStage;
 import at.redcross.tacos.datasetup.stage1.RosterEntryStage;
-import at.redcross.tacos.datasetup.stage1.SecuredResourceStage;
 import at.redcross.tacos.datasetup.stage1.ServiceTypeStage;
-import at.redcross.tacos.datasetup.stage1.SystemUserStage;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 
 /**
@@ -112,15 +111,16 @@ public class DatasetupApplication {
 	// run as java-application
 	public static void main(String[] args) {
 		DatasetupApplication app = new DatasetupApplication();
+		// Basic data
 		app.registerStage(new GroupStage());
-		app.registerStage(new RosterEntryStage());
-		app.registerStage(new SecuredResourceStage());
-		app.registerStage(new DistrictStage());
 		app.registerStage(new LocationStage());
+		app.registerStage(new SystemUserStage());
+		app.registerStage(new SecuredResourceStage());
+		// Additional data
 		app.registerStage(new ServiceTypeStage());
 		app.registerStage(new AssignmentStage());
 		app.registerStage(new CompetenceStage());
-		app.registerStage(new SystemUserStage());
+		app.registerStage(new RosterEntryStage());
 		app.registerStage(new CarStage());
 		app.registerStage(new LinkStage());
 		app.registerStage(new InfoStage());

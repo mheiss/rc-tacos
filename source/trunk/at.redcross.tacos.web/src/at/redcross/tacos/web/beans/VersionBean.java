@@ -33,9 +33,12 @@ public class VersionBean extends BaseBean {
 		try {
 			ExternalContext ext = FacesContext.getCurrentInstance().getExternalContext();
 			in = ext.getResourceAsStream("/WEB-INF/classes/version.properties");
-			Properties p = new Properties();
-			p.load(in);
-			systemVersion = p.getProperty("tacos.version", "");
+			if (in != null) {
+				Properties p = new Properties();
+				p.load(in);
+				systemVersion = p.getProperty("tacos.version", "");
+				logger.info("Tacos " + systemVersion + " started");
+			}
 		} catch (Exception ex) {
 			logger.error("Failed to read version file", ex);
 		} finally {

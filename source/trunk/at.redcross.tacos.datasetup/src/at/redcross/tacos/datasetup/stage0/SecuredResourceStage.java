@@ -1,4 +1,4 @@
-package at.redcross.tacos.datasetup.stage1;
+package at.redcross.tacos.datasetup.stage0;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
