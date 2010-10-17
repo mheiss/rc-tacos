@@ -1,0 +1,79 @@
+<project name="TacosBuilder" default="build">
+	<property file="build.properties" />
+	
+	<!-- Basic initializsation -->
+	<target name="init">
+		<property name="project.name" value="tacos" />
+		<property name="tacos.web" value="at.redcross.tacos.web" />
+		<property name="tacos.dbal" value="at.redcross.tacos.dbal" />
+		<property name="tacos.logging" value="at.redcross.tacos.logging" />
+		<property name="tacos.hibernate" value="at.redcross.tacos.hibernate" />
+		<property name="tacos.builder" value="at.redcross.tacos.build" />
+		<property name="builder.dir" value="${base.dir}/${tacos.builder}/builder" />
+	</target>
+	
+	<!-- cleanup the builder -->
+	<target name="cleanup" depends="init">
+		<echo message="Cleaning up the builder" />
+		<delete dir="${builder.dir}" failonerror="false" />
+	</target>
+	
+	<!-- Performs a clean rebuild -->
+	<target name="build" depends="cleanup,setup-classpath">
+		<echo message="Building application" />
+		<mkdir dir="${builder.dir}/classes" />
+		<mkdir dir="${builder.dir}/libs" />
+		
+		<!-- Compile the application -->
+		<javac destdir="${builder.dir}/classes">
+			<!-- external libs -->
+			<classpath refid="application.classpath" />
+			<classpath refid="tomcat.classpath" />
+			<!-- application source -->
+			<src path="${base.dir}/${tacos.dbal}/src" />
+			<src path="${base.dir}/${tacos.web}/src" />
+		</javac>
+		
+		<!-- Copy all needed libraries -->
+		<copy todir="${builder.dir}/libs" preservelastmodified="true">
+			<path refid="application.classpath"/>
+		</copy>
+		
+		<!-- Create the war file -->
+		<war destfile="${builder.dir}/${project.name}.war" webxml="${base.dir}/${tacos.web}/WebContent/WEB-INF/web.xml">
+			<fileset dir="${base.dir}/${tacos.web}/WebContent" />
+			<lib dir="${builder.dir}/libs" includes="*.jar" />
+			<classes dir="${builder.dir}/classes" includes="*/**" />
+			<zipfileset file="${base.dir}/${tacos.builder}/log4j.properties" prefix="WEB-INF/classes" /> 
+			<zipfileset file="${base.dir}/${tacos.builder}/versions.properties" prefix="WEB-INF/classes" /> 
+			<zipfileset file="${base.dir}/${tacos.builder}/persistence.xml" prefix="META-INF" /> 
+		</war>
+	</target>
+		
+	<!-- Deploys the war file to a remote server -->
+	<target name="deployRemote" depends="build">
+		<echo message="Deploying application" />
+		<taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask">
+			<classpath refid="tomcat.classpath" />
+		</taskdef>
+
+	    <deploy url="${tomcat.manager.url}" path="/${project.name}"
+	        username="${tomcat.manager.username}" password="${tomcat.manager.password}"
+	        war="file:${builder.dir}/${project.name}.war" update="true" />
+	</target>
+	
+	<!-- Define the application classpath -->
+	<target name="setup-classpath" depends="init">
+		<path id="application.classpath">
+			<fileset dir="${base.dir}/${tacos.dbal}/lib" includes="*.jar" />
+			<fileset dir="${base.dir}/${tacos.hibernate}/lib" includes="*.jar" />
+			<fileset dir="${base.dir}/${tacos.logging}/lib" includes="*.jar" />
+			<fileset dir="${base.dir}/${tacos.web}/WebContent/WEB-INF/lib" includes="*.jar" />
+		</path>
+		<path id="tomcat.classpath">
+			<fileset dir="${tomcat.dir}/lib">
+				<include name="**/*.jar" />
+			</fileset>
+		</path>
+	</target>
+</project>
