@@ -127,6 +127,18 @@
         primary key (id)
     );
 
+    create table RestoreLogin (
+        id bigint not null auto_increment,
+        history_changedat datetime,
+        history_changedby varchar(255) not null,
+        history_createdat datetime,
+        history_createdby varchar(255) not null,
+        expireat datetime,
+        token varchar(255) not null,
+        username varchar(255) not null unique,
+        primary key (id)
+    );
+
     create table RosterEntry (
         id bigint not null auto_increment,
         history_changedat datetime,

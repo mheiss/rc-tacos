@@ -127,6 +127,18 @@
         primary key (id)
     );
 
+    create table RestoreLogin (
+        id number(19,0) not null,
+        history_changedat timestamp,
+        history_changedby varchar2(255 char) not null,
+        history_createdat timestamp,
+        history_createdby varchar2(255 char) not null,
+        expireat timestamp,
+        token varchar2(255 char) not null,
+        username varchar2(255 char) not null unique,
+        primary key (id)
+    );
+
     create table RosterEntry (
         id number(19,0) not null,
         history_changedat timestamp,
