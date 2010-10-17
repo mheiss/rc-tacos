@@ -18,6 +18,7 @@ public class InfoStage implements DatasetupStage {
 
 	@Override
 	public void performImport(EntityManager manager) {
+		// nothing to import
 	}
 
 }

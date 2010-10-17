@@ -22,14 +22,13 @@ public class CategoryStage implements DatasetupStage {
 		{
 			Category category = new Category();
 			category.setName("Ausbildung");
-			category
-					.setDescription("Hier werden ausbildungsrelevante Themen angekündigt (Pflichtfortbildungen, (Re-) Zertifizierungen");
+			category.setDescription("Hier werden ausbildungsrelevante Themen angekündigt.");
 			manager.persist(category);
 		}
 		{
 			Category category = new Category();
 			category.setName("Ambulanzdienst");
-			category.setDescription("Ambulanzdienste aller Art... ");
+			category.setDescription("Ambulanzdienste aller Art.");
 			manager.persist(category);
 		}
 	}
