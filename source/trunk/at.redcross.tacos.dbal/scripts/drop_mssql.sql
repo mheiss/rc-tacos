@@ -67,6 +67,8 @@
 
     drop table Notification;
 
+    drop table RestoreLogin;
+
     drop table RosterEntry;
 
     drop table SecuredAction;

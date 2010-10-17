@@ -19,6 +19,8 @@
 
     drop table Notification cascade constraints;
 
+    drop table RestoreLogin cascade constraints;
+
     drop table RosterEntry cascade constraints;
 
     drop table SecuredAction cascade constraints;

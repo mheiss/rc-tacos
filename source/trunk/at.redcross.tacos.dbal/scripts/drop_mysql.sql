@@ -83,6 +83,8 @@
 
     drop table if exists Notification;
 
+    drop table if exists RestoreLogin;
+
     drop table if exists RosterEntry;
 
     drop table if exists SecuredAction;
