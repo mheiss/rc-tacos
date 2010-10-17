@@ -1,4 +1,4 @@
-package at.redcross.tacos.datasetup.stage1;
+package at.redcross.tacos.datasetup.stage0;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -20,7 +20,7 @@ public class GroupStage implements DatasetupStage {
 	public void performImport(EntityManager manager) {
 		{
 			Group group = new Group();
-			group.setName("ROLE_ANONYMOUS");
+			group.setName("ROLE_USER");
 			manager.persist(group);
 		}
 		{
