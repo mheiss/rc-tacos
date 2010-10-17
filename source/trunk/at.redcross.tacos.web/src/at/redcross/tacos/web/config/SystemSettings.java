@@ -13,9 +13,6 @@ public class SystemSettings implements Serializable {
 
 	private static final long serialVersionUID = 8690368855777808625L;
 
-	/** the current software version */
-	private String tacosVersion;
-
 	/** SMTP port */
 	private int smtpPort;
 
@@ -40,10 +37,6 @@ public class SystemSettings implements Serializable {
 	// ---------------------------------
 	// Getters for the properties
 	// ---------------------------------
-	public String getTacosVersion() {
-		return tacosVersion;
-	}
-
 	public int getSmtpPort() {
 		return smtpPort;
 	}
@@ -75,10 +68,6 @@ public class SystemSettings implements Serializable {
 	// ---------------------------------
 	// Setters for the properties
 	// ---------------------------------
-	public void setTacosVersion(String tacosVersion) {
-		this.tacosVersion = tacosVersion;
-	}
-
 	public void setSmtpPort(int smtpPort) {
 		this.smtpPort = smtpPort;
 	}

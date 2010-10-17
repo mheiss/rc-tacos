@@ -62,7 +62,7 @@ public class SettingsStore {
 	 * 
 	 * @return the path to the system settings file
 	 */
-	public File getSettings() {
+	public File getSettingsDir() {
 		return new File(homeDir, "tacos.config");
 	}
 
@@ -95,7 +95,7 @@ public class SettingsStore {
 	/** Initializes the configuration files and ensures that they are existing */
 	private void initFiles() {
 		try {
-			File file = getSettings();
+			File file = getSettingsDir();
 			if (!file.exists()) {
 				XmlFile.write(file, new SystemSettings());
 			}
