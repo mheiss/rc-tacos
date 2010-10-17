@@ -32,11 +32,11 @@ public class DatasetupApplication {
 
 	private final static Logger logger = LoggerFactory.getLogger(DatasetupApplication.class);
 
-	// the system property whether or not a cleanup should be executed
-	private final static String PROP_CLEANUP = "at.redcross.tacos.datasetup.cleanup";
+	/** System property whether or not core data should be imported */
+	private final static String PROP_STAGE_CORE = "stage0";
 
-	// the system property whether or not a import should be executed
-	private final static String PROP_IMPORT = "at.redcross.tacos.datasetup.import";
+	/** System property whether or not additional data should be imported */
+	private final static String PROP_STAGE_DATA = "stage1";
 
 	// the registered stages that will be executed
 	private List<DatasetupStage> stages;
@@ -62,14 +62,10 @@ public class DatasetupApplication {
 	public void execute() {
 		long start = System.currentTimeMillis();
 		logger.info("Executing datasetup");
-		if (System.getProperty(PROP_CLEANUP, "true").equals("true")) {
-			logger.info("Performing cleanup");
-			runCleanup();
-		}
-		if (System.getProperty(PROP_IMPORT, "true").equals("true")) {
-			logger.info("Performing import");
-			runImport();
-		}
+		logger.info("Performing cleanup");
+		runCleanup();
+		logger.info("Performing import");
+		runImport();
 		long duration = System.currentTimeMillis() - start;
 		logger.info("Datasetup successfully in '" + duration + "' ms");
 	}
@@ -111,21 +107,23 @@ public class DatasetupApplication {
 	// run as java-application
 	public static void main(String[] args) {
 		DatasetupApplication app = new DatasetupApplication();
-		// Basic data
-		app.registerStage(new GroupStage());
-		app.registerStage(new LocationStage());
-		app.registerStage(new SystemUserStage());
-		app.registerStage(new SecuredResourceStage());
-		// Additional data
-		app.registerStage(new ServiceTypeStage());
-		app.registerStage(new AssignmentStage());
-		app.registerStage(new CompetenceStage());
-		app.registerStage(new RosterEntryStage());
-		app.registerStage(new CarStage());
-		app.registerStage(new LinkStage());
-		app.registerStage(new InfoStage());
-		app.registerStage(new CategoryStage());
-		app.registerStage(new NotificationStage());
+		if (System.getProperty(PROP_STAGE_CORE, "true").equals("true")) {
+			app.registerStage(new GroupStage());
+			app.registerStage(new LocationStage());
+			app.registerStage(new SystemUserStage());
+			app.registerStage(new SecuredResourceStage());
+		}
+		if (System.getProperty(PROP_STAGE_DATA, "true").equals("true")) {
+			app.registerStage(new AssignmentStage());
+			app.registerStage(new CarStage());
+			app.registerStage(new CategoryStage());
+			app.registerStage(new CompetenceStage());
+			app.registerStage(new InfoStage());
+			app.registerStage(new LinkStage());
+			app.registerStage(new NotificationStage());
+			app.registerStage(new RosterEntryStage());
+			app.registerStage(new ServiceTypeStage());
+		}
 		app.execute();
 	}
 }
