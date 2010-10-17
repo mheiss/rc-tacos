@@ -4,7 +4,7 @@
 	<!-- Basic initializsation -->
 	<target name="init">
 		<!-- Check required files -->
-		<available file="config/build.properties" property="build.file" />
+		<available file="build.properties" property="build.file" />
 		<available file="config/log4j.properties" property="log.file" />
 		<available file="config/persistence.xml" property="jpa.file" />
 		<fail unless="build.file" message="Please provide a configuration file for the build." />
