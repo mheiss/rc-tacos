@@ -10,7 +10,7 @@ import org.ajax4jsf.model.KeepAlive;
 import at.redcross.tacos.dbal.entity.Link;
 import at.redcross.tacos.dbal.helper.LinkHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
-import at.redcross.tacos.web.persitence.EntityManagerFactory;
+import at.redcross.tacos.web.persistence.EntityManagerFactory;
 
 @KeepAlive
 @ManagedBean(name = "linkOverviewBean")

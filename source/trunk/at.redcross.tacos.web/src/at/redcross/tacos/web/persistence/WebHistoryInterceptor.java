@@ -1,4 +1,4 @@
-package at.redcross.tacos.web.persitence;
+package at.redcross.tacos.web.persistence;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

@@ -21,7 +21,7 @@ import at.redcross.tacos.dbal.query.RosterQueryParam;
 import at.redcross.tacos.web.beans.dto.RosterDto;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.faces.combo.DropDownHelper;
-import at.redcross.tacos.web.persitence.EntityManagerFactory;
+import at.redcross.tacos.web.persistence.EntityManagerFactory;
 import at.redcross.tacos.web.reporting.ReportRenderer;
 import at.redcross.tacos.web.reporting.RosterReportParam;
 import at.redcross.tacos.web.reporting.ReportRenderer.ReportRenderParameters;

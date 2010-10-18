@@ -6,28 +6,36 @@ import at.redcross.tacos.dbal.manager.DbalResources;
 
 public class DatasetupDbalResources extends DbalResources {
 
-    // the one and only
-    private static DatasetupDbalResources instance;
+	// the system property to define an alternative persistence unit
+	public final static String PERSISTENCE_UNIT = "at.redcross.tacos.persistence";
 
-    private DatasetupDbalResources() {
-        // prevent instantiation
-    }
+	// the one and only
+	private static DatasetupDbalResources instance;
 
-    /**
-     * Creates or returns the shared {@code DbalResources} instance.
-     * 
-     * @return the shared instance.
-     */
-    public synchronized static DbalResources getInstance() {
-        if (instance == null) {
-            instance = new DatasetupDbalResources();
-        }
-        return instance;
-    }
+	private DatasetupDbalResources() {
+		// prevent instantiation
+	}
 
-    @Override
-    protected void initFactory(Map<String, String> map) {
-        map.put("hibernate.ejb.interceptor", DatasetupHistoryInterceptor.class.getName());
-    }
+	/**
+	 * Creates or returns the shared {@code DbalResources} instance.
+	 * 
+	 * @return the shared instance.
+	 */
+	public synchronized static DbalResources getInstance() {
+		if (instance == null) {
+			instance = new DatasetupDbalResources();
+		}
+		return instance;
+	}
+
+	@Override
+	protected void initFactory(Map<String, String> map) {
+		map.put("hibernate.ejb.interceptor", DatasetupHistoryInterceptor.class.getName());
+	}
+
+	@Override
+	protected String getPersistenceUnit() {
+		return System.getProperty(PERSISTENCE_UNIT, "");
+	}
 
 }

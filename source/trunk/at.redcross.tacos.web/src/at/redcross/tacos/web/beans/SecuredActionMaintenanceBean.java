@@ -1,6 +1,10 @@
 package at.redcross.tacos.web.beans;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.component.UIComponent;
@@ -18,7 +22,9 @@ import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.web.beans.dto.DtoHelper;
 import at.redcross.tacos.web.beans.dto.GenericDto;
 import at.redcross.tacos.web.faces.FacesUtils;
-import at.redcross.tacos.web.persitence.EntityManagerFactory;
+import at.redcross.tacos.web.persistence.EntityManagerFactory;
+import at.redcross.tacos.web.security.WebActionDefinition;
+import at.redcross.tacos.web.security.WebActionDefinitionRegistry;
 
 @KeepAlive
 @ManagedBean(name = "securedActionMaintenanceBean")
@@ -38,6 +44,7 @@ public class SecuredActionMaintenanceBean extends SecuredBean {
 		EntityManager manager = null;
 		try {
 			manager = EntityManagerFactory.createEntityManager();
+			syncronizeActions(manager);
 			actions = DtoHelper.fromList(SecuredAction.class, SecuredActionHelper.list(manager));
 		} finally {
 			manager = EntityManagerHelper.close(manager);
@@ -62,6 +69,49 @@ public class SecuredActionMaintenanceBean extends SecuredBean {
 		}
 	}
 
+	/**
+	 * Synchronizes the defined actions with the ones form the database
+	 */
+	protected void syncronizeActions(EntityManager manager) {
+		List<SecuredAction> actions = SecuredActionHelper.list(manager);
+		Set<WebActionDefinition> definitions = WebActionDefinitionRegistry.getInstance()
+				.getDefinitions();
+		// put them into a map for comparison
+		Map<String, SecuredAction> actionMap = new HashMap<String, SecuredAction>();
+		for (SecuredAction action : actions) {
+			actionMap.put(action.getName(), action);
+		}
+		Map<String, WebActionDefinition> definitionMap = new HashMap<String, WebActionDefinition>();
+		for (WebActionDefinition defintion : definitions) {
+			definitionMap.put(defintion.getId(), defintion);
+		}
+
+		// remove elements that are not in the local definition any more
+		Set<String> actionSet = new HashSet<String>(actionMap.keySet());
+		actionSet.removeAll(definitionMap.keySet());
+		for (String actionId : actionSet) {
+			SecuredAction action = actionMap.get(actionId);
+			manager.remove(action);
+			logger.info("Removing securedAction '" + action + "'");
+		}
+
+		// remove all elements that are already in the database
+		Set<String> definitionSet = new HashSet<String>(definitionMap.keySet());
+		definitionSet.removeAll(actionMap.keySet());
+		for (String definitionId : definitionSet) {
+			WebActionDefinition definition = definitionMap.get(definitionId);
+			SecuredAction action = new SecuredAction();
+			action.setName(definition.getId());
+			action.setDescription(definition.getDescription());
+			action.setActionExpression("permitAll");
+			manager.persist(action);
+			logger.info("Adding securedAction '" + action + "'");
+		}
+
+		// commit the changes to the database
+		EntityManagerHelper.commit(manager);
+	}
+	
 	// ---------------------------------
 	// Validation methods
 	// ---------------------------------
@@ -72,7 +122,7 @@ public class SecuredActionMaintenanceBean extends SecuredBean {
 		}
 		throw new ValidatorException(FacesUtils.createErrorMessage("No valid access definition"));
 	}
-
+	
 	// ---------------------------------
 	// Getters for the properties
 	// ---------------------------------

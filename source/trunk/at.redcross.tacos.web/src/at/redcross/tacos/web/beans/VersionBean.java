@@ -1,6 +1,6 @@
 package at.redcross.tacos.web.beans;
 
-import java.io.InputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
@@ -8,12 +8,11 @@ import java.util.Properties;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import at.redcross.tacos.web.config.SettingsStore;
 
 @ApplicationScoped
 @ManagedBean(name = "versionBean")
@@ -28,28 +27,24 @@ public class VersionBean extends BaseBean {
 
 	@PostConstruct
 	protected void init() {
-		// read from configuration file
-		InputStream in = null;
 		try {
-			ExternalContext ext = FacesContext.getCurrentInstance().getExternalContext();
-			in = ext.getResourceAsStream("/WEB-INF/classes/version.properties");
-			if (in != null) {
-				Properties p = new Properties();
-				p.load(in);
-				systemVersion = p.getProperty("tacos.version", "");
-				logger.info("Tacos " + systemVersion + " started");
-			}
+			systemVersion = readVersionString();
+			logger.info("Tacos '" + systemVersion + "' started");
 		} catch (Exception ex) {
-			logger.error("Failed to read version file", ex);
-		} finally {
-			IOUtils.closeQuietly(in);
+			logger.error("Failed to read system properties", ex);
 		}
+	}
 
-		// fallback to default solution if anything went wrong
-		if (systemVersion == null || systemVersion.isEmpty()) {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-HHmm");
-			systemVersion = "0.0.0.v" + sdf.format(new Date());
+	private String readVersionString() throws IOException {
+		// read from configuration file
+		Properties p = SettingsStore.getInstance().getSystemProperties();
+		systemVersion = p.getProperty("tacos.version", "");
+		// replace patterns in the format string
+		if (!systemVersion.contains("${date}")) {
+			return systemVersion;
 		}
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd-HHmm");
+		return systemVersion.replace("${date}", sdf.format(new Date()));
 	}
 
 	public String getSystemVersion() {
