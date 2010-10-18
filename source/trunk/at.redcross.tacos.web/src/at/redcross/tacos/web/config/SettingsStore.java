@@ -1,8 +1,14 @@
 package at.redcross.tacos.web.config;
 
 import java.io.File;
+import java.io.InputStream;
+import java.util.Properties;
+
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,6 +70,28 @@ public class SettingsStore {
 	 */
 	public File getSettingsDir() {
 		return new File(homeDir, "tacos.config");
+	}
+
+	/**
+	 * Reads and returns the content of the global <tt>system.properties</tt>
+	 * file that is located in the classpath.
+	 * 
+	 * @return the system properties
+	 */
+	public Properties getSystemProperties() {
+		InputStream in = null;
+		Properties p = new Properties();
+		try {
+			ExternalContext ext = FacesContext.getCurrentInstance().getExternalContext();
+			in = ext.getResourceAsStream("/WEB-INF/classes/system.properties");
+			p.load(in);
+			return p;
+		} catch (Exception ex) {
+			logger.error("Failed to read system properties", ex);
+			return p;
+		} finally {
+			IOUtils.closeQuietly(in);
+		}
 	}
 
 	/** Initialize the store and set the directory */

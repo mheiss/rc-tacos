@@ -23,7 +23,7 @@ import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.web.beans.dto.LocationInfo;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.faces.combo.DropDownHelper;
-import at.redcross.tacos.web.persitence.EntityManagerFactory;
+import at.redcross.tacos.web.persistence.EntityManagerFactory;
 import at.redcross.tacos.web.reporting.ReportRenderer;
 import at.redcross.tacos.web.reporting.ReportRenderer.ReportRenderParameters;
 

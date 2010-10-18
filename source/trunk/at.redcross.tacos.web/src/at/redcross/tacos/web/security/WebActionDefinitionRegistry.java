@@ -1,5 +1,6 @@
 package at.redcross.tacos.web.security;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -41,8 +42,8 @@ public class WebActionDefinitionRegistry {
 	 * 
 	 * @return the available action definitions.
 	 */
-	protected Set<WebActionDefinition> getDefinitions() {
-		return definitions;
+	public Set<WebActionDefinition> getDefinitions() {
+		return Collections.unmodifiableSet(definitions);
 	}
 
 	/**

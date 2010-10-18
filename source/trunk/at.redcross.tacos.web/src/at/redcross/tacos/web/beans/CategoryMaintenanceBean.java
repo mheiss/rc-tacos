@@ -18,7 +18,7 @@ import at.redcross.tacos.web.beans.dto.DtoHelper;
 import at.redcross.tacos.web.beans.dto.DtoState;
 import at.redcross.tacos.web.beans.dto.GenericDto;
 import at.redcross.tacos.web.faces.FacesUtils;
-import at.redcross.tacos.web.persitence.EntityManagerFactory;
+import at.redcross.tacos.web.persistence.EntityManagerFactory;
 
 @KeepAlive
 @ManagedBean(name = "categoryMaintenanceBean")

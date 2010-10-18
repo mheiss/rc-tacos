@@ -6,10 +6,12 @@
 		<!-- Check required files -->
 		<available file="build.properties" property="build.file" />
 		<available file="config/log4j.properties" property="log.file" />
+		<available file="config/system.properties" property="system.file" />
 		<available file="config/persistence.xml" property="jpa.file" />
 		<fail unless="build.file" message="Please provide a configuration file for the build." />
 		<fail unless="log.file" message="Please provide a log file for the application." />
-		<fail unless="build.file" message="Please provide a JPA file for the application." />
+		<fail unless="jpa.file" message="Please provide a JPA file for the application." />
+		<fail unless="system.file" message="Please provide a system configuration file." />
 		
 		<!-- Common properties for the build script -->
 		<property name="project.name" value="tacos" />
@@ -21,7 +23,7 @@
 		<property name="builder.dir" value="${base.dir}/${tacos.builder}/builder" />
 		
 		<!-- Configuration files needed for the application -->
-		<property name="config.version" value="${base.dir}/${tacos.builder}/version.properties" />
+		<property name="config.system" value="${base.dir}/${tacos.builder}/config/system.properties" />
 		<property name="config.jpa" value="${base.dir}/${tacos.builder}/config/persistence.xml" />
 		<property name="config.log4j" value="${base.dir}/${tacos.builder}/config/log4j.properties" />
 	</target>
@@ -60,7 +62,7 @@
 			<classes dir="${builder.dir}/classes" includes="*/**" />
 			<zipfileset file="${config.jpa}" prefix="META-INF" /> 
 			<zipfileset file="${config.log4j}" prefix="WEB-INF/classes" /> 
-			<zipfileset file="${config.version}" prefix="WEB-INF/classes" /> 
+			<zipfileset file="${config.system}" prefix="WEB-INF/classes" /> 
 		</war>
 	</target>
 		

@@ -7,6 +7,9 @@ import java.util.concurrent.atomic.AtomicReference;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * The {@code DbalResources} manages the access to the {@code
  * EntityManagerFactory}. The factory is lazily created upon the first request.
@@ -14,50 +17,65 @@ import javax.persistence.Persistence;
  */
 public abstract class DbalResources {
 
-    // the default persistence to use #see persistence.xml
-    private static final String PERSISTENCE_UNIT_NAME = "tacosDevelopment";
+	private final static Logger logger = LoggerFactory.getLogger(DbalResources.class);
 
-    // the cached factory instance
-    private final AtomicReference<EntityManagerFactory> lazyFactory = new AtomicReference<EntityManagerFactory>();
+	// default persistence unit if nothing is provided
+	public final static String DEFAULT_PERSISTENCE_UNIT = "tacosDevelopment";
 
-    /**
-     * Creates and returns a new {@code EntityManagerFactory} using the given
-     * properties to initialize.
-     * 
-     * @param map
-     *            the map to initialize the factory
-     * @return the initialized factory
-     */
-    public synchronized EntityManagerFactory getFactory() {
-        final EntityManagerFactory existingFactory = lazyFactory.get();
-        if (existingFactory != null) {
-            return existingFactory;
-        }
-        final EntityManagerFactory newFactory = createFactory();
-        if (lazyFactory.compareAndSet(null, newFactory)) {
-            return newFactory;
-        }
-        return lazyFactory.get();
-    }
+	// the cached factory instance
+	protected final AtomicReference<EntityManagerFactory> lazyFactory = new AtomicReference<EntityManagerFactory>();
 
-    /**
-     * Callback method to initialize the factory with custom properties.
-     * Subclasses can override and define custom properties.
-     * 
-     * @param map
-     *            the map to add the custom key/value properties
-     */
-    protected abstract void initFactory(Map<String, String> map);
+	/**
+	 * Creates and returns a new {@code EntityManagerFactory} using the given
+	 * properties to initialize.
+	 * 
+	 * @param map
+	 *            the map to initialize the factory
+	 * @return the initialized factory
+	 */
+	public synchronized EntityManagerFactory getFactory() {
+		final EntityManagerFactory existingFactory = lazyFactory.get();
+		if (existingFactory != null) {
+			return existingFactory;
+		}
+		final EntityManagerFactory newFactory = createFactory();
+		if (lazyFactory.compareAndSet(null, newFactory)) {
+			return newFactory;
+		}
+		return lazyFactory.get();
+	}
 
-    // ---------------------------------
-    // Private API
-    // ---------------------------------
+	/**
+	 * Callback method to initialize the factory with custom properties.
+	 * Subclasses must override and define custom properties.
+	 * 
+	 * @param map
+	 *            the map to add the custom key/value properties
+	 */
+	protected abstract void initFactory(Map<String, String> map);
 
-    // creates and returns a factory instance
-    private EntityManagerFactory createFactory() {
-        Map<String, String> map = new HashMap<String, String>();
-        initFactory(map);
-        return Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME, map);
-    }
+	/**
+	 * Returns the name of the persistence-unit that should be used to create
+	 * the factory.
+	 * 
+	 * @return the name of the persistence unit
+	 */
+	protected abstract String getPersistenceUnit();
+
+	// ---------------------------------
+	// Private API
+	// ---------------------------------
+
+	// creates and returns a factory instance
+	private EntityManagerFactory createFactory() {
+		Map<String, String> map = new HashMap<String, String>();
+		initFactory(map);
+		String persistenceUnit = getPersistenceUnit();
+		if (persistenceUnit == null || persistenceUnit.isEmpty()) {
+			persistenceUnit = DEFAULT_PERSISTENCE_UNIT;
+		}
+		logger.info("Using persistence unit '" + persistenceUnit + "'");
+		return Persistence.createEntityManagerFactory(persistenceUnit, map);
+	}
 
 }

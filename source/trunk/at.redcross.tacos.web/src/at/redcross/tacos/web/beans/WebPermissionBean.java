@@ -24,7 +24,7 @@ import at.redcross.tacos.dbal.entity.SystemUser;
 import at.redcross.tacos.dbal.helper.SecuredActionHelper;
 import at.redcross.tacos.dbal.helper.SecuredResourceHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
-import at.redcross.tacos.web.persitence.EntityManagerFactory;
+import at.redcross.tacos.web.persistence.EntityManagerFactory;
 import at.redcross.tacos.web.security.WebAuthenticationTrustResolver;
 import at.redcross.tacos.web.security.WebAuthenticationVoter;
 import at.redcross.tacos.web.security.WebSecurityExpressionRoot;

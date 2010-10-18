@@ -18,7 +18,7 @@ import at.redcross.tacos.dbal.entity.RestoreLogin;
 import at.redcross.tacos.dbal.entity.SystemUser;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.web.faces.FacesUtils;
-import at.redcross.tacos.web.persitence.EntityManagerFactory;
+import at.redcross.tacos.web.persistence.EntityManagerFactory;
 
 @KeepAlive
 @ManagedBean(name = "resetPasswordBean")

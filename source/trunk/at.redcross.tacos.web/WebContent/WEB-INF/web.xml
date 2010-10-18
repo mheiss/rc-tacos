@@ -18,9 +18,14 @@
 	
 	<!-- TACOS configuration -->
 	<servlet>
+		<servlet-name>TacosDbalServlet</servlet-name>
+		<servlet-class>at.redcross.tacos.web.persistence.WebDbalServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet>
 		<servlet-name>TacosActionServlet</servlet-name>
 		<servlet-class>at.redcross.tacos.web.security.WebActionDefinitionServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
+		<load-on-startup>2</load-on-startup>
 	</servlet>
 	
 

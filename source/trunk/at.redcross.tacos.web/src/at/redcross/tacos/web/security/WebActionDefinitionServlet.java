@@ -1,6 +1,5 @@
 package at.redcross.tacos.web.security;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -8,11 +7,9 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
-import javax.servlet.GenericServlet;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServlet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -20,13 +17,13 @@ import org.apache.commons.logging.LogFactory;
 import at.redcross.tacos.dbal.entity.SecuredAction;
 import at.redcross.tacos.dbal.helper.SecuredActionHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
-import at.redcross.tacos.web.persitence.EntityManagerFactory;
+import at.redcross.tacos.web.persistence.EntityManagerFactory;
 
 /**
  * The {@code WebActionDefinitionServlet} synchronizes the available actions
  * with the database.
  */
-public class WebActionDefinitionServlet extends GenericServlet {
+public class WebActionDefinitionServlet extends HttpServlet {
 
 	private static final long serialVersionUID = -874845960031052211L;
 
@@ -88,10 +85,4 @@ public class WebActionDefinitionServlet extends GenericServlet {
 		// commit the changes to the database
 		EntityManagerHelper.commit(manager);
 	}
-
-	@Override
-	public void service(ServletRequest request, ServletResponse response) throws ServletException, IOException {
-		// do nothing
-	}
-
 }

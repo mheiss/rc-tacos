@@ -18,7 +18,7 @@ import at.redcross.tacos.dbal.helper.LocationHelper;
 import at.redcross.tacos.dbal.helper.SystemUserHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.web.faces.combo.DropDownItem;
-import at.redcross.tacos.web.persitence.EntityManagerFactory;
+import at.redcross.tacos.web.persistence.EntityManagerFactory;
 
 @KeepAlive
 @ManagedBean(name = "userOverviewBean")
