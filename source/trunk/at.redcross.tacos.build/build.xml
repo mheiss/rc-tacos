@@ -57,7 +57,7 @@
 		
 		<!-- Create the war file -->
 		<war destfile="${builder.dir}/${project.name}.war" webxml="${base.dir}/${tacos.web}/WebContent/WEB-INF/web.xml">
-			<fileset dir="${base.dir}/${tacos.web}/WebContent" excludes="WEB-INF/lib/*.jar" />
+			<fileset dir="${base.dir}/${tacos.web}/WebContent" excludes="WEB-INF/lib/*.jar WEB-INF/classes/*" />
 			<lib dir="${builder.dir}/libs" includes="*.jar" />
 			<classes dir="${builder.dir}/classes" includes="*/**" />
 			<zipfileset file="${config.jpa}" prefix="META-INF" /> 
