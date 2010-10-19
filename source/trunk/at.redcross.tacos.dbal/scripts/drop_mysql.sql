@@ -3,6 +3,14 @@
         drop 
         foreign key FK107B4716F1CD8;
 
+    alter table Car 
+        drop 
+        foreign key FK107B44CC82590;
+
+    alter table CarCareEntry 
+        drop 
+        foreign key FK9FF5628D1D301F3C;
+
     alter table Info 
         drop 
         foreign key FK22D8CE716F1CD8;
@@ -10,18 +18,6 @@
     alter table Info 
         drop 
         foreign key FK22D8CE3DDF2C38;
-
-    alter table Location 
-        drop 
-        foreign key FK752A03D54004E1E2;
-
-    alter table Location 
-        drop 
-        foreign key FK752A03D54004E238;
-
-    alter table Login 
-        drop 
-        foreign key FK462FF4914938758;
 
     alter table RosterEntry 
         drop 
@@ -42,6 +38,10 @@
     alter table RosterEntry 
         drop 
         foreign key FKEF3D70871D301F3C;
+
+    alter table SystemUser 
+        drop 
+        foreign key FK9D23FEBAB76029C;
 
     alter table SystemUser 
         drop 
@@ -67,11 +67,13 @@
 
     drop table if exists Car;
 
+    drop table if exists CarCareEntry;
+
+    drop table if exists CarDetail;
+
     drop table if exists Category;
 
     drop table if exists Competence;
-
-    drop table if exists District;
 
     drop table if exists Info;
 

@@ -38,7 +38,7 @@ public class Login extends EntityImpl {
 	@Column(nullable = false, unique = true)
 	private String loginName;
 
-	@Column
+	@Column(nullable = false)
 	private String password;
 
 	@Temporal(TemporalType.DATE)
@@ -50,7 +50,7 @@ public class Login extends EntityImpl {
 	@Column
 	private boolean superUser;
 
-	@OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "login", optional = false, orphanRemoval = true, cascade = CascadeType.ALL)
 	private SystemUser systemUser;
 
 	// ---------------------------------

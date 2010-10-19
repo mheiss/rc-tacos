@@ -1,6 +1,7 @@
 package at.redcross.tacos.datasetup;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -77,7 +78,9 @@ public class DatasetupApplication {
 		EntityManager manager = null;
 		try {
 			manager = EntityManagerFactory.createEntityManager();
-			for (DatasetupStage stage : stages) {
+			List<DatasetupStage> cleanStages = new ArrayList<DatasetupStage>(stages);
+			Collections.reverse(cleanStages);
+			for (DatasetupStage stage : cleanStages) {
 				logger.debug("Cleaning stage '" + stage.getClass().getSimpleName() + "'");
 				stage.performCleanup(manager);
 			}
@@ -121,8 +124,8 @@ public class DatasetupApplication {
 			app.registerStage(new InfoStage());
 			app.registerStage(new LinkStage());
 			app.registerStage(new NotificationStage());
-			app.registerStage(new RosterEntryStage());
 			app.registerStage(new ServiceTypeStage());
+			app.registerStage(new RosterEntryStage());
 		}
 		app.execute();
 	}

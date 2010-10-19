@@ -2,12 +2,12 @@ package at.redcross.tacos.dbal.entity;
 
 import java.util.Date;
 
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -23,133 +23,131 @@ public class Info extends EntityImpl {
 	private static final long serialVersionUID = 7340594759209992414L;
 
 	@Id
-    @GeneratedValue
-    private long id;
+	@GeneratedValue
+	private long id;
 
-    @OneToOne
-    private Location location;
-    
-    @OneToOne
-    private Category category;
-    
-    @Column
-    private String shortName;
+	@ManyToOne(optional = false,fetch=FetchType.EAGER)
+	private Location location;
 
-    @Column
-    private String description;
+	@ManyToOne(optional = false,fetch=FetchType.EAGER)
+	private Category category;
 
-    @Temporal(TemporalType.DATE)
-    @Column(nullable = false)
-    private Date displayStartDate;
-    
-    @Temporal(TemporalType.DATE)
-    @Column(nullable = false)
-    private Date displayEndDate;
-    
-    @Column
-    private boolean toDelete;    
-    
+	@Column
+	private String shortName;
 
-    // ---------------------------------
-    // EntityImpl
-    // ---------------------------------
-    @Override
-    public String getDisplayString() {
-        return String.valueOf(id);
-    }
+	@Column
+	private String description;
 
-    // ---------------------------------
-    // Object related methods
-    // ---------------------------------
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this).append("id", id).toString();
-    }
+	@Temporal(TemporalType.DATE)
+	@Column(nullable = false)
+	private Date displayStartDate;
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(id).hashCode();
-    }
+	@Temporal(TemporalType.DATE)
+	@Column(nullable = false)
+	private Date displayEndDate;
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        if (obj.getClass() != getClass()) {
-            return false;
-        }
-        Info rhs = (Info) obj;
-        return new EqualsBuilder().append(id, rhs.id).isEquals();
-    }
+	@Column
+	private boolean toDelete;
 
-    // ---------------------------------
-    // Setters for the properties
-    // ---------------------------------
-    public void setLocation(Location location) {
-        this.location = location;
-    }
+	// ---------------------------------
+	// EntityImpl
+	// ---------------------------------
+	@Override
+	public String getDisplayString() {
+		return String.valueOf(id);
+	}
 
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
-    }
+	// ---------------------------------
+	// Object related methods
+	// ---------------------------------
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("id", id).toString();
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().append(id).hashCode();
+	}
 
-    public void setDisplayStartDate(Date displayStartDate) {
-        this.displayStartDate = displayStartDate;
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
+		if (obj.getClass() != getClass()) {
+			return false;
+		}
+		Info rhs = (Info) obj;
+		return new EqualsBuilder().append(id, rhs.id).isEquals();
+	}
 
-    public void setDisplayEndDate(Date displayEndDate) {
-        this.displayEndDate = displayEndDate;
-    }
+	// ---------------------------------
+	// Setters for the properties
+	// ---------------------------------
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setDisplayStartDate(Date displayStartDate) {
+		this.displayStartDate = displayStartDate;
+	}
+
+	public void setDisplayEndDate(Date displayEndDate) {
+		this.displayEndDate = displayEndDate;
+	}
 
 	public void setToDelete(boolean toDelete) {
 		this.toDelete = toDelete;
 	}
-	
-	public void setCategory(Category category){
+
+	public void setCategory(Category category) {
 		this.category = category;
 	}
 
-
 	// ---------------------------------
-    // Getters for the properties
-    // ---------------------------------
-    public long getId() {
-        return id;
-    }
-    
-    public Location getLocation() {
-        return location;
-    }
+	// Getters for the properties
+	// ---------------------------------
+	public long getId() {
+		return id;
+	}
 
-    public String getShortName() {
-        return shortName;
-    }
-    
-    public String getDescription(){
-    	return description;
-    }
-    
-    public Date getDisplayStartDate(){
-    	return displayStartDate;
-    }
-    
-    public Date getDisplayEndDate(){
-    	return displayEndDate;
-    }
-    
-    public Boolean isToDelete(){
-    	return toDelete;
-    }
-    
-    public Category getCategory(){
-    	return category;
-    }
+	public Location getLocation() {
+		return location;
+	}
+
+	public String getShortName() {
+		return shortName;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public Date getDisplayStartDate() {
+		return displayStartDate;
+	}
+
+	public Date getDisplayEndDate() {
+		return displayEndDate;
+	}
+
+	public Boolean isToDelete() {
+		return toDelete;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
 }

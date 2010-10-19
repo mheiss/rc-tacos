@@ -23,7 +23,67 @@
         registrationdate datetime,
         todelete bit,
         type varchar(255),
-        location_id bigint,
+        detail_id bigint,
+        location_id bigint not null,
+        primary key (id)
+    );
+
+    create table CarCareEntry (
+        id bigint not null auto_increment,
+        history_changedat datetime,
+        history_changedby varchar(255) not null,
+        history_createdat datetime,
+        history_createdby varchar(255) not null,
+        description varchar(255),
+        donefrom varchar(255),
+        executeuntil datetime,
+        executedon datetime,
+        responsible varchar(255),
+        status varchar(255),
+        type varchar(255),
+        car_id bigint,
+        primary key (id)
+    );
+
+    create table CarDetail (
+        id bigint not null auto_increment,
+        history_changedat datetime,
+        history_changedby varchar(255) not null,
+        history_createdat datetime,
+        history_createdby varchar(255) not null,
+        authorizedfrom datetime,
+        authorizeduntil datetime,
+        buildup varchar(255),
+        carenotes varchar(255),
+        code varchar(255),
+        color varchar(255),
+        companyname varchar(255),
+        cylindercapacity integer,
+        enginepower integer,
+        enginepoweratmotorspeed integer,
+        identificationnumber varchar(255),
+        kindofdrive varchar(255),
+        limitspeed integer,
+        make varchar(255),
+        maxallowedaxleload1 integer,
+        maxallowedaxleload2 integer,
+        maxallowedaxleload3 integer,
+        maxallowedbuffload integer,
+        maxallowedcarryingcapicity integer,
+        maxallowedcoupledload integer,
+        maxallowedtotalweight integer,
+        motortype varchar(255),
+        netweight integer,
+        o2 integer,
+        purposeofuse varchar(255),
+        seats integer,
+        standings integer,
+        sticker varchar(255),
+        techvalidtotalvol integer,
+        tradename varchar(255),
+        typeofvehicle varchar(255),
+        variant varchar(255),
+        wheeldimensions varchar(255),
         primary key (id)
     );
 
@@ -50,17 +110,6 @@
         primary key (id)
     );
 
-    create table District (
-        id bigint not null auto_increment,
-        history_changedat datetime,
-        history_changedby varchar(255) not null,
-        history_createdat datetime,
-        history_createdby varchar(255) not null,
-        name varchar(255) not null unique,
-        shortname varchar(255),
-        primary key (id)
-    );
-
     create table Info (
         id bigint not null auto_increment,
         history_changedat datetime,
@@ -72,8 +121,8 @@
         displaystartdate date not null,
         shortname varchar(255),
         todelete bit,
-        category_id bigint,
-        location_id bigint,
+        category_id bigint not null,
+        location_id bigint not null,
         primary key (id)
     );
 
@@ -96,8 +145,6 @@
         history_createdby varchar(255) not null,
         name varchar(255) not null unique,
         shortname varchar(255),
-        district_id bigint,
-        District_Fk bigint,
         primary key (id)
     );
 
@@ -110,9 +157,8 @@
         expireat date,
         locked bit,
         loginname varchar(255) not null unique,
-        password varchar(255),
+        password varchar(255) not null,
         superuser bit,
-        systemuser_id bigint,
         primary key (id)
     );
 
@@ -157,11 +203,11 @@
         specialservice bit,
         standby bit,
         todelete bit,
-        assignment_id bigint,
+        assignment_id bigint not null,
         car_id bigint,
-        location_id bigint,
-        servicetype_id bigint,
-        systemuser_id bigint,
+        location_id bigint not null,
+        servicetype_id bigint not null,
+        systemuser_id bigint not null,
         primary key (id)
     );
 
@@ -219,8 +265,10 @@
         notes varchar(255),
         pnr integer unique,
         todelete bit,
-        location_id bigint,
-        primary key (id)
+        location_id bigint not null,
+        login_id bigint not null,
+        primary key (id),
+        unique (login_id)
     );
 
     create table SystemUser_Competence (
@@ -250,6 +298,18 @@
         foreign key (location_id) 
         references Location (id);
 
+    alter table Car 
+        add index FK107B44CC82590 (detail_id), 
+        add constraint FK107B44CC82590 
+        foreign key (detail_id) 
+        references CarDetail (id);
+
+    alter table CarCareEntry 
+        add index FK9FF5628D1D301F3C (car_id), 
+        add constraint FK9FF5628D1D301F3C 
+        foreign key (car_id) 
+        references Car (id);
+
     alter table Info 
         add index FK22D8CE716F1CD8 (location_id), 
         add constraint FK22D8CE716F1CD8 
@@ -261,24 +321,6 @@
         add constraint FK22D8CE3DDF2C38 
         foreign key (category_id) 
         references Category (id);
-
-    alter table Location 
-        add index FK752A03D54004E1E2 (District_Fk), 
-        add constraint FK752A03D54004E1E2 
-        foreign key (District_Fk) 
-        references District (id);
-
-    alter table Location 
-        add index FK752A03D54004E238 (district_id), 
-        add constraint FK752A03D54004E238 
-        foreign key (district_id) 
-        references District (id);
-
-    alter table Login 
-        add index FK462FF4914938758 (systemuser_id), 
-        add constraint FK462FF4914938758 
-        foreign key (systemuser_id) 
-        references SystemUser (id);
 
     alter table RosterEntry 
         add index FKEF3D7087716F1CD8 (location_id), 
@@ -309,6 +351,12 @@
         add constraint FKEF3D70871D301F3C 
         foreign key (car_id) 
         references Car (id);
+
+    alter table SystemUser 
+        add index FK9D23FEBAB76029C (login_id), 
+        add constraint FK9D23FEBAB76029C 
+        foreign key (login_id) 
+        references Login (id);
 
     alter table SystemUser 
         add index FK9D23FEBA716F1CD8 (location_id), 

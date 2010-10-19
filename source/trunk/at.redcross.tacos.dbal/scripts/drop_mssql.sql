@@ -2,20 +2,17 @@
     alter table Car 
         drop constraint FK107B4716F1CD8;
 
+    alter table Car 
+        drop constraint FK107B44CC82590;
+
+    alter table CarCareEntry 
+        drop constraint FK9FF5628D1D301F3C;
+
     alter table Info 
         drop constraint FK22D8CE716F1CD8;
 
     alter table Info 
         drop constraint FK22D8CE3DDF2C38;
-
-    alter table Location 
-        drop constraint FK752A03D54004E1E2;
-
-    alter table Location 
-        drop constraint FK752A03D54004E238;
-
-    alter table Login 
-        drop constraint FK462FF4914938758;
 
     alter table RosterEntry 
         drop constraint FKEF3D7087716F1CD8;
@@ -31,6 +28,9 @@
 
     alter table RosterEntry 
         drop constraint FKEF3D70871D301F3C;
+
+    alter table SystemUser 
+        drop constraint FK9D23FEBAB76029C;
 
     alter table SystemUser 
         drop constraint FK9D23FEBA716F1CD8;
@@ -51,11 +51,13 @@
 
     drop table Car;
 
+    drop table CarCareEntry;
+
+    drop table CarDetail;
+
     drop table Category;
 
     drop table Competence;
-
-    drop table District;
 
     drop table Info;
 

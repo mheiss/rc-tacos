@@ -3,11 +3,13 @@
 
     drop table Car cascade constraints;
 
+    drop table CarCareEntry cascade constraints;
+
+    drop table CarDetail cascade constraints;
+
     drop table Category cascade constraints;
 
     drop table Competence cascade constraints;
-
-    drop table District cascade constraints;
 
     drop table Info cascade constraints;
 
