@@ -30,22 +30,27 @@ public class SystemUserStage implements DatasetupStage {
 			address.setStreet("Street_A");
 			address.setPhone("Phone_A");
 			address.setEmail("no-reply@st.roteskreuz.at");
-
+			
+			Login login = new Login();
+			login.setLoginName("tacos");
+			login.setPassword("1734c8d3b028f603483d60ab3ab8a61cf6a41f93709cf47fa01d30a90ee2282c");
+			
 			SystemUser sysUser = new SystemUser();
 			sysUser.setPnr(50000000);
 			sysUser.setFirstName("Tacos");
 			sysUser.setLastName("Tacos");
 			sysUser.setAddress(address);
 			sysUser.setGroups(GroupHelper.getByName(manager, "ROLE_ADMIN"));
-
-			Login login = new Login();
-			login.setSystemUser(sysUser);
-			login.setLoginName("tacos");
-			login.setPassword("1734c8d3b028f603483d60ab3ab8a61cf6a41f93709cf47fa01d30a90ee2282c");
 			sysUser.setLocation(LocationHelper.getByName(manager, "Location_A"));
-
-			manager.persist(login);
+			
+			sysUser.setLogin(login);
+			login.setSystemUser(sysUser);
+			
 			manager.persist(sysUser);
+			manager.persist(login);
+			
+			sysUser = manager.merge(sysUser);
+			login = manager.merge(login);
 		}
 	}
 }

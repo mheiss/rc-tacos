@@ -13,6 +13,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -47,8 +48,8 @@ public class SystemUser extends EntityImpl {
 	@Enumerated(EnumType.STRING)
 	private Gender gender = Gender.UNKNOWN;
 
-	@Temporal(TemporalType.DATE)
 	@Column
+	@Temporal(TemporalType.DATE)
 	private Date birthday;
 
 	@Column
@@ -58,10 +59,10 @@ public class SystemUser extends EntityImpl {
 	@Column(nullable = false)
 	private Address address;
 
-	@OneToOne(mappedBy = "systemUser", orphanRemoval = true, cascade = CascadeType.ALL)
+	@OneToOne(optional = false, orphanRemoval = true, cascade = CascadeType.ALL)
 	private Login login;
 
-	@OneToOne
+	@ManyToOne(optional = false)
 	private Location location;
 
 	@ManyToMany
@@ -71,7 +72,7 @@ public class SystemUser extends EntityImpl {
 	@ManyToMany
 	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<Competence> competences;
-	
+
 	@Column
 	private boolean toDelete;
 
@@ -219,7 +220,7 @@ public class SystemUser extends EntityImpl {
 		}
 		return competences;
 	}
-	
+
 	public boolean isToDelete() {
 		return toDelete;
 	}

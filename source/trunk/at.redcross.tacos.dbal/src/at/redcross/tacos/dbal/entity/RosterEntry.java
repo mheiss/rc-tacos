@@ -2,12 +2,11 @@ package at.redcross.tacos.dbal.entity;
 
 import java.util.Date;
 
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -20,252 +19,250 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 @Table(name = "RosterEntry")
 public class RosterEntry extends EntityImpl {
 
-    private static final long serialVersionUID = -8201138084188688001L;
+	private static final long serialVersionUID = -8201138084188688001L;
 
-    @Id
-    @GeneratedValue
-    private long id;
+	@Id
+	@GeneratedValue
+	private long id;
 
-    @OneToOne
-    private SystemUser systemUser;
+	@ManyToOne(optional = false)
+	private SystemUser systemUser;
 
-    @OneToOne
-    private Location location;
+	@ManyToOne(optional = false)
+	private Location location;
 
-    @OneToOne
-    private ServiceType serviceType;
+	@ManyToOne(optional = false)
+	private ServiceType serviceType;
 
-    @OneToOne
-    private Assignment assignment;
+	@ManyToOne(optional = false)
+	private Assignment assignment;
 
-    // PLANNED START DATE AND TIME
-    @Temporal(TemporalType.DATE)
-    @Column(nullable = false)
-    private Date plannedStartDate;
+	// PLANNED START DATE AND TIME
+	@Temporal(TemporalType.DATE)
+	@Column(nullable = false)
+	private Date plannedStartDate;
 
-    @Temporal(TemporalType.TIME)
-    @Column(nullable = false)
-    private Date plannedStartTime;
+	@Temporal(TemporalType.TIME)
+	@Column(nullable = false)
+	private Date plannedStartTime;
 
-    // PLANNED END DATE AND TIME
-    @Temporal(TemporalType.DATE)
-    @Column(nullable = false)
-    private Date plannedEndDate;
+	// PLANNED END DATE AND TIME
+	@Temporal(TemporalType.DATE)
+	@Column(nullable = false)
+	private Date plannedEndDate;
 
-    @Temporal(TemporalType.TIME)
-    @Column(nullable = false)
-    private Date plannedEndTime;
+	@Temporal(TemporalType.TIME)
+	@Column(nullable = false)
+	private Date plannedEndTime;
 
-    // REAL START DATE AND TIME
-    @Temporal(TemporalType.DATE)
-    private Date realStartDate;
+	// REAL START DATE AND TIME
+	@Temporal(TemporalType.DATE)
+	private Date realStartDate;
 
-    @Temporal(TemporalType.TIME)
-    private Date realStartTime;
+	@Temporal(TemporalType.TIME)
+	private Date realStartTime;
 
-    // REAL END DATE AND TIME
-    @Temporal(TemporalType.DATE)
-    private Date realEndDate;
+	// REAL END DATE AND TIME
+	@Temporal(TemporalType.DATE)
+	private Date realEndDate;
 
-    @Temporal(TemporalType.TIME)
-    private Date realEndTime;
+	@Temporal(TemporalType.TIME)
+	private Date realEndTime;
 
-    @Column
-    private String notes;
+	@Column
+	private String notes;
 
-    @Column
-    private boolean standby;
+	@Column
+	private boolean standby;
 
-    @Column
-    private boolean specialService;
-    
-    @OneToOne
-    private Car car;
-    
-    @Column
-    private boolean toDelete;
-    
+	@Column
+	private boolean specialService;
 
-    // ---------------------------------
-    // EntityImpl
-    // ---------------------------------
-    @Override
-    public String getDisplayString() {
-        return String.valueOf(id);
-    }
+	@ManyToOne(optional=true)
+	private Car car;
 
-    // ---------------------------------
-    // Object related methods
-    // ---------------------------------
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this).append("id", id).append("user", systemUser).toString();
-    }
+	@Column
+	private boolean toDelete;
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(id).hashCode();
-    }
+	// ---------------------------------
+	// EntityImpl
+	// ---------------------------------
+	@Override
+	public String getDisplayString() {
+		return String.valueOf(id);
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        if (obj.getClass() != getClass()) {
-            return false;
-        }
-        RosterEntry rhs = (RosterEntry) obj;
-        return new EqualsBuilder().append(id, rhs.id).isEquals();
-    }
+	// ---------------------------------
+	// Object related methods
+	// ---------------------------------
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("id", id).append("user", systemUser).toString();
+	}
 
-    // ---------------------------------
-    // Setters for the properties
-    // ---------------------------------
-    public void setSystemUser(SystemUser systemUser) {
-        this.systemUser = systemUser;
-    }
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().append(id).hashCode();
+	}
 
-    public void setLocation(Location location) {
-        this.location = location;
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
+		if (obj.getClass() != getClass()) {
+			return false;
+		}
+		RosterEntry rhs = (RosterEntry) obj;
+		return new EqualsBuilder().append(id, rhs.id).isEquals();
+	}
 
-    public void setServiceType(ServiceType serviceType) {
-        this.serviceType = serviceType;
-    }
+	// ---------------------------------
+	// Setters for the properties
+	// ---------------------------------
+	public void setSystemUser(SystemUser systemUser) {
+		this.systemUser = systemUser;
+	}
 
-    public void setAssignment(Assignment assignment) {
-        this.assignment = assignment;
-    }
+	public void setLocation(Location location) {
+		this.location = location;
+	}
 
-    public void setPlannedStartDate(Date plannedStartDate) {
-        this.plannedStartDate = plannedStartDate;
-    }
+	public void setServiceType(ServiceType serviceType) {
+		this.serviceType = serviceType;
+	}
 
-    public void setPlannedStartTime(Date plannedStartTime) {
-        this.plannedStartTime = plannedStartTime;
-    }
+	public void setAssignment(Assignment assignment) {
+		this.assignment = assignment;
+	}
 
-    public void setPlannedEndDate(Date plannedEndDate) {
-        this.plannedEndDate = plannedEndDate;
-    }
+	public void setPlannedStartDate(Date plannedStartDate) {
+		this.plannedStartDate = plannedStartDate;
+	}
 
-    public void setPlannedEndTime(Date plannedEndTime) {
-        this.plannedEndTime = plannedEndTime;
-    }
+	public void setPlannedStartTime(Date plannedStartTime) {
+		this.plannedStartTime = plannedStartTime;
+	}
 
-    public void setRealEndDate(Date realEndDate) {
-        this.realEndDate = realEndDate;
-    }
+	public void setPlannedEndDate(Date plannedEndDate) {
+		this.plannedEndDate = plannedEndDate;
+	}
 
-    public void setRealEndTime(Date realEndTime) {
-        this.realEndTime = realEndTime;
-    }
+	public void setPlannedEndTime(Date plannedEndTime) {
+		this.plannedEndTime = plannedEndTime;
+	}
 
-    public void setRealStartDate(Date realStartDate) {
-        this.realStartDate = realStartDate;
-    }
+	public void setRealEndDate(Date realEndDate) {
+		this.realEndDate = realEndDate;
+	}
 
-    public void setRealStartTime(Date realStartTime) {
-        this.realStartTime = realStartTime;
-    }
+	public void setRealEndTime(Date realEndTime) {
+		this.realEndTime = realEndTime;
+	}
 
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
+	public void setRealStartDate(Date realStartDate) {
+		this.realStartDate = realStartDate;
+	}
 
-    public void setStandby(boolean standby) {
-        this.standby = standby;
-    }
+	public void setRealStartTime(Date realStartTime) {
+		this.realStartTime = realStartTime;
+	}
 
-    public void setSpecialService(boolean specialService) {
-        this.specialService = specialService;
-    }
-    
-    public void setCar(Car car) {
-        this.car = car;
-    }
+	public void setNotes(String notes) {
+		this.notes = notes;
+	}
+
+	public void setStandby(boolean standby) {
+		this.standby = standby;
+	}
+
+	public void setSpecialService(boolean specialService) {
+		this.specialService = specialService;
+	}
+
+	public void setCar(Car car) {
+		this.car = car;
+	}
 
 	public void setToDelete(boolean toDelete) {
 		this.toDelete = toDelete;
 	}
 
-
 	// ---------------------------------
-    // Getters for the properties
-    // ---------------------------------
-    public long getId() {
-        return id;
-    }
+	// Getters for the properties
+	// ---------------------------------
+	public long getId() {
+		return id;
+	}
 
-    public SystemUser getSystemUser() {
-        return systemUser;
-    }
+	public SystemUser getSystemUser() {
+		return systemUser;
+	}
 
-    public ServiceType getServiceType() {
-        return serviceType;
-    }
+	public ServiceType getServiceType() {
+		return serviceType;
+	}
 
-    public Assignment getAssignment() {
-        return assignment;
-    }
+	public Assignment getAssignment() {
+		return assignment;
+	}
 
-    public Location getLocation() {
-        return location;
-    }
+	public Location getLocation() {
+		return location;
+	}
 
-    public Date getPlannedEndDate() {
-        return plannedEndDate;
-    }
+	public Date getPlannedEndDate() {
+		return plannedEndDate;
+	}
 
-    public Date getPlannedEndTime() {
-        return plannedEndTime;
-    }
+	public Date getPlannedEndTime() {
+		return plannedEndTime;
+	}
 
-    public Date getPlannedStartDate() {
-        return plannedStartDate;
-    }
+	public Date getPlannedStartDate() {
+		return plannedStartDate;
+	}
 
-    public Date getPlannedStartTime() {
-        return plannedStartTime;
-    }
+	public Date getPlannedStartTime() {
+		return plannedStartTime;
+	}
 
-    public Date getRealStartDate() {
-        return realStartDate;
-    }
+	public Date getRealStartDate() {
+		return realStartDate;
+	}
 
-    public Date getRealStartTime() {
-        return realStartTime;
-    }
+	public Date getRealStartTime() {
+		return realStartTime;
+	}
 
-    public Date getRealEndDate() {
-        return realEndDate;
-    }
+	public Date getRealEndDate() {
+		return realEndDate;
+	}
 
-    public Date getRealEndTime() {
-        return realEndTime;
-    }
+	public Date getRealEndTime() {
+		return realEndTime;
+	}
 
-    public boolean isStandby() {
-        return standby;
-    }
+	public boolean isStandby() {
+		return standby;
+	}
 
-    public boolean isSpecialService() {
-        return specialService;
-    }
+	public boolean isSpecialService() {
+		return specialService;
+	}
 
-    public String getNotes() {
-        return notes;
-    }
-    
-    public Car getCar() {
-        return car;
-    }
+	public String getNotes() {
+		return notes;
+	}
 
-    public boolean isToDelete() {
+	public Car getCar() {
+		return car;
+	}
+
+	public boolean isToDelete() {
 		return toDelete;
 	}
 }

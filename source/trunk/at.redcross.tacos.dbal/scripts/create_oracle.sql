@@ -23,7 +23,67 @@
         registrationdate timestamp,
         todelete number(1,0),
         type varchar2(255 char),
-        location_id number(19,0),
+        detail_id number(19,0),
+        location_id number(19,0) not null,
+        primary key (id)
+    );
+
+    create table CarCareEntry (
+        id number(19,0) not null,
+        history_changedat timestamp,
+        history_changedby varchar2(255 char) not null,
+        history_createdat timestamp,
+        history_createdby varchar2(255 char) not null,
+        description varchar2(255 char),
+        donefrom varchar2(255 char),
+        executeuntil timestamp,
+        executedon timestamp,
+        responsible varchar2(255 char),
+        status varchar2(255 char),
+        type varchar2(255 char),
+        car_id number(19,0),
+        primary key (id)
+    );
+
+    create table CarDetail (
+        id number(19,0) not null,
+        history_changedat timestamp,
+        history_changedby varchar2(255 char) not null,
+        history_createdat timestamp,
+        history_createdby varchar2(255 char) not null,
+        authorizedfrom timestamp,
+        authorizeduntil timestamp,
+        buildup varchar2(255 char),
+        carenotes varchar2(255 char),
+        code varchar2(255 char),
+        color varchar2(255 char),
+        companyname varchar2(255 char),
+        cylindercapacity number(10,0),
+        enginepower number(10,0),
+        enginepoweratmotorspeed number(10,0),
+        identificationnumber varchar2(255 char),
+        kindofdrive varchar2(255 char),
+        limitspeed number(10,0),
+        make varchar2(255 char),
+        maxallowedaxleload1 number(10,0),
+        maxallowedaxleload2 number(10,0),
+        maxallowedaxleload3 number(10,0),
+        maxallowedbuffload number(10,0),
+        maxallowedcarryingcapicity number(10,0),
+        maxallowedcoupledload number(10,0),
+        maxallowedtotalweight number(10,0),
+        motortype varchar2(255 char),
+        netweight number(10,0),
+        o2 number(10,0),
+        purposeofuse varchar2(255 char),
+        seats number(10,0),
+        standings number(10,0),
+        sticker varchar2(255 char),
+        techvalidtotalvol number(10,0),
+        tradename varchar2(255 char),
+        typeofvehicle varchar2(255 char),
+        variant varchar2(255 char),
+        wheeldimensions varchar2(255 char),
         primary key (id)
     );
 
@@ -50,17 +110,6 @@
         primary key (id)
     );
 
-    create table District (
-        id number(19,0) not null,
-        history_changedat timestamp,
-        history_changedby varchar2(255 char) not null,
-        history_createdat timestamp,
-        history_createdby varchar2(255 char) not null,
-        name varchar2(255 char) not null unique,
-        shortname varchar2(255 char),
-        primary key (id)
-    );
-
     create table Info (
         id number(19,0) not null,
         history_changedat timestamp,
@@ -72,8 +121,8 @@
         displaystartdate date not null,
         shortname varchar2(255 char),
         todelete number(1,0),
-        category_id number(19,0),
-        location_id number(19,0),
+        category_id number(19,0) not null,
+        location_id number(19,0) not null,
         primary key (id)
     );
 
@@ -96,8 +145,6 @@
         history_createdby varchar2(255 char) not null,
         name varchar2(255 char) not null unique,
         shortname varchar2(255 char),
-        district_id number(19,0),
-        District_Fk number(19,0),
         primary key (id)
     );
 
@@ -110,9 +157,8 @@
         expireat date,
         locked number(1,0),
         loginname varchar2(255 char) not null unique,
-        password varchar2(255 char),
+        password varchar2(255 char) not null,
         superuser number(1,0),
-        systemuser_id number(19,0),
         primary key (id)
     );
 
@@ -157,11 +203,11 @@
         specialservice number(1,0),
         standby number(1,0),
         todelete number(1,0),
-        assignment_id number(19,0),
+        assignment_id number(19,0) not null,
         car_id number(19,0),
-        location_id number(19,0),
-        servicetype_id number(19,0),
-        systemuser_id number(19,0),
+        location_id number(19,0) not null,
+        servicetype_id number(19,0) not null,
+        systemuser_id number(19,0) not null,
         primary key (id)
     );
 
@@ -219,8 +265,10 @@
         notes varchar2(255 char),
         pnr number(10,0) unique,
         todelete number(1,0),
-        location_id number(19,0),
-        primary key (id)
+        location_id number(19,0) not null,
+        login_id number(19,0) not null,
+        primary key (id),
+        unique (login_id)
     );
 
     create table SystemUser_Competence (
@@ -249,6 +297,16 @@
         foreign key (location_id) 
         references Location;
 
+    alter table Car 
+        add constraint FK107B44CC82590 
+        foreign key (detail_id) 
+        references CarDetail;
+
+    alter table CarCareEntry 
+        add constraint FK9FF5628D1D301F3C 
+        foreign key (car_id) 
+        references Car;
+
     alter table Info 
         add constraint FK22D8CE716F1CD8 
         foreign key (location_id) 
@@ -258,21 +316,6 @@
         add constraint FK22D8CE3DDF2C38 
         foreign key (category_id) 
         references Category;
-
-    alter table Location 
-        add constraint FK752A03D54004E1E2 
-        foreign key (District_Fk) 
-        references District;
-
-    alter table Location 
-        add constraint FK752A03D54004E238 
-        foreign key (district_id) 
-        references District;
-
-    alter table Login 
-        add constraint FK462FF4914938758 
-        foreign key (systemuser_id) 
-        references SystemUser;
 
     alter table RosterEntry 
         add constraint FKEF3D7087716F1CD8 
@@ -298,6 +341,11 @@
         add constraint FKEF3D70871D301F3C 
         foreign key (car_id) 
         references Car;
+
+    alter table SystemUser 
+        add constraint FK9D23FEBAB76029C 
+        foreign key (login_id) 
+        references Login;
 
     alter table SystemUser 
         add constraint FK9D23FEBA716F1CD8 

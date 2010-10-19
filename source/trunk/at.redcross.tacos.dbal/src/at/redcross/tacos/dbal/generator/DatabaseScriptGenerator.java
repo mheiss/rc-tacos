@@ -6,7 +6,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultComponentSafeNamingStrategy;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 
@@ -52,7 +52,7 @@ public class DatabaseScriptGenerator {
 	private String packageName = "at.redcross.tacos.dbal.entity";
 
 	/** holds all found classes */
-	private AnnotationConfiguration cfg;
+	private Configuration cfg;
 
 	public static void main(String[] args) throws Exception {
 		DatabaseScriptGenerator gen = new DatabaseScriptGenerator();
@@ -138,7 +138,7 @@ public class DatabaseScriptGenerator {
 
 	/** initializes the generator */
 	private void initGenerator() throws Exception {
-		cfg = new AnnotationConfiguration();
+		cfg = new Configuration();
 		cfg.setNamingStrategy(new DefaultComponentSafeNamingStrategy());
 		cfg.setProperty("hibernate.hbm2ddl.auto", "create");
 		for (Class<?> clazz : getClasses(packageName)) {

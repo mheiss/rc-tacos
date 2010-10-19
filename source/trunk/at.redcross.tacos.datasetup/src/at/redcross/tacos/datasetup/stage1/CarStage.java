@@ -5,7 +5,6 @@ import javax.persistence.TypedQuery;
 
 import at.redcross.tacos.datasetup.DatasetupStage;
 import at.redcross.tacos.dbal.entity.Car;
-import at.redcross.tacos.dbal.entity.Location;
 import at.redcross.tacos.dbal.helper.LocationHelper;
 
 // creates car stages
@@ -21,13 +20,12 @@ public class CarStage implements DatasetupStage {
 
 	@Override
 	public void performImport(EntityManager manager) {
-		Location locationA = LocationHelper.getByName(manager, "Location_A");
 		{
 			Car car = new Car();
 			car.setName("5.01 01");
 			car.setOutOfOrder(true);
 			car.setNotes("nicht zu schnell fahren, Bremsen funktionieren nicht!");
-			car.setLocation(locationA);
+			car.setLocation(LocationHelper.getByName(manager, "Location_A"));
 
 			manager.persist(car);
 		}
@@ -35,7 +33,7 @@ public class CarStage implements DatasetupStage {
 			Car car = new Car();
 			car.setName("5.01 03");
 			car.setOutOfOrder(false);
-			car.setLocation(locationA);
+			car.setLocation(LocationHelper.getByName(manager, "Location_A"));
 
 			manager.persist(car);
 		}
@@ -43,7 +41,7 @@ public class CarStage implements DatasetupStage {
 			Car car = new Car();
 			car.setName("5.01 04");
 			car.setOutOfOrder(true);
-			car.setLocation(locationA);
+			car.setLocation(LocationHelper.getByName(manager, "Location_A"));
 
 			manager.persist(car);
 		}
@@ -51,7 +49,7 @@ public class CarStage implements DatasetupStage {
 			Car car = new Car();
 			car.setName("5.01 05");
 			car.setOutOfOrder(true);
-			car.setLocation(locationA);
+			car.setLocation(LocationHelper.getByName(manager, "Location_A"));
 
 			manager.persist(car);
 		}
@@ -59,7 +57,7 @@ public class CarStage implements DatasetupStage {
 			Car car = new Car();
 			car.setName("5.01 28");
 			car.setOutOfOrder(true);
-			car.setLocation(locationA);
+			car.setLocation(LocationHelper.getByName(manager, "Location_A"));
 
 			manager.persist(car);
 		}
@@ -67,7 +65,7 @@ public class CarStage implements DatasetupStage {
 			Car car = new Car();
 			car.setName("5.01 22");
 			car.setOutOfOrder(true);
-			car.setLocation(locationA);
+			car.setLocation(LocationHelper.getByName(manager, "Location_A"));
 
 			manager.persist(car);
 		}
@@ -75,7 +73,7 @@ public class CarStage implements DatasetupStage {
 			Car car = new Car();
 			car.setName("5.01 23");
 			car.setOutOfOrder(true);
-			car.setLocation(locationA);
+			car.setLocation(LocationHelper.getByName(manager, "Location_A"));
 
 			manager.persist(car);
 		}
@@ -83,7 +81,7 @@ public class CarStage implements DatasetupStage {
 			Car car = new Car();
 			car.setName("5.01 24");
 			car.setOutOfOrder(true);
-			car.setLocation(locationA);
+			car.setLocation(LocationHelper.getByName(manager, "Location_A"));
 
 			manager.persist(car);
 		}
@@ -91,7 +89,7 @@ public class CarStage implements DatasetupStage {
 			Car car = new Car();
 			car.setName("5.01 25");
 			car.setOutOfOrder(true);
-			car.setLocation(locationA);
+			car.setLocation(LocationHelper.getByName(manager, "Location_A"));
 
 			manager.persist(car);
 		}
@@ -99,7 +97,7 @@ public class CarStage implements DatasetupStage {
 			Car car = new Car();
 			car.setName("5.01 26");
 			car.setOutOfOrder(true);
-			car.setLocation(locationA);
+			car.setLocation(LocationHelper.getByName(manager, "Location_A"));
 
 			manager.persist(car);
 		}
@@ -107,7 +105,7 @@ public class CarStage implements DatasetupStage {
 			Car car = new Car();
 			car.setName("5.01 27");
 			car.setOutOfOrder(true);
-			car.setLocation(locationA);
+			car.setLocation(LocationHelper.getByName(manager, "Location_A"));
 
 			manager.persist(car);
 		}
@@ -115,7 +113,7 @@ public class CarStage implements DatasetupStage {
 			Car car = new Car();
 			car.setName("5.01 42");
 			car.setOutOfOrder(true);
-			car.setLocation(locationA);
+			car.setLocation(LocationHelper.getByName(manager, "Location_A"));
 
 			manager.persist(car);
 		}
@@ -123,7 +121,7 @@ public class CarStage implements DatasetupStage {
 			Car car = new Car();
 			car.setName("5.01 43");
 			car.setOutOfOrder(true);
-			car.setLocation(locationA);
+			car.setLocation(LocationHelper.getByName(manager, "Location_A"));
 
 			manager.persist(car);
 		}
@@ -131,7 +129,7 @@ public class CarStage implements DatasetupStage {
 			Car car = new Car();
 			car.setName("5.01 44");
 			car.setOutOfOrder(true);
-			car.setLocation(locationA);
+			car.setLocation(LocationHelper.getByName(manager, "Location_A"));
 
 			manager.persist(car);
 		}
@@ -139,7 +137,7 @@ public class CarStage implements DatasetupStage {
 			Car car = new Car();
 			car.setName("5.01 45");
 			car.setOutOfOrder(true);
-			car.setLocation(locationA);
+			car.setLocation(LocationHelper.getByName(manager, "Location_A"));
 
 			manager.persist(car);
 		}
@@ -147,7 +145,7 @@ public class CarStage implements DatasetupStage {
 			Car car = new Car();
 			car.setName("5.01 46");
 			car.setOutOfOrder(false);
-			car.setLocation(locationA);
+			car.setLocation(LocationHelper.getByName(manager, "Location_A"));
 
 			manager.persist(car);
 		}
@@ -155,7 +153,7 @@ public class CarStage implements DatasetupStage {
 			Car car = new Car();
 			car.setName("5.01 47");
 			car.setOutOfOrder(false);
-			car.setLocation(locationA);
+			car.setLocation(LocationHelper.getByName(manager, "Location_A"));
 
 			manager.persist(car);
 		}
@@ -163,7 +161,7 @@ public class CarStage implements DatasetupStage {
 			Car car = new Car();
 			car.setName("5.01 48");
 			car.setOutOfOrder(false);
-			car.setLocation(locationA);
+			car.setLocation(LocationHelper.getByName(manager, "Location_A"));
 
 			manager.persist(car);
 		}
@@ -171,7 +169,7 @@ public class CarStage implements DatasetupStage {
 			Car car = new Car();
 			car.setName("5.01 49");
 			car.setOutOfOrder(false);
-			car.setLocation(locationA);
+			car.setLocation(LocationHelper.getByName(manager, "Location_A"));
 
 			manager.persist(car);
 		}

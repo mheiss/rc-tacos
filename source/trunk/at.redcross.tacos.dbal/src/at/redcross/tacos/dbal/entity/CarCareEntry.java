@@ -4,9 +4,10 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -20,79 +21,76 @@ public class CarCareEntry extends EntityImpl {
 	private static final long serialVersionUID = 2274945878385792887L;
 
 	@Id
-    @GeneratedValue
-    private long id;
-    
-    @OneToOne
-    private Car car;
-    
-    @Column
-    private String type;
-    
-    @Column
-    private String description;
-    
-    @Column
-    private String status;
-    
-    @Column
-    private String responsible;
-    
-    @Column
-    private Date executeUntil;
-    
-    @Column
-    private String doneFrom;
-    
-    @Column
-    private Date executedOn;
-    
+	@GeneratedValue
+	private long id;
 
+	@ManyToOne(fetch = FetchType.EAGER)
+	private Car car;
 
-    // ---------------------------------
-    // EntityImpl
-    // ---------------------------------
-    @Override
-    public String getDisplayString() {
-        return description;
-    }
+	@Column
+	private String type;
 
-    // ---------------------------------
-    // Object related methods
-    // ---------------------------------
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this).append("description", id).toString();
-    }
+	@Column
+	private String description;
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(id).hashCode();
-    }
+	@Column
+	private String status;
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        if (obj.getClass() != getClass()) {
-            return false;
-        }
-        CarCareEntry rhs = (CarCareEntry) obj;
-        return new EqualsBuilder().append(id, rhs.id).isEquals();
-    }
+	@Column
+	private String responsible;
 
-    // ---------------------------------
-    // Setters for the properties
-    // ---------------------------------
+	@Column
+	private Date executeUntil;
 
+	@Column
+	private String doneFrom;
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	@Column
+	private Date executedOn;
+
+	// ---------------------------------
+	// EntityImpl
+	// ---------------------------------
+	@Override
+	public String getDisplayString() {
+		return description;
+	}
+
+	// ---------------------------------
+	// Object related methods
+	// ---------------------------------
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("id", id).toString();
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().append(id).hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
+		if (obj.getClass() != getClass()) {
+			return false;
+		}
+		CarCareEntry rhs = (CarCareEntry) obj;
+		return new EqualsBuilder().append(id, rhs.id).isEquals();
+	}
+
+	// ---------------------------------
+	// Setters for the properties
+	// ---------------------------------
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
 	public void setCar(Car car) {
 		this.car = car;
@@ -123,17 +121,17 @@ public class CarCareEntry extends EntityImpl {
 	}
 
 	// ---------------------------------
-    // Getters for the properties
-    // ---------------------------------
-    public long getId() {
-        return id;
-    }
+	// Getters for the properties
+	// ---------------------------------
+	public long getId() {
+		return id;
+	}
 
-    public String getDescription() {
-        return description;
-    }
-    
-    public Car getCar() {
+	public String getDescription() {
+		return description;
+	}
+
+	public Car getCar() {
 		return car;
 	}
 
