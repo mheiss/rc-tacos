@@ -103,8 +103,10 @@ public class UserMaintenanceBean extends BaseBean {
 			}
 			manager = EntityManagerFactory.createEntityManager();
 			if (isNew()) {
-				manager.persist(login);
+				//systemUser before login!
 				manager.persist(systemUser);
+				manager.persist(login);
+				
 			} else {
 				manager.merge(login);
 				manager.merge(systemUser);
