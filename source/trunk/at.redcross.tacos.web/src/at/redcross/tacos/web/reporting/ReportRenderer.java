@@ -1,5 +1,6 @@
 package at.redcross.tacos.web.reporting;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
 import org.eclipse.birt.core.framework.Platform;
+import org.eclipse.birt.core.framework.PlatformConfig;
+import org.eclipse.birt.core.framework.PlatformFileContext;
 import org.eclipse.birt.core.framework.PlatformServletContext;
 import org.eclipse.birt.report.engine.api.EngineConfig;
 import org.eclipse.birt.report.engine.api.IReportEngine;
@@ -21,136 +24,148 @@ import org.eclipse.birt.report.engine.api.PDFRenderOption;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import at.redcross.tacos.web.config.SettingsStore;
+
 public class ReportRenderer {
 
-    private final static Logger logger = LoggerFactory.getLogger(ReportRenderer.class);
+	private final static Logger logger = LoggerFactory.getLogger(ReportRenderer.class);
 
-    /** The one and only instance */
-    private static ReportRenderer renderer;
+	/** The one and only instance */
+	private static ReportRenderer renderer;
 
-    /** the engine to render the reports */
-    private IReportEngine engine;
+	/** the engine to render the reports */
+	private IReportEngine engine;
 
-    /**
-     * Creates and initializes the reporting engine
-     */
-    private ReportRenderer() {
-        initEngine();
-    }
+	/**
+	 * Creates and initializes the reporting engine
+	 */
+	private ReportRenderer() {
+		initEngine();
+	}
 
-    /**
-     * Returns the shared reporting renderer instance.
-     * 
-     * @return the report renderer
-     */
-    public static synchronized ReportRenderer getInstance() {
-        if (renderer == null) {
-            renderer = new ReportRenderer();
-        }
-        return renderer;
-    }
+	/**
+	 * Returns the shared reporting renderer instance.
+	 * 
+	 * @return the report renderer
+	 */
+	public static synchronized ReportRenderer getInstance() {
+		if (renderer == null) {
+			renderer = new ReportRenderer();
+		}
+		return renderer;
+	}
 
-    /**
-     * Returns the shared reporting engine
-     * 
-     * @return the engine
-     */
-    public IReportEngine getEngine() {
-        return engine;
-    }
+	/**
+	 * Returns the shared reporting engine
+	 * 
+	 * @return the engine
+	 */
+	public IReportEngine getEngine() {
+		return engine;
+	}
 
-    /**
-     * Request to generate and serve a new report using the given parameters.
-     * The report will be written to the current response.
-     * 
-     * @param params
-     *            the parameters for the report
-     * @throws Exception
-     *             if the report generation failed
-     */
-    public void renderReport(ReportRenderParameters params) throws Exception {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        ExternalContext extContext = facesContext.getExternalContext();
+	/**
+	 * Request to generate and serve a new report using the given parameters.
+	 * The report will be written to the current response.
+	 * 
+	 * @param params
+	 *            the parameters for the report
+	 * @throws Exception
+	 *             if the report generation failed
+	 */
+	public void renderReport(ReportRenderParameters params) throws Exception {
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		ExternalContext extContext = facesContext.getExternalContext();
 
-        // response should be a PDF file
-        HttpServletResponse resp = (HttpServletResponse) extContext.getResponse();
-        resp.setContentType("application/pdf");
-        resp.setHeader("Content-Disposition", "attachment; filename=\"" + params.reportName + "\"");
+		// response should be a PDF file
+		HttpServletResponse resp = (HttpServletResponse) extContext.getResponse();
+		resp.setContentType("application/pdf");
+		resp.setHeader("Content-Disposition", "attachment; filename=\"" + params.reportName + "\"");
 
-        InputStream stream = null;
-        IRunAndRenderTask task = null;
-        try {
-            long start = System.currentTimeMillis();
-            logger.info("Creating report '" + params.reportName + "'");
+		InputStream stream = null;
+		IRunAndRenderTask task = null;
+		try {
+			long start = System.currentTimeMillis();
+			logger.info("Creating report '" + params.reportName + "'");
 
-            stream = extContext.getResourceAsStream("reports/" + params.reportFile);
+			stream = extContext.getResourceAsStream("reports/" + params.reportFile);
 
-            // get the engine and pass the parameters
-            IReportEngine engine = ReportRenderer.getInstance().getEngine();
-            if (engine == null) {
-                throw new RuntimeException("Reporting engine not available");
-            }
-            IReportRunnable design = engine.openReportDesign(stream);
+			// get the engine and pass the parameters
+			IReportEngine engine = ReportRenderer.getInstance().getEngine();
+			if (engine == null) {
+				throw new RuntimeException("Reporting engine not available");
+			}
+			IReportRunnable design = engine.openReportDesign(stream);
 
-            // set output options
-            PDFRenderOption options = new PDFRenderOption();
-            options.setOutputFormat(PDFRenderOption.OUTPUT_FORMAT_PDF);
-            options.setOutputStream(resp.getOutputStream());
+			// set output options
+			PDFRenderOption options = new PDFRenderOption();
+			options.setOutputFormat(PDFRenderOption.OUTPUT_FORMAT_PDF);
+			options.setOutputStream(resp.getOutputStream());
 
-            task = engine.createRunAndRenderTask(design);
-            task.setRenderOption(options);
-            for (Map.Entry<String, Object> entry : params.arguments.entrySet()) {
-                task.setParameterValue(entry.getKey(), entry.getValue());
-            }
+			task = engine.createRunAndRenderTask(design);
+			task.setRenderOption(options);
+			for (Map.Entry<String, Object> entry : params.arguments.entrySet()) {
+				task.setParameterValue(entry.getKey(), entry.getValue());
+			}
 
-            // run PDF generation
-            task.run();
-            long duration = System.currentTimeMillis() - start;
-            logger.info("Finished report generation in '" + duration + "'ms");
-        }
-        finally {
-            // cleanup resources
-            IOUtils.closeQuietly(stream);
-            if (task != null) {
-                task.close();
-            }
-            facesContext.responseComplete();
-        }
-    }
+			// run PDF generation
+			task.run();
+			long duration = System.currentTimeMillis() - start;
+			logger.info("Finished report generation in '" + duration + "'ms");
+		} finally {
+			// cleanup resources
+			IOUtils.closeQuietly(stream);
+			if (task != null) {
+				task.close();
+			}
+			facesContext.responseComplete();
+		}
+	}
 
-    /** Does the needed initialization */
-    private void initEngine() {
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        ExternalContext extContext = facesContext.getExternalContext();
-        ServletContext servletContext = (ServletContext) extContext.getContext();
-        try {
-            // this causes the plug-in loader to look in the current directory.
-            EngineConfig config = new EngineConfig();
-            config.setEngineHome("");
+	/** Does the needed initialization */
+	private void initEngine() {
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		ExternalContext extContext = facesContext.getExternalContext();
+		ServletContext servletContext = (ServletContext) extContext.getContext();
+		try {
+			EngineConfig config = new EngineConfig();
 
-            // Using the PlatformServletContext will cause the OSGi loader to
-            // look for the plug-ins in the WEB-INF/platform directory.
-            config.setPlatformContext(new PlatformServletContext(servletContext));
+			// check the report engine directory
+			File reportEngine = new File(SettingsStore.getInstance().getHome(), "report-engine");
+			if (reportEngine.isDirectory()) {
+				PlatformConfig platformConfig = new PlatformConfig();
+				platformConfig.setBIRTHome(reportEngine.getAbsolutePath());
+				config.setEngineHome(reportEngine.getAbsolutePath());
+				config.setPlatformContext(new PlatformFileContext(platformConfig));
+				logger.info("Using file reporting engine");
+			}
 
-            // request to startup the OSGi-framework
-            Platform.startup(config);
+			// Using the PlatformServletContext will cause the OSGi loader to
+			// look for the plug-ins in the WEB-INF/platform directory.
+			if (!reportEngine.isDirectory()) {
+				config.setEngineHome("");
+				config.setPlatformContext(new PlatformServletContext(servletContext));
+				logger.info("Using servlet reporting engine");
+			}
 
-            // get the report factory and cache the engine
-            IReportEngineFactory factory = (IReportEngineFactory) Platform
-                    .createFactoryObject(IReportEngineFactory.EXTENSION_REPORT_ENGINE_FACTORY);
-            engine = factory.createReportEngine(config);
-            logger.info("Using reporting engine '" + engine.getVersion() + "'");
-        }
-        catch (Exception ex) {
-            logger.error("Failed to initialize the reporting engine.", ex);
-        }
-    }
+			// request to startup the OSGi-framework
+			Platform.startup(config);
 
-    public static class ReportRenderParameters {
+			// get the report factory and cache the engine
+			IReportEngineFactory factory = (IReportEngineFactory) Platform
+					.createFactoryObject(IReportEngineFactory.EXTENSION_REPORT_ENGINE_FACTORY);
+			engine = factory.createReportEngine(config);
+			logger.info("Using reporting engine '" + engine.getVersion() + "'");
+		} catch (Exception ex) {
+			logger.error("Failed to initialize the reporting engine.", ex);
+		}
+	}
 
-        public String reportName;
-        public String reportFile;
-        public Map<String, Object> arguments = new HashMap<String, Object>();
-    }
+	public static class ReportRenderParameters {
+
+		public String reportName;
+		public String reportFile;
+		public Map<String, Object> arguments = new HashMap<String, Object>();
+	}
 
 }

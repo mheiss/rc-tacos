@@ -25,7 +25,7 @@ public class MailProvider {
 
 	/** Initializes and returns the given mail object */
 	private static <T extends Email> T initMail(T email) throws Exception {
-		SystemSettings settings = XmlFile.read(SettingsStore.getInstance().getSettingsDir());
+		SystemSettings settings = XmlFile.read(SettingsStore.getInstance().getConfigFile());
 		email.setSmtpPort(settings.getSmtpPort());
 		email.setAuthenticator(new DefaultAuthenticator(settings.getSmtpUser(), settings
 				.getSmtpPassword()));

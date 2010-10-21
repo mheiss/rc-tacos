@@ -21,7 +21,7 @@ public class SystemMaintenanceBean extends BaseBean {
 
 	@Override
 	protected void init() throws Exception {
-		settings = XmlFile.read(SettingsStore.getInstance().getSettingsDir());
+		settings = XmlFile.read(SettingsStore.getInstance().getConfigFile());
 	}
 
 	// ---------------------------------
@@ -29,7 +29,7 @@ public class SystemMaintenanceBean extends BaseBean {
 	// ---------------------------------
 	public void saveSettings(ActionEvent event) {
 		try {
-			XmlFile.write(SettingsStore.getInstance().getSettingsDir(), settings);
+			XmlFile.write(SettingsStore.getInstance().getConfigFile(), settings);
 		} catch (Exception ex) {
 			FacesUtils.addErrorMessage("Die Einstellungen konnte nicht gespeichert werden");
 		}
