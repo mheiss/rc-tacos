@@ -63,12 +63,12 @@ public class SettingsStore {
 	}
 
 	/**
-	 * Returns the current file name where the system settings configuration is
+	 * Returns the current file where the system settings configuration is
 	 * located.
 	 * 
 	 * @return the path to the system settings file
 	 */
-	public File getSettingsDir() {
+	public File getConfigFile() {
 		return new File(homeDir, "tacos.config");
 	}
 
@@ -123,7 +123,7 @@ public class SettingsStore {
 	/** Initializes the configuration files and ensures that they are existing */
 	private void initFiles() {
 		try {
-			File file = getSettingsDir();
+			File file = getConfigFile();
 			if (!file.exists()) {
 				XmlFile.write(file, new SystemSettings());
 			}

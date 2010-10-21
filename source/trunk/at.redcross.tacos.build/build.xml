@@ -60,9 +60,9 @@
 			<fileset dir="${base.dir}/${tacos.web}/WebContent" excludes="WEB-INF/lib/*.jar WEB-INF/classes/*" />
 			<lib dir="${builder.dir}/libs" includes="*.jar" />
 			<classes dir="${builder.dir}/classes" includes="*/**" />
-			<zipfileset file="${config.jpa}" prefix="META-INF" /> 
 			<zipfileset file="${config.log4j}" prefix="WEB-INF/classes" /> 
 			<zipfileset file="${config.system}" prefix="WEB-INF/classes" /> 
+			<zipfileset file="${config.jpa}" prefix="WEB-INF/classes/META-INF" /> 
 		</war>
 	</target>
 		
