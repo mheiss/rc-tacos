@@ -12,7 +12,7 @@
 			<h:outputText value="Wollen sie wirklich den folgenden Dienstplaneintrag löschen?" />
 			<p>
 				<h:outputLabel value="Mitarbeiter:" styleClass="label" /> 
-				<h:inputText value="#{loginBean.currentPassword}" required="true" requiredMessage="Bitte geben Sie Ihr aktuelles Kennwort ein." />
+				<h:outputText value="#{bean.entry.entity.systemUser.lastName} #{bean.entry.entity.systemUser.firstName}" />
 			</p>
 			<p>
 				<h:outputLabel value="Datum:" styleClass="label" />
