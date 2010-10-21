@@ -73,10 +73,14 @@
 			</c:forEach>
 		</rich:tabPanel>
 		<br />
-		<rich:simpleTogglePanel id="notification" opened="false" label="Anmerkungen" bodyClass="defaultToggleBodyStyle" styleClass="defaultToggleStyle" switchType="client">
+		<rich:simpleTogglePanel id="notification" opened="false" label="Anmerkungen" bodyClass="defaultToggleBodyStyle" styleClass="defaultToggleStyle" 
+			switchType="client"	onclick="smartEditor()">
 			<h:panelGroup rendered="#{permissionBean.authorizedToAssignCar}">
-				<rich:editor height="50" value="#{rosterCarAllocationOverviewBean.notification.notes}" theme="simple" 
-					oninit="smartEditor()" autoResize="true" language="de" />
+				<fieldset class="defaultStyle">
+					<legend> <h:outputText value="" /> </legend> 
+					<rich:editor id="editor" height="50" value="#{rosterCarAllocationOverviewBean.notification.notes}" theme="simple" 
+						oninit="smartEditor()" autoResize="true" language="de" />
+				</fieldset>
 			</h:panelGroup>
 			<h:panelGroup rendered="#{not permissionBean.authorizedToAssignCar}">
 				<p>
