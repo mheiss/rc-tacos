@@ -397,12 +397,6 @@ ul.linkList a.linkDescription {
 /***********************************************************
  Service styling
  **********************************************************/
-div#serviceCaption {
-	padding-top: 1em;
-	padding-bottom: 1em;
-	border-bottom: 1px solid #CCCCCC;
-}
-
 div#serviceSection ul.column {
 	width: 100%;
 	padding: 0;
