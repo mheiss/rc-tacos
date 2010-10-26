@@ -77,6 +77,13 @@
 		<action onPostback="false">#{rosterCarAllocationOverviewBean.prettyInit}</action>
 	</url-mapping>
 	
+	<!-- ################ STATISTIC ####################### -->
+	<url-mapping id="statistic-adminOverview">
+		<pattern>/statistic/admin</pattern>
+		<view-id>/WEB-INF/pages/statistic/statisticAdminOverview.faces</view-id>
+		<action onPostback="false">#{rosterStatisticOverviewBean.prettyInit}</action>
+	</url-mapping>
+	
 	<!-- ################ INFO ####################### -->
 	<url-mapping id="info-currentOverview">
 		<pattern>/info/current</pattern>
