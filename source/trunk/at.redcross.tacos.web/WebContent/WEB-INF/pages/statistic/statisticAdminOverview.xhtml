@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich" xmlns:pretty="http://ocpsoft.com/prettyfaces">
+<body>
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+	<ui:param name="htmlTitle" value="Adminstatistik" />
+	<ui:param name="section" value="statistic" />
+	<ui:param name="page" value="adminOverview" />
+
+	<ui:define name="navigation">
+		<ui:include src="navigation.xhtml" />
+	</ui:define>
+
+	<ui:define name="page-header">
+		<h:graphicImage library="images/32x32" name="statistic2.png" />
+		<h2 class="title">
+			<h:outputText value="Adminstatistik am " />
+			<h:outputText id="dateTitle" value="#{rosterStatisticOverviewBean.date}">
+				<f:convertDateTime pattern="E, dd.MMMMM yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+			</h:outputText>
+		</h2>
+	</ui:define>
+	
+	<ui:define name="page-toolbar">
+		<li>
+			<a4j:htmlCommandLink actionListener="#{rosterStatisticOverviewBean.createPdfReport}">
+				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="pdf.png" />
+				<h:outputText styleClass="toolbarText" value="Exportieren"  />
+			</a4j:htmlCommandLink>
+		</li>
+	</ui:define>
+
+	<ui:define name="page-content">
+		<ui:decorate template="statisticFilter.xhtml">
+			<ui:param name="bean" value="#{rosterStatisticOverviewBean}" />
+		</ui:decorate>
+		<ui:decorate template="statisticTabPanel.xhtml">
+			<ui:param name="bean" value="#{rosterStatisticOverviewBean}" />
+		</ui:decorate>
+	</ui:define>
+</ui:composition>
+</body>
+</html>

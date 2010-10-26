@@ -19,6 +19,11 @@
 				<pretty:link mappingId="info-currentOverview"><h:outputText value="Informationen" /></pretty:link>
 			</li>
 			<h:panelGroup rendered="#{permissionBean.authorizedToAccessAdminArea}">
+				<li class="tab #{section eq 'statistic' ? 'active' : ''}">
+					<pretty:link mappingId="statistic-adminOverview" > <h:outputText value="Statistik" /> </pretty:link>
+				</li>
+			</h:panelGroup>
+			<h:panelGroup rendered="#{permissionBean.authorizedToAccessAdminArea}">
 				<li class="tab #{section eq 'admin' ? 'active' : ''}">
 					<pretty:link mappingId="admin-home" > <h:outputText value="Administration" /> </pretty:link>
 				</li>
