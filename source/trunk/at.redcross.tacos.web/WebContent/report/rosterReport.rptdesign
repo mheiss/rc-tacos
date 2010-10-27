@@ -178,6 +178,7 @@ return false;]]></method>
         </simple-master-page>
     </page-setup>
     <body>
+        <text name="ReportHeader" id="124" extends="tacos.ReportHeader"/>
         <table id="76">
             <property name="marginTop">0mm</property>
             <property name="marginLeft">0mm</property>
@@ -186,7 +187,7 @@ return false;]]></method>
             <property name="textAlign">left</property>
             <property name="canShrink">true</property>
             <property name="height">100%</property>
-            <property name="width">7.46875in</property>
+            <property name="width">7.677083333333333in</property>
             <property name="dataSet">TacosDataSet</property>
             <list-property name="boundDataColumns">
                 <structure>
@@ -245,7 +246,7 @@ return false;]]></method>
                 <property name="width">20%</property>
             </column>
             <column id="113">
-                <property name="width">15%</property>
+                <property name="width">1.46875in</property>
             </column>
             <header>
                 <row id="77">
