@@ -39,6 +39,23 @@ reportParam=null;]]></method>
             </styles>
         </theme>
     </themes>
+    <components>
+        <text name="ReportHeader" id="74">
+            <property name="fontSize">xx-large</property>
+            <property name="borderBottomColor">#000000</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">medium</property>
+            <property name="borderTopColor">#000000</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">medium</property>
+            <property name="marginBottom">6pt</property>
+            <property name="paddingTop">4pt</property>
+            <property name="paddingBottom">4pt</property>
+            <property name="textAlign">center</property>
+            <property name="contentType">html</property>
+            <text-property name="content"><![CDATA[<value-of>params["reportName"]</value-of>]]></text-property>
+        </text>
+    </components>
     <page-setup>
         <simple-master-page name="TacosMasterPage" id="33">
             <property name="type">a4</property>
