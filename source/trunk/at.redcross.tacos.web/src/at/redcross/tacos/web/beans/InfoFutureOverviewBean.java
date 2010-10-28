@@ -35,8 +35,7 @@ public class InfoFutureOverviewBean extends InfoOverviewBean {
 
 	@Override
 	protected List<Info> getEntries(EntityManager manager, Category category) {
-		// TODO Auto-generated method stub
-		return null;
+		return InfoHelper.listFuture(manager, category);
 	}
 	
 }
