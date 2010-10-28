@@ -5,10 +5,10 @@ import java.util.Calendar;
 import java.util.List;
 
 import at.redcross.tacos.dbal.entity.RosterEntry;
+import at.redcross.tacos.dbal.utils.TacosDateUtils;
 import at.redcross.tacos.web.beans.LocaleBean;
 import at.redcross.tacos.web.beans.WebPermissionBean;
 import at.redcross.tacos.web.faces.FacesUtils;
-import at.redcross.tacos.web.utils.TacosDateUtils;
 
 /**
  * The {@code RosterDto} is an extended {@linkplain GenericDto DTO} that

@@ -29,43 +29,67 @@
                 </structure>
                 <structure>
                     <property name="position">3</property>
-                    <property name="name">startTime</property>
-                    <property name="dataType">string</property>
+                    <property name="name">startDateTime</property>
+                    <property name="dataType">date-time</property>
                 </structure>
                 <structure>
                     <property name="position">4</property>
-                    <property name="name">endTime</property>
-                    <property name="dataType">string</property>
-                </structure>
-                <structure>
-                    <property name="position">5</property>
                     <property name="name">serviceType</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">6</property>
+                    <property name="position">5</property>
                     <property name="name">assignment</property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="position">7</property>
+                    <property name="position">6</property>
                     <property name="name">location</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">endDateTime</property>
+                    <property name="dataType">date-time</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">startTime</property>
+                    <property name="dataType">time</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">startDate</property>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="position">10</property>
+                    <property name="name">endTime</property>
+                    <property name="dataType">time</property>
+                </structure>
+                <structure>
+                    <property name="position">11</property>
+                    <property name="name">endDate</property>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="position">12</property>
+                    <property name="name">car</property>
                     <property name="dataType">string</property>
                 </structure>
             </list-property>
             <list-property name="columnHints">
                 <structure>
                     <property name="columnName">index</property>
+                    <text-property name="displayName">Index</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">name</property>
                     <text-property name="displayName">Mitarbeiter</text-property>
                 </structure>
                 <structure>
-                    <property name="columnName">startTime</property>
-                </structure>
-                <structure>
-                    <property name="columnName">endTime</property>
+                    <property name="columnName">startDateTime</property>
+                    <text-property name="displayName">Start [Datum/Zeit]</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">serviceType</property>
@@ -78,6 +102,30 @@
                 <structure>
                     <property name="columnName">location</property>
                     <text-property name="displayName">Dienststelle</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">endDateTime</property>
+                    <text-property name="displayName">Ende [Datum/Zeit]</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">startTime</property>
+                    <text-property name="displayName">Start [Zeit]</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">startDate</property>
+                    <text-property name="displayName">Start [Datum]</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">endTime</property>
+                    <text-property name="displayName">Ende [Zeit]</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">endDate</property>
+                    <text-property name="displayName">Ende [Datum]</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">car</property>
+                    <text-property name="displayName">Fahrzeug</text-property>
                 </structure>
             </list-property>
             <structure name="cachedMetaData">
@@ -94,27 +142,52 @@
                     </structure>
                     <structure>
                         <property name="position">3</property>
-                        <property name="name">startTime</property>
-                        <property name="dataType">string</property>
+                        <property name="name">startDateTime</property>
+                        <property name="dataType">date-time</property>
                     </structure>
                     <structure>
                         <property name="position">4</property>
-                        <property name="name">endTime</property>
-                        <property name="dataType">string</property>
-                    </structure>
-                    <structure>
-                        <property name="position">5</property>
                         <property name="name">serviceType</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">6</property>
+                        <property name="position">5</property>
                         <property name="name">assignment</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
-                        <property name="position">7</property>
+                        <property name="position">6</property>
                         <property name="name">location</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">endDateTime</property>
+                        <property name="dataType">date-time</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">startTime</property>
+                        <property name="dataType">time</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">startDate</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">endTime</property>
+                        <property name="dataType">time</property>
+                    </structure>
+                    <structure>
+                        <property name="position">11</property>
+                        <property name="name">endDate</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">12</property>
+                        <property name="name">car</property>
                         <property name="dataType">string</property>
                     </structure>
                 </list-property>
@@ -126,12 +199,19 @@ if(count < reportParam.size()){
 	// custom logic goes here
 	count++;
 	dataSetRow["index"] = count;
-	dataSetRow["name"] = entry.getStaffMember();
-	dataSetRow["location"] = entry.getLocation();
+	dataSetRow["name"] = entry.getSystemUser().getFirstName() + " "+ entry.getSystemUser().getLastName();
+	dataSetRow["location"] = entry.getLocation().getDisplayString();
 	dataSetRow["startTime"] = entry.getPlannedStartTime();
+	dataSetRow["startDate"] = entry.getPlannedStartDate();
+	dataSetRow["startDateTime"] = entry.getPlannedStartDateTime();
 	dataSetRow["endTime"] = entry.getPlannedEndTime();
-	dataSetRow["assignment"] = entry.getAssignment();
-	dataSetRow["serviceType"] = entry.getServiceType();
+	dataSetRow["endDate"] = entry.getPlannedEndDate();
+	dataSetRow["endDateTime"] = entry.getPlannedEndDateTime();
+	dataSetRow["assignment"] = entry.getAssignment().getDisplayString();
+	dataSetRow["serviceType"] = entry.getServiceType().getDisplayString();
+	if(entry.getCar() != null)  {
+		dataSetRow["car"] = entry.getCar().getDisplayString();
+	} 
 	
 	return true;
 }
@@ -203,18 +283,6 @@ return false;]]></method>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="name">startTime</property>
-                    <text-property name="displayName">startTime</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["startTime"]</expression>
-                    <property name="dataType">string</property>
-                </structure>
-                <structure>
-                    <property name="name">endTime</property>
-                    <text-property name="displayName">endTime</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["endTime"]</expression>
-                    <property name="dataType">string</property>
-                </structure>
-                <structure>
                     <property name="name">location</property>
                     <text-property name="displayName">Dienststelle</text-property>
                     <expression name="expression" type="javascript">dataSetRow["location"]</expression>
@@ -226,33 +294,71 @@ return false;]]></method>
                     <expression name="expression" type="javascript">dataSetRow["assignment"]</expression>
                     <property name="dataType">string</property>
                 </structure>
+                <structure>
+                    <property name="name">serviceType</property>
+                    <text-property name="displayName">Dienstverhältnis</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["serviceType"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">endTime</property>
+                    <text-property name="displayName">EndTime</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["endTime"]</expression>
+                    <property name="dataType">time</property>
+                </structure>
+                <structure>
+                    <property name="name">locationGroup</property>
+                    <expression name="expression" type="javascript">dataSetRow["location"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">endDateTime</property>
+                    <expression name="expression" type="javascript">dataSetRow["endDateTime"]</expression>
+                    <property name="dataType">date-time</property>
+                </structure>
+                <structure>
+                    <property name="name">startDate</property>
+                    <expression name="expression" type="javascript">dataSetRow["startDate"]</expression>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="name">endDate</property>
+                    <expression name="expression" type="javascript">dataSetRow["endDate"]</expression>
+                    <property name="dataType">date</property>
+                </structure>
+                <structure>
+                    <property name="name">car</property>
+                    <expression name="expression" type="javascript">dataSetRow["car"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">startDateTime</property>
+                    <expression name="expression" type="javascript">dataSetRow["startDateTime"]</expression>
+                    <property name="dataType">date-time</property>
+                </structure>
+                <structure>
+                    <property name="name">startTime</property>
+                    <expression name="expression" type="javascript">dataSetRow["startTime"]</expression>
+                    <property name="dataType">time</property>
+                </structure>
             </list-property>
-            <column id="89">
-                <property name="width">10mm</property>
-            </column>
             <column id="90">
                 <property name="width">20%</property>
             </column>
             <column id="99">
-                <property name="width">15%</property>
-            </column>
-            <column id="120">
-                <property name="width">5mm</property>
-            </column>
-            <column id="105">
-                <property name="width">15%</property>
-            </column>
-            <column id="91">
-                <property name="width">20%</property>
+                <property name="width">25%</property>
             </column>
             <column id="113">
-                <property name="width">1.46875in</property>
+                <property name="width">20%</property>
             </column>
             <header>
                 <row id="77">
                     <property name="backgroundColor">#BED6F8</property>
                     <property name="fontSize">larger</property>
                     <property name="fontWeight">bold</property>
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
                     <property name="borderLeftColor">#000000</property>
                     <property name="borderLeftStyle">solid</property>
                     <property name="borderLeftWidth">thin</property>
@@ -264,38 +370,71 @@ return false;]]></method>
                     <property name="borderTopWidth">thin</property>
                     <property name="textAlign">left</property>
                     <property name="verticalAlign">middle</property>
-                    <cell id="78">
-                        <label id="122">
-                            <property name="display">none</property>
-                        </label>
-                    </cell>
                     <cell id="79">
                         <label id="94">
+                            <property name="marginLeft">2px</property>
                             <text-property name="text">Mitarbeiter</text-property>
                         </label>
                     </cell>
                     <cell id="96">
-                        <property name="colSpan">3</property>
-                        <property name="rowSpan">1</property>
                         <label id="107">
                             <property name="textAlign">center</property>
                             <text-property name="text">Dienstzeit</text-property>
                         </label>
                     </cell>
-                    <cell id="80">
-                        <label id="108">
-                            <text-property name="text">Dienststelle</text-property>
-                        </label>
-                    </cell>
                     <cell id="110">
                         <label id="115">
+                            <property name="marginLeft">2px</property>
                             <text-property name="text">Verwendung</text-property>
                         </label>
                     </cell>
                 </row>
             </header>
+            <group id="166">
+                <property name="groupName">LocationGroup</property>
+                <property name="interval">none</property>
+                <property name="sortDirection">asc</property>
+                <expression name="keyExpr" type="javascript">row["location"]</expression>
+                <structure name="toc">
+                    <expression name="expressionValue" type="javascript">row["location"]</expression>
+                </structure>
+                <property name="repeatHeader">true</property>
+                <property name="hideDetail">false</property>
+                <property name="pageBreakAfter">auto</property>
+                <property name="pageBreakBefore">auto</property>
+                <property name="pageBreakInside">auto</property>
+                <header>
+                    <row id="167">
+                        <property name="height">0.3125in</property>
+                        <cell id="169">
+                            <property name="colSpan">3</property>
+                            <property name="rowSpan">1</property>
+                            <property name="backgroundColor">#808080</property>
+                            <property name="fontSize">medium</property>
+                            <property name="fontWeight">bold</property>
+                            <property name="color">#FFFFFF</property>
+                            <property name="verticalAlign">middle</property>
+                            <data id="181">
+                                <property name="fontSize">larger</property>
+                                <property name="paddingLeft">10pt</property>
+                                <property name="resultSetColumn">locationGroup</property>
+                            </data>
+                        </cell>
+                    </row>
+                </header>
+                <footer>
+                    <row id="173">
+                        <cell id="175"/>
+                        <cell id="176"/>
+                        <cell id="178"/>
+                    </row>
+                </footer>
+            </group>
             <detail>
                 <row id="81">
+                    <property name="borderBottomColor">#000000</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
                     <property name="borderLeftColor">#000000</property>
                     <property name="borderLeftStyle">solid</property>
                     <property name="borderLeftWidth">thin</property>
@@ -306,38 +445,239 @@ return false;]]></method>
                     <property name="borderTopStyle">solid</property>
                     <property name="borderTopWidth">thin</property>
                     <property name="verticalAlign">middle</property>
-                    <cell id="82">
-                        <data id="93">
-                            <property name="resultSetColumn">index</property>
-                        </data>
-                    </cell>
                     <cell id="83">
+                        <property name="borderRightColor">#000000</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
                         <data id="95">
                             <property name="resultSetColumn">name</property>
                         </data>
                     </cell>
                     <cell id="97">
+                        <property name="borderRightColor">#000000</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
                         <property name="textAlign">center</property>
-                        <data id="101">
-                            <property name="resultSetColumn">startTime</property>
-                        </data>
-                    </cell>
-                    <cell id="118">
-                        <property name="textAlign">center</property>
-                        <label id="121">
-                            <text-property name="text"> -</text-property>
-                        </label>
-                    </cell>
-                    <cell id="103">
-                        <property name="textAlign">center</property>
-                        <data id="106">
-                            <property name="resultSetColumn">endTime</property>
-                        </data>
-                    </cell>
-                    <cell id="84">
-                        <data id="109">
-                            <property name="resultSetColumn">location</property>
-                        </data>
+                        <property name="canShrink">false</property>
+                        <grid id="158">
+                            <property name="canShrink">false</property>
+                            <property name="dataSet">TacosDataSet</property>
+                            <list-property name="boundDataColumns">
+                                <structure>
+                                    <property name="name">index</property>
+                                    <expression name="expression" type="javascript">dataSetRow["index"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">name</property>
+                                    <expression name="expression" type="javascript">dataSetRow["name"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">startDateTime</property>
+                                    <expression name="expression" type="javascript">dataSetRow["startDateTime"]</expression>
+                                    <property name="dataType">date-time</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">serviceType</property>
+                                    <expression name="expression" type="javascript">dataSetRow["serviceType"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">assignment</property>
+                                    <expression name="expression" type="javascript">dataSetRow["assignment"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">location</property>
+                                    <expression name="expression" type="javascript">dataSetRow["location"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">endDateTime</property>
+                                    <expression name="expression" type="javascript">dataSetRow["endDateTime"]</expression>
+                                    <property name="dataType">date-time</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">startTime</property>
+                                    <expression name="expression" type="javascript">dataSetRow["startTime"]</expression>
+                                    <property name="dataType">time</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">startDate</property>
+                                    <expression name="expression" type="javascript">dataSetRow["startDate"]</expression>
+                                    <property name="dataType">date</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">endTime</property>
+                                    <expression name="expression" type="javascript">dataSetRow["endTime"]</expression>
+                                    <property name="dataType">time</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">endDate</property>
+                                    <expression name="expression" type="javascript">dataSetRow["endDate"]</expression>
+                                    <property name="dataType">date</property>
+                                </structure>
+                                <structure>
+                                    <property name="name">car</property>
+                                    <expression name="expression" type="javascript">dataSetRow["car"]</expression>
+                                    <property name="dataType">string</property>
+                                </structure>
+                            </list-property>
+                            <column id="159">
+                                <property name="width">50%</property>
+                            </column>
+                            <column id="160">
+                                <property name="width">15px</property>
+                            </column>
+                            <column id="161">
+                                <property name="width">50%</property>
+                            </column>
+                            <row id="162">
+                                <cell id="163">
+                                    <data id="155">
+                                        <property name="dataSet">TacosDataSet</property>
+                                        <list-property name="boundDataColumns">
+                                            <structure>
+                                                <property name="name">index</property>
+                                                <expression name="expression" type="javascript">dataSetRow["index"]</expression>
+                                                <property name="dataType">string</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">name</property>
+                                                <expression name="expression" type="javascript">dataSetRow["name"]</expression>
+                                                <property name="dataType">string</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">startDateTime</property>
+                                                <expression name="expression" type="javascript">dataSetRow["startDateTime"]</expression>
+                                                <property name="dataType">date-time</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">serviceType</property>
+                                                <expression name="expression" type="javascript">dataSetRow["serviceType"]</expression>
+                                                <property name="dataType">string</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">assignment</property>
+                                                <expression name="expression" type="javascript">dataSetRow["assignment"]</expression>
+                                                <property name="dataType">string</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">location</property>
+                                                <expression name="expression" type="javascript">dataSetRow["location"]</expression>
+                                                <property name="dataType">string</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">endDateTime</property>
+                                                <expression name="expression" type="javascript">dataSetRow["endDateTime"]</expression>
+                                                <property name="dataType">date-time</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">startTime</property>
+                                                <expression name="expression" type="javascript">dataSetRow["startTime"]</expression>
+                                                <property name="dataType">time</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">startDate</property>
+                                                <expression name="expression" type="javascript">dataSetRow["startDate"]</expression>
+                                                <property name="dataType">date</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">endTime</property>
+                                                <expression name="expression" type="javascript">dataSetRow["endTime"]</expression>
+                                                <property name="dataType">time</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">endDate</property>
+                                                <expression name="expression" type="javascript">dataSetRow["endDate"]</expression>
+                                                <property name="dataType">date</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">car</property>
+                                                <expression name="expression" type="javascript">dataSetRow["car"]</expression>
+                                                <property name="dataType">string</property>
+                                            </structure>
+                                        </list-property>
+                                        <property name="resultSetColumn">startDateTime</property>
+                                    </data>
+                                </cell>
+                                <cell id="164">
+                                    <label id="121">
+                                        <property name="fontSize">medium</property>
+                                        <text-property name="text"> - </text-property>
+                                    </label>
+                                </cell>
+                                <cell id="165">
+                                    <data id="156">
+                                        <property name="dataSet">TacosDataSet</property>
+                                        <list-property name="boundDataColumns">
+                                            <structure>
+                                                <property name="name">index</property>
+                                                <expression name="expression" type="javascript">dataSetRow["index"]</expression>
+                                                <property name="dataType">string</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">name</property>
+                                                <expression name="expression" type="javascript">dataSetRow["name"]</expression>
+                                                <property name="dataType">string</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">startDateTime</property>
+                                                <expression name="expression" type="javascript">dataSetRow["startDateTime"]</expression>
+                                                <property name="dataType">date-time</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">serviceType</property>
+                                                <expression name="expression" type="javascript">dataSetRow["serviceType"]</expression>
+                                                <property name="dataType">string</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">assignment</property>
+                                                <expression name="expression" type="javascript">dataSetRow["assignment"]</expression>
+                                                <property name="dataType">string</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">location</property>
+                                                <expression name="expression" type="javascript">dataSetRow["location"]</expression>
+                                                <property name="dataType">string</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">endDateTime</property>
+                                                <expression name="expression" type="javascript">dataSetRow["endDateTime"]</expression>
+                                                <property name="dataType">date-time</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">startTime</property>
+                                                <expression name="expression" type="javascript">dataSetRow["startTime"]</expression>
+                                                <property name="dataType">time</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">startDate</property>
+                                                <expression name="expression" type="javascript">dataSetRow["startDate"]</expression>
+                                                <property name="dataType">date</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">endTime</property>
+                                                <expression name="expression" type="javascript">dataSetRow["endTime"]</expression>
+                                                <property name="dataType">time</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">endDate</property>
+                                                <expression name="expression" type="javascript">dataSetRow["endDate"]</expression>
+                                                <property name="dataType">date</property>
+                                            </structure>
+                                            <structure>
+                                                <property name="name">car</property>
+                                                <expression name="expression" type="javascript">dataSetRow["car"]</expression>
+                                                <property name="dataType">string</property>
+                                            </structure>
+                                        </list-property>
+                                        <property name="resultSetColumn">endDateTime</property>
+                                    </data>
+                                </cell>
+                            </row>
+                        </grid>
                     </cell>
                     <cell id="111">
                         <data id="116">
@@ -348,21 +688,8 @@ return false;]]></method>
             </detail>
             <footer>
                 <row id="85">
-                    <property name="borderBottomColor">#000000</property>
-                    <property name="borderBottomStyle">solid</property>
-                    <property name="borderBottomWidth">thin</property>
-                    <property name="borderLeftColor">#000000</property>
-                    <property name="borderLeftStyle">solid</property>
-                    <property name="borderLeftWidth">thin</property>
-                    <property name="borderRightColor">#000000</property>
-                    <property name="borderRightStyle">solid</property>
-                    <property name="borderRightWidth">thin</property>
-                    <cell id="86"/>
                     <cell id="87"/>
                     <cell id="98"/>
-                    <cell id="119"/>
-                    <cell id="104"/>
-                    <cell id="88"/>
                     <cell id="112"/>
                 </row>
             </footer>
