@@ -39,4 +39,9 @@ public class InfoExpiredOverviewBean extends InfoOverviewBean {
 		return InfoHelper.listExpired(manager,category);
 	}
 
+	@Override
+	protected List<Info> getEntries(EntityManager manager, Location location,Category category) {
+		return InfoHelper.listExpired(manager, location, category);
+	}
+
 }

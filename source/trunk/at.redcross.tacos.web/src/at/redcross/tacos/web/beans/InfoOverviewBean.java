@@ -172,6 +172,8 @@ public abstract class InfoOverviewBean extends BaseBean {
 	/** Loads the info entries using the given filter parameters */
 	protected abstract List<Info> getEntries(EntityManager manager, Location location);
 	
+	protected abstract List<Info> getEntries(EntityManager manager, Location location, Category category);
+	
 	/** Loads the info entries using the given filter parameters */
 	protected abstract List<Info> getEntries(EntityManager manager, Category category);
 
@@ -230,8 +232,10 @@ public abstract class InfoOverviewBean extends BaseBean {
 	public void tabChanged(ValueChangeEvent event) {
 		EntityManager manager = null;
 		try {
+			categoryName = "*";
+			category = getCategoryByName(categoryName);
 			manager = EntityManagerFactory.createEntityManager();
-			infos = getEntries(manager, getLocationByName(locationName));
+			infos = getEntries(manager, getLocationByName(locationName), getCategoryByName(categoryName));
 		} finally {
 			manager = EntityManagerHelper.close(manager);
 		}

@@ -38,4 +38,9 @@ public class InfoCurrentOverviewBean extends InfoOverviewBean {
 		return InfoHelper.listCurrent(manager, category);
 	}
 
+	@Override
+	protected List<Info> getEntries(EntityManager manager, Location location,Category category) {
+		return InfoHelper.listCurrent(manager, location, category);
+	}
+
 }

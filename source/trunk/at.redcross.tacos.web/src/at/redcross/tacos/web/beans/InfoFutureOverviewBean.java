@@ -37,5 +37,10 @@ public class InfoFutureOverviewBean extends InfoOverviewBean {
 	protected List<Info> getEntries(EntityManager manager, Category category) {
 		return InfoHelper.listFuture(manager, category);
 	}
+
+	@Override
+	protected List<Info> getEntries(EntityManager manager, Location location,Category category) {
+		return InfoHelper.listFuture(manager, location, category);
+	}
 	
 }
