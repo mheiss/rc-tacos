@@ -10,8 +10,8 @@ import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
+import at.redcross.tacos.dbal.utils.TacosDateUtils;
 import at.redcross.tacos.web.faces.FacesUtils;
-import at.redcross.tacos.web.utils.TacosDateUtils;
 
 @FacesValidator("validator.fromTo")
 public class FromToDateValidator implements Validator {

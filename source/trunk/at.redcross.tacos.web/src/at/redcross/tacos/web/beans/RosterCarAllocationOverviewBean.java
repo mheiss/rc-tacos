@@ -19,12 +19,12 @@ import at.redcross.tacos.dbal.helper.NotificationHelper;
 import at.redcross.tacos.dbal.helper.RosterEntryHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.dbal.query.RosterQueryParam;
+import at.redcross.tacos.dbal.utils.TacosDateUtils;
 import at.redcross.tacos.web.beans.dto.RosterDto;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.faces.combo.DropDownHelper;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
 import at.redcross.tacos.web.reporting.ReportRenderer.ReportRenderParameters;
-import at.redcross.tacos.web.utils.TacosDateUtils;
 
 @KeepAlive
 @ManagedBean(name = "rosterCarAllocationOverviewBean")
