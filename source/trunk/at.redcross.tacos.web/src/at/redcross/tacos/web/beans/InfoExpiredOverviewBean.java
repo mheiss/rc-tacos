@@ -2,6 +2,7 @@ package at.redcross.tacos.web.beans;
 
 import java.util.List;
 
+
 import javax.faces.bean.ManagedBean;
 import javax.persistence.EntityManager;
 
@@ -35,8 +36,7 @@ public class InfoExpiredOverviewBean extends InfoOverviewBean {
 
 	@Override
 	protected List<Info> getEntries(EntityManager manager, Category category) {
-		// TODO Auto-generated method stub
-		return null;
+		return InfoHelper.listExpired(manager,category);
 	}
 
 }
