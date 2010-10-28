@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 
 import org.ajax4jsf.model.KeepAlive;
 
+import at.redcross.tacos.dbal.entity.Category;
 import at.redcross.tacos.dbal.entity.Info;
 import at.redcross.tacos.dbal.entity.Location;
 import at.redcross.tacos.dbal.helper.InfoHelper;
@@ -30,6 +31,12 @@ public class InfoCurrentOverviewBean extends InfoOverviewBean {
 		params.reportFile = "rosterDayReport.rptdesign";
 		params.arguments.put("rosterList", infos);
 		return params;
+	}
+
+	@Override
+	protected List<Info> getEntries(EntityManager manager, Category category) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
