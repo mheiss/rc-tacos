@@ -7,16 +7,16 @@
 		<fieldset class="defaultStyle">
 			<ol>
 				<li class="left">
-					<h:outputLabel for="location" value="Ortsstelle" />
+					<h:outputLabel for="category" value="Kategorie" />
 					<div class="input">
-						<rich:comboBox id="location" value="#{bean.location}" width="250" selectFirstOnUpdate="false" defaultLabel="Filter nach Orststelle">
-							<f:selectItems value="#{bean.locationItems}" />
+						<rich:comboBox id="category" value="#{bean.category}" width="250" selectFirstOnUpdate="false" defaultLabel="Filter nach Kategorie">
+							<f:selectItems value="#{bean.categoryItems}" />
 							<f:validator validatorId="validator.dropDown" />
 							<f:converter converterId="converter.dropDown" />
 							<rich:ajaxValidator event="onchange" />
-							<a4j:support event="onselect" actionListener="#{bean.filterChanged}" reRender="infoResultList" />
+							<a4j:support event="onselect" actionListener="#{bean.filterChanged}" reRender="infoTab" />
 						</rich:comboBox> 
-						<rich:message for="location" errorClass="error" />
+						<rich:message for="category" errorClass="error" />
 					</div>
 				</li>
 			</ol>

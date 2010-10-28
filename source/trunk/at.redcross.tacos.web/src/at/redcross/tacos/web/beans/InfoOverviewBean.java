@@ -22,6 +22,7 @@ import at.redcross.tacos.dbal.entity.Location;
 import at.redcross.tacos.dbal.helper.CategoryHelper;
 import at.redcross.tacos.dbal.helper.LocationHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
+import at.redcross.tacos.web.beans.dto.CategoryInfo;
 import at.redcross.tacos.web.beans.dto.LocationInfo;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.faces.combo.DropDownHelper;
@@ -41,9 +42,11 @@ public abstract class InfoOverviewBean extends BaseBean {
 
 	/** the available locations */
 	protected List<Location> locations;
+	protected List<Category> categories;
 	
-	/** filter by location name */
+	/** filter by category */
 	protected String locationName = "*";
+	protected String categoryName = "*";
 	
 	// filter by location
 	protected Location location;
@@ -55,6 +58,7 @@ public abstract class InfoOverviewBean extends BaseBean {
 	// queried result
 	protected List<Info> infos;
 	protected List<LocationInfo> locationInfo;
+	protected List<CategoryInfo> categoryInfo;
 	
 	protected String shortName;
 	
@@ -74,6 +78,7 @@ public abstract class InfoOverviewBean extends BaseBean {
 			locationItems = DropDownHelper.convertToItems(locations);
 			categoryItems = DropDownHelper.convertToItems(CategoryHelper.list(manager));
 			location = getLocationByName(locationName);
+			category = getCategoryByName(categoryName);
 			loadfromDatabase(manager, location);
 		} finally {
 			manager = EntityManagerHelper.close(manager);
@@ -87,7 +92,7 @@ public abstract class InfoOverviewBean extends BaseBean {
 		EntityManager manager = null;
 		try {
 			manager = EntityManagerFactory.createEntityManager();
-			loadfromDatabase(manager, location);
+			loadfromDatabase(manager, category);
 		} finally {
 			manager = EntityManagerHelper.close(manager);
 		}
@@ -115,6 +120,18 @@ public abstract class InfoOverviewBean extends BaseBean {
 		for (Location location : locations) {
 			if (location.getName().equals(locationName)) {
 				return location;
+			}
+		}
+		return null;
+	}
+	
+	protected Category getCategoryByName(String categoryName) {
+		if (categoryName == null || "*".equals(categoryName)) {
+			return null;
+		}
+		for (Category category : categories) {
+			if (category.getName().equals(categoryName)) {
+				return category;
 			}
 		}
 		return null;
@@ -154,6 +171,9 @@ public abstract class InfoOverviewBean extends BaseBean {
 
 	/** Loads the info entries using the given filter parameters */
 	protected abstract List<Info> getEntries(EntityManager manager, Location location);
+	
+	/** Loads the info entries using the given filter parameters */
+	protected abstract List<Info> getEntries(EntityManager manager, Category category);
 
 	/** Returns the parameters for the report generation */
 	protected abstract ReportRenderParameters getReportParams();
@@ -184,11 +204,34 @@ public abstract class InfoOverviewBean extends BaseBean {
 		}
 	}
 	
+	protected void loadfromDatabase(EntityManager manager, Category filterCategory) {
+		// build a structure containing all results grouped by categories
+		infos = new ArrayList<Info>();
+		Map<Category, List<Info>> mappedResult = new HashMap<Category, List<Info>>();
+		for (Info info : getEntries(manager, filterCategory)) {
+			infos.add(info);
+
+			Category category = info.getCategory();
+			List<Info> list = mappedResult.get(category);
+			if (list == null) {
+				list = new ArrayList<Info>();
+				mappedResult.put(category, list);
+			}
+			list.add(info);
+		}
+		// map this structure again for visualization
+		categoryInfo = new ArrayList<CategoryInfo>();
+		for (Map.Entry<Category, List<Info>> info : mappedResult.entrySet()) {
+			CategoryInfo value = new CategoryInfo(info.getKey(), info.getValue());
+			categoryInfo.add(value);
+		}
+	}
+	
 	public void tabChanged(ValueChangeEvent event) {
 		EntityManager manager = null;
 		try {
 			manager = EntityManagerFactory.createEntityManager();
-			infos = getEntries(manager, location);
+			infos = getEntries(manager, getLocationByName(locationName));
 		} finally {
 			manager = EntityManagerHelper.close(manager);
 		}
@@ -250,5 +293,21 @@ public abstract class InfoOverviewBean extends BaseBean {
 	
 	public String getShortName(){
 		return shortName;
+	}
+	
+	public Category getCategory() {
+		return category;
+	}
+	
+	public String getCategoryName() {
+		return categoryName;
+	}
+	
+	public List<Category> getCategories() {
+		return categories;
+	}
+	
+	public List<CategoryInfo> getCategoryInfo() {
+		return categoryInfo;
 	}
 }

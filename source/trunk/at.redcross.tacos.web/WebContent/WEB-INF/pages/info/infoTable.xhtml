@@ -11,33 +11,46 @@
 	<rich:panel rendered="#{not empty values}">
 		<rich:dataTable id="table-#{tabId}"  styleClass="defaultStyle" rendered="#{not empty values}" value="#{values}" var="info"
 			onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
-			<rich:column styleClass="mediumColumn" sortBy="#{info.category.name}">
+			
+			
+			<rich:column styleClass="smallColumn" style="background-color:#aaa;">
 				<f:facet name="header">
-					<h:outputText value="Kategorie" />
+					<h:outputText value="" />
 				</f:facet>
-				<h:outputText value="#{info.category.name}" />
+				<h:graphicImage library="images/16x16" name="info.png" />
 			</rich:column>
-			<rich:column sortBy="#{info.shortName}">
+			
+			
+			
+			<rich:column styleClass="bold" style="background-color:#aaa;"  sortBy="#{info.shortName}">
 				<f:facet name="header">
 					<h:outputText value="Information" />
 				</f:facet>
 				<h:outputText value="#{info.shortName}" />
 			</rich:column>
-			<rich:column sortBy="#{info.description}">
+			<rich:column style="background-color:#aaa;"  colspan = "3"  styleClass="mediumColumn" sortBy="#{info.category.name}">
+				<f:facet name="header">
+					<h:outputText value="Kategorie" />
+				</f:facet>
+				<h:outputText value="#{info.category.name}" />
+			</rich:column>
+			
+			
+			<rich:column breakBefore = "true" colspan = "3" sortBy="#{info.description}">
 				<f:facet name="header">
 					<h:outputText value="Beschreibung" />
 				</f:facet>
-				<h:outputText value="#{info.description}" />
+				<h:outputText escape = "false" value="#{info.description}" />
 			</rich:column>
 			<rich:column styleClass="smallColumn">
 				<f:facet name="header">
 					<h:outputText value="Aktionen" />
 				</f:facet>
-				<pretty:link rendered="#{infoDto.editEnabled}" mappingId="info-editMaintenance" title="Information bearbeiten">
+				<pretty:link  mappingId="info-editMaintenance" title="Information bearbeiten">
 					<f:param value="#{info.id}" />
 					<h:graphicImage styleClass="actionImage" library="images/16x16" name="edit.png" />
 				</pretty:link>
-				<a4j:commandLink rendered="#{infoDto.deleteEnabled}" reRender="page-panels" oncomplete="#{rich:component('confirmDeleteInfoPanel')}.show();return false;" title="Information löschen">
+				<a4j:commandLink reRender="page-panels" oncomplete="#{rich:component('confirmDeleteInfoPanel')}.show();return false;" title="Information löschen">
 					<a4j:actionparam name="infoId" assignTo="#{infoCurrentOverviewBean.infoId}" value="#{info.id}" />
 					<h:graphicImage library="images/16x16" name="remove.png" />
 				</a4j:commandLink>
