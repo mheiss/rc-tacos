@@ -3,61 +3,47 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich" xmlns:pretty="http://ocpsoft.com/prettyfaces">
 <body>
 <ui:composition>
-<h:panelGroup id="resultList">
-	<rich:panel rendered="#{empty values}" styleClass="border:1px">
-		<h:outputText value="Keine Einträge gefunden" styleClass="italic" />
-	</rich:panel>
-	<rich:dataTable styleClass="defaultStyle" rendered="#{not empty values}" value="#{values}" var="locationInfo">
-		<f:facet name="header">
-			<rich:columnGroup>
-			<rich:column rowspan="2" styleClass="mediumColumn">
+	<h:panelGroup rendered="#{empty values}">
+		<div class="emptyBox italic">
+			<h:outputText value="Keine Einträge gefunden" />
+		</div>
+	</h:panelGroup>
+	<rich:panel rendered="#{not empty values}">
+		<rich:dataTable id="table-#{tabId}"  styleClass="defaultStyle" rendered="#{not empty values}" value="#{values}" var="info"
+			onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
+			<rich:column styleClass="mediumColumn" sortBy="#{info.category.name}">
+				<f:facet name="header">
 					<h:outputText value="Kategorie" />
-				</rich:column>
-				<rich:column rowspan="2" styleClass="mediumColumn">
-					<h:outputText value="Information" />
-				</rich:column>
-				<rich:column rowspan="2" styleClass="mediumColumn">
-					<h:outputText value="Beschreibung" />
-				</rich:column>
-				<rich:column rowspan="2" title="Bearbeiten" styleClass="smallColumn">
-					<rich:spacer />
-				</rich:column>
-				<rich:column rowspan="2" title="Löschen" styleClass="smallColumn">
-					<rich:spacer />
-				</rich:column>
-			</rich:columnGroup>
-		</f:facet>
-
-		<rich:column colspan="10">
-			<h:outputText value="#{locationInfo.location.name}" />
-		</rich:column>
-
-		<rich:subTable onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'" value="#{locationInfo.infos}" var="info">
-			<rich:column styleClass="bold" sortBy="#{info.category.name}">
+				</f:facet>
 				<h:outputText value="#{info.category.name}" />
 			</rich:column>
-			<rich:column styleClass="bold" sortBy="#{info.shortName}">
+			<rich:column sortBy="#{info.shortName}">
+				<f:facet name="header">
+					<h:outputText value="Information" />
+				</f:facet>
 				<h:outputText value="#{info.shortName}" />
 			</rich:column>
-			<rich:column styleClass="bold" sortBy="#{info.description}">
-				<h:outputText escape = "false" value="#{info.description}" />
+			<rich:column sortBy="#{info.description}">
+				<f:facet name="header">
+					<h:outputText value="Beschreibung" />
+				</f:facet>
+				<h:outputText value="#{info.description}" />
 			</rich:column>
-			<rich:column styleClass="center">
-				<pretty:link mappingId="info-editMaintenance" title="Information bearbeiten">
+			<rich:column styleClass="smallColumn">
+				<f:facet name="header">
+					<h:outputText value="Aktionen" />
+				</f:facet>
+				<pretty:link rendered="#{infoDto.editEnabled}" mappingId="info-editMaintenance" title="Information bearbeiten">
 					<f:param value="#{info.id}" />
 					<h:graphicImage styleClass="actionImage" library="images/16x16" name="edit.png" />
 				</pretty:link>
-			</rich:column>
-			<rich:column styleClass="center">
-				<a4j:commandLink reRender="resultList">
-					<a4j:actionparam name="infoId" assignTo="#{infoCurrentOverviewBean.infoId}" value="#{info.id}" 
-						actionListener="#{infoCurrentOverviewBean.markToDelete}" />
+				<a4j:commandLink rendered="#{infoDto.deleteEnabled}" reRender="page-panels" oncomplete="#{rich:component('confirmDeleteInfoPanel')}.show();return false;" title="Information löschen">
+					<a4j:actionparam name="infoId" assignTo="#{infoCurrentOverviewBean.infoId}" value="#{info.id}" />
 					<h:graphicImage library="images/16x16" name="remove.png" />
 				</a4j:commandLink>
 			</rich:column>
-		</rich:subTable>
 	</rich:dataTable>
-</h:panelGroup>
+	</rich:panel>
 </ui:composition>
 </body>
 </html>

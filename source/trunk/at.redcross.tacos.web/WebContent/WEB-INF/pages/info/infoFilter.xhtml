@@ -14,7 +14,7 @@
 							<f:validator validatorId="validator.dropDown" />
 							<f:converter converterId="converter.dropDown" />
 							<rich:ajaxValidator event="onchange" />
-							<a4j:support event="onselect" actionListener="#{bean.filterChanged}" reRender="resultList" />
+							<a4j:support event="onselect" actionListener="#{bean.filterChanged}" reRender="infoResultList" />
 						</rich:comboBox> 
 						<rich:message for="location" errorClass="error" />
 					</div>
