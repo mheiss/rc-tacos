@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 import javax.faces.model.SelectItem;
 
 import javax.persistence.EntityManager;
@@ -38,6 +39,12 @@ public abstract class InfoOverviewBean extends BaseBean {
 	/* the entry to remove */
 	private Info info;
 
+	/** the available locations */
+	protected List<Location> locations;
+	
+	/** filter by location name */
+	protected String locationName = "*";
+	
 	// filter by location
 	protected Location location;
 	protected List<SelectItem> locationItems;
@@ -48,6 +55,9 @@ public abstract class InfoOverviewBean extends BaseBean {
 	// queried result
 	protected List<Info> infos;
 	protected List<LocationInfo> locationInfo;
+	
+	protected String shortName;
+	
 
 	// sign in and sign out date
 	protected Date now;
@@ -60,8 +70,10 @@ public abstract class InfoOverviewBean extends BaseBean {
 		EntityManager manager = null;
 		try {
 			manager = EntityManagerFactory.createEntityManager();
-			locationItems = DropDownHelper.convertToItems(LocationHelper.list(manager));
+			locations = LocationHelper.list(manager);
+			locationItems = DropDownHelper.convertToItems(locations);
 			categoryItems = DropDownHelper.convertToItems(CategoryHelper.list(manager));
+			location = getLocationByName(locationName);
 			loadfromDatabase(manager, location);
 		} finally {
 			manager = EntityManagerHelper.close(manager);
@@ -94,6 +106,18 @@ public abstract class InfoOverviewBean extends BaseBean {
 		} catch (Exception e) {
 			FacesUtils.addErrorMessage("Failed to create report");
 		}
+	}
+	
+	protected Location getLocationByName(String locationName) {
+		if (locationName == null || "*".equals(locationName)) {
+			return null;
+		}
+		for (Location location : locations) {
+			if (location.getName().equals(locationName)) {
+				return location;
+			}
+		}
+		return null;
 	}
 
 
@@ -159,6 +183,16 @@ public abstract class InfoOverviewBean extends BaseBean {
 			locationInfo.add(value);
 		}
 	}
+	
+	public void tabChanged(ValueChangeEvent event) {
+		EntityManager manager = null;
+		try {
+			manager = EntityManagerFactory.createEntityManager();
+			infos = getEntries(manager, location);
+		} finally {
+			manager = EntityManagerHelper.close(manager);
+		}
+	}
 
 	// ---------------------------------
 	// Setters for the properties
@@ -173,6 +207,10 @@ public abstract class InfoOverviewBean extends BaseBean {
 	
 	public void setCategory(Category category) {
 		this.category = category;
+	}
+	
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
 	}
 
 	// ---------------------------------
@@ -200,5 +238,17 @@ public abstract class InfoOverviewBean extends BaseBean {
 	
 	public List<SelectItem> getCategoryItems(){
 		return categoryItems;
+	}
+	
+	public List<Location> getLocations() {
+		return locations;
+	}
+	
+	public String getLocationName() {
+		return locationName;
+	}
+	
+	public String getShortName(){
+		return shortName;
 	}
 }
