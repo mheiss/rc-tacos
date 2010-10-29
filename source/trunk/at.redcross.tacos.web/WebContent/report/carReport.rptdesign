@@ -59,6 +59,7 @@
     <body>
         <text name="ReportHeader" id="124" extends="tacos.ReportHeader"/>
         <table id="199">
+            <property name="width">7.625in</property>
             <property name="dataSet">TacosDataSet</property>
             <list-property name="boundDataColumns">
                 <structure>
@@ -73,8 +74,8 @@
                 </structure>
                 <structure>
                     <property name="name">startDateTime</property>
-                    <expression name="expression" type="javascript">dataSetRow["startDateTime"]</expression>
-                    <property name="dataType">date-time</property>
+                    <expression name="expression" type="javascript">dataSetRow["startTime"]</expression>
+                    <property name="dataType">time</property>
                 </structure>
                 <structure>
                     <property name="name">serviceType</property>
@@ -93,8 +94,8 @@
                 </structure>
                 <structure>
                     <property name="name">endDateTime</property>
-                    <expression name="expression" type="javascript">dataSetRow["endDateTime"]</expression>
-                    <property name="dataType">date-time</property>
+                    <expression name="expression" type="javascript">dataSetRow["endTime"]</expression>
+                    <property name="dataType">time</property>
                 </structure>
                 <structure>
                     <property name="name">startTime</property>
@@ -124,19 +125,43 @@
             </list-property>
             <list-property name="sort">
                 <structure>
-                    <expression name="key" type="javascript">row["startDateTime"]</expression>
+                    <expression name="key" type="javascript">row["car"]</expression>
+                    <property name="direction">asc</property>
+                    <property name="strength">-1</property>
+                </structure>
+                <structure>
+                    <expression name="key" type="javascript">row["startTime"]</expression>
                     <property name="direction">asc</property>
                     <property name="strength">-1</property>
                 </structure>
             </list-property>
-            <column id="212"/>
-            <column id="213"/>
-            <column id="214"/>
-            <column id="236"/>
-            <column id="244"/>
+            <column id="277">
+                <property name="width">0.8333333333333334in</property>
+            </column>
+            <column id="212">
+                <property name="width">1.5625in</property>
+            </column>
+            <column id="213">
+                <property name="width">0.9583333333333334in</property>
+            </column>
+            <column id="214">
+                <property name="width">0.9375in</property>
+            </column>
+            <column id="236">
+                <property name="width">1.6666666666666667in</property>
+            </column>
+            <column id="244">
+                <property name="width">1.5625in</property>
+            </column>
             <header>
                 <row id="200">
                     <property name="style">RowHeader</property>
+                    <cell id="272">
+                        <property name="canShrink">true</property>
+                        <label id="278">
+                            <text-property name="text">Fahrzeug</text-property>
+                        </label>
+                    </cell>
                     <cell id="201">
                         <label id="229">
                             <text-property name="text">Mitarbeiter</text-property>
@@ -179,8 +204,8 @@
                 <header>
                     <row id="216">
                         <property name="style">GroupHeader</property>
-                        <cell id="217">
-                            <property name="colSpan">5</property>
+                        <cell id="273">
+                            <property name="colSpan">6</property>
                             <property name="rowSpan">1</property>
                             <data id="224">
                                 <property name="resultSetColumn">location</property>
@@ -191,6 +216,7 @@
                 <footer>
                     <row id="220">
                         <property name="style">GroupFooter</property>
+                        <cell id="275"/>
                         <cell id="221"/>
                         <cell id="222"/>
                         <cell id="223"/>
@@ -202,6 +228,12 @@
             <detail>
                 <row id="204">
                     <property name="style">RowContent</property>
+                    <cell id="274">
+                        <property name="canShrink">false</property>
+                        <data id="279">
+                            <property name="resultSetColumn">car</property>
+                        </data>
+                    </cell>
                     <cell id="205">
                         <data id="230">
                             <property name="resultSetColumn">name</property>
@@ -212,17 +244,18 @@
                         <property name="rowSpan">1</property>
                         <grid id="263">
                             <column id="264">
-                                <property name="width">48%</property>
+                                <property name="width">45%</property>
                             </column>
                             <column id="270">
-                                <property name="width">10px</property>
+                                <property name="width">5px</property>
                             </column>
                             <column id="265">
-                                <property name="width">48%</property>
+                                <property name="width">45%</property>
                             </column>
                             <row id="266">
                                 <cell id="267">
                                     <data id="226">
+                                        <property name="style">TimeStyle</property>
                                         <property name="textAlign">right</property>
                                         <property name="resultSetColumn">startDateTime</property>
                                     </data>
@@ -235,6 +268,7 @@
                                 </cell>
                                 <cell id="268">
                                     <data id="228">
+                                        <property name="style">TimeStyle</property>
                                         <property name="textAlign">left</property>
                                         <property name="resultSetColumn">endDateTime</property>
                                     </data>
@@ -256,6 +290,7 @@
             </detail>
             <footer>
                 <row id="208">
+                    <cell id="276"/>
                     <cell id="209"/>
                     <cell id="210"/>
                     <cell id="211"/>

@@ -1,6 +1,5 @@
 package at.redcross.tacos.web.beans;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -20,9 +19,6 @@ import at.redcross.tacos.web.reporting.ReportRenderer.ReportRenderParameters;
 public class RosterDayOverviewBean extends RosterOverviewBean {
 
     private static final long serialVersionUID = 8817078489086816724L;
-
-    private final SimpleDateFormat sdfFile = new SimpleDateFormat("ddMMyyyy");
-    private final SimpleDateFormat sdfDisplay = new SimpleDateFormat("dd.MM.yyyy");
 
     @Override
     protected Date getPreviousDate(Date date) {
