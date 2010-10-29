@@ -1,5 +1,6 @@
 package at.redcross.tacos.web.beans;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -30,6 +31,9 @@ import at.redcross.tacos.web.reporting.ReportRenderer.ReportRenderParameters;
 public abstract class RosterOverviewBean extends BaseBean {
 
     private static final long serialVersionUID = -63594513702881676L;
+    
+    protected final SimpleDateFormat sdfFile = new SimpleDateFormat("ddMMyyyy");
+    protected final SimpleDateFormat sdfDisplay = new SimpleDateFormat("dd.MM.yyyy");
 
     /** the id of the selected roster entry */
     private long entryId;
