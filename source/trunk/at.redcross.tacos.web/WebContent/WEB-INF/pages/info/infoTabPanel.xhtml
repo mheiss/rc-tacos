@@ -9,14 +9,14 @@
 		<rich:tab label="Alle Dienststellen" name="*">
 			<ui:decorate template="infoTable.xhtml">
 				<ui:param name="tabId" value="all" />
-				<ui:param name="values" value="#{infoCurrentOverviewBean.infos}" />
+				<ui:param name="values" value="#{bean.infos}" />
 			</ui:decorate>
 		</rich:tab>
 		<c:forEach items="#{bean.locations}" var="location">
 			<rich:tab label="#{location.name}" name="#{location.name}">
 				<ui:decorate template="infoTable.xhtml">
 					<ui:param name="tabId" value="#{location.id}" />
-					<ui:param name="values" value="#{infoCurrentOverviewBean.infos}" />
+					<ui:param name="values" value="#{bean.infos}" />
 				</ui:decorate>
 			</rich:tab>
 		</c:forEach>
