@@ -118,22 +118,15 @@
 			<li>
 				<h:outputLabel for="startTime" value="Dienstzeit von"> <em class="required">*</em> </h:outputLabel>
 				<div class="input">
-					<rich:calendar id="startDate" value="#{rosterMaintenanceBean.rosterEntry.plannedStartDate}" styleClass="rich-calendar" 
+					<rich:calendar id="startDate" value="#{rosterMaintenanceBean.plannedStartDateTime}" styleClass="rich-calendar" 
 						enableManualInput="true" converterMessage="Bitte geben Sie ein gültiges Datum an"
-						datePattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}"
+						datePattern="dd.MM.yyyy HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}"
 						required="true" requiredMessage="Bitte geben Sie ein Startdatum an">
 						<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 						<rich:ajaxValidator event="onchanged" />
 						<rich:ajaxValidator event="oninputblur" />
-						<f:validator validatorId="validator.fromTo" />
-						<f:validator validatorId="validator.futureDate" />
 					</rich:calendar> 
-					<h:inputText id="startTime" value="#{rosterMaintenanceBean.rosterEntry.plannedStartTime}" 
-						required="true" requiredMessage="Bitte geben Sie einen Startzeitpunkt an" 
-						converterMessage="Bitte geben Sie eine gültige Zeit an. Beispiel: 10:47">
-						<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
-						<rich:ajaxValidator event="onblur" />
-					</h:inputText> 
+					
 					<rich:message for="startTime" errorClass="error" /> 
 					<rich:message for="startDate" errorClass="error" />
 				</div>
@@ -148,7 +141,6 @@
 						<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 						<rich:ajaxValidator event="onchanged" />
 						<rich:ajaxValidator event="oninputblur" />
-						<f:validator validatorId="validator.fromTo" />
 					</rich:calendar> 
 					<h:inputText id="endTime" value="#{rosterMaintenanceBean.rosterEntry.plannedEndTime}" 
 						required="true" requiredMessage="Bitte geben Sie einen Endzeitpunkt an" 
