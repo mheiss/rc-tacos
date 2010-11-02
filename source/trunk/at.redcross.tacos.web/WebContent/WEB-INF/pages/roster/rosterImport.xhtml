@@ -19,16 +19,22 @@
 		</h2>
 	</ui:define>
 	
+	<ui:define name="page-toolbar">
+		<li>
+			<a4j:commandLink id="showForm">
+				<rich:componentControl for="uploadPanel" attachTo="showForm" operation="show" event="onclick"/>
+				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="searchFile.png" />
+				<h:outputText styleClass="toolbarText" value="Datei auswählen"  />
+			</a4j:commandLink>
+		</li>
+	</ui:define>
+	
 	<ui:define name="page-content">
-		<!-- The upload wrapper -->
-		<p>
-			<h:outputText value="Bitte wählen Sie die Datei welche die gewünschten Dienstplaneinträge enthält." />
-		</p>
-		<rich:fileUpload id="rosterUpload" fileUploadListener="#{rosterImportBean.uploadListener}" acceptedTypes="xls, xlsx" allowFlash="true"
-			immediateUpload="true" autoclear="true" listHeight="20px" addControlLabel="Importieren....">
-	       	<a4j:support event="onuploadcomplete" reRender="page-content" />
-	    </rich:fileUpload>
-		<!-- The result wrapper -->
+		<h:panelGroup rendered="#{empty rosterImportBean.entryList}">
+			<p>
+				<h:outputText value="Bitte wählen sie eine Datei aus." styleClass="italic" />
+			</p>		
+		</h:panelGroup>
 		<h:panelGroup rendered="#{not empty rosterImportBean.entryList}">
 			<p>
 				<h:outputText value="Die Datei '#{rosterImportBean.entryItem.fileName}' enthält die folgenden Dienstplaneinträge."  />
@@ -74,6 +80,33 @@
 			</rich:dataTable>
 		</h:panelGroup>
 	</ui:define>
+	
+	<ui:define name="page-panels">
+		<ui:decorate template="/WEB-INF/templates/widgets/modalPanel.xhtml">
+			<ui:param name="panelId" value="uploadPanel" />
+			<ui:param name="panelWidth" value="420" />
+			<ui:param name="panelHeight" value="250" />
+			<ui:param name="panelHeader" value="Bitte wählen Sie die gewünschte Datei aus." />
+			<ui:define name="panelContent">
+				<rich:fileUpload id="rosterUpload" fileUploadListener="#{rosterImportBean.uploadListener}" acceptedTypes="xls, xlsx" allowFlash="true"
+					immediateUpload="true" autoclear="true" listHeight="120px" addControlLabel="Importieren....">
+			       	<a4j:support event="onuploadcomplete" reRender="page-content" oncomplete="#{rich:component('uploadPanel')}.hide();return false;" />
+			    </rich:fileUpload>
+		    </ui:define>
+		    <ui:define name="panelFooter">
+		    	<div class="right">
+			    	<div class="center">
+						<a4j:commandLink id="hideForm">
+							<h:graphicImage library="images/16x16" name="error.png" styleClass="linkImage" />
+							<rich:componentControl for="uploadPanel" attachTo="hideForm" operation="hide" event="onclick"/>
+							<h:outputText value="Schließen" styleClass="linkText" />
+						</a4j:commandLink>
+					</div>
+				</div>
+		    </ui:define>
+	    </ui:decorate>
+	</ui:define>
+	
 </ui:composition>
 </body>
 </html>
