@@ -76,6 +76,11 @@
 		<view-id>/WEB-INF/pages/roster/rosterCarAllocationOverview.faces</view-id>
 		<action onPostback="false">#{rosterCarAllocationOverviewBean.prettyInit}</action>
 	</url-mapping>
+	<url-mapping id="roster-import">
+		<pattern>/roster/import</pattern>
+		<view-id>/WEB-INF/pages/roster/rosterImport.faces</view-id>
+		<action onPostback="false">#{rosterImportBean.prettyInit}</action>
+	</url-mapping>
 	
 	<!-- ################ STATISTIC ####################### -->
 	<url-mapping id="statistic-adminOverview">
