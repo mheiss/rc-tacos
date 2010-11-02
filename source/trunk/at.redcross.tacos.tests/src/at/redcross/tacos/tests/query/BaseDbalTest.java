@@ -8,7 +8,7 @@ import org.junit.BeforeClass;
 import at.redcross.tacos.datasetup.persistence.EntityManagerFactory;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 
-public abstract class BaseTest {
+public abstract class BaseDbalTest {
 
     protected static EntityManager manager = null;
 

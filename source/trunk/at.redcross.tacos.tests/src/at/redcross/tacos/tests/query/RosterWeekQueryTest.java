@@ -34,70 +34,70 @@ import at.redcross.tacos.dbal.query.RosterQueryParam;
  * The query is expected to return a single result when the START and the END
  * are in the range of the given date.
  */
-public class RosterWeekQueryTest extends BaseTest {
+public class RosterWeekQueryTest extends BaseDbalTest {
 
-	@Before
-	public void setup() throws Exception {
-		{
-			RosterEntry entry = new RosterEntry();
-			entry.setNotes("note");
-			entry.setAssignment(AssignmentHelper.getByName(manager, "Fahrer"));
-			entry.setLocation(LocationHelper.getByName(manager, "Bruck"));
-			entry.setServiceType(ServiceTypeHelper.getByName(manager, "Hauptamtlich"));
-			entry.setSystemUser(SystemUserHelper.getByLogin(manager, "m.heiss"));
-			entry.setPlannedStartTime(DateHelper.parseTime("12:30"));
-			entry.setPlannedStartDate(DateHelper.parseDate("31.07.2010"));
+    @Before
+    public void setup() throws Exception {
+        {
+            RosterEntry entry = new RosterEntry();
+            entry.setNotes("note");
+            entry.setAssignment(AssignmentHelper.getByName(manager, "Fahrer"));
+            entry.setLocation(LocationHelper.getByName(manager, "Bruck"));
+            entry.setServiceType(ServiceTypeHelper.getByName(manager, "Hauptamtlich"));
+            entry.setSystemUser(SystemUserHelper.getByLogin(manager, "m.heiss"));
+            entry.setPlannedStartTime(DateHelper.parseTime("12:30"));
+            entry.setPlannedStartDate(DateHelper.parseDate("31.07.2010"));
 
-			entry.setPlannedEndTime(DateHelper.parseTime("14:30"));
-			entry.setPlannedEndDate(DateHelper.parseDate("02.08.2010"));
-			manager.persist(entry);
-		}
-		EntityManagerHelper.commit(manager);
-	}
+            entry.setPlannedEndTime(DateHelper.parseTime("14:30"));
+            entry.setPlannedEndDate(DateHelper.parseDate("02.08.2010"));
+            manager.persist(entry);
+        }
+        EntityManagerHelper.commit(manager);
+    }
 
-	@After
-	public void tearDown() {
-		TypedQuery<RosterEntry> query = manager.createQuery("from RosterEntry", RosterEntry.class);
-		for (RosterEntry entry : query.getResultList()) {
-			if (entry.getNotes().equals("note")) {
-				manager.remove(entry);
-			}
-		}
-		EntityManagerHelper.commit(manager);
-	}
+    @After
+    public void tearDown() {
+        TypedQuery<RosterEntry> query = manager.createQuery("from RosterEntry", RosterEntry.class);
+        for (RosterEntry entry : query.getResultList()) {
+            if (entry.getNotes().equals("note")) {
+                manager.remove(entry);
+            }
+        }
+        EntityManagerHelper.commit(manager);
+    }
 
-	@Test
-	public void testQueryWeekEntry() throws Exception {
-		Date date = DateHelper.parseCustom("2010 29", "yyyy w");
-		List<RosterEntry> result = RosterEntryHelper.listByWeek(manager, getParam(date));
-		Assert.assertEquals(0, result.size());
-	}
+    @Test
+    public void testQueryWeekEntry() throws Exception {
+        Date date = DateHelper.parseCustom("2010 29", "yyyy w");
+        List<RosterEntry> result = RosterEntryHelper.listByWeek(manager, getParam(date));
+        Assert.assertEquals(0, result.size());
+    }
 
-	@Test
-	public void testQueryWeekEntry1() throws Exception {
-		Date date = DateHelper.parseCustom("2010 30", "yyyy w");
-		List<RosterEntry> result = RosterEntryHelper.listByWeek(manager, getParam(date));
-		Assert.assertEquals(1, result.size());
-	}
+    @Test
+    public void testQueryWeekEntry1() throws Exception {
+        Date date = DateHelper.parseCustom("2010 30", "yyyy w");
+        List<RosterEntry> result = RosterEntryHelper.listByWeek(manager, getParam(date));
+        Assert.assertEquals(1, result.size());
+    }
 
-	@Test
-	public void testQueryWeekEntry2() throws Exception {
-		Date date = DateHelper.parseCustom("2010 31", "yyyy w");
-		List<RosterEntry> result = RosterEntryHelper.listByWeek(manager, getParam(date));
-		Assert.assertEquals(1, result.size());
-	}
+    @Test
+    public void testQueryWeekEntry2() throws Exception {
+        Date date = DateHelper.parseCustom("2010 31", "yyyy w");
+        List<RosterEntry> result = RosterEntryHelper.listByWeek(manager, getParam(date));
+        Assert.assertEquals(1, result.size());
+    }
 
-	@Test
-	public void testQueryWeekEntry3() throws Exception {
-		Date date = DateHelper.parseCustom("2010 32", "yyyy w");
-		List<RosterEntry> result = RosterEntryHelper.listByWeek(manager, getParam(date));
-		Assert.assertEquals(0, result.size());
-	}
+    @Test
+    public void testQueryWeekEntry3() throws Exception {
+        Date date = DateHelper.parseCustom("2010 32", "yyyy w");
+        List<RosterEntry> result = RosterEntryHelper.listByWeek(manager, getParam(date));
+        Assert.assertEquals(0, result.size());
+    }
 
-	private RosterQueryParam getParam(Date date) {
-		RosterQueryParam param = new RosterQueryParam();
-		param.date = date;
-		return param;
-	}
+    private RosterQueryParam getParam(Date date) {
+        RosterQueryParam param = new RosterQueryParam();
+        param.date = date;
+        return param;
+    }
 
 }
