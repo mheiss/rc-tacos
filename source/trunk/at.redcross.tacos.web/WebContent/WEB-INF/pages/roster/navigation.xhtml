@@ -22,11 +22,11 @@
 			<li class="menu-item #{page eq 'rosterCarAllocation' ? 'selected' : ''}">
 				<pretty:link mappingId="roster-assignCar"> <h:outputText value="Fahrzeugzuweisung" /> </pretty:link>
 			</li>
-			<!--<li class="menu-item #{page eq 'personalOverview' ? 'selected' : ''}">
-				<pretty:link mappingId="roster-personalOverview"> <h:outputText value="Meine Dienste" /> </pretty:link>
-			</li> -->
 			 <li class="menu-item #{page eq 'maintenance' ? 'selected' : ''}">
 				<pretty:link mappingId="roster-createMaintenance"> <h:outputText value="Neuer Eintrag" /> </pretty:link>
+			</li>
+			<li class="menu-item #{page eq 'import' ? 'selected' : ''}">
+				<pretty:link mappingId="roster-import"> <h:outputText value="Importieren" /> </pretty:link>
 			</li> 
 		</ul>
 	</ui:define>
