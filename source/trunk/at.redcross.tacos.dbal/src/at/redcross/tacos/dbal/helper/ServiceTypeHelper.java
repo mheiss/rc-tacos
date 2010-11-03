@@ -17,7 +17,11 @@ public class ServiceTypeHelper {
         String hqlQuery = "from ServiceType st where st.name = :name";
         TypedQuery<ServiceType> query = manager.createQuery(hqlQuery, ServiceType.class);
         query.setParameter("name", name);
-        return query.getSingleResult();
+        List<ServiceType> resultList = query.getResultList();
+        if (!resultList.isEmpty()) {
+            return resultList.iterator().next();
+        }
+        return null;
     }
 
 }

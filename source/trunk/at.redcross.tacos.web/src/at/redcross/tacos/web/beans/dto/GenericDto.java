@@ -22,7 +22,7 @@ public class GenericDto<T extends EntityImpl> implements Serializable {
 	protected boolean selected;
 
 	/** the current state of this DTO */
-	protected DtoState state = DtoState.SYNC;
+	protected EntryState state = EntryState.SYNC;
 
 	/**
 	 * Creates a new generic DTO object wrapping the given entity
@@ -34,7 +34,7 @@ public class GenericDto<T extends EntityImpl> implements Serializable {
 		this.entity = entity;
 	}
 
-	public void setState(DtoState state) {
+	public void setState(EntryState state) {
 		this.state = state;
 	}
 
@@ -46,7 +46,7 @@ public class GenericDto<T extends EntityImpl> implements Serializable {
 		return entity;
 	}
 
-	public DtoState getState() {
+	public EntryState getState() {
 		return state;
 	}
 

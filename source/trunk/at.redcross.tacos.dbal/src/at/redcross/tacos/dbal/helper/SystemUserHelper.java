@@ -21,8 +21,19 @@ public class SystemUserHelper {
         return query.getSingleResult().getSystemUser();
     }
 
+    public static SystemUser getByPersonalNumber(EntityManager manager, String pNr) {
+        String hqlQuery = "from SystemUser user where user.pnr = :pnr";
+        TypedQuery<SystemUser> query = manager.createQuery(hqlQuery, SystemUser.class);
+        query.setParameter("pnr", Integer.valueOf(pNr));
+        List<SystemUser> resultList = query.getResultList();
+        if (!resultList.isEmpty()) {
+            return resultList.iterator().next();
+        }
+        return null;
+    }
+
     public static List<SystemUser> listByLocationName(EntityManager manager, String locationName, boolean locked) {
-    	StringBuilder builder = new StringBuilder();    	
+        StringBuilder builder = new StringBuilder();
         builder.append("from SystemUser user ");
         builder.append(" where user.login.locked = :locked ");
         if (locationName != null) {

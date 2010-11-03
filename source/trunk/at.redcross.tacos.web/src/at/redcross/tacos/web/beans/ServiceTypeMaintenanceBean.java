@@ -15,7 +15,7 @@ import at.redcross.tacos.dbal.entity.ServiceType;
 import at.redcross.tacos.dbal.helper.ServiceTypeHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.web.beans.dto.DtoHelper;
-import at.redcross.tacos.web.beans.dto.DtoState;
+import at.redcross.tacos.web.beans.dto.EntryState;
 import at.redcross.tacos.web.beans.dto.GenericDto;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
@@ -57,11 +57,11 @@ public class ServiceTypeMaintenanceBean extends BaseBean {
 			if (serviceType.getId() != serviceTypeId) {
 				continue;
 			}
-			if (dto.getState() == DtoState.NEW) {
+			if (dto.getState() == EntryState.NEW) {
 				iter.remove();
 			}
 
-			dto.setState(DtoState.DELETE);
+			dto.setState(EntryState.DELETE);
 		}
 	}
 
@@ -71,13 +71,13 @@ public class ServiceTypeMaintenanceBean extends BaseBean {
 			if (serviceType.getId() != serviceTypeId) {
 				continue;
 			}
-			dto.setState(DtoState.SYNC);
+			dto.setState(EntryState.SYNC);
 		}
 	}
 
 	public void addServiceType(ActionEvent event) {
 		GenericDto<ServiceType> dto = new GenericDto<ServiceType>(new ServiceType());
-		dto.setState(DtoState.NEW);
+		dto.setState(EntryState.NEW);
 		serviceTypes.add(dto);
 	}
 

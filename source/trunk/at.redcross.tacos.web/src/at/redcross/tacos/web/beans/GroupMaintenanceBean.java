@@ -18,7 +18,7 @@ import at.redcross.tacos.dbal.entity.Group;
 import at.redcross.tacos.dbal.helper.GroupHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.web.beans.dto.DtoHelper;
-import at.redcross.tacos.web.beans.dto.DtoState;
+import at.redcross.tacos.web.beans.dto.EntryState;
 import at.redcross.tacos.web.beans.dto.GenericDto;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
@@ -60,10 +60,10 @@ public class GroupMaintenanceBean extends BaseBean {
 			if (group.getId() != groupId) {
 				continue;
 			}
-			if (dto.getState() == DtoState.NEW) {
+			if (dto.getState() == EntryState.NEW) {
 				iter.remove();
 			}
-			dto.setState(DtoState.DELETE);
+			dto.setState(EntryState.DELETE);
 		}
 	}
 
@@ -73,13 +73,13 @@ public class GroupMaintenanceBean extends BaseBean {
 			if (group.getId() != groupId) {
 				continue;
 			}
-			dto.setState(DtoState.SYNC);
+			dto.setState(EntryState.SYNC);
 		}
 	}
 
 	public void addGroup(ActionEvent event) {
 		GenericDto<Group> dto = new GenericDto<Group>(new Group());
-		dto.setState(DtoState.NEW);
+		dto.setState(EntryState.NEW);
 		groups.add(dto);
 	}
 

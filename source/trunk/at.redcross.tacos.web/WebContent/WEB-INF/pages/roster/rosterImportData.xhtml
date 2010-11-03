@@ -1,0 +1,72 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich" xmlns:pretty="http://ocpsoft.com/prettyfaces">
+<body>
+<ui:composition>
+	<h:panelGroup rendered="#{empty values}">
+		<div class="emptyBox italic">
+			<h:outputText value="Keine Einträge gefunden" />
+		</div>
+	</h:panelGroup>
+	<rich:panel rendered="#{not empty values}">
+		<rich:dataTable styleClass="defaultStyle" value="#{values}" var="rosterDto"
+			onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
+			<rich:column styleClass="bold" sortBy="#{rosterDto.entity.systemUser.lastName}">
+				<f:facet name="header">
+					<h:outputText value="Mitarbeiter" />
+				</f:facet>
+				<h:outputText value="#{rosterDto.entity.systemUser.lastName} #{rosterDto.entity.systemUser.firstName}" />
+			</rich:column>
+			<rich:column styleClass="mediumColumn" sortBy="#{rosterDto.entity.location.name}">
+				<f:facet name="header">
+					<h:outputText value="Dienststelle" />
+				</f:facet>
+				<h:outputText value="#{rosterDto.entity.location.name}" />
+			</rich:column>
+			<rich:column styleClass="center" sortBy="#{rosterDto.entity.plannedStartTime}">
+				<f:facet name="header">
+					<h:panelGroup>
+						<h:outputText value="Dienstzeit von" />
+					</h:panelGroup>
+				</f:facet>
+				<h:outputText value="#{rosterDto.entity.plannedStartDate}">
+					<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+				</h:outputText>
+				<h:outputText value=" " />
+				<h:outputText value="#{rosterDto.entity.plannedStartTime}">
+					<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+				</h:outputText>
+			</rich:column>
+			<rich:column styleClass="center" sortBy="#{rosterDto.entity.plannedEndTime}">
+				<f:facet name="header">
+					<h:panelGroup>
+						<h:outputText value="Dienstzeit bis" />
+					</h:panelGroup>
+				</f:facet>
+				<h:panelGroup>
+					<h:outputText value="#{rosterDto.entity.plannedEndDate}">
+						<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+					</h:outputText>
+					<h:outputText value=" " />
+					<h:outputText value="#{rosterDto.entity.plannedEndTime}">
+						<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+					</h:outputText>
+				</h:panelGroup>
+			</rich:column>
+			<rich:column sortBy="#{rosterDto.entity.assignment.name}">
+				<f:facet name="header">
+					<h:outputText value="Verwendung" />
+				</f:facet>
+				<h:outputText value="#{rosterDto.entity.assignment.name}" />
+			</rich:column>
+			<rich:column sortBy="#{rosterDto.entity.serviceType.name}">
+				<f:facet name="header">
+					<h:outputText value="Dienstverhältnis" />
+				</f:facet>
+				<h:outputText value="#{rosterDto.entity.serviceType.name}" />
+			</rich:column>
+		</rich:dataTable>
+	</rich:panel>
+</ui:composition>
+</body>
+</html>

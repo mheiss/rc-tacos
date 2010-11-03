@@ -47,3 +47,7 @@ input[type=checkbox] {
 	position:relative;
 }
 
+.error {
+	font-weight:bold;
+	color: #9A0000;
+}

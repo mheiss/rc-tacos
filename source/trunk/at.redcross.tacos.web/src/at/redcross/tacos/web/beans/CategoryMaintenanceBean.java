@@ -15,7 +15,7 @@ import at.redcross.tacos.dbal.entity.Category;
 import at.redcross.tacos.dbal.helper.CategoryHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.web.beans.dto.DtoHelper;
-import at.redcross.tacos.web.beans.dto.DtoState;
+import at.redcross.tacos.web.beans.dto.EntryState;
 import at.redcross.tacos.web.beans.dto.GenericDto;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
@@ -57,11 +57,11 @@ public class CategoryMaintenanceBean extends BaseBean {
 			if (category.getId() != categoryId) {
 				continue;
 			}
-			if (dto.getState() == DtoState.NEW) {
+			if (dto.getState() == EntryState.NEW) {
 				iter.remove();
 			}
 
-			dto.setState(DtoState.DELETE);
+			dto.setState(EntryState.DELETE);
 		}
 	}
 
@@ -71,13 +71,13 @@ public class CategoryMaintenanceBean extends BaseBean {
 			if (category.getId() != categoryId) {
 				continue;
 			}
-			dto.setState(DtoState.SYNC);
+			dto.setState(EntryState.SYNC);
 		}
 	}
 
 	public void addCategory(ActionEvent event) {
 		GenericDto<Category> dto = new GenericDto<Category>(new Category());
-		dto.setState(DtoState.NEW);
+		dto.setState(EntryState.NEW);
 		categorys.add(dto);
 	}
 

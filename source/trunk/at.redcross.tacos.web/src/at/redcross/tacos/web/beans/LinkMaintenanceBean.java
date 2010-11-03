@@ -15,7 +15,7 @@ import at.redcross.tacos.dbal.entity.Link;
 import at.redcross.tacos.dbal.helper.LinkHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.web.beans.dto.DtoHelper;
-import at.redcross.tacos.web.beans.dto.DtoState;
+import at.redcross.tacos.web.beans.dto.EntryState;
 import at.redcross.tacos.web.beans.dto.GenericDto;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
@@ -57,11 +57,11 @@ public class LinkMaintenanceBean extends BaseBean {
 			if (link.getId() != linkId) {
 				continue;
 			}
-			if (dto.getState() == DtoState.NEW) {
+			if (dto.getState() == EntryState.NEW) {
 				iter.remove();
 			}
 
-			dto.setState(DtoState.DELETE);
+			dto.setState(EntryState.DELETE);
 		}
 	}
 
@@ -71,13 +71,13 @@ public class LinkMaintenanceBean extends BaseBean {
 			if (link.getId() != linkId) {
 				continue;
 			}
-			dto.setState(DtoState.SYNC);
+			dto.setState(EntryState.SYNC);
 		}
 	}
 
 	public void addLink(ActionEvent event) {
 		GenericDto<Link> dto = new GenericDto<Link>(new Link());
-		dto.setState(DtoState.NEW);
+		dto.setState(EntryState.NEW);
 		links.add(dto);
 	}
 

@@ -25,6 +25,12 @@ import org.apache.poi.ss.usermodel.Workbook;
  */
 public class RosterParser {
 
+    /** cell of the district metadata */
+    private final static Point CELL_DISTRICT_NAME = new Point(0, 0);
+
+    /** cell of the date metadata */
+    private final static Point CELL_DATE_VALUE = new Point(0, 1);
+
     /** row number containing the <tt>personalNumber</tt> */
     private final static int ROW_PERSONAL_ID = 5;
 
@@ -41,13 +47,13 @@ public class RosterParser {
     private final static int[] ROW_ENTRY_RANGE = { 10, 41 };
 
     /** cell number (zero based) containing the starting point */
-    private final static int CELL_START = 2;
-
-    /** cell number (zero based) containing the <tt>date</tt> */
-    private final static int CELL_DATE = 1;
+    private final static int COLUMN_START = 2;
 
     /** offset for the next relevant cell index */
-    private final static int CELL_OFFSET = 4;
+    private final static int COLUMN_OFFSET = 4;
+    
+    /** cell number (zero based) containing the <tt>day</tt> */
+    private final static int COLUMN_DAY = 1;
 
     /** the workbook we are working with */
     private final Workbook workbook;
@@ -75,7 +81,17 @@ public class RosterParser {
      */
     public Collection<RosterParserEntry> parse() {
         Sheet sheet = workbook.getSheetAt(0);
-        return processSheet(sheet);
+        return parseEntries(sheet);
+    }
+
+    /**
+     * Processes and parses the given file to extract the common metadata entry.
+     * 
+     * @return the metadata entry
+     */
+    public RosterParserMetadata parsetMetadata() {
+        Sheet sheet = workbook.getSheetAt(0);
+        return parseMetadata(sheet);
     }
 
     // ---------------------------------
@@ -94,23 +110,42 @@ public class RosterParser {
     }
 
     /** processes the given sheet of the workbook */
-    private Collection<RosterParserEntry> processSheet(Sheet sheet) {
+    private Collection<RosterParserEntry> parseEntries(Sheet sheet) {
         Collection<RosterParserEntry> entries = new ArrayList<RosterParserEntry>();
-        for (int cellId = CELL_START;; cellId += CELL_OFFSET) {
+        for (int cellId = COLUMN_START;; cellId += COLUMN_OFFSET) {
             // first we read the basic information
             // null indicates nothing more to do)
-            RosterParserEntry sharedEntry = readBasicEntry(sheet, cellId);
+            RosterParserEntry sharedEntry = parseSharedEntry(sheet, cellId);
             if (sharedEntry == null) {
                 return entries;
             }
 
             // using the shared entry we create the others
-            entries.addAll(readTimeEntryList(sheet, cellId, sharedEntry));
+            entries.addAll(parseRosterEntryList(sheet, cellId, sharedEntry));
         }
     }
 
+    private RosterParserMetadata parseMetadata(Sheet sheet) {
+        RosterParserMetadata metadata = new RosterParserMetadata();
+
+        /** read the shared district metadata */
+        {
+            Row row = sheet.getRow(CELL_DISTRICT_NAME.getRow());
+            Cell cell = row.getCell(CELL_DISTRICT_NAME.getColumn());
+            metadata.district = readValue(cell);
+        }
+        /** read the shared date metadata */
+        {
+            Row row = sheet.getRow(CELL_DATE_VALUE.getRow());
+            Cell cell = row.getCell(CELL_DATE_VALUE.getColumn());
+            metadata.monthAndYear = readValue(cell);
+        }
+
+        return metadata;
+    }
+
     /** Reads and returns the basic information (without date and time) */
-    private RosterParserEntry readBasicEntry(Sheet sheet, int cellId) {
+    private RosterParserEntry parseSharedEntry(Sheet sheet, int cellId) {
         RosterParserEntry entry = new RosterParserEntry();
 
         /** read the personal number ( if cell is missing we break here ) */
@@ -148,7 +183,7 @@ public class RosterParser {
     }
 
     /** Takes the given (shared) entry and fills the appropriate time value */
-    private Collection<RosterParserEntry> readTimeEntryList(Sheet sheet, int cellId, RosterParserEntry shared) {
+    private Collection<RosterParserEntry> parseRosterEntryList(Sheet sheet, int cellId, RosterParserEntry shared) {
         Collection<RosterParserEntry> entries = new ArrayList<RosterParserEntry>();
 
         // time of the entry
@@ -167,8 +202,8 @@ public class RosterParser {
             // read the date of the entry (shared cell)
             {
                 Row row = sheet.getRow(rowId);
-                Cell cell = row.getCell(CELL_DATE, HSSFRow.RETURN_NULL_AND_BLANK);
-                entry.date = readValue(cell);
+                Cell cell = row.getCell(COLUMN_DAY, HSSFRow.RETURN_NULL_AND_BLANK);
+                entry.day = readValue(cell);
             }
             // read the time of the entry
             {

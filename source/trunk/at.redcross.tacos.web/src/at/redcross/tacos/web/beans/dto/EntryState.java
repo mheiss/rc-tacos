@@ -1,6 +1,6 @@
 package at.redcross.tacos.web.beans.dto;
 
-public enum DtoState {
+public enum EntryState {
 
     /**
      * The given entity is new (not in the database)
