@@ -17,7 +17,11 @@ public class LocationHelper {
         String hqlQuery = "from Location l where l.name = :name";
         TypedQuery<Location> query = manager.createQuery(hqlQuery, Location.class);
         query.setParameter("name", name);
-        return query.getSingleResult();
+        List<Location> locationList = query.getResultList();
+        if (!locationList.isEmpty()) {
+            return locationList.iterator().next();
+        }
+        return null;
     }
 
 }

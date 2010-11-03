@@ -1,13 +1,13 @@
 package at.redcross.tacos.web.parser;
 
 /**
- * The {@code RosterParserEntry} represents a single result entry that is parsed
- * out of the source file.
+ * The {@code RosterParserEntry} represents a single entry that is parsed out of
+ * the source file.
  */
 public class RosterParserEntry {
 
     /** the date of the entry */
-    public String date;
+    public String day;
 
     /** the start time of the entry */
     public String startTime;

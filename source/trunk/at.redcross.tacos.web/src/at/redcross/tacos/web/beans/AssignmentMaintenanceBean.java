@@ -15,7 +15,7 @@ import at.redcross.tacos.dbal.entity.Assignment;
 import at.redcross.tacos.dbal.helper.AssignmentHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.web.beans.dto.DtoHelper;
-import at.redcross.tacos.web.beans.dto.DtoState;
+import at.redcross.tacos.web.beans.dto.EntryState;
 import at.redcross.tacos.web.beans.dto.GenericDto;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
@@ -56,10 +56,10 @@ public class AssignmentMaintenanceBean extends BaseBean {
 			if (assignment.getId() != assignmentId) {
 				continue;
 			}
-			if (dto.getState() == DtoState.NEW) {
+			if (dto.getState() == EntryState.NEW) {
 				iter.remove();
 			}
-			dto.setState(DtoState.DELETE);
+			dto.setState(EntryState.DELETE);
 		}
 	}
 
@@ -69,13 +69,13 @@ public class AssignmentMaintenanceBean extends BaseBean {
 			if (assignment.getId() != assignmentId) {
 				continue;
 			}
-			dto.setState(DtoState.SYNC);
+			dto.setState(EntryState.SYNC);
 		}
 	}
 
 	public void addAssignment(ActionEvent event) {
 		GenericDto<Assignment> dto = new GenericDto<Assignment>(new Assignment());
-		dto.setState(DtoState.NEW);
+		dto.setState(EntryState.NEW);
 		assignments.add(dto);
 	}
 

@@ -18,7 +18,7 @@ import at.redcross.tacos.dbal.entity.SecuredResource;
 import at.redcross.tacos.dbal.helper.SecuredResourceHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.web.beans.dto.DtoHelper;
-import at.redcross.tacos.web.beans.dto.DtoState;
+import at.redcross.tacos.web.beans.dto.EntryState;
 import at.redcross.tacos.web.beans.dto.GenericDto;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
@@ -62,10 +62,10 @@ public class SecuredResourceMaintenanceBean extends SecuredBean {
 			if (securedResource.getId() != securedResourceId) {
 				continue;
 			}
-			if (dto.getState() == DtoState.NEW) {
+			if (dto.getState() == EntryState.NEW) {
 				iter.remove();
 			}
-			dto.setState(DtoState.DELETE);
+			dto.setState(EntryState.DELETE);
 		}
 	}
 
@@ -75,13 +75,13 @@ public class SecuredResourceMaintenanceBean extends SecuredBean {
 			if (securedResource.getId() != securedResourceId) {
 				continue;
 			}
-			dto.setState(DtoState.SYNC);
+			dto.setState(EntryState.SYNC);
 		}
 	}
 
 	public void addSecuredResource(ActionEvent event) {
 		GenericDto<SecuredResource> dto = new GenericDto<SecuredResource>(new SecuredResource());
-		dto.setState(DtoState.NEW);
+		dto.setState(EntryState.NEW);
 		resources.add(dto);
 	}
 
@@ -91,7 +91,7 @@ public class SecuredResourceMaintenanceBean extends SecuredBean {
 			int errorCount = 0;
 			for (GenericDto<SecuredResource> dto : resources) {
 				// no validation for records that will be removed
-				if (dto.getState() == DtoState.DELETE) {
+				if (dto.getState() == EntryState.DELETE) {
 					continue;
 				}
 				SecuredResource resource = dto.getEntity();

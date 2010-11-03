@@ -15,7 +15,7 @@ import at.redcross.tacos.dbal.entity.Location;
 import at.redcross.tacos.dbal.helper.LocationHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.web.beans.dto.DtoHelper;
-import at.redcross.tacos.web.beans.dto.DtoState;
+import at.redcross.tacos.web.beans.dto.EntryState;
 import at.redcross.tacos.web.beans.dto.GenericDto;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
@@ -57,11 +57,11 @@ public class LocationMaintenanceBean extends BaseBean {
 			if (location.getId() != locationId) {
 				continue;
 			}
-			if (dto.getState() == DtoState.NEW) {
+			if (dto.getState() == EntryState.NEW) {
 				iter.remove();
 			}
 
-			dto.setState(DtoState.DELETE);
+			dto.setState(EntryState.DELETE);
 		}
 	}
 
@@ -71,13 +71,13 @@ public class LocationMaintenanceBean extends BaseBean {
 			if (location.getId() != locationId) {
 				continue;
 			}
-			dto.setState(DtoState.SYNC);
+			dto.setState(EntryState.SYNC);
 		}
 	}
 
 	public void addLocation(ActionEvent event) {
 		GenericDto<Location> dto = new GenericDto<Location>(new Location());
-		dto.setState(DtoState.NEW);
+		dto.setState(EntryState.NEW);
 		locations.add(dto);
 	}
 

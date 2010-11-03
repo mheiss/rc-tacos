@@ -1,6 +1,7 @@
 package at.redcross.tacos.web.beans.dto;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class DtoHelper {
 
 	/**
 	 * Synchronizes the given list of DTO objects according to their current
-	 * {@linkplain DtoState state} with the provided entity manager-
+	 * {@linkplain EntryState state} with the provided entity manager-
 	 * 
 	 * @param <T>
 	 *            the type of the entity
@@ -68,7 +69,7 @@ public class DtoHelper {
 	 *            the list of DTO's to process
 	 * @return the cleaned and synchronized list
 	 */
-	public static <T extends EntityImpl> void filter(List<GenericDto<T>> dtos) {
+	public static <T extends EntityImpl> void filter(Collection<GenericDto<T>> dtos) {
 		Iterator<GenericDto<T>> iter = dtos.iterator();
 		while (iter.hasNext()) {
 			GenericDto<T> dto = iter.next();
@@ -78,7 +79,7 @@ public class DtoHelper {
 					break;
 				case NEW:
 				case SYNC:
-					dto.setState(DtoState.SYNC);
+					dto.setState(EntryState.SYNC);
 					break;
 			}
 		}

@@ -17,7 +17,11 @@ public class AssignmentHelper {
         String hqlQuery = "from Assignment a where a.name = :name";
         TypedQuery<Assignment> query = manager.createQuery(hqlQuery, Assignment.class);
         query.setParameter("name", name);
-        return query.getSingleResult();
+        List<Assignment> resultList = query.getResultList();
+        if (!resultList.isEmpty()) {
+            return resultList.iterator().next();
+        }
+        return null;
     }
 
 }
