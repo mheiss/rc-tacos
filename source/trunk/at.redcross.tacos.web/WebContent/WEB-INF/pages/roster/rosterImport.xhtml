@@ -67,7 +67,7 @@
 					</li>
 				</ol>
 			</fieldset>
-			<rich:tabPanel styleClass="defaultTabPanelStyle" tabClass="defaultTabStyle" headerClass="defaultTabHeaderStyle">
+			<rich:tabPanel styleClass="defaultTabPanelStyle" tabClass="defaultTabStyle" headerClass="defaultTabHeaderStyle" immediate="true">
 				<rich:tab label="Neue Einträge (#{fn:length(rosterImportBean.newRosterList)})" name="new-data">
 					<ui:decorate template="rosterImportData.xhtml">
 						<ui:param name="values" value="#{rosterImportBean.newRosterList}" />
