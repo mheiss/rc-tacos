@@ -9,8 +9,22 @@
 		</div>
 	</h:panelGroup>
 	<rich:panel rendered="#{not empty values}">
-		<rich:dataTable styleClass="defaultStyle" value="#{values}" var="rosterDto"
+		<rich:datascroller styleClass="defaultScroller" for="importData" maxPages="#{bean.maxResults}" page="#{bean.page}" id="scroller-importData-top" reRender="scroller-importData-bottom" />
+		<rich:dataTable id="importData" styleClass="defaultStyle" value="#{values}" var="rosterDto" rowKeyVar="row" rows="#{bean.maxResults}"
 			onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
+			<rich:column styleClass="smallColumn">
+				<f:facet name="header">
+					<rich:spacer />
+				</f:facet>
+				<h:outputText value="#{row+1}" />
+			</rich:column>
+			<rich:column styleClass="smallColumn" sortBy="#{rosterDto.state}">
+				<f:facet name="header">
+					<h:outputText value="Status" />
+				</f:facet>
+				<h:graphicImage library="images/16x16" name="data_new.png" rendered="#{rosterDto.state.name eq 'new'}" title="Neu" />
+				<h:graphicImage library="images/16x16" name="data.png" rendered="#{rosterDto.state.name eq 'sync'}" title="Sync" />
+			</rich:column>
 			<rich:column styleClass="bold" sortBy="#{rosterDto.entity.systemUser.lastName}">
 				<f:facet name="header">
 					<h:outputText value="Mitarbeiter" />
@@ -66,6 +80,7 @@
 				<h:outputText value="#{rosterDto.entity.serviceType.name}" />
 			</rich:column>
 		</rich:dataTable>
+		<rich:datascroller styleClass="defaultScroller" for="importData" maxPages="#{bean.maxResults}" page="#{bean.page}" id="scroller-importData-bottom" reRender="scroller-importData-top" />
 	</rich:panel>
 </ui:composition>
 </body>

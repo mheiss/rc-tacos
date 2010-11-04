@@ -101,13 +101,9 @@ public class RosterStatisticOverviewBean extends RosterOverviewBean {
     @Override
     protected RosterQueryParam getParamForQuery() {
         RosterQueryParam param = new RosterQueryParam();
-        param.date = date;
-        param.locationOfUser = getLocationByName(locationOfUser);
+        param.startDate = date;
         param.location = getLocationByName(locationOfRosterEntry);
-        // param.month = month; --> wie?
-        // param.year = year; --> wie?
         param.serviceType = getServiceTypeByName(serviceType);
-        // TODO
         return param;
     }
 

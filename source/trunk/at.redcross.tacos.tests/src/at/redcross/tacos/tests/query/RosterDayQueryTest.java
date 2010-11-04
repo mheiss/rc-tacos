@@ -101,7 +101,7 @@ public class RosterDayQueryTest extends BaseDbalTest {
 
     private RosterQueryParam getParam(Date date) {
         RosterQueryParam param = new RosterQueryParam();
-        param.date = date;
+        param.startDate = date;
         return param;
     }
 
