@@ -9,57 +9,65 @@
 		</div>
 	</h:panelGroup>
 	<rich:panel rendered="#{not empty values}">
-		<rich:dataTable styleClass="defaultStyle" value="#{values}" var="entry"
+		<rich:datascroller styleClass="defaultScroller" for="rawImportData" maxPages="#{bean.maxResults}" page="#{bean.page}" id="scroller-rawImportData-top" reRender="scroller-rawImportData-bottom" />
+		<rich:dataTable id="rawImportData" styleClass="defaultStyle" value="#{values}" var="entry" rowKeyVar="row" rows="#{bean.maxResults}"
 			onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
-			<rich:column styleClass="bold mediumColumn" sortBy="#{entry.personalNumber}">
+			<rich:column styleClass="smallColumn">
+				<f:facet name="header">
+					<rich:spacer />
+				</f:facet>
+				<h:outputText value="#{row+1}" />
+			</rich:column>
+			<rich:column styleClass="smallColumn">
+				<f:facet name="header">
+					<h:outputText value="Status" />
+				</f:facet>
+				<h:graphicImage library="images/16x16" name="data_error.png" title="#{entry.message}" />
+			</rich:column>
+			<rich:column styleClass="bold" sortBy="#{entry.personalNumber}">
 				<f:facet name="header">
 					<h:outputText value="Mitarbeiternummer" />
 				</f:facet>
-				<h:outputText value="#{entry.personalNumber}" />
+				<rich:inplaceInput value="#{entry.personalNumber}" layout="block" />
 			</rich:column>
 			<rich:column sortBy="#{entry.day}" styleClass="smallColumn">
 				<f:facet name="header">
 					<h:outputText value="Tag" />
 				</f:facet>
-				<h:outputText value="#{entry.day}" />
+				<rich:inplaceInput value="#{entry.day}" layout="block" />
 			</rich:column>
 			<rich:column sortBy="#{entry.startTime}" styleClass="center">
 				<f:facet name="header">
 					<h:outputText value="Dienst von" />
 				</f:facet>
-				<h:outputText value="#{entry.startTime}" />
+				<rich:inplaceInput value="#{entry.startTime}" layout="block" />
 			</rich:column>
 			<rich:column sortBy="#{entry.endTime}" styleClass="center">
 				<f:facet name="header">
 					<h:outputText value="Dienst bis" />
 				</f:facet>
-				<h:outputText value="#{entry.endTime}" />
+				<rich:inplaceInput value="#{entry.endTime}" layout="block" />
 			</rich:column>
 			<rich:column sortBy="#{entry.locationName}">
 				<f:facet name="header">
 					<h:outputText value="Dienststelle" />
 				</f:facet>
-				<h:outputText value="#{entry.locationName}" />
+				<rich:inplaceInput value="#{entry.locationName}" layout="block" />
 			</rich:column>
 			<rich:column sortBy="#{entry.assignmentName}">
 				<f:facet name="header">
 					<h:outputText value="Verwendung" />
 				</f:facet>
-				<h:outputText value="#{entry.assignmentName}" />
+				<rich:inplaceInput value="#{entry.assignmentName}" layout="block" />
 			</rich:column>
 			<rich:column sortBy="#{entry.serviceTypeName}">
 				<f:facet name="header">
 					<h:outputText value="Dienstverhältniss" />
 				</f:facet>
-				<h:outputText value="#{entry.serviceTypeName}" />
-			</rich:column>
-			<rich:column sortBy="#{entry.message}">
-				<f:facet name="header">
-					<h:outputText value="Systemmeldung" />
-				</f:facet>
-				<h:outputText value="#{entry.message}" styleClass="error" />
+				<rich:inplaceInput value="#{entry.serviceTypeName}" layout="block" />
 			</rich:column>
 		</rich:dataTable>
+		<rich:datascroller styleClass="defaultScroller" for="rawImportData" maxPages="#{bean.maxResults}" page="#{bean.page}" id="scroller-rawImportData-bottom" reRender="scroller-rawImportData-top" />
 	</rich:panel>
 </ui:composition>
 </body>

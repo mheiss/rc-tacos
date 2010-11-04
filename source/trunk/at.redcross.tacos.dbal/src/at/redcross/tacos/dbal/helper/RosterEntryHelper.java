@@ -1,7 +1,6 @@
 package at.redcross.tacos.dbal.helper;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -14,62 +13,74 @@ import at.redcross.tacos.dbal.query.RosterQueryParam;
 
 public class RosterEntryHelper {
 
-	public static List<RosterEntry> listByDay(EntityManager manager, RosterQueryParam param) {
-		Date start = DateUtils.truncate(param.date, Calendar.DAY_OF_MONTH);
+    public static List<RosterEntry> listByDay(EntityManager manager, RosterQueryParam param) {
+        param.startDate = DateUtils.truncate(param.startDate, Calendar.DAY_OF_MONTH);
+        param.endDate = DateUtils.truncate(param.startDate, Calendar.DAY_OF_MONTH);
+        return list(manager, param);
+    }
 
-		StringBuilder builder = new StringBuilder();
-		builder.append(" from RosterEntry entry ");
-		builder.append(" where :date >= entry.plannedStartDate AND :date <= entry.plannedEndDate");
-		builder.append(" AND entry.toDelete = :deleteFlag ");
-		if (param.location != null) {
-			builder.append(" and entry.location.id = :locationId");
-		}
+    public static List<RosterEntry> listByWeek(EntityManager manager, RosterQueryParam param) {
+        Calendar helper = Calendar.getInstance();
+        helper.setTime(param.startDate);
 
-		TypedQuery<RosterEntry> query = manager.createQuery(builder.toString(), RosterEntry.class);
-		query.setParameter("date", start);
-		if (param.location != null) {
-			query.setParameter("locationId", param.location.getId());
-		}
-		query.setParameter("deleteFlag", param.toDelete);
-		return query.getResultList();
-	}
+        Calendar calendar = Calendar.getInstance();
+        calendar.clear();
+        calendar.set(Calendar.YEAR, helper.get(Calendar.YEAR));
+        calendar.set(Calendar.WEEK_OF_YEAR, helper.get(Calendar.WEEK_OF_YEAR));
 
-	public static List<RosterEntry> listByWeek(EntityManager manager, RosterQueryParam param) {
-		Calendar helper = Calendar.getInstance();
-		helper.setTime(param.date);
+        param.startDate = DateUtils.truncate(calendar.getTime(), Calendar.DAY_OF_MONTH);
+        param.endDate = DateUtils.addDays(param.startDate, 6);
 
-		Calendar calendar = Calendar.getInstance();
-		calendar.clear();
-		calendar.set(Calendar.YEAR, helper.get(Calendar.YEAR));
-		calendar.set(Calendar.WEEK_OF_YEAR, helper.get(Calendar.WEEK_OF_YEAR));
+        return list(manager, param);
+    }
 
-		Date start = DateUtils.truncate(calendar.getTime(), Calendar.DAY_OF_MONTH);
-		Date end = DateUtils.addDays(start, 6);
+    public static List<RosterEntry> list(EntityManager manager, RosterQueryParam param) {
+        param.startDate = DateUtils.truncate(param.startDate, Calendar.DAY_OF_MONTH);
+        param.endDate = DateUtils.truncate(param.endDate, Calendar.DAY_OF_MONTH);
+        
+        StringBuilder builder = new StringBuilder();
+        builder.append(" FROM RosterEntry entry ");
+        builder.append(" WHERE (entry.plannedStartDate BETWEEN :start AND :end ");
+        builder.append(" OR entry.plannedEndDate BETWEEN :start AND :end) ");
+        builder.append(" AND entry.toDelete = :deleteFlag ");
+        if (param.location != null) {
+            builder.append(" AND entry.location.id = :locationId");
+        }
+        TypedQuery<RosterEntry> query = manager.createQuery(builder.toString(), RosterEntry.class);
+        query.setParameter("start", param.startDate);
+        query.setParameter("end", param.endDate);
+        if (param.location != null) {
+            query.setParameter("locationId", param.location.getId());
+        }
+        query.setParameter("deleteFlag", param.toDelete);
+        return query.getResultList();
+    }
 
-		StringBuilder builder = new StringBuilder();
-		builder.append(" from RosterEntry entry ");
-		builder.append(" where (entry.plannedStartDate between :start and :end ");
-		builder.append(" OR entry.plannedEndDate between :start and :end) ");
-		builder.append(" AND entry.toDelete = :deleteFlag ");
-		if (param.location != null) {
-			builder.append(" and entry.location.id = :locationId");
-		}
-		TypedQuery<RosterEntry> query = manager.createQuery(builder.toString(), RosterEntry.class);
-		query.setParameter("start", start);
-		query.setParameter("end", end);
-		if (param.location != null) {
-			query.setParameter("locationId", param.location.getId());
-		}
-		query.setParameter("deleteFlag", param.toDelete);
-		return query.getResultList();
-	}
-
-	public static List<RosterEntry> list(EntityManager manager) {
-		StringBuilder builder = new StringBuilder();
-		builder.append(" from RosterEntry entry ");
-		builder.append(" where entry.toDelete <> true ");
-		TypedQuery<RosterEntry> query = manager.createQuery(builder.toString(), RosterEntry.class);
-		return query.getResultList();
-	}
+    public static boolean isSameEntity(RosterEntry lhs, RosterEntry rhs) {
+        if (lhs == null || rhs == null) {
+            return false;
+        }
+        // compare attributes
+        if (lhs.getSystemUser().getId() != rhs.getSystemUser().getId()) {
+            return false;
+        }
+        if (lhs.getLocation().getId() != rhs.getLocation().getId()) {
+            return false;
+        }
+        if (lhs.getServiceType().getId() != rhs.getServiceType().getId()) {
+            return false;
+        }
+        if (lhs.getAssignment().getId() != rhs.getAssignment().getId()) {
+            return false;
+        }
+        if (lhs.getPlannedStartDateTime().compareTo(rhs.getPlannedStartDateTime()) != 0) {
+            return false;
+        }
+        if (lhs.getPlannedEndDateTime().compareTo(rhs.getPlannedEndDateTime()) != 0) {
+            return false;
+        }
+        // seems to be equal
+        return true;
+    }
 
 }

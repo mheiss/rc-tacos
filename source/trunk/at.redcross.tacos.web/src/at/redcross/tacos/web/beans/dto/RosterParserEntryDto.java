@@ -10,7 +10,7 @@ public class RosterParserEntryDto {
 
     /** the wrapped roster parser entry */
     private final RosterParserEntry entry;
-    
+
     /** custom message field */
     private String message;
 
@@ -39,12 +39,40 @@ public class RosterParserEntryDto {
     public boolean equals(Object obj) {
         return EqualsBuilder.reflectionEquals(this, obj);
     }
-    
+
     // ---------------------------------
     // Setters for the properties
     // ---------------------------------
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public void setPersonalNumber(String personalNumber) {
+        entry.personalNumber = personalNumber;
+    }
+
+    public void setServiceTypeName(String serviceTypeName) {
+        entry.serviceTypeName = serviceTypeName;
+    }
+
+    public void setAssignmentName(String assignmentName) {
+        entry.assignmentName = assignmentName;
+    }
+
+    public void setLocationName(String locationName) {
+        entry.locationName = locationName;
+    }
+
+    public void setDay(String day) {
+        entry.day = day;
+    }
+
+    public void setStartTime(String startTime) {
+        entry.startTime = startTime;
+    }
+
+    public void setEndTime(String endTime) {
+        entry.endTime = endTime;
     }
 
     // ---------------------------------
@@ -53,11 +81,11 @@ public class RosterParserEntryDto {
     public RosterParserEntry getEntry() {
         return entry;
     }
-    
+
     public String getMessage() {
         return message;
     }
-    
+
     public String getPersonalNumber() {
         return entry.personalNumber;
     }

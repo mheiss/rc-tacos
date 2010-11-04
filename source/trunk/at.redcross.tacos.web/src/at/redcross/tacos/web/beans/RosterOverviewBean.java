@@ -247,7 +247,7 @@ public abstract class RosterOverviewBean extends BaseBean {
 
     protected RosterQueryParam getParamForQuery() {
         RosterQueryParam param = new RosterQueryParam();
-        param.date = date;
+        param.startDate = date;
         param.location = getLocationByName(locationName);
         param.toDelete = showDeleted;
         return param;

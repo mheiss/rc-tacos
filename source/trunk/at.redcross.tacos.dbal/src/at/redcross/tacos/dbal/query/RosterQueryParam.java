@@ -7,34 +7,22 @@ import at.redcross.tacos.dbal.entity.ServiceType;
 
 public class RosterQueryParam {
 
-	/** the location of the entry */
-	public Location location;
+    /** the start range for the query */
+    public Date startDate;
 
-	/** the date of the entry */
-	public Date date;
+    /** the end range for the query */
+    public Date endDate;
 
-	/** show deleted entries */
-	public boolean toDelete = false;
+    /** show deleted entries */
+    public boolean toDelete = false;
 
-	/** the owner of the entry */
-	public Integer systemUserId = null;
-	
-	//statistic params
-	/** the location of the user */
-	public Location locationOfUser;
+    /** the owner of the entry */
+    public Integer systemUserId = null;
 
-	/** month of the roster entry */
-	public Date month;
+    /** the service type of the entry */
+    public ServiceType serviceType;
 
-	
-	/** year of the roster entry */
-	public Date year;
+    /** the location of the entry */
+    public Location location;
 
-	
-	/** service type of the roster entry */
-	public ServiceType serviceType;
-
-	
-	
-	
 }

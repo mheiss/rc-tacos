@@ -21,27 +21,46 @@
 	
 	<ui:define name="page-toolbar">
 		<li>
-			<a4j:commandLink id="processForm" actionListener="#{rosterImportBean.syncronizeEntries}" reRender="page-content">
-				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="runProcess.png" />
-				<h:outputText styleClass="toolbarText" value="Syncronisieren"  />
-			</a4j:commandLink>
-		</li>
-		<li>
 			<a4j:commandLink id="showForm">
 				<rich:componentControl for="uploadPanel" attachTo="showForm" operation="show" event="onclick"/>
 				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="searchFile.png" />
 				<h:outputText styleClass="toolbarText" value="Datei auswählen"  />
 			</a4j:commandLink>
 		</li>
+		<li>
+			<a4j:commandLink id="processForm" actionListener="#{rosterImportBean.syncronizeEntries}" reRender="page-content">
+				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="refresh.png" />
+				<h:outputText styleClass="toolbarText" value="Aktualisieren"  />
+			</a4j:commandLink>
+		</li>
+		<li>
+			<a4j:commandLink id="persistForm" actionListener="#{rosterImportBean.persistEntries}" reRender="page-content">
+				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="save.png" />
+				<h:outputText styleClass="toolbarText" value="Speichern"  />
+			</a4j:commandLink>
+		</li>
 	</ui:define>
 	
 	<ui:define name="page-content">
+		<rich:messages errorClass="errorMessage" globalOnly="true" />
 		<h:panelGroup rendered="#{empty rosterImportBean.entryList}">
 			<p>
 				<h:outputText value="Bitte wählen sie eine Datei aus." styleClass="italic" />
 			</p>		
 		</h:panelGroup>
 		<h:panelGroup rendered="#{not empty rosterImportBean.entryList}">
+			<div class="rich-messages">
+				<h:panelGroup rendered="#{not empty rosterImportBean.errorEntryList}">
+					<div class="warningMessage">
+						<p><h:outputText value="Nicht alle Einträge konnten erfolgreich übernommen werden. Bitte korrigieren Sie die fehlerhaften Einträge." /></p>
+					</div>
+				</h:panelGroup>
+				<h:panelGroup rendered="#{not empty rosterImportBean.newRosterList and empty rosterImportBean.errorEntryList}">
+					<div class="infoMessage">
+						<p><h:outputText value="Alle Einträge wurden erfolgreich importiert und können nun gespeichert werden." /></p>
+					</div>
+				</h:panelGroup>
+			</div>
 			<p>
 				<h:outputText value="Die folgenden Einträge wurden aus dem Dienstplan " />
 				<h:outputText value=" '#{rosterImportBean.entryItem.fileName}' " styleClass="bold" />
@@ -70,12 +89,14 @@
 			<rich:tabPanel styleClass="defaultTabPanelStyle" tabClass="defaultTabStyle" headerClass="defaultTabHeaderStyle" immediate="true">
 				<rich:tab label="Neue Einträge (#{fn:length(rosterImportBean.newRosterList)})" name="new-data">
 					<ui:decorate template="rosterImportData.xhtml">
+						<ui:param name="bean" value="#{rosterImportBean}" />
 						<ui:param name="values" value="#{rosterImportBean.newRosterList}" />
 					</ui:decorate>
 				</rich:tab>
 				
 				<rich:tab label="Fehlerhafte Einträge (#{fn:length(rosterImportBean.errorEntryList)})" name="error-data">
 					<ui:decorate template="rosterImportRawData.xhtml">
+						<ui:param name="bean" value="#{rosterImportBean}" />
 						<ui:param name="values" value="#{rosterImportBean.errorEntryList}" />
 					</ui:decorate>
 				</rich:tab>

@@ -1,11 +1,14 @@
 package at.redcross.tacos.web.beans;
 
 import java.io.File;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
@@ -26,9 +29,11 @@ import at.redcross.tacos.dbal.entity.ServiceType;
 import at.redcross.tacos.dbal.entity.SystemUser;
 import at.redcross.tacos.dbal.helper.AssignmentHelper;
 import at.redcross.tacos.dbal.helper.LocationHelper;
+import at.redcross.tacos.dbal.helper.RosterEntryHelper;
 import at.redcross.tacos.dbal.helper.ServiceTypeHelper;
 import at.redcross.tacos.dbal.helper.SystemUserHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
+import at.redcross.tacos.dbal.query.RosterQueryParam;
 import at.redcross.tacos.web.beans.dto.DtoHelper;
 import at.redcross.tacos.web.beans.dto.EntryState;
 import at.redcross.tacos.web.beans.dto.GenericDto;
@@ -42,7 +47,7 @@ import at.redcross.tacos.web.utils.StringUtils;
 
 @KeepAlive
 @ManagedBean(name = "rosterImportBean")
-public class RosterImportBean extends BaseBean {
+public class RosterImportBean extends PagingBean {
 
     private static final long serialVersionUID = -4428380184844072809L;
 
@@ -53,9 +58,6 @@ public class RosterImportBean extends BaseBean {
 
     /** the list of new entities */
     private Collection<GenericDto<RosterEntry>> newRosterList;
-
-    /** the list of duplicate entries */
-    private Collection<GenericDto<RosterEntry>> duplicateRosterList;
 
     /** the list of error entries */
     private Collection<RosterParserEntryDto> errorEntryList;
@@ -89,7 +91,6 @@ public class RosterImportBean extends BaseBean {
         // initialize resulting list
         entryList = new ArrayList<RosterParserEntryDto>();
         newRosterList = new ArrayList<GenericDto<RosterEntry>>();
-        duplicateRosterList = new ArrayList<GenericDto<RosterEntry>>();
         errorEntryList = new ArrayList<RosterParserEntryDto>();
         // initialize caching maps
         locationCache = new HashMap<String, Location>();
@@ -120,30 +121,52 @@ public class RosterImportBean extends BaseBean {
 
         /** clear the old result */
         newRosterList.clear();
-        duplicateRosterList.clear();
         errorEntryList.clear();
+
+        // check if we can parse the presented date
+        Date date = parseDateString(metadata.getMonthAndYear(), new SimpleDateFormat("MM_yyyy"));
+        if (date == null) {
+            FacesUtils.addErrorMessage("Das Datum des Dienstplanes konnte nicht erkannt werden");
+            return;
+        }
 
         /** Process each entry in the list */
         EntityManager manager = null;
         try {
             manager = EntityManagerFactory.createEntityManager();
+            // convert a parsed entry to a entity
             for (RosterParserEntryDto entryDto : entryList) {
+                progressIndicatorCurrent++;
                 try {
-                    progressIndicatorCurrent++;
-                    processRawEntry(manager, entryDto);
-                }
-                catch (Exception ex) {
+                    convertParsedEntry(manager, entryDto);
+                } catch (Exception ex) {
                     errorEntryList.add(entryDto);
                     entryDto.setMessage("Fehlerhafte oder unvollständige Daten");
                     logger.error("Failed to prcess record '" + entryDto + "'", ex);
                 }
             }
-        }
-        catch (Exception ex) {
+
+            // query existing entries for this month
+            RosterQueryParam param = new RosterQueryParam();
+            param.startDate = DateUtils.setDays(date, 1);
+            param.endDate = DateUtils.addMonths(date, 1);
+
+            // filter duplicate entries
+            List<RosterEntry> existingEntries = RosterEntryHelper.list(manager, param);
+            Iterator<GenericDto<RosterEntry>> iter = newRosterList.iterator();
+            while (iter.hasNext()) {
+                GenericDto<RosterEntry> dto = iter.next();
+                RosterEntry lhs = dto.getEntity();
+                for (RosterEntry rhs : existingEntries) {
+                    if (RosterEntryHelper.isSameEntity(lhs, rhs)) {
+                        dto.setState(EntryState.SYNC);
+                    }
+                }
+            }
+        } catch (Exception ex) {
             logger.fatal("Failed to syncronize entries with the database.", ex);
             FacesUtils.addErrorMessage("Interner fehler beim Syncronisieren der Daten");
-        }
-        finally {
+        } finally {
             manager = EntityManagerHelper.close(manager);
         }
     }
@@ -160,15 +183,11 @@ public class RosterImportBean extends BaseBean {
                 manager.persist(entry.getEntity());
             }
             EntityManagerHelper.commit(manager);
-
-            /** Mark the entries as saved */
             DtoHelper.filter(newRosterList);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             logger.fatal("Failed to syncronize entries with the database.", ex);
             FacesUtils.addErrorMessage("Interner fehler beim Syncronisieren der Daten");
-        }
-        finally {
+        } finally {
             manager = EntityManagerHelper.close(manager);
         }
     }
@@ -177,7 +196,7 @@ public class RosterImportBean extends BaseBean {
     // Helper methods
     // ---------------------------------
     /** Process a single raw data entry */
-    protected void processRawEntry(EntityManager manager, RosterParserEntryDto rawEntry) throws Exception {
+    protected void convertParsedEntry(EntityManager manager, RosterParserEntryDto rawEntry) throws Exception {
         // determine the corresponding entities
         Location location = queryLocation(manager, rawEntry.getLocationName());
         if (location == null) {
@@ -243,7 +262,9 @@ public class RosterImportBean extends BaseBean {
         entry.setPlannedEndDate(endDate);
 
         // successfully completed the new entry :)
-        newRosterList.add(new GenericDto<RosterEntry>(entry));
+        GenericDto<RosterEntry> newEntry = new GenericDto<RosterEntry>(entry);
+        newEntry.setState(EntryState.NEW);
+        newRosterList.add(newEntry);
     }
 
     /** Returns the location for the given name */
@@ -312,6 +333,15 @@ public class RosterImportBean extends BaseBean {
         return entryList;
     }
 
+    /** Parses and returns the given string using the given format */
+    protected Date parseDateString(String source, DateFormat format) {
+        try {
+            return format.parse(source);
+        } catch (Exception ex) {
+            return null;
+        }
+    }
+
     // ---------------------------------
     // Getters for the properties
     // ---------------------------------
@@ -337,10 +367,6 @@ public class RosterImportBean extends BaseBean {
 
     public Collection<GenericDto<RosterEntry>> getNewRosterList() {
         return newRosterList;
-    }
-
-    public Collection<GenericDto<RosterEntry>> getDuplicateRosterList() {
-        return duplicateRosterList;
     }
 
     public RosterParserMetadataDto getMetadata() {
