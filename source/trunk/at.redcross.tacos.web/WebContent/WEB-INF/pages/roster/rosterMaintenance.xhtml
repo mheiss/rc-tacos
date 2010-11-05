@@ -115,7 +115,7 @@
 		</fieldset>
 		<fieldset class="defaultStyle"><legend><h:outputText value="Dienstzeiten" /></legend>
 		<ol>
-			<li>
+			<li class = "left">
 				<h:outputLabel for="startTime" value="Dienstzeit bis"> <em class="required">*</em> </h:outputLabel>
 				<div class="input">
 					<rich:calendar id="startDate" value="#{rosterMaintenanceBean.rosterEntry.plannedStartDate}" styleClass="rich-calendar" 
@@ -125,17 +125,23 @@
 						<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 						<rich:ajaxValidator event="onchanged" />
 						<rich:ajaxValidator event="oninputblur" />
-					</rich:calendar> 
-					<h:inputText id="startTime" value="#{rosterMaintenanceBean.rosterEntry.plannedStartTime}" 
-						required="true" requiredMessage="Bitte geben Sie einen Startzeitpunkt an" 
-						converterMessage="Bitte geben Sie eine gültige Zeit an. Beispiel: 10:00">
-						<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
-						<rich:ajaxValidator event="onblur" />
-					</h:inputText> 
+					</rich:calendar>
+				</div>
+				<div class = "input">
+					<rich:comboBox width="100px" id="startTime" value="#{rosterMaintenanceBean.rosterEntry.plannedStartTime}" 
+						selectFirstOnUpdate="false" defaultLabel="Dienstbeginn"
+						required="true"	requiredMessage="Bitte geben sie eine Zeit für den Dienstbeginn an">
+						<f:selectItems value="#{rosterMaintenanceBean.timeItems}" />
+							<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+						<f:validator validatorId="validator.dropDown" />
+						<f:converter converterId="converter.dropDown" />
+						<rich:ajaxValidator event="onchange" />
+					</rich:comboBox> 
 					<rich:message for="endTime" errorClass="error" /> 
 					<rich:message for="endDate" errorClass="error" />
 				</div>
 			</li>
+				
 			<li>
 				<h:outputLabel for="endTime" value="Dienstzeit bis"> <em class="required">*</em> </h:outputLabel>
 				<div class="input">
@@ -147,12 +153,19 @@
 						<rich:ajaxValidator event="onchanged" />
 						<rich:ajaxValidator event="oninputblur" />
 					</rich:calendar> 
-					<h:inputText id="endTime" value="#{rosterMaintenanceBean.rosterEntry.plannedEndTime}" 
-						required="true" requiredMessage="Bitte geben Sie einen Endzeitpunkt an" 
-						converterMessage="Bitte geben Sie eine gültige Zeit an. Beispiel: 10:47">
-						<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
-						<rich:ajaxValidator event="onblur" />
-					</h:inputText> 
+				</div>
+			
+			
+				<div class = "input">
+					<rich:comboBox width="100px" id="endTime" value="#{rosterMaintenanceBean.rosterEntry.plannedEndTime}" 
+						selectFirstOnUpdate="false" defaultLabel="Dienstende"
+						required="true"	requiredMessage="Bitte geben sie eine Zeit für das Dienstende an">
+						<f:selectItems value="#{rosterMaintenanceBean.timeItems}" />
+							<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+						<f:validator validatorId="validator.dropDown" />
+						<f:converter converterId="converter.dropDown" />
+						<rich:ajaxValidator event="onchange" />
+					</rich:comboBox> 
 					<rich:message for="endTime" errorClass="error" /> 
 					<rich:message for="endDate" errorClass="error" />
 				</div>

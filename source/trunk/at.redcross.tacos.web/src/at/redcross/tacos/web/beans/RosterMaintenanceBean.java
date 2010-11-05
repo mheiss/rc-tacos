@@ -1,5 +1,8 @@
 package at.redcross.tacos.web.beans;
 
+import java.text.ParseException;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -10,9 +13,6 @@ import javax.persistence.EntityManager;
 
 import org.ajax4jsf.model.KeepAlive;
 
-import com.ibm.icu.util.Calendar;
-
-import at.redcross.tacos.dbal.entity.Gender;
 import at.redcross.tacos.dbal.entity.RosterEntry;
 import at.redcross.tacos.dbal.helper.AssignmentHelper;
 import at.redcross.tacos.dbal.helper.LocationHelper;
@@ -40,9 +40,8 @@ public class RosterMaintenanceBean extends BaseBean {
 	private List<SelectItem> locationItems;
 	private List<SelectItem> serviceTypeItems;
 	private List<SelectItem> assignmentItems;
-	private List<SelectItem> timeItems;
+	private List <SelectItem> timeItems = new ArrayList<SelectItem>();
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void init() throws Exception {
 		EntityManager manager = null;
@@ -58,9 +57,9 @@ public class RosterMaintenanceBean extends BaseBean {
 			locationItems = DropDownHelper.convertToItems(LocationHelper.list(manager));
 			serviceTypeItems = DropDownHelper.convertToItems(ServiceTypeHelper.list(manager));
 			assignmentItems = DropDownHelper.convertToItems(AssignmentHelper.list(manager));
-			timeItems = new ArrayList<SelectItem>();
-			timeItems.add(new DropDownItem("06:00", "6").getItem());
-			timeItems.add(new DropDownItem("07:00", "7").getItem());
+			this.createTimeItemEntries();
+				
+				
 		} finally {
 			manager = EntityManagerHelper.close(manager);
 		}
@@ -114,6 +113,24 @@ public class RosterMaintenanceBean extends BaseBean {
 		}
 		rosterId = -1;
 		return new RosterEntry();
+	}
+	
+	private void createTimeItemEntries(){
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+		Date date;
+		String time;
+		int i = 1;
+		while(i<24)
+		{
+			time = i +":00";
+			try {
+				date = sdf.parse(time);
+				timeItems.add(new DropDownItem(time, date).getItem());
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			i++;
+		}
 	}
 
 	// ---------------------------------
