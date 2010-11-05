@@ -116,19 +116,24 @@
 		<fieldset class="defaultStyle"><legend><h:outputText value="Dienstzeiten" /></legend>
 		<ol>
 			<li>
-				<h:outputLabel for="startTime" value="Dienstzeit von"> <em class="required">*</em> </h:outputLabel>
+				<h:outputLabel for="startTime" value="Dienstzeit bis"> <em class="required">*</em> </h:outputLabel>
 				<div class="input">
-					<rich:calendar id="startDate" value="#{rosterMaintenanceBean.plannedStartDateTime}" styleClass="rich-calendar" 
-						enableManualInput="true" converterMessage="Bitte geben Sie ein gültiges Datum an"
-						datePattern="dd.MM.yyyy HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}"
-						required="true" requiredMessage="Bitte geben Sie ein Startdatum an">
+					<rich:calendar id="startDate" value="#{rosterMaintenanceBean.rosterEntry.plannedStartDate}" styleClass="rich-calendar" 
+						enableManualInput="true" datePattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" 
+						required="true" requiredMessage="Bitte geben Sie ein Startdatum an." 
+						converterMessage="Bitte geben Sie ein gültiges Datum an.">
 						<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 						<rich:ajaxValidator event="onchanged" />
 						<rich:ajaxValidator event="oninputblur" />
 					</rich:calendar> 
-					
-					<rich:message for="startTime" errorClass="error" /> 
-					<rich:message for="startDate" errorClass="error" />
+					<h:inputText id="startTime" value="#{rosterMaintenanceBean.rosterEntry.plannedStartTime}" 
+						required="true" requiredMessage="Bitte geben Sie einen Startzeitpunkt an" 
+						converterMessage="Bitte geben Sie eine gültige Zeit an. Beispiel: 10:00">
+						<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+						<rich:ajaxValidator event="onblur" />
+					</h:inputText> 
+					<rich:message for="endTime" errorClass="error" /> 
+					<rich:message for="endDate" errorClass="error" />
 				</div>
 			</li>
 			<li>
