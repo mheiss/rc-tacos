@@ -1,5 +1,6 @@
 package at.redcross.tacos.web.beans;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import org.ajax4jsf.model.KeepAlive;
 
 import com.ibm.icu.util.Calendar;
 
+import at.redcross.tacos.dbal.entity.Gender;
 import at.redcross.tacos.dbal.entity.RosterEntry;
 import at.redcross.tacos.dbal.helper.AssignmentHelper;
 import at.redcross.tacos.dbal.helper.LocationHelper;
@@ -20,6 +22,7 @@ import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.web.beans.dto.RosterDto;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.faces.combo.DropDownHelper;
+import at.redcross.tacos.web.faces.combo.DropDownItem;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
 
 @KeepAlive
@@ -31,22 +34,13 @@ public class RosterMaintenanceBean extends BaseBean {
 	// the entry to create or edit
 	private long rosterId = -1;
 	private RosterEntry rosterEntry;
-	
-	private Date plannedStartDateTime;
-
-	public Date getPlannedStartDateTime() {
-		return plannedStartDateTime;
-	}
-
-	public void setPlannedStartDateTime(Date plannedStartDateTime) {
-		this.plannedStartDateTime = plannedStartDateTime;
-	}
 
 	// the suggested values for the drop down boxes
 	private List<SelectItem> userItems;
 	private List<SelectItem> locationItems;
 	private List<SelectItem> serviceTypeItems;
 	private List<SelectItem> assignmentItems;
+	private List<SelectItem> timeItems;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -60,24 +54,13 @@ public class RosterMaintenanceBean extends BaseBean {
 				FacesUtils.redirectAccessDenied("Entry '" + rosterEntry + "' cannot be edited");
 			}
 		
-			Calendar cal = Calendar.getInstance();
-			int year;
-			int month;
-			int date;
-			int hour;
-			int minute;
-			year = rosterEntry.getPlannedStartDate().getYear();
-			month = rosterEntry.getPlannedStartDate().getMonth();
-			date = rosterEntry.getPlannedStartDate().getDate();
-			hour = rosterEntry.getPlannedStartTime().getHours();
-			minute = rosterEntry.getPlannedStartTime().getMinutes();
-			cal.set(year, month, date, hour, minute);
-			plannedStartDateTime = new Date();
-			plannedStartDateTime.setTime(cal.getTimeInMillis());
 			userItems = DropDownHelper.convertToItems(SystemUserHelper.list(manager));
 			locationItems = DropDownHelper.convertToItems(LocationHelper.list(manager));
 			serviceTypeItems = DropDownHelper.convertToItems(ServiceTypeHelper.list(manager));
 			assignmentItems = DropDownHelper.convertToItems(AssignmentHelper.list(manager));
+			timeItems = new ArrayList<SelectItem>();
+			timeItems.add(new DropDownItem("06:00", "6").getItem());
+			timeItems.add(new DropDownItem("07:00", "7").getItem());
 		} finally {
 			manager = EntityManagerHelper.close(manager);
 		}
@@ -90,8 +73,6 @@ public class RosterMaintenanceBean extends BaseBean {
 	public String persist() {
 		EntityManager manager = null;
 		try {
-			rosterEntry.setPlannedStartDate(plannedStartDateTime);
-			rosterEntry.setPlannedStartTime(plannedStartDateTime);
 			
 			manager = EntityManagerFactory.createEntityManager();
 			if (isNew()) {
@@ -166,6 +147,10 @@ public class RosterMaintenanceBean extends BaseBean {
 
 	public List<SelectItem> getAssignmentItems() {
 		return assignmentItems;
+	}
+	
+	public List<SelectItem> getTimeItems() {
+		return timeItems;
 	}
 
 	public RosterEntry getRosterEntry() {
