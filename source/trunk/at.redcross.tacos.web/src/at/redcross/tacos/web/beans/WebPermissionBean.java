@@ -75,4 +75,8 @@ public class WebPermissionBean extends WebPermissionManager {
     public boolean isAuthorizedToEditInfo() {
         return canExecuteAction("info-editEntry");
     }
+    
+    public boolean isAuthorizedToEditRole() {
+        return canExecuteAction("user-editRole");
+    }
 }

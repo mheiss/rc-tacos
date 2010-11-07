@@ -213,11 +213,11 @@
 			</h:panelGroup>
 		</fieldset>
 		
-		<fieldset class="defaultStyle"> <legend> <h:outputText value="Zugewiesene Benutzergruppen" /> </legend>
+		<fieldset  class="defaultStyle"> <legend> <h:outputText value="Zugewiesene Benutzergruppen" /> </legend>
 			<p>	<h:outputText value="Die zugewiesenen Gruppen definieren welche Aktionen der Benutzer durchführen kann und auf welche Seiten er Zugriff hat." /> </p>
 			<h:outputLabel for="group" value="Gruppe: " styleClass="leftAligned" />
 			<div class="input">
-				<rich:comboBox id="group" value="#{userMaintenanceBean.selectedGroup}" 
+				<rich:comboBox rendered="#{userMaintenanceBean.editRoleEnabled}" id="group" value="#{userMaintenanceBean.selectedGroup}" 
 					selectFirstOnUpdate="false" defaultLabel="Gruppe auswählen"
 					disabled="#{empty userMaintenanceBean.groupItems}">
 					<f:selectItems value="#{userMaintenanceBean.groupItems}" />
@@ -228,7 +228,7 @@
 				</rich:comboBox> 
 				<rich:message for="group" errorClass="error" />
 			</div>
-			<a4j:commandLink id="groupButton" styleClass="button" actionListener="#{userMaintenanceBean.addGroup}" reRender="group,groupButton,groupTable">
+			<a4j:commandLink rendered="#{userMaintenanceBean.editRoleEnabled}" id="groupButton" styleClass="button" actionListener="#{userMaintenanceBean.addGroup}" reRender="group,groupButton,groupTable">
 				<h:graphicImage library="images/16x16" name="add.png" styleClass="buttonWithImage" />
 				<h:outputText value="Gruppe hinzufügen" styleClass="buttonWithImage" /> 
 			</a4j:commandLink>
@@ -238,7 +238,7 @@
 				<a4j:repeat value="#{userMaintenanceBean.systemUser.groups}" var="group" rowKeyVar="rowIndex">
 					<h:outputText value="#{group.name}" />
 					<h:outputText value=" ( " />
-					<a4j:commandLink reRender="group,groupTable" immediate="true">
+					<a4j:commandLink rendered="#{userMaintenanceBean.editRoleEnabled}" reRender="group,groupTable" immediate="true">
 						<a4j:actionparam name="groupIdParam" assignTo="#{userMaintenanceBean.selectedGroupId}" value="#{group.id}"
 							actionListener="#{userMaintenanceBean.removeGroup}" />
 						<h:graphicImage library="images/16x16" name="remove.png" styleClass="deleteImage" />
