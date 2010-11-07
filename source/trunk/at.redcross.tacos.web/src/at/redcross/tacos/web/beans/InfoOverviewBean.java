@@ -82,7 +82,6 @@ public abstract class InfoOverviewBean extends BaseBean {
         try {
             // provide default value if category is null
             if (category == null) {
-            	System.out.println("++++++++++++ category is null");
                 category = getCategoryByName(categoryName);
             }
             manager = EntityManagerFactory.createEntityManager();
@@ -159,8 +158,6 @@ public abstract class InfoOverviewBean extends BaseBean {
         InfoQueryParam param = new InfoQueryParam();
         param.location = getLocationByName(locationName);
         param.category = category;
-        System.out.println("categoryName:"+categoryName);
-        System.out.println("category: " +param.category);
         return param;
     }
 	

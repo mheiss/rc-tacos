@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import at.redcross.tacos.dbal.entity.Info;
+import at.redcross.tacos.web.beans.WebPermissionBean;
+import at.redcross.tacos.web.faces.FacesUtils;
 
 /**
  * The {@code InfoDto} is an extended {@linkplain GenericDto DTO} that
@@ -36,7 +38,7 @@ public class InfoDto extends GenericDto<Info> {
 	}
 
 	/**
-	 * Returns whether or not the current authenticated user can edit a info
+	 * Returns whether or not the current authenticated user can edit an info
 	 * entry. The following restrictions are considered:
 	 * <ul>
 	 * <li>The entry must not be deleted</li>
@@ -48,29 +50,30 @@ public class InfoDto extends GenericDto<Info> {
 		if (entity.isToDelete()) {
 			return false;
 		}
-//		// editing is allowed for principals with permission
-//		if (FacesUtils.lookupBean(WebPermissionBean.class).isAuthorizedToEditInfo()) {
-//			return true;
-//		}
+		// editing is allowed for principals with permission
+		if (FacesUtils.lookupBean(WebPermissionBean.class).isAuthorizedToEditInfo()) {
+			return true;
+		}
 		// edit denied
 		return false;
 	}
 
 	/**
-	 * Returns whether or not the current authenticated user can delete a info
+	 * Returns whether or not the current authenticated user can delete an info
 	 * entry. The following restrictions are considered:
 	 * <ul>
-	 * <li>The entry must not be deleted</li>
+	 * <li>The info must not be deleted</li>
 	 * <li>Principal must have the permission to delete the entry</li>
 	 * </ul>
 	 */
 	public boolean isDeleteEnabled() {
+		final boolean answer;
 		// entry is already deleted
 		if (entity.isToDelete()) {
 			return false;
 		}
-//		return FacesUtils.lookupBean(WebPermissionBean.class).isAuthorizedToDeleteInfo();
-		return true;
+		answer = FacesUtils.lookupBean(WebPermissionBean.class).isAuthorizedToDeleteInfo();
+		return answer;
 	}
 
 }
