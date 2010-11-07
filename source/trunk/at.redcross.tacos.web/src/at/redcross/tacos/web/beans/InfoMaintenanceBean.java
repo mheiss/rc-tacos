@@ -36,6 +36,9 @@ public class InfoMaintenanceBean extends BaseBean {
 		try {
 			manager = EntityManagerFactory.createEntityManager();
 			loadfromDatabase(manager, infoId);
+			if (!isEditEnabled()) {
+				FacesUtils.redirectAccessDenied("Entry '" + info + "' cannot be edited");
+			}
 			locationItems = DropDownHelper.convertToItems(LocationHelper.list(manager));
 			categoryItems = DropDownHelper.convertToItems(CategoryHelper.list(manager));
 		} finally {
@@ -89,6 +92,27 @@ public class InfoMaintenanceBean extends BaseBean {
 			infoId = -1;
 			info = new Info();
 		}
+	}
+	
+	/**
+	 * Returns whether or not the current authenticated user can edit an info
+	 * entry. The following restrictions are considered:
+	 * <ul>
+	 * <li>The entry must not be deleted</li>
+	 * <li>Principal must have the permission to edit the entry</li>
+	 * </ul>
+	 */
+	public boolean isEditEnabled() {
+		// info is already deleted
+		if (info.isToDelete()) {
+			return false;
+		}
+		// editing is allowed for principals with permission
+		if (FacesUtils.lookupBean(WebPermissionBean.class).isAuthorizedToEditInfo()) {
+			return true;
+		}
+		// edit denied
+		return false;
 	}
 
 	// ---------------------------------

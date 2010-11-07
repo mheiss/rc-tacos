@@ -73,6 +73,9 @@ public class UserMaintenanceBean extends BaseBean {
 		try {
 			manager = EntityManagerFactory.createEntityManager();
 			loadfromDatabase(manager, userId);
+			if (!FacesUtils.lookupBean(WebPermissionBean.class).isAuthorizedToEditUser()) {
+				FacesUtils.redirectAccessDenied("Entry '" + systemUser + "' cannot be edited");
+			}
 			competenceItems = DropDownHelper.convertToItems(CompetenceHelper.list(manager));
 			locationItems = DropDownHelper.convertToItems(LocationHelper.list(manager));
 			groupItems = DropDownHelper.convertToItems(GroupHelper.list(manager));
@@ -227,6 +230,7 @@ public class UserMaintenanceBean extends BaseBean {
 		// edit denied
 		return false;
 	}
+	
 
 	// ---------------------------------
 	// Setters for the properties
