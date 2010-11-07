@@ -240,6 +240,10 @@ public abstract class RosterOverviewBean extends BaseBean {
     protected List<RosterEntry> getParamForReport() {
         List<RosterEntry> params = new ArrayList<RosterEntry>();
         for (RosterDto entryDto : entries) {
+            // ignore entries that are removed
+            if(entryDto.getEntity().isToDelete()) {
+                continue;
+            }
             params.add(entryDto.getEntity());
         }
         return params;
