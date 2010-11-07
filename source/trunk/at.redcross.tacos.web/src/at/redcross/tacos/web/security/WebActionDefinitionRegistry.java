@@ -86,5 +86,11 @@ public class WebActionDefinitionRegistry {
 			definition.setDescription("Informationen bearbeiten");
 			definitions.add(definition);
 		}
+		// edit the role of a user
+		{
+			WebActionDefinition definition = new WebActionDefinition("user-editRole");
+			definition.setDescription("Gruppe(n) eines Mitarbeiters zuweisen bzw. ändern");
+			definitions.add(definition);
+		}
 	}
 }
