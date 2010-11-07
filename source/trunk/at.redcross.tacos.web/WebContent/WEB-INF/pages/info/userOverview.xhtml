@@ -5,7 +5,7 @@
 <body>
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
 	<ui:param name="htmlTitle" value="Mitarbeiter Übersicht" />
-	<ui:param name="section" value="admin" />
+	<ui:param name="section" value="info" />
 	<ui:param name="page" value="userOverview" />
 	
 	<ui:define name="navigation">
@@ -19,7 +19,7 @@
 	
 	<ui:define name="page-toolbar">
 		<li>
-			<pretty:link mappingId="admin-userCreateMaintenance" title="Mitarbeitereintrag anlegen">
+			<pretty:link rendered="#{userOverviewBean.editUserEnabled}" mappingId="info-userCreateMaintenance" title="Mitarbeitereintrag anlegen">
 				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="add.png" />
 				<h:outputText styleClass="toolbarText" value="Mitarbeiter anlegen"  />
 			</pretty:link>

@@ -17,6 +17,7 @@ import at.redcross.tacos.dbal.entity.SystemUser;
 import at.redcross.tacos.dbal.helper.LocationHelper;
 import at.redcross.tacos.dbal.helper.SystemUserHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
+import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.faces.combo.DropDownItem;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
 
@@ -99,6 +100,22 @@ public class UserOverviewBean extends PagingBean {
         }
         return null;
     }
+    
+    /**
+	 * Returns whether or not the current authenticated user can edit (delete or change) a user
+	 * entry. The following restrictions are considered:
+	 * <ul>
+	 * <li>Principal must have the permission to edit a role</li>
+	 * </ul>
+	 */
+	public boolean isEditUserEnabled() {
+		// editing is allowed for principals with permission
+		if (FacesUtils.lookupBean(WebPermissionBean.class).isAuthorizedToEditUser()) {
+			return true;
+		}
+		// edit denied
+		return false;
+	}
 
     // ---------------------------------
     // Setters for the properties

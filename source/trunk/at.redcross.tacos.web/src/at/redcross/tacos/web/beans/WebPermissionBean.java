@@ -79,4 +79,12 @@ public class WebPermissionBean extends WebPermissionManager {
     public boolean isAuthorizedToEditRole() {
         return canExecuteAction("user-editRole");
     }
+    
+    public boolean isAuthorizedToEditUser() {
+        return canExecuteAction("user-editEntry");
+    }
+    
+    public boolean isAuthorizedToEditVehicle() {
+        return canExecuteAction("vehicle-editEntry");
+    }
 }

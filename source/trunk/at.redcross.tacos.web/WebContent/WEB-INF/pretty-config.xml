@@ -115,45 +115,44 @@
 		<view-id>/WEB-INF/pages/info/infoMaintenance.faces</view-id>
 		<action onPostback="false">#{infoMaintenanceBean.prettyInit}</action>
 	</url-mapping>
+	<!-- ################ INFO - USER ####################### -->
+	<url-mapping id="info-userCreateMaintenance">
+		<pattern>/info/user/create</pattern>
+		<view-id>/WEB-INF/pages/info/userMaintenance.faces</view-id>
+		<action onPostback="false">#{userMaintenanceBean.prettyInit}</action>
+	</url-mapping>
+	<url-mapping id="info-userEditMaintenance">
+		<pattern>/info/user/edit/#{userMaintenanceBean.userId}</pattern>
+		<view-id>/WEB-INF/pages/info/userMaintenance.faces</view-id>
+		<action onPostback="false">#{userMaintenanceBean.prettyInit}</action>
+	</url-mapping>
+	<url-mapping id="info-userOverview">
+		<pattern>/info/users</pattern>
+		<view-id>/WEB-INF/pages/info/userOverview.faces</view-id>
+		<action onPostback="false">#{userOverviewBean.prettyInit}</action>
+	</url-mapping>
+	
+	<!-- ################ INFO - CAR ####################### -->
+	<url-mapping id="info-vehicleCreateMaintenance">
+		<pattern>/info/car/create</pattern>
+		<view-id>/WEB-INF/pages/info/vehicleMaintenance.faces</view-id>
+		<action onPostback="false">#{vehicleMaintenanceBean.prettyInit}</action>
+	</url-mapping>
+	<url-mapping id="info-vehicleEditMaintenance">
+		<pattern>/info/car/edit/#{vehicleMaintenanceBean.carId}</pattern>
+		<view-id>/WEB-INF/pages/info/vehicleMaintenance.faces</view-id>
+		<action onPostback="false">#{vehicleMaintenanceBean.prettyInit}</action>
+	</url-mapping>
+	<url-mapping id="info-vehicleOverview">
+		<pattern>/info/vehicles</pattern>
+		<view-id>/WEB-INF/pages/info/vehicleOverview.faces</view-id>
+		<action onPostback="false">#{vehicleOverviewBean.prettyInit}</action>
+	</url-mapping>
 	
 	<!-- ################ ADMINISTRATION ####################### -->
 	<url-mapping id="admin-home">
 		<pattern>/admin</pattern>
 		<view-id>/WEB-INF/pages/administration/homeView.faces</view-id>
-	</url-mapping>
-	
-	<!-- ################ ADMINISTRATION - USER ####################### -->
-	<url-mapping id="admin-userCreateMaintenance">
-		<pattern>/admin/user/create</pattern>
-		<view-id>/WEB-INF/pages/administration/userMaintenance.faces</view-id>
-		<action onPostback="false">#{userMaintenanceBean.prettyInit}</action>
-	</url-mapping>
-	<url-mapping id="admin-userEditMaintenance">
-		<pattern>/admin/user/edit/#{userMaintenanceBean.userId}</pattern>
-		<view-id>/WEB-INF/pages/administration/userMaintenance.faces</view-id>
-		<action onPostback="false">#{userMaintenanceBean.prettyInit}</action>
-	</url-mapping>
-	<url-mapping id="admin-userOverview">
-		<pattern>/admin/users</pattern>
-		<view-id>/WEB-INF/pages/administration/userOverview.faces</view-id>
-		<action onPostback="false">#{userOverviewBean.prettyInit}</action>
-	</url-mapping>
-	
-	<!-- ################ ADMINISTRATION - CAR ####################### -->
-	<url-mapping id="admin-vehicleCreateMaintenance">
-		<pattern>/admin/car/create</pattern>
-		<view-id>/WEB-INF/pages/administration/vehicleMaintenance.faces</view-id>
-		<action onPostback="false">#{vehicleMaintenanceBean.prettyInit}</action>
-	</url-mapping>
-	<url-mapping id="admin-vehicleEditMaintenance">
-		<pattern>/admin/car/edit/#{vehicleMaintenanceBean.carId}</pattern>
-		<view-id>/WEB-INF/pages/administration/vehicleMaintenance.faces</view-id>
-		<action onPostback="false">#{vehicleMaintenanceBean.prettyInit}</action>
-	</url-mapping>
-	<url-mapping id="admin-vehicleOverview">
-		<pattern>/admin/vehicles</pattern>
-		<view-id>/WEB-INF/pages/administration/vehicleOverview.faces</view-id>
-		<action onPostback="false">#{vehicleOverviewBean.prettyInit}</action>
 	</url-mapping>
 	
 	<!-- ################ ADMINISTRATION - COMPETENCE ####################### -->

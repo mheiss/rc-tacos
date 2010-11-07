@@ -4,8 +4,8 @@
 <body>
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
 	<ui:param name="htmlTitle" value="Mitarbeiter pflegen" />
-	<ui:param name="section" value="admin" />
-	<ui:param name="page" value="userMaintenance" />
+	<ui:param name="section" value="info" />
+	<ui:param name="page" value="userOverview" />
 	
 	<ui:define name="navigation">
 		<ui:include src="navigation.xhtml" />
@@ -251,7 +251,7 @@
 	
 		<fieldset class="defaultStyle">
 			<legend> <h:outputText value="Anmerkungen" /> </legend> 
-			<p>	<h:outputText value="Hier können Sie Anmerkungen zum Benutzer hinterlegen. Diese sind nur innerhalb des Administrationsbereiches einsichtlich." /> </p>
+			<p>	<h:outputText value="Hier können Sie Anmerkungen zum Benutzer hinterlegen." /> </p>
 			<rich:editor value="#{userMaintenanceBean.systemUser.notes}" theme="simple" oninit="smartEditor()" autoResize="true" language="de" />
 		</fieldset>
 

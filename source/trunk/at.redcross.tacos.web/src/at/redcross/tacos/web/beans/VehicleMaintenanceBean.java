@@ -58,7 +58,7 @@ public class VehicleMaintenanceBean extends BaseBean {
 				manager.merge(car);
 			}
 			EntityManagerHelper.commit(manager);
-			return FacesUtils.pretty("admin-vehicleOverview");
+			return FacesUtils.pretty("info-vehicleOverview");
 		} catch (Exception ex) {
 			FacesUtils.addErrorMessage("Der Fahrzeugeintrag konnte nicht gespeichert werden");
 			return null;
@@ -72,7 +72,7 @@ public class VehicleMaintenanceBean extends BaseBean {
 		try {
 			manager = EntityManagerFactory.createEntityManager();
 			loadfromDatabase(manager, car.getId());
-			return FacesUtils.pretty("admin-editCarView");
+			return FacesUtils.pretty("info-vehicleEditMaintenance");
 		} catch (Exception ex) {
 			FacesUtils.addErrorMessage("Der Fahrzeugeintrag konnte nicht zurückgesetzt werden");
 			return null;

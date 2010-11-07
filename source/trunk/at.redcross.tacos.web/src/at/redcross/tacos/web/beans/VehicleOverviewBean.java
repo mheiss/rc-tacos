@@ -13,6 +13,7 @@ import at.redcross.tacos.dbal.entity.Location;
 import at.redcross.tacos.dbal.helper.CarHelper;
 import at.redcross.tacos.dbal.helper.LocationHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
+import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
 
 @KeepAlive
@@ -74,6 +75,22 @@ public class VehicleOverviewBean extends PagingBean {
         }
         return null;
     }
+    
+    /**
+	 * Returns whether or not the current authenticated user can edit (delete or change) a vehicle
+	 * entry. The following restrictions are considered:
+	 * <ul>
+	 * <li>Principal must have the permission to edit a role</li>
+	 * </ul>
+	 */
+	public boolean isEditVehicleEnabled() {
+		// editing is allowed for principals with permission
+		if (FacesUtils.lookupBean(WebPermissionBean.class).isAuthorizedToEditVehicle()) {
+			return true;
+		}
+		// edit denied
+		return false;
+	}
 
     // ---------------------------------
     // Setters for the properties
