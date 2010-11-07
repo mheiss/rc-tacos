@@ -110,6 +110,14 @@ public class WebPermissionBean {
 	public boolean isAuthorizedToCreateOutdatedRoster() {
 		return canExecuteAction("roster-createOutdated");
 	}
+	
+	public boolean isAuthorizedToDeleteInfo(){
+		return canExecuteAction("info-deleteEntry");
+	}
+	
+	public boolean isAuthorizedToEditInfo() {
+		return canExecuteAction("info-editEntry");
+	}
 
 	// ---------------------------------
 	// Helper methods
@@ -163,7 +171,8 @@ public class WebPermissionBean {
 
 	/** Finds the according expression based on the action */
 	private Expression getExpressionByAction(String actionExpression) {
-		return parser.parseExpression(actionExpression);
+		final Expression accordingExpression = parser.parseExpression(actionExpression);
+		return accordingExpression;
 	}
 
 	/** Finds the according expression based on the resource */

@@ -30,11 +30,11 @@
 				<h:outputText value="#{infoDto.entity.category.name}" />
 			</rich:column>
 			<rich:column style="background-color:#aaa;">
-				<pretty:link  mappingId="info-editMaintenance" title="Information bearbeiten">
+				<pretty:link  rendered="#{infoDto.editEnabled}" mappingId="info-editMaintenance" title="Information bearbeiten">
 					<f:param value="#{infoDto.entity.id}" />
 					<h:graphicImage layout="block" styleClass="actionImage" library="images/16x16" name="edit.png" />
 				</pretty:link>
-				<a4j:commandLink reRender="page-panels" oncomplete="#{rich:component('confirmDeleteInfoPanel')}.show();return false;" title="Information löschen">
+				<a4j:commandLink rendered="#{infoDto.deleteEnabled}" reRender="page-panels" oncomplete="#{rich:component('confirmDeleteInfoPanel')}.show();return false;" title="Information löschen">
 					<a4j:actionparam name="infoId" assignTo="#{infoCurrentOverviewBean.infoId}" value="#{infoDto.entity.id}" />
 					<h:graphicImage layout="block" library="images/16x16" name="remove.png" />
 				</a4j:commandLink>

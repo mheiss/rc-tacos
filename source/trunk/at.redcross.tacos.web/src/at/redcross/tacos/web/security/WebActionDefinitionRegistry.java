@@ -74,5 +74,17 @@ public class WebActionDefinitionRegistry {
 			definition.setDescription("Dienstplaneinträge für die Vergangenheit anlegen");
 			definitions.add(definition);
 		}
+		// delete an info entry
+		{
+			WebActionDefinition definition = new WebActionDefinition("info-deleteEntry");
+			definition.setDescription("Informationen löschen");
+			definitions.add(definition);
+		}
+		// edit an info entry
+		{
+			WebActionDefinition definition = new WebActionDefinition("info-editEntry");
+			definition.setDescription("Informationen bearbeiten");
+			definitions.add(definition);
+		}
 	}
 }
