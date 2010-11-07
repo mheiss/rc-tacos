@@ -38,6 +38,9 @@ public class VehicleMaintenanceBean extends BaseBean {
 		try {
 			manager = EntityManagerFactory.createEntityManager();
 			loadfromDatabase(manager, carId);
+			if (!FacesUtils.lookupBean(WebPermissionBean.class).isAuthorizedToEditVehicle()) {
+				FacesUtils.redirectAccessDenied("Entry '" + car + "' cannot be edited");
+			}
 			locationItems = DropDownHelper.convertToItems(LocationHelper.list(manager));
 		} finally {
 			manager = EntityManagerHelper.close(manager);
@@ -91,6 +94,7 @@ public class VehicleMaintenanceBean extends BaseBean {
 			car = new Car();
 		}
 	}
+	
 
 	// ---------------------------------
 	// Setters for the properties

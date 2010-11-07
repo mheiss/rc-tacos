@@ -118,9 +118,6 @@ public abstract class InfoOverviewBean extends BaseBean {
 		}
 	}
 	
-	
-
-
 	public void markToDelete(ActionEvent event) {
         EntityManager manager = null;
         try {
