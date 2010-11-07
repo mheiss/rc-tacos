@@ -14,16 +14,23 @@
 	<ui:define name="block-content">
 		<ul class="menu">
 			<li class="menu-item #{page eq 'currentOverview' ? 'selected' : ''}">
-				<pretty:link mappingId="info-currentOverview"><h:outputText value="Aktuelle Informationen" /> </pretty:link>
+				<pretty:link mappingId="info-currentOverview"><h:outputText value="Aktuelle Mitteilungen" /> </pretty:link>
 			</li>
 			<li class="menu-item #{page eq 'expiredOverview' ? 'selected' : ''}">
-				<pretty:link mappingId="info-expiredOverview"><h:outputText value="Abgelaufene Informationen" /> </pretty:link>
+				<pretty:link mappingId="info-expiredOverview"><h:outputText value="Abgelaufene Mitteilungen" /> </pretty:link>
 			</li>
 			<li class="menu-item #{page eq 'futureOverview' ? 'selected' : ''}">
-				<pretty:link mappingId="info-futureOverview"><h:outputText value="Künftige Informationen" /> </pretty:link>
+				<pretty:link mappingId="info-futureOverview"><h:outputText value="Künftige Mitteilungen" /> </pretty:link>
 			</li>
 			<li class="menu-item #{page eq 'maintenance' ? 'selected' : ''}">
-				<pretty:link mappingId="info-createMaintenance"> <h:outputText value="Neuer Eintrag" /> </pretty:link>
+				<pretty:link mappingId="info-createMaintenance"> <h:outputText value="Neue Mitteilung eintragen" /> </pretty:link>
+			</li>
+			<rich:separator height="4" lineType="double"/>
+			<li class="menu-item #{page eq 'userOverview' ? 'selected' : ''}">
+				<pretty:link mappingId="info-userOverview"> <h:outputText value="Mitarbeiter" /> </pretty:link>
+			</li>
+			<li class="menu-item #{page eq 'vehicleOverview' ? 'selected' : ''}">
+				<pretty:link mappingId="info-vehicleOverview"> <h:outputText value="Fahrzeuge" /> </pretty:link>
 			</li>
 		</ul>
 	</ui:define>

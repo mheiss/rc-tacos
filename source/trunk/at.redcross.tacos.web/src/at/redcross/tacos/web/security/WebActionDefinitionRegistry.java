@@ -92,5 +92,17 @@ public class WebActionDefinitionRegistry {
 			definition.setDescription("Gruppe(n) eines Mitarbeiters zuweisen bzw. ändern");
 			definitions.add(definition);
 		}
+		// edit an user
+		{
+			WebActionDefinition definition = new WebActionDefinition("user-editEntry");
+			definition.setDescription("Mitarbeiter anlegen bzw. bearbeiten");
+			definitions.add(definition);
+		}
+		// edit a vehicle
+		{
+			WebActionDefinition definition = new WebActionDefinition("vehicle-editEntry");
+			definition.setDescription("Fahrzeug anlegen bzw. bearbeiten");
+			definitions.add(definition);
+		}
 	}
 }
