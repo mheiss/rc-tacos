@@ -320,21 +320,29 @@ table.defaultStyle td {
 	border-bottom: 1px solid #BBBBBB;
 }
 
-td.smallColumn {
+table.defaultStyle td.smallColumn {
 	width: 2em;
 	text-align: center;
 }
 
-td.mediumColumn {
+table.defaultStyle td.mediumColumn {
 	width: 20%;
 }
 
-td.largeColumn {
+table.defaultStyle td.largeColumn {
 	width: 30%;
 }
 
 table.defaultStyle .center {
 	text-align: center;
+}
+
+table.defaultStyle tr .rosterStandby {
+	background-color: #A4DFFF;
+}
+
+table.defaultStyle tr.rosterSpecial {
+	background-color: #FFF5A4;
 }
 
 /***********************************************************
