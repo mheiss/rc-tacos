@@ -20,8 +20,13 @@
 					</div>
 				</li>
 				<li class="right">
-					<h:outputLabel for="delete" value="Zeige gelöschte" />
+					<h:outputLabel for="normal" value="Status" />
 					<div class="input right">
+						<h:outputText value="Normal" styleClass="checkBoxLabel" />
+						<h:selectBooleanCheckbox id="normal" value="#{bean.showNormal}">
+							<a4j:support event="onclick" actionListener="#{bean.filterChanged}" reRender="dateTitle,filter,rosterTab" />
+						</h:selectBooleanCheckbox>
+						<h:outputText value="Gelöscht" styleClass="checkBoxLabel" />
 						<h:selectBooleanCheckbox id="delete" value="#{bean.showDeleted}">
 							<a4j:support event="onclick" actionListener="#{bean.filterChanged}" reRender="dateTitle,filter,rosterTab" />
 						</h:selectBooleanCheckbox>

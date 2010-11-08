@@ -116,58 +116,57 @@
 		<fieldset class="defaultStyle"><legend><h:outputText value="Dienstzeiten" /></legend>
 		<ol>
 			<li class = "left">
-				<h:outputLabel for="startTime" value="Dienstzeit bis"> <em class="required">*</em> </h:outputLabel>
+				<h:outputLabel for="startDate" value="Dienstzeit bis"> <em class="required">*</em> </h:outputLabel>
 				<div class="input">
-					<rich:calendar id="startDate" value="#{rosterMaintenanceBean.rosterEntry.plannedStartDate}" styleClass="rich-calendar" 
+					<rich:calendar id="startDate" value="#{rosterMaintenanceBean.entryStartDate}" styleClass="rich-calendar" 
 						enableManualInput="true" datePattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" 
 						required="true" requiredMessage="Bitte geben Sie ein Startdatum an." 
 						converterMessage="Bitte geben Sie ein gültiges Datum an.">
 						<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+						<f:validator validatorId="validator.futureDate" />
+						<f:validator validatorId="validator.fromTo" />
 						<rich:ajaxValidator event="onchanged" />
 						<rich:ajaxValidator event="oninputblur" />
 					</rich:calendar>
+					<rich:message for="startDate" errorClass="error" />
 				</div>
-				<div class = "input">
-					<rich:comboBox width="100px" id="startTime" value="#{rosterMaintenanceBean.rosterEntry.plannedStartTime}" 
-						selectFirstOnUpdate="false" defaultLabel="Dienstbeginn"
-						required="true"	requiredMessage="Bitte geben sie eine Zeit für den Dienstbeginn an">
+				<div class="input">
+					<rich:comboBox width="100px" id="startTime" value="#{rosterMaintenanceBean.entryStartTime}" 
+						selectFirstOnUpdate="false" required="true"	requiredMessage="Bitte geben sie eine Zeit für den Dienstbeginn an">
 						<f:selectItems value="#{rosterMaintenanceBean.timeItems}" />
-							<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+						<f:converter converterId="converter.dropDownTime" />
 						<f:validator validatorId="validator.dropDown" />
-						<f:converter converterId="converter.dropDown" />
 						<rich:ajaxValidator event="onchange" />
+						<rich:ajaxValidator event="oninputblur" />
 					</rich:comboBox> 
-					<rich:message for="endTime" errorClass="error" /> 
-					<rich:message for="endDate" errorClass="error" />
+					<rich:message for="startTime" errorClass="error" /> 
 				</div>
 			</li>
 				
 			<li>
-				<h:outputLabel for="endTime" value="Dienstzeit bis"> <em class="required">*</em> </h:outputLabel>
+				<h:outputLabel for="endDate" value="Dienstzeit bis"> <em class="required">*</em> </h:outputLabel>
 				<div class="input">
-					<rich:calendar id="endDate" value="#{rosterMaintenanceBean.rosterEntry.plannedEndDate}" styleClass="rich-calendar" 
+					<rich:calendar id="endDate" value="#{rosterMaintenanceBean.entryEndDate}" styleClass="rich-calendar" 
 						enableManualInput="true" datePattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" 
 						required="true" requiredMessage="Bitte geben Sie ein Enddatum an." 
 						converterMessage="Bitte geben Sie ein gültiges Datum an.">
 						<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+						<f:validator validatorId="validator.fromTo" />
 						<rich:ajaxValidator event="onchanged" />
 						<rich:ajaxValidator event="oninputblur" />
 					</rich:calendar> 
+					<rich:message for="endDate" errorClass="error" />
 				</div>
-			
-			
-				<div class = "input">
-					<rich:comboBox width="100px" id="endTime" value="#{rosterMaintenanceBean.rosterEntry.plannedEndTime}" 
-						selectFirstOnUpdate="false" defaultLabel="Dienstende"
-						required="true"	requiredMessage="Bitte geben sie eine Zeit für das Dienstende an">
+				<div class="input">
+					<rich:comboBox width="100px" id="endTime" value="#{rosterMaintenanceBean.entryEndTime}" 
+						selectFirstOnUpdate="false" required="true"	requiredMessage="Bitte geben sie eine Zeit für das Dienstende an">
 						<f:selectItems value="#{rosterMaintenanceBean.timeItems}" />
-							<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+						<f:converter converterId="converter.dropDownTime" />
 						<f:validator validatorId="validator.dropDown" />
-						<f:converter converterId="converter.dropDown" />
 						<rich:ajaxValidator event="onchange" />
+						<rich:ajaxValidator event="oninputblur" />
 					</rich:comboBox> 
 					<rich:message for="endTime" errorClass="error" /> 
-					<rich:message for="endDate" errorClass="error" />
 				</div>
 			</li>
 		</ol>

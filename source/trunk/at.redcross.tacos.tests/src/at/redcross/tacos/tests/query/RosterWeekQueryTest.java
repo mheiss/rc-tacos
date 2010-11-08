@@ -42,14 +42,11 @@ public class RosterWeekQueryTest extends BaseDbalTest {
             RosterEntry entry = new RosterEntry();
             entry.setNotes("note");
             entry.setAssignment(AssignmentHelper.getByName(manager, "Fahrer"));
-            entry.setLocation(LocationHelper.getByName(manager, "Bruck"));
+            entry.setLocation(LocationHelper.getByName(manager, "Location_A"));
             entry.setServiceType(ServiceTypeHelper.getByName(manager, "Hauptamtlich"));
-            entry.setSystemUser(SystemUserHelper.getByLogin(manager, "m.heiss"));
-            entry.setPlannedStartTime(DateHelper.parseTime("12:30"));
-            entry.setPlannedStartDate(DateHelper.parseDate("31.07.2010"));
-
-            entry.setPlannedEndTime(DateHelper.parseTime("14:30"));
-            entry.setPlannedEndDate(DateHelper.parseDate("02.08.2010"));
+            entry.setSystemUser(SystemUserHelper.getByLogin(manager, "tacos"));
+            entry.setPlannedStartDateTime(DateHelper.parseDateTime("31.07.2010 12:30"));
+            entry.setPlannedEndDateTime(DateHelper.parseDateTime("02.08.2010 14:30"));
             manager.persist(entry);
         }
         EntityManagerHelper.commit(manager);

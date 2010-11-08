@@ -14,24 +14,25 @@ import javax.persistence.EntityManager;
 
 import org.ajax4jsf.model.KeepAlive;
 
+import at.redcross.tacos.dbal.entity.DataState;
 import at.redcross.tacos.dbal.entity.Location;
 import at.redcross.tacos.dbal.entity.RosterEntry;
 import at.redcross.tacos.dbal.helper.LocationHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.dbal.query.RosterQueryParam;
-import at.redcross.tacos.dbal.utils.TacosDateUtils;
 import at.redcross.tacos.web.beans.dto.RosterDto;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.faces.combo.DropDownHelper;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
 import at.redcross.tacos.web.reporting.ReportRenderer;
 import at.redcross.tacos.web.reporting.ReportRenderer.ReportRenderParameters;
+import at.redcross.tacos.web.utils.TacosDateUtils;
 
 @KeepAlive
 public abstract class RosterOverviewBean extends BaseBean {
 
     private static final long serialVersionUID = -63594513702881676L;
-    
+
     protected final SimpleDateFormat sdfFile = new SimpleDateFormat("ddMMyyyy");
     protected final SimpleDateFormat sdfDisplay = new SimpleDateFormat("dd.MM.yyyy");
 
@@ -53,6 +54,11 @@ public abstract class RosterOverviewBean extends BaseBean {
     /** filter by delete flag */
     protected boolean showDeleted;
 
+    /** filter by normal flag */
+    protected boolean showNormal = true;
+
+    /** filter by normal flag */
+
     /** filter by date */
     protected Date date;
 
@@ -69,8 +75,7 @@ public abstract class RosterOverviewBean extends BaseBean {
             locations = LocationHelper.list(manager);
             locationItems = DropDownHelper.convertToItems(locations);
             entries = getEntries(manager, getParamForQuery());
-        }
-        finally {
+        } finally {
             manager = EntityManagerHelper.close(manager);
         }
     }
@@ -87,8 +92,7 @@ public abstract class RosterOverviewBean extends BaseBean {
             }
             manager = EntityManagerFactory.createEntityManager();
             entries = getEntries(manager, getParamForQuery());
-        }
-        finally {
+        } finally {
             manager = EntityManagerHelper.close(manager);
         }
     }
@@ -98,8 +102,7 @@ public abstract class RosterOverviewBean extends BaseBean {
         try {
             manager = EntityManagerFactory.createEntityManager();
             entries = getEntries(manager, getParamForQuery());
-        }
-        finally {
+        } finally {
             manager = EntityManagerHelper.close(manager);
         }
     }
@@ -114,8 +117,7 @@ public abstract class RosterOverviewBean extends BaseBean {
 
             // render the report
             ReportRenderer.getInstance().renderReport(params);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             FacesUtils.addErrorMessage("Failed to create report");
         }
     }
@@ -129,8 +131,7 @@ public abstract class RosterOverviewBean extends BaseBean {
             date = getNextDate(date);
             manager = EntityManagerFactory.createEntityManager();
             entries = getEntries(manager, getParamForQuery());
-        }
-        finally {
+        } finally {
             manager = EntityManagerHelper.close(manager);
         }
     }
@@ -144,8 +145,7 @@ public abstract class RosterOverviewBean extends BaseBean {
             date = getPreviousDate(date);
             manager = EntityManagerFactory.createEntityManager();
             entries = getEntries(manager, getParamForQuery());
-        }
-        finally {
+        } finally {
             manager = EntityManagerHelper.close(manager);
         }
     }
@@ -160,16 +160,14 @@ public abstract class RosterOverviewBean extends BaseBean {
                 if (entry.getId() != entryId) {
                     continue;
                 }
-                entry.setToDelete(true);
+                entry.setState(DataState.DELETE);
                 manager.merge(entry);
                 iter.remove();
             }
             EntityManagerHelper.commit(manager);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             FacesUtils.addErrorMessage("Der Dienstplaneintrag konnte nicht gelöscht werden");
-        }
-        finally {
+        } finally {
             manager = EntityManagerHelper.close(manager);
         }
     }
@@ -183,17 +181,13 @@ public abstract class RosterOverviewBean extends BaseBean {
                 if (entry.getId() != entryId) {
                     continue;
                 }
-                Date now = Calendar.getInstance().getTime();
-                entry.setRealStartDate(now);
-                entry.setRealStartTime(now);
+                entry.setRealStartDateTime(Calendar.getInstance().getTime());
                 manager.merge(entry);
             }
             EntityManagerHelper.commit(manager);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             FacesUtils.addErrorMessage("Der Dienstplaneintrag konnte nicht gelöscht werden");
-        }
-        finally {
+        } finally {
             manager = EntityManagerHelper.close(manager);
         }
     }
@@ -207,17 +201,13 @@ public abstract class RosterOverviewBean extends BaseBean {
                 if (entry.getId() != entryId) {
                     continue;
                 }
-                Date now = Calendar.getInstance().getTime();
-                entry.setRealEndDate(now);
-                entry.setRealEndTime(now);
+                entry.setRealEndDateTime(Calendar.getInstance().getTime());
                 manager.merge(entry);
             }
             EntityManagerHelper.commit(manager);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             FacesUtils.addErrorMessage("Der Dienstplaneintrag konnte nicht gelöscht werden");
-        }
-        finally {
+        } finally {
             manager = EntityManagerHelper.close(manager);
         }
     }
@@ -241,7 +231,7 @@ public abstract class RosterOverviewBean extends BaseBean {
         List<RosterEntry> params = new ArrayList<RosterEntry>();
         for (RosterDto entryDto : entries) {
             // ignore entries that are removed
-            if(entryDto.getEntity().isToDelete()) {
+            if (entryDto.getEntity().getState().equals(DataState.DELETE)) {
                 continue;
             }
             params.add(entryDto.getEntity());
@@ -253,7 +243,8 @@ public abstract class RosterOverviewBean extends BaseBean {
         RosterQueryParam param = new RosterQueryParam();
         param.startDate = date;
         param.location = getLocationByName(locationName);
-        param.toDelete = showDeleted;
+        param.stateNormal = showNormal;
+        param.stateDelete = showDeleted;
         return param;
     }
 
@@ -284,6 +275,10 @@ public abstract class RosterOverviewBean extends BaseBean {
         this.showDeleted = showDeleted;
     }
 
+    public void setShowNormal(boolean showNormal) {
+        this.showNormal = showNormal;
+    }
+
     public void setLocationName(String locationName) {
         this.locationName = locationName;
     }
@@ -311,6 +306,10 @@ public abstract class RosterOverviewBean extends BaseBean {
 
     public boolean isShowDeleted() {
         return showDeleted;
+    }
+
+    public boolean isShowNormal() {
+        return showNormal;
     }
 
     public String getLocationName() {

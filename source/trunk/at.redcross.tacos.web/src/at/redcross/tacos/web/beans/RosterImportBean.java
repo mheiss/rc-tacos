@@ -244,22 +244,19 @@ public class RosterImportBean extends PagingBean {
             errorEntryList.add(rawEntry);
             return;
         }
-        // parse the time information
-        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-        entry.setPlannedStartTime(timeFormat.parse(rawEntry.getStartTime()));
-        entry.setPlannedEndTime(timeFormat.parse(rawEntry.getEndTime()));
-
-        // if the date is valid we also apply it
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd_MM_yyyy");
-        Date startDate = dateFormat.parse(rawEntry.getDay() + "_" + metadata.getMonthAndYear());
+        // parse the date and time information
+        SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd_MM_yyyy HH:mm");
+        String dateTimeString = rawEntry.getDay() + "_" + metadata.getMonthAndYear() + " "
+                + rawEntry.getStartTime();
+        Date startDateTime = dateTimeFormat.parse(dateTimeString);
 
         // check if the entry spans multiple days
-        Date endDate = new Date(startDate.getTime());
-        if (entry.getPlannedStartTime().after(entry.getPlannedEndTime())) {
-            endDate = DateUtils.addDays(endDate, 1);
+        Date endDateTime = new Date(startDateTime.getTime());
+        if (entry.getPlannedStartDateTime().after(entry.getPlannedEndDateTime())) {
+            endDateTime = DateUtils.addDays(endDateTime, 1);
         }
-        entry.setPlannedStartDate(startDate);
-        entry.setPlannedEndDate(endDate);
+        entry.setPlannedStartDateTime(startDateTime);
+        entry.setPlannedEndDateTime(endDateTime);
 
         // successfully completed the new entry :)
         GenericDto<RosterEntry> newEntry = new GenericDto<RosterEntry>(entry);

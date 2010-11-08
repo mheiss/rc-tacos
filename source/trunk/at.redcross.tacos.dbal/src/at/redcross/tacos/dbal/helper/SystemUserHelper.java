@@ -14,10 +14,10 @@ public class SystemUserHelper {
         return manager.createQuery("from SystemUser", SystemUser.class).getResultList();
     }
 
-    public static SystemUser getByLogin(EntityManager manager, String alias) {
-        String hqlQuery = "from Login l where l.alias = :alias";
+    public static SystemUser getByLogin(EntityManager manager, String loginName) {
+        String hqlQuery = "from Login l where l.loginName = :loginName";
         TypedQuery<Login> query = manager.createQuery(hqlQuery, Login.class);
-        query.setParameter("alias", alias);
+        query.setParameter("loginName", loginName);
         return query.getSingleResult().getSystemUser();
     }
 

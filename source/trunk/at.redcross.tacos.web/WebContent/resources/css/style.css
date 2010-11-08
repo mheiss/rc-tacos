@@ -99,8 +99,7 @@ fieldset.defaultStyle label em.required {
 	width: 16px;
 	color: #fff;
 	position: absolute;
-	background: transparent url("../images/custom/mandatory.png") no-repeat
-		scroll center;
+	background: transparent url("../images/custom/mandatory.png") no-repeat scroll center;
 }
 
 fieldset.defaultStyle label.leftAligned {
@@ -122,9 +121,8 @@ fieldset.defaultStyle .largeInput {
 
 fieldset.defaultStyle .output {
 	float: left;
-	padding-top:0.6em;
+	padding-top: 0.6em;
 }
-
 
 fieldset.defaultStyle .leftDecorator {
 	position: relative;
@@ -139,6 +137,14 @@ fieldset.defaultStyle .leftDateDecorator {
 fieldset.defaultStyle .input input {
 	height: 20px;
 	font-size: 1.1em;
+}
+
+fieldset.defaultStyle .checkBoxLabel {
+	font-size: 1.1em;
+	position: relative;
+	top: -0.5em;
+	padding-right: 0.4em;
+	margin-left: 2em;
 }
 
 fieldset.defaultStyle .largeInput input {
@@ -159,8 +165,7 @@ fieldset.defaultStyle .rich-calendar-button {
 	margin-right: 1.5em;
 }
 
-fieldset.defaultStyle .rich-calendar-input,fieldset.defaultStyle .rich-calendar-button
-	{
+fieldset.defaultStyle .rich-calendar-input,fieldset.defaultStyle .rich-calendar-button {
 	margin-top: -0.3em;
 }
 
@@ -200,16 +205,14 @@ fieldset.defaultStyle a.button {
 	padding-right: 18px;
 	margin-top: 3px;
 	text-decoration: none;
-	background: transparent url("../images/custom/bg_button_a.png")
-		no-repeat scroll top right;
+	background: transparent url("../images/custom/bg_button_a.png") no-repeat scroll top right;
 }
 
 fieldset.defaultStyle a.button span {
 	display: block;
 	line-height: 14px;
 	padding: 5px 0 5px 18px;
-	background: transparent url("../images/custom/bg_button_b.png")
-		no-repeat;
+	background: transparent url("../images/custom/bg_button_b.png") no-repeat;
 }
 
 fieldset.defaultStyle a.button:active {
@@ -259,8 +262,7 @@ fieldset.defaultStyle .box .deleteImage {
 	padding: 0px;
 }
 
-.defaultTabHeaderStyle .rich-tabhdr-cell-active,.defaultTabHeaderStyle .rich-tabhdr-cell-inactive
-	{
+.defaultTabHeaderStyle .rich-tabhdr-cell-active,.defaultTabHeaderStyle .rich-tabhdr-cell-inactive {
 	padding-right: 2px;
 }
 
@@ -337,12 +339,16 @@ table.defaultStyle .center {
 	text-align: center;
 }
 
-table.defaultStyle tr .rosterStandby {
+table.defaultStyle .rosterStandby {
 	background-color: #A4DFFF;
 }
 
-table.defaultStyle tr.rosterSpecial {
-	background-color: #FFF5A4;
+table.defaultStyle .rosterSpecial {
+	background-color: #FFF1A3;
+}
+
+table.defaultStyle .rosterDelete {
+	background-color: #CCCCCC;
 }
 
 /***********************************************************
@@ -448,8 +454,7 @@ div#serviceSection .competenceImage {
 }
 
 div#serviceSection .assignmentImage {
-	background: url(../images/32x32/components.png) no-repeat scroll left
-		top;
+	background: url(../images/32x32/components.png) no-repeat scroll left top;
 }
 
 div#serviceSection .serviceTypeImage {
@@ -461,13 +466,11 @@ div#serviceSection .locationImage {
 }
 
 div#serviceSection .securedResourceImage {
-	background: url(../images/32x32/securedResource.png) no-repeat scroll
-		left top;
+	background: url(../images/32x32/securedResource.png) no-repeat scroll left top;
 }
 
 div#serviceSection .securedActionImage {
-	background: url(../images/32x32/securedAction.png) no-repeat scroll left
-		top;
+	background: url(../images/32x32/securedAction.png) no-repeat scroll left top;
 }
 
 div#serviceSection .groupImage {
@@ -517,8 +520,7 @@ div#serviceSection .systemImage {
 	width: 20px;
 	bottom: -20px;
 	position: absolute;
-	background: url("../images/custom/arrow.png") no-repeat scroll 0 0
-		transparent;
+	background: url("../images/custom/arrow.png") no-repeat scroll 0 0 transparent;
 }
 
 .tooltipDefault ul,.tooltipDefault ol {
@@ -578,7 +580,8 @@ div#serviceSection .systemImage {
 	border: 0px;
 	color: #fff;
 	height: 2em;
-	font-size: 1.1em; padding-top : 1em;
+	font-size: 1.1em;
+	padding-top: 1em;
 	padding-left: 0.5em;
 	font-weight: bold;
 	background: #9A0000;
@@ -599,7 +602,8 @@ div#serviceSection .systemImage {
 	float: left;
 	clear: both;
 	display: block;
-	padding-right: 1em; text-align : right;
+	padding-right: 1em;
+	text-align: right;
 	font-weight: bold;
 	text-align: right;
 }

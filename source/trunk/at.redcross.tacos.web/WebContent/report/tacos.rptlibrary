@@ -199,11 +199,7 @@ if(count < reportParam.size()){
 	dataSetRow["index"] = count;
 	dataSetRow["name"] = entry.getSystemUser().getFirstName() + " "+ entry.getSystemUser().getLastName();
 	dataSetRow["location"] = entry.getLocation().getDisplayString();
-	dataSetRow["startTime"] = entry.getPlannedStartTime();
-	dataSetRow["startDate"] = entry.getPlannedStartDate();
 	dataSetRow["startDateTime"] = entry.getPlannedStartDateTime();
-	dataSetRow["endTime"] = entry.getPlannedEndTime();
-	dataSetRow["endDate"] = entry.getPlannedEndDate();
 	dataSetRow["endDateTime"] = entry.getPlannedEndDateTime();
 	dataSetRow["assignment"] = entry.getAssignment().getDisplayString();
 	dataSetRow["serviceType"] = entry.getServiceType().getDisplayString();

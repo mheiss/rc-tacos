@@ -18,11 +18,11 @@ import at.redcross.tacos.dbal.helper.ServiceTypeHelper;
 import at.redcross.tacos.dbal.helper.SystemUserHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.dbal.query.RosterQueryParam;
-import at.redcross.tacos.dbal.utils.TacosDateUtils;
 import at.redcross.tacos.web.beans.dto.RosterDto;
 import at.redcross.tacos.web.faces.combo.DropDownHelper;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
 import at.redcross.tacos.web.reporting.ReportRenderer.ReportRenderParameters;
+import at.redcross.tacos.web.utils.TacosDateUtils;
 
 @KeepAlive
 @ManagedBean(name = "rosterStatisticOverviewBean")

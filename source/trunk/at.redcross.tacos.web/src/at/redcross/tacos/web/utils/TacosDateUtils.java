@@ -1,4 +1,4 @@
-package at.redcross.tacos.dbal.utils;
+package at.redcross.tacos.web.utils;
 
 import java.util.Calendar;
 import java.util.Date;

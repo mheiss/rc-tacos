@@ -11,7 +11,8 @@
 		<div class="left">
 			<div class="center">
 				<h:graphicImage library="images/16x16" name="success.png" styleClass="linkImage" />
-				<a4j:commandLink onclick="submitPanel(); return true" styleClass="linkText">
+				<a4j:commandLink onclick="submitPanel(); return false;" styleClass="linkText"
+					oncomplete="if(!ajaxRequestContainsErrors()) { #{rich:component(panelId)}.hide() }">
 					<h:outputText value="Bestätigen" />
 				</a4j:commandLink>
 			</div>
@@ -19,7 +20,7 @@
 		<div class="right">
 			<div class="center">
 				<h:graphicImage library="images/16x16" name="error.png" styleClass="linkImage" />
-				<h:outputLink onclick="#{rich:component(panelId)}.hide();return false" styleClass="linkText">
+				<h:outputLink onclick="#{rich:component(panelId)}.hide(); return true;" styleClass="linkText">
 					<h:outputText value="Abbrechen" />
 				</h:outputLink>
 			</div>
