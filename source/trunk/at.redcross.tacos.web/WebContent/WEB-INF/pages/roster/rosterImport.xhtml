@@ -28,13 +28,15 @@
 			</a4j:commandLink>
 		</li>
 		<li>
-			<a4j:commandLink id="processForm" actionListener="#{rosterImportBean.syncronizeEntries}" reRender="page-content">
+			<a4j:commandLink id="processForm" actionListener="#{rosterImportBean.syncronizeEntries}" 
+				reRender="page-content" rendered="#{not empty rosterImportBean.entryItem}">
 				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="refresh.png" />
 				<h:outputText styleClass="toolbarText" value="Aktualisieren"  />
 			</a4j:commandLink>
 		</li>
 		<li>
-			<a4j:commandLink id="persistForm" actionListener="#{rosterImportBean.persistEntries}" reRender="page-content">
+			<a4j:commandLink id="persistForm" actionListener="#{rosterImportBean.persistEntries}" 
+				reRender="page-content" rendered="#{not empty rosterImportBean.entryItem}">
 				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="save.png" />
 				<h:outputText styleClass="toolbarText" value="Speichern"  />
 			</a4j:commandLink>
@@ -45,14 +47,14 @@
 		<rich:messages errorClass="errorMessage" globalOnly="true" />
 		<h:panelGroup rendered="#{empty rosterImportBean.entryList}">
 			<p>
-				<h:outputText value="Bitte wählen sie eine Datei aus." styleClass="italic" />
+				<h:outputText value="Bitte wählen Sie die gewünschte Datei mit den Dienstplaneinträgen aus." styleClass="italic" />
 			</p>		
 		</h:panelGroup>
 		<h:panelGroup rendered="#{not empty rosterImportBean.entryList}">
 			<div class="rich-messages">
 				<h:panelGroup rendered="#{not empty rosterImportBean.errorEntryList}">
 					<div class="warningMessage">
-						<p><h:outputText value="Nicht alle Einträge konnten erfolgreich übernommen werden. Bitte korrigieren Sie die fehlerhaften Einträge." /></p>
+						<p><h:outputText value="Nicht alle Einträge konnten erfolgreich übernommen werden. Bitte korrigieren Sie die fehlerhaften Einträge und klicken auf 'Aktualisieren'" /></p>
 					</div>
 				</h:panelGroup>
 				<h:panelGroup rendered="#{not empty rosterImportBean.newRosterList and empty rosterImportBean.errorEntryList}">

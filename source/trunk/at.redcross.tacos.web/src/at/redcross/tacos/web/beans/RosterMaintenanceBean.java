@@ -20,8 +20,8 @@ import at.redcross.tacos.dbal.helper.SystemUserHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.web.beans.dto.RosterDto;
 import at.redcross.tacos.web.faces.FacesUtils;
-import at.redcross.tacos.web.faces.combo.DropDownHelper;
-import at.redcross.tacos.web.faces.combo.DropDownItem;
+import at.redcross.tacos.web.model.SelectableItemHelper;
+import at.redcross.tacos.web.model.SelectableItem;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
 import at.redcross.tacos.web.utils.TacosDateUtils;
 
@@ -62,10 +62,10 @@ public class RosterMaintenanceBean extends BaseBean {
             }
             entryStartDate = entryStartTime = rosterEntry.getPlannedStartDateTime();
             entryEndDate = entryEndTime = rosterEntry.getPlannedEndDateTime();
-            userItems = DropDownHelper.convertToItems(SystemUserHelper.list(manager));
-            locationItems = DropDownHelper.convertToItems(LocationHelper.list(manager));
-            serviceTypeItems = DropDownHelper.convertToItems(ServiceTypeHelper.list(manager));
-            assignmentItems = DropDownHelper.convertToItems(AssignmentHelper.list(manager));
+            userItems = SelectableItemHelper.convertToItems(SystemUserHelper.list(manager));
+            locationItems = SelectableItemHelper.convertToItems(LocationHelper.list(manager));
+            serviceTypeItems = SelectableItemHelper.convertToItems(ServiceTypeHelper.list(manager));
+            assignmentItems = SelectableItemHelper.convertToItems(AssignmentHelper.list(manager));
             timeItems = createTimeItemEntries();
         } finally {
             manager = EntityManagerHelper.close(manager);
@@ -131,7 +131,7 @@ public class RosterMaintenanceBean extends BaseBean {
             String time = i + ":00";
             try {
                 Date date = sdf.parse(time);
-                items.add(new DropDownItem(time, date).getItem());
+                items.add(new SelectableItem(time, date).getItem());
             } catch (ParseException e) {
                 // just ignore
             }

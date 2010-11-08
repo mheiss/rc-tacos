@@ -16,12 +16,11 @@
 					<h:outputText value="Fahrzeug" />
 				</f:facet>
 				<h:outputText value="#{rosterDto.entity.car.name}" rendered="#{not rosterDto.assignCarEnabled}" />
-				<rich:comboBox value="#{rosterDto.entity.car}" rendered="#{rosterDto.assignCarEnabled}"
-					selectFirstOnUpdate="false" defaultLabel="Fahrzeug">
+				<rich:comboBox value="#{rosterDto.entity.car}" rendered="#{rosterDto.assignCarEnabled}" layout="block">
 					<f:selectItems value="#{rosterCarAllocationOverviewBean.carItems}" />
-					<f:validator validatorId="validator.dropDown" />
-					<f:converter converterId="converter.dropDown" />
-					<rich:ajaxValidator event="onchange" />
+					<f:validator validatorId="validator.selectableItem" />
+					<f:converter converterId="converter.selectableItem" />
+					<rich:ajaxValidator event="onviewactivated" />
 				</rich:comboBox> 
 			</rich:column>
 			<rich:column styleClass="bold #{rosterDto.styleClass}" sortBy="#{rosterDto.entity.systemUser.lastName}">

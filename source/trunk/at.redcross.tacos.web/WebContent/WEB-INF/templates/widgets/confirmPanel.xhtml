@@ -11,8 +11,8 @@
 		<div class="left">
 			<div class="center">
 				<h:graphicImage library="images/16x16" name="success.png" styleClass="linkImage" />
-				<a4j:commandLink onclick="submitPanel(); return false;" styleClass="linkText"
-					oncomplete="if(!ajaxRequestContainsErrors()) { #{rich:component(panelId)}.hide() }">
+				<a4j:commandLink actionListener="#{panelBean[panelAction]}" styleClass="linkText" 
+					oncomplete="if(!ajaxRequestContainsErrors()) { #{rich:component(panelId)}.hide(); }" reRender="page-content">
 					<h:outputText value="Bestätigen" />
 				</a4j:commandLink>
 			</div>

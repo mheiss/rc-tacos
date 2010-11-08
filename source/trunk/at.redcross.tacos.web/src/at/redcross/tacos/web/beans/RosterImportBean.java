@@ -245,14 +245,17 @@ public class RosterImportBean extends PagingBean {
             return;
         }
         // parse the date and time information
+        String dateString = rawEntry.getDay() + "_" + metadata.getMonthAndYear();
         SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd_MM_yyyy HH:mm");
-        String dateTimeString = rawEntry.getDay() + "_" + metadata.getMonthAndYear() + " "
-                + rawEntry.getStartTime();
-        Date startDateTime = dateTimeFormat.parse(dateTimeString);
+
+        String startDateTimeString = dateString + " " + rawEntry.getStartTime();
+        Date startDateTime = dateTimeFormat.parse(startDateTimeString);
+
+        String endDateTimeString = dateString + " " + rawEntry.getEndTime();
+        Date endDateTime = dateTimeFormat.parse(endDateTimeString);
 
         // check if the entry spans multiple days
-        Date endDateTime = new Date(startDateTime.getTime());
-        if (entry.getPlannedStartDateTime().after(entry.getPlannedEndDateTime())) {
+        if (startDateTime.after(endDateTime)) {
             endDateTime = DateUtils.addDays(endDateTime, 1);
         }
         entry.setPlannedStartDateTime(startDateTime);

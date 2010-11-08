@@ -1,4 +1,4 @@
-package at.redcross.tacos.web.faces.combo;
+package at.redcross.tacos.web.faces.converter;
 
 import java.text.SimpleDateFormat;
 
@@ -6,6 +6,8 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+
+import at.redcross.tacos.web.model.SelectableItem;
 
 @FacesConverter(value = "converter.dropDownTime")
 public class DropDownTimeConverter implements Converter {
@@ -28,8 +30,8 @@ public class DropDownTimeConverter implements Converter {
             return "";
         }
         // object is wrapped so unpack
-        if (value instanceof DropDownItem) {
-            DropDownItem dropDownItem = (DropDownItem) value;
+        if (value instanceof SelectableItem) {
+            SelectableItem dropDownItem = (SelectableItem) value;
             return timeFormat.format(dropDownItem.getValue());
         }
         // Date conversion

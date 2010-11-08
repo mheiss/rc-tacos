@@ -14,7 +14,7 @@ import at.redcross.tacos.dbal.helper.CategoryHelper;
 import at.redcross.tacos.dbal.helper.LocationHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.web.faces.FacesUtils;
-import at.redcross.tacos.web.faces.combo.DropDownHelper;
+import at.redcross.tacos.web.model.SelectableItemHelper;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
 
 @KeepAlive
@@ -39,8 +39,8 @@ public class InfoMaintenanceBean extends BaseBean {
 			if (!isEditEnabled()) {
 				FacesUtils.redirectAccessDenied("Entry '" + info + "' cannot be edited");
 			}
-			locationItems = DropDownHelper.convertToItems(LocationHelper.list(manager));
-			categoryItems = DropDownHelper.convertToItems(CategoryHelper.list(manager));
+			locationItems = SelectableItemHelper.convertToItems(LocationHelper.list(manager));
+			categoryItems = SelectableItemHelper.convertToItems(CategoryHelper.list(manager));
 		} finally {
 			manager = EntityManagerHelper.close(manager);
 		}

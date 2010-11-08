@@ -18,7 +18,7 @@ import at.redcross.tacos.dbal.helper.LocationHelper;
 import at.redcross.tacos.dbal.helper.SystemUserHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.web.faces.FacesUtils;
-import at.redcross.tacos.web.faces.combo.DropDownItem;
+import at.redcross.tacos.web.model.SelectableItem;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
 
 @KeepAlive
@@ -49,8 +49,8 @@ public class UserOverviewBean extends PagingBean {
             manager = EntityManagerFactory.createEntityManager();
             locations = LocationHelper.list(manager);
             stateItems = new ArrayList<SelectItem>();
-            stateItems.add(new DropDownItem("nicht gesperrt", false).getItem());
-            stateItems.add(new DropDownItem("gesperrt", true).getItem());
+            stateItems.add(new SelectableItem("nicht gesperrt", false).getItem());
+            stateItems.add(new SelectableItem("gesperrt", true).getItem());
             // load not locked users
             loadfromDatabase(manager, getLocationByName(locationName), locked);
         } finally {

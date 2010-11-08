@@ -47,8 +47,8 @@
 						selectFirstOnUpdate="false" defaultLabel="Mitarbeiter"
 						required="true" requiredMessage="Bitte geben sie einen Mitarbeiter an">
 						<f:selectItems value="#{rosterMaintenanceBean.userItems}" />
-						<f:validator validatorId="validator.dropDown" />
-						<f:converter converterId="converter.dropDown" />
+						<f:validator validatorId="validator.selectableItem" />
+						<f:converter converterId="converter.selectableItem" />
 						<rich:ajaxValidator event="onchange" />
 					</rich:comboBox> 
 					<rich:message for="systemUser" errorClass="error" />
@@ -61,8 +61,8 @@
 						selectFirstOnUpdate="false" defaultLabel="Orststelle"
 						required="true" requiredMessage="Bitte geben sie eine Dienststelle an">
 						<f:selectItems value="#{rosterMaintenanceBean.locationItems}" />
-						<f:validator validatorId="validator.dropDown" />
-						<f:converter converterId="converter.dropDown" />
+						<f:validator validatorId="validator.selectableItem" />
+						<f:converter converterId="converter.selectableItem" />
 						<rich:ajaxValidator event="onchange" />
 					</rich:comboBox> 
 					<rich:message for="location" errorClass="error" />
@@ -75,8 +75,8 @@
 						selectFirstOnUpdate="false" defaultLabel="Verwendung"
 						required="true"	requiredMessage="Bitte geben sie eine Verwendung an">
 						<f:selectItems value="#{rosterMaintenanceBean.assignmentItems}" />
-						<f:validator validatorId="validator.dropDown" />
-						<f:converter converterId="converter.dropDown" />
+						<f:validator validatorId="validator.selectableItem" />
+						<f:converter converterId="converter.selectableItem" />
 						<rich:ajaxValidator event="onchange" />
 					</rich:comboBox> 
 					<rich:message for="assignment" errorClass="error" />
@@ -89,8 +89,8 @@
 						selectFirstOnUpdate="false" defaultLabel="Dienstverhältnis"
 						required="true" requiredMessage="Bitte geben sie ein Dienstverhältnis an">
 						<f:selectItems value="#{rosterMaintenanceBean.serviceTypeItems}" />
-						<f:validator validatorId="validator.dropDown" />
-						<f:converter converterId="converter.dropDown" />
+						<f:validator validatorId="validator.selectableItem" />
+						<f:converter converterId="converter.selectableItem" />
 						<rich:ajaxValidator event="onchange" />
 					</rich:comboBox> 
 					<rich:message for="serviceType" errorClass="error" />
@@ -135,7 +135,7 @@
 						selectFirstOnUpdate="false" required="true"	requiredMessage="Bitte geben sie eine Zeit für den Dienstbeginn an">
 						<f:selectItems value="#{rosterMaintenanceBean.timeItems}" />
 						<f:converter converterId="converter.dropDownTime" />
-						<f:validator validatorId="validator.dropDown" />
+						<f:validator validatorId="validator.selectableItem" />
 						<rich:ajaxValidator event="onchange" />
 						<rich:ajaxValidator event="oninputblur" />
 					</rich:comboBox> 
@@ -162,7 +162,7 @@
 						selectFirstOnUpdate="false" required="true"	requiredMessage="Bitte geben sie eine Zeit für das Dienstende an">
 						<f:selectItems value="#{rosterMaintenanceBean.timeItems}" />
 						<f:converter converterId="converter.dropDownTime" />
-						<f:validator validatorId="validator.dropDown" />
+						<f:validator validatorId="validator.selectableItem" />
 						<rich:ajaxValidator event="onchange" />
 						<rich:ajaxValidator event="oninputblur" />
 					</rich:comboBox> 

@@ -3,6 +3,7 @@ package at.redcross.tacos.web.beans;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 
+import org.ajax4jsf.model.KeepAlive;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -10,6 +11,7 @@ import at.redcross.tacos.dbal.entity.SystemUser;
 import at.redcross.tacos.web.security.WebPermissionManager;
 import at.redcross.tacos.web.security.WebUserDetails;
 
+@KeepAlive
 @ManagedBean(name = "permissionBean")
 public class WebPermissionBean extends WebPermissionManager {
 
@@ -75,15 +77,19 @@ public class WebPermissionBean extends WebPermissionManager {
     public boolean isAuthorizedToEditInfo() {
         return canExecuteAction("info-editEntry");
     }
-    
+
     public boolean isAuthorizedToEditRole() {
         return canExecuteAction("user-editRole");
     }
-    
+
+    public boolean isAuthorizedToEditCompetence() {
+        return canExecuteAction("user-editCompetence");
+    }
+
     public boolean isAuthorizedToEditUser() {
         return canExecuteAction("user-editEntry");
     }
-    
+
     public boolean isAuthorizedToEditVehicle() {
         return canExecuteAction("vehicle-editEntry");
     }

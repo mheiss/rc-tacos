@@ -13,8 +13,8 @@
 						<rich:comboBox width="350px" id="locationOfUser" value="#{rosterStatisticOverviewBean.locationOfUser}" 
 							selectFirstOnUpdate="false" defaultLabel="Ortsstelle wählen">
 							<f:selectItems value="#{rosterStatisticOverviewBean.locationItems}" />
-							<f:validator validatorId="validator.dropDown" />
-							<f:converter converterId="converter.dropDown" />
+							<f:validator validatorId="validator.selectableItem" />
+							<f:converter converterId="converter.selectableItem" />
 							<rich:ajaxValidator event="onchange" />
 						</rich:comboBox> 
 						<rich:message for="locationOfUser" errorClass="error" />
@@ -29,8 +29,8 @@
 						<rich:comboBox width="350px" id="systemUserName" value="#{rosterStatisticOverviewBean.systemUserName}" 
 							selectFirstOnUpdate="false" defaultLabel="Mitarbeiter wählen">
 							<f:selectItems value="#{rosterStatisticOverviewBean.userItems}" />
-							<f:validator validatorId="validator.dropDown" />
-							<f:converter converterId="converter.dropDown" />
+							<f:validator validatorId="validator.selectableItem" />
+							<f:converter converterId="converter.selectableItem" />
 							<rich:ajaxValidator event="onchange" />
 						</rich:comboBox> 
 						<rich:message for="systemUserName" errorClass="error" />
@@ -42,8 +42,8 @@
 						<rich:comboBox width="350px" id="locationOfRosterEntry" value="#{rosterStatisticOverviewBean.locationOfRosterEntry}" 
 							selectFirstOnUpdate="false" defaultLabel="Ortsstelle wählen">
 							<f:selectItems value="#{rosterStatisticOverviewBean.locationItems}" />
-							<f:validator validatorId="validator.dropDown" />
-							<f:converter converterId="converter.dropDown" />
+							<f:validator validatorId="validator.selectableItem" />
+							<f:converter converterId="converter.selectableItem" />
 							<rich:ajaxValidator event="onchange" />
 						</rich:comboBox> 
 						<rich:message for="locationOfRosterEntry" errorClass="error" />
@@ -58,8 +58,8 @@
 						<rich:comboBox width="350px" id="serviceType" value="#{rosterStatisticOverviewBean.serviceType}" 
 							selectFirstOnUpdate="false" defaultLabel="Dienstverhältnis wählen">
 							<f:selectItems value="#{rosterStatisticOverviewBean.serviceTypeItems}" />
-							<f:validator validatorId="validator.dropDown" />
-							<f:converter converterId="converter.dropDown" />
+							<f:validator validatorId="validator.selectableItem" />
+							<f:converter converterId="converter.selectableItem" />
 							<rich:ajaxValidator event="onchange" />
 						</rich:comboBox> 
 						<rich:message for="serviceType" errorClass="error" />

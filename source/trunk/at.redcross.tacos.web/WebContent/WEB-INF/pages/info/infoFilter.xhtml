@@ -11,8 +11,8 @@
 					<div class="input">
 						<rich:comboBox id="category" value="#{bean.category}" width="250" selectFirstOnUpdate="false" defaultLabel="Filter nach Kategorie">
 							<f:selectItems value="#{bean.categoryItems}" />
-							<f:validator validatorId="validator.dropDown" />
-							<f:converter converterId="converter.dropDown" />
+							<f:validator validatorId="validator.selectableItem" />
+							<f:converter converterId="converter.selectableItem" />
 							<rich:ajaxValidator event="onchange" />
 							<a4j:support event="onselect" actionListener="#{bean.filterChanged}" reRender="infoTab,filter" />
 						</rich:comboBox> 

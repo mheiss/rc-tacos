@@ -1,4 +1,4 @@
-package at.redcross.tacos.web.faces.combo;
+package at.redcross.tacos.web.model;
 
 import java.io.Serializable;
 
@@ -6,18 +6,18 @@ import javax.faces.model.SelectItem;
 
 import at.redcross.tacos.dbal.entity.EntityImpl;
 
-public class DropDownItem implements Serializable {
+public class SelectableItem implements Serializable {
 
     private static final long serialVersionUID = 3574974379104269750L;
 
     private final String label;
     private final Object value;
 
-    public DropDownItem(EntityImpl entity) {
+    public SelectableItem(EntityImpl entity) {
         this(entity.getDisplayString(), entity);
     }
 
-    public DropDownItem(String label, Object value) {
+    public SelectableItem(String label, Object value) {
         this.label = label;
         this.value = value;
     }
@@ -39,7 +39,7 @@ public class DropDownItem implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		DropDownItem other = (DropDownItem) obj;
+		SelectableItem other = (SelectableItem) obj;
 		if (label == null) {
 			if (other.label != null)
 				return false;

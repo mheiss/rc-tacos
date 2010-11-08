@@ -13,7 +13,7 @@ import at.redcross.tacos.dbal.entity.Car;
 import at.redcross.tacos.dbal.helper.LocationHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.web.faces.FacesUtils;
-import at.redcross.tacos.web.faces.combo.DropDownHelper;
+import at.redcross.tacos.web.model.SelectableItemHelper;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
 
 @KeepAlive
@@ -41,7 +41,7 @@ public class VehicleMaintenanceBean extends BaseBean {
 			if (!FacesUtils.lookupBean(WebPermissionBean.class).isAuthorizedToEditVehicle()) {
 				FacesUtils.redirectAccessDenied("Entry '" + car + "' cannot be edited");
 			}
-			locationItems = DropDownHelper.convertToItems(LocationHelper.list(manager));
+			locationItems = SelectableItemHelper.convertToItems(LocationHelper.list(manager));
 		} finally {
 			manager = EntityManagerHelper.close(manager);
 		}

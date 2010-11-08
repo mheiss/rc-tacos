@@ -99,8 +99,7 @@
 		</fieldset>
 		
 		<fieldset class="defaultStyle"> 
-			<legend> <h:outputText value="Kompetenzen" /> </legend>
-			<p>	<h:outputText value="Die folgenden Ausbildungen von Ihnen sind im System hinterlegt: " /> </p>
+			<legend> <h:outputText value="Ihre Kompetenzen" /> </legend>
 			<h:outputText value="Keine Einträge gefunden" styleClass="italic" rendered="#{empty loginBean.user.competences}" />
 			<div class="output">
 				<a4j:repeat value="#{loginBean.user.competences}" var="competence" rowKeyVar="rowIndex">
@@ -110,8 +109,7 @@
 			</div>
 		</fieldset>
 		
-		<fieldset class="defaultStyle"> <legend> <h:outputText value="Benutzergruppen" /> </legend>
-			<p>	<h:outputText value="Die Gruppen definieren welche Aktionen Sie ausführen und auf welche Seiten Sie Zugriff haben" /> </p>
+		<fieldset class="defaultStyle"> <legend> <h:outputText value="Ihre Benutzergruppen" /> </legend>
 			<h:outputText value="Keine Einträge gefunden" styleClass="italic" rendered="#{empty loginBean.user.groups}" />
 			<div class="output">
 				<a4j:repeat value="#{loginBean.user.groups}" var="group" rowKeyVar="rowIndex">
@@ -123,41 +121,7 @@
 	</ui:define>
 	
 	<ui:define name="page-panels">
-		<a4j:jsFunction name="submitPanel" actionListener="#{loginBean.changePassword}" reRender="page-content" />
-	
-		<ui:decorate template="/WEB-INF/templates/widgets/confirmPanel.xhtml">
-			<ui:param name="panelId" value="changePasswortPanel" />
-			<ui:param name="panelHeader" value="Kennwort ändern" />
-			
-			<ui:define name="panelContent">
-				<rich:messages errorClass="errorMessage" globalOnly="true" />
-				<p>
-					<h:outputText value="Bitte geben Sie ihr gewünschtes neues Kennwort ein" />
-				</p>
-				<fieldset class="defaultStyle">
-					<ol>
-						<li>
-							<h:outputLabel value="Altes Kennwort" styleClass="label" /> 
-							<div class="output">
-								<h:inputSecret value="#{loginBean.currentPassword}" />
-							</div>
-						</li>
-						<li>
-							<h:outputLabel value="Neues Kennwort" styleClass="label" /> 
-							<div class="output">
-								<h:inputSecret id="password" value="#{loginBean.password}" />
-							</div>
-						</li>
-						<li>
-							<h:outputLabel value="Bestätigen" styleClass="label" /> 
-							<div class="output">
-								<h:inputSecret id="password2" value="#{loginBean.password2}" />
-							</div>
-						</li>
-					</ol>
-				</fieldset>
-			</ui:define>
-		</ui:decorate>
+		<ui:decorate template="profilePanel.xhtml" />
 	</ui:define>
 
 </ui:composition>

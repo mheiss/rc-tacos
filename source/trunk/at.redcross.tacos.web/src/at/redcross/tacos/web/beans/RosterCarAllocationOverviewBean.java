@@ -20,7 +20,7 @@ import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.dbal.query.RosterQueryParam;
 import at.redcross.tacos.web.beans.dto.RosterDto;
 import at.redcross.tacos.web.faces.FacesUtils;
-import at.redcross.tacos.web.faces.combo.DropDownHelper;
+import at.redcross.tacos.web.model.SelectableItemHelper;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
 import at.redcross.tacos.web.reporting.ReportRenderer.ReportRenderParameters;
 import at.redcross.tacos.web.utils.TacosDateUtils;
@@ -45,8 +45,8 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
             manager = EntityManagerFactory.createEntityManager();
             date = TacosDateUtils.getCalendar(System.currentTimeMillis()).getTime();
             locations = LocationHelper.list(manager);
-            locationItems = DropDownHelper.convertToItems(locations);
-            carItems = DropDownHelper.convertToItems(CarHelper.list(manager, false));
+            locationItems = SelectableItemHelper.convertToItems(locations);
+            carItems = SelectableItemHelper.convertToItems(CarHelper.list(manager, false));
             entries = getEntries(manager, getParamForQuery());
             notification = getNotification(manager, date);
         }
