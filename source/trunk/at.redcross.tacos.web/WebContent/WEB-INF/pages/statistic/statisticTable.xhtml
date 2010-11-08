@@ -93,41 +93,41 @@
 					<h:outputText value="#{rosterDto.entity.location.name}" />
 				</rich:column>
 				<rich:column>
-					<h:outputText value="#{rosterDto.entity.plannedStartDate}">
+					<h:outputText value="#{rosterDto.entity.plannedStartDateTime}">
 						<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 					</h:outputText>
 					<h:outputText value=" " />
-					<h:outputText value="#{rosterDto.entity.plannedStartTime}">
+					<h:outputText value="#{rosterDto.entity.plannedStartDateTime}">
 						<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 					</h:outputText>
 				</rich:column>
 				<rich:column>
 					<h:panelGroup>
-						<h:outputText value="#{rosterDto.entity.plannedEndDate}">
+						<h:outputText value="#{rosterDto.entity.plannedEndDateTime}">
 							<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 						</h:outputText>
 						<h:outputText value=" " />
-						<h:outputText value="#{rosterDto.entity.plannedEndTime}">
+						<h:outputText value="#{rosterDto.entity.plannedEndDateTime}">
 							<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 						</h:outputText>
 					</h:panelGroup>
 				</rich:column>
 				<rich:column>
-					<h:outputText value="#{rosterDto.entity.realStartDate}">
+					<h:outputText value="#{rosterDto.entity.realStartDateTime}">
 						<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 					</h:outputText>
 					<h:outputText value=" " />
-					<h:outputText value="#{rosterDto.entity.realStartTime}">
+					<h:outputText value="#{rosterDto.entity.realStartDateTime}">
 						<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 					</h:outputText>
 				</rich:column>
 				<rich:column>
 					<h:panelGroup>
-						<h:outputText value="#{rosterDto.entity.realEndDate}">
+						<h:outputText value="#{rosterDto.entity.realEndDateTime}">
 							<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 						</h:outputText>
 						<h:outputText value=" " />
-						<h:outputText value="#{rosterDto.entity.realEndTime}">
+						<h:outputText value="#{rosterDto.entity.realEndDateTime}">
 							<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 						</h:outputText>
 					</h:panelGroup>
