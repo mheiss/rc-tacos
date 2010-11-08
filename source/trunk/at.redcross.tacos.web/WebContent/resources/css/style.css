@@ -62,6 +62,11 @@ fieldset.defaultStyle legend {
 	border-bottom: 1px solid #000000;
 }
 
+fieldset.defaultStyle p {
+	padding-left:0.5em;
+}
+	
+
 fieldset.defaultStyle li {
 	clear: both;
 	padding: 0.5em;
@@ -289,7 +294,6 @@ fieldset.defaultStyle .box .deleteImage {
  **********************************************************/
 .defaultScroller {
 	width: 100%;
-	margin-bottom: 0.5em;
 }
 
 .defaultScroller .rich-dtascroller-table {
@@ -306,20 +310,15 @@ table.defaultStyle,table.bigTable,table.editorTable {
 }
 
 table.defaultStyle th {
+	padding: 0.6em;
 	text-align: center;
 	font-weight: bold;
-	padding: 0.6em;
 	background-color: #BED6F8;
 }
 
 table.defaultStyle tr {
 	border: 1px solid #BBBBBB;
 	padding: 3px 4px;
-}
-
-table.defaultStyle td {
-	border: 0px;
-	border-bottom: 1px solid #BBBBBB;
 }
 
 table.defaultStyle td.smallColumn {

@@ -92,6 +92,12 @@ public class WebActionDefinitionRegistry {
 			definition.setDescription("Gruppe(n) eines Mitarbeiters zuweisen bzw. ändern");
 			definitions.add(definition);
 		}
+	      // edit the competence of a user
+        {
+            WebActionDefinition definition = new WebActionDefinition("user-editCompetence");
+            definition.setDescription("Kompetenz(n) eines Mitarbeiters zuweisen bzw. ändern");
+            definitions.add(definition);
+        }
 		// edit an user
 		{
 			WebActionDefinition definition = new WebActionDefinition("user-editEntry");

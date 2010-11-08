@@ -13,6 +13,10 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>/WEB-INF/spring-config.xml</param-value>
 	</context-param>
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
 	
 	<!-- BIRT configuration -->
 	<context-param>
@@ -33,31 +37,7 @@
 		<param-name>org.richfaces.SKIN</param-name>
 		<param-value>blueSky</param-value>
 	</context-param>
-	<context-param>
-		<param-name>org.richfaces.queue.global.enabled</param-name>
-		<param-value>true</param-value>
-	</context-param>
-	<context-param>
-		<param-name>org.ajax4jsf.xmlparser.ORDER</param-name>
-		<param-value>NONE,NEKO,TIDY</param-value>
-	</context-param>
-	<context-param>
-		<param-name>org.ajax4jsf.xmlparser.NEKO</param-name>
-		<param-value>.*\..*</param-value>
-	</context-param>
-	<context-param>
-		<param-name>org.richfaces.LoadStyleStrategy</param-name>
-		<param-value>ALL</param-value>
-	</context-param>
-	<context-param>
-		<param-name>org.richfaces.LoadScriptStrategy</param-name>
-		<param-value>ALL</param-value>
-	</context-param>
-	<context-param>
-		<param-name>org.ajax4jsf.COMPRESS_SCRIPT</param-name>
-		<param-value>false</param-value>
-	</context-param>
-	
+
 	<!-- Facelets configuration -->
 	<context-param>
 		<param-name>facelets.DEVELOPMENT</param-name>
@@ -77,24 +57,6 @@
 		<param-name>facelets.BUILD_BEFORE_RESTORE</param-name>
 		<param-value>false</param-value>
 	</context-param>
-	
-	<!-- JSF RI Performance tuning -->
-	<context-param>
-		<param-name>com.sun.faces.responseBufferSize</param-name>
-		<param-value>500000</param-value>
-	</context-param>
-	<context-param>
-		<param-name>com.sun.faces.verifyObjects</param-name>
-		<param-value>false</param-value>
-	</context-param>
-	<context-param>
-		<param-name>com.sun.faces.externalizeJavaScript</param-name>
-		<param-value>true</param-value>
-	</context-param>
-	<filter>
-		<filter-name>springSecurityFilterChain</filter-name>
-		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-	</filter>
 	
 	<!-- RichFaces configuration -->
 	<filter>
@@ -157,7 +119,4 @@
 	<welcome-file-list>
 		<welcome-file>/</welcome-file>
 	</welcome-file-list>
-	<login-config>
-		<auth-method>BASIC</auth-method>
-	</login-config>
 </web-app>

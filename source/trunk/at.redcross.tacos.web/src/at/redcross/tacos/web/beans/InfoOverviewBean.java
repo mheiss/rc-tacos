@@ -19,7 +19,7 @@ import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.dbal.query.InfoQueryParam;
 import at.redcross.tacos.web.beans.dto.InfoDto;
 import at.redcross.tacos.web.faces.FacesUtils;
-import at.redcross.tacos.web.faces.combo.DropDownHelper;
+import at.redcross.tacos.web.model.SelectableItemHelper;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
 import at.redcross.tacos.web.reporting.ReportRenderer;
 import at.redcross.tacos.web.reporting.ReportRenderer.ReportRenderParameters;
@@ -65,9 +65,9 @@ public abstract class InfoOverviewBean extends BaseBean {
 		try {
 			manager = EntityManagerFactory.createEntityManager();
 			locations = LocationHelper.list(manager);
-			locationItems = DropDownHelper.convertToItems(locations);
+			locationItems = SelectableItemHelper.convertToItems(locations);
 			categories = CategoryHelper.list(manager);
-			categoryItems = DropDownHelper.convertToItems(categories);
+			categoryItems = SelectableItemHelper.convertToItems(categories);
 			infos = getEntries(manager, getParamForQuery());
 		} finally {
 			manager = EntityManagerHelper.close(manager);

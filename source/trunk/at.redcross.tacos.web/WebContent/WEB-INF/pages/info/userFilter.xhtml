@@ -11,8 +11,8 @@
 					<div class="input">
 						<rich:comboBox id="locked" value="#{bean.locked}" width="250" selectFirstOnUpdate="false" defaultLabel="Filter nach Mitarbeiterstatus">
 							<f:selectItems value="#{bean.stateItems}" />
-							<f:validator validatorId="validator.dropDown" />
-							<f:converter converterId="converter.dropDown" />
+							<f:validator validatorId="validator.selectableItem" />
+							<f:converter converterId="converter.selectableItem" />
 							<rich:ajaxValidator event="onchange" />
 							<a4j:support event="onselect" actionListener="#{bean.filterChanged}" reRender="filter,userTab" />
 						</rich:comboBox> 

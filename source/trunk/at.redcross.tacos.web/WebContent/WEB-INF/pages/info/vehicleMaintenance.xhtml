@@ -48,8 +48,8 @@
 						selectFirstOnUpdate="false" defaultLabel="aktuelle Dienststelle"
 						required="true" requiredMessage="Bitte geben sie eine aktuelle Dienststelle an">
 						<f:selectItems value="#{vehicleMaintenanceBean.locationItems}" />
-						<f:validator validatorId="validator.dropDown" />
-						<f:converter converterId="converter.dropDown" />
+						<f:validator validatorId="validator.selectableItem" />
+						<f:converter converterId="converter.selectableItem" />
 						<rich:ajaxValidator event="onchange" />
 					</rich:comboBox> 
 					<rich:message for="location" errorClass="error" />

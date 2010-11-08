@@ -22,14 +22,14 @@ import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.dbal.query.RosterQueryParam;
 import at.redcross.tacos.web.beans.dto.RosterDto;
 import at.redcross.tacos.web.faces.FacesUtils;
-import at.redcross.tacos.web.faces.combo.DropDownHelper;
+import at.redcross.tacos.web.model.SelectableItemHelper;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
 import at.redcross.tacos.web.reporting.ReportRenderer;
 import at.redcross.tacos.web.reporting.ReportRenderer.ReportRenderParameters;
 import at.redcross.tacos.web.utils.TacosDateUtils;
 
 @KeepAlive
-public abstract class RosterOverviewBean extends BaseBean {
+public abstract class RosterOverviewBean extends PagingBean {
 
     private static final long serialVersionUID = -63594513702881676L;
 
@@ -73,7 +73,7 @@ public abstract class RosterOverviewBean extends BaseBean {
             manager = EntityManagerFactory.createEntityManager();
             date = TacosDateUtils.getCalendar(System.currentTimeMillis()).getTime();
             locations = LocationHelper.list(manager);
-            locationItems = DropDownHelper.convertToItems(locations);
+            locationItems = SelectableItemHelper.convertToItems(locations);
             entries = getEntries(manager, getParamForQuery());
         } finally {
             manager = EntityManagerHelper.close(manager);

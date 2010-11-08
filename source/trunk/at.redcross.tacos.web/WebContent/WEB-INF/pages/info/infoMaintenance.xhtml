@@ -56,8 +56,8 @@
 						selectFirstOnUpdate="false" defaultLabel="Orststelle"
 						required="true" requiredMessage="Bitte geben sie eine Dienststelle an">
 						<f:selectItems value="#{infoMaintenanceBean.locationItems}" />
-						<f:validator validatorId="validator.dropDown" />
-						<f:converter converterId="converter.dropDown" />
+						<f:validator validatorId="validator.selectableItem" />
+						<f:converter converterId="converter.selectableItem" />
 						<rich:ajaxValidator event="onchange" />
 					</rich:comboBox> 
 					<rich:message for="location" errorClass="error" />
@@ -70,8 +70,8 @@
 						selectFirstOnUpdate="false" defaultLabel="Kategorie"
 						required="true" requiredMessage="Bitte geben sie eine Kategorie an">
 						<f:selectItems value="#{infoMaintenanceBean.categoryItems}" />
-						<f:validator validatorId="validator.dropDown" />
-						<f:converter converterId="converter.dropDown" />
+						<f:validator validatorId="validator.selectableItem" />
+						<f:converter converterId="converter.selectableItem" />
 						<rich:ajaxValidator event="onchange" />
 					</rich:comboBox> 
 					<rich:message for="location" errorClass="error" />

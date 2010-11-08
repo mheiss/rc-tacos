@@ -24,7 +24,7 @@
 	
 	<ui:define name="page-toolbar">
 		<li>
-			<a4j:commandLink actionListener="#{rosterCarAllocationOverviewBean.navigateNext}" reRender="dateTitle,filter,rosterTab,notification">
+			<a4j:commandLink actionListener="#{rosterCarAllocationOverviewBean.navigateNext}" reRender="dateTitle,filter,rosterTab,rosterFooter">
 				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="next.png" />
 				<h:outputText styleClass="toolbarText" value="Nächster Tag"  />
 			</a4j:commandLink>
@@ -36,7 +36,7 @@
 			</a4j:htmlCommandLink>
 		</li>
 		<li>
-			<a4j:commandLink actionListener="#{rosterCarAllocationOverviewBean.navigatePrevious}" reRender="dateTitle,filter,rosterTab,notification">
+			<a4j:commandLink actionListener="#{rosterCarAllocationOverviewBean.navigatePrevious}" reRender="dateTitle,filter,rosterTab,rosterFooter">
 				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="back.png" />
 				<h:outputText styleClass="toolbarText" value="Vorheriger Tag"  />
 			</a4j:commandLink>
@@ -50,29 +50,21 @@
 	</ui:define>
 
 	<ui:define name="page-content">
+		<a4j:outputPanel ajaxRendered="true">
+      		<rich:messages id="messages" errorClass="errorMessage" />
+		</a4j:outputPanel>
 		<ui:decorate template="rosterFilter.xhtml">
 			<ui:param name="bean" value="#{rosterCarAllocationOverviewBean}" />
 		</ui:decorate>
-		<rich:tabPanel id="rosterTab" selectedTab="#{rosterCarAllocationOverviewBean.locationName}" switchType="ajax" valueChangeListener="#{rosterCarAllocationOverviewBean.tabChanged}"
-			styleClass="defaultTabPanelStyle" tabClass="defaultTabStyle" headerClass="defaultTabHeaderStyle">
-			<rich:tab label="Alle Dienststellen" name="*">
-				<ui:decorate template="rosterCarAllocationTable.xhtml">
-					<ui:param name="tabId" value="all" />
-					<ui:param name="bean" value="#{rosterCarAllocationOverviewBean}" />
-					<ui:param name="values" value="#{rosterCarAllocationOverviewBean.entries}" />
-				</ui:decorate>
-			</rich:tab>
-			<c:forEach items="#{rosterCarAllocationOverviewBean.locations}" var="location">
-				<rich:tab label="#{location.name}" name="#{location.name}">
-					<ui:decorate template="rosterCarAllocationTable.xhtml">
-						<ui:param name="tabId" value="#{location.id}" />
-						<ui:param name="bean" value="#{rosterCarAllocationOverviewBean}" />
-						<ui:param name="values" value="#{rosterCarAllocationOverviewBean.entries}" />
-					</ui:decorate>
-				</rich:tab>
-			</c:forEach>
-		</rich:tabPanel>
-		<br />
+		<ui:decorate template="rosterCarTabPanel.xhtml">
+			<ui:param name="bean" value="#{rosterCarAllocationOverviewBean}" />
+		</ui:decorate>
+		<ui:decorate template="rosterFooter.xhtml">
+			<ui:param name="bean" value="#{rosterCarAllocationOverviewBean}" />
+		</ui:decorate>
+	</ui:define>
+	
+	<ui:define name="rosterFooterPanel">
 		<rich:simpleTogglePanel id="notification" opened="false" label="Anmerkungen" bodyClass="defaultToggleBodyStyle" styleClass="defaultToggleStyle" 
 			switchType="client"	onclick="smartEditor()">
 			<h:panelGroup rendered="#{permissionBean.authorizedToAssignCar}">

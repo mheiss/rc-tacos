@@ -4,11 +4,12 @@
 <body>
 <ui:composition>
 
-	<a4j:jsFunction name="submitPanel" actionListener="#{bean.markToDelete}" reRender="page-content" />
-
 	<ui:decorate template="/WEB-INF/templates/widgets/confirmPanel.xhtml">
 		<ui:param name="panelId" value="confirmDeleteRosterPanel" />
 		<ui:param name="panelHeader" value="Dienstplaneintrag löschen?" />
+	
+		<ui:param name="panelBean" value="#{bean}" />
+		<ui:param name="panelAction" value="markToDelete" />
 
 		<ui:define name="panelContent">
 			<h:outputText value="Wollen sie wirklich den folgenden Dienstplaneintrag löschen?" />

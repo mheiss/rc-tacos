@@ -19,7 +19,7 @@ import at.redcross.tacos.dbal.helper.SystemUserHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.dbal.query.RosterQueryParam;
 import at.redcross.tacos.web.beans.dto.RosterDto;
-import at.redcross.tacos.web.faces.combo.DropDownHelper;
+import at.redcross.tacos.web.model.SelectableItemHelper;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
 import at.redcross.tacos.web.reporting.ReportRenderer.ReportRenderParameters;
 import at.redcross.tacos.web.utils.TacosDateUtils;
@@ -83,12 +83,12 @@ public class RosterStatisticOverviewBean extends RosterOverviewBean {
             manager = EntityManagerFactory.createEntityManager();
             date = TacosDateUtils.getCalendar(System.currentTimeMillis()).getTime();
             locations = LocationHelper.list(manager);
-            locationItems = DropDownHelper.convertToItems(locations);
+            locationItems = SelectableItemHelper.convertToItems(locations);
             entries = getEntries(manager, getParamForQuery());
             users = SystemUserHelper.list(manager);
-            userItems = DropDownHelper.convertToItems(users);
+            userItems = SelectableItemHelper.convertToItems(users);
             serviceTypes = ServiceTypeHelper.list(manager);
-            serviceTypeItems = DropDownHelper.convertToItems(serviceTypes);
+            serviceTypeItems = SelectableItemHelper.convertToItems(serviceTypes);
         }
         finally {
             manager = EntityManagerHelper.close(manager);
