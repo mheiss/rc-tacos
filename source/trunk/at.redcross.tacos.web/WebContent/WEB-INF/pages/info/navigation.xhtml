@@ -10,21 +10,21 @@
 		<ui:define name="block-image">
 			<h:graphicImage library="images/32x32" name="calendar.png" />
 		</ui:define>
-		<ui:define name="block-title"> <h:outputText value="Informationen" /> </ui:define>
+		<ui:define name="block-title"> <h:outputText value="Mitteilungen" /> </ui:define>
 	
 		<ui:define name="block-content">
 			<ul class="menu">
 				<li class="menu-item #{page eq 'currentOverview' ? 'selected' : ''}">
-					<pretty:link mappingId="info-currentOverview"><h:outputText value="Aktuelle Mitteilungen" /> </pretty:link>
+					<pretty:link mappingId="info-currentOverview"><h:outputText value="Aktuell" /> </pretty:link>
 				</li>
 				<li class="menu-item #{page eq 'expiredOverview' ? 'selected' : ''}">
-					<pretty:link mappingId="info-expiredOverview"><h:outputText value="Abgelaufene Mitteilungen" /> </pretty:link>
+					<pretty:link mappingId="info-expiredOverview"><h:outputText value="Abgelaufen" /> </pretty:link>
 				</li>
 				<li class="menu-item #{page eq 'futureOverview' ? 'selected' : ''}">
-					<pretty:link mappingId="info-futureOverview"><h:outputText value="Künftige Mitteilungen" /> </pretty:link>
+					<pretty:link mappingId="info-futureOverview"><h:outputText value="Künftig" /> </pretty:link>
 				</li>
 				<li class="menu-item #{page eq 'maintenance' ? 'selected' : ''}">
-					<pretty:link mappingId="info-createMaintenance"> <h:outputText value="Neue Mitteilung eintragen" /> </pretty:link>
+					<pretty:link mappingId="info-createMaintenance"> <h:outputText value="Neue Mitteilung" /> </pretty:link>
 				</li>
 			</ul>
 		</ui:define>
