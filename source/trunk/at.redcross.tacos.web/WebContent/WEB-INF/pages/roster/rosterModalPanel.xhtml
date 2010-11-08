@@ -3,29 +3,26 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich" xmlns:pretty="http://ocpsoft.com/prettyfaces">
 <body>
 <ui:composition>
+
 	<a4j:jsFunction name="submitPanel" actionListener="#{bean.markToDelete}" reRender="page-content" />
+
 	<ui:decorate template="/WEB-INF/templates/widgets/confirmPanel.xhtml">
 		<ui:param name="panelId" value="confirmDeleteRosterPanel" />
 		<ui:param name="panelHeader" value="Dienstplaneintrag löschen?" />
-		
+
 		<ui:define name="panelContent">
 			<h:outputText value="Wollen sie wirklich den folgenden Dienstplaneintrag löschen?" />
 			<p>
 				<h:outputLabel value="Mitarbeiter:" styleClass="label" /> 
-				<h:outputText value="#{bean.entry.entity.systemUser.lastName} #{bean.entry.entity.systemUser.firstName}" />
-			</p>
+				<h:outputText value="#{bean.entry.entity.systemUser.lastName} #{bean.entry.entity.systemUser.firstName}" /></p>
 			<p>
-				<h:outputLabel value="Datum:" styleClass="label" />
-				<h:outputText value="#{bean.entry.entity.plannedStartDate}" styleClass="content">
-					<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
-				</h:outputText>
-				<h:outputText value=" " />
-				<h:outputText value="#{bean.entry.entity.plannedStartTime}">
-					<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+				<h:outputLabel value="Datum:" styleClass="label" /> 
+				<h:outputText value="#{bean.entry.entity.plannedStartDateTime}" styleClass="content">
+					<f:convertDateTime pattern="dd.MM.yyyy HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 				</h:outputText>
 			</p>
 			<p>
-				<h:graphicImage library="images/16x16" name="warning.png" styleClass="linkImage" />
+				<h:graphicImage library="images/16x16" name="warning.png" styleClass="linkImage" /> 
 				<h:outputText value="Diese Aktion kann nicht mehr Rückgängig gemacht werden" styleClass="linkText" />
 			</p>
 		</ui:define>

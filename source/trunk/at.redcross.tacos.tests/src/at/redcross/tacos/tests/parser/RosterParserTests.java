@@ -4,11 +4,15 @@ import java.io.File;
 import java.util.Collection;
 
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import at.redcross.tacos.web.parser.RosterParser;
 import at.redcross.tacos.web.parser.RosterParserEntry;
 
 public class RosterParserTests extends BaseFileTest {
+
+    private final static Logger logger = LoggerFactory.getLogger(RosterParserTests.class);
 
     @Test
     public void testImportFile() throws Exception {
@@ -23,8 +27,8 @@ public class RosterParserTests extends BaseFileTest {
         RosterParser parser = new RosterParser(file);
         Collection<RosterParserEntry> entries = parser.parse();
         long duration = System.currentTimeMillis() - start;
-        System.out.println("Parsing done in '" + duration + "' ms");
-        System.out.println("Found '" + entries.size() + "' records");
+        logger.debug("Parsing done in '" + duration + "' ms");
+        logger.info("Found '" + entries.size() + "' records");
     }
 
 }

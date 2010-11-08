@@ -30,5 +30,10 @@
 				<ui:include src="/WEB-INF/templates/footer.xhtml" />
 			</div>
 		</div>
+		<a4j:outputPanel ajaxRendered="true">
+			<h:form style="display:none" prependId="false">
+				<h:inputHidden id="maximumSeverity" value="#{facesContext.maximumSeverity.ordinal}"/>
+    		</h:form>              
+		</a4j:outputPanel>
 	</body>
 </html>

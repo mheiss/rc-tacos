@@ -1,9 +1,12 @@
 package at.redcross.tacos.dbal.entity;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -14,8 +17,7 @@ import javax.persistence.TemporalType;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
-
-import at.redcross.tacos.dbal.utils.TacosDateUtils;
+import org.apache.commons.lang.time.DateUtils;
 
 @Entity
 @Table(name = "RosterEntry")
@@ -39,37 +41,19 @@ public class RosterEntry extends EntityImpl {
     @ManyToOne(optional = false)
     private Assignment assignment;
 
-    // PLANNED START DATE AND TIME
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
-    private Date plannedStartDate;
+    private Date plannedStartDateTime;
 
-    @Temporal(TemporalType.TIME)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
-    private Date plannedStartTime;
+    private Date plannedEndDateTime;
 
-    // PLANNED END DATE AND TIME
-    @Temporal(TemporalType.DATE)
-    @Column(nullable = false)
-    private Date plannedEndDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date realStartDateTime;
 
-    @Temporal(TemporalType.TIME)
-    @Column(nullable = false)
-    private Date plannedEndTime;
-
-    // REAL START DATE AND TIME
-    @Temporal(TemporalType.DATE)
-    private Date realStartDate;
-
-    @Temporal(TemporalType.TIME)
-    private Date realStartTime;
-
-    // REAL END DATE AND TIME
-    @Temporal(TemporalType.DATE)
-    private Date realEndDate;
-
-    @Temporal(TemporalType.TIME)
-    private Date realEndTime;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date realEndDateTime;
 
     @Column
     private String notes;
@@ -83,8 +67,9 @@ public class RosterEntry extends EntityImpl {
     @ManyToOne(optional = true)
     private Car car;
 
-    @Column
-    private boolean toDelete;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private DataState state = DataState.NORMAL;
 
     // ---------------------------------
     // EntityImpl
@@ -121,26 +106,14 @@ public class RosterEntry extends EntityImpl {
         RosterEntry rhs = (RosterEntry) obj;
         return new EqualsBuilder().append(id, rhs.id).isEquals();
     }
-
+    
     // ---------------------------------
-    // Common helpers
+    // Business relevant methods
     // ---------------------------------
-    public Date getPlannedStartDateTime() {
-        return TacosDateUtils.mergeDateAndTime(plannedStartDate, plannedStartTime).getTime();
+    public boolean isToDelete() {
+        return state.equals(DataState.DELETE);
     }
-
-    public Date getPlannedEndDateTime() {
-        return TacosDateUtils.mergeDateAndTime(plannedEndDate, plannedEndTime).getTime();
-    }
-
-    public Date getRealStartDateTime() {
-        return TacosDateUtils.mergeDateAndTime(realStartDate, realStartTime).getTime();
-    }
-
-    public Date getRealEndDateTime() {
-        return TacosDateUtils.mergeDateAndTime(realEndDate, realEndTime).getTime();
-    }
-
+    
     // ---------------------------------
     // Setters for the properties
     // ---------------------------------
@@ -160,36 +133,20 @@ public class RosterEntry extends EntityImpl {
         this.assignment = assignment;
     }
 
-    public void setPlannedStartDate(Date plannedStartDate) {
-        this.plannedStartDate = plannedStartDate;
+    public void setPlannedStartDateTime(Date plannedStartDateTime) {
+        this.plannedStartDateTime = DateUtils.truncate(plannedStartDateTime, Calendar.MINUTE);
     }
 
-    public void setPlannedStartTime(Date plannedStartTime) {
-        this.plannedStartTime = plannedStartTime;
+    public void setPlannedEndDateTime(Date plannedEndDateTime) {
+        this.plannedEndDateTime = DateUtils.truncate(plannedEndDateTime, Calendar.MINUTE);
     }
 
-    public void setPlannedEndDate(Date plannedEndDate) {
-        this.plannedEndDate = plannedEndDate;
+    public void setRealStartDateTime(Date realStartDateTime) {
+        this.realStartDateTime = DateUtils.truncate(realStartDateTime, Calendar.MINUTE);
     }
 
-    public void setPlannedEndTime(Date plannedEndTime) {
-        this.plannedEndTime = plannedEndTime;
-    }
-
-    public void setRealEndDate(Date realEndDate) {
-        this.realEndDate = realEndDate;
-    }
-
-    public void setRealEndTime(Date realEndTime) {
-        this.realEndTime = realEndTime;
-    }
-
-    public void setRealStartDate(Date realStartDate) {
-        this.realStartDate = realStartDate;
-    }
-
-    public void setRealStartTime(Date realStartTime) {
-        this.realStartTime = realStartTime;
+    public void setRealEndDateTime(Date realEndDateTime) {
+        this.realEndDateTime = DateUtils.truncate(realEndDateTime, Calendar.MINUTE);
     }
 
     public void setNotes(String notes) {
@@ -208,8 +165,8 @@ public class RosterEntry extends EntityImpl {
         this.car = car;
     }
 
-    public void setToDelete(boolean toDelete) {
-        this.toDelete = toDelete;
+    public void setState(DataState state) {
+        this.state = state;
     }
 
     // ---------------------------------
@@ -235,36 +192,20 @@ public class RosterEntry extends EntityImpl {
         return location;
     }
 
-    public Date getPlannedEndDate() {
-        return plannedEndDate;
+    public Date getPlannedStartDateTime() {
+        return plannedStartDateTime;
     }
 
-    public Date getPlannedEndTime() {
-        return plannedEndTime;
+    public Date getPlannedEndDateTime() {
+        return plannedEndDateTime;
     }
 
-    public Date getPlannedStartDate() {
-        return plannedStartDate;
+    public Date getRealStartDateTime() {
+        return realStartDateTime;
     }
 
-    public Date getPlannedStartTime() {
-        return plannedStartTime;
-    }
-
-    public Date getRealStartDate() {
-        return realStartDate;
-    }
-
-    public Date getRealStartTime() {
-        return realStartTime;
-    }
-
-    public Date getRealEndDate() {
-        return realEndDate;
-    }
-
-    public Date getRealEndTime() {
-        return realEndTime;
+    public Date getRealEndDateTime() {
+        return realEndDateTime;
     }
 
     public boolean isStandby() {
@@ -283,7 +224,7 @@ public class RosterEntry extends EntityImpl {
         return car;
     }
 
-    public boolean isToDelete() {
-        return toDelete;
+    public DataState getState() {
+        return state;
     }
 }

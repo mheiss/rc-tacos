@@ -31,3 +31,7 @@ function smartGrid() {
 	jQuery("ul.column").css({ 'width' : colWrap}); //Set exact width of row in pixels instead of using % - Prevents cross-browser bugs that appear in certain view port resolutions.
 	jQuery("ul.column li").css({ 'width' : colFixed}); //Set exact width of the re-adjusted column	
 }
+
+function ajaxRequestContainsErrors() {
+    return document.getElementById("maximumSeverity").value == "2";
+}

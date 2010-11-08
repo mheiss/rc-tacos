@@ -14,7 +14,10 @@ public class RosterQueryParam {
     public Date endDate;
 
     /** show deleted entries */
-    public boolean toDelete = false;
+    public boolean stateDelete = false;
+    
+    /** show normal entries */
+    public boolean stateNormal = true;
 
     /** the owner of the entry */
     public Integer systemUserId = null;

@@ -11,13 +11,13 @@
 	<rich:panel rendered="#{not empty values}">
 		<rich:dataTable id="table-#{tabId}"  styleClass="defaultStyle" rendered="#{not empty values}" value="#{values}" var="rosterDto"
 			onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
-			<rich:column styleClass="bold" sortBy="#{rosterDto.entity.systemUser.lastName}">
+			<rich:column styleClass="bold #{rosterDto.styleClass}" sortBy="#{rosterDto.entity.systemUser.lastName}">
 				<f:facet name="header">
 					<h:outputText value="Mitarbeiter" />
 				</f:facet>
 				<h:outputText value="#{rosterDto.entity.systemUser.lastName} #{rosterDto.entity.systemUser.firstName}" />
 			</rich:column>
-			<rich:column styleClass="smallColumn">
+			<rich:column styleClass="smallColumn #{rosterDto.styleClass}">
 				<f:facet name="header">
 					<rich:spacer />
 				</f:facet>
@@ -29,13 +29,13 @@
 					<h:graphicImage library="images/16x16" name="notes.png" rendered="#{not empty rosterDto.entity.notes}" />
 				</a4j:outputPanel>
 			</rich:column>
-			<rich:column styleClass="mediumColumn" sortBy="#{rosterDto.entity.location.name}">
+			<rich:column styleClass="mediumColumn #{rosterDto.styleClass}" sortBy="#{rosterDto.entity.location.name}">
 				<f:facet name="header">
 					<h:outputText value="Dienststelle" />
 				</f:facet>
 				<h:outputText value="#{rosterDto.entity.location.name}" />
 			</rich:column>
-			<rich:column styleClass="center" sortBy="#{rosterDto.entity.plannedStartTime}">
+			<rich:column styleClass="center #{rosterDto.styleClass}" sortBy="#{rosterDto.entity.plannedStartDateTime}">
 				<f:facet name="header">
 					<h:panelGroup>
 						<h:outputText value="Dienstzeit von" />
@@ -43,15 +43,11 @@
 						<h:outputText value="[geplant]" />
 					</h:panelGroup>
 				</f:facet>
-				<h:outputText value="#{rosterDto.entity.plannedStartDate}">
-					<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
-				</h:outputText>
-				<h:outputText value=" " />
-				<h:outputText value="#{rosterDto.entity.plannedStartTime}">
-					<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+				<h:outputText value="#{rosterDto.entity.plannedStartDateTime}">
+					<f:convertDateTime pattern="dd.MM.yyyy HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 				</h:outputText>
 			</rich:column>
-			<rich:column styleClass="center" sortBy="#{rosterDto.entity.plannedEndTime}">
+			<rich:column styleClass="center #{rosterDto.styleClass}" sortBy="#{rosterDto.entity.plannedEndDateTime}">
 				<f:facet name="header">
 					<h:panelGroup>
 						<h:outputText value="Dienstzeit bis" />
@@ -60,16 +56,12 @@
 					</h:panelGroup>
 				</f:facet>
 				<h:panelGroup>
-					<h:outputText value="#{rosterDto.entity.plannedEndDate}">
-						<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
-					</h:outputText>
-					<h:outputText value=" " />
-					<h:outputText value="#{rosterDto.entity.plannedEndTime}">
-						<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+					<h:outputText value="#{rosterDto.entity.plannedEndDateTime}">
+						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 					</h:outputText>
 				</h:panelGroup>
 			</rich:column>
-			<rich:column styleClass="center" sortBy="#{rosterDto.entity.realStartDate}">
+			<rich:column styleClass="center #{rosterDto.styleClass}" sortBy="#{rosterDto.entity.realStartDateTime}">
 				<f:facet name="header">
 					<h:panelGroup>
 						<h:outputText value="Dienstzeit von" />
@@ -77,7 +69,7 @@
 						<h:outputText value="[real]" />
 					</h:panelGroup>
 				</f:facet>
-				<h:panelGroup rendered="#{empty rosterDto.entity.realStartDate and not rosterDto.entity.toDelete}">
+				<h:panelGroup rendered="#{empty rosterDto.entity.realStartDateTime and not rosterDto.entity.toDelete}">
 					<a4j:commandLink title="Anmelden" reRender="table-#{tabId}">
 						<a4j:actionparam name="entryId" assignTo="#{bean.entryId}" value="#{rosterDto.entity.id}" 
 							actionListener="#{bean.signIn}" />
@@ -85,17 +77,13 @@
 						<h:outputText styleClass="actionText" value="Anmelden" />
 					</a4j:commandLink>
 				</h:panelGroup>
-				<h:panelGroup rendered="#{not empty rosterDto.entity.realStartDate}">
-					<h:outputText value="#{rosterDto.entity.realStartDate}">
-						<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
-					</h:outputText>
-					<h:outputText value=" " />
-					<h:outputText value="#{rosterDto.entity.realStartTime}">
-						<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+				<h:panelGroup rendered="#{not empty rosterDto.entity.realStartDateTime}">
+					<h:outputText value="#{rosterDto.entity.realStartDateTime}">
+						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 					</h:outputText>
 				</h:panelGroup>
 			</rich:column>
-			<rich:column styleClass="center" sortBy="#{rosterDto.entity.realEndDate}">
+			<rich:column styleClass="center #{rosterDto.styleClass}" sortBy="#{rosterDto.entity.realEndDateTime}">
 				<f:facet name="header">
 					<h:panelGroup>
 						<h:outputText value="Dienstzeit bis" />
@@ -103,7 +91,7 @@
 						<h:outputText value="[real]" />
 					</h:panelGroup>
 				</f:facet>
-				<h:panelGroup rendered="#{empty rosterDto.entity.realEndDate and not rosterDto.entity.toDelete}">
+				<h:panelGroup rendered="#{empty rosterDto.entity.realEndDateTime and not rosterDto.entity.toDelete}">
 					<a4j:commandLink title="Abmelden" reRender="table-#{tabId}">
 						<a4j:actionparam name="entryId" assignTo="#{bean.entryId}" value="#{rosterDto.entity.id}" 
 							actionListener="#{bean.signOut}" />
@@ -111,29 +99,25 @@
 						<h:outputText styleClass="actionText" value="Abmelden" />
 					</a4j:commandLink>
 				</h:panelGroup>
-				<h:panelGroup rendered="#{not empty rosterDto.entity.realEndDate}">
+				<h:panelGroup rendered="#{not empty rosterDto.entity.realEndDateTime}">
 					<h:outputText value="#{rosterDto.entity.realEndDate}">
-						<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
-					</h:outputText>
-					<h:outputText value=" " />
-					<h:outputText value="#{rosterDto.entity.realEndTime}">
-						<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 					</h:outputText>
 				</h:panelGroup>
 			</rich:column>
-			<rich:column sortBy="#{rosterDto.entity.assignment.name}">
+			<rich:column styleClass="#{rosterDto.styleClass}" sortBy="#{rosterDto.entity.assignment.name}">
 				<f:facet name="header">
 					<h:outputText value="Verwendung" />
 				</f:facet>
 				<h:outputText value="#{rosterDto.entity.assignment.name}" />
 			</rich:column>
-			<rich:column sortBy="#{rosterDto.entity.serviceType.name}">
+			<rich:column styleClass="#{rosterDto.styleClass}" sortBy="#{rosterDto.entity.serviceType.name}">
 				<f:facet name="header">
 					<h:outputText value="Dienstverhältnis" />
 				</f:facet>
 				<h:outputText value="#{rosterDto.entity.serviceType.name}" />
 			</rich:column>
-			<rich:column styleClass="smallColumn">
+			<rich:column styleClass="smallColumn #{rosterDto.styleClass}">
 				<f:facet name="header">
 					<h:outputText value="Aktionen" />
 				</f:facet>

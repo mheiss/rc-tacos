@@ -14,43 +14,43 @@ import org.richfaces.component.html.HtmlComboBox;
 @FacesConverter(value = "converter.dropDown")
 public class DropDownConverter implements Converter {
 
-	@Override
-	public Object getAsObject(FacesContext context, UIComponent component, String value) {
-		HtmlComboBox box = (HtmlComboBox) component;
-		for (UIComponent child : box.getChildren()) {
-			UISelectItems childItem = (UISelectItems) child;
+    @Override
+    public Object getAsObject(FacesContext context, UIComponent component, String value) {
+        HtmlComboBox box = (HtmlComboBox) component;
+        for (UIComponent child : box.getChildren()) {
+            UISelectItems childItem = (UISelectItems) child;
 
-			@SuppressWarnings("unchecked")
-			List<SelectItem> items = (List<SelectItem>) childItem.getValue();
-			for (SelectItem item : items) {
-				DropDownItem downItem = (DropDownItem) item.getValue();
-				if (value.equals(downItem.getLabel())) {
-					return downItem.getValue();
-				}
-			}
-		}
-		return null;
-	}
+            @SuppressWarnings("unchecked")
+            List<SelectItem> items = (List<SelectItem>) childItem.getValue();
+            for (SelectItem item : items) {
+                DropDownItem downItem = (DropDownItem) item.getValue();
+                if (value.equals(downItem.getLabel())) {
+                    return downItem.getValue();
+                }
+            }
+        }
+        return null;
+    }
 
-	@Override
-	public String getAsString(FacesContext context, UIComponent component, Object value) {
-		HtmlComboBox box = (HtmlComboBox) component;
-		for (UIComponent child : box.getChildren()) {
-			UISelectItems childItem = (UISelectItems) child;
+    @Override
+    public String getAsString(FacesContext context, UIComponent component, Object value) {
+        HtmlComboBox box = (HtmlComboBox) component;
+        for (UIComponent child : box.getChildren()) {
+            UISelectItems childItem = (UISelectItems) child;
 
-			@SuppressWarnings("unchecked")
-			List<SelectItem> items = (List<SelectItem>) childItem.getValue();
-			for (SelectItem item : items) {
-				DropDownItem downItem = (DropDownItem) item.getValue();
-				if (downItem.equals(value)) {
-					return downItem.getLabel();
-				}
-				if (downItem.getValue().equals(value)) {
-					return downItem.getLabel();
-				}
-			}
-		}
-		return "";
-	}
+            @SuppressWarnings("unchecked")
+            List<SelectItem> items = (List<SelectItem>) childItem.getValue();
+            for (SelectItem item : items) {
+                DropDownItem downItem = (DropDownItem) item.getValue();
+                if (downItem.equals(value)) {
+                    return downItem.getLabel();
+                }
+                if (downItem.getValue().equals(value)) {
+                    return downItem.getLabel();
+                }
+            }
+        }
+        return "";
+    }
 
 }

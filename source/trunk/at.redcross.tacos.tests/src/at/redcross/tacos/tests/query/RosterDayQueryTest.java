@@ -11,6 +11,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import at.redcross.tacos.dbal.entity.DataState;
 import at.redcross.tacos.dbal.entity.RosterEntry;
 import at.redcross.tacos.dbal.helper.AssignmentHelper;
 import at.redcross.tacos.dbal.helper.LocationHelper;
@@ -42,14 +43,45 @@ public class RosterDayQueryTest extends BaseDbalTest {
             RosterEntry entry = new RosterEntry();
             entry.setNotes("note");
             entry.setAssignment(AssignmentHelper.getByName(manager, "Fahrer"));
-            entry.setLocation(LocationHelper.getByName(manager, "Bruck"));
+            entry.setLocation(LocationHelper.getByName(manager, "Location_A"));
             entry.setServiceType(ServiceTypeHelper.getByName(manager, "Hauptamtlich"));
-            entry.setSystemUser(SystemUserHelper.getByLogin(manager, "m.heiss"));
-            entry.setPlannedStartTime(DateHelper.parseTime("12:30"));
-            entry.setPlannedStartDate(DateHelper.parseDate("31.07.2010"));
-
-            entry.setPlannedEndTime(DateHelper.parseTime("14:30"));
-            entry.setPlannedEndDate(DateHelper.parseDate("01.08.2010"));
+            entry.setSystemUser(SystemUserHelper.getByLogin(manager, "tacos"));
+            entry.setPlannedStartDateTime(DateHelper.parseDateTime("01.07.2010 12:30"));
+            entry.setPlannedEndDateTime(DateHelper.parseDateTime("02.07.2010 14:30"));
+            manager.persist(entry);
+        }
+        {
+            RosterEntry entry = new RosterEntry();
+            entry.setNotes("note");
+            entry.setAssignment(AssignmentHelper.getByName(manager, "Fahrer"));
+            entry.setLocation(LocationHelper.getByName(manager, "Location_A"));
+            entry.setServiceType(ServiceTypeHelper.getByName(manager, "Hauptamtlich"));
+            entry.setSystemUser(SystemUserHelper.getByLogin(manager, "tacos"));
+            entry.setPlannedStartDateTime(DateHelper.parseDateTime("20.07.2010 12:30"));
+            entry.setPlannedEndDateTime(DateHelper.parseDateTime("20.07.2010 14:30"));
+            manager.persist(entry);
+        }
+        {
+            RosterEntry entry = new RosterEntry();
+            entry.setNotes("note");
+            entry.setAssignment(AssignmentHelper.getByName(manager, "Fahrer"));
+            entry.setLocation(LocationHelper.getByName(manager, "Location_A"));
+            entry.setServiceType(ServiceTypeHelper.getByName(manager, "Hauptamtlich"));
+            entry.setSystemUser(SystemUserHelper.getByLogin(manager, "tacos"));
+            entry.setPlannedStartDateTime(DateHelper.parseDateTime("20.07.2010 12:30"));
+            entry.setPlannedEndDateTime(DateHelper.parseDateTime("20.07.2010 14:30"));
+            entry.setState(DataState.DELETE);
+            manager.persist(entry);
+        }
+        {
+            RosterEntry entry = new RosterEntry();
+            entry.setNotes("note");
+            entry.setAssignment(AssignmentHelper.getByName(manager, "Fahrer"));
+            entry.setLocation(LocationHelper.getByName(manager, "Location_A"));
+            entry.setServiceType(ServiceTypeHelper.getByName(manager, "Hauptamtlich"));
+            entry.setSystemUser(SystemUserHelper.getByLogin(manager, "tacos"));
+            entry.setPlannedStartDateTime(DateHelper.parseDateTime("10.07.2010 12:30"));
+            entry.setPlannedEndDateTime(DateHelper.parseDateTime("15.07.2010 14:30"));
             manager.persist(entry);
         }
         EntityManagerHelper.commit(manager);
@@ -65,38 +97,115 @@ public class RosterDayQueryTest extends BaseDbalTest {
     }
 
     @Test
-    public void testQueryDayEntry() throws Exception {
-        Date date = DateHelper.parseDate("30.07.2010");
+    public void testRangeBefore() throws Exception {
+        Date date = DateHelper.parseDate("09.07.2010");
         List<RosterEntry> rosterList = RosterEntryHelper.listByDay(manager, getParam(date));
         Assert.assertEquals(0, rosterList.size());
     }
 
     @Test
-    public void testQueryDayEntry2() throws Exception {
-        Date date = DateHelper.parseDate("31.07.2010");
+    public void testRangeStart() throws Exception {
+        Date date = DateHelper.parseDate("10.07.2010");
         List<RosterEntry> rosterList = RosterEntryHelper.listByDay(manager, getParam(date));
         Assert.assertEquals(1, rosterList.size());
+        Assert.assertEquals("10.07.2010", DateHelper.formatDate(rosterList.get(0)
+                .getPlannedStartDateTime()));
+        Assert.assertEquals("15.07.2010", DateHelper.formatDate(rosterList.get(0)
+                .getPlannedEndDateTime()));
     }
 
     @Test
-    public void testQueryDayEntry3() throws Exception {
-        Date date = DateHelper.parseDate("01.08.2010");
+    public void testRangeBetween() throws Exception {
+        Date date = DateHelper.parseDate("12.07.2010");
         List<RosterEntry> rosterList = RosterEntryHelper.listByDay(manager, getParam(date));
         Assert.assertEquals(1, rosterList.size());
+        Assert.assertEquals("10.07.2010", DateHelper.formatDate(rosterList.get(0)
+                .getPlannedStartDateTime()));
+        Assert.assertEquals("15.07.2010", DateHelper.formatDate(rosterList.get(0)
+                .getPlannedEndDateTime()));
     }
 
     @Test
-    public void testQueryDayEntry4() throws Exception {
-        Date date = DateHelper.parseDate("02.08.2010");
+    public void testRangeEnd() throws Exception {
+        Date date = DateHelper.parseDate("15.07.2010");
+        List<RosterEntry> rosterList = RosterEntryHelper.listByDay(manager, getParam(date));
+        Assert.assertEquals(1, rosterList.size());
+        Assert.assertEquals("10.07.2010", DateHelper.formatDate(rosterList.get(0)
+                .getPlannedStartDateTime()));
+        Assert.assertEquals("15.07.2010", DateHelper.formatDate(rosterList.get(0)
+                .getPlannedEndDateTime()));
+    }
+
+    @Test
+    public void testRangeAfter() throws Exception {
+        Date date = DateHelper.parseDate("16.07.2010");
         List<RosterEntry> rosterList = RosterEntryHelper.listByDay(manager, getParam(date));
         Assert.assertEquals(0, rosterList.size());
     }
 
     @Test
-    public void testQueryDayEntry5() throws Exception {
-        Date date = DateHelper.parseDate("16.06.2010");
+    public void testSingleDay() throws Exception {
+        Date date = DateHelper.parseDate("20.07.2010");
         List<RosterEntry> rosterList = RosterEntryHelper.listByDay(manager, getParam(date));
-        Assert.assertEquals(0, rosterList.size());
+        Assert.assertEquals(1, rosterList.size());
+        Assert.assertEquals("20.07.2010", DateHelper.formatDate(rosterList.get(0)
+                .getPlannedStartDateTime()));
+        Assert.assertEquals("20.07.2010", DateHelper.formatDate(rosterList.get(0)
+                .getPlannedEndDateTime()));
+    }
+
+    @Test
+    public void testSingleLocked() throws Exception {
+        Date date = DateHelper.parseDate("20.07.2010");
+        RosterQueryParam param = getParam(date);
+        param.stateDelete = true;
+        param.stateNormal = false;
+        List<RosterEntry> rosterList = RosterEntryHelper.listByDay(manager, param);
+        Assert.assertEquals(1, rosterList.size());
+        Assert.assertEquals("20.07.2010", DateHelper.formatDate(rosterList.get(0)
+                .getPlannedStartDateTime()));
+        Assert.assertEquals("20.07.2010", DateHelper.formatDate(rosterList.get(0)
+                .getPlannedEndDateTime()));
+    }
+    
+    @Test
+    public void testSingleLockedNotLocked() throws Exception {
+        Date date = DateHelper.parseDate("20.07.2010");
+        RosterQueryParam param = getParam(date);
+        param.stateDelete = true;
+        param.stateNormal = true;
+        List<RosterEntry> rosterList = RosterEntryHelper.listByDay(manager, param);
+        Assert.assertEquals(2, rosterList.size());
+        Assert.assertEquals("20.07.2010", DateHelper.formatDate(rosterList.get(0)
+                .getPlannedStartDateTime()));
+        Assert.assertEquals("20.07.2010", DateHelper.formatDate(rosterList.get(0)
+                .getPlannedEndDateTime()));
+        Assert.assertEquals("20.07.2010", DateHelper.formatDate(rosterList.get(1)
+                .getPlannedStartDateTime()));
+        Assert.assertEquals("20.07.2010", DateHelper.formatDate(rosterList.get(1)
+                .getPlannedEndDateTime()));
+    }
+
+    @Test
+    public void testSpanStart() throws Exception {
+        Date date = DateHelper.parseDate("01.07.2010");
+        List<RosterEntry> rosterList = RosterEntryHelper.listByDay(manager, getParam(date));
+        Assert.assertEquals(1, rosterList.size());
+        Assert.assertEquals("01.07.2010", DateHelper.formatDate(rosterList.get(0)
+                .getPlannedStartDateTime()));
+        Assert.assertEquals("02.07.2010", DateHelper.formatDate(rosterList.get(0)
+                .getPlannedEndDateTime()));
+    }
+
+    @Test
+    public void testSpanEnd() throws Exception {
+        Date date = DateHelper.parseDate("02.07.2010");
+        List<RosterEntry> rosterList = RosterEntryHelper.listByDay(manager, getParam(date));
+        Assert.assertEquals(1, rosterList.size());
+        Assert.assertEquals("01.07.2010", DateHelper.formatDate(rosterList.get(0)
+                .getPlannedStartDateTime()));
+        Assert.assertEquals("02.07.2010", DateHelper.formatDate(rosterList.get(0)
+                .getPlannedEndDateTime()));
     }
 
     private RosterQueryParam getParam(Date date) {
