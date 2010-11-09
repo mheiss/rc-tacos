@@ -17,12 +17,14 @@ import at.redcross.tacos.dbal.query.RosterQueryParam;
 
 public class RosterEntryHelper {
 
+	/** Returns a list of entries for the given day */
 	public static List<RosterEntry> listByDay(EntityManager manager, RosterQueryParam param) {
 		param.startDate = DateUtils.truncate(param.startDate, Calendar.DAY_OF_MONTH);
 		param.endDate = DateUtils.addDays(param.startDate, 1);
 		return list(manager, param);
 	}
 
+	/** Returns a list of entries in the given week of the year */
 	public static List<RosterEntry> listByWeek(EntityManager manager, RosterQueryParam param) {
 		// determine the current week
 		Calendar paramStartCal = Calendar.getInstance();
@@ -47,6 +49,7 @@ public class RosterEntryHelper {
 		return list(manager, param);
 	}
 
+	/** Returns a list of entries for the given parameters */
 	public static List<RosterEntry> list(EntityManager manager, RosterQueryParam param) {
 		param.startDate = DateUtils.truncate(param.startDate, Calendar.DAY_OF_MONTH);
 		param.endDate = DateUtils.truncate(param.endDate, Calendar.DAY_OF_MONTH);
@@ -98,6 +101,7 @@ public class RosterEntryHelper {
 		return query.getResultList();
 	}
 
+	/** Returns whether or not the given entries are the same */
 	public static boolean isSameEntity(RosterEntry lhs, RosterEntry rhs) {
 		if (lhs == null || rhs == null) {
 			return false;
