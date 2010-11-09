@@ -55,9 +55,17 @@ public class RosterEntryHelper {
 		builder.append(" FROM RosterEntry entry ");
 		builder.append(" WHERE ");
 		builder.append(" ( ");
-		builder.append(" entry.plannedStartDateTime BETWEEN :start AND :end ");
-		builder.append("  OR  ");
-		builder.append(" entry.plannedEndDateTime BETWEEN :start AND :end ");
+		builder.append(" 	( ");
+		builder.append(" 		entry.plannedStartDateTime BETWEEN :start AND :end ");
+		builder.append("  		OR  ");
+		builder.append(" 		entry.plannedEndDateTime BETWEEN :start AND :end ");
+		builder.append(" 	) ");
+		builder.append(" 	OR ");
+		builder.append(" 	( ");
+		builder.append(" 		entry.plannedStartDateTime <= :start ");
+		builder.append(" 		AND  ");
+		builder.append(" 		:end <= entry.plannedEndDateTime ");
+		builder.append(" 	) ");
 		builder.append(" ) ");
 		builder.append(" AND entry.state IN (:states)");
 		if (param.location != null) {
