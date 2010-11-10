@@ -3,19 +3,22 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich" xmlns:pretty="http://ocpsoft.com/prettyfaces">
 <body>
 <ui:composition>
-	<a4j:jsFunction name="submit" actionListener="#{bean.markToDelete}" reRender="page-content" />
+
 	<ui:decorate template="/WEB-INF/templates/widgets/confirmPanel.xhtml">
 		<ui:param name="panelId" value="confirmDeleteInfoPanel" />
-		<ui:param name="panelHeader" value="Information löschen?" />
-		
+		<ui:param name="panelHeader" value="Mitteilung löschen?" />
+	
+		<ui:param name="panelBean" value="#{bean}" />
+		<ui:param name="panelAction" value="markToDelete" />
+
 		<ui:define name="panelContent">
-			<h:outputText value="Wollen sie wirklich den Info-Eintrag löschen?" />
+			<h:outputText value="Wollen sie wirklich den folgende Mitteilung löschen?" />
 			<p>
 				<h:outputLabel value="Information" styleClass="label" /> 
 				<h:outputText value="#{bean.info.entity.shortName}" />
 			</p>
 			<p>
-				<h:graphicImage library="images/16x16" name="warning.png" styleClass="linkImage" />
+				<h:graphicImage library="images/16x16" name="warning.png" styleClass="linkImage" /> 
 				<h:outputText value="Diese Aktion kann nicht mehr Rückgängig gemacht werden" styleClass="linkText" />
 			</p>
 		</ui:define>
