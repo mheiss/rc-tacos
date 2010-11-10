@@ -182,7 +182,7 @@
 			<p>	
 				<h:outputText value="Die zugewiesenen Kompetenzen definieren welche Ausbildung der Benutzer hat. Sie werden nicht weiter im System ausgewertet." /> 
 			</p>
-			<h:panelGroup id="competenceAction" rendered="#{webPermissionBean.authorizedToEditCompetence}">
+			<h:panelGroup id="competenceAction" rendered="#{userMaintenanceBean.editCompetenceEnabled}">
 				<h:outputLabel for="competence" value="Kompetenz: " styleClass="leftAligned" />
 				<div class="input">
 					<rich:comboBox id="competence" value="#{userMaintenanceBean.selectedCompetence}" 
@@ -224,7 +224,7 @@
 			<p>
 				<h:outputText value="Die zugewiesenen Gruppen definieren welche Aktionen der Benutzer durchführen kann und auf welche Seiten er Zugriff hat." /> 
 			</p>
-			<h:panelGroup id="groupAction" rendered="#{webPermissionBean.authorizedToEditRole}">
+			<h:panelGroup id="groupAction" rendered="#{userMaintenanceBean.editRoleEnabled}">
 				<h:outputLabel for="group" value="Gruppe: " styleClass="leftAligned" />
 				<div class="input">
 					<rich:comboBox id="group" value="#{userMaintenanceBean.selectedGroup}" 

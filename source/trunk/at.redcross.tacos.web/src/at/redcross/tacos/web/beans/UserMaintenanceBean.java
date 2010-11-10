@@ -214,6 +214,38 @@ public class UserMaintenanceBean extends BaseBean {
             }
         }
     }
+    
+    /**
+	 * Returns whether or not the current authenticated user can edit (delete or change) a role
+	 * entry. The following restrictions are considered:
+	 * <ul>
+	 * <li>Principal must have the permission to edit a role</li>
+	 * </ul>
+	 */
+	public boolean isEditRoleEnabled() {
+		// editing is allowed for principals with permission
+		if (FacesUtils.lookupBean(WebPermissionBean.class).isAuthorizedToEditRole()) {
+			return true;
+		}
+		// edit denied
+		return false;
+	}
+	
+	/**
+	 * Returns whether or not the current authenticated user can edit (delete or change) a competence
+	 * The following restrictions are considered:
+	 * <ul>
+	 * <li>Principal must have the permission to edit a competence</li>
+	 * </ul>
+	 */
+	public boolean isEditCompetenceEnabled() {
+		// editing is allowed for principals with permission
+		if (FacesUtils.lookupBean(WebPermissionBean.class).isAuthorizedToEditCompetence()) {
+			return true;
+		}
+		// edit denied
+		return false;
+	}
 
     // ---------------------------------
     // Setters for the properties
