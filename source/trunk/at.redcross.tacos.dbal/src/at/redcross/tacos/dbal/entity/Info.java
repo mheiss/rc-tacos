@@ -35,7 +35,7 @@ public class Info extends EntityImpl {
 	@Column
 	private String shortName;
 
-	@Column
+	@Column(length=4096)
 	private String description;
 
 	@Temporal(TemporalType.DATE)

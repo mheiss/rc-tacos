@@ -31,7 +31,7 @@ public class Car extends EntityImpl {
 	@Column
 	private boolean outOfOrder;
 
-	@Column
+	@Column(length=1024)
 	private String notes;
 
 	@ManyToOne(optional = false, fetch = FetchType.EAGER)

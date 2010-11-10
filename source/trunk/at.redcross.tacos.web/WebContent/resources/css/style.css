@@ -167,11 +167,8 @@ fieldset.defaultStyle .input .textfield {
 }
 
 fieldset.defaultStyle .rich-calendar-button {
-	margin-right: 1.5em;
-}
-
-fieldset.defaultStyle .rich-calendar-input,fieldset.defaultStyle .rich-calendar-button {
 	margin-top: -0.3em;
+	margin-right: 1.5em;
 }
 
 fieldset.defaultStyle span.hint {
