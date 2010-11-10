@@ -38,6 +38,7 @@ public class InfoMaintenanceBean extends BaseBean {
 			loadfromDatabase(manager, infoId);
 			if (!isEditEnabled()) {
 				FacesUtils.redirectAccessDenied("Entry '" + info + "' cannot be edited");
+				return;
 			}
 			locationItems = SelectableItemHelper.convertToItems(LocationHelper.list(manager));
 			categoryItems = SelectableItemHelper.convertToItems(CategoryHelper.list(manager));

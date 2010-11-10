@@ -7,18 +7,22 @@
 <ui:composition>
 	<div id="primary-menu">
 		<ul class="menu">
-			<li class="tab #{section eq 'home' ? 'active' : ''}">
-				<pretty:link mappingId="home"> <h:outputText value="Home" /> </pretty:link>
-			</li>
+			<h:panelGroup>
+				<li class="tab #{section eq 'home' ? 'active' : ''}">
+					<pretty:link mappingId="home"> <h:outputText value="Home" /> </pretty:link>
+				</li>
+			</h:panelGroup>
 			<h:panelGroup rendered="#{permissionBean.authorizedToAccessRosterArea}">
 				<li class="tab #{section eq 'roster' ? 'active' : ''}">
 					<pretty:link mappingId="roster-dayOverview"><h:outputText value="Dienstplan" /></pretty:link>
 				</li>
 			</h:panelGroup>
-			<li class="tab #{section eq 'info' ? 'active' : ''}">
-				<pretty:link mappingId="info-currentOverview"><h:outputText value="Informationen" /></pretty:link>
-			</li>
-			<h:panelGroup rendered="#{permissionBean.authorizedToAccessAdminArea}">
+			<h:panelGroup rendered="#{permissionBean.authorizedToAccessInfoArea}">
+				<li class="tab #{section eq 'info' ? 'active' : ''}">
+					<pretty:link mappingId="info-currentOverview"><h:outputText value="Informationen" /></pretty:link>
+				</li>
+			</h:panelGroup>
+			<h:panelGroup rendered="#{permissionBean.authorizedToAccessStatisticArea}">
 				<li class="tab #{section eq 'statistic' ? 'active' : ''}">
 					<pretty:link mappingId="statistic-adminOverview" > <h:outputText value="Statistik" /> </pretty:link>
 				</li>

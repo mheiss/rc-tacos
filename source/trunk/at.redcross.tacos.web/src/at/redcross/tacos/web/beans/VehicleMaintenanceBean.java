@@ -40,6 +40,7 @@ public class VehicleMaintenanceBean extends BaseBean {
 			loadfromDatabase(manager, carId);
 			if (!FacesUtils.lookupBean(WebPermissionBean.class).isAuthorizedToEditVehicle()) {
 				FacesUtils.redirectAccessDenied("Entry '" + car + "' cannot be edited");
+				return;
 			}
 			locationItems = SelectableItemHelper.convertToItems(LocationHelper.list(manager));
 		} finally {
