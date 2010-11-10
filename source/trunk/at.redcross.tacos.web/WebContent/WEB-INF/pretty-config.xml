@@ -84,7 +84,7 @@
 	
 	<!-- ################ STATISTIC ####################### -->
 	<url-mapping id="statistic-adminOverview">
-		<pattern>/statistic/admin</pattern>
+		<pattern>/statistic</pattern>
 		<view-id>/WEB-INF/pages/statistic/statisticAdminOverview.faces</view-id>
 		<action onPostback="false">#{rosterStatisticOverviewBean.prettyInit}</action>
 	</url-mapping>
@@ -115,6 +115,7 @@
 		<view-id>/WEB-INF/pages/info/infoMaintenance.faces</view-id>
 		<action onPostback="false">#{infoMaintenanceBean.prettyInit}</action>
 	</url-mapping>
+	
 	<!-- ################ INFO - USER ####################### -->
 	<url-mapping id="info-userCreateMaintenance">
 		<pattern>/info/user/create</pattern>

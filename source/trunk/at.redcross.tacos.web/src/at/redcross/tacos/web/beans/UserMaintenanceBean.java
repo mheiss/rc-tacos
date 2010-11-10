@@ -75,6 +75,7 @@ public class UserMaintenanceBean extends BaseBean {
             loadfromDatabase(manager, userId);
             if (!FacesUtils.lookupBean(WebPermissionBean.class).isAuthorizedToEditUser()) {
                 FacesUtils.redirectAccessDenied("Entry '" + systemUser + "' cannot be edited");
+                return;
             }
             competenceItems = SelectableItemHelper.convertToItems(CompetenceHelper.list(manager));
             locationItems = SelectableItemHelper.convertToItems(LocationHelper.list(manager));

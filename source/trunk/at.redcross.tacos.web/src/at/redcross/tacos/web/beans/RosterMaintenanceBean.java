@@ -59,6 +59,7 @@ public class RosterMaintenanceBean extends BaseBean {
             RosterDto dto = new RosterDto(rosterEntry);
             if (!isNew() && !dto.isEditEnabled()) {
                 FacesUtils.redirectAccessDenied("Entry '" + rosterEntry + "' cannot be edited");
+                return;
             }
             entryStartDate = entryStartTime = rosterEntry.getPlannedStartDateTime();
             entryEndDate = entryEndTime = rosterEntry.getPlannedEndDateTime();

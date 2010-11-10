@@ -46,10 +46,19 @@ public class WebPermissionBean extends WebPermissionManager {
     public boolean isAuthorizedToAccessAdminArea() {
         return canAccessResource("admin-home");
     }
+    
+    public boolean isAuthorizedToAccessStatisticArea() {
+        return canAccessResource("statistic-adminOverview");
+    }
 
     public boolean isAuthorizedToAccessRosterArea() {
         return canAccessResource("roster-dayOverview");
     }
+    
+    public boolean isAuthorizedToAccessInfoArea() {
+        return canAccessResource("info-currentOverview");
+    }
+
 
     // ---------------------------------
     // Action requests
