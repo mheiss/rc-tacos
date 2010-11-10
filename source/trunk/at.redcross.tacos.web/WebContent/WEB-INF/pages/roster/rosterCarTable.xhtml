@@ -9,7 +9,7 @@
 		</div>
 	</h:panelGroup>
 	<rich:panel rendered="#{not empty values}">
-		<rich:dataTable id="table-#{tabId}"  styleClass="defaultStyle" rendered="#{not empty values}" value="#{values}" var="rosterDto"
+		<rich:dataTable id="table-#{tabId}"  styleClass="defaultStyle" rendered="#{not empty values}" value="#{values}" var="rosterDto" rows="#{bean.maxResults}"
 			onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
 			<rich:column styleClass="smallColumn bold #{rosterDto.styleClass}" sortBy="#{rosterDto.entity.car.name}">
 				<f:facet name="header">

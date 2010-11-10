@@ -10,7 +10,7 @@
 	</h:panelGroup>
 	<rich:panel rendered="#{not empty values}">
 		<rich:datascroller styleClass="defaultScroller" for="table-#{tabId}" maxPages="#{bean.maxResults}" page="#{bean.page}" id="scroller-roster#{tabId}-top" reRender="scroller-roster#{tabId}-bottom" />
-		<rich:dataTable id="table-#{tabId}"  styleClass="defaultStyle" rendered="#{not empty values}" value="#{values}" var="rosterDto"
+		<rich:dataTable id="table-#{tabId}"  styleClass="defaultStyle" rendered="#{not empty values}" value="#{values}" var="rosterDto" rows="#{bean.maxResults}"
 			onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
 			<rich:column styleClass="bold #{rosterDto.styleClass}" sortBy="#{rosterDto.entity.systemUser.lastName}">
 				<f:facet name="header">
