@@ -55,7 +55,7 @@ public class RosterEntry extends EntityImpl {
     @Temporal(TemporalType.TIMESTAMP)
     private Date realEndDateTime;
 
-    @Column
+    @Column(length=1024)
     private String notes;
 
     @Column

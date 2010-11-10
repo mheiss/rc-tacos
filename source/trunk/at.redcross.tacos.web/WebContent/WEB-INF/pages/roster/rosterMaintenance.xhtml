@@ -115,7 +115,7 @@
 		</fieldset>
 		<fieldset class="defaultStyle"><legend><h:outputText value="Dienstzeiten" /></legend>
 		<ol>
-			<li class = "left">
+			<li>
 				<h:outputLabel for="startDate" value="Dienstzeit bis"> <em class="required">*</em> </h:outputLabel>
 				<div class="input">
 					<rich:calendar id="startDate" value="#{rosterMaintenanceBean.entryStartDate}" styleClass="rich-calendar" 
@@ -173,8 +173,12 @@
 		</fieldset>
 		<fieldset class="defaultStyle">
 			<legend><h:outputText value="Anmerkungen" /></legend> 
-			<rich:editor value="#{rosterMaintenanceBean.rosterEntry.notes}" theme="simple" 
-				oninit="smartEditor()" autoResize="true" language="de" />
+			<a4j:outputPanel ajaxRendered="true" id="editorObserver">
+				<p><h:outputText value="#{rosterMaintenanceBean.currentDescLength}/#{rosterMaintenanceBean.maxDescLength} Zeichen" styleClass="italic" /></p>
+			</a4j:outputPanel>
+			<rich:editor id="editor" value="#{rosterMaintenanceBean.rosterEntry.notes}" theme="simple" oninit="smartEditor()" autoResize="true" language="de">
+				<a4j:support event="onchange" reRender="editorObserver" ajaxSingle="true" />				
+			</rich:editor>
 		</fieldset>
 		
 		<fieldset class="defaultStyle last">

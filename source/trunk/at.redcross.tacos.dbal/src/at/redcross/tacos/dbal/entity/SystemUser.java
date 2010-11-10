@@ -52,7 +52,7 @@ public class SystemUser extends EntityImpl {
 	@Temporal(TemporalType.DATE)
 	private Date birthday;
 
-	@Column
+	@Column(length=1024)
 	private String notes;
 
 	@Embedded

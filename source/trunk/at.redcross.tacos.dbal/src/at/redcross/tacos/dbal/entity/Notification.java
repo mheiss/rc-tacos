@@ -28,7 +28,7 @@ public class Notification extends EntityImpl {
 	@Temporal(TemporalType.DATE)
 	private Date entryDate;
 
-	@Column
+	@Column(length=4096)
 	private String notes;
 
 	// ---------------------------------
