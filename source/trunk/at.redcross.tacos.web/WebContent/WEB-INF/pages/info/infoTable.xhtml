@@ -29,8 +29,8 @@
 				</f:facet>
 				<h:outputText value="#{infoDto.entity.category.name}" />
 			</rich:column>
-			<rich:column style="background-color:#aaa;">
-				<pretty:link  rendered="#{infoDto.editEnabled}" mappingId="info-editMaintenance" title="Information bearbeiten">
+			<rich:column styleClass="mediumColumn" style="background-color:#aaa;">
+				<pretty:link rendered="#{infoDto.editEnabled}" mappingId="info-editMaintenance" title="Information bearbeiten">
 					<f:param value="#{infoDto.entity.id}" />
 					<h:graphicImage layout="block" styleClass="actionImage" library="images/16x16" name="edit.png" />
 				</pretty:link>
@@ -39,12 +39,14 @@
 					<h:graphicImage layout="block" library="images/16x16" name="remove.png" />
 				</a4j:commandLink>
 			</rich:column>
-			<rich:column breakBefore = "true" colspan = "5" sortBy="#{infoDto.entity.description}">
+			<rich:column breakBefore="true" colspan="5" sortBy="#{infoDto.entity.description}">
 				<f:facet name="header">
 				</f:facet>
-				<h:outputText escape = "false" value="#{infoDto.entity.description}" />
+				<div class="htmlContent">
+					<h:outputText escape="false" value="#{infoDto.entity.description}" />
+				</div>
 			</rich:column>
-			<rich:column colspan = "2" styleClass="smallColumn">
+			<rich:column colspan="2" styleClass="smallColumn">
 				<f:facet name="header">
 				</f:facet>		
 			</rich:column>

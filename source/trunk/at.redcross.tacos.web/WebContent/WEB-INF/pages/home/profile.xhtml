@@ -89,34 +89,38 @@
 						<h:outputText value="#{loginBean.login.loginName}"  />
 					</div>
 				</li>
-				<li class="right">
+				<!--  <li class="right">
 					<h:outputLabel value="Passwort"> </h:outputLabel>
 					<div class="output">
 						<a4j:commandLink value="Passwort ändern" oncomplete="#{rich:component('changePasswortPanel')}.show();return false;" />					
 					</div>
-				</li>
+				</li> -->
 			</ol>
 		</fieldset>
 		
 		<fieldset class="defaultStyle"> 
 			<legend> <h:outputText value="Ihre Kompetenzen" /> </legend>
-			<h:outputText value="Keine Einträge gefunden" styleClass="italic" rendered="#{empty loginBean.user.competences}" />
-			<div class="output">
+			<h:panelGroup rendered="#{empty loginBean.user.competences}">
+				<p><h:outputText value="Keine Einträge gefunden" styleClass="italic" /></p>
+			</h:panelGroup>
+			<p>
 				<a4j:repeat value="#{loginBean.user.competences}" var="competence" rowKeyVar="rowIndex">
 					<h:outputText value="#{competence.name}" />
 					<h:outputText value=" , " rendered="#{rowIndex lt fn:length(loginBean.user.competences)-1}" />
 				</a4j:repeat>
-			</div>
+			</p>
 		</fieldset>
 		
 		<fieldset class="defaultStyle"> <legend> <h:outputText value="Ihre Benutzergruppen" /> </legend>
-			<h:outputText value="Keine Einträge gefunden" styleClass="italic" rendered="#{empty loginBean.user.groups}" />
-			<div class="output">
+			<h:panelGroup rendered="#{empty loginBean.user.groups}">
+				<p><h:outputText value="Keine Einträge gefunden" styleClass="italic"  /></p>
+			</h:panelGroup>
+			<p>
 				<a4j:repeat value="#{loginBean.user.groups}" var="group" rowKeyVar="rowIndex">
 					<h:outputText value="#{group.name}" />
 					<h:outputText value=" , " rendered="#{rowIndex lt fn:length(loginBean.user.groups)-1}" />
 				</a4j:repeat>
-			</div>
+			</p>
 		</fieldset>
 	</ui:define>
 	

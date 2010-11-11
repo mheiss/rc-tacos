@@ -10,6 +10,18 @@
 	
 	<ui:define name="navigation">
 		<ui:include src="navigation.xhtml" />
+		<ui:decorate template="/WEB-INF/templates/widgets/round-box.xhtml">
+			<ui:define name="block-image">
+				<h:graphicImage library="images/32x32" name="info.png" />
+			</ui:define>
+			<ui:define name="block-title"> <h:outputText value="Anmerkungen" /> </ui:define>
+			<ui:define name="block-content">
+				<a4j:outputPanel ajaxRendered="true" layout="block" styleClass="htmlContent">
+					<h:outputText escape="false" value="#{rosterCarAllocationOverviewBean.notification.notes}" rendered="#{not empty rosterCarAllocationOverviewBean.notification.notes}" />
+					<h:outputText styleClass="italic" value="Keine Anmerkungen vorhanden" rendered="#{empty rosterCarAllocationOverviewBean.notification.notes}" />
+				</a4j:outputPanel>
+			</ui:define>
+		</ui:decorate>		
 	</ui:define>
 
 	<ui:define name="page-header">
@@ -24,7 +36,7 @@
 	
 	<ui:define name="page-toolbar">
 		<li>
-			<a4j:commandLink actionListener="#{rosterCarAllocationOverviewBean.navigateNext}" reRender="dateTitle,filter,rosterTab,rosterFooter">
+			<a4j:commandLink actionListener="#{rosterCarAllocationOverviewBean.navigateNext}" reRender="menu-wrapper,page-content">
 				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="next.png" />
 				<h:outputText styleClass="toolbarText" value="Nächster Tag"  />
 			</a4j:commandLink>
@@ -36,13 +48,13 @@
 			</a4j:htmlCommandLink>
 		</li>
 		<li>
-			<a4j:commandLink actionListener="#{rosterCarAllocationOverviewBean.navigatePrevious}" reRender="dateTitle,filter,rosterTab,rosterFooter">
+			<a4j:commandLink actionListener="#{rosterCarAllocationOverviewBean.navigatePrevious}" reRender="menu-wrapper,page-content">
 				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="back.png" />
 				<h:outputText styleClass="toolbarText" value="Vorheriger Tag"  />
 			</a4j:commandLink>
 		</li>
 		<li>
-			<a4j:commandLink ajaxSingle="false" actionListener="#{rosterCarAllocationOverviewBean.saveEntries}" reRender="dateTitle,filter,rosterTab" title="Speichern">
+			<a4j:commandLink ajaxSingle="false" actionListener="#{rosterCarAllocationOverviewBean.saveEntries}" reRender="menu-wrapper,page-content" title="Speichern">
 				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="save.png" />
 				<h:outputText styleClass="toolbarText" value="Speichern" />
 			</a4j:commandLink>
@@ -65,21 +77,12 @@
 	</ui:define>
 	
 	<ui:define name="rosterFooterPanel">
-		<rich:simpleTogglePanel id="notification" opened="false" label="Anmerkungen" bodyClass="defaultToggleBodyStyle" styleClass="defaultToggleStyle" 
-			switchType="client"	onclick="smartEditor()">
-			<h:panelGroup rendered="#{permissionBean.authorizedToAssignCar}">
-				<fieldset class="defaultStyle">
-					<legend> <h:outputText value="" /> </legend> 
-					<rich:editor id="editor" height="50" value="#{rosterCarAllocationOverviewBean.notification.notes}" theme="simple" 
-						oninit="smartEditor()" autoResize="true" language="de" />
-				</fieldset>
-			</h:panelGroup>
-			<h:panelGroup rendered="#{not permissionBean.authorizedToAssignCar}">
-				<p>
-				<h:outputText escape="false" value="#{rosterCarAllocationOverviewBean.notification.notes}" rendered="#{not empty rosterCarAllocationOverviewBean.notification.notes}" />
-				<h:outputText styleClass="italic" value="Keine Anmerkungen vorhanden" rendered="#{empty rosterCarAllocationOverviewBean.notification.notes}" />
-				</p>
-			</h:panelGroup>
+		<rich:simpleTogglePanel opened="#{not empty rosterCarAllocationOverviewBean.notification.notes}" label="Anmerkungen" bodyClass="defaultToggleBodyStyle" styleClass="defaultToggleStyle" 
+			switchType="client"	onclick="smartEditor()" rendered="#{permissionBean.authorizedToAssignCar}" >
+			<fieldset class="defaultStyle">
+				<legend> <h:outputText value="" /> </legend> 
+				<rich:editor id="editor" height="50" value="#{rosterCarAllocationOverviewBean.notification.notes}" theme="simple" oninit="smartEditor()" autoResize="true" language="de" />
+			</fieldset>
 		</rich:simpleTogglePanel>
 	</ui:define>
 	
