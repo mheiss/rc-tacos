@@ -206,7 +206,7 @@
 				<h:outputText value="Keine Einträge gefunden" styleClass="italic" rendered="#{empty userMaintenanceBean.systemUser.competences}" />
 				<a4j:repeat value="#{userMaintenanceBean.systemUser.competences}" var="competence" rowKeyVar="rowIndex">
 					<h:outputText value="#{competence.name}" />
-					<h:panelGroup rendered="#{webPermissionBean.authorizedToEditCompetence}">
+					<h:panelGroup rendered="#{userMaintenanceBean.editCompetenceEnabled}">
 						<h:outputText value=" ( " />
 						<a4j:commandLink reRender="competenceTable,competence" immediate="true">
 								<a4j:actionparam name="competenceIdParam" assignTo="#{userMaintenanceBean.selectedCompetenceId}" value="#{competence.id}"
@@ -248,9 +248,9 @@
 				<h:outputText value="Keine Einträge gefunden" styleClass="italic" rendered="#{empty userMaintenanceBean.systemUser.groups}" />
 				<a4j:repeat value="#{userMaintenanceBean.systemUser.groups}" var="group" rowKeyVar="rowIndex">
 					<h:outputText value="#{group.name}" />
-					<h:panelGroup rendered="#{webPermissionBean.authorizedToEditRole}">
+					<h:panelGroup rendered="#{userMaintenanceBean.editRoleEnabled}">
 						<h:outputText value=" ( " />
-						<a4j:commandLink rendered="#{userMaintenanceBean.editRoleEnabled}" reRender="group,groupTable" immediate="true">
+						<a4j:commandLink reRender="group,groupTable" immediate="true">
 							<a4j:actionparam name="groupIdParam" assignTo="#{userMaintenanceBean.selectedGroupId}" value="#{group.id}"
 								actionListener="#{userMaintenanceBean.removeGroup}" />
 							<h:graphicImage library="images/16x16" name="remove.png" styleClass="deleteImage" />
