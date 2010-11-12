@@ -5,9 +5,9 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/at.redcross.tacos.datasetup"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/at.redcross.tacos.dbal"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/at.redcross.tacos.hsqldb"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/at.redcross.tacos.logging"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/at.redcross.tacos.web"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/at.redcross.tacos.dbal.lib"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/at.redcross.tacos.hsqldb"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
