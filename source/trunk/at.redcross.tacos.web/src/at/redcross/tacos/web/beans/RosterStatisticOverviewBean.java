@@ -1,9 +1,14 @@
 package at.redcross.tacos.web.beans;
 
+import java.text.DateFormatSymbols;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 import javax.persistence.EntityManager;
 
@@ -18,7 +23,9 @@ import at.redcross.tacos.dbal.helper.ServiceTypeHelper;
 import at.redcross.tacos.dbal.helper.SystemUserHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.dbal.query.RosterQueryParam;
+import at.redcross.tacos.dbal.query.StatisticQueryParam;
 import at.redcross.tacos.web.beans.dto.RosterDto;
+import at.redcross.tacos.web.model.SelectableItem;
 import at.redcross.tacos.web.model.SelectableItemHelper;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
 import at.redcross.tacos.web.reporting.ReportRenderer.ReportRenderParameters;
@@ -44,6 +51,8 @@ public class RosterStatisticOverviewBean extends RosterOverviewBean {
 
     private List<SelectItem> userItems;
     private List<SelectItem> serviceTypeItems;
+    private List<SelectItem> monthItems;
+    private List<SelectItem> yearItems;
 
     private long amount;
 
@@ -89,21 +98,40 @@ public class RosterStatisticOverviewBean extends RosterOverviewBean {
             userItems = SelectableItemHelper.convertToItems(users);
             serviceTypes = ServiceTypeHelper.list(manager);
             serviceTypeItems = SelectableItemHelper.convertToItems(serviceTypes);
+            monthItems = this.createMonthItemEntries();
+            yearItems = this.createYearItemEntries();
         }
         finally {
             manager = EntityManagerHelper.close(manager);
         }
     }
 
+ // ---------------------------------
+    // Actions
+    // ---------------------------------
+    public void filterChanged(ActionEvent event) {
+        EntityManager manager = null;
+        try {
+            // provide default value if date is null
+            //if (date == null) {
+             //   date = TacosDateUtils.getCalendar(System.currentTimeMillis()).getTime();
+            //}
+            manager = EntityManagerFactory.createEntityManager();
+            entries = getEntries(manager, getParamForQuery());
+        } finally {
+            manager = EntityManagerHelper.close(manager);
+        }
+    }
+    
     // ---------------------------------
     // Helper methods
     // ---------------------------------
-    @Override
-    protected RosterQueryParam getParamForQuery() {
-        RosterQueryParam param = new RosterQueryParam();
-        param.startDate = date;
+    protected StatisticQueryParam getParamForStatisticQuery() {
+        StatisticQueryParam param = new StatisticQueryParam();
         param.location = getLocationByName(locationOfRosterEntry);
         param.serviceType = getServiceTypeByName(serviceType);
+        param.year = Integer.parseInt(year);
+        param.month = Integer.parseInt(month);
         return param;
     }
 
@@ -131,6 +159,25 @@ public class RosterStatisticOverviewBean extends RosterOverviewBean {
         }
         return null;
     }
+    
+    private List<SelectItem> createMonthItemEntries() {
+		List<SelectItem> items = new ArrayList<SelectItem>();
+		String[] germanyMonths = new DateFormatSymbols(Locale.GERMANY).getMonths();
+		for (int i = 0; i < germanyMonths.length; i++) {
+			String germanyMonth = germanyMonths[i];
+			//January = 0!
+			items.add(new SelectableItem(germanyMonth, i).getItem());
+		}
+		return items;
+	}
+    
+    private List<SelectItem> createYearItemEntries() {
+		List<SelectItem> items = new ArrayList<SelectItem>();
+		for (int i = 2010; i <= 2015; i++) {
+			items.add(new SelectableItem(String.valueOf(i), i).getItem());
+		}
+		return items;
+	}
 
     // ---------------------------------
     // Setters for the properties
@@ -172,6 +219,22 @@ public class RosterStatisticOverviewBean extends RosterOverviewBean {
 
     public long getAmount() {
         return amount;
+    }
+    
+    public String getMonth(){
+    	return month;
+    }
+    
+    public List<SelectItem> getMonthItems(){
+    	return monthItems;
+    }
+    
+    public String getYear(){
+    	return year;
+    }
+    
+    public List<SelectItem> getYearItems(){
+    	return yearItems;
     }
 
 }
