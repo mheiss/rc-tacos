@@ -82,6 +82,10 @@
 				<f:facet name="header">
 					<h:outputText value="Aktionen" />
 				</f:facet>
+				<a4j:commandLink rendered="#{rosterDto.historyEnabled}" reRender="page-panels" oncomplete="#{rich:component('historyPanel')}.show(); return false;" title="Protokoll anzeigen">
+					<a4j:actionparam name="entryId" assignTo="#{bean.entryId}" value="#{rosterDto.entity.id}" />
+					<h:graphicImage library="images/16x16" name="info.png" />
+				</a4j:commandLink>
 				<pretty:link rendered="#{rosterDto.editEnabled}" mappingId="roster-editMaintenance" title="Dienstplaneintrag bearbeiten">
 					<f:param value="#{rosterDto.entity.id}" />
 					<h:graphicImage styleClass="actionImage" library="images/16x16" name="edit.png" />

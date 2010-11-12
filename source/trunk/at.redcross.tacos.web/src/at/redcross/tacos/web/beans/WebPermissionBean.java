@@ -63,6 +63,10 @@ public class WebPermissionBean extends WebPermissionManager {
     // ---------------------------------
     // Action requests
     // ---------------------------------
+    public boolean isAuthorizedToViewHistory() {
+        return canExecuteAction("view-history");
+    }
+    
     public boolean isAuthorizedToDeleteRoster() {
         return canExecuteAction("roster-deleteEntry");
     }

@@ -6,25 +6,26 @@
 <ui:composition template="/WEB-INF/templates/widgets/modalPanel.xhtml">
 	<ui:param name="panelWidth" value="350" />
 	<ui:param name="panelHeight" value="300" />
-	<ui:param name="panelHeader" value="Änderungshistorie für #{panelEntity.displayString}" />
+	<ui:param name="panelId" value="historyPanel" />
+	<ui:param name="panelHeader" value="Änderungshistorie für #{panelEntry.displayString}" />
 	
-	<ui:define name="content">
-			<h:outputText value="Diesr Datensatz wurde von folgenden Personen geändert:" />
+	<ui:define name="panelContent">
+			<h:outputText value="Dieser Datensatz wurde von folgenden Personen geändert:" />
 			<p>
 				<h:outputLabel value="Geändert von" styleClass="label" /> 
-				<h:outputText value="#{panelEntity.history.changedBy}" /></p>
+				<h:outputText value="#{panelEntry.history.changedBy}" /></p>
 			<p>
 				<h:outputLabel value="Datum:" styleClass="label" /> 
-				<h:outputText value="#{panelBean.history.changedAt}" styleClass="content">
+				<h:outputText value="#{panelEntry.history.changedAt}" styleClass="content">
 					<f:convertDateTime pattern="dd.MM.yyyy HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 				</h:outputText>
 			</p>
 			<p>
 				<h:outputLabel value="Erstellt von" styleClass="label" /> 
-				<h:outputText value="#{panelEntity.history.createdBy}" /></p>
+				<h:outputText value="#{panelEntry.history.createdBy}" /></p>
 			<p>
 				<h:outputLabel value="Datum:" styleClass="label" /> 
-				<h:outputText value="#{panelBean.history.createdAt}" styleClass="content">
+				<h:outputText value="#{panelEntry.history.createdAt}" styleClass="content">
 					<f:convertDateTime pattern="dd.MM.yyyy HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 				</h:outputText>
 			</p>
@@ -37,7 +38,7 @@
 		<div class="right">
 			<div class="center">
 				<h:graphicImage library="images/16x16" name="success.png" styleClass="linkImage" />
-				<h:outputLink onclick="#{rich:component(panelId)}.hide(); return true;" styleClass="linkText">
+				<h:outputLink onclick="#{rich:component(panelId)}.hide(); return false;" styleClass="linkText">
 					<h:outputText value="Schließen" />
 				</h:outputLink>
 			</div>

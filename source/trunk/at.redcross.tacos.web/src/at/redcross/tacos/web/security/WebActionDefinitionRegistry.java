@@ -110,5 +110,11 @@ public class WebActionDefinitionRegistry {
 			definition.setDescription("Fahrzeug anlegen bzw. bearbeiten");
 			definitions.add(definition);
 		}
+		// view history
+		{
+		    WebActionDefinition definition = new WebActionDefinition("view-history");
+		    definition.setDescription("Änderungshistorie eines Datensatzes ansehen");
+		    definitions.add(definition);
+		}
 	}
 }

@@ -62,6 +62,7 @@ public class WebPermissionManager {
         // if no restriction is defined we permit the execution
         String actionExpression = findActionByName(actionName);
         if (actionExpression == null) {
+            log.warn("No action definition for '" + actionName + "' existing");
             return true;
         }
         Expression expression = getExpressionByAction(actionExpression);

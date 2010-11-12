@@ -4,8 +4,9 @@
 <body>
 <ui:composition>
 
+	<!-- Panel to delete a given roster entry -->
 	<ui:decorate template="/WEB-INF/templates/widgets/confirmPanel.xhtml">
-		<ui:param name="panelId" value="confirmDeleteRosterPanel" />
+		<ui:param name="panelId" value="removeRosterPanel" />
 		<ui:param name="panelHeader" value="Dienstplaneintrag löschen?" />
 	
 		<ui:param name="panelBean" value="#{bean}" />
@@ -28,6 +29,12 @@
 			</p>
 		</ui:define>
 	</ui:decorate>
+	
+	<!-- Panel to show the history of a given entry -->
+	<ui:decorate template="/WEB-INF/templates/widgets/historyPanel.xhtml">
+		<ui:param name="panelEntry" value="#{bean.entry.entity}" />
+	</ui:decorate>
+	
 </ui:composition>
 </body>
 </html>

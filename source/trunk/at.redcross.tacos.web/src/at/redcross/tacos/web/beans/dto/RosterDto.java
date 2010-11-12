@@ -99,7 +99,24 @@ public class RosterDto extends GenericDto<RosterEntry> {
         }
         return FacesUtils.lookupBean(WebPermissionBean.class).isAuthorizedToAssignCar();
     }
+    
+    /**
+     * Returns whether or not the current authenticated user can view the history of the entry.
+     * <ul>
+     * <li>Principal must have the permission to view the history</li>
+     * </ul>
+     */
+    public boolean isHistoryEnabled() {
+        return FacesUtils.lookupBean(WebPermissionBean.class).isAuthorizedToViewHistory();
+    }
 
+    /**
+     * Returns the appropriate style class to decorate the resulting list.
+     * Please note that you have to update the <tt>CSS</tt> file when any of the
+     * returned string values is changed.
+     * 
+     * @return the style to apply to this record
+     */
     public String getStyleClass() {
         if (entity.getState().equals(DataState.DELETE)) {
             return "rosterDelete";
