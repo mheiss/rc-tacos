@@ -3,8 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/at.redcross.tacos.dbal"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/at.redcross.tacos.hibernate"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/at.redcross.tacos.logging"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/at.redcross.tacos.hsqldb"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/at.redcross.tacos.dbal.lib"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
