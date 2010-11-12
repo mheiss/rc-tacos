@@ -17,8 +17,8 @@
 		<property name="project.name" value="tacos" />
 		<property name="tacos.web" value="at.redcross.tacos.web" />
 		<property name="tacos.dbal" value="at.redcross.tacos.dbal" />
+		<property name="tacos.dbal.lib" value="at.redcross.tacos.dbal.lib" />
 		<property name="tacos.logging" value="at.redcross.tacos.logging" />
-		<property name="tacos.hibernate" value="at.redcross.tacos.hibernate" />
 		<property name="tacos.builder" value="at.redcross.tacos.build" />
 		<property name="builder.dir" value="${base.dir}/${tacos.builder}/builder" />
 		
@@ -82,7 +82,7 @@
 	<target name="setup-classpath" depends="init">
 		<path id="application.classpath">
 			<fileset dir="${base.dir}/${tacos.dbal}/lib" includes="*.jar" />
-			<fileset dir="${base.dir}/${tacos.hibernate}/lib" includes="*.jar" />
+			<fileset dir="${base.dir}/${tacos.dbal.lib}/lib" includes="*.jar" />
 			<fileset dir="${base.dir}/${tacos.logging}/lib" includes="*.jar" />
 			<fileset dir="${base.dir}/${tacos.web}/WebContent/WEB-INF/lib" includes="*.jar" />
 		</path>
