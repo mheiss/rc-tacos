@@ -5,7 +5,7 @@
 	<projects>
 		<project>at.redcross.tacos.dbal</project>
 		<project>at.redcross.tacos.logging</project>
-		<project>at.redcross.tacos.hsqldb</project>
+		<project>at.redcross.tacos.dbal.lib</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
