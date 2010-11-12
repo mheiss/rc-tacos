@@ -9,7 +9,7 @@
         <dependent-module archiveName="at.redcross.tacos.logging.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/at.redcross.tacos.logging/at.redcross.tacos.logging">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="at.redcross.tacos.hsqldb.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/at.redcross.tacos.hsqldb/at.redcross.tacos.hsqldb">
+        <dependent-module archiveName="at.redcross.tacos.dbal.lib.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/at.redcross.tacos.dbal.lib/at.redcross.tacos.dbal.lib">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="context-root" value="at.redcross.tacos.web"/>
