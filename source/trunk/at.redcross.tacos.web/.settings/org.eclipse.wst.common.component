@@ -6,9 +6,6 @@
         <dependent-module archiveName="at.redcross.tacos.dbal.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/at.redcross.tacos.dbal/at.redcross.tacos.dbal">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="at.redcross.tacos.hibernate.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/at.redcross.tacos.hibernate/at.redcross.tacos.hibernate">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module archiveName="at.redcross.tacos.logging.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/at.redcross.tacos.logging/at.redcross.tacos.logging">
             <dependency-type>uses</dependency-type>
         </dependent-module>

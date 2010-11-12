@@ -4,7 +4,6 @@
 	<comment></comment>
 	<projects>
 		<project>at.redcross.tacos.dbal</project>
-		<project>at.redcross.tacos.hibernate</project>
 		<project>at.redcross.tacos.logging</project>
 		<project>at.redcross.tacos.hsqldb</project>
 	</projects>
