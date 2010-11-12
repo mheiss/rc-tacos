@@ -16,7 +16,128 @@
         <script-data-source name="TacosDataSource" id="75" extends="tacos.TacosDataSource"/>
     </data-sources>
     <data-sets>
-        <script-data-set name="TacosDataSet" id="74" extends="tacos.TacosDataSet"/>
+        <script-data-set name="TacosDataSet" id="74" extends="tacos.TacosDataSet">
+            <list-property name="resultSetHints">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">index</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">name</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">startDateTime</property>
+                    <property name="dataType">date-time</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">serviceType</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">assignment</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">location</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">endDateTime</property>
+                    <property name="dataType">date-time</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">car</property>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">index</property>
+                    <text-property name="displayName">Index</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">name</property>
+                    <text-property name="displayName">Mitarbeiter</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">startDateTime</property>
+                    <text-property name="displayName">Start [Datum/Zeit]</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">serviceType</property>
+                    <text-property name="displayName">Dienstverhältnis</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">assignment</property>
+                    <text-property name="displayName">Verwendung</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">location</property>
+                    <text-property name="displayName">Dienststelle</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">endDateTime</property>
+                    <text-property name="displayName">Ende [Datum/Zeit]</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">car</property>
+                    <text-property name="displayName">Fahrzeug</text-property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">index</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">name</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">startDateTime</property>
+                        <property name="dataType">date-time</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">serviceType</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">assignment</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">location</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">endDateTime</property>
+                        <property name="dataType">date-time</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">car</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+        </script-data-set>
     </data-sets>
     <page-setup>
         <simple-master-page name="TacosMasterPage" id="73" extends="tacos.TacosMasterPage">
@@ -74,8 +195,8 @@
                 </structure>
                 <structure>
                     <property name="name">startDateTime</property>
-                    <expression name="expression" type="javascript">dataSetRow["startTime"]</expression>
-                    <property name="dataType">time</property>
+                    <expression name="expression" type="javascript">dataSetRow["startDateTime"]</expression>
+                    <property name="dataType">date-time</property>
                 </structure>
                 <structure>
                     <property name="name">serviceType</property>
@@ -94,28 +215,8 @@
                 </structure>
                 <structure>
                     <property name="name">endDateTime</property>
-                    <expression name="expression" type="javascript">dataSetRow["endTime"]</expression>
-                    <property name="dataType">time</property>
-                </structure>
-                <structure>
-                    <property name="name">startTime</property>
-                    <expression name="expression" type="javascript">dataSetRow["startTime"]</expression>
-                    <property name="dataType">time</property>
-                </structure>
-                <structure>
-                    <property name="name">startDate</property>
-                    <expression name="expression" type="javascript">dataSetRow["startDate"]</expression>
-                    <property name="dataType">date</property>
-                </structure>
-                <structure>
-                    <property name="name">endTime</property>
-                    <expression name="expression" type="javascript">dataSetRow["endTime"]</expression>
-                    <property name="dataType">time</property>
-                </structure>
-                <structure>
-                    <property name="name">endDate</property>
-                    <expression name="expression" type="javascript">dataSetRow["endDate"]</expression>
-                    <property name="dataType">date</property>
+                    <expression name="expression" type="javascript">dataSetRow["endDateTime"]</expression>
+                    <property name="dataType">date-time</property>
                 </structure>
                 <structure>
                     <property name="name">car</property>
@@ -130,7 +231,7 @@
                     <property name="strength">-1</property>
                 </structure>
                 <structure>
-                    <expression name="key" type="javascript">row["startTime"]</expression>
+                    <expression name="key" type="javascript">row["startDateTime"]</expression>
                     <property name="direction">asc</property>
                     <property name="strength">-1</property>
                 </structure>
