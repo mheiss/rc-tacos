@@ -27,5 +27,11 @@ public class RosterQueryParam {
 
     /** the location of the entry */
     public Location location;
+    
+    /** the year of the statistic result*/
+    public int year;
+    
+    /** the month of the statistic result*/
+    public int month;
 
 }

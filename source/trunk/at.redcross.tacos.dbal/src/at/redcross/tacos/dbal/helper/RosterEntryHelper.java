@@ -1,6 +1,7 @@
 package at.redcross.tacos.dbal.helper;
 
 import java.util.ArrayList;
+
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
@@ -42,6 +43,31 @@ public class RosterEntryHelper {
 		paramEndCal.clear();
 		paramEndCal.set(Calendar.YEAR, startYear);
 		paramEndCal.set(Calendar.WEEK_OF_MONTH, startWeek + 1);
+
+		// pass and request the listing
+		param.startDate = paramStartCal.getTime();
+		param.endDate = paramEndCal.getTime();
+		return list(manager, param);
+	}
+	
+	/** Returns a list of entries for the given statistic parameters */
+	public static List<RosterEntry> listStatistic(EntityManager manager, RosterQueryParam param) {
+		// determine the current week
+		Calendar paramStartCal = Calendar.getInstance();
+		paramStartCal.setTime(param.startDate);
+		int startYear = paramStartCal.get(Calendar.YEAR);
+		int startMonth = paramStartCal.get(Calendar.MONTH);
+
+		// setup the starting calendar
+		paramStartCal.clear();
+		paramStartCal.set(Calendar.YEAR, startYear);
+		paramStartCal.set(Calendar.MONTH, startMonth);
+
+		// setup the ending calendar
+		Calendar paramEndCal = Calendar.getInstance();
+		paramEndCal.clear();
+		paramEndCal.set(Calendar.YEAR, startYear);
+		paramEndCal.set(Calendar.MONTH, startMonth + 1);
 
 		// pass and request the listing
 		param.startDate = paramStartCal.getTime();

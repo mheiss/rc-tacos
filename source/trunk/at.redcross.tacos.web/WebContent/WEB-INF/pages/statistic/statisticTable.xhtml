@@ -76,67 +76,67 @@
 				</f:facet>
 			</rich:column>	
 			
-			<rich:subTable onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'" rendered="#{not empty values}" value="#{rosterDto}" var="rosterDto">
+			<rich:subTable onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'" rendered="#{not empty values}" value="#{rosterDto.entity}" var="rosterDto">
 				<rich:column styleClass="smallColumn">
 					<f:facet name="header">
 						<rich:spacer />
 					</f:facet>
 					<a4j:outputPanel layout="block">
 						<rich:toolTip styleClass="tooltipDefault" followMouse="false" direction="top-right" layout="block" verticalOffset="35">
-							<h:outputText value="#{rosterDto.entity.notes}" escape="false" />
+							<h:outputText value="#{rosterDto.notes}" escape="false" />
 							<div class="tooltip-image" />
 						</rich:toolTip>
-						<h:graphicImage library="images/16x16" name="notes.png" rendered="#{not empty rosterDto.entity.notes}" />
+						<h:graphicImage library="images/16x16" name="notes.png" rendered="#{not empty rosterDto.notes}" />
 					</a4j:outputPanel>
 				</rich:column>
 				<rich:column>
-					<h:outputText value="#{rosterDto.entity.location.name}" />
+					<h:outputText value="#{rosterDto.location.name}" />
 				</rich:column>
 				<rich:column>
-					<h:outputText value="#{rosterDto.entity.plannedStartDateTime}">
+					<h:outputText value="#{rosterDto.plannedStartDateTime}">
 						<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 					</h:outputText>
 					<h:outputText value=" " />
-					<h:outputText value="#{rosterDto.entity.plannedStartDateTime}">
+					<h:outputText value="#{rosterDto.plannedStartDateTime}">
 						<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 					</h:outputText>
 				</rich:column>
 				<rich:column>
 					<h:panelGroup>
-						<h:outputText value="#{rosterDto.entity.plannedEndDateTime}">
+						<h:outputText value="#{rosterDto.plannedEndDateTime}">
 							<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 						</h:outputText>
 						<h:outputText value=" " />
-						<h:outputText value="#{rosterDto.entity.plannedEndDateTime}">
+						<h:outputText value="#{rosterDto.plannedEndDateTime}">
 							<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 						</h:outputText>
 					</h:panelGroup>
 				</rich:column>
 				<rich:column>
-					<h:outputText value="#{rosterDto.entity.realStartDateTime}">
+					<h:outputText value="#{rosterDto.realStartDateTime}">
 						<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 					</h:outputText>
 					<h:outputText value=" " />
-					<h:outputText value="#{rosterDto.entity.realStartDateTime}">
+					<h:outputText value="#{rosterDto.realStartDateTime}">
 						<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 					</h:outputText>
 				</rich:column>
 				<rich:column>
 					<h:panelGroup>
-						<h:outputText value="#{rosterDto.entity.realEndDateTime}">
+						<h:outputText value="#{rosterDto.realEndDateTime}">
 							<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 						</h:outputText>
 						<h:outputText value=" " />
-						<h:outputText value="#{rosterDto.entity.realEndDateTime}">
+						<h:outputText value="#{rosterDto.realEndDateTime}">
 							<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 						</h:outputText>
 					</h:panelGroup>
 				</rich:column>
 				<rich:column>
-					<h:outputText value="#{rosterDto.entity.assignment.name}" />
+					<h:outputText value="#{rosterDto.assignment.name}" />
 				</rich:column>
 				<rich:column>
-					<h:outputText value="#{rosterDto.entity.serviceType.name}" />
+					<h:outputText value="#{rosterDto.serviceType.name}" />
 				</rich:column>
 				<rich:column>
 					<h:outputText value="#{rosterStatisticOverviewBean.amount}" />

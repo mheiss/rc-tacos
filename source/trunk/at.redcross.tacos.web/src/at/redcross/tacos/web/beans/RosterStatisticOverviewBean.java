@@ -2,6 +2,7 @@ package at.redcross.tacos.web.beans;
 
 import java.text.DateFormatSymbols;
 
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,7 +14,6 @@ import javax.faces.model.SelectItem;
 import javax.persistence.EntityManager;
 
 import org.ajax4jsf.model.KeepAlive;
-import org.apache.commons.lang.time.DateUtils;
 
 import at.redcross.tacos.dbal.entity.ServiceType;
 import at.redcross.tacos.dbal.entity.SystemUser;
@@ -23,7 +23,6 @@ import at.redcross.tacos.dbal.helper.ServiceTypeHelper;
 import at.redcross.tacos.dbal.helper.SystemUserHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.dbal.query.RosterQueryParam;
-import at.redcross.tacos.dbal.query.StatisticQueryParam;
 import at.redcross.tacos.web.beans.dto.RosterDto;
 import at.redcross.tacos.web.model.SelectableItem;
 import at.redcross.tacos.web.model.SelectableItemHelper;
@@ -55,31 +54,11 @@ public class RosterStatisticOverviewBean extends RosterOverviewBean {
     private List<SelectItem> yearItems;
 
     private long amount;
-
-    @Override
-    protected Date getPreviousDate(Date date) {
-        return DateUtils.addDays(date, -1);
+    
+    protected List<RosterDto> getStatisticEntries(EntityManager manager, RosterQueryParam params) {
+        return RosterDto.fromList(RosterEntryHelper.listStatistic(manager, params));
     }
 
-    @Override
-    protected Date getNextDate(Date date) {
-        return DateUtils.addDays(date, +1);
-    }
-
-    @Override
-    protected List<RosterDto> getEntries(EntityManager manager, RosterQueryParam params) {
-        return RosterDto.fromList(RosterEntryHelper.listByDay(manager, params));
-    }
-
-    @Override
-    protected ReportRenderParameters getReportParams() {
-        ReportRenderParameters params = new ReportRenderParameters();
-        params.reportName = "Dienstplan_" + sdfFile.format(date) + ".pdf";
-        params.reportFile = "rosterDayReport.rptdesign";
-        params.arguments.put("reportParam", getParamForReport());
-        params.arguments.put("reportDate", date);
-        return params;
-    }
 
     // ---------------------------------
     // Initialization
@@ -109,6 +88,7 @@ public class RosterStatisticOverviewBean extends RosterOverviewBean {
  // ---------------------------------
     // Actions
     // ---------------------------------
+    @Override
     public void filterChanged(ActionEvent event) {
         EntityManager manager = null;
         try {
@@ -117,7 +97,7 @@ public class RosterStatisticOverviewBean extends RosterOverviewBean {
              //   date = TacosDateUtils.getCalendar(System.currentTimeMillis()).getTime();
             //}
             manager = EntityManagerFactory.createEntityManager();
-            entries = getEntries(manager, getParamForQuery());
+            entries = getStatisticEntries(manager, getParamForStatisticQuery());
         } finally {
             manager = EntityManagerHelper.close(manager);
         }
@@ -126,12 +106,13 @@ public class RosterStatisticOverviewBean extends RosterOverviewBean {
     // ---------------------------------
     // Helper methods
     // ---------------------------------
-    protected StatisticQueryParam getParamForStatisticQuery() {
-        StatisticQueryParam param = new StatisticQueryParam();
+    protected RosterQueryParam getParamForStatisticQuery() {
+        RosterQueryParam param = new RosterQueryParam();
         param.location = getLocationByName(locationOfRosterEntry);
         param.serviceType = getServiceTypeByName(serviceType);
         param.year = Integer.parseInt(year);
         param.month = Integer.parseInt(month);
+        //param.systemUserId =
         return param;
     }
 
@@ -236,5 +217,34 @@ public class RosterStatisticOverviewBean extends RosterOverviewBean {
     public List<SelectItem> getYearItems(){
     	return yearItems;
     }
+
+
+	@Override
+	protected List<RosterDto> getEntries(EntityManager manager,
+			RosterQueryParam param) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	protected Date getNextDate(Date date) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	protected Date getPreviousDate(Date date) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	protected ReportRenderParameters getReportParams() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
