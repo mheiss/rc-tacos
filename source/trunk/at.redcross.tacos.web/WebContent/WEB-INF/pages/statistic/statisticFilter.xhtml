@@ -4,7 +4,7 @@
 	xmlns:birt="http://jsf4birt.components">
 <body>
 <ui:composition>
-	<rich:simpleTogglePanel id="filter" opened="true" label="Filter" bodyClass="defaultToggleBodyStyle" styleClass="defaultToggleStyle" switchType="client">
+	<rich:simpleTogglePanel id="statisticFilter" opened="true" label="Filter" bodyClass="defaultToggleBodyStyle" styleClass="defaultToggleStyle" switchType="client">
 		<fieldset class="defaultStyle">
 			<ol>
 				<li class="left">				
@@ -16,7 +16,7 @@
 							<f:validator validatorId="validator.selectableItem" />
 							<f:converter converterId="converter.selectableItem" />
 							<rich:ajaxValidator event="onchange" />
-							<a4j:support event="onchanged" actionListener="#{bean.filterChanged}" reRender="filter, statisticTable" />
+							<a4j:support event="onchanged" actionListener="#{rosterStatisticOverviewBean.filterChanged}" reRender="statisticFilter, statisticTable" />
 						</rich:comboBox> 
 						<rich:message for="locationOfUser" errorClass="error" />
 							<span class="hint">
@@ -33,6 +33,7 @@
 							<f:validator validatorId="validator.selectableItem" />
 							<f:converter converterId="converter.selectableItem" />
 							<rich:ajaxValidator event="onchange" />
+							<a4j:support event="onchanged" actionListener="#{rosterStatisticOverviewBean.filterChanged}" reRender="statisticFilter, statisticTable" />
 						</rich:comboBox> 
 						<rich:message for="systemUserName" errorClass="error" />
 					</div>
@@ -46,6 +47,7 @@
 							<f:validator validatorId="validator.selectableItem" />
 							<f:converter converterId="converter.selectableItem" />
 							<rich:ajaxValidator event="onchange" />
+							<a4j:support event="onchanged" actionListener="#{rosterStatisticOverviewBean.filterChanged}" reRender="statisticFilter, statisticTable" />
 						</rich:comboBox> 
 						<rich:message for="locationOfRosterEntry" errorClass="error" />
 							<span class="hint">
@@ -62,6 +64,7 @@
 							<f:validator validatorId="validator.selectableItem" />
 							<f:converter converterId="converter.selectableItem" />
 							<rich:ajaxValidator event="onchange" />
+							<a4j:support event="onchanged" actionListener="#{rosterStatisticOverviewBean.filterChanged}" reRender="statisticFilter, statisticTable" />
 						</rich:comboBox> 
 						<rich:message for="serviceType" errorClass="error" />
 					</div>
@@ -75,6 +78,7 @@
 							<f:validator validatorId="validator.selectableItem" />
 							<f:converter converterId="converter.selectableItem" />
 							<rich:ajaxValidator event="onchange" />
+							<a4j:support event="onchanged" actionListener="#{rosterStatisticOverviewBean.filterChanged}" reRender="statisticFilter, statisticTable" />
 						</rich:comboBox> 
 						<rich:message for="month" errorClass="error" />
 					</div>
@@ -88,6 +92,7 @@
 							<f:validator validatorId="validator.selectableItem" />
 							<f:converter converterId="converter.selectableItem" />
 							<rich:ajaxValidator event="onchange" />
+							<a4j:support event="onchanged" actionListener="#{rosterStatisticOverviewBean.filterChanged}" reRender="statisticFilter, statisticTable" />
 						</rich:comboBox> 
 						<rich:message for="year" errorClass="error" />
 					</div>
