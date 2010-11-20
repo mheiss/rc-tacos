@@ -9,112 +9,75 @@
 		</div>
 	</h:panelGroup>
 	<rich:panel rendered="#{not empty values}">
-		<rich:dataTable id="table-#{tabId}"  styleClass="defaultStyle" rendered="#{not empty values}" value="#{values}" var="rosterDto"
-			onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
-		
-			<rich:column styleClass="bold" sortBy="#{rosterDto.entity.systemUser.lastName}">
-				<f:facet name="header">
-					<h:outputText value="Mitarbeiter" />
-				</f:facet>
-				<h:outputText value="#{rosterDto.entity.systemUser.lastName} #{rosterDto.entity.systemUser.firstName}" />
+		<rich:dataTable id="table-#{tabId}"  styleClass="defaultStyle" rendered="#{not empty values}" value="#{values}" var="rosterDto">
+
+			<f:facet name="header">
+				<rich:columnGroup>
+					<rich:column>
+						<h:outputText value="Start [p]" />
+					</rich:column>
+					<rich:column>
+						<h:outputText value="Ende [p]" />
+					</rich:column>
+					<rich:column>
+						<h:outputText value="Start [r]" />
+					</rich:column>
+					<rich:column>
+						<h:outputText value="Ende [r]" />
+					</rich:column>
+					<rich:column>
+						<h:outputText value="Dienststelle" />
+					</rich:column>
+					<rich:column>
+						<h:outputText value="Verwendung" />
+					</rich:column>
+					<rich:column>
+						<h:outputText value="Dienstverhältniss" />
+					</rich:column>
+					<rich:column>
+						<h:outputText value="Stunden" />
+					</rich:column>
+				</rich:columnGroup>
+			</f:facet>
+
+			<rich:column styleClass="bold" sortBy="#{rosterDto.systemUser.lastName}" colspan="8">
+				<h:outputText value="#{rosterDto.systemUser.lastName} #{rosterDto.systemUser.firstName}" />
 			</rich:column>
-			
-			<rich:column styleClass="mediumColumn" sortBy="#{rosterDto.entity.location.name}">
-				<f:facet name="header">
-					<h:outputText value="Dienststelle" />
-				</f:facet>
-			</rich:column>
-			<rich:column styleClass="center" sortBy="#{rosterDto.entity.plannedStartTime}">
-				<f:facet name="header">
-					<h:panelGroup>
-						<h:outputText value="Dienstzeit von" />
-						<br />
-						<h:outputText value="[geplant]" />
-					</h:panelGroup>
-				</f:facet>	
-			</rich:column>
-			<rich:column styleClass="center" sortBy="#{rosterDto.entity.plannedEndTime}">
-				<f:facet name="header">
-					<h:panelGroup>
-						<h:outputText value="Dienstzeit bis" />
-						<br />
-						<h:outputText value="[geplant]" />
-					</h:panelGroup>
-				</f:facet>
-			</rich:column>
-			<rich:column styleClass="center" sortBy="#{rosterDto.entity.realStartTime}">
-				<f:facet name="header">
-					<h:panelGroup>
-						<h:outputText value="Dienstzeit von" />
-						<br />
-						<h:outputText value="[real]" />
-					</h:panelGroup>
-				</f:facet>
-			</rich:column>
-			<rich:column styleClass="center" sortBy="#{rosterDto.entity.realEndTime}">
-				<f:facet name="header">
-					<h:panelGroup>
-						<h:outputText value="Dienstzeit bis" />
-						<br />
-						<h:outputText value="[real]" />
-					</h:panelGroup>
-				</f:facet>
-			</rich:column>
-			<rich:column sortBy="#{rosterDto.entity.assignment.name}">
-				<f:facet name="header">
-					<h:outputText value="Verwendung" />
-				</f:facet>
-			</rich:column>
-			<rich:column sortBy="#{rosterDto.entity.serviceType.name}">
-				<f:facet name="header">
-					<h:outputText value="Dienstverhältnis" />
-				</f:facet>
-			</rich:column>	
-			<rich:subTable onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'" rendered="#{not empty values}" value="#{rosterDto.entity}" var="rosterDto">
-				<rich:column styleClass="smallColumn">
-					<f:facet name="header">
-						<rich:spacer />
-					</f:facet>
-					<a4j:outputPanel layout="block">
-						<rich:toolTip styleClass="tooltipDefault" followMouse="false" direction="top-right" layout="block" verticalOffset="35">
-							<h:outputText value="#{rosterDto.notes}" escape="false" />
-							<div class="tooltip-image" />
-						</rich:toolTip>
-						<h:graphicImage library="images/16x16" name="notes.png" rendered="#{not empty rosterDto.notes}" />
-					</a4j:outputPanel>
-				</rich:column>
+
+			<rich:subTable value="#{rosterDto.entryList}" var="rosterEntry">
 				<rich:column>
-					<h:outputText value="#{rosterDto.location.name}" />
-				</rich:column>
-				<rich:column>
-					<h:outputText value="#{rosterDto.plannedStartDateTime}">
+					<h:outputText value="#{rosterEntry.plannedStartDateTime}">
 						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 					</h:outputText>
 				</rich:column>
 				<rich:column>
-					<h:panelGroup>
-						<h:outputText value="#{rosterDto.plannedEndDateTime}">
-							<f:convertDateTime pattern="dd.MM.yyyy HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
-						</h:outputText>
-					</h:panelGroup>
-				</rich:column>
-				<rich:column>
-					<h:outputText value="#{rosterDto.realStartDateTime}">
+					<h:outputText value="#{rosterEntry.plannedEndDateTime}">
 						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 					</h:outputText>
 				</rich:column>
 				<rich:column>
-					<h:panelGroup>
-						<h:outputText value="#{rosterDto.realEndDateTime}">
-							<f:convertDateTime pattern="dd.MM.yyyy HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
-						</h:outputText>
-					</h:panelGroup>
+					<h:outputText value="#{rosterEntry.realStartDateTime}">
+						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+					</h:outputText>
 				</rich:column>
 				<rich:column>
-					<h:outputText value="#{rosterDto.assignment.name}" />
+					<h:outputText value="#{rosterEntry.realEndDateTime}">
+						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+					</h:outputText>
 				</rich:column>
 				<rich:column>
-					<h:outputText value="#{rosterDto.serviceType.name}" />
+					<h:outputText value="#{rosterEntry.location.name}" />
+				</rich:column>
+				<rich:column>
+					<h:outputText value="#{rosterEntry.assignment.name}" />
+				</rich:column>
+				<rich:column>
+					<h:outputText value="#{rosterEntry.serviceType.name}" />
+				</rich:column>
+				<rich:column>
+					 <f:facet name="footer">
+					 	<h:outputText value="#{rosterDto.amount}" />
+					 </f:facet>
 				</rich:column>
 			</rich:subTable>
 	</rich:dataTable>
