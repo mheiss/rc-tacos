@@ -15,16 +15,13 @@
 	<ui:define name="page-header">
 		<h:graphicImage library="images/32x32" name="statistic2.png" />
 		<h2 class="title">
-			<h:outputText value="Adminstatistik am " />
-			<h:outputText id="dateTitle" value="#{rosterStatisticOverviewBean.date}">
-				<f:convertDateTime pattern="E, dd.MMMMM yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
-			</h:outputText>
+			<h:outputText value="Adminstatistik" />
 		</h2>
 	</ui:define>
 	
 	<ui:define name="page-toolbar">
 		<li>
-			<a4j:htmlCommandLink actionListener="#{rosterStatisticOverviewBean.createPdfReport}">
+			<a4j:htmlCommandLink actionListener="#{rosterAdminStatisticsBean.createPdfReport}">
 				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="pdf.png" />
 				<h:outputText styleClass="toolbarText" value="Exportieren"  />
 			</a4j:htmlCommandLink>
@@ -32,11 +29,18 @@
 	</ui:define>
 
 	<ui:define name="page-content">
-		<ui:decorate template="statisticFilter.xhtml">
-			<ui:param name="bean" value="#{rosterStatisticOverviewBean}" />
+		<a4j:outputPanel ajaxRendered="true">
+			<rich:messages errorClass="errorMessage" globalOnly="true" />
+		</a4j:outputPanel>
+		<ui:decorate template="adminStatisticFilter.xhtml">
+			<ui:param name="bean" value="#{rosterAdminStatisticsBean}" />
 		</ui:decorate>
-		<ui:decorate template="statisticTabPanel.xhtml">
-			<ui:param name="bean" value="#{rosterStatisticOverviewBean}" />
+		<ui:decorate template="adminStatisticSearchPanel.xhtml">
+			<ui:param name="bean" value="#{rosterAdminStatisticsBean}" />
+		</ui:decorate>
+		<ui:decorate template="adminStatisticTable.xhtml">
+			<ui:param name="tabId" value="roster" />
+			<ui:param name="values" value="#{rosterAdminStatisticsBean.rosterEntries}" />
 		</ui:decorate>
 	</ui:define>
 </ui:composition>

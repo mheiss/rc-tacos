@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DateFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Locale;
@@ -18,6 +17,8 @@ import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+
+import com.ibm.icu.text.NumberFormat;
 
 /**
  * The {@code RosterParser} provides static helper methods to parses a given
@@ -51,7 +52,7 @@ public class RosterParser {
 
     /** offset for the next relevant cell index */
     private final static int COLUMN_OFFSET = 4;
-    
+
     /** cell number (zero based) containing the <tt>day</tt> */
     private final static int COLUMN_DAY = 1;
 
@@ -103,8 +104,7 @@ public class RosterParser {
         try {
             in = new FileInputStream(file);
             return new HSSFWorkbook(in);
-        }
-        finally {
+        } finally {
             IOUtils.closeQuietly(in);
         }
     }
@@ -233,7 +233,9 @@ public class RosterParser {
                 if (DateUtil.isCellDateFormatted(cell)) {
                     return sdf.format(cell.getDateCellValue());
                 }
-                return NumberFormat.getInstance().format(cell.getNumericCellValue());
+                NumberFormat format = NumberFormat.getIntegerInstance();
+                format.setGroupingUsed(false);
+                return format.format(cell.getNumericCellValue());
         }
         return "";
     }

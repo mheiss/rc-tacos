@@ -13,11 +13,8 @@ import org.apache.commons.lang.time.DateUtils;
 
 import at.redcross.tacos.dbal.entity.Notification;
 import at.redcross.tacos.dbal.helper.CarHelper;
-import at.redcross.tacos.dbal.helper.LocationHelper;
 import at.redcross.tacos.dbal.helper.NotificationHelper;
-import at.redcross.tacos.dbal.helper.RosterEntryHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
-import at.redcross.tacos.dbal.query.RosterQueryParam;
 import at.redcross.tacos.web.beans.dto.RosterDto;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.model.SelectableItemHelper;
@@ -33,26 +30,15 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
 
     // the suggested values for the drop down boxes
     private List<SelectItem> carItems;
-    private List<SelectItem> locationItems;
 
     // the notification of the day
     private Notification notification;
 
     @Override
-    public void init() throws Exception {
-        EntityManager manager = null;
-        try {
-            manager = EntityManagerFactory.createEntityManager();
-            date = TacosDateUtils.getCalendar(System.currentTimeMillis()).getTime();
-            locations = LocationHelper.list(manager);
-            locationItems = SelectableItemHelper.convertToItems(locations);
-            carItems = SelectableItemHelper.convertToItems(CarHelper.list(manager, false));
-            entries = getEntries(manager, getParamForQuery());
-            notification = getNotification(manager, date);
-        }
-        finally {
-            manager = EntityManagerHelper.close(manager);
-        }
+    protected void init(EntityManager manager) {
+        super.init(manager);
+        carItems = SelectableItemHelper.convertToItems(CarHelper.list(manager, false));
+        notification = getNotification(manager, date);
     }
 
     // ---------------------------------
@@ -67,13 +53,16 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
             }
             manager.merge(notification);
             EntityManagerHelper.commit(manager);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             FacesUtils.addErrorMessage("Die Fahrzeugzuweisung konnte nicht gespeichert werden");
-        }
-        finally {
+        } finally {
             manager = EntityManagerHelper.close(manager);
         }
+    }
+
+    @Override
+    protected Date getInitialDate() {
+        return TacosDateUtils.getCalendar(System.currentTimeMillis()).getTime();
     }
 
     @Override
@@ -87,9 +76,9 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
     }
 
     @Override
-    protected List<RosterDto> getEntries(EntityManager manager, RosterQueryParam param) {
+    protected List<RosterDto> getEntries(EntityManager manager) {
         notification = getNotification(manager, date);
-        return RosterDto.fromList(RosterEntryHelper.listByDay(manager, param));
+        return super.getEntries();
     }
 
     @Override
@@ -97,12 +86,13 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
         ReportRenderParameters params = new ReportRenderParameters();
         params.reportName = "Fahrzeugzuweisung_" + sdfFile.format(date) + ".pdf";
         params.reportFile = "carReport.rptdesign";
-        params.arguments.put("reportParam", getParamForReport());
+        params.arguments.put("reportParam", getFilteredEntries());
         params.arguments.put("reportName", String.format("Fahrzeugzuweisung für %1$s", sdfDisplay
                 .format(date)));
         return params;
     }
 
+    /** Returns the notification entry for the current date or creates a new one */
     protected Notification getNotification(EntityManager manager, Date date) {
         notification = NotificationHelper.getByDate(manager, date);
         if (notification != null) {
@@ -118,10 +108,6 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
     // ---------------------------------
     public List<SelectItem> getCarItems() {
         return carItems;
-    }
-
-    public List<SelectItem> getLocationItems() {
-        return locationItems;
     }
 
     public Notification getNotification() {

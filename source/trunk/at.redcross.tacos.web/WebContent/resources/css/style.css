@@ -359,6 +359,15 @@ table.defaultStyle .rosterDelete {
 	background-color: #CCCCCC;
 }
 
+table.defaultStyle .cellError {
+	color:#000;
+	background-color: #f00;
+}
+
+table.defaultStyle .cellError .rich-inplace-view {
+	background-color: #f00;
+}
+
 /***********************************************************
  Table Editor styling
  **********************************************************/

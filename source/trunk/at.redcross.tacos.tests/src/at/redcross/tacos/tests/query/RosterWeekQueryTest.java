@@ -35,100 +35,103 @@ import at.redcross.tacos.dbal.manager.EntityManagerHelper;
  */
 public class RosterWeekQueryTest extends BaseRosterTest {
 
-	@Before
-	public void setup() throws Exception {
-		// entry spanning one day in KW30
-		{
-			RosterEntry entry = new RosterEntry();
-			entry.setNotes("note");
-			entry.setAssignment(AssignmentHelper.getByName(manager, "Fahrer"));
-			entry.setLocation(LocationHelper.getByName(manager, "Location_A"));
-			entry.setServiceType(ServiceTypeHelper.getByName(manager, "Hauptamtlich"));
-			entry.setSystemUser(SystemUserHelper.getByLogin(manager, "tacos"));
-			entry.setPlannedStartDateTime(DateHelper.parseDateTime("27.07.2010 12:30"));
-			entry.setPlannedEndDateTime(DateHelper.parseDateTime("27.07.2010 14:30"));
-			manager.persist(entry);
-		}
-		// entry spanning two days in KW30
-		{
-			RosterEntry entry = new RosterEntry();
-			entry.setNotes("note");
-			entry.setAssignment(AssignmentHelper.getByName(manager, "Fahrer"));
-			entry.setLocation(LocationHelper.getByName(manager, "Location_A"));
-			entry.setServiceType(ServiceTypeHelper.getByName(manager, "Hauptamtlich"));
-			entry.setSystemUser(SystemUserHelper.getByLogin(manager, "tacos"));
-			entry.setPlannedStartDateTime(DateHelper.parseDateTime("27.07.2010 18:30"));
-			entry.setPlannedEndDateTime(DateHelper.parseDateTime("28.07.2010 06:00"));
-			manager.persist(entry);
-		}
-		// entry spanning KW30 AND 31
-		{
-			RosterEntry entry = new RosterEntry();
-			entry.setNotes("note");
-			entry.setAssignment(AssignmentHelper.getByName(manager, "Fahrer"));
-			entry.setLocation(LocationHelper.getByName(manager, "Location_A"));
-			entry.setServiceType(ServiceTypeHelper.getByName(manager, "Hauptamtlich"));
-			entry.setSystemUser(SystemUserHelper.getByLogin(manager, "tacos"));
-			entry.setPlannedStartDateTime(DateHelper.parseDateTime("01.08.2010 18:30"));
-			entry.setPlannedEndDateTime(DateHelper.parseDateTime("02.08.2010 06:00"));
-			manager.persist(entry);
-		}
-		// entry spanning one day in KW31
-		{
-			RosterEntry entry = new RosterEntry();
-			entry.setNotes("note");
-			entry.setAssignment(AssignmentHelper.getByName(manager, "Fahrer"));
-			entry.setLocation(LocationHelper.getByName(manager, "Location_A"));
-			entry.setServiceType(ServiceTypeHelper.getByName(manager, "Hauptamtlich"));
-			entry.setSystemUser(SystemUserHelper.getByLogin(manager, "tacos"));
-			entry.setPlannedStartDateTime(DateHelper.parseDateTime("06.08.2010 12:30"));
-			entry.setPlannedEndDateTime(DateHelper.parseDateTime("06.08.2010 18:30"));
-			manager.persist(entry);
-		}
-		EntityManagerHelper.commit(manager);
-	}
+    @Before
+    public void setup() throws Exception {
+        // entry spanning one day in KW30
+        {
+            RosterEntry entry = new RosterEntry();
+            entry.setNotes("###JUNIT_TEST###");
+            entry.setAssignment(AssignmentHelper.getByName(manager, "Fahrer"));
+            entry.setLocation(LocationHelper.getByName(manager, "Location_A"));
+            entry.setServiceType(ServiceTypeHelper.getByName(manager, "Hauptamtlich"));
+            entry.setSystemUser(SystemUserHelper.getByLogin(manager, "tacos"));
+            entry.setPlannedStartDateTime(DateHelper.parseDateTime("27.07.2010 12:30"));
+            entry.setPlannedEndDateTime(DateHelper.parseDateTime("27.07.2010 14:30"));
+            manager.persist(entry);
+        }
+        // entry spanning two days in KW30
+        {
+            RosterEntry entry = new RosterEntry();
+            entry.setNotes("###JUNIT_TEST###");
+            entry.setAssignment(AssignmentHelper.getByName(manager, "Fahrer"));
+            entry.setLocation(LocationHelper.getByName(manager, "Location_A"));
+            entry.setServiceType(ServiceTypeHelper.getByName(manager, "Hauptamtlich"));
+            entry.setSystemUser(SystemUserHelper.getByLogin(manager, "tacos"));
+            entry.setPlannedStartDateTime(DateHelper.parseDateTime("27.07.2010 18:30"));
+            entry.setPlannedEndDateTime(DateHelper.parseDateTime("28.07.2010 06:00"));
+            manager.persist(entry);
+        }
+        // entry spanning KW30 AND 31
+        {
+            RosterEntry entry = new RosterEntry();
+            entry.setNotes("###JUNIT_TEST###");
+            entry.setAssignment(AssignmentHelper.getByName(manager, "Fahrer"));
+            entry.setLocation(LocationHelper.getByName(manager, "Location_A"));
+            entry.setServiceType(ServiceTypeHelper.getByName(manager, "Hauptamtlich"));
+            entry.setSystemUser(SystemUserHelper.getByLogin(manager, "tacos"));
+            entry.setPlannedStartDateTime(DateHelper.parseDateTime("01.08.2010 18:30"));
+            entry.setPlannedEndDateTime(DateHelper.parseDateTime("02.08.2010 06:00"));
+            manager.persist(entry);
+        }
+        // entry spanning one day in KW31
+        {
+            RosterEntry entry = new RosterEntry();
+            entry.setNotes("###JUNIT_TEST###");
+            entry.setAssignment(AssignmentHelper.getByName(manager, "Fahrer"));
+            entry.setLocation(LocationHelper.getByName(manager, "Location_A"));
+            entry.setServiceType(ServiceTypeHelper.getByName(manager, "Hauptamtlich"));
+            entry.setSystemUser(SystemUserHelper.getByLogin(manager, "tacos"));
+            entry.setPlannedStartDateTime(DateHelper.parseDateTime("06.08.2010 12:30"));
+            entry.setPlannedEndDateTime(DateHelper.parseDateTime("06.08.2010 18:30"));
+            manager.persist(entry);
+        }
+        EntityManagerHelper.commit(manager);
+    }
 
-	@After
-	public void tearDown() {
-		TypedQuery<RosterEntry> query = manager.createQuery("from RosterEntry", RosterEntry.class);
-		for (RosterEntry entry : query.getResultList()) {
-			if (entry.getNotes().equals("note")) {
-				manager.remove(entry);
-			}
-		}
-		EntityManagerHelper.commit(manager);
-	}
+    @After
+    public void tearDown() {
+        TypedQuery<RosterEntry> query = manager.createQuery("from RosterEntry", RosterEntry.class);
+        for (RosterEntry entry : query.getResultList()) {
+            if (entry.getNotes() == null) {
+                continue;
+            }
+            if (entry.getNotes().equals("###JUNIT_TEST###")) {
+                manager.remove(entry);
+            }
+        }
+        EntityManagerHelper.commit(manager);
+    }
 
-	@Test
-	public void testQueryKW29NoMatch() throws Exception {
-		Date date = DateHelper.parseCustom("2010 29", "yyyy w");
-		List<RosterEntry> result = RosterEntryHelper.listByWeek(manager, getParam(date));
-		Assert.assertEquals(0, result.size());
-	}
+    @Test
+    public void testQueryKW29NoMatch() throws Exception {
+        Date date = DateHelper.parseCustom("2010 29", "yyyy w");
+        List<RosterEntry> result = RosterEntryHelper.list(manager, getParam(date));
+        Assert.assertEquals(0, result.size());
+    }
 
-	@Test
-	public void testQueryKW30MultiMatch() throws Exception {
-		Date date = DateHelper.parseCustom("2010 30", "yyyy w");
-		List<RosterEntry> result = RosterEntryHelper.listByWeek(manager, getParam(date));
-		Assert.assertEquals(3, result.size());
-		Assert.assertTrue(checkStartDate("27.07.2010 12:30", result.get(0)));
-		Assert.assertTrue(checkStartDate("27.07.2010 18:30", result.get(1)));
-		Assert.assertTrue(checkStartDate("01.08.2010 18:30", result.get(2)));
-	}
+    @Test
+    public void testQueryKW30MultiMatch() throws Exception {
+        Date date = DateHelper.parseCustom("2010 30", "yyyy w");
+        List<RosterEntry> result = RosterEntryHelper.list(manager, getParam(date));
+        Assert.assertEquals(3, result.size());
+        Assert.assertTrue(checkStartDate("27.07.2010 12:30", result.get(0)));
+        Assert.assertTrue(checkStartDate("27.07.2010 18:30", result.get(1)));
+        Assert.assertTrue(checkStartDate("01.08.2010 18:30", result.get(2)));
+    }
 
-	@Test
-	public void testQueryKW31MultiMatch() throws Exception {
-		Date date = DateHelper.parseCustom("2010 31", "yyyy w");
-		List<RosterEntry> result = RosterEntryHelper.listByWeek(manager, getParam(date));
-		Assert.assertEquals(2, result.size());
-		Assert.assertTrue(checkStartDate("01.08.2010 18:30", result.get(0)));
-		Assert.assertTrue(checkStartDate("06.08.2010 12:30", result.get(1)));
-	}
+    @Test
+    public void testQueryKW31MultiMatch() throws Exception {
+        Date date = DateHelper.parseCustom("2010 31", "yyyy w");
+        List<RosterEntry> result = RosterEntryHelper.list(manager, getParam(date));
+        Assert.assertEquals(2, result.size());
+        Assert.assertTrue(checkStartDate("01.08.2010 18:30", result.get(0)));
+        Assert.assertTrue(checkStartDate("06.08.2010 12:30", result.get(1)));
+    }
 
-	@Test
-	public void testQueryKW32NoMatch() throws Exception {
-		Date date = DateHelper.parseCustom("2010 32", "yyyy w");
-		List<RosterEntry> result = RosterEntryHelper.listByWeek(manager, getParam(date));
-		Assert.assertEquals(0, result.size());
-	}
+    @Test
+    public void testQueryKW32NoMatch() throws Exception {
+        Date date = DateHelper.parseCustom("2010 32", "yyyy w");
+        List<RosterEntry> result = RosterEntryHelper.list(manager, getParam(date));
+        Assert.assertEquals(0, result.size());
+    }
 }

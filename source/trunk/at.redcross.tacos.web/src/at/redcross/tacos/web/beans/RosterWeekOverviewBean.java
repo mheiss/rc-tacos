@@ -1,18 +1,14 @@
 package at.redcross.tacos.web.beans;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import javax.faces.bean.ManagedBean;
-import javax.persistence.EntityManager;
 
 import org.ajax4jsf.model.KeepAlive;
 import org.apache.commons.lang.time.DateUtils;
 
-import at.redcross.tacos.dbal.helper.RosterEntryHelper;
-import at.redcross.tacos.dbal.query.RosterQueryParam;
-import at.redcross.tacos.web.beans.dto.RosterDto;
 import at.redcross.tacos.web.reporting.ReportRenderer.ReportRenderParameters;
 
 @KeepAlive
@@ -22,6 +18,22 @@ public class RosterWeekOverviewBean extends RosterOverviewBean {
     private static final long serialVersionUID = 8106951839383744965L;
 
     private final SimpleDateFormat sdf = new SimpleDateFormat("w");
+
+    @Override
+    protected Date getInitialDate() {
+        // determine the current week
+        Calendar calendar = Calendar.getInstance();
+        int startYear = calendar.get(Calendar.YEAR);
+        int startWeek = calendar.get(Calendar.WEEK_OF_YEAR);
+
+        // setup the starting calendar
+        calendar.clear();
+        calendar.set(Calendar.YEAR, startYear);
+        calendar.set(Calendar.WEEK_OF_MONTH, startWeek);
+
+        // return the date value
+        return calendar.getTime();
+    }
 
     @Override
     protected Date getNextDate(Date date) {
@@ -38,14 +50,10 @@ public class RosterWeekOverviewBean extends RosterOverviewBean {
         ReportRenderParameters params = new ReportRenderParameters();
         params.reportName = "Dienstplan_KW" + sdf.format(date) + ".pdf";
         params.reportFile = "rosterReport.rptdesign";
-        params.arguments.put("reportParam", getParamForReport());
+        params.arguments.put("reportParam", getFilteredEntries());
         params.arguments.put("reportName", String
                 .format("Dienstplan für KW %1$s", sdf.format(date)));
         return params;
     }
 
-    @Override
-    protected List<RosterDto> getEntries(EntityManager manager, RosterQueryParam params) {
-        return RosterDto.fromList(RosterEntryHelper.listByWeek(manager, params));
-    }
 }

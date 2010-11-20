@@ -46,8 +46,13 @@
 
 
 	<!-- ################ ROSTER ####################### -->
-	<url-mapping id="roster-dayOverview">
+	<url-mapping id="roster-home">
 		<pattern>/roster</pattern>
+		<view-id>/WEB-INF/pages/redirect.faces</view-id>
+		<action>#{navigationDelegationBean.redirectRosterHome}</action>
+	</url-mapping>
+	<url-mapping id="roster-dayOverview">
+		<pattern>/roster/day</pattern>
 		<view-id>/WEB-INF/pages/roster/rosterDayOverview.faces</view-id>
 		<action onPostback="false">#{rosterDayOverviewBean.prettyInit}</action>
 	</url-mapping>
@@ -83,13 +88,23 @@
 	</url-mapping>
 	
 	<!-- ################ STATISTIC ####################### -->
-	<url-mapping id="statistic-adminOverview">
+	<url-mapping id="statistic-home">
 		<pattern>/statistic</pattern>
-		<view-id>/WEB-INF/pages/statistic/statisticAdminOverview.faces</view-id>
-		<action onPostback="false">#{rosterStatisticOverviewBean.prettyInit}</action>
+		<view-id>/WEB-INF/pages/redirect.faces</view-id>
+		<action>#{navigationDelegationBean.redirectStatisticHome}</action>
+	</url-mapping>
+	<url-mapping id="statistic-admin">
+		<pattern>/statistic/admin</pattern>
+		<view-id>/WEB-INF/pages/statistic/adminStatistic.faces</view-id>
+		<action onPostback="false">#{rosterAdminStatisticsBean.prettyInit}</action>
 	</url-mapping>
 	
 	<!-- ################ INFO ####################### -->
+	<url-mapping id="info-home">
+		<pattern>/info</pattern>
+		<view-id>/WEB-INF/pages/redirect.faces</view-id>
+		<action>#{navigationDelegationBean.redirectInfoHome}</action>
+	</url-mapping>
 	<url-mapping id="info-currentOverview">
 		<pattern>/info/current</pattern>
 		<view-id>/WEB-INF/pages/info/infoCurrentOverview.faces</view-id>
@@ -115,8 +130,6 @@
 		<view-id>/WEB-INF/pages/info/infoMaintenance.faces</view-id>
 		<action onPostback="false">#{infoMaintenanceBean.prettyInit}</action>
 	</url-mapping>
-	
-	<!-- ################ INFO - USER ####################### -->
 	<url-mapping id="info-userCreateMaintenance">
 		<pattern>/info/user/create</pattern>
 		<view-id>/WEB-INF/pages/info/userMaintenance.faces</view-id>
@@ -132,8 +145,6 @@
 		<view-id>/WEB-INF/pages/info/userOverview.faces</view-id>
 		<action onPostback="false">#{userOverviewBean.prettyInit}</action>
 	</url-mapping>
-	
-	<!-- ################ INFO - CAR ####################### -->
 	<url-mapping id="info-vehicleCreateMaintenance">
 		<pattern>/info/car/create</pattern>
 		<view-id>/WEB-INF/pages/info/vehicleMaintenance.faces</view-id>
@@ -153,7 +164,12 @@
 	<!-- ################ ADMINISTRATION ####################### -->
 	<url-mapping id="admin-home">
 		<pattern>/admin</pattern>
-		<view-id>/WEB-INF/pages/administration/homeView.faces</view-id>
+		<view-id>/WEB-INF/pages/redirect.faces</view-id>
+		<action>#{navigationDelegationBean.redirectAdminHome}</action>
+	</url-mapping>
+	<url-mapping id="admin-overview">
+		<pattern>/admin/overview</pattern>
+		<view-id>/WEB-INF/pages/administration/home.faces</view-id>
 	</url-mapping>
 	
 	<!-- ################ ADMINISTRATION - COMPETENCE ####################### -->

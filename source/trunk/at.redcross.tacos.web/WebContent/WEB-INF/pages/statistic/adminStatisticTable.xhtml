@@ -70,12 +70,6 @@
 					<h:outputText value="Dienstverhältnis" />
 				</f:facet>
 			</rich:column>	
-			<rich:column sortBy="#{rosterDto.entity.amount}">
-				<f:facet name="header">
-					<h:outputText value="Summe" />
-				</f:facet>
-			</rich:column>	
-			
 			<rich:subTable onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'" rendered="#{not empty values}" value="#{rosterDto.entity}" var="rosterDto">
 				<rich:column styleClass="smallColumn">
 					<f:facet name="header">
@@ -94,41 +88,25 @@
 				</rich:column>
 				<rich:column>
 					<h:outputText value="#{rosterDto.plannedStartDateTime}">
-						<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
-					</h:outputText>
-					<h:outputText value=" " />
-					<h:outputText value="#{rosterDto.plannedStartDateTime}">
-						<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 					</h:outputText>
 				</rich:column>
 				<rich:column>
 					<h:panelGroup>
 						<h:outputText value="#{rosterDto.plannedEndDateTime}">
-							<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
-						</h:outputText>
-						<h:outputText value=" " />
-						<h:outputText value="#{rosterDto.plannedEndDateTime}">
-							<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+							<f:convertDateTime pattern="dd.MM.yyyy HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 						</h:outputText>
 					</h:panelGroup>
 				</rich:column>
 				<rich:column>
 					<h:outputText value="#{rosterDto.realStartDateTime}">
-						<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
-					</h:outputText>
-					<h:outputText value=" " />
-					<h:outputText value="#{rosterDto.realStartDateTime}">
-						<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 					</h:outputText>
 				</rich:column>
 				<rich:column>
 					<h:panelGroup>
 						<h:outputText value="#{rosterDto.realEndDateTime}">
-							<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
-						</h:outputText>
-						<h:outputText value=" " />
-						<h:outputText value="#{rosterDto.realEndDateTime}">
-							<f:convertDateTime pattern="HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+							<f:convertDateTime pattern="dd.MM.yyyy HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 						</h:outputText>
 					</h:panelGroup>
 				</rich:column>
@@ -137,9 +115,6 @@
 				</rich:column>
 				<rich:column>
 					<h:outputText value="#{rosterDto.serviceType.name}" />
-				</rich:column>
-				<rich:column>
-					<h:outputText value="#{rosterStatisticOverviewBean.amount}" />
 				</rich:column>
 			</rich:subTable>
 	</rich:dataTable>

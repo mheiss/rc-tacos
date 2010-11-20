@@ -4,36 +4,34 @@
 	xmlns:birt="http://jsf4birt.components">
 <body>
 <ui:composition>
-	<rich:simpleTogglePanel id="statisticFilter" opened="true" label="Filter" bodyClass="defaultToggleBodyStyle" styleClass="defaultToggleStyle" switchType="client">
+	<rich:simpleTogglePanel id="statisticFilter" opened="true" label="Filter" bodyClass="defaultToggleBodyStyle" styleClass="defaultToggleStyle" switchType="server">
 		<fieldset class="defaultStyle">
 			<ol>
 				<li class="left">				
 					<h:outputLabel for="locationOfUser" value="Dienststelle"> </h:outputLabel>
 					<div class="input left">
-						<rich:comboBox width="350px" id="locationOfUser" value="#{rosterStatisticOverviewBean.locationOfUser}" 
+						<rich:comboBox width="350px" id="locationOfUser" value="#{bean.queryParam.homeLocation}" 
 							selectFirstOnUpdate="false" defaultLabel="Ortsstelle wählen">
-							<f:selectItems value="#{rosterStatisticOverviewBean.locationItems}" />
+							<f:selectItems value="#{bean.locationItems}" />
 							<f:validator validatorId="validator.selectableItem" />
 							<f:converter converterId="converter.selectableItem" />
 							<rich:ajaxValidator event="onchange" />
-							<a4j:support event="onchanged" actionListener="#{rosterStatisticOverviewBean.filterChanged}" reRender="statisticFilter, statisticTable" />
 						</rich:comboBox> 
 						<rich:message for="locationOfUser" errorClass="error" />
-							<span class="hint">
+						<span class="hint">
 							<h:outputText value="Primäre Ortsstelle des Mitarbeiters" />
-							</span>
+						</span>
 					</div>
 				</li>
 				<li class="right">				
 					<h:outputLabel for="systemUserName" value="Mitarbeiter"> </h:outputLabel>
 					<div class="input left">
-						<rich:comboBox width="350px" id="systemUserName" value="#{rosterStatisticOverviewBean.systemUserName}" 
+						<rich:comboBox width="350px" id="systemUserName" value="#{bean.queryParam.systemUser}" 
 							selectFirstOnUpdate="false" defaultLabel="Mitarbeiter wählen">
-							<f:selectItems value="#{rosterStatisticOverviewBean.userItems}" />
+							<f:selectItems value="#{bean.userItems}" />
 							<f:validator validatorId="validator.selectableItem" />
 							<f:converter converterId="converter.selectableItem" />
 							<rich:ajaxValidator event="onchange" />
-							<a4j:support event="onchanged" actionListener="#{rosterStatisticOverviewBean.filterChanged}" reRender="statisticFilter, statisticTable" />
 						</rich:comboBox> 
 						<rich:message for="systemUserName" errorClass="error" />
 					</div>
@@ -41,30 +39,28 @@
 				<li class="left">				
 					<h:outputLabel for="locationOfRosterEntry" value="Dienststelle"> </h:outputLabel>
 					<div class="input left">
-						<rich:comboBox width="350px" id="locationOfRosterEntry" value="#{rosterStatisticOverviewBean.locationOfRosterEntry}" 
+						<rich:comboBox width="350px" id="locationOfRosterEntry" value="#{bean.queryParam.location}" 
 							selectFirstOnUpdate="false" defaultLabel="Ortsstelle wählen">
-							<f:selectItems value="#{rosterStatisticOverviewBean.locationItems}" />
+							<f:selectItems value="#{bean.locationItems}" />
 							<f:validator validatorId="validator.selectableItem" />
 							<f:converter converterId="converter.selectableItem" />
 							<rich:ajaxValidator event="onchange" />
-							<a4j:support event="onchanged" actionListener="#{rosterStatisticOverviewBean.filterChanged}" reRender="statisticFilter, statisticTable" />
 						</rich:comboBox> 
 						<rich:message for="locationOfRosterEntry" errorClass="error" />
-							<span class="hint">
+						<span class="hint">
 							<h:outputText value="Dienststelle, an der die Dienste gemacht wurden" />
-							</span>
+						</span>
 					</div>
 				</li>
 				<li class="right">
 					<h:outputLabel for="serviceType" value="Dienstverhältnis"> </h:outputLabel>
 					<div class="input left">
-						<rich:comboBox width="350px" id="serviceType" value="#{rosterStatisticOverviewBean.serviceType}" 
+						<rich:comboBox width="350px" id="serviceType" value="#{bean.queryParam.serviceType}" 
 							selectFirstOnUpdate="false" defaultLabel="Dienstverhältnis wählen">
-							<f:selectItems value="#{rosterStatisticOverviewBean.serviceTypeItems}" />
+							<f:selectItems value="#{bean.serviceTypeItems}" />
 							<f:validator validatorId="validator.selectableItem" />
 							<f:converter converterId="converter.selectableItem" />
 							<rich:ajaxValidator event="onchange" />
-							<a4j:support event="onchanged" actionListener="#{rosterStatisticOverviewBean.filterChanged}" reRender="statisticFilter, statisticTable" />
 						</rich:comboBox> 
 						<rich:message for="serviceType" errorClass="error" />
 					</div>
@@ -72,13 +68,12 @@
 				<li class="left">
 					<h:outputLabel for="month" value="Monat" />
 					<div class="input left">
-						<rich:comboBox width="150px" id="month" value="#{rosterStatisticOverviewBean.month}" 
+						<rich:comboBox width="150px" id="month" value="#{bean.queryParam.month}" 
 							selectFirstOnUpdate="false" defaultLabel="Monat wählen">
-							<f:selectItems value="#{rosterStatisticOverviewBean.monthItems}" />
+							<f:selectItems value="#{bean.monthItems}" />
 							<f:validator validatorId="validator.selectableItem" />
 							<f:converter converterId="converter.selectableItem" />
 							<rich:ajaxValidator event="onchange" />
-							<a4j:support event="onchanged" actionListener="#{rosterStatisticOverviewBean.filterChanged}" reRender="statisticFilter, statisticTable" />
 						</rich:comboBox> 
 						<rich:message for="month" errorClass="error" />
 					</div>
@@ -86,18 +81,16 @@
 				<li class="right">
 					<h:outputLabel for="year" value="Jahr" />
 					<div class="input left">
-						<rich:comboBox width="150px" id="year" value="#{rosterStatisticOverviewBean.year}" 
+						<rich:comboBox width="150px" id="year" value="#{bean.queryParam.year}" 
 							selectFirstOnUpdate="false" defaultLabel="Jahr wählen">
-							<f:selectItems value="#{rosterStatisticOverviewBean.yearItems}" />
+							<f:selectItems value="#{bean.yearItems}" />
 							<f:validator validatorId="validator.selectableItem" />
 							<f:converter converterId="converter.selectableItem" />
 							<rich:ajaxValidator event="onchange" />
-							<a4j:support event="onchanged" actionListener="#{rosterStatisticOverviewBean.filterChanged}" reRender="statisticFilter, statisticTable" />
 						</rich:comboBox> 
 						<rich:message for="year" errorClass="error" />
 					</div>
 				</li>
-				
 			</ol>
 		</fieldset>
 	</rich:simpleTogglePanel>

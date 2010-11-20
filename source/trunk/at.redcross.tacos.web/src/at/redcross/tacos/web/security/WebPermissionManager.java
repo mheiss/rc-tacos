@@ -28,7 +28,7 @@ import com.ocpsoft.pretty.PrettyContext;
 import com.ocpsoft.pretty.config.PrettyConfig;
 import com.ocpsoft.pretty.config.PrettyUrlMapping;
 
-public class WebPermissionManager {
+public abstract class WebPermissionManager {
 
     private final static Logger log = LoggerFactory.getLogger(WebPermissionBean.class);
 

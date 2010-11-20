@@ -14,6 +14,9 @@ public class RosterParserEntryDto {
     /** custom message field */
     private String message;
 
+    /** the name of the affected cell */
+    private String cellId;
+
     /**
      * Creates a new DTO using the given entry
      */
@@ -43,7 +46,8 @@ public class RosterParserEntryDto {
     // ---------------------------------
     // Setters for the properties
     // ---------------------------------
-    public void setMessage(String message) {
+    public void addMessage(String cellId, String message) {
+        this.cellId = cellId;
         this.message = message;
     }
 
@@ -84,6 +88,10 @@ public class RosterParserEntryDto {
 
     public String getMessage() {
         return message;
+    }
+
+    public String getCellId() {
+        return cellId;
     }
 
     public String getPersonalNumber() {
