@@ -24,43 +24,43 @@
 				</f:facet>
 				<h:graphicImage library="images/16x16" name="data_error.png" title="#{entry.message}" />
 			</rich:column>
-			<rich:column styleClass="bold" sortBy="#{entry.personalNumber}">
+			<rich:column styleClass="#{entry.cellId eq 'systemUser' ? 'cellError' : 'none'}  bold" sortBy="#{entry.personalNumber}">
 				<f:facet name="header">
 					<h:outputText value="Mitarbeiternummer" />
 				</f:facet>
 				<rich:inplaceInput value="#{entry.personalNumber}" layout="block" />
 			</rich:column>
-			<rich:column sortBy="#{entry.day}" styleClass="smallColumn">
+			<rich:column styleClass="smallColumn" sortBy="#{entry.day}" >
 				<f:facet name="header">
 					<h:outputText value="Tag" />
 				</f:facet>
 				<rich:inplaceInput value="#{entry.day}" layout="block" />
 			</rich:column>
-			<rich:column sortBy="#{entry.startTime}" styleClass="center">
+			<rich:column styleClass="#{entry.cellId eq 'startTime' ? 'cellError' : 'none'} center" sortBy="#{entry.startTime}">
 				<f:facet name="header">
 					<h:outputText value="Dienst von" />
 				</f:facet>
 				<rich:inplaceInput value="#{entry.startTime}" layout="block" />
 			</rich:column>
-			<rich:column sortBy="#{entry.endTime}" styleClass="center">
+			<rich:column styleClass="#{entry.cellId eq 'endTime' ? 'cellError' : 'none'} center" sortBy="#{entry.endTime}" >
 				<f:facet name="header">
 					<h:outputText value="Dienst bis" />
 				</f:facet>
 				<rich:inplaceInput value="#{entry.endTime}" layout="block" />
 			</rich:column>
-			<rich:column sortBy="#{entry.locationName}">
+			<rich:column styleClass="#{entry.cellId eq 'location' ? 'cellError' : 'none'}" sortBy="#{entry.locationName}">
 				<f:facet name="header">
 					<h:outputText value="Dienststelle" />
 				</f:facet>
 				<rich:inplaceInput value="#{entry.locationName}" layout="block" />
 			</rich:column>
-			<rich:column sortBy="#{entry.assignmentName}">
+			<rich:column styleClass="#{entry.cellId eq 'assignment' ? 'cellError' : 'none'}" sortBy="#{entry.assignmentName}">
 				<f:facet name="header">
 					<h:outputText value="Verwendung" />
 				</f:facet>
 				<rich:inplaceInput value="#{entry.assignmentName}" layout="block" />
 			</rich:column>
-			<rich:column sortBy="#{entry.serviceTypeName}">
+			<rich:column styleClass="#{entry.cellId eq 'serviceType' ? 'cellError' : 'none'}" sortBy="#{entry.serviceTypeName}">
 				<f:facet name="header">
 					<h:outputText value="Dienstverhältniss" />
 				</f:facet>

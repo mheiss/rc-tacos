@@ -103,14 +103,14 @@ public class RosterDayQueryTest extends BaseRosterTest {
 	@Test
 	public void testRangeBefore() throws Exception {
 		Date date = DateHelper.parseDate("09.07.2010");
-		List<RosterEntry> rosterList = RosterEntryHelper.listByDay(manager, getParam(date));
+		List<RosterEntry> rosterList = RosterEntryHelper.list(manager, getParam(date));
 		Assert.assertEquals(0, rosterList.size());
 	}
 
 	@Test
 	public void testRangeStart() throws Exception {
 		Date date = DateHelper.parseDate("10.07.2010");
-		List<RosterEntry> rosterList = RosterEntryHelper.listByDay(manager, getParam(date));
+		List<RosterEntry> rosterList = RosterEntryHelper.list(manager, getParam(date));
 		Assert.assertEquals(1, rosterList.size());
 		Assert.assertTrue(checkStartDate("10.07.2010 12:30", rosterList.get(0)));
 	}
@@ -118,7 +118,7 @@ public class RosterDayQueryTest extends BaseRosterTest {
 	@Test
 	public void testRangeBetween() throws Exception {
 		Date date = DateHelper.parseDate("12.07.2010");
-		List<RosterEntry> rosterList = RosterEntryHelper.listByDay(manager, getParam(date));
+		List<RosterEntry> rosterList = RosterEntryHelper.list(manager, getParam(date));
 		Assert.assertEquals(1, rosterList.size());
 		Assert.assertTrue(checkStartDate("10.07.2010 12:30", rosterList.get(0)));
 	}
@@ -126,7 +126,7 @@ public class RosterDayQueryTest extends BaseRosterTest {
 	@Test
 	public void testRangeEnd() throws Exception {
 		Date date = DateHelper.parseDate("15.07.2010");
-		List<RosterEntry> rosterList = RosterEntryHelper.listByDay(manager, getParam(date));
+		List<RosterEntry> rosterList = RosterEntryHelper.list(manager, getParam(date));
 		Assert.assertEquals(1, rosterList.size());
 		Assert.assertTrue(checkStartDate("10.07.2010 12:30", rosterList.get(0)));
 	}
@@ -134,14 +134,14 @@ public class RosterDayQueryTest extends BaseRosterTest {
 	@Test
 	public void testRangeAfter() throws Exception {
 		Date date = DateHelper.parseDate("16.07.2010");
-		List<RosterEntry> rosterList = RosterEntryHelper.listByDay(manager, getParam(date));
+		List<RosterEntry> rosterList = RosterEntryHelper.list(manager, getParam(date));
 		Assert.assertEquals(0, rosterList.size());
 	}
 
 	@Test
 	public void testSingleDay() throws Exception {
 		Date date = DateHelper.parseDate("20.07.2010");
-		List<RosterEntry> rosterList = RosterEntryHelper.listByDay(manager, getParam(date));
+		List<RosterEntry> rosterList = RosterEntryHelper.list(manager, getParam(date));
 		Assert.assertEquals(1, rosterList.size());
 		Assert.assertTrue(checkStartDate("20.07.2010 06:30", rosterList.get(0)));
 	}
@@ -152,7 +152,7 @@ public class RosterDayQueryTest extends BaseRosterTest {
 		RosterQueryParam param = getParam(date);
 		param.stateDelete = true;
 		param.stateNormal = false;
-		List<RosterEntry> rosterList = RosterEntryHelper.listByDay(manager, param);
+		List<RosterEntry> rosterList = RosterEntryHelper.list(manager, param);
 		Assert.assertEquals(1, rosterList.size());
 		Assert.assertTrue(checkStartDate("20.07.2010 04:30", rosterList.get(0)));
 	}
@@ -163,7 +163,7 @@ public class RosterDayQueryTest extends BaseRosterTest {
 		RosterQueryParam param = getParam(date);
 		param.stateDelete = true;
 		param.stateNormal = true;
-		List<RosterEntry> rosterList = RosterEntryHelper.listByDay(manager, param);
+		List<RosterEntry> rosterList = RosterEntryHelper.list(manager, param);
 		Assert.assertEquals(2, rosterList.size());
 		Assert.assertTrue(checkStartDate("20.07.2010 06:30", rosterList.get(0)));
 		Assert.assertTrue(checkStartDate("20.07.2010 04:30", rosterList.get(1)));
@@ -172,7 +172,7 @@ public class RosterDayQueryTest extends BaseRosterTest {
 	@Test
 	public void testSpanStart() throws Exception {
 		Date date = DateHelper.parseDate("01.07.2010");
-		List<RosterEntry> rosterList = RosterEntryHelper.listByDay(manager, getParam(date));
+		List<RosterEntry> rosterList = RosterEntryHelper.list(manager, getParam(date));
 		Assert.assertEquals(1, rosterList.size());
 		Assert.assertTrue(checkStartDate("01.07.2010 12:30", rosterList.get(0)));
 	}
@@ -180,7 +180,7 @@ public class RosterDayQueryTest extends BaseRosterTest {
 	@Test
 	public void testSpanEnd() throws Exception {
 		Date date = DateHelper.parseDate("02.07.2010");
-		List<RosterEntry> rosterList = RosterEntryHelper.listByDay(manager, getParam(date));
+		List<RosterEntry> rosterList = RosterEntryHelper.list(manager, getParam(date));
 		Assert.assertEquals(1, rosterList.size());
 		Assert.assertTrue(checkStartDate("01.07.2010 12:30", rosterList.get(0)));
 	}

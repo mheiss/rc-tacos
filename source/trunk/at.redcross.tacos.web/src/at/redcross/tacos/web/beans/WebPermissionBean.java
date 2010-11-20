@@ -1,5 +1,7 @@
 package at.redcross.tacos.web.beans;
 
+import java.io.Serializable;
+
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 
@@ -13,7 +15,9 @@ import at.redcross.tacos.web.security.WebUserDetails;
 
 @KeepAlive
 @ManagedBean(name = "permissionBean")
-public class WebPermissionBean extends WebPermissionManager {
+public class WebPermissionBean extends WebPermissionManager implements Serializable {
+
+    private static final long serialVersionUID = 1368029789717485124L;
 
     @PostConstruct
     protected void init() {
@@ -46,19 +50,18 @@ public class WebPermissionBean extends WebPermissionManager {
     public boolean isAuthorizedToAccessAdminArea() {
         return canAccessResource("admin-home");
     }
-    
+
     public boolean isAuthorizedToAccessStatisticArea() {
-        return canAccessResource("statistic-adminOverview");
+        return canAccessResource("statistic-home");
     }
 
     public boolean isAuthorizedToAccessRosterArea() {
-        return canAccessResource("roster-dayOverview");
-    }
-    
-    public boolean isAuthorizedToAccessInfoArea() {
-        return canAccessResource("info-currentOverview");
+        return canAccessResource("roster-home");
     }
 
+    public boolean isAuthorizedToAccessInfoArea() {
+        return canAccessResource("info-home");
+    }
 
     // ---------------------------------
     // Action requests
@@ -66,7 +69,7 @@ public class WebPermissionBean extends WebPermissionManager {
     public boolean isAuthorizedToViewHistory() {
         return canExecuteAction("view-history");
     }
-    
+
     public boolean isAuthorizedToDeleteRoster() {
         return canExecuteAction("roster-deleteEntry");
     }
@@ -92,7 +95,7 @@ public class WebPermissionBean extends WebPermissionManager {
     }
 
     public boolean isAuthorizedToEditRole() {
-    	return canExecuteAction("user-editRole");
+        return canExecuteAction("user-editRole");
     }
 
     public boolean isAuthorizedToEditCompetence() {

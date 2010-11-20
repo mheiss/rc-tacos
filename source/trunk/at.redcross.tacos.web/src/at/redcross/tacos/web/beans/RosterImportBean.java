@@ -141,8 +141,8 @@ public class RosterImportBean extends PagingBean {
                     convertParsedEntry(manager, entryDto);
                 } catch (Exception ex) {
                     errorEntryList.add(entryDto);
-                    entryDto.setMessage("Fehlerhafte oder unvollständige Daten");
-                    logger.error("Failed to prcess record '" + entryDto + "'", ex);
+                    entryDto.addMessage(null, "Fehlerhafte oder unvollständige Daten");
+                    logger.error("Failed to process record '" + entryDto + "'", ex);
                 }
             }
 
@@ -200,28 +200,28 @@ public class RosterImportBean extends PagingBean {
         // determine the corresponding entities
         Location location = queryLocation(manager, rawEntry.getLocationName());
         if (location == null) {
-            rawEntry.setMessage("Dienststelle nicht vorhanden");
+            rawEntry.addMessage("location", "Dienststelle nicht vorhanden");
             errorEntryList.add(rawEntry);
             return;
         }
 
         SystemUser user = querySystemUser(manager, rawEntry.getPersonalNumber());
         if (user == null) {
-            rawEntry.setMessage("Mitarbeiter nicht vorhanden");
+            rawEntry.addMessage("systemUser", "Mitarbeiter nicht vorhanden");
             errorEntryList.add(rawEntry);
             return;
         }
 
         ServiceType serviceType = queryServiceType(manager, rawEntry.getServiceTypeName());
         if (serviceType == null) {
-            rawEntry.setMessage("Dienstverhältnis nicht vorhanden");
+            rawEntry.addMessage("serviceType", "Dienstverhältnis nicht vorhanden");
             errorEntryList.add(rawEntry);
             return;
         }
 
         Assignment assignment = queryAssignment(manager, rawEntry.getAssignmentName());
         if (assignment == null) {
-            rawEntry.setMessage("Verwendung nicht vorhanden");
+            rawEntry.addMessage("assignment", "Verwendung nicht vorhanden");
             errorEntryList.add(rawEntry);
             return;
         }
@@ -235,12 +235,12 @@ public class RosterImportBean extends PagingBean {
 
         // if start or end is missing then this is a failure
         if (StringUtils.isEmpty(rawEntry.getStartTime())) {
-            rawEntry.setMessage("Startzeitpunkt undefiniert");
+            rawEntry.addMessage("startTime", "Startzeitpunkt undefiniert");
             errorEntryList.add(rawEntry);
             return;
         }
         if (StringUtils.isEmpty(rawEntry.getEndTime())) {
-            rawEntry.setMessage("Endzeitpunkt undefiniert");
+            rawEntry.addMessage("endTime", "Endzeitpunkt undefiniert");
             errorEntryList.add(rawEntry);
             return;
         }

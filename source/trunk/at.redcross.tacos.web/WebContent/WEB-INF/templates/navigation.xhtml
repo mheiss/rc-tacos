@@ -14,17 +14,17 @@
 			</h:panelGroup>
 			<h:panelGroup rendered="#{permissionBean.authorizedToAccessRosterArea}">
 				<li class="tab #{section eq 'roster' ? 'active' : ''}">
-					<pretty:link mappingId="roster-dayOverview"><h:outputText value="Dienstplan" /></pretty:link>
+					<pretty:link mappingId="roster-home"><h:outputText value="Dienstplan" /></pretty:link>
 				</li>
 			</h:panelGroup>
 			<h:panelGroup rendered="#{permissionBean.authorizedToAccessInfoArea}">
 				<li class="tab #{section eq 'info' ? 'active' : ''}">
-					<pretty:link mappingId="info-currentOverview"><h:outputText value="Informationen" /></pretty:link>
+					<pretty:link mappingId="info-home"><h:outputText value="Informationen" /></pretty:link>
 				</li>
 			</h:panelGroup>
 			<h:panelGroup rendered="#{permissionBean.authorizedToAccessStatisticArea}">
 				<li class="tab #{section eq 'statistic' ? 'active' : ''}">
-					<pretty:link mappingId="statistic-adminOverview" > <h:outputText value="Statistik" /> </pretty:link>
+					<pretty:link mappingId="statistic-home" > <h:outputText value="Statistik" /> </pretty:link>
 				</li>
 			</h:panelGroup>
 			<h:panelGroup rendered="#{permissionBean.authorizedToAccessAdminArea}">

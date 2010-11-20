@@ -13,14 +13,9 @@
 
 	<ui:define name="block-content">
 		<ul class="menu">
-			<li class="menu-item #{page eq 'adminOverview' ? 'selected' : ''}">
-				<pretty:link mappingId="statistic-AdminOverview"><h:outputText value="Adminstatistik" /> </pretty:link>
+			<li class="menu-item #{page eq 'adminStatistic' ? 'selected' : ''}">
+				<pretty:link mappingId="statistic-admin"><h:outputText value="Adminstatistik" /> </pretty:link>
 			</li>
-			<!-- 
-			<li class="menu-item #{page eq 'userOverview' ? 'selected' : ''}">
-				<pretty:link mappingId="statistic-UserOverview"><h:outputText value="Mitarbeiterstatistik Dienstplan" /> </pretty:link>
-			</li>
-			 -->
 		</ul>
 	</ui:define>
 </ui:composition>
