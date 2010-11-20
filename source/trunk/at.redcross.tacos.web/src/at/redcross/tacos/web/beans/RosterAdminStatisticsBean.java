@@ -3,8 +3,10 @@ package at.redcross.tacos.web.beans;
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
@@ -16,13 +18,14 @@ import org.ajax4jsf.model.KeepAlive;
 
 import at.redcross.tacos.dbal.entity.DataState;
 import at.redcross.tacos.dbal.entity.RosterEntry;
+import at.redcross.tacos.dbal.entity.SystemUser;
 import at.redcross.tacos.dbal.helper.LocationHelper;
 import at.redcross.tacos.dbal.helper.ServiceTypeHelper;
 import at.redcross.tacos.dbal.helper.SystemUserHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.dbal.query.RosterQueryParam;
 import at.redcross.tacos.dbal.query.RosterStatisticQueryParam;
-import at.redcross.tacos.web.beans.dto.RosterDto;
+import at.redcross.tacos.web.beans.dto.RosterStatisticDto;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.model.SelectableItem;
 import at.redcross.tacos.web.model.SelectableItemHelper;
@@ -38,7 +41,7 @@ public class RosterAdminStatisticsBean extends PagingBean {
     private RosterStatisticQueryParam queryParam = new RosterStatisticQueryParam();
 
     /** the search result to display */
-    private List<RosterDto> rosterEntries;
+    private List<RosterStatisticDto> rosterEntries;
 
     /** values for the drop down fields */
     private List<SelectItem> userItems;
@@ -74,7 +77,24 @@ public class RosterAdminStatisticsBean extends PagingBean {
         try {
             manager = EntityManagerFactory.createEntityManager();
             List<RosterEntry> rosterList = doSearch(manager, queryParam);
-            rosterEntries = RosterDto.fromList(rosterList);
+            // create a mapping between the user and the entries
+            Map<SystemUser, List<RosterEntry>> mapping = new HashMap<SystemUser, List<RosterEntry>>();
+            for (RosterEntry entry : rosterList) {
+                SystemUser user = entry.getSystemUser();
+                List<RosterEntry> list = mapping.get(user);
+                if (list == null) {
+                    list = new ArrayList<RosterEntry>();
+                    mapping.put(user, list);
+                }
+                list.add(entry);
+            }
+            // create the resulting list
+            rosterEntries = new ArrayList<RosterStatisticDto>();
+            for (Map.Entry<SystemUser, List<RosterEntry>> entry : mapping.entrySet()) {
+                RosterStatisticDto dto = new RosterStatisticDto(entry.getKey());
+                dto.addEntires(entry.getValue());
+                rosterEntries.add(dto);
+            }
         } catch (Exception e) {
             FacesUtils.addErrorMessage("Fehler beim suchen der Dienstplaneinträge");
         } finally {
@@ -91,7 +111,7 @@ public class RosterAdminStatisticsBean extends PagingBean {
         String[] germanyMonths = new DateFormatSymbols(Locale.GERMANY).getMonths();
         for (int i = 0; i < germanyMonths.length; i++) {
             String germanyMonth = germanyMonths[i];
-            items.add(new SelectableItem(germanyMonth, i+1).getItem());
+            items.add(new SelectableItem(germanyMonth, i + 1).getItem());
         }
         return items;
     }
@@ -171,7 +191,7 @@ public class RosterAdminStatisticsBean extends PagingBean {
         return queryParam;
     }
 
-    public List<RosterDto> getRosterEntries() {
+    public List<RosterStatisticDto> getRosterEntries() {
         return rosterEntries;
     }
 
