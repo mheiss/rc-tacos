@@ -76,9 +76,9 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
     }
 
     @Override
-    protected List<RosterDto> getEntries(EntityManager manager) {
+    protected List<RosterDto> queryEntries(EntityManager manager) {
         notification = getNotification(manager, date);
-        return super.getEntries();
+        return super.queryEntries(manager);
     }
 
     @Override

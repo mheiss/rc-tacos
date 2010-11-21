@@ -81,7 +81,7 @@ public abstract class RosterBean extends PagingBean {
         EntityManager manager = null;
         try {
             manager = EntityManagerFactory.createEntityManager();
-            entries = getEntries(manager);
+            entries = queryEntries(manager);
         } finally {
             manager = EntityManagerHelper.close(manager);
         }
@@ -91,7 +91,7 @@ public abstract class RosterBean extends PagingBean {
         EntityManager manager = null;
         try {
             manager = EntityManagerFactory.createEntityManager();
-            entries = getEntries(manager);
+            entries = queryEntries(manager);
         } finally {
             manager = EntityManagerHelper.close(manager);
         }
@@ -101,7 +101,7 @@ public abstract class RosterBean extends PagingBean {
     // Roster API
     // ---------------------------------
     /** Loads the roster entries using the query parameters */
-    protected List<RosterDto> getEntries(EntityManager manager) {
+    protected List<RosterDto> queryEntries(EntityManager manager) {
         return RosterDto.fromList(RosterEntryHelper.list(manager, getQueryParams()));
     }
 
