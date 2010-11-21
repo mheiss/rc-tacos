@@ -12,7 +12,7 @@ public class RosterStatisticDto {
     private final SystemUser systemUser;
 
     /** the entries of the user */
-    private final List<RosterEntry> entryList;
+    private final List<RosterStatisticEntry> entryList;
 
     /** the total amount of hours */
     private double amount;
@@ -22,24 +22,25 @@ public class RosterStatisticDto {
      */
     public RosterStatisticDto(SystemUser systemUser) {
         this.systemUser = systemUser;
-        this.entryList = new ArrayList<RosterEntry>();
+        this.entryList = new ArrayList<RosterStatisticEntry>();
     }
 
     /**
-     * Filters the given list and adds only the entries that are matching the
-     * user
+     * Adds all roster entries to this statistic DTO. The amount of the all
+     * passed roster entries is automatically added to the sum of the amount.
      * 
      * @param entries
      *            the entries to add
      */
     public void addEntires(List<RosterEntry> entries) {
         for (RosterEntry entry : entries) {
-            entryList.add(entry);
-            amount += 1;
+            RosterStatisticEntry statisticEntry = new RosterStatisticEntry(entry);
+            entryList.add(statisticEntry);
+            amount += statisticEntry.getAmount();
         }
     }
 
-    public List<RosterEntry> getEntryList() {
+    public List<RosterStatisticEntry> getEntryList() {
         return entryList;
     }
 

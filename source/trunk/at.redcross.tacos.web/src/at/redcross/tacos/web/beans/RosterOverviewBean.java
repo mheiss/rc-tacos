@@ -38,7 +38,7 @@ public abstract class RosterOverviewBean extends RosterBean {
     @Override
     protected void init(EntityManager manager) {
         super.init(manager);
-        entries = getEntries(manager);
+        entries = queryEntries(manager);
     }
 
     // ---------------------------------
@@ -49,7 +49,7 @@ public abstract class RosterOverviewBean extends RosterBean {
         try {
             date = getNextDate(date);
             manager = EntityManagerFactory.createEntityManager();
-            entries = getEntries(manager);
+            entries = queryEntries(manager);
         } finally {
             manager = EntityManagerHelper.close(manager);
         }
@@ -60,7 +60,7 @@ public abstract class RosterOverviewBean extends RosterBean {
         try {
             date = getPreviousDate(date);
             manager = EntityManagerFactory.createEntityManager();
-            entries = getEntries(manager);
+            entries = queryEntries(manager);
         } finally {
             manager = EntityManagerHelper.close(manager);
         }
