@@ -1,6 +1,7 @@
 package at.redcross.tacos.web.beans;
 
 import java.text.DateFormatSymbols;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -15,6 +16,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import org.ajax4jsf.model.KeepAlive;
+
+import com.ibm.icu.util.Calendar;
 
 import at.redcross.tacos.dbal.entity.DataState;
 import at.redcross.tacos.dbal.entity.RosterEntry;
@@ -49,6 +52,8 @@ public class RosterAdminStatisticsBean extends PagingBean {
     private List<SelectItem> monthItems;
     private List<SelectItem> yearItems;
     private List<SelectItem> locationItems;
+    
+    
 
     // ---------------------------------
     // Initialization
@@ -64,6 +69,10 @@ public class RosterAdminStatisticsBean extends PagingBean {
             serviceTypeItems = SelectableItemHelper.convertToItems(ServiceTypeHelper.list(manager));
             monthItems = createMonthItemEntries();
             yearItems = createYearItemEntries();
+            //initialize the previous month and actual year
+            Calendar cal = Calendar.getInstance();
+            queryParam.month = cal.get(Calendar.MONTH);
+            queryParam.year = cal.get(Calendar.YEAR);
         } finally {
             manager = EntityManagerHelper.close(manager);
         }
