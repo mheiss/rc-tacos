@@ -38,6 +38,9 @@ public class RosterStatisticDto {
             entryList.add(statisticEntry);
             amount += statisticEntry.getAmount();
         }
+        double tmp = 0;
+        tmp = Math.round(amount *100);
+        amount = tmp/100;
     }
 
     public List<RosterStatisticEntry> getEntryList() {
