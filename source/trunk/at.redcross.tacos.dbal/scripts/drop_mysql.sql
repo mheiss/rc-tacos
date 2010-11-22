@@ -87,6 +87,8 @@
 
     drop table if exists RestoreLogin;
 
+    drop table if exists RevisionInfo;
+
     drop table if exists RosterEntry;
 
     drop table if exists SecuredAction;

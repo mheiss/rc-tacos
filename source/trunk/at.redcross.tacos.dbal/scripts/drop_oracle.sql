@@ -23,6 +23,8 @@
 
     drop table RestoreLogin cascade constraints;
 
+    drop table RevisionInfo cascade constraints;
+
     drop table RosterEntry cascade constraints;
 
     drop table SecuredAction cascade constraints;

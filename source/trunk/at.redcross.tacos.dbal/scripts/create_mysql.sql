@@ -185,6 +185,13 @@
         primary key (id)
     );
 
+    create table RevisionInfo (
+        id integer not null auto_increment,
+        timestamp bigint not null,
+        username varchar(255),
+        primary key (id)
+    );
+
     create table RosterEntry (
         id bigint not null auto_increment,
         history_changedat datetime,

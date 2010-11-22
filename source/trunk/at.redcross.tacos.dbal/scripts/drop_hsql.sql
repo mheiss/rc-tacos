@@ -71,6 +71,8 @@
 
     drop table RestoreLogin if exists;
 
+    drop table RevisionInfo if exists;
+
     drop table RosterEntry if exists;
 
     drop table SecuredAction if exists;
