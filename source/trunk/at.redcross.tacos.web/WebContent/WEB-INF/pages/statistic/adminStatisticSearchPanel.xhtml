@@ -4,10 +4,13 @@
 	xmlns:birt="http://jsf4birt.components">
 <body>
 <ui:composition>
-	<rich:simpleTogglePanel id="statisticSearch" opened="true" label="Suche" bodyClass="defaultToggleBodyStyle" styleClass="defaultToggleStyle" switchType="server">
+	<rich:simpleTogglePanel id="statisticActions" label="Aktionen" bodyClass="defaultToggleBodyStyle" styleClass="defaultToggleStyle" switchType="server">
 		<fieldset class="defaultStyle">
 			<div class="actionBar">
-				<a4j:commandLink styleClass="button" actionListener="#{bean.search}" reRender="page-content">
+				<a4j:commandLink styleClass="button" actionListener="#{bean.reset}" reRender="statisticFilter,statisticTable">
+					<span><h:outputText value="Zurücksetzen" /></span>
+				</a4j:commandLink>
+				<a4j:commandLink styleClass="button" actionListener="#{bean.search}" reRender="statisticFilter,statisticTable">
 					<span><h:outputText value="Suchen" /></span>
 				</a4j:commandLink>
 			</div>

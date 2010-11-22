@@ -4,6 +4,7 @@ import java.text.DateFormatSymbols;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -16,8 +17,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import org.ajax4jsf.model.KeepAlive;
-
-import com.ibm.icu.util.Calendar;
 
 import at.redcross.tacos.dbal.entity.DataState;
 import at.redcross.tacos.dbal.entity.RosterEntry;
@@ -41,7 +40,7 @@ public class RosterAdminStatisticsBean extends PagingBean {
     private static final long serialVersionUID = -1809399594337778364L;
 
     /** holds the current filter parameters that are selected */
-    private RosterStatisticQueryParam queryParam = new RosterStatisticQueryParam();
+    private RosterStatisticQueryParam queryParam;
 
     /** the search result to display */
     private List<RosterStatisticDto> rosterEntries;
@@ -52,8 +51,6 @@ public class RosterAdminStatisticsBean extends PagingBean {
     private List<SelectItem> monthItems;
     private List<SelectItem> yearItems;
     private List<SelectItem> locationItems;
-    
-    
 
     // ---------------------------------
     // Initialization
@@ -69,10 +66,7 @@ public class RosterAdminStatisticsBean extends PagingBean {
             serviceTypeItems = SelectableItemHelper.convertToItems(ServiceTypeHelper.list(manager));
             monthItems = createMonthItemEntries();
             yearItems = createYearItemEntries();
-            //initialize the previous month and actual year
-            Calendar cal = Calendar.getInstance();
-            queryParam.month = cal.get(Calendar.MONTH);
-            queryParam.year = cal.get(Calendar.YEAR);
+            queryParam = initQueryParam();
         } finally {
             manager = EntityManagerHelper.close(manager);
         }
@@ -105,10 +99,15 @@ public class RosterAdminStatisticsBean extends PagingBean {
                 rosterEntries.add(dto);
             }
         } catch (Exception e) {
-            FacesUtils.addErrorMessage("Fehler beim suchen der Dienstplaneinträge");
+            FacesUtils.addErrorMessage("Fehler beim Suchen der Dienstplaneinträge");
         } finally {
             manager = EntityManagerHelper.close(manager);
         }
+    }
+
+    public void reset(ActionEvent event) {
+        queryParam = initQueryParam();
+        rosterEntries = new ArrayList<RosterStatisticDto>();
     }
 
     // ---------------------------------
@@ -120,6 +119,9 @@ public class RosterAdminStatisticsBean extends PagingBean {
         String[] germanyMonths = new DateFormatSymbols(Locale.GERMANY).getMonths();
         for (int i = 0; i < germanyMonths.length; i++) {
             String germanyMonth = germanyMonths[i];
+            if (germanyMonth.isEmpty()) {
+                continue;
+            }
             items.add(new SelectableItem(germanyMonth, i + 1).getItem());
         }
         return items;
@@ -132,6 +134,15 @@ public class RosterAdminStatisticsBean extends PagingBean {
             items.add(new SelectableItem(String.valueOf(i), i).getItem());
         }
         return items;
+    }
+
+    /** Returns the initialized search parameters */
+    private RosterStatisticQueryParam initQueryParam() {
+        RosterStatisticQueryParam queryParam = new RosterStatisticQueryParam();
+        Calendar cal = Calendar.getInstance();
+        queryParam.month = cal.get(Calendar.MONTH);
+        queryParam.year = cal.get(Calendar.YEAR);
+        return queryParam;
     }
 
     /** Performs the search using the given parameters and manager */

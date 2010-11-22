@@ -6,7 +6,7 @@
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
 	<ui:param name="htmlTitle" value="Adminstatistik" />
 	<ui:param name="section" value="statistic" />
-	<ui:param name="page" value="adminOverview" />
+	<ui:param name="page" value="adminStatistic" />
 
 	<ui:define name="navigation">
 		<ui:include src="navigation.xhtml" />
@@ -39,7 +39,6 @@
 			<ui:param name="bean" value="#{rosterAdminStatisticsBean}" />
 		</ui:decorate>
 		<ui:decorate template="adminStatisticTable.xhtml">
-			<ui:param name="tabId" value="roster" />
 			<ui:param name="values" value="#{rosterAdminStatisticsBean.rosterEntries}" />
 		</ui:decorate>
 	</ui:define>
