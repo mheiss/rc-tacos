@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.MappedSuperclass;
 
+import org.hibernate.envers.AuditOverride;
+
 /**
  * The {@code EntityImpl} is the base class for all entity instances.
  */
@@ -16,6 +18,7 @@ public abstract class EntityImpl implements Serializable {
 
     @Embedded
     @Column(nullable = true)
+    @AuditOverride(name="history",isAudited=false)
     private History history;
 
     // ---------------------------------

@@ -18,8 +18,10 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.time.DateUtils;
+import org.hibernate.envers.Audited;
 
 @Entity
+@Audited
 @Table(name = "RosterEntry")
 public class RosterEntry extends EntityImpl {
 
