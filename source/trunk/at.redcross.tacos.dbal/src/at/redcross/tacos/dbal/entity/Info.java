@@ -15,8 +15,10 @@ import javax.persistence.TemporalType;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.envers.Audited;
 
 @Entity
+@Audited
 @Table(name = "Info")
 public class Info extends EntityImpl {
 

@@ -24,8 +24,10 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.envers.Audited;
 
 @Entity
+@Audited
 @Table(name = "SystemUser")
 public class SystemUser extends EntityImpl {
 

@@ -1,40 +1,31 @@
 package at.redcross.tacos.dbal.entity;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.hibernate.envers.Audited;
+import org.hibernate.envers.RevisionEntity;
+import org.hibernate.envers.RevisionNumber;
+import org.hibernate.envers.RevisionTimestamp;
+
+import at.redcross.tacos.dbal.entity.listener.PersistentAuditListener;
 
 @Entity
-@Audited
-@Table(name = "Category")
-public class Category extends EntityImpl {
+@RevisionEntity(PersistentAuditListener.class)
+public class RevisionInfo {
 
-	private static final long serialVersionUID = 6798163625565312161L;
-
-	@Id
+    @Id
     @GeneratedValue
-    private long id;
+    @RevisionNumber
+    private int id;
 
-    @Column(nullable = false)
-    private String name;
-    
-    @Column
-    private String description;
+    @RevisionTimestamp
+    private long timestamp;
 
-    // ---------------------------------
-    // EntityImpl
-    // ---------------------------------
-    @Override
-    public String getDisplayString() {
-        return name;
-    }
+    private String username;
 
     // ---------------------------------
     // Object related methods
@@ -46,7 +37,7 @@ public class Category extends EntityImpl {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(id).hashCode();
+        return new HashCodeBuilder().append(id).append(timestamp).append(username).hashCode();
     }
 
     @Override
@@ -60,34 +51,39 @@ public class Category extends EntityImpl {
         if (obj.getClass() != getClass()) {
             return false;
         }
-        Category rhs = (Category) obj;
-        return new EqualsBuilder().append(id, rhs.id).isEquals();
+        RevisionInfo rhs = (RevisionInfo) obj;
+        return new EqualsBuilder().append(id, rhs.id).append(timestamp, rhs.timestamp).append(
+                username, rhs.username).isEquals();
     }
 
     // ---------------------------------
     // Setters for the properties
     // ---------------------------------
-    public void setName(String name) {
-        this.name = name;
-    }
-    
-    public void setDescription(String description) {
-        this.description = description;
+    public void setId(int id) {
+        this.id = id;
     }
 
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     // ---------------------------------
     // Getters for the properties
     // ---------------------------------
-    public long getId() {
+
+    public int getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public long getTimestamp() {
+        return timestamp;
     }
-    
-    public String getDescription() {
-        return description;
+
+    public String getUsername() {
+        return username;
     }
 }

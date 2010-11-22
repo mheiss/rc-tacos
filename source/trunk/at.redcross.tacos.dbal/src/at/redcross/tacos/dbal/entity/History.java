@@ -8,21 +8,27 @@ import javax.persistence.Embeddable;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.envers.AuditOverride;
+
 @Embeddable
 public class History implements Serializable {
 
     private static final long serialVersionUID = -3160225389716712769L;
 
     @Column(nullable = false)
+    @AuditOverride(name = "createdBy", isAudited = false)
     private String createdBy;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @AuditOverride(name = "createdAt", isAudited = false)
     private Date createdAt;
 
     @Column(nullable = false)
+    @AuditOverride(name = "changedBy", isAudited = false)
     private String changedBy;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @AuditOverride(name = "changedAt", isAudited = false)
     private Date changedAt;
 
     // ---------------------------------
