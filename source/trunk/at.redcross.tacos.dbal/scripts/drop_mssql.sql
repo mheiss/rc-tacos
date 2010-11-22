@@ -71,6 +71,8 @@
 
     drop table RestoreLogin;
 
+    drop table RevisionInfo;
+
     drop table RosterEntry;
 
     drop table SecuredAction;

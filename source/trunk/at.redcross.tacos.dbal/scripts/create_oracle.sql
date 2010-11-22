@@ -185,6 +185,13 @@
         primary key (id)
     );
 
+    create table RevisionInfo (
+        id number(10,0) not null,
+        timestamp number(19,0) not null,
+        username varchar2(255 char),
+        primary key (id)
+    );
+
     create table RosterEntry (
         id number(19,0) not null,
         history_changedat timestamp,
