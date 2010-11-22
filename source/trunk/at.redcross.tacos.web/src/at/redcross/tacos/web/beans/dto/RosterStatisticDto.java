@@ -1,5 +1,6 @@
 package at.redcross.tacos.web.beans.dto;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,9 +39,9 @@ public class RosterStatisticDto {
             entryList.add(statisticEntry);
             amount += statisticEntry.getAmount();
         }
-        double tmp = 0;
-        tmp = Math.round(amount *100);
-        amount = tmp/100;
+        // rounding is done by using a helper
+        BigDecimal bigDecimal = new BigDecimal(String.valueOf(this.amount));
+        amount = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
     public List<RosterStatisticEntry> getEntryList() {
