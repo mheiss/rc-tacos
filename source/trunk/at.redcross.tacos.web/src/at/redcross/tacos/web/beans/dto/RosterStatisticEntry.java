@@ -29,7 +29,7 @@ public class RosterStatisticEntry {
             return 0;
         }
         // we use a helper object to determine the amount
-        long duration = (end.getTime() - start.getTime()) / 1000 / 3600;
+        double duration = (end.getTime() - start.getTime()) / 1000.0 / 3600.0;
         BigDecimal bigDecimal = new BigDecimal(String.valueOf(duration));
         return bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
