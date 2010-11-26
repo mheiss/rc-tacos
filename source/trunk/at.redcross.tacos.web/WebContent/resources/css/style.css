@@ -24,13 +24,13 @@
 /*******************************************************
  	HTML content styling
  *******************************************************/
-.htmlContent ul, .htmlContent ol {
-	padding:0.5em;
-	margin:0.5em 2em;
+.htmlContent ul,.htmlContent ol {
+	padding: 0.5em;
+	margin: 0.5em 2em;
 }
 
 .htmlContent li {
-	list-style: square;	
+	list-style: square;
 }
 
 /*******************************************************
@@ -75,9 +75,8 @@ fieldset.defaultStyle legend {
 }
 
 fieldset.defaultStyle p {
-	padding-left:0.5em;
+	padding-left: 0.5em;
 }
-	
 
 fieldset.defaultStyle li {
 	clear: both;
@@ -360,7 +359,7 @@ table.defaultStyle .rosterDelete {
 }
 
 table.defaultStyle .cellError {
-	color:#000;
+	color: #000;
 	background-color: #f00;
 }
 
