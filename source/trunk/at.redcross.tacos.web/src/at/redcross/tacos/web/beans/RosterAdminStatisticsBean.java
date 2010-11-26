@@ -17,8 +17,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import org.ajax4jsf.model.KeepAlive;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import at.redcross.tacos.dbal.entity.DataState;
+import at.redcross.tacos.dbal.entity.Login;
 import at.redcross.tacos.dbal.entity.RosterEntry;
 import at.redcross.tacos.dbal.entity.SystemUser;
 import at.redcross.tacos.dbal.helper.LocationHelper;
@@ -32,6 +34,7 @@ import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.model.SelectableItem;
 import at.redcross.tacos.web.model.SelectableItemHelper;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
+import at.redcross.tacos.web.security.WebUserDetails;
 
 @KeepAlive
 @ManagedBean(name = "rosterAdminStatisticsBean")
@@ -142,6 +145,12 @@ public class RosterAdminStatisticsBean extends PagingBean {
         Calendar cal = Calendar.getInstance();
         queryParam.month = cal.get(Calendar.MONTH);
         queryParam.year = cal.get(Calendar.YEAR);
+        //
+        WebUserDetails details = (WebUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Login login =  details.getLogin();
+		SystemUser user = login.getSystemUser();
+		//
+        queryParam.systemUser = user;
         return queryParam;
     }
 
@@ -202,6 +211,22 @@ public class RosterAdminStatisticsBean extends PagingBean {
         // filter by state
         query.setParameter("states", new ArrayList<DataState>(Arrays.asList(DataState.NORMAL)));
         return query.getResultList();
+    }
+    
+    /**
+     * Returns whether or not the current authenticated user can change the user
+     * The following restrictions are considered:
+     * <ul>
+     * <li>Principal must have the permission of the statistic administrator</li>
+     * </ul>
+     */
+    public boolean isStatisticAdminAllowed() {
+        // editing is allowed for principals with permission
+        if (FacesUtils.lookupBean(WebPermissionBean.class).isAuthorizedToViewAdminStatistic()) {
+            return true;
+        }
+        // edit denied
+        return false;
     }
 
     // ---------------------------------
