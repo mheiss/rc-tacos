@@ -6,7 +6,7 @@
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
 	<ui:param name="htmlTitle" value="Adminstatistik" />
 	<ui:param name="section" value="statistic" />
-	<ui:param name="page" value="adminStatistic" />
+	<ui:param name="page" value="statistic" />
 
 	<ui:define name="navigation">
 		<ui:include src="navigation.xhtml" />
@@ -15,13 +15,13 @@
 	<ui:define name="page-header">
 		<h:graphicImage library="images/32x32" name="statistic2.png" />
 		<h2 class="title">
-			<h:outputText value="Adminstatistik" />
+			<h:outputText value="Statistik Dienste" />
 		</h2>
 	</ui:define>
 	
 	<ui:define name="page-toolbar">
 		<li>
-			<a4j:htmlCommandLink actionListener="#{rosterAdminStatisticsBean.createPdfReport}">
+			<a4j:htmlCommandLink actionListener="#{rosterStatisticsBean.createPdfReport}">
 				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="pdf.png" />
 				<h:outputText styleClass="toolbarText" value="Exportieren"  />
 			</a4j:htmlCommandLink>
@@ -32,14 +32,14 @@
 		<a4j:outputPanel ajaxRendered="true">
 			<rich:messages errorClass="errorMessage" globalOnly="true" />
 		</a4j:outputPanel>
-		<ui:decorate template="adminStatisticFilter.xhtml">
-			<ui:param name="bean" value="#{rosterAdminStatisticsBean}" />
+		<ui:decorate template="statisticFilter.xhtml">
+			<ui:param name="bean" value="#{rosterStatisticsBean}" />
 		</ui:decorate>
-		<ui:decorate template="adminStatisticSearchPanel.xhtml">
-			<ui:param name="bean" value="#{rosterAdminStatisticsBean}" />
+		<ui:decorate template="statisticSearchPanel.xhtml">
+			<ui:param name="bean" value="#{rosterStatisticsBean}" />
 		</ui:decorate>
-		<ui:decorate template="adminStatisticTable.xhtml">
-			<ui:param name="values" value="#{rosterAdminStatisticsBean.rosterEntries}" />
+		<ui:decorate template="statisticTable.xhtml">
+			<ui:param name="values" value="#{rosterStatisticsBean.rosterEntries}" />
 		</ui:decorate>
 	</ui:define>
 </ui:composition>

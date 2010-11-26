@@ -22,7 +22,7 @@ public class NavigationDelegationBean {
 
     /** Redirects to the default page for the statistic area */
     public void redirectStatisticHome() {
-        FacesUtils.redirect("statistic-admin", "");
+        FacesUtils.redirect("statistic", "");
     }
 
     /** Redirects to the default page for the administration are */

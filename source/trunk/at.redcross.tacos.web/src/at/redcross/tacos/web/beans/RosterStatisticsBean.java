@@ -37,8 +37,8 @@ import at.redcross.tacos.web.persistence.EntityManagerFactory;
 import at.redcross.tacos.web.security.WebUserDetails;
 
 @KeepAlive
-@ManagedBean(name = "rosterAdminStatisticsBean")
-public class RosterAdminStatisticsBean extends PagingBean {
+@ManagedBean(name = "rosterStatisticsBean")
+public class RosterStatisticsBean extends PagingBean {
 
     private static final long serialVersionUID = -1809399594337778364L;
 
