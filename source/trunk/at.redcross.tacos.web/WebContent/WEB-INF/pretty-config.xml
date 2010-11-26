@@ -93,10 +93,10 @@
 		<view-id>/WEB-INF/pages/redirect.faces</view-id>
 		<action>#{navigationDelegationBean.redirectStatisticHome}</action>
 	</url-mapping>
-	<url-mapping id="statistic-admin">
-		<pattern>/statistic/admin</pattern>
-		<view-id>/WEB-INF/pages/statistic/adminStatistic.faces</view-id>
-		<action onPostback="false">#{rosterAdminStatisticsBean.prettyInit}</action>
+	<url-mapping id="statistic">
+		<pattern>/statistic/view</pattern>
+		<view-id>/WEB-INF/pages/statistic/statistic.faces</view-id>
+		<action onPostback="false">#{rosterStatisticsBean.prettyInit}</action>
 	</url-mapping>
 	
 	<!-- ################ INFO ####################### -->
