@@ -109,6 +109,25 @@ public class RosterDto extends GenericDto<RosterEntry> {
     public boolean isHistoryEnabled() {
         return FacesUtils.lookupBean(WebPermissionBean.class).isAuthorizedToViewHistory();
     }
+    
+    /**
+     * Returns whether or not the roster entry could checked in or out.
+     * The following restrictions are considered:
+     * <ul>
+     * <li>Roster entry must not have the service type "Hauptamtlich" or "Ersatzeinstellung"</li>
+     * </ul>
+     * T
+     */
+    public boolean isCheckInOutEnabled() {
+    	// entry is already deleted
+        if (entity.getState().equals(DataState.DELETE)) {
+            return false;
+        }
+        if (entity.getServiceType().getName().equalsIgnoreCase("Hauptamtlich") ||entity.getServiceType().getName().equalsIgnoreCase("Ersatzeinstellung") ){
+        	return false;
+        }
+        return true;
+    }
 
     /**
      * Returns the appropriate style class to decorate the resulting list.

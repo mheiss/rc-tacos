@@ -71,7 +71,7 @@
 					</h:panelGroup>
 				</f:facet>
 				<h:panelGroup rendered="#{empty rosterDto.entity.realStartDateTime and not rosterDto.entity.toDelete}">
-					<a4j:commandLink title="Anmelden" reRender="table-#{tabId}">
+					<a4j:commandLink rendered="#{rosterDto.checkInOutEnabled}" title="Anmelden" reRender="table-#{tabId}">
 						<a4j:actionparam name="entryId" assignTo="#{bean.entryId}" value="#{rosterDto.entity.id}" 
 							actionListener="#{bean.signIn}" />
 						<h:graphicImage styleClass="actionImage" library="images/16x16" name="clock-into.png" />
@@ -93,7 +93,7 @@
 					</h:panelGroup>
 				</f:facet>
 				<h:panelGroup rendered="#{empty rosterDto.entity.realEndDateTime and not rosterDto.entity.toDelete}">
-					<a4j:commandLink title="Abmelden" reRender="table-#{tabId}">
+					<a4j:commandLink rendered="#{rosterDto.checkInOutEnabled}" title="Abmelden" reRender="table-#{tabId}">
 						<a4j:actionparam name="entryId" assignTo="#{bean.entryId}" value="#{rosterDto.entity.id}" 
 							actionListener="#{bean.signOut}" />
 						<h:graphicImage styleClass="actionImage" library="images/16x16" name="clock-out.png" />
