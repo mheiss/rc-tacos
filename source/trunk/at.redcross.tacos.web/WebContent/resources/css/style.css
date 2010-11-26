@@ -518,6 +518,10 @@ div#serviceSection .systemImage {
 	background: url(../images/32x32/preferences.png) no-repeat scroll left top;
 }
 
+div#serviceSection .statisticImage {
+	background: url(../images/32x32/statistic2.png) no-repeat scroll left top;
+}
+
 /***********************************************************
  Tooltip styling
  **********************************************************/
