@@ -116,5 +116,11 @@ public class WebActionDefinitionRegistry {
 		    definition.setDescription("Änderungshistorie eines Datensatzes ansehen");
 		    definitions.add(definition);
 		}
+		// view administrator statistics
+		{
+		    WebActionDefinition definition = new WebActionDefinition("statistic-viewAdmin");
+		    definition.setDescription("Adminstatistik ansehen");
+		    definitions.add(definition);
+		}
 	}
 }

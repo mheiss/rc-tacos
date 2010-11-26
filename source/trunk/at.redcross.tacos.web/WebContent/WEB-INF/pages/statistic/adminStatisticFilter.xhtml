@@ -26,7 +26,7 @@
 				<li class="right">				
 					<h:outputLabel for="systemUserName" value="Mitarbeiter"> </h:outputLabel>
 					<div class="input left">
-						<rich:comboBox width="350px" id="systemUserName" value="#{bean.queryParam.systemUser}" 
+						<rich:comboBox disabled = "#{not bean.statisticAdminAllowed}" width="350px" id="systemUserName" value="#{bean.queryParam.systemUser}" 
 							selectFirstOnUpdate="false" defaultLabel="Mitarbeiter wählen">
 							<f:selectItems value="#{bean.userItems}" />
 							<f:validator validatorId="validator.selectableItem" />

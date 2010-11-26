@@ -109,4 +109,8 @@ public class WebPermissionBean extends WebPermissionManager implements Serializa
     public boolean isAuthorizedToEditVehicle() {
         return canExecuteAction("vehicle-editEntry");
     }
+    
+    public boolean isAuthorizedToViewAdminStatistic() {
+        return canExecuteAction("statistic-viewAdmin");
+    }
 }
