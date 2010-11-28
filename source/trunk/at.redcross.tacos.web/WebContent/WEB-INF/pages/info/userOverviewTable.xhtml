@@ -9,81 +9,87 @@
 		</div>
 	</h:panelGroup>
 	<rich:panel rendered="#{not empty values}">
-		<rich:dataTable id="table-#{tabId}" styleClass="defaultStyle" value="#{values}" var="user" 
+		<rich:datascroller styleClass="defaultScroller" for="table-#{tabId}" maxPages="#{bean.maxResults}" page="#{bean.page}" id="scroller-top-#{tabId}" />
+		<rich:dataTable id="table-#{tabId}" styleClass="defaultStyle" value="#{values}" var="dto" rows="#{bean.maxResults}"
 			onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
 			<rich:column styleClass="center">
 				<f:facet name="header">
 					<rich:spacer />
 				</f:facet>
-				<h:panelGroup rendered="#{user.login.locked}">
-					<h:graphicImage library="images/24x24" name="user_#{user.gender.name}_locked.png" />
+				<h:panelGroup rendered="#{dto.entity.login.locked}">
+					<h:graphicImage library="images/24x24" name="user_#{dto.entity.gender.name}_locked.png" />
 				</h:panelGroup>
-				<h:panelGroup rendered="#{user.login.expired and not user.login.locked}">
-					<h:graphicImage library="images/24x24" name="user_#{user.gender.name}_expired.png" />
+				<h:panelGroup rendered="#{dto.entity.login.expired and not dto.entity.login.locked}">
+					<h:graphicImage library="images/24x24" name="user_#{dto.entity.gender.name}_expired.png" />
 				</h:panelGroup>
-				<h:panelGroup rendered="#{not user.login.expired and not user.login.locked}">
-					<h:graphicImage library="images/24x24" name="user_#{user.gender.name}.png" />
+				<h:panelGroup rendered="#{not dto.entity.login.expired and not dto.entity.login.locked}">
+					<h:graphicImage library="images/24x24" name="user_#{dto.entity.gender.name}.png" />
 				</h:panelGroup>
 			</rich:column>
-			<rich:column styleClass="bold" sortBy="#{user.pnr}" sortOrder="ASCENDING">
+			<rich:column styleClass="bold" sortBy="#{dto.entity.pnr}" sortOrder="ASCENDING">
 				<f:facet name="header">
 					<h:outputText value="PNR" title="Personalnummer" />
 				</f:facet>
-				<h:outputText value="#{user.pnr}" />
+				<h:outputText value="#{dto.entity.pnr}" />
 			</rich:column>
-			<rich:column styleClass="bold" sortBy="#{user.login.loginName}">
+			<rich:column styleClass="bold" sortBy="#{dto.entity.login.loginName}">
 				<f:facet name="header">
 					<h:outputText value="Login" />
 				</f:facet>
-				<h:outputText value="#{user.login.loginName}" />
+				<h:outputText value="#{dto.entity.login.loginName}" />
 			</rich:column>
-			<rich:column styleClass="bold" sortBy="#{user.lastName}">
+			<rich:column styleClass="bold" sortBy="#{dto.entity.lastName}">
 				<f:facet name="header">
 					<h:outputText value="Nachname" />
 				</f:facet>
-				<h:outputText value="#{user.lastName}" />
+				<h:outputText value="#{dto.entity.lastName}" />
 			</rich:column>
-			<rich:column styleClass="bold" sortBy="#{user.firstName}">
+			<rich:column styleClass="bold" sortBy="#{dto.entity.firstName}">
 				<f:facet name="header">
 					<h:outputText value="Vorname" />
 				</f:facet>
-				<h:outputText value="#{user.firstName}" />
+				<h:outputText value="#{dto.entity.firstName}" />
 			</rich:column>
-			<rich:column sortBy="#{user.address.email}">
+			<rich:column sortBy="#{dto.entity.address.email}">
 				<f:facet name="header">
 					<h:outputText value="eMail" />
 				</f:facet>
-				<h:outputText value="#{user.address.email}" />
+				<h:outputText value="#{dto.entity.address.email}" />
 			</rich:column>
 			<rich:column>
 				<f:facet name="header">
 					<h:outputText value="Telefon (dienstlich)" />
 				</f:facet>
-				<h:outputText value="#{user.address.phone}" />
+				<h:outputText value="#{dto.entity.address.phone}" />
 			</rich:column>
 			<rich:column>
 				<f:facet name="header">
 					<h:outputText value="Telefon (privat)" />
 				</f:facet>
-				<h:outputText value="#{user.address.phone2}" />
+				<h:outputText value="#{dto.entity.address.phone2}" />
 			</rich:column>
 			<rich:column styleClass="mediumColumn">
 				<f:facet name="header">
 					<h:outputText value="Dienststelle" />
 				</f:facet>
-				<h:outputText value="#{user.location.name}" />
+				<h:outputText value="#{dto.entity.location.name}" />
 			</rich:column>
 			<rich:column title="Bearbeiten" styleClass="smallColumn">
 				<f:facet name="header">
-					<rich:spacer />
+					<h:outputText value="Aktionen" />
 				</f:facet>
+				<a4j:commandLink rendered="#{dto.historyEnabled}"  reRender="page-panels" oncomplete="#{rich:component('historyPanel')}.show(); return false;" title="Protokoll anzeigen">
+					<a4j:actionparam name="entryId" assignTo="#{historyBean.primaryKey}" value="#{dto.entity.id}" />
+					<a4j:actionparam name="entryClass" assignTo="#{historyBean.className}" value="#{dto.entity.class.name}" actionListener="#{historyBean.queryHistory}" />
+					<h:graphicImage library="images/16x16" name="info.png" />
+				</a4j:commandLink>
 				<pretty:link rendered="#{userOverviewBean.editUserEnabled}" mappingId="info-userEditMaintenance" title="Mitarbeitereintrag bearbeiten">
-					<f:param value="#{user.id}" />
+					<f:param value="#{dto.entity.id}" />
 					<h:graphicImage library="images/16x16" name="edit.png" />
 				</pretty:link>
 			</rich:column>
 		</rich:dataTable>
-		<rich:datascroller styleClass="defaultScroller" for="table-#{tabId}" maxPages="#{bean.maxResults}" page="#{bean.page}" id="scroller-#{tabId}" />
+		<rich:datascroller styleClass="defaultScroller" for="table-#{tabId}" maxPages="#{bean.maxResults}" page="#{bean.page}" id="scroller-bottom-#{tabId}" />
 	</rich:panel>
 </ui:composition>
 </body>

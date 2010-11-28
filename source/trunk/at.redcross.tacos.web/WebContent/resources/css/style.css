@@ -334,6 +334,16 @@ table.defaultStyle td.smallColumn {
 	text-align: center;
 }
 
+table.defaultStyle td.mediumFixedColumn {
+	width: 8em;
+	text-align: center;
+}
+
+table.defaultStyle td.largeFixedColumn {
+	width: 12em;
+	text-align: center;
+}
+
 table.defaultStyle td.mediumColumn {
 	width: 20%;
 }
