@@ -313,7 +313,7 @@ fieldset.defaultStyle .box .deleteImage {
 	border-bottom: 2px solid #000;
 }
 
-table.defaultStyle,table.bigTable,table.editorTable {
+table.defaultStyle {
 	width: 100%;
 }
 
@@ -365,6 +365,10 @@ table.defaultStyle .cellError {
 
 table.defaultStyle .cellError .rich-inplace-view {
 	background-color: #f00;
+}
+
+table.defaultStyle td a {
+	padding-right:0.5em;
 }
 
 /***********************************************************

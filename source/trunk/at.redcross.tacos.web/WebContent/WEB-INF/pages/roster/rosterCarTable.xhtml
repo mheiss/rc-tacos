@@ -46,8 +46,6 @@
 				<f:facet name="header">
 					<h:panelGroup>
 						<h:outputText value="Dienstzeit von" />
-						<br />
-						<h:outputText value="[geplant]" />
 					</h:panelGroup>
 				</f:facet>
 				<h:outputText value="#{rosterDto.entity.plannedStartDateTime}">
@@ -58,8 +56,6 @@
 				<f:facet name="header">
 					<h:panelGroup>
 						<h:outputText value="Dienstzeit bis" />
-						<br />
-						<h:outputText value="[geplant]" />
 					</h:panelGroup>
 				</f:facet>
 				<h:outputText value="#{rosterDto.entity.plannedEndDateTime}">
@@ -83,7 +79,8 @@
 					<h:outputText value="Aktionen" />
 				</f:facet>
 				<a4j:commandLink rendered="#{rosterDto.historyEnabled}" reRender="page-panels" oncomplete="#{rich:component('historyPanel')}.show(); return false;" title="Protokoll anzeigen">
-					<a4j:actionparam name="entryId" assignTo="#{bean.entryId}" value="#{rosterDto.entity.id}" />
+					<a4j:actionparam name="entryId" assignTo="#{historyBean.primaryKey}" value="#{rosterDto.entity.id}" />
+					<a4j:actionparam name="entryClass" assignTo="#{historyBean.className}" value="#{rosterDto.entity.class.name}" actionListener="#{historyBean.queryHistory}" />
 					<h:graphicImage library="images/16x16" name="info.png" />
 				</a4j:commandLink>
 				<pretty:link rendered="#{rosterDto.editEnabled}" mappingId="roster-editMaintenance" title="Dienstplaneintrag bearbeiten">

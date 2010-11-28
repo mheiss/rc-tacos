@@ -31,7 +31,7 @@
 		<rich:panel rendered="#{empty securedActionMaintenanceBean.actions}" style="margin-top:10px;">
 			<h:outputText value="Keine Einträge gefunden" styleClass="italic" />
 		</rich:panel>
-		<rich:dataTable id="securedActionTable" styleClass="editorTable" value="#{securedActionMaintenanceBean.actions}" var="dto" rowKeyVar="row"
+		<rich:dataTable id="securedActionTable" styleClass="defaultStyle" value="#{securedActionMaintenanceBean.actions}" var="dto" rowKeyVar="row"
 			rendered="#{not empty securedActionMaintenanceBean.actions}"
 			onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
 			<rich:column styleClass="smallColumn">
@@ -71,8 +71,23 @@
 				</f:facet>
 				<rich:inplaceInput maxlength="255" layout="block" value="#{dto.entity.description}" />
 			</rich:column>
+			<rich:column styleClass="smallColumn">
+				<f:facet name="header">
+					<h:outputText value="Aktionen" />
+				</f:facet>
+				<a4j:commandLink rendered="#{dto.historyEnabled}" reRender="page-panels" oncomplete="#{rich:component('historyPanel')}.show(); return false;" title="Protokoll anzeigen">
+					<a4j:actionparam name="entryId" assignTo="#{historyBean.primaryKey}" value="#{dto.entity.id}" />
+					<a4j:actionparam name="entryClass" assignTo="#{historyBean.className}" value="#{dto.entity.class.name}" actionListener="#{historyBean.queryHistory}" />
+					<h:graphicImage library="images/16x16" name="info.png" />
+				</a4j:commandLink>
+			</rich:column>
 		</rich:dataTable>
 	</ui:define>
+	
+	<ui:define name="page-panels">
+		<ui:decorate template="/WEB-INF/templates/widgets/historyPanel.xhtml" />
+	</ui:define>
+	
 </ui:composition>
 </body>
 </html>

@@ -37,11 +37,11 @@
 		<rich:panel rendered="#{empty serviceTypeMaintenanceBean.serviceTypes}" style="margin-top:10px;">
 			<h:outputText value="Keine Einträge gefunden" styleClass="italic" />
 		</rich:panel>
-		<rich:dataTable id="serviceTypeTable" styleClass="editorTable" value="#{serviceTypeMaintenanceBean.serviceTypes}" var="dto" rowKeyVar="row"
+		<rich:dataTable id="serviceTypeTable" styleClass="defaultStyle" value="#{serviceTypeMaintenanceBean.serviceTypes}" var="dto" rowKeyVar="row"
 			onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
 			<rich:column styleClass="smallColumn">
 				<f:facet name="header">
-					<rich:spacer />
+					<h:outputText value="" />
 				</f:facet>
 				<h:outputText value="#{row+1}" />
 			</rich:column>
@@ -53,13 +53,7 @@
 				<h:graphicImage library="images/16x16" name="data.png" rendered="#{dto.state.name eq 'sync'}" title="Neu" />
 				<h:graphicImage library="images/16x16" name="data_delete.png" rendered="#{dto.state.name eq 'delete'}" title="Zu löschen" />	
 			</rich:column>
-			<rich:column sortBy="#{dto.entity.shortName}" styleClass="smallColumn">
-				<f:facet name="header">
-					<h:outputText value="Abkürzung" />
-				</f:facet>
-				<rich:inplaceInput value="#{dto.entity.shortName}" maxlength="5" layout="block" />
-			</rich:column>
-			<rich:column sortBy="#{dto.entity.name}" styleClass="mediumColumn">
+			<rich:column sortBy="#{dto.entity.name}">
 				<f:facet name="header">
 					<h:outputText value="Name" />
 				</f:facet>
@@ -67,6 +61,18 @@
 					required="true" requiredMessage="Zeile #{row+1}: Bitte geben Sie einen Namen für dieses Dienstverhältnis an">
 					<a4j:support event="onviewactivated" reRender="serviceTypeTable, messages" />
 				</rich:inplaceInput>
+			</rich:column>
+			<rich:column sortBy="#{dto.entity.signInOut}" styleClass="smallColumn">
+				<f:facet name="header">
+					<h:outputText value="Anmelden/Abmelden" />
+				</f:facet>
+				<h:selectBooleanCheckbox value="#{dto.entity.signInOut}" />
+			</rich:column>
+			<rich:column sortBy="#{dto.entity.shortName}" styleClass="smallColumn">
+				<f:facet name="header">
+					<h:outputText value="Abkürzung" />
+				</f:facet>
+				<rich:inplaceInput value="#{dto.entity.shortName}" maxlength="5" layout="block" />
 			</rich:column>
 			<rich:column sortBy="#{dto.entity.description}">
 				<f:facet name="header">
@@ -76,8 +82,13 @@
 			</rich:column>
 			<rich:column styleClass="smallColumn">
 				<f:facet name="header">
-					<rich:spacer />
+					<h:outputText value="Aktionen" />
 				</f:facet>
+				<a4j:commandLink rendered="#{dto.historyEnabled}" reRender="page-panels" oncomplete="#{rich:component('historyPanel')}.show(); return false;" title="Protokoll anzeigen">
+					<a4j:actionparam name="entryId" assignTo="#{historyBean.primaryKey}" value="#{dto.entity.id}" />
+					<a4j:actionparam name="entryClass" assignTo="#{historyBean.className}" value="#{dto.entity.class.name}" actionListener="#{historyBean.queryHistory}" />
+					<h:graphicImage library="images/16x16" name="info.png" />
+				</a4j:commandLink>
 				<a4j:commandLink reRender="serviceTypeTable" rendered="#{dto.state.name ne 'delete'}" immediate="true">
 					<a4j:actionparam name="serviceTypeId" assignTo="#{serviceTypeMaintenanceBean.serviceTypeId}" value="#{dto.entity.id}"
 						actionListener="#{serviceTypeMaintenanceBean.removeServiceType}" />
@@ -91,6 +102,11 @@
 			</rich:column>
 		</rich:dataTable>
 	</ui:define>
+	
+	<ui:define name="page-panels">
+		<ui:decorate template="/WEB-INF/templates/widgets/historyPanel.xhtml" />
+	</ui:define>
+	
 </ui:composition>
 </body>
 </html>

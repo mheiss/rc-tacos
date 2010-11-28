@@ -10,7 +10,7 @@
 				<li class="left">				
 					<h:outputLabel for="locationOfUser" value="Dienststelle"> </h:outputLabel>
 					<div class="input left">
-						<rich:comboBox width="350px" id="locationOfUser" value="#{bean.queryParam.homeLocation}" 
+						<rich:comboBox width="200px" id="locationOfUser" value="#{bean.queryParam.homeLocation}" 
 							selectFirstOnUpdate="false" defaultLabel="Ortsstelle wählen">
 							<f:selectItems value="#{bean.locationItems}" />
 							<f:validator validatorId="validator.selectableItem" />
@@ -26,7 +26,7 @@
 				<li class="right">				
 					<h:outputLabel for="systemUserName" value="Mitarbeiter"> </h:outputLabel>
 					<div class="input left">
-						<rich:comboBox disabled = "#{not bean.statisticAdminAllowed}" width="350px" id="systemUserName" value="#{bean.queryParam.systemUser}" 
+						<rich:comboBox disabled="#{not bean.statisticAdminAllowed}" width="200px" id="systemUserName" value="#{bean.queryParam.systemUser}" 
 							selectFirstOnUpdate="false" defaultLabel="Mitarbeiter wählen">
 							<f:selectItems value="#{bean.userItems}" />
 							<f:validator validatorId="validator.selectableItem" />
@@ -39,7 +39,7 @@
 				<li class="left">				
 					<h:outputLabel for="locationOfRosterEntry" value="Dienststelle"> </h:outputLabel>
 					<div class="input left">
-						<rich:comboBox width="350px" id="locationOfRosterEntry" value="#{bean.queryParam.location}" 
+						<rich:comboBox width="200px" id="locationOfRosterEntry" value="#{bean.queryParam.location}" 
 							selectFirstOnUpdate="false" defaultLabel="Ortsstelle wählen">
 							<f:selectItems value="#{bean.locationItems}" />
 							<f:validator validatorId="validator.selectableItem" />
@@ -55,7 +55,7 @@
 				<li class="right">
 					<h:outputLabel for="serviceType" value="Dienstverhältnis"> </h:outputLabel>
 					<div class="input left">
-						<rich:comboBox width="350px" id="serviceType" value="#{bean.queryParam.serviceType}" 
+						<rich:comboBox width="200px" id="serviceType" value="#{bean.queryParam.serviceType}" 
 							selectFirstOnUpdate="false" defaultLabel="Dienstverhältnis wählen">
 							<f:selectItems value="#{bean.serviceTypeItems}" />
 							<f:validator validatorId="validator.selectableItem" />

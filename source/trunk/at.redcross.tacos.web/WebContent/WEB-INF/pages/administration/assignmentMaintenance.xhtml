@@ -37,7 +37,7 @@
 		<rich:panel rendered="#{empty assignmentMaintenanceBean.assignments}" style="margin-top:10px;">
 			<h:outputText value="Keine Einträge gefunden" styleClass="italic" />
 		</rich:panel>
-		<rich:dataTable id="assignmentTable" styleClass="editorTable" value="#{assignmentMaintenanceBean.assignments}" var="dto" rowKeyVar="row"
+		<rich:dataTable id="assignmentTable" styleClass="defaultStyle" value="#{assignmentMaintenanceBean.assignments}" var="dto" rowKeyVar="row"
 			onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
 			<rich:column styleClass="smallColumn">
 				<f:facet name="header">
@@ -76,8 +76,13 @@
 			</rich:column>
 			<rich:column styleClass="smallColumn">
 				<f:facet name="header">
-					<rich:spacer />
+					<h:outputText value="Aktionen" />
 				</f:facet>
+				<a4j:commandLink rendered="#{dto.historyEnabled}" reRender="page-panels" oncomplete="#{rich:component('historyPanel')}.show(); return false;" title="Protokoll anzeigen">
+					<a4j:actionparam name="entryId" assignTo="#{historyBean.primaryKey}" value="#{dto.entity.id}" />
+					<a4j:actionparam name="entryClass" assignTo="#{historyBean.className}" value="#{dto.entity.class.name}" actionListener="#{historyBean.queryHistory}" />
+					<h:graphicImage library="images/16x16" name="info.png" />
+				</a4j:commandLink>
 				<a4j:commandLink reRender="assignmentTable" rendered="#{dto.state.name ne 'delete'}" immediate="true">
 					<a4j:actionparam name="assignmentId" assignTo="#{assignmentMaintenanceBean.assignmentId}" value="#{dto.entity.id}"
 						actionListener="#{assignmentMaintenanceBean.removeAssignment}" />
@@ -91,6 +96,11 @@
 			</rich:column>
 		</rich:dataTable>
 	</ui:define>
+	
+	<ui:define name="page-panels">
+		<ui:decorate template="/WEB-INF/templates/widgets/historyPanel.xhtml" />
+	</ui:define>
+	
 </ui:composition>
 </body>
 </html>

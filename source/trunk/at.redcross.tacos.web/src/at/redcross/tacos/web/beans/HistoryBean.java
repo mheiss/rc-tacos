@@ -111,6 +111,10 @@ public class HistoryBean extends BaseBean {
             if (property.startsWith("history")) {
                 continue;
             }
+            // skip internal methods from entity
+            if(property.startsWith("displayString")) {
+            	continue;
+            }
             RevisionInfoChange change = new RevisionInfoChange(property);
 
             // get the value of the property and compute the changes
@@ -124,7 +128,7 @@ public class HistoryBean extends BaseBean {
         return changes;
     }
 
-    /** Returns a string containing the changes between the objects */
+    /** Returns whether or not there are changes between the two objects */
     @SuppressWarnings("unchecked")
     private boolean computeChanges(RevisionInfoChange change, Object lhs, Object rhs) {
         // simple cases where one or two sides are not set
@@ -133,13 +137,13 @@ public class HistoryBean extends BaseBean {
         }
         // the value is deleted
         if (rhs == null && lhs != null) {
-            change.setOldValue(lhs);
+            change.setOldValue(getContent(lhs));
             change.setNewValue(null);
             return true;
         }
         // initial value set
         if (rhs != null && lhs == null) {
-            change.setNewValue(rhs);
+            change.setNewValue(getContent(rhs));
             return true;
         }
 
@@ -150,8 +154,8 @@ public class HistoryBean extends BaseBean {
             if (rhsEntity.getDisplayString().equals(lhsEntity.getDisplayString())) {
                 return false;
             }
-            change.setNewValue(rhsEntity.getDisplayString());
-            change.setOldValue(lhsEntity.getDisplayString());
+            change.setNewValue(getContent(rhsEntity));
+            change.setOldValue(getContent(lhsEntity));
             return true;
         }
 
@@ -162,12 +166,22 @@ public class HistoryBean extends BaseBean {
             if (rhsComparable.compareTo(lhsComparable) == 0) {
                 return false;
             }
-            change.setNewValue(rhs);
-            change.setOldValue(lhs);
+            change.setNewValue(getContent(rhs));
+            change.setOldValue(getContent(lhs));
             return true;
         }
         return false;
     }
+    
+    /** Helper method to get the current value of an object a string */
+    private String getContent(Object object) {
+    	if(object instanceof EntityImpl) {
+    		EntityImpl entity = (EntityImpl)object;
+    		return entity.getDisplayString();
+    	}
+    	return String.valueOf(object);
+    }
+    
 
     // ---------------------------------
     // Setters for the properties
