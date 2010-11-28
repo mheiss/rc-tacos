@@ -21,7 +21,7 @@ public class RevisionInfoEntry implements Serializable {
     private final RevisionType type;
 
     /** the changes */
-    private final List<String> changes;
+    private final List<RevisionInfoChange> changes;
 
     /**
      * Creates a new entry using the given array of objects.
@@ -30,11 +30,11 @@ public class RevisionInfoEntry implements Serializable {
         entity = (EntityImpl) objects[0];
         revision = (RevisionInfo) objects[1];
         type = (RevisionType) objects[2];
-        changes = new ArrayList<String>();
+        changes = new ArrayList<RevisionInfoChange>();
     }
 
     /** Appends the given info string to this revision entry */
-    public void addChange(String change) {
+    public void addChange(RevisionInfoChange change) {
         changes.add(change);
     }
 
@@ -53,7 +53,7 @@ public class RevisionInfoEntry implements Serializable {
         return type;
     }
 
-    public List<String> getChanges() {
+    public List<RevisionInfoChange> getChanges() {
         return changes;
     }
 }
