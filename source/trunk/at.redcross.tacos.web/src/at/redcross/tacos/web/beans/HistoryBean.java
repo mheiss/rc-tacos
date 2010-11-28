@@ -18,6 +18,7 @@ import org.hibernate.envers.query.AuditEntity;
 import org.hibernate.envers.query.AuditQuery;
 
 import at.redcross.tacos.dbal.entity.EntityImpl;
+import at.redcross.tacos.dbal.entity.RevisionInfoChange;
 import at.redcross.tacos.dbal.entity.RevisionInfoEntry;
 import at.redcross.tacos.dbal.helper.AuditQueryHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
@@ -82,15 +83,15 @@ public class HistoryBean extends BaseBean {
         for (RevisionInfoEntry entry : entires) {
             // entry is added, no other compares needed
             if (entry.getType() == RevisionType.ADD) {
-                entry.addChange("Datensatz wurde hinzugefügt");
+                continue;
             }
             if (entry.getType() == RevisionType.DEL) {
-                entry.addChange("Datensatz wurde gelöscht");
+                continue;
             }
             if (entry.getType() == RevisionType.MOD) {
                 // compare each property of the given entity
-                List<String> changes = computeChanges(baseEntity, entry.getEntity());
-                for (String change : changes) {
+                List<RevisionInfoChange> changes = computeChanges(baseEntity, entry.getEntity());
+                for (RevisionInfoChange change : changes) {
                     entry.addChange(change);
                 }
                 // compare the next entry with this one
@@ -101,8 +102,8 @@ public class HistoryBean extends BaseBean {
 
     /** Computes the changes between the two entities */
     @SuppressWarnings("unchecked")
-    private List<String> computeChanges(EntityImpl lhsEntity, EntityImpl rhsEntity) throws Exception {
-        List<String> changes = new ArrayList<String>();
+    private List<RevisionInfoChange> computeChanges(EntityImpl lhsEntity, EntityImpl rhsEntity) throws Exception {
+        List<RevisionInfoChange> changes = new ArrayList<RevisionInfoChange>();
         // compute the changes and add to the result
         Map<String, Object> lhsProperties = BeanUtils.describe(lhsEntity);
         for (String property : lhsProperties.keySet()) {
@@ -110,33 +111,36 @@ public class HistoryBean extends BaseBean {
             if (property.startsWith("history")) {
                 continue;
             }
+            RevisionInfoChange change = new RevisionInfoChange(property);
 
             // get the value of the property and compute the changes
             Object lhsProperty = PropertyUtils.getProperty(lhsEntity, property);
             Object rhsProperty = PropertyUtils.getProperty(rhsEntity, property);
-            String changed = computeChanges(lhsProperty, rhsProperty);
-
-            // no changes detected
-            if (changed == null) {
+            if (!computeChanges(change, lhsProperty, rhsProperty)) {
                 continue;
             }
-            changes.add(property + " - " + changed);
+            changes.add(change);
         }
         return changes;
     }
 
     /** Returns a string containing the changes between the objects */
     @SuppressWarnings("unchecked")
-    private String computeChanges(Object lhs, Object rhs) {
+    private boolean computeChanges(RevisionInfoChange change, Object lhs, Object rhs) {
         // simple cases where one or two sides are not set
         if (rhs == null && lhs == null) {
-            return null;
+            return false;
         }
+        // the value is deleted
         if (rhs == null && lhs != null) {
-            return String.valueOf(lhs) + " -> " + "(null) ";
+            change.setOldValue(lhs);
+            change.setNewValue(null);
+            return true;
         }
+        // initial value set
         if (rhs != null && lhs == null) {
-            return "(null)" + " -> " + String.valueOf(rhs);
+            change.setNewValue(rhs);
+            return true;
         }
 
         // compare entities
@@ -144,9 +148,11 @@ public class HistoryBean extends BaseBean {
             EntityImpl rhsEntity = (EntityImpl) rhs;
             EntityImpl lhsEntity = (EntityImpl) lhs;
             if (rhsEntity.getDisplayString().equals(lhsEntity.getDisplayString())) {
-                return null;
+                return false;
             }
-            return lhsEntity.getDisplayString() + " -> " + rhsEntity.getDisplayString();
+            change.setNewValue(rhsEntity.getDisplayString());
+            change.setOldValue(lhsEntity.getDisplayString());
+            return true;
         }
 
         // compare objects
@@ -154,11 +160,13 @@ public class HistoryBean extends BaseBean {
             Comparable<Object> rhsComparable = (Comparable<Object>) rhs;
             Comparable<Object> lhsComparable = (Comparable<Object>) lhs;
             if (rhsComparable.compareTo(lhsComparable) == 0) {
-                return null;
+                return false;
             }
-            return String.valueOf(lhs) + " -> " + String.valueOf(rhs);
+            change.setNewValue(rhs);
+            change.setOldValue(lhs);
+            return true;
         }
-        return null;
+        return false;
     }
 
     // ---------------------------------

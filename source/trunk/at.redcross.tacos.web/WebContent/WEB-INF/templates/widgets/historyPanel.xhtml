@@ -55,8 +55,12 @@
 				<f:facet name="header">
 					<h:outputText value="Änderungen" />
 				</f:facet>
+				<h:outputText value="Datensatz wurde erstellt" rendered="#{revisionEntry.type eq 'ADD'}" />
+				<h:outputText value="Datensatz wurde gelöscht" rendered="#{revisionEntry.type eq 'DEL'}" />
 				<a4j:repeat value="#{revisionEntry.changes}" var="change" rowKeyVar="rowIndex">
-					<h:outputText value="#{change}" />
+					<h:outputText value="Feld '#{change.property}' " />
+					<h:outputText value="war '#{change.oldValue}' und " rendered="#{not empty change.oldValue}" />
+					<h:outputText value="wurde geändert in '#{change.newValue}'" />
 					<h:outputText value=" , " rendered="#{rowIndex lt fn:length(revisionEntry.changes)-1}" />
 				</a4j:repeat>
 			</rich:column>
