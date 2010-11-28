@@ -3,6 +3,8 @@ package at.redcross.tacos.web.beans.dto;
 import java.io.Serializable;
 
 import at.redcross.tacos.dbal.entity.EntityImpl;
+import at.redcross.tacos.web.beans.WebPermissionBean;
+import at.redcross.tacos.web.faces.FacesUtils;
 
 /**
  * The {@code GenericDto} is a wrapper for e {@linkplain EntityImpl entity} that
@@ -33,7 +35,24 @@ public class GenericDto<T extends EntityImpl> implements Serializable {
 	public GenericDto(T entity) {
 		this.entity = entity;
 	}
+	
+    // ---------------------------------
+    // Business relevant methods
+    // ---------------------------------
+	/**
+	 * Returns whether or not the current authenticated user can view the
+	 * history of the entry.
+	 * <ul>
+	 * <li>Principal must have the permission to view the history</li>
+	 * </ul>
+	 */
+	public boolean isHistoryEnabled() {
+		return FacesUtils.lookupBean(WebPermissionBean.class).isAuthorizedToViewHistory();
+	}
 
+    // ---------------------------------
+    // Setters for the properties
+    // ---------------------------------
 	public void setState(EntryState state) {
 		this.state = state;
 	}
@@ -42,6 +61,9 @@ public class GenericDto<T extends EntityImpl> implements Serializable {
 		this.selected = selected;
 	}
 
+    // ---------------------------------
+    // Getters for the properties
+    // ---------------------------------
 	public T getEntity() {
 		return entity;
 	}
@@ -53,4 +75,7 @@ public class GenericDto<T extends EntityImpl> implements Serializable {
 	public boolean isSelected() {
 		return selected;
 	}
+	
+
+	
 }

@@ -16,88 +16,99 @@ import org.hibernate.envers.Audited;
 @Table(name = "ServiceType")
 public class ServiceType extends EntityImpl {
 
-    private static final long serialVersionUID = 7780994907233444353L;
+	private static final long serialVersionUID = 7780994907233444353L;
 
-    @Id
-    @GeneratedValue
-    private long id;
+	@Id
+	@GeneratedValue
+	private long id;
 
-    @Column(nullable = false, unique = true)
-    private String name;
+	@Column(nullable = false, unique = true)
+	private String name;
 
-    @Column
-    private String shortName;
+	@Column
+	private String shortName;
 
-    @Column(length = 255)
-    private String description;
+	@Column
+	private boolean signInOut = true;
 
-    // ---------------------------------
-    // EntityImpl
-    // ---------------------------------
-    @Override
-    public String getDisplayString() {
-        return name;
-    }
+	@Column(length = 255)
+	private String description;
 
-    // ---------------------------------
-    // Object related methods
-    // ---------------------------------
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this).append("name", name).toString();
-    }
+	// ---------------------------------
+	// EntityImpl
+	// ---------------------------------
+	@Override
+	public String getDisplayString() {
+		return name;
+	}
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(id).hashCode();
-    }
+	// ---------------------------------
+	// Object related methods
+	// ---------------------------------
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("name", name).toString();
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        if (obj.getClass() != getClass()) {
-            return false;
-        }
-        ServiceType rhs = (ServiceType) obj;
-        return new EqualsBuilder().append(id, rhs.id).isEquals();
-    }
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().append(id).hashCode();
+	}
 
-    // ---------------------------------
-    // Setters for the properties
-    // ---------------------------------
-    public void setName(String name) {
-        this.name = name;
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
+		if (obj.getClass() != getClass()) {
+			return false;
+		}
+		ServiceType rhs = (ServiceType) obj;
+		return new EqualsBuilder().append(id, rhs.id).isEquals();
+	}
 
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
-    }
+	// ---------------------------------
+	// Setters for the properties
+	// ---------------------------------
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
+	}
 
-    // ---------------------------------
-    // Getters for the properties
-    // ---------------------------------
-    public long getId() {
-        return id;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setSignInOut(boolean signInOut) {
+		this.signInOut = signInOut;
+	}
 
-    public String getShortName() {
-        return shortName;
-    }
+	// ---------------------------------
+	// Getters for the properties
+	// ---------------------------------
+	public long getId() {
+		return id;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public String getName() {
+		return name;
+	}
+
+	public String getShortName() {
+		return shortName;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public boolean isSignInOut() {
+		return signInOut;
+	}
 }
