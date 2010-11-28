@@ -34,8 +34,8 @@ public class RevisionInfoEntry implements Serializable {
     }
 
     /** Appends the given info string to this revision entry */
-    public void addChange(RevisionInfoChange change) {
-        changes.add(change);
+    public void addChanges(List<RevisionInfoChange> changes) {
+        this.changes.addAll(changes);
     }
 
     // ---------------------------------

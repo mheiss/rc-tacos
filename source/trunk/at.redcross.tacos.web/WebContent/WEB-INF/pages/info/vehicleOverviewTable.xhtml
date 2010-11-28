@@ -9,61 +9,65 @@
 		</div>
 	</h:panelGroup>
 	<rich:panel rendered="#{not empty values}">
-		<rich:dataTable id="table-#{tabId}" styleClass="defaultStyle" value="#{values}" var="car" onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
-			<rich:column sortBy="#{car.outOfOrder}" sortOrder="ASCENDING" styleClass="center smallColumn">
+		<rich:dataTable id="table-#{tabId}" styleClass="defaultStyle" value="#{values}" var="dto" onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
+			<rich:column sortBy="#{dto.entity.outOfOrder}" sortOrder="ASCENDING" styleClass="center smallColumn">
 				<f:facet name="header">
 					<h:outputText value="Status" title="Status" />
 				</f:facet>
-				<h:panelGroup rendered="#{car.outOfOrder}">
+				<h:panelGroup rendered="#{dto.entity.outOfOrder}">
 					<h:graphicImage library="images/16x16" name="data_down.png" title="Nicht verfügbar"/>
 				</h:panelGroup>
-				<h:panelGroup rendered="#{not car.outOfOrder}">
+				<h:panelGroup rendered="#{not dto.entity.outOfOrder}">
 					<h:graphicImage library="images/16x16" name="data_ok.png" title="Einsatzbereit" />
 				</h:panelGroup>
 			</rich:column>
-			<rich:column styleClass="smallColumn bold" sortBy="#{car.name}" sortOrder="ASCENDING">
+			<rich:column styleClass="smallColumn bold" sortBy="#{dto.entity.name}" sortOrder="ASCENDING">
 				<f:facet name="header">
 					<h:outputText value="Name" title="Fahrzeug" />
 				</f:facet>
-				<h:outputText value="#{car.name}" />
+				<h:outputText value="#{dto.entity.name}" />
 			</rich:column>
-			<rich:column styleClass="smallColumn" sortBy="#{car.type}">
+			<rich:column styleClass="smallColumn" sortBy="#{dto.entity.type}">
 				<f:facet name="header">
 					<h:outputText value="Typ" title="Typ" />
 				</f:facet>
-				<h:outputText value="#{car.type}" />
+				<h:outputText value="#{dto.entity.type}" />
 			</rich:column>
-			<rich:column sortBy="#{car.location.name}">
+			<rich:column sortBy="#{dto.entity.location.name}">
 				<f:facet name="header">
 					<h:outputText value="Dienststelle" />
 				</f:facet>
-				<h:outputText value="#{car.location.name}" />
+				<h:outputText value="#{dto.entity.location.name}" />
 			</rich:column>
 			<rich:column>
 				<f:facet name="header">
 					<h:outputText value="Anmerkungen" />
 				</f:facet>
-				<h:outputText value="#{car.notes}" escape="false"/>
+				<h:outputText value="#{dto.entity.notes}" escape="false"/>
 			</rich:column>
-			<rich:column styleClass="smallColumn" sortBy="#{car.registrationDate}">
+			<rich:column styleClass="smallColumn" sortBy="#{dto.entity.registrationDate}">
 				<f:facet name="header">
 					<h:outputText value="Erstzulassung" title="Erstzulassung" />
 				</f:facet>
-				<h:outputText value="#{car.registrationDate}">
+				<h:outputText value="#{dto.entity.registrationDate}">
 					<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 				</h:outputText>
 			</rich:column>
-			<rich:column title="Bearbeiten" styleClass="smallColumn">
+			<rich:column styleClass="smallColumn">
 				<f:facet name="header">
-					<rich:spacer />
+					<h:outputText value="Aktionen" />
 				</f:facet>
+				<a4j:commandLink rendered="#{dto.historyEnabled}"  reRender="page-panels" oncomplete="#{rich:component('historyPanel')}.show(); return false;" title="Protokoll anzeigen">
+					<a4j:actionparam name="entryId" assignTo="#{historyBean.primaryKey}" value="#{dto.entity.id}" />
+					<a4j:actionparam name="entryClass" assignTo="#{historyBean.className}" value="#{dto.entity.class.name}" actionListener="#{historyBean.queryHistory}" />
+					<h:graphicImage library="images/16x16" name="info.png" />
+				</a4j:commandLink>
 				<pretty:link rendered="#{vehicleOverviewBean.editVehicleEnabled}" mappingId="info-vehicleEditMaintenance" title="Fahrzeugeintrag bearbeiten">
-					<f:param value="#{car.id}" />
+					<f:param value="#{dto.entity.id}" />
 					<h:graphicImage library="images/16x16" name="edit.png" />
 				</pretty:link>
 			</rich:column>
 		</rich:dataTable>
-		<rich:datascroller styleClass="defaultScroller" for="table-#{tabId}" maxPages="#{bean.maxResults}" page="#{bean.page}" id="scroller-#{tabId}" />
 	</rich:panel>
 </ui:composition>
 </body>
