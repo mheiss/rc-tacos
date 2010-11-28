@@ -32,7 +32,7 @@
 			<rich:column styleClass="mediumColumn" style="background-color:#aaa;">
 				<pretty:link rendered="#{infoDto.editEnabled}" mappingId="info-editMaintenance" title="Information bearbeiten">
 					<f:param value="#{infoDto.entity.id}" />
-					<h:graphicImage layout="block" styleClass="actionImage" library="images/16x16" name="edit.png" />
+					<h:graphicImage layout="block" library="images/16x16" name="edit.png" />
 				</pretty:link>
 				<a4j:commandLink rendered="#{infoDto.deleteEnabled}" reRender="page-panels" oncomplete="#{rich:component('confirmDeleteInfoPanel')}.show();return false;" title="Information löschen">
 					<a4j:actionparam name="infoId" assignTo="#{infoCurrentOverviewBean.infoId}" value="#{infoDto.entity.id}" />
