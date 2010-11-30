@@ -507,6 +507,7 @@
         description varchar2(255 char),
         name varchar2(255 char) not null unique,
         shortname varchar2(255 char),
+        signinout number(1,0),
         primary key (id)
     );
 
@@ -521,6 +522,7 @@
         description varchar2(255 char),
         name varchar2(255 char),
         shortname varchar2(255 char),
+        signinout number(1,0),
         primary key (id, REV)
     );
 

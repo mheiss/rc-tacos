@@ -507,6 +507,7 @@
         description varchar(255) null,
         name varchar(255) not null unique,
         shortname varchar(255) null,
+        signinout tinyint null,
         primary key (id)
     );
 
@@ -521,6 +522,7 @@
         description varchar(255) null,
         name varchar(255) null,
         shortname varchar(255) null,
+        signinout tinyint null,
         primary key (id, REV)
     );
 

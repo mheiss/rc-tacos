@@ -507,6 +507,7 @@
         description varchar(255),
         name varchar(255) not null unique,
         shortname varchar(255),
+        signinout bit,
         primary key (id)
     );
 
@@ -521,6 +522,7 @@
         description varchar(255),
         name varchar(255),
         shortname varchar(255),
+        signinout bit,
         primary key (id, REV)
     );
 
