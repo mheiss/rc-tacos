@@ -11,7 +11,9 @@ import at.redcross.tacos.dbal.entity.SystemUser;
 public class SystemUserHelper {
 
     public static List<SystemUser> list(EntityManager manager) {
-        return manager.createQuery("from SystemUser", SystemUser.class).getResultList();
+        TypedQuery<SystemUser> query = manager.createQuery(
+                "from SystemUser user order by user.lastName desc", SystemUser.class);
+        return query.getResultList();
     }
 
     public static SystemUser getByLogin(EntityManager manager, String loginName) {
@@ -39,6 +41,7 @@ public class SystemUserHelper {
         if (locationName != null) {
             builder.append(" AND user.location.name = :locationName ");
         }
+        builder.append(" order by user.lastName ");
         TypedQuery<SystemUser> query = manager.createQuery(builder.toString(), SystemUser.class);
         query.setParameter("locked", locked);
         if (locationName != null) {
