@@ -3,6 +3,7 @@ package at.redcross.tacos.web.beans;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -75,6 +76,8 @@ public class HistoryBean extends PagingBean {
             auditQuery = auditQuery.add(AuditEntity.id().eq(primaryKey));
             auditQuery.addOrder(AuditEntity.revisionNumber().asc());
             revisionEntries = AuditQueryHelper.listRevisions(auditQuery);
+            // ensure that the revisions are ordered as expected
+            sortChanges(revisionEntries);
             computeChanges(revisionEntries);
             Collections.reverse(revisionEntries);
         } catch (Exception e) {
@@ -82,6 +85,16 @@ public class HistoryBean extends PagingBean {
         } finally {
             manager = EntityManagerHelper.close(manager);
         }
+    }
+
+    /** Sorts the returned list of revisions */
+    private void sortChanges(List<RevisionInfoEntry> entries) throws Exception {
+        Collections.sort(entries, new Comparator<RevisionInfoEntry>() {
+
+            public int compare(RevisionInfoEntry o1, RevisionInfoEntry o2) {
+                return o1.getRevision().getId() - o2.getRevision().getId();
+            };
+        });
     }
 
     /** Computes the changes for the given revisions */
