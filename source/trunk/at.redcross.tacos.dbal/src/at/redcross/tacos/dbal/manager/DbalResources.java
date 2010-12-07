@@ -19,9 +19,12 @@ public abstract class DbalResources {
 
     private final static Logger logger = LoggerFactory.getLogger(DbalResources.class);
 
+    // the system property to define an alternative persistence unit
+    public final static String PERSISTENCE_UNIT = "at.redcross.tacos.persistence";
+
     // default persistence unit if nothing is provided
     public final static String DEFAULT_PERSISTENCE_UNIT = "tacosDevelopment";
-    
+
     // the system property to define the audit implementation
     public static final String AUDIT_CLASSNAME = "at.redcross.tacos.dbal.auditListener";
 

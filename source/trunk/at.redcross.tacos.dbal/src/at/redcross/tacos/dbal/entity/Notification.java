@@ -36,6 +36,11 @@ public class Notification extends EntityImpl {
 	// ---------------------------------
 	// EntityImpl
 	// ---------------------------------
+    @Override
+    public Object getOid() {
+        return id;
+    }
+	
 	@Override
 	public String getDisplayString() {
 		return notes;

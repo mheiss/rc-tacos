@@ -35,6 +35,11 @@ public class Competence extends EntityImpl {
     // EntityImpl
     // ---------------------------------
     @Override
+    public Object getOid() {
+        return id;
+    }
+    
+    @Override
     public String getDisplayString() {
         return name;
     }

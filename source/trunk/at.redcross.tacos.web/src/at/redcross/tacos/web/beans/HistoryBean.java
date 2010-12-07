@@ -16,6 +16,7 @@ import javax.persistence.EntityManager;
 import org.ajax4jsf.model.KeepAlive;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.log4j.Logger;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.RevisionType;
@@ -45,6 +46,9 @@ public class HistoryBean extends PagingBean {
     /** the entity for that the history is shown */
     private EntityImpl entity;
 
+    /** THe entity manager (only valid during #queryHistory) */
+    private EntityManager manager;
+
     /** the history entries */
     private List<RevisionInfoEntry> revisionEntries;
 
@@ -62,7 +66,6 @@ public class HistoryBean extends PagingBean {
 
     public void queryHistory(ActionEvent event) {
         Class<?> entityClass;
-        EntityManager manager = null;
         try {
             entityClass = Class.forName(className);
             // query the entity by the primary key
@@ -81,6 +84,7 @@ public class HistoryBean extends PagingBean {
             computeChanges(revisionEntries);
             Collections.reverse(revisionEntries);
         } catch (Exception e) {
+            Logger.getLogger(HistoryBean.class).error(e);
             FacesUtils.addErrorMessage("Änderungshistorie konnte nicht geladen werden");
         } finally {
             manager = EntityManagerHelper.close(manager);
@@ -203,7 +207,7 @@ public class HistoryBean extends PagingBean {
     private String getContent(Object object) {
         if (object instanceof EntityImpl) {
             EntityImpl entity = (EntityImpl) object;
-            return entity.getDisplayString();
+            return String.valueOf(entity.getOid());
         }
         if (object instanceof Date) {
             Date date = (Date) object;

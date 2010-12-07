@@ -18,12 +18,19 @@ public abstract class EntityImpl implements Serializable {
 
     @Embedded
     @Column(nullable = true)
-    @AuditOverride(name="history",isAudited=false)
+    @AuditOverride(name = "history", isAudited = false)
     private History history;
 
     // ---------------------------------
     // Public API
     // ---------------------------------
+    /**
+     * Returns the primary key of this entity
+     * 
+     * @return the primary key object
+     */
+    public abstract Object getOid();
+
     /**
      * Returns a meaningful string that will be displayed in the UI to render
      * the object.
