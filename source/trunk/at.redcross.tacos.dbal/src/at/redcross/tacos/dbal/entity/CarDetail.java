@@ -126,6 +126,11 @@ public class CarDetail extends EntityImpl {
 	// ---------------------------------
 	// EntityImpl
 	// ---------------------------------
+    @Override
+    public Object getOid() {
+        return id;
+    }
+	
 	@Override
 	public String getDisplayString() {
 		return String.valueOf(id);

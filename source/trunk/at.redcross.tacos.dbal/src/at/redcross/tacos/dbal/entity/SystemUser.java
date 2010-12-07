@@ -31,200 +31,205 @@ import org.hibernate.envers.Audited;
 @Table(name = "SystemUser")
 public class SystemUser extends EntityImpl {
 
-	private static final long serialVersionUID = 1556985467901977440L;
+    private static final long serialVersionUID = 1556985467901977440L;
 
-	@Id
-	@GeneratedValue
-	private long id;
+    @Id
+    @GeneratedValue
+    private long id;
 
-	@Column(unique = true)
-	private int pnr;
+    @Column(unique = true)
+    private int pnr;
 
-	@Column(nullable = false)
-	private String firstName;
+    @Column(nullable = false)
+    private String firstName;
 
-	@Column(nullable = false)
-	private String lastName;
+    @Column(nullable = false)
+    private String lastName;
 
-	@Column(nullable = false)
-	@Enumerated(EnumType.STRING)
-	private Gender gender = Gender.UNKNOWN;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Gender gender = Gender.UNKNOWN;
 
-	@Column
-	@Temporal(TemporalType.DATE)
-	private Date birthday;
+    @Column
+    @Temporal(TemporalType.DATE)
+    private Date birthday;
 
-	@Column(length=1024)
-	private String notes;
+    @Column(length = 1024)
+    private String notes;
 
-	@Embedded
-	@Column(nullable = false)
-	private Address address;
+    @Embedded
+    @Column(nullable = false)
+    private Address address;
 
-	@OneToOne(optional = false, orphanRemoval = true, cascade = CascadeType.ALL)
-	private Login login;
+    @OneToOne(optional = false, orphanRemoval = true, cascade = CascadeType.ALL)
+    private Login login;
 
-	@ManyToOne(optional = false)
-	private Location location;
+    @ManyToOne(optional = false)
+    private Location location;
 
-	@ManyToMany
-	@LazyCollection(LazyCollectionOption.FALSE)
-	private List<Group> groups;
+    @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Group> groups;
 
-	@ManyToMany
-	@LazyCollection(LazyCollectionOption.FALSE)
-	private List<Competence> competences;
+    @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Competence> competences;
 
-	@Column
-	private boolean toDelete;
+    @Column
+    private boolean toDelete;
 
-	// ---------------------------------
-	// EntityImpl
-	// ---------------------------------
-	@Override
-	public String getDisplayString() {
-		return lastName + " " + firstName;
-	}
+    // ---------------------------------
+    // EntityImpl
+    // ---------------------------------
+    @Override
+    public Object getOid() {
+        return id;
+    }
 
-	// ---------------------------------
-	// Object related methods
-	// ---------------------------------
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this).append("id", id).append("firstName", firstName).append(
-				"lastName", lastName).toString();
-	}
+    @Override
+    public String getDisplayString() {
+        return lastName + " " + firstName;
+    }
 
-	@Override
-	public int hashCode() {
-		return new HashCodeBuilder().append(id).hashCode();
-	}
+    // ---------------------------------
+    // Object related methods
+    // ---------------------------------
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("id", id).append("firstName", firstName).append(
+                "lastName", lastName).toString();
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		if (obj == this) {
-			return true;
-		}
-		if (obj.getClass() != getClass()) {
-			return false;
-		}
-		SystemUser rhs = (SystemUser) obj;
-		return new EqualsBuilder().append(id, rhs.id).isEquals();
-	}
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(id).hashCode();
+    }
 
-	// ---------------------------------
-	// Setters for the properties
-	// ---------------------------------
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        if (obj.getClass() != getClass()) {
+            return false;
+        }
+        SystemUser rhs = (SystemUser) obj;
+        return new EqualsBuilder().append(id, rhs.id).isEquals();
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    // ---------------------------------
+    // Setters for the properties
+    // ---------------------------------
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	public void setPnr(int pnr) {
-		this.pnr = pnr;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public void setLocation(Location location) {
-		this.location = location;
-	}
+    public void setPnr(int pnr) {
+        this.pnr = pnr;
+    }
 
-	public void setGender(Gender gender) {
-		this.gender = gender;
-	}
+    public void setLocation(Location location) {
+        this.location = location;
+    }
 
-	public void setBirthday(Date birthday) {
-		this.birthday = birthday;
-	}
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
 
-	public void setAddress(Address address) {
-		this.address = address;
-	}
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
 
-	public void setLogin(Login login) {
-		this.login = login;
-	}
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
-	public void setGroups(List<Group> groups) {
-		this.groups = groups;
-	}
+    public void setLogin(Login login) {
+        this.login = login;
+    }
 
-	public void setCompetences(List<Competence> competences) {
-		this.competences = competences;
-	}
+    public void setGroups(List<Group> groups) {
+        this.groups = groups;
+    }
 
-	public void setNotes(String notes) {
-		this.notes = notes;
-	}
+    public void setCompetences(List<Competence> competences) {
+        this.competences = competences;
+    }
 
-	public void setToDelete(boolean toDelete) {
-		this.toDelete = toDelete;
-	}
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
 
-	// ---------------------------------
-	// Setters for the properties
-	// ---------------------------------
-	public long getId() {
-		return id;
-	}
+    public void setToDelete(boolean toDelete) {
+        this.toDelete = toDelete;
+    }
 
-	public String getLastName() {
-		return lastName;
-	}
+    // ---------------------------------
+    // Setters for the properties
+    // ---------------------------------
+    public long getId() {
+        return id;
+    }
 
-	public String getFirstName() {
-		return firstName;
-	}
+    public String getLastName() {
+        return lastName;
+    }
 
-	public int getPnr() {
-		return pnr;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public Location getLocation() {
-		return location;
-	}
+    public int getPnr() {
+        return pnr;
+    }
 
-	public Gender getGender() {
-		return gender;
-	}
+    public Location getLocation() {
+        return location;
+    }
 
-	public Date getBirthday() {
-		return birthday;
-	}
+    public Gender getGender() {
+        return gender;
+    }
 
-	public Address getAddress() {
-		return address;
-	}
+    public Date getBirthday() {
+        return birthday;
+    }
 
-	public Login getLogin() {
-		return login;
-	}
+    public Address getAddress() {
+        return address;
+    }
 
-	public String getNotes() {
-		return notes;
-	}
+    public Login getLogin() {
+        return login;
+    }
 
-	public List<Group> getGroups() {
-		if (groups == null) {
-			groups = new ArrayList<Group>();
-		}
-		return groups;
-	}
+    public String getNotes() {
+        return notes;
+    }
 
-	public List<Competence> getCompetences() {
-		if (competences == null) {
-			competences = new ArrayList<Competence>();
-		}
-		return competences;
-	}
+    public List<Group> getGroups() {
+        if (groups == null) {
+            groups = new ArrayList<Group>();
+        }
+        return groups;
+    }
 
-	public boolean isToDelete() {
-		return toDelete;
-	}
+    public List<Competence> getCompetences() {
+        if (competences == null) {
+            competences = new ArrayList<Competence>();
+        }
+        return competences;
+    }
+
+    public boolean isToDelete() {
+        return toDelete;
+    }
 
 }

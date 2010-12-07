@@ -57,6 +57,9 @@ public class WebDbalResources extends DbalResources {
 
     @Override
     protected String getPersistenceUnit() {
+        if (System.getProperty(PERSISTENCE_UNIT) != null) {
+            return System.getProperty(PERSISTENCE_UNIT);
+        }
         return persistenceUnit;
     }
 }

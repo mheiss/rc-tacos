@@ -21,143 +21,148 @@ import org.hibernate.envers.Audited;
 @Table(name = "Car")
 public class Car extends EntityImpl {
 
-	private static final long serialVersionUID = 3458978488903275473L;
+    private static final long serialVersionUID = 3458978488903275473L;
 
-	@Id
-	@GeneratedValue
-	private long id;
+    @Id
+    @GeneratedValue
+    private long id;
 
-	@Column(nullable = false, unique = true)
-	private String name;
+    @Column(nullable = false, unique = true)
+    private String name;
 
-	@Column
-	private boolean outOfOrder;
+    @Column
+    private boolean outOfOrder;
 
-	@Column(length=1024)
-	private String notes;
+    @Column(length = 1024)
+    private String notes;
 
-	@ManyToOne(optional = false, fetch = FetchType.EAGER)
-	private Location location;
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private Location location;
 
-	@Column
-	private boolean toDelete;
+    @Column
+    private boolean toDelete;
 
-	@Column
-	private String type;
+    @Column
+    private String type;
 
-	@Column
-	private Date registrationDate;
+    @Column
+    private Date registrationDate;
 
-	@OneToOne(optional = true, fetch = FetchType.EAGER)
-	private CarDetail detail;
+    @OneToOne(optional = true, fetch = FetchType.EAGER)
+    private CarDetail detail;
 
-	// ---------------------------------
-	// EntityImpl
-	// ---------------------------------
-	@Override
-	public String getDisplayString() {
-		return name;
-	}
+    // ---------------------------------
+    // EntityImpl
+    // ---------------------------------
+    @Override
+    public Object getOid() {
+        return id;
+    }
 
-	// ---------------------------------
-	// Object related methods
-	// ---------------------------------
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this).append("id", id).toString();
-	}
+    @Override
+    public String getDisplayString() {
+        return name;
+    }
 
-	@Override
-	public int hashCode() {
-		return new HashCodeBuilder().append(id).hashCode();
-	}
+    // ---------------------------------
+    // Object related methods
+    // ---------------------------------
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("id", id).toString();
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		if (obj == this) {
-			return true;
-		}
-		if (obj.getClass() != getClass()) {
-			return false;
-		}
-		Car rhs = (Car) obj;
-		return new EqualsBuilder().append(id, rhs.id).isEquals();
-	}
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(id).hashCode();
+    }
 
-	// ---------------------------------
-	// Setters for the properties
-	// ---------------------------------
-	public void setName(String name) {
-		this.name = name;
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        if (obj.getClass() != getClass()) {
+            return false;
+        }
+        Car rhs = (Car) obj;
+        return new EqualsBuilder().append(id, rhs.id).isEquals();
+    }
 
-	public void setOutOfOrder(boolean outOfOrder) {
-		this.outOfOrder = outOfOrder;
-	}
+    // ---------------------------------
+    // Setters for the properties
+    // ---------------------------------
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setNotes(String notes) {
-		this.notes = notes;
-	}
+    public void setOutOfOrder(boolean outOfOrder) {
+        this.outOfOrder = outOfOrder;
+    }
 
-	public void setLocation(Location location) {
-		this.location = location;
-	}
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
 
-	public void setToDelete(boolean toDelete) {
-		this.toDelete = toDelete;
-	}
+    public void setLocation(Location location) {
+        this.location = location;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public void setToDelete(boolean toDelete) {
+        this.toDelete = toDelete;
+    }
 
-	public void setRegistrationDate(Date registrationDate) {
-		this.registrationDate = registrationDate;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public CarDetail getDetail() {
-		return detail;
-	}
+    public void setRegistrationDate(Date registrationDate) {
+        this.registrationDate = registrationDate;
+    }
 
-	// ---------------------------------
-	// Getters for the properties
-	// ---------------------------------
-	public long getId() {
-		return id;
-	}
+    public CarDetail getDetail() {
+        return detail;
+    }
 
-	public String getName() {
-		return name;
-	}
+    // ---------------------------------
+    // Getters for the properties
+    // ---------------------------------
+    public long getId() {
+        return id;
+    }
 
-	public boolean isOutOfOrder() {
-		return outOfOrder;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getNotes() {
-		return notes;
-	}
+    public boolean isOutOfOrder() {
+        return outOfOrder;
+    }
 
-	public Location getLocation() {
-		return location;
-	}
+    public String getNotes() {
+        return notes;
+    }
 
-	public boolean isToDelete() {
-		return toDelete;
-	}
+    public Location getLocation() {
+        return location;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public boolean isToDelete() {
+        return toDelete;
+    }
 
-	public Date getRegistrationDate() {
-		return registrationDate;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public void setDetail(CarDetail detail) {
-		this.detail = detail;
-	}
+    public Date getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setDetail(CarDetail detail) {
+        this.detail = detail;
+    }
 }

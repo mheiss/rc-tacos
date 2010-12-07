@@ -53,6 +53,11 @@ public class CarCareEntry extends EntityImpl {
 	// ---------------------------------
 	// EntityImpl
 	// ---------------------------------
+    @Override
+    public Object getOid() {
+        return id;
+    }
+	
 	@Override
 	public String getDisplayString() {
 		return description;
