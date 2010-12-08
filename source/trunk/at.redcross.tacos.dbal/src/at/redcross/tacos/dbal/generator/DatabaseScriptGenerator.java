@@ -1,15 +1,13 @@
 package at.redcross.tacos.dbal.generator;
 
 import java.io.File;
-import java.io.FilenameFilter;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.DefaultComponentSafeNamingStrategy;
 import org.hibernate.envers.configuration.AuditConfiguration;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
+
+import at.redcross.tacos.dbal.utils.EntityUtils;
 
 /**
  * The {@code DdlScriptGenerator} generates DDL script file from annotated
@@ -98,54 +96,12 @@ public class DatabaseScriptGenerator {
 
     }
 
-    /**
-     * Utility method used to fetch Class list based on a package name.
-     * 
-     * @param packageName
-     *            (should be the package containing your annotated beans.
-     */
-    private List<Class<?>> getClasses(String packageName) throws Exception {
-        List<Class<?>> classes = new ArrayList<Class<?>>();
-        File directory = null;
-        try {
-            ClassLoader cld = Thread.currentThread().getContextClassLoader();
-            String path = packageName.replace('.', '/');
-            URL resource = cld.getResource(path);
-            if (resource == null) {
-                throw new ClassNotFoundException("No resource for " + path);
-            }
-            directory = new File(resource.getFile());
-        } catch (NullPointerException x) {
-            throw new ClassNotFoundException(packageName + " (" + directory
-                    + ") does not appear to be a valid package");
-        }
-        if (!directory.exists()) {
-            throw new IllegalArgumentException("Package '" + packageName + "' is not existing");
-        }
-
-        String[] files = directory.list(new FilenameFilter() {
-
-            @Override
-            public boolean accept(File dir, String name) {
-                if (name.endsWith(".class")) {
-                    return true;
-                }
-                return false;
-            }
-        });
-        for (int i = 0; i < files.length; i++) {
-            String clazzName = files[i].substring(0, files[i].length() - 6);
-            classes.add(Class.forName(packageName + '.' + clazzName));
-        }
-        return classes;
-    }
-
     /** initializes the generator */
     private void initGenerator() throws Exception {
         cfg = new Configuration();
         cfg.setNamingStrategy(new DefaultComponentSafeNamingStrategy());
         cfg.setProperty("hibernate.hbm2ddl.auto", "create");
-        for (Class<?> clazz : getClasses(packageName)) {
+        for (Class<?> clazz : EntityUtils.listEntityClasses(packageName)) {
             cfg.addAnnotatedClass(clazz);
         }
         if (!outputDir.isDirectory()) {
