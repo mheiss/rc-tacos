@@ -58,8 +58,7 @@ public class DatabaseMirror {
 			logger.info("Collected '" + entityList.size() + "' entities from the database");
 
 			// remove all of them and insert again
-			deleteEntityList(manager, entityList);
-			Collections.reverse(entityList);
+			deleteEntityList(manager);
 			mirrorEntityList(manager, entityList);
 
 			long duration = System.currentTimeMillis() - start;
@@ -93,11 +92,14 @@ public class DatabaseMirror {
 	}
 
 	/** Deletes the given entities from the database */
-	private void deleteEntityList(EntityManager manager, List<EntityImpl> persistentList) {
+	private void deleteEntityList(EntityManager manager) {
 		try {
 			manager.getTransaction().begin();
-			for (EntityImpl backupEntry : persistentList) {
-				manager.remove(backupEntry);
+			List<Class<?>> clazzes = getPersistentClasses();
+			Collections.reverse(clazzes);
+			for (Class<?> clazz : clazzes) {
+				String hqlQuery = "delete from " + clazz.getSimpleName();
+				manager.createQuery(hqlQuery).executeUpdate();
 			}
 			manager.getTransaction().commit();
 		} catch (Exception ex) {
@@ -179,29 +181,30 @@ public class DatabaseMirror {
 	private List<Class<?>> getPersistentClasses() {
 		// note that the order is important
 		List<Class<?>> clazzes = new ArrayList<Class<?>>();
-
-		// depends on the system user
-		clazzes.add(SystemUser.class);
-		clazzes.add(Login.class);
-		clazzes.add(Group.class);
-
+		
+		// no dependency
+		clazzes.add(Link.class);
+		clazzes.add(Notification.class);
+		clazzes.add(SecuredResource.class);
+		
 		// depends on the roster entry
 		clazzes.add(RosterEntry.class);
 		clazzes.add(Assignment.class);
 		clazzes.add(Competence.class);
 		clazzes.add(ServiceType.class);
+		
+		// depends on the system user
+		clazzes.add(SystemUser.class);
+		clazzes.add(Login.class);
+		clazzes.add(Group.class);
 
 		// depends on location
 		clazzes.add(Car.class);
-
 		clazzes.add(Info.class);
 		clazzes.add(Category.class);
-
-		// no dependency
+		
+		// the last one
 		clazzes.add(Location.class);
-		clazzes.add(Link.class);
-		clazzes.add(Notification.class);
-		clazzes.add(SecuredResource.class);
 
 		return clazzes;
 	}

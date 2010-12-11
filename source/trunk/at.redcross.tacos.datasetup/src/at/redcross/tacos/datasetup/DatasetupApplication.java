@@ -33,12 +33,6 @@ public class DatasetupApplication {
 
 	private final static Logger logger = LoggerFactory.getLogger(DatasetupApplication.class);
 
-	/** System property whether or not core data should be imported */
-	private final static String PROP_STAGE_CORE = "stage0";
-
-	/** System property whether or not additional data should be imported */
-	private final static String PROP_STAGE_DATA = "stage1";
-
 	// the registered stages that will be executed
 	private List<DatasetupStage> stages;
 
@@ -80,11 +74,12 @@ public class DatasetupApplication {
 			manager = EntityManagerFactory.createEntityManager();
 			List<DatasetupStage> cleanStages = new ArrayList<DatasetupStage>(stages);
 			Collections.reverse(cleanStages);
+			manager.getTransaction().begin();
 			for (DatasetupStage stage : cleanStages) {
 				logger.debug("Cleaning stage '" + stage.getClass().getSimpleName() + "'");
 				stage.performCleanup(manager);
 			}
-			EntityManagerHelper.commit(manager);
+			manager.getTransaction().commit();
 		} finally {
 			manager = EntityManagerHelper.close(manager);
 		}
@@ -110,23 +105,19 @@ public class DatasetupApplication {
 	// run as java-application
 	public static void main(String[] args) {
 		DatasetupApplication app = new DatasetupApplication();
-		if (System.getProperty(PROP_STAGE_CORE, "true").equals("true")) {
-			app.registerStage(new GroupStage());
-			app.registerStage(new LocationStage());
-			app.registerStage(new SystemUserStage());
-			app.registerStage(new SecuredResourceStage());
-		}
-		if (System.getProperty(PROP_STAGE_DATA, "true").equals("true")) {
-			app.registerStage(new AssignmentStage());
-			app.registerStage(new CarStage());
-			app.registerStage(new CategoryStage());
-			app.registerStage(new CompetenceStage());
-			app.registerStage(new InfoStage());
-			app.registerStage(new LinkStage());
-			app.registerStage(new NotificationStage());
-			app.registerStage(new ServiceTypeStage());
-			app.registerStage(new RosterEntryStage());
-		}
+		app.registerStage(new LocationStage());
+		app.registerStage(new GroupStage());
+		app.registerStage(new SystemUserStage());
+		app.registerStage(new SecuredResourceStage());
+		app.registerStage(new AssignmentStage());
+		app.registerStage(new CarStage());
+		app.registerStage(new CategoryStage());
+		app.registerStage(new CompetenceStage());
+		app.registerStage(new InfoStage());
+		app.registerStage(new LinkStage());
+		app.registerStage(new NotificationStage());
+		app.registerStage(new ServiceTypeStage());
+		app.registerStage(new RosterEntryStage());
 		app.execute();
 	}
 }
