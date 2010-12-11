@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.Table;
 
 public class EntityUtils {
 
@@ -69,7 +69,7 @@ public class EntityUtils {
         for (int i = 0; i < files.length; i++) {
             String clazzName = files[i].substring(0, files[i].length() - 6);
             Class<?> clazzForName = Class.forName(packageName + '.' + clazzName);
-            if (!clazzForName.isAnnotationPresent(Entity.class)) {
+            if (!clazzForName.isAnnotationPresent(Table.class)) {
                 continue;
             }
             classes.add(clazzForName);

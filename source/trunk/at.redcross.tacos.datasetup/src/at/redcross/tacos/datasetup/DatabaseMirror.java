@@ -1,5 +1,6 @@
 package at.redcross.tacos.datasetup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -19,9 +20,6 @@ public class DatabaseMirror {
 
     private final static Logger logger = LoggerFactory.getLogger(DatabaseMirror.class);
 
-    /** look for classes in this package **/
-    private String packageName = "at.redcross.tacos.dbal.entity";
-
     // run as java-application
     public static void main(String[] args) throws Exception {
         DatabaseMirror mirror = new DatabaseMirror();
@@ -30,52 +28,75 @@ public class DatabaseMirror {
 
     /** Mirror all known tables */
     public void mirror() throws Exception {
-        logger.info("Starting mirroring");
-        long start = System.currentTimeMillis();
-        List<Class<?>> clazzList = EntityUtils.listEntityClasses(packageName);
-        for (Class<?> clazz : clazzList) {
-            mirrorPersistent(clazz);
-        }
-        long duration = System.currentTimeMillis() - start;
-        logger.info("Mirroring '" + clazzList.size() + "' tables in " + duration + "ms");
-    }
-
-    /** Mirrors the given persistence table */
-    private void mirrorPersistent(Class<?> persistent) {
-        // try to determine the table name
-        Table table = persistent.getAnnotation(Table.class);
-        if (table == null) {
-            return;
-        }
-        String tableName = table.name();
+        List<EntityImpl> entityList = new ArrayList<EntityImpl>();
         EntityManager manager = null;
         try {
             manager = EntityManagerFactory.createEntityManager();
-            // metadata about the current table
-            Query countQuery = manager.createQuery("select count(*) from " + tableName + "");
-            Long count = (Long) countQuery.getSingleResult();
-            logger.info("Processing table '" + tableName + "' ('" + count + "')");
-            // query all entries
-            TypedQuery<EntityImpl> listQuery = manager.createQuery("from " + tableName,
-                    EntityImpl.class);
-            List<EntityImpl> backupList = listQuery.getResultList();
+            logger.info("Starting mirroring");
+            long start = System.currentTimeMillis();
 
-            // delete all entries from the table
-            manager.getTransaction().begin();
-            Query deleteQuery = manager.createQuery("delete from " + tableName);
-            deleteQuery.executeUpdate();
-            manager.getTransaction().commit();
+            // get a list of all entities from the database
+            collectPersistent(manager, entityList);
+            deleteEntityList(manager, entityList);
 
-            // insert the entries again
+            manager = EntityManagerHelper.close(manager);
+            manager = EntityManagerFactory.createEntityManager();
+
+            // now insert the whole list again
+            mirrorEntityList(manager, entityList);
+
+            long duration = System.currentTimeMillis() - start;
+            logger.info("Mirrored tables in " + duration + "ms");
+        } catch (Exception ex) {
+            logger.error("Failed to mirror persistents", ex);
+        } finally {
+            manager = EntityManagerHelper.close(manager);
+        }
+
+    }
+
+    /** Collects all entities from the given persistent */
+    private void collectPersistent(EntityManager manager, List<EntityImpl> persistentList) throws Exception {
+        for (Class<?> tableClazz : EntityUtils.listEntityClasses("at.redcross.tacos.dbal.entity")) {
+            Table table = tableClazz.getAnnotation(Table.class);
+            String tableName = table.name();
+            try {
+                Query countQuery = manager.createQuery("select count(*) from " + tableName + "");
+                Long count = (Long) countQuery.getSingleResult();
+                logger.info("Processing table '" + tableName + "' ('" + count + "')");
+                // query all entries
+                TypedQuery<EntityImpl> listQuery = manager.createQuery("from " + tableName,
+                        EntityImpl.class);
+                persistentList.addAll(listQuery.getResultList());
+            } catch (Exception ex) {
+                logger.error("Failed to collect persistent '" + tableName + "'", ex);
+            }
+        }
+    }
+
+    /** Deletes the given entities from the database */
+    private void deleteEntityList(EntityManager manager, List<EntityImpl> persistentList) {
+        try {
             manager.getTransaction().begin();
-            for (EntityImpl backupEntry : backupList) {
-                manager.persist(backupEntry);
+            for (EntityImpl backupEntry : persistentList) {
+                manager.remove(backupEntry);
             }
             manager.getTransaction().commit();
         } catch (Exception ex) {
-            logger.error("Failed to mirror persistent '" + persistent + "'", ex);
-        } finally {
-            manager = EntityManagerHelper.close(manager);
+            logger.error("Failed to delete entity", ex);
+        }
+    }
+
+    /** Inserts the given entities into the database */
+    private void mirrorEntityList(EntityManager manager, List<EntityImpl> persistentList) {
+        try {
+            manager.getTransaction().begin();
+            for (EntityImpl backupEntry : persistentList) {
+                manager.merge(backupEntry);
+            }
+            manager.getTransaction().commit();
+        } catch (Exception ex) {
+            logger.error("Failed to mirror persistents", ex);
         }
     }
 }
