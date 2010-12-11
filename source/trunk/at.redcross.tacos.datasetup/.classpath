@@ -5,5 +5,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/at.redcross.tacos.dbal"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/at.redcross.tacos.logging"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/at.redcross.tacos.dbal.lib"/>
+	<classpathentry kind="lib" path="lib/commons-beanutils-core-1.8.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
