@@ -118,7 +118,7 @@ public class ForgotPasswordBean extends PasswordBean {
 		builder.append("Wir haben eine Anfrage zum Zurücksetzen Ihres Passwortes erhalten. ");
 		builder.append("Sollten Sie diese Anfrage abgeschickt haben, ");
 		builder.append("dann folgen Sie bitte den nachfolgenden Anweisungen.\n");
-		builder.append("Wenn sie nicht wollen das Ihr Passwort zurückgesetzt wird, ");
+		builder.append("Wenn sie nicht wollen, dass Ihr Passwort zurückgesetzt wird, ");
 		builder.append("dann ignorieren Sie einfach diese Nachricht.");
 		builder.append("\n\n");
 		builder.append("Bitte klicken Sie auf den folgenden Link um Ihr Passwort zurückzusetzen:");
