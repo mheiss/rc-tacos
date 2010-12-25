@@ -27,10 +27,10 @@
 	</ui:define>
 
 	<ui:define name="page-content">		
-		<ui:decorate template="userFilter.xhtml">
+		<ui:decorate template="userFilterPanel.xhtml">
 			<ui:param name="bean" value="#{userOverviewBean}" />
 		</ui:decorate>
-		<rich:tabPanel id="userTab" selectedTab="#{userOverviewBean.locationName}" switchType="ajax" valueChangeListener="#{userOverviewBean.tabChanged}"
+		<rich:tabPanel id="userTab" selectedTab="#{userOverviewBean.queryParam.locationName}" switchType="ajax" valueChangeListener="#{userOverviewBean.tabChanged}"
 			styleClass="defaultTabPanelStyle" tabClass="defaultTabStyle" headerClass="defaultTabHeaderStyle">
 			<rich:tab label="Alle Dienststellen" name="*">
 				<ui:decorate template="userOverviewTable.xhtml">

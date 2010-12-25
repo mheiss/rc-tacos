@@ -30,6 +30,7 @@ import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.dbal.query.RosterQueryParam;
 import at.redcross.tacos.dbal.query.RosterStatisticQueryParam;
 import at.redcross.tacos.web.beans.dto.RosterStatisticDto;
+import at.redcross.tacos.web.beans.dto.RosterStatisticEntry;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.model.SelectableItem;
 import at.redcross.tacos.web.model.SelectableItemHelper;
@@ -98,7 +99,9 @@ public class RosterStatisticsBean extends PagingBean {
             rosterEntries = new ArrayList<RosterStatisticDto>();
             for (Map.Entry<SystemUser, List<RosterEntry>> entry : mapping.entrySet()) {
                 RosterStatisticDto dto = new RosterStatisticDto(entry.getKey());
-                dto.addEntires(entry.getValue());
+                for (RosterEntry rosterEntry : entry.getValue()) {
+                    dto.addElement(new RosterStatisticEntry(rosterEntry));
+                }
                 rosterEntries.add(dto);
             }
         } catch (Exception e) {
@@ -146,10 +149,11 @@ public class RosterStatisticsBean extends PagingBean {
         queryParam.month = cal.get(Calendar.MONTH);
         queryParam.year = cal.get(Calendar.YEAR);
         //
-        WebUserDetails details = (WebUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Login login =  details.getLogin();
-		SystemUser user = login.getSystemUser();
-		//
+        WebUserDetails details = (WebUserDetails) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal();
+        Login login = details.getLogin();
+        SystemUser user = login.getSystemUser();
+        //
         queryParam.systemUser = user;
         return queryParam;
     }
@@ -212,7 +216,7 @@ public class RosterStatisticsBean extends PagingBean {
         query.setParameter("states", new ArrayList<DataState>(Arrays.asList(DataState.NORMAL)));
         return query.getResultList();
     }
-    
+
     /**
      * Returns whether or not the current authenticated user can change the user
      * The following restrictions are considered:

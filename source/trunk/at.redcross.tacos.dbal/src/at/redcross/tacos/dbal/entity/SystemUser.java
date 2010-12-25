@@ -26,6 +26,8 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.envers.Audited;
 
+import at.redcross.tacos.dbal.utils.EmbeddedComparison;
+
 @Entity
 @Audited
 @Table(name = "SystemUser")
@@ -58,9 +60,11 @@ public class SystemUser extends EntityImpl {
     private String notes;
 
     @Embedded
+    @EmbeddedComparison
     @Column(nullable = false)
     private Address address;
 
+    @EmbeddedComparison
     @OneToOne(optional = false, orphanRemoval = true, cascade = CascadeType.ALL)
     private Login login;
 

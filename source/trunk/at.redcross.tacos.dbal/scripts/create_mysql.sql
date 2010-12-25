@@ -369,6 +369,12 @@
         primary key (id, REV)
     );
 
+    create table REVINFO (
+        REV integer not null auto_increment,
+        REVTSTMP bigint,
+        primary key (REV)
+    );
+
     create table RestoreLogin (
         id bigint not null auto_increment,
         history_changedat datetime,
@@ -393,13 +399,6 @@
         token varchar(255),
         username varchar(255),
         primary key (id, REV)
-    );
-
-    create table RevisionInfo (
-        id integer not null auto_increment,
-        timestamp bigint not null,
-        username varchar(255),
-        primary key (id)
     );
 
     create table RosterEntry (
@@ -628,10 +627,10 @@
     );
 
     alter table Assignment_AUD 
-        add index FKDFB4523E8277D80A (REV), 
-        add constraint FKDFB4523E8277D80A 
+        add index FKDFB4523EDF74E053 (REV), 
+        add constraint FKDFB4523EDF74E053 
         foreign key (REV) 
-        references RevisionInfo (id);
+        references REVINFO (REV);
 
     alter table Car 
         add index FK107B4716F1CD8 (location_id), 
@@ -652,34 +651,34 @@
         references Car (id);
 
     alter table CarCareEntry_AUD 
-        add index FKA6381DE8277D80A (REV), 
-        add constraint FKA6381DE8277D80A 
+        add index FKA6381DEDF74E053 (REV), 
+        add constraint FKA6381DEDF74E053 
         foreign key (REV) 
-        references RevisionInfo (id);
+        references REVINFO (REV);
 
     alter table CarDetail_AUD 
-        add index FKDD8388768277D80A (REV), 
-        add constraint FKDD8388768277D80A 
+        add index FKDD838876DF74E053 (REV), 
+        add constraint FKDD838876DF74E053 
         foreign key (REV) 
-        references RevisionInfo (id);
+        references REVINFO (REV);
 
     alter table Car_AUD 
-        add index FK843A3B858277D80A (REV), 
-        add constraint FK843A3B858277D80A 
+        add index FK843A3B85DF74E053 (REV), 
+        add constraint FK843A3B85DF74E053 
         foreign key (REV) 
-        references RevisionInfo (id);
+        references REVINFO (REV);
 
     alter table Category_AUD 
-        add index FK23378FEF8277D80A (REV), 
-        add constraint FK23378FEF8277D80A 
+        add index FK23378FEFDF74E053 (REV), 
+        add constraint FK23378FEFDF74E053 
         foreign key (REV) 
-        references RevisionInfo (id);
+        references REVINFO (REV);
 
     alter table Competence_AUD 
-        add index FKE7F8853A8277D80A (REV), 
-        add constraint FKE7F8853A8277D80A 
+        add index FKE7F8853ADF74E053 (REV), 
+        add constraint FKE7F8853ADF74E053 
         foreign key (REV) 
-        references RevisionInfo (id);
+        references REVINFO (REV);
 
     alter table Info 
         add index FK22D8CE716F1CD8 (location_id), 
@@ -694,40 +693,40 @@
         references Category (id);
 
     alter table Info_AUD 
-        add index FKE79EF9F8277D80A (REV), 
-        add constraint FKE79EF9F8277D80A 
+        add index FKE79EF9FDF74E053 (REV), 
+        add constraint FKE79EF9FDF74E053 
         foreign key (REV) 
-        references RevisionInfo (id);
+        references REVINFO (REV);
 
     alter table Link_AUD 
-        add index FK4B0CB4EB8277D80A (REV), 
-        add constraint FK4B0CB4EB8277D80A 
+        add index FK4B0CB4EBDF74E053 (REV), 
+        add constraint FK4B0CB4EBDF74E053 
         foreign key (REV) 
-        references RevisionInfo (id);
+        references REVINFO (REV);
 
     alter table Location_AUD 
-        add index FK6563F268277D80A (REV), 
-        add constraint FK6563F268277D80A 
+        add index FK6563F26DF74E053 (REV), 
+        add constraint FK6563F26DF74E053 
         foreign key (REV) 
-        references RevisionInfo (id);
+        references REVINFO (REV);
 
     alter table Login_AUD 
-        add index FK10FC609A8277D80A (REV), 
-        add constraint FK10FC609A8277D80A 
+        add index FK10FC609ADF74E053 (REV), 
+        add constraint FK10FC609ADF74E053 
         foreign key (REV) 
-        references RevisionInfo (id);
+        references REVINFO (REV);
 
     alter table Notification_AUD 
-        add index FK2DD68D5C8277D80A (REV), 
-        add constraint FK2DD68D5C8277D80A 
+        add index FK2DD68D5CDF74E053 (REV), 
+        add constraint FK2DD68D5CDF74E053 
         foreign key (REV) 
-        references RevisionInfo (id);
+        references REVINFO (REV);
 
     alter table RestoreLogin_AUD 
-        add index FK541ED1EC8277D80A (REV), 
-        add constraint FK541ED1EC8277D80A 
+        add index FK541ED1ECDF74E053 (REV), 
+        add constraint FK541ED1ECDF74E053 
         foreign key (REV) 
-        references RevisionInfo (id);
+        references REVINFO (REV);
 
     alter table RosterEntry 
         add index FKEF3D7087716F1CD8 (location_id), 
@@ -760,28 +759,28 @@
         references Car (id);
 
     alter table RosterEntry_AUD 
-        add index FK3AA002D88277D80A (REV), 
-        add constraint FK3AA002D88277D80A 
+        add index FK3AA002D8DF74E053 (REV), 
+        add constraint FK3AA002D8DF74E053 
         foreign key (REV) 
-        references RevisionInfo (id);
+        references REVINFO (REV);
 
     alter table SecuredAction_AUD 
-        add index FK6DD334948277D80A (REV), 
-        add constraint FK6DD334948277D80A 
+        add index FK6DD33494DF74E053 (REV), 
+        add constraint FK6DD33494DF74E053 
         foreign key (REV) 
-        references RevisionInfo (id);
+        references REVINFO (REV);
 
     alter table SecuredResource_AUD 
-        add index FKC3721F2C8277D80A (REV), 
-        add constraint FKC3721F2C8277D80A 
+        add index FKC3721F2CDF74E053 (REV), 
+        add constraint FKC3721F2CDF74E053 
         foreign key (REV) 
-        references RevisionInfo (id);
+        references REVINFO (REV);
 
     alter table ServiceType_AUD 
-        add index FKE5A1EDC08277D80A (REV), 
-        add constraint FKE5A1EDC08277D80A 
+        add index FKE5A1EDC0DF74E053 (REV), 
+        add constraint FKE5A1EDC0DF74E053 
         foreign key (REV) 
-        references RevisionInfo (id);
+        references REVINFO (REV);
 
     alter table SystemUser 
         add index FK9D23FEBAB76029C (login_id), 
@@ -796,10 +795,10 @@
         references Location (id);
 
     alter table SystemUser_AUD 
-        add index FK595E3F8B8277D80A (REV), 
-        add constraint FK595E3F8B8277D80A 
+        add index FK595E3F8BDF74E053 (REV), 
+        add constraint FK595E3F8BDF74E053 
         foreign key (REV) 
-        references RevisionInfo (id);
+        references REVINFO (REV);
 
     alter table SystemUser_Competence 
         add index FK446C328E14938758 (SystemUser_id), 
@@ -814,10 +813,10 @@
         references Competence (id);
 
     alter table SystemUser_Competence_AUD 
-        add index FKF700695F8277D80A (REV), 
-        add constraint FKF700695F8277D80A 
+        add index FKF700695FDF74E053 (REV), 
+        add constraint FKF700695FDF74E053 
         foreign key (REV) 
-        references RevisionInfo (id);
+        references REVINFO (REV);
 
     alter table SystemUser_UserGroup 
         add index FK16853A0F3A498367 (groups_id), 
@@ -832,13 +831,13 @@
         references SystemUser (id);
 
     alter table SystemUser_UserGroup_AUD 
-        add index FK7E57C8608277D80A (REV), 
-        add constraint FK7E57C8608277D80A 
+        add index FK7E57C860DF74E053 (REV), 
+        add constraint FK7E57C860DF74E053 
         foreign key (REV) 
-        references RevisionInfo (id);
+        references REVINFO (REV);
 
     alter table UserGroup_AUD 
-        add index FK4C4F45258277D80A (REV), 
-        add constraint FK4C4F45258277D80A 
+        add index FK4C4F4525DF74E053 (REV), 
+        add constraint FK4C4F4525DF74E053 
         foreign key (REV) 
-        references RevisionInfo (id);
+        references REVINFO (REV);

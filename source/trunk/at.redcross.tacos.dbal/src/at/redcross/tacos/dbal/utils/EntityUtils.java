@@ -5,12 +5,24 @@ import java.io.FilenameFilter;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
 
+import at.redcross.tacos.dbal.entity.EntityImpl;
+
 public class EntityUtils {
+
+    /** Returns a collection with the given elements */
+    public static Collection<Object> convert(EntityImpl... input) {
+        Collection<Object> list = new ArrayList<Object>();
+        for (EntityImpl entity : input) {
+            list.add(entity);
+        }
+        return list;
+    }
 
     /**
      * Returns the maximum allowed length of a given column.

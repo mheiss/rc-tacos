@@ -1,12 +1,8 @@
 package at.redcross.tacos.web.beans;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -14,12 +10,9 @@ import javax.faces.event.ActionEvent;
 import javax.persistence.EntityManager;
 
 import org.ajax4jsf.model.KeepAlive;
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
-import org.hibernate.envers.RevisionType;
 import org.hibernate.envers.query.AuditEntity;
 import org.hibernate.envers.query.AuditQuery;
 
@@ -28,6 +21,8 @@ import at.redcross.tacos.dbal.entity.RevisionInfoChange;
 import at.redcross.tacos.dbal.entity.RevisionInfoEntry;
 import at.redcross.tacos.dbal.helper.AuditQueryHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
+import at.redcross.tacos.dbal.utils.ObjectChange;
+import at.redcross.tacos.dbal.utils.ObjectComparator;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
 
@@ -51,9 +46,6 @@ public class HistoryBean extends PagingBean {
 
     /** the history entries */
     private List<RevisionInfoEntry> revisionEntries;
-
-    /** format dates using the provided formatter */
-    private SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
     @PostConstruct
     public void setup() {
@@ -79,9 +71,10 @@ public class HistoryBean extends PagingBean {
             auditQuery = auditQuery.add(AuditEntity.id().eq(primaryKey));
             auditQuery.addOrder(AuditEntity.revisionNumber().asc());
             revisionEntries = AuditQueryHelper.listRevisions(auditQuery);
-            // ensure that the revisions are ordered as expected
-            sortChanges(revisionEntries);
-            computeChanges(revisionEntries);
+            // compute the changes based on the returned revisions
+            if (revisionEntries != null && !revisionEntries.isEmpty()) {
+                computeChanges(revisionEntries);
+            }
             Collections.reverse(revisionEntries);
         } catch (Exception e) {
             Logger.getLogger(HistoryBean.class).error(e);
@@ -91,129 +84,31 @@ public class HistoryBean extends PagingBean {
         }
     }
 
-    /** Sorts the returned list of revisions */
-    private void sortChanges(List<RevisionInfoEntry> entries) throws Exception {
-        Collections.sort(entries, new Comparator<RevisionInfoEntry>() {
-
-            public int compare(RevisionInfoEntry o1, RevisionInfoEntry o2) {
-                return o1.getRevision().getId() - o2.getRevision().getId();
-            };
-        });
-    }
-
     /** Computes the changes for the given revisions */
     private void computeChanges(List<RevisionInfoEntry> entries) throws Exception {
-        // check if we have something to do
-        if (entries.isEmpty()) {
-            return;
-        }
-        EntityImpl baseEntity = entries.iterator().next().getEntity();
+        EntityImpl baseEntity = null;
         for (RevisionInfoEntry entry : entries) {
-            // entry is added, no other compares needed
-            if (entry.getType() == RevisionType.ADD) {
-                continue;
-            }
-            if (entry.getType() == RevisionType.DEL) {
-                continue;
-            }
-            if (entry.getType() == RevisionType.MOD) {
-                // compare each property of the given entity
-                entry.addChanges(computeChanges(baseEntity, entry.getEntity()));
-
-                // compare the next entry with this one
+            // compare with the first available entity
+            if (baseEntity == null) {
                 baseEntity = entry.getEntity();
-            }
-        }
-    }
-
-    /** Computes the changes between the two entities */
-    @SuppressWarnings("unchecked")
-    private List<RevisionInfoChange> computeChanges(EntityImpl lhsEntity, EntityImpl rhsEntity) throws Exception {
-        List<RevisionInfoChange> changes = new ArrayList<RevisionInfoChange>();
-        // compute the changes and add to the result
-        Map<String, Object> properties = BeanUtils.describe(lhsEntity);
-        for (String property : properties.keySet()) {
-            // skip history property
-            if (property.startsWith("history")) {
                 continue;
             }
-            // skip internal methods from entity
-            if (property.startsWith("displayString")) {
-                continue;
-            }
-            RevisionInfoChange change = new RevisionInfoChange(property);
 
-            // get the value of the property and compute the changes
-            Object lhsProperty = PropertyUtils.getProperty(lhsEntity, property);
-            Object rhsProperty = PropertyUtils.getProperty(rhsEntity, property);
-            if (!computeChanges(change, lhsProperty, rhsProperty)) {
-                continue;
+            // compute changes between the objects
+            ObjectComparator comparator = new ObjectComparator(baseEntity, entry.getEntity());
+            comparator.setManager(manager);
+            List<RevisionInfoChange> changes = new ArrayList<RevisionInfoChange>();
+            for (ObjectChange change : comparator.getChanges()) {
+                RevisionInfoChange revisionChange = new RevisionInfoChange(change.getAttribute());
+                revisionChange.setNewValue(change.getNewValue());
+                revisionChange.setOldValue(change.getOldValue());
+                changes.add(revisionChange);
             }
-            changes.add(change);
-        }
-        return changes;
-    }
+            entry.addChanges(changes);
 
-    /** Returns whether or not there are changes between the two objects */
-    @SuppressWarnings("unchecked")
-    private boolean computeChanges(RevisionInfoChange change, Object lhs, Object rhs) {
-        // simple cases where one or two sides are not set
-        if (rhs == null && lhs == null) {
-            return false;
+            // compare the next with this one
+            baseEntity = entry.getEntity();
         }
-        // the value is deleted
-        if (rhs == null && lhs != null) {
-            change.setOldValue(getContent(lhs));
-            change.setNewValue(null);
-            return true;
-        }
-        // initial value set, ignore (null) to empty string
-        String content = getContent(rhs);
-        if (rhs != null && lhs == null) {
-            if (content.trim().isEmpty()) {
-                return false;
-            }
-            change.setNewValue(content);
-            return true;
-        }
-
-        // compare entities
-        if (rhs instanceof EntityImpl && lhs instanceof EntityImpl) {
-            EntityImpl rhsEntity = (EntityImpl) rhs;
-            EntityImpl lhsEntity = (EntityImpl) lhs;
-            if (rhsEntity.getDisplayString().equals(lhsEntity.getDisplayString())) {
-                return false;
-            }
-            change.setNewValue(getContent(rhsEntity));
-            change.setOldValue(getContent(lhsEntity));
-            return true;
-        }
-
-        // compare objects
-        if (rhs instanceof Comparable<?> && lhs instanceof Comparable<?>) {
-            Comparable<Object> rhsComparable = (Comparable<Object>) rhs;
-            Comparable<Object> lhsComparable = (Comparable<Object>) lhs;
-            if (rhsComparable.compareTo(lhsComparable) == 0) {
-                return false;
-            }
-            change.setNewValue(content);
-            change.setOldValue(getContent(lhs));
-            return true;
-        }
-        return false;
-    }
-
-    /** Helper method to get the current value of an object as formatted string */
-    private String getContent(Object object) {
-        if (object instanceof EntityImpl) {
-            EntityImpl entity = (EntityImpl) object;
-            return String.valueOf(entity.getOid());
-        }
-        if (object instanceof Date) {
-            Date date = (Date) object;
-            return sdf.format(date);
-        }
-        return String.valueOf(object);
     }
 
     // ---------------------------------

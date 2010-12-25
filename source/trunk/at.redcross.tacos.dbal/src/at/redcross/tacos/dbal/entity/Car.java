@@ -16,6 +16,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.envers.Audited;
 
+import at.redcross.tacos.dbal.utils.EmbeddedComparison;
+
 @Entity
 @Audited
 @Table(name = "Car")
@@ -48,6 +50,7 @@ public class Car extends EntityImpl {
     @Column
     private Date registrationDate;
 
+    @EmbeddedComparison
     @OneToOne(optional = true, fetch = FetchType.EAGER)
     private CarDetail detail;
 
