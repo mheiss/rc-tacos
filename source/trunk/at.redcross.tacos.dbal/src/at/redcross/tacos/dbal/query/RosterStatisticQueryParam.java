@@ -7,6 +7,8 @@ import at.redcross.tacos.dbal.entity.SystemUser;
 /** Extended query parameters for statistic */
 public class RosterStatisticQueryParam extends RosterQueryParam {
 
+    private static final long serialVersionUID = 4784695967395357186L;
+
     /** the home location of the user */
     public Location homeLocation;
 

@@ -2,21 +2,13 @@ package at.redcross.tacos.web.beans.dto;
 
 import java.math.BigDecimal;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import at.redcross.tacos.dbal.entity.RosterEntry;
 import at.redcross.tacos.dbal.entity.SystemUser;
 import at.redcross.tacos.web.beans.WebPermissionBean;
 import at.redcross.tacos.web.faces.FacesUtils;
 
-public class RosterStatisticDto {
+public class RosterStatisticDto extends GenericGroupDto<SystemUser, RosterStatisticEntry> {
 
-    /** the system user of the entry */
-    private final SystemUser systemUser;
-
-    /** the entries of the user */
-    private final List<RosterStatisticEntry> entryList;
+    private static final long serialVersionUID = 3542146567592476801L;
 
     /** the total amount of hours */
     private double amount;
@@ -25,28 +17,18 @@ public class RosterStatisticDto {
      * Creates a new statistic entry for the given user
      */
     public RosterStatisticDto(SystemUser systemUser) {
-        this.systemUser = systemUser;
-        this.entryList = new ArrayList<RosterStatisticEntry>();
+        super(systemUser);
     }
 
-    /**
-     * Adds all roster entries to this statistic DTO. The amount of the all
-     * passed roster entries is automatically added to the sum of the amount.
-     * 
-     * @param entries
-     *            the entries to add
-     */
-    public void addEntires(List<RosterEntry> entries) {
-        for (RosterEntry entry : entries) {
-            RosterStatisticEntry statisticEntry = new RosterStatisticEntry(entry);
-            entryList.add(statisticEntry);
-            amount += statisticEntry.getAmount();
-        }
+    @Override
+    public void addElement(RosterStatisticEntry element) {
+        super.addElement(element);
+        amount += element.getAmount();
         // rounding is done by using a helper
         BigDecimal bigDecimal = new BigDecimal(String.valueOf(this.amount));
         amount = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
-    
+
     /**
      * Returns whether or not the current authenticated user can change the user
      * The following restrictions are considered:
@@ -61,14 +43,6 @@ public class RosterStatisticDto {
         }
         // edit denied
         return false;
-    }
-
-    public List<RosterStatisticEntry> getEntryList() {
-        return entryList;
-    }
-
-    public SystemUser getSystemUser() {
-        return systemUser;
     }
 
     public double getAmount() {

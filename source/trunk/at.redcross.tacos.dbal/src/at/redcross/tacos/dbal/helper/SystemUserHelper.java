@@ -7,6 +7,7 @@ import javax.persistence.TypedQuery;
 
 import at.redcross.tacos.dbal.entity.Login;
 import at.redcross.tacos.dbal.entity.SystemUser;
+import at.redcross.tacos.dbal.query.SystemUserQueryParam;
 
 public class SystemUserHelper {
 
@@ -34,20 +35,65 @@ public class SystemUserHelper {
         return null;
     }
 
-    public static List<SystemUser> listByLocationName(EntityManager manager, String locationName, boolean locked) {
+    public static List<SystemUser> list(EntityManager manager, SystemUserQueryParam param) {
         StringBuilder builder = new StringBuilder();
-        builder.append("from SystemUser user ");
-        builder.append(" where user.login.locked = :locked ");
-        if (locationName != null) {
-            builder.append(" AND user.location.name = :locationName ");
+        builder.append(" select distinct user from SystemUser user ");
+        builder.append(" left join user.groups as userGroup ");
+        builder.append(" left join user.competences as competence ");
+        builder.append(" where ");
+        builder.append(" user.login.locked = :locked AND ");
+        if (param.stateDelete & !param.stateNormal) {
+            builder.append(" user.toDelete = :toDelete AND ");
         }
-        builder.append(" order by user.lastName ");
-        TypedQuery<SystemUser> query = manager.createQuery(builder.toString(), SystemUser.class);
-        query.setParameter("locked", locked);
-        if (locationName != null) {
-            query.setParameter("locationName", locationName);
+        if (param.stateNormal & !param.stateDelete) {
+            builder.append(" user.toDelete = :toDelete AND ");
+        }
+        if (param.locationName != null && param.locationName != "*") {
+            builder.append(" user.location.name = :locationName AND ");
+        }
+        if (param.group != null) {
+            builder.append(" userGroup.id = :groupId AND ");
+        }
+        if (param.competence != null) {
+            builder.append(" competence.id = :competenceId AND ");
+        }
+        if (param.userName != null) {
+            builder.append(" ( user.firstName like :name ");
+            builder.append(" OR ");
+            builder.append(" user.lastName like :name ) ");
+        }
+        // ensure valid string
+        String queryString = builder.toString().trim();
+        if (queryString.endsWith("AND")) {
+            queryString = queryString.substring(0, queryString.length() - 3);
+        }
+        if (queryString.endsWith("WHERE")) {
+            queryString = queryString.substring(0, queryString.length() - 5);
+        }
+        queryString += " order by user.lastName ";
+        System.out.println(queryString);
+        // append the order clause
+        TypedQuery<SystemUser> query = manager.createQuery(queryString, SystemUser.class);
+        query.setParameter("locked", param.stateLocked);
+        if (param.stateDelete & !param.stateNormal) {
+            query.setParameter("toDelete", true);
+        }
+        if (param.stateNormal & !param.stateDelete) {
+            query.setParameter("toDelete", false);
+        }
+        if (param.locationName != null && param.locationName != "*") {
+            query.setParameter("locationName", param.locationName);
+        }
+        if (param.group != null) {
+            query.setParameter("groupId", param.getGroup().getId());
+        }
+        if (param.competence != null) {
+            query.setParameter("competenceId", param.getCompetence().getId());
+        }
+        if (param.userName != null) {
+            String value = "%" + param.userName + "%";
+            query.setParameter("name", value);
         }
         return query.getResultList();
     }
-
 }

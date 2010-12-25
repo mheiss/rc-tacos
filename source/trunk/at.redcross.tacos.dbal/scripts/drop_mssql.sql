@@ -1,6 +1,6 @@
 
     alter table Assignment_AUD 
-        drop constraint FKDFB4523E8277D80A;
+        drop constraint FKDFB4523EDF74E053;
 
     alter table Car 
         drop constraint FK107B4716F1CD8;
@@ -12,19 +12,19 @@
         drop constraint FK9FF5628D1D301F3C;
 
     alter table CarCareEntry_AUD 
-        drop constraint FKA6381DE8277D80A;
+        drop constraint FKA6381DEDF74E053;
 
     alter table CarDetail_AUD 
-        drop constraint FKDD8388768277D80A;
+        drop constraint FKDD838876DF74E053;
 
     alter table Car_AUD 
-        drop constraint FK843A3B858277D80A;
+        drop constraint FK843A3B85DF74E053;
 
     alter table Category_AUD 
-        drop constraint FK23378FEF8277D80A;
+        drop constraint FK23378FEFDF74E053;
 
     alter table Competence_AUD 
-        drop constraint FKE7F8853A8277D80A;
+        drop constraint FKE7F8853ADF74E053;
 
     alter table Info 
         drop constraint FK22D8CE716F1CD8;
@@ -33,22 +33,22 @@
         drop constraint FK22D8CE3DDF2C38;
 
     alter table Info_AUD 
-        drop constraint FKE79EF9F8277D80A;
+        drop constraint FKE79EF9FDF74E053;
 
     alter table Link_AUD 
-        drop constraint FK4B0CB4EB8277D80A;
+        drop constraint FK4B0CB4EBDF74E053;
 
     alter table Location_AUD 
-        drop constraint FK6563F268277D80A;
+        drop constraint FK6563F26DF74E053;
 
     alter table Login_AUD 
-        drop constraint FK10FC609A8277D80A;
+        drop constraint FK10FC609ADF74E053;
 
     alter table Notification_AUD 
-        drop constraint FK2DD68D5C8277D80A;
+        drop constraint FK2DD68D5CDF74E053;
 
     alter table RestoreLogin_AUD 
-        drop constraint FK541ED1EC8277D80A;
+        drop constraint FK541ED1ECDF74E053;
 
     alter table RosterEntry 
         drop constraint FKEF3D7087716F1CD8;
@@ -66,16 +66,16 @@
         drop constraint FKEF3D70871D301F3C;
 
     alter table RosterEntry_AUD 
-        drop constraint FK3AA002D88277D80A;
+        drop constraint FK3AA002D8DF74E053;
 
     alter table SecuredAction_AUD 
-        drop constraint FK6DD334948277D80A;
+        drop constraint FK6DD33494DF74E053;
 
     alter table SecuredResource_AUD 
-        drop constraint FKC3721F2C8277D80A;
+        drop constraint FKC3721F2CDF74E053;
 
     alter table ServiceType_AUD 
-        drop constraint FKE5A1EDC08277D80A;
+        drop constraint FKE5A1EDC0DF74E053;
 
     alter table SystemUser 
         drop constraint FK9D23FEBAB76029C;
@@ -84,7 +84,7 @@
         drop constraint FK9D23FEBA716F1CD8;
 
     alter table SystemUser_AUD 
-        drop constraint FK595E3F8B8277D80A;
+        drop constraint FK595E3F8BDF74E053;
 
     alter table SystemUser_Competence 
         drop constraint FK446C328E14938758;
@@ -93,7 +93,7 @@
         drop constraint FK446C328ED9A3C737;
 
     alter table SystemUser_Competence_AUD 
-        drop constraint FKF700695F8277D80A;
+        drop constraint FKF700695FDF74E053;
 
     alter table SystemUser_UserGroup 
         drop constraint FK16853A0F3A498367;
@@ -102,10 +102,10 @@
         drop constraint FK16853A0F14938758;
 
     alter table SystemUser_UserGroup_AUD 
-        drop constraint FK7E57C8608277D80A;
+        drop constraint FK7E57C860DF74E053;
 
     alter table UserGroup_AUD 
-        drop constraint FK4C4F45258277D80A;
+        drop constraint FK4C4F4525DF74E053;
 
     drop table Assignment;
 
@@ -151,11 +151,11 @@
 
     drop table Notification_AUD;
 
+    drop table REVINFO;
+
     drop table RestoreLogin;
 
     drop table RestoreLogin_AUD;
-
-    drop table RevisionInfo;
 
     drop table RosterEntry;
 

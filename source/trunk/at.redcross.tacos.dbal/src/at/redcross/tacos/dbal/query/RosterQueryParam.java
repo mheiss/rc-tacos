@@ -1,11 +1,14 @@
 package at.redcross.tacos.dbal.query;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import at.redcross.tacos.dbal.entity.Location;
 
 /** Holds query parameters for roster entries */
-public class RosterQueryParam {
+public class RosterQueryParam implements Serializable {
+
+    private static final long serialVersionUID = 4232731266426352731L;
 
     /** the start range for the query */
     public Date startDate;

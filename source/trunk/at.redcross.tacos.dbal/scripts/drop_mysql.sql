@@ -1,7 +1,7 @@
 
     alter table Assignment_AUD 
         drop 
-        foreign key FKDFB4523E8277D80A;
+        foreign key FKDFB4523EDF74E053;
 
     alter table Car 
         drop 
@@ -17,23 +17,23 @@
 
     alter table CarCareEntry_AUD 
         drop 
-        foreign key FKA6381DE8277D80A;
+        foreign key FKA6381DEDF74E053;
 
     alter table CarDetail_AUD 
         drop 
-        foreign key FKDD8388768277D80A;
+        foreign key FKDD838876DF74E053;
 
     alter table Car_AUD 
         drop 
-        foreign key FK843A3B858277D80A;
+        foreign key FK843A3B85DF74E053;
 
     alter table Category_AUD 
         drop 
-        foreign key FK23378FEF8277D80A;
+        foreign key FK23378FEFDF74E053;
 
     alter table Competence_AUD 
         drop 
-        foreign key FKE7F8853A8277D80A;
+        foreign key FKE7F8853ADF74E053;
 
     alter table Info 
         drop 
@@ -45,27 +45,27 @@
 
     alter table Info_AUD 
         drop 
-        foreign key FKE79EF9F8277D80A;
+        foreign key FKE79EF9FDF74E053;
 
     alter table Link_AUD 
         drop 
-        foreign key FK4B0CB4EB8277D80A;
+        foreign key FK4B0CB4EBDF74E053;
 
     alter table Location_AUD 
         drop 
-        foreign key FK6563F268277D80A;
+        foreign key FK6563F26DF74E053;
 
     alter table Login_AUD 
         drop 
-        foreign key FK10FC609A8277D80A;
+        foreign key FK10FC609ADF74E053;
 
     alter table Notification_AUD 
         drop 
-        foreign key FK2DD68D5C8277D80A;
+        foreign key FK2DD68D5CDF74E053;
 
     alter table RestoreLogin_AUD 
         drop 
-        foreign key FK541ED1EC8277D80A;
+        foreign key FK541ED1ECDF74E053;
 
     alter table RosterEntry 
         drop 
@@ -89,19 +89,19 @@
 
     alter table RosterEntry_AUD 
         drop 
-        foreign key FK3AA002D88277D80A;
+        foreign key FK3AA002D8DF74E053;
 
     alter table SecuredAction_AUD 
         drop 
-        foreign key FK6DD334948277D80A;
+        foreign key FK6DD33494DF74E053;
 
     alter table SecuredResource_AUD 
         drop 
-        foreign key FKC3721F2C8277D80A;
+        foreign key FKC3721F2CDF74E053;
 
     alter table ServiceType_AUD 
         drop 
-        foreign key FKE5A1EDC08277D80A;
+        foreign key FKE5A1EDC0DF74E053;
 
     alter table SystemUser 
         drop 
@@ -113,7 +113,7 @@
 
     alter table SystemUser_AUD 
         drop 
-        foreign key FK595E3F8B8277D80A;
+        foreign key FK595E3F8BDF74E053;
 
     alter table SystemUser_Competence 
         drop 
@@ -125,7 +125,7 @@
 
     alter table SystemUser_Competence_AUD 
         drop 
-        foreign key FKF700695F8277D80A;
+        foreign key FKF700695FDF74E053;
 
     alter table SystemUser_UserGroup 
         drop 
@@ -137,11 +137,11 @@
 
     alter table SystemUser_UserGroup_AUD 
         drop 
-        foreign key FK7E57C8608277D80A;
+        foreign key FK7E57C860DF74E053;
 
     alter table UserGroup_AUD 
         drop 
-        foreign key FK4C4F45258277D80A;
+        foreign key FK4C4F4525DF74E053;
 
     drop table if exists Assignment;
 
@@ -187,11 +187,11 @@
 
     drop table if exists Notification_AUD;
 
+    drop table if exists REVINFO;
+
     drop table if exists RestoreLogin;
 
     drop table if exists RestoreLogin_AUD;
-
-    drop table if exists RevisionInfo;
 
     drop table if exists RosterEntry;
 

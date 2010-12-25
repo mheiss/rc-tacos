@@ -1,7 +1,5 @@
 package at.redcross.tacos.web.beans;
 
-import java.util.ArrayList;
-
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -14,143 +12,125 @@ import org.ajax4jsf.model.KeepAlive;
 
 import at.redcross.tacos.dbal.entity.Location;
 import at.redcross.tacos.dbal.entity.SystemUser;
+import at.redcross.tacos.dbal.helper.CompetenceHelper;
+import at.redcross.tacos.dbal.helper.GroupHelper;
 import at.redcross.tacos.dbal.helper.LocationHelper;
 import at.redcross.tacos.dbal.helper.SystemUserHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
+import at.redcross.tacos.dbal.query.SystemUserQueryParam;
 import at.redcross.tacos.web.beans.dto.DtoHelper;
 import at.redcross.tacos.web.beans.dto.GenericDto;
 import at.redcross.tacos.web.faces.FacesUtils;
-import at.redcross.tacos.web.model.SelectableItem;
+import at.redcross.tacos.web.model.SelectableItemHelper;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
 
 @KeepAlive
 @ManagedBean(name = "userOverviewBean")
 public class UserOverviewBean extends PagingBean {
 
-	private static final long serialVersionUID = -5114023802685654841L;
+    private static final long serialVersionUID = -5114023802685654841L;
 
-	/** available locations */
-	private List<Location> locations;
+    /** available locations */
+    private List<Location> locations;
 
-	/** filter by user status */
-	private boolean locked;
+    /** available groups */
+    private List<SelectItem> groups;
 
-	/** the values for the drop down fields */
-	private List<SelectItem> stateItems;
+    /** the available competences */
+    private List<SelectItem> competences;
 
-	/** active location */
-	private String locationName = "*";
+    /** filter value for the query */
+    private SystemUserQueryParam queryParam;
 
-	/** queried results for visualization / reporting */
-	private List<GenericDto<SystemUser>> users;
+    /** queried results for visualization / reporting */
+    private List<GenericDto<SystemUser>> users;
 
-	@Override
-	protected void init() throws Exception {
-		EntityManager manager = null;
-		try {
-			manager = EntityManagerFactory.createEntityManager();
-			locations = LocationHelper.list(manager);
-			stateItems = new ArrayList<SelectItem>();
-			stateItems.add(new SelectableItem("nicht gesperrt", false).getItem());
-			stateItems.add(new SelectableItem("gesperrt", true).getItem());
-			// load not locked users
-			loadfromDatabase(manager, getLocationByName(locationName), locked);
-		} finally {
-			manager = EntityManagerHelper.close(manager);
-		}
-	}
+    @Override
+    protected void init() throws Exception {
+        EntityManager manager = null;
+        try {
+            manager = EntityManagerFactory.createEntityManager();
+            locations = LocationHelper.list(manager);
+            groups = SelectableItemHelper.convertToItems(GroupHelper.list(manager));
+            competences = SelectableItemHelper.convertToItems(CompetenceHelper.list(manager));
+            queryParam = new SystemUserQueryParam();
+            loadfromDatabase(manager);
+        } finally {
+            manager = EntityManagerHelper.close(manager);
+        }
+    }
 
-	// ---------------------------------
-	// Actions
-	// ---------------------------------
-	public void tabChanged(ValueChangeEvent event) {
-		EntityManager manager = null;
-		try {
-			page = 1;
-			manager = EntityManagerFactory.createEntityManager();
-			loadfromDatabase(manager, getLocationByName(locationName), locked);
-		} finally {
-			manager = EntityManagerHelper.close(manager);
-		}
-	}
+    // ---------------------------------
+    // Actions
+    // ---------------------------------
+    public void tabChanged(ValueChangeEvent event) {
+        EntityManager manager = null;
+        try {
+            page = 1;
+            manager = EntityManagerFactory.createEntityManager();
+            loadfromDatabase(manager);
+        } finally {
+            manager = EntityManagerHelper.close(manager);
+        }
+    }
 
-	public void filterChanged(ActionEvent event) {
-		EntityManager manager = null;
-		try {
-			manager = EntityManagerFactory.createEntityManager();
-			loadfromDatabase(manager, getLocationByName(locationName), locked);
-		} finally {
-			manager = EntityManagerHelper.close(manager);
-		}
-	}
+    public void filterChanged(ActionEvent event) {
+        EntityManager manager = null;
+        try {
+            manager = EntityManagerFactory.createEntityManager();
+            loadfromDatabase(manager);
+        } finally {
+            manager = EntityManagerHelper.close(manager);
+        }
+    }
 
-	// ---------------------------------
-	// Private API
-	// ---------------------------------
-	private void loadfromDatabase(EntityManager manager, String locationId, boolean locked) {
-		users = DtoHelper.fromList(SystemUser.class, SystemUserHelper.listByLocationName(manager,
-				locationId, locked));
-	}
+    public void resetFilter(ActionEvent event) {
+        queryParam = new SystemUserQueryParam();
+    }
 
-	private String getLocationByName(String locationName) {
-		if (locationName == null || "*".equals(locationName)) {
-			return null;
-		}
-		for (Location location : locations) {
-			if (location.getName().equals(locationName)) {
-				return location.getName();
-			}
-		}
-		return null;
-	}
+    // ---------------------------------
+    // Private API
+    // ---------------------------------
+    private void loadfromDatabase(EntityManager manager) {
+        users = DtoHelper.fromList(SystemUser.class, SystemUserHelper.list(manager, queryParam));
+    }
 
-	/**
-	 * Returns whether or not the current authenticated user can edit (delete or
-	 * change) a user entry. The following restrictions are considered:
-	 * <ul>
-	 * <li>Principal must have the permission to edit a role</li>
-	 * </ul>
-	 */
-	public boolean isEditUserEnabled() {
-		// editing is allowed for principals with permission
-		if (FacesUtils.lookupBean(WebPermissionBean.class).isAuthorizedToEditUser()) {
-			return true;
-		}
-		// edit denied
-		return false;
-	}
+    /**
+     * Returns whether or not the current authenticated user can edit (delete or
+     * change) a user entry. The following restrictions are considered:
+     * <ul>
+     * <li>Principal must have the permission to edit a role</li>
+     * </ul>
+     */
+    public boolean isEditUserEnabled() {
+        // editing is allowed for principals with permission
+        if (FacesUtils.lookupBean(WebPermissionBean.class).isAuthorizedToEditUser()) {
+            return true;
+        }
+        // edit denied
+        return false;
+    }
 
-	// ---------------------------------
-	// Setters for the properties
-	// ---------------------------------
-	public void setLocationName(String locationName) {
-		this.locationName = locationName;
-	}
+    // ---------------------------------
+    // Getters for the properties
+    // ---------------------------------
+    public List<Location> getLocations() {
+        return locations;
+    }
 
-	public void setLocked(boolean locked) {
-		this.locked = locked;
-	}
+    public SystemUserQueryParam getQueryParam() {
+        return queryParam;
+    }
 
-	// ---------------------------------
-	// Getters for the properties
-	// ---------------------------------
-	public List<Location> getLocations() {
-		return locations;
-	}
+    public List<SelectItem> getCompetences() {
+        return competences;
+    }
 
-	public List<GenericDto<SystemUser>> getUsers() {
-		return users;
-	}
+    public List<SelectItem> getGroups() {
+        return groups;
+    }
 
-	public String getLocationName() {
-		return locationName;
-	}
-
-	public boolean getLocked() {
-		return locked;
-	}
-
-	public List<SelectItem> getStateItems() {
-		return stateItems;
-	}
+    public List<GenericDto<SystemUser>> getUsers() {
+        return users;
+    }
 }

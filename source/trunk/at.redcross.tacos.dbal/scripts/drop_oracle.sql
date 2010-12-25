@@ -43,11 +43,11 @@
 
     drop table Notification_AUD cascade constraints;
 
+    drop table REVINFO cascade constraints;
+
     drop table RestoreLogin cascade constraints;
 
     drop table RestoreLogin_AUD cascade constraints;
-
-    drop table RevisionInfo cascade constraints;
 
     drop table RosterEntry cascade constraints;
 

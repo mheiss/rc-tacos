@@ -1,0 +1,72 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich" xmlns:pretty="http://ocpsoft.com/prettyfaces">
+<body>
+<ui:composition>
+	<rich:simpleTogglePanel id="filter" opened="false" label="Filter" bodyClass="defaultToggleBodyStyle" styleClass="defaultToggleStyle" switchType="client">
+		<fieldset class="defaultStyle">
+			<ol>
+				<li class="left">
+					<h:outputLabel for="normal" value="Mitarbeiter" />
+					<div class="input">
+						<h:inputText value="#{bean.queryParam.userName}">
+							<a4j:support event="onkeypress" actionListener="#{bean.filterChanged}" reRender="userTab" />
+						</h:inputText>
+					</div>
+				</li>
+			
+				<li class="right">
+					<h:outputLabel for="normal" value="Mitarbeiterstatus" />
+					<div class="input right">
+						<h:outputText value="Normal" styleClass="checkBoxLabel" />
+						<h:selectBooleanCheckbox id="normal" value="#{bean.queryParam.stateNormal}">
+							<a4j:support event="onclick" actionListener="#{bean.filterChanged}" reRender="userTab" />
+						</h:selectBooleanCheckbox>
+						<h:outputText value="Gesperrt" styleClass="checkBoxLabel" />
+						<h:selectBooleanCheckbox id="locked" value="#{bean.queryParam.stateLocked}">
+							<a4j:support event="onclick" actionListener="#{bean.filterChanged}" reRender="userTab" />
+						</h:selectBooleanCheckbox>
+						<h:outputText value="Gelöscht" styleClass="checkBoxLabel" />
+						<h:selectBooleanCheckbox id="delete" value="#{bean.queryParam.stateDelete}">
+							<a4j:support event="onclick" actionListener="#{bean.filterChanged}" reRender="userTab" />
+						</h:selectBooleanCheckbox>
+					</div>
+				</li>
+				<li class="left">
+					<h:outputLabel for="normal" value="Benutzergruppe" />
+					<div class="input right">
+						<rich:comboBox id="group" value="#{bean.queryParam.group}" selectFirstOnUpdate="false" defaultLabel="Gruppe">
+							<rich:ajaxValidator event="onchange" />
+							<f:selectItems value="#{bean.groups}" />
+							<f:validator validatorId="validator.selectableItem" />
+							<f:converter converterId="converter.selectableItem" />
+							<a4j:support event="onchange" reRender="userTab" actionListener="#{bean.filterChanged}" />
+						</rich:comboBox>
+					</div>
+				</li>
+				<li class="right">
+					<h:outputLabel for="normal" value="Kompetenz" />
+					<div class="input right">
+						<rich:comboBox id="competence" value="#{bean.queryParam.competence}" selectFirstOnUpdate="false" defaultLabel="Kompetenz">
+							<rich:ajaxValidator event="onchange" />
+							<f:selectItems value="#{bean.competences}" />
+							<f:validator validatorId="validator.selectableItem" />
+							<f:converter converterId="converter.selectableItem" />
+							<a4j:support event="onchange" reRender="userTab" actionListener="#{bean.filterChanged}" />
+						</rich:comboBox>
+					</div>
+				</li>
+			</ol>
+			<div class="clear actionBar">
+				<a4j:commandLink styleClass="button" actionListener="#{bean.resetFilter}" reRender="filter,userTab">
+					<span><h:outputText value="Zurücksetzen" /></span>
+				</a4j:commandLink>
+				<a4j:commandLink styleClass="button" actionListener="#{bean.filterChanged}" reRender="userTab">
+					<span><h:outputText value="Suchen" /></span>
+				</a4j:commandLink>
+			</div>
+		</fieldset>
+	</rich:simpleTogglePanel>
+</ui:composition>
+</body>
+</html>

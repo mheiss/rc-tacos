@@ -7,18 +7,19 @@ import javax.persistence.Embedded;
 import javax.persistence.MappedSuperclass;
 
 import org.hibernate.envers.AuditOverride;
+import org.hibernate.envers.AuditOverrides;
 
 /**
  * The {@code EntityImpl} is the base class for all entity instances.
  */
 @MappedSuperclass
+@AuditOverrides(value = { @AuditOverride(name = "history", isAudited = false) })
 public abstract class EntityImpl implements Serializable {
 
     private static final long serialVersionUID = -3033645633746573785L;
 
     @Embedded
     @Column(nullable = true)
-    @AuditOverride(name = "history", isAudited = false)
     private History history;
 
     // ---------------------------------
