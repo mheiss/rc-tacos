@@ -29,7 +29,12 @@
 				</f:facet>
 				<h:outputText value="#{infoDto.entity.category.name}" />
 			</rich:column>
-			<rich:column styleClass="mediumColumn" style="background-color:#aaa;">
+			<rich:column styleClass="actionColumn" style="background-color:#aaa;">
+				<a4j:commandLink rendered="#{infoDto.historyEnabled}" reRender="page-panels" oncomplete="#{rich:component('historyPanel')}.show(); return false;" title="Protokoll anzeigen">
+					<a4j:actionparam name="entryId" assignTo="#{historyBean.primaryKey}" value="#{infoDto.entity.id}" />
+					<a4j:actionparam name="entryClass" assignTo="#{historyBean.className}" value="#{infoDto.entity.class.name}" actionListener="#{historyBean.queryHistory}" />
+					<h:graphicImage library="images/16x16" name="info.png" />
+				</a4j:commandLink>
 				<pretty:link rendered="#{infoDto.editEnabled}" mappingId="info-editMaintenance" title="Information bearbeiten">
 					<f:param value="#{infoDto.entity.id}" />
 					<h:graphicImage layout="block" library="images/16x16" name="edit.png" />
@@ -39,16 +44,12 @@
 					<h:graphicImage layout="block" library="images/16x16" name="remove.png" />
 				</a4j:commandLink>
 			</rich:column>
-			<rich:column breakBefore="true" colspan="5" sortBy="#{infoDto.entity.description}">
+			<rich:column breakBefore="true" colspan="6" sortBy="#{infoDto.entity.description}">
 				<f:facet name="header">
 				</f:facet>
 				<div class="htmlContent">
 					<h:outputText escape="false" value="#{infoDto.entity.description}" />
 				</div>
-			</rich:column>
-			<rich:column colspan="2" styleClass="smallColumn">
-				<f:facet name="header">
-				</f:facet>		
 			</rich:column>
 	</rich:dataTable>
 	</rich:panel>
