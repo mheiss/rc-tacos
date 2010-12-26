@@ -2,7 +2,6 @@ package at.redcross.tacos.web.beans.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class GenericGroupDto<K, V> implements Serializable {
@@ -25,6 +24,9 @@ public class GenericGroupDto<K, V> implements Serializable {
 
     /** Adds the given element to the list of elements of this group */
     public void addElement(V element) {
+        if (elements.contains(element)) {
+            return;
+        }
         elements.add(element);
     }
 
@@ -33,6 +35,6 @@ public class GenericGroupDto<K, V> implements Serializable {
     }
 
     public List<V> getElements() {
-        return Collections.unmodifiableList(elements);
+        return elements;
     }
 }

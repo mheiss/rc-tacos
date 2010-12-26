@@ -77,7 +77,6 @@ public class SystemUserHelper {
             queryString = queryString.substring(0, queryString.length() - 5);
         }
         queryString += " order by user.lastName ";
-        System.out.println(queryString);
         // append the order clause
         TypedQuery<SystemUser> query = manager.createQuery(queryString, SystemUser.class);
         query.setParameter("locked", param.stateLocked);
