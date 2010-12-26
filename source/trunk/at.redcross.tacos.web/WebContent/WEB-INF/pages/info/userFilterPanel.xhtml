@@ -14,7 +14,6 @@
 						</h:inputText>
 					</div>
 				</li>
-			
 				<li class="right">
 					<h:outputLabel for="normal" value="Mitarbeiterstatus" />
 					<div class="input right">
@@ -45,6 +44,19 @@
 					</div>
 				</li>
 				<li class="right">
+					<h:outputLabel for="normal" value="Gruppieren" />
+					<div class="input right">
+						<h:outputText value="Kompetenz" styleClass="checkBoxLabel" />
+						<h:selectBooleanCheckbox id="competenceGrouping" value="#{bean.groupByCompetence}">
+							<a4j:support event="onclick" actionListener="#{bean.filterChanged}" reRender="page-content" />
+						</h:selectBooleanCheckbox>
+						<h:outputText value="Benutzergruppe" styleClass="checkBoxLabel" />
+						<h:selectBooleanCheckbox id="userGroupGrouping" value="#{bean.groupByUserGroup}">
+							<a4j:support event="onclick" actionListener="#{bean.filterChanged}" reRender="page-content" />
+						</h:selectBooleanCheckbox>
+					</div>
+				</li>
+				<li class="left">
 					<h:outputLabel for="normal" value="Kompetenz" />
 					<div class="input right">
 						<rich:comboBox id="competence" value="#{bean.queryParam.competence}" selectFirstOnUpdate="false" defaultLabel="Kompetenz">
