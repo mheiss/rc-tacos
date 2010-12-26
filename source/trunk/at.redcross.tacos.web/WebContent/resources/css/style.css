@@ -334,6 +334,11 @@ table.defaultStyle td.smallColumn {
 	text-align: center;
 }
 
+table.defaultStyle td.actionColumn {
+	width: 6em;
+	text-align: center;
+}
+
 table.defaultStyle td.mediumFixedColumn {
 	width: 8em;
 	text-align: center;
@@ -378,7 +383,7 @@ table.defaultStyle .cellError .rich-inplace-view {
 }
 
 table.defaultStyle td a {
-	padding-right:0.5em;
+	padding-right: 0.5em;
 }
 
 /***********************************************************
