@@ -10,7 +10,10 @@ import at.redcross.tacos.dbal.entity.Location;
 public class LocationHelper {
 
     public static List<Location> list(EntityManager manager) {
-        return manager.createQuery("from Location", Location.class).getResultList();
+        StringBuilder builder = new StringBuilder();
+        builder.append(" from Location location ");
+        builder.append(" order by location.name asc ");
+        return manager.createQuery(builder.toString(), Location.class).getResultList();
     }
 
     public static Location getByName(EntityManager manager, String name) {

@@ -1,5 +1,7 @@
 package at.redcross.tacos.dbal.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -15,7 +17,9 @@ import at.redcross.tacos.dbal.entity.listener.PersistentAuditListener;
 
 @Entity
 @RevisionEntity(PersistentAuditListener.class)
-public class RevisionInfo {
+public class RevisionInfo implements Serializable {
+
+    private static final long serialVersionUID = -4950252030360728027L;
 
     @Id
     @GeneratedValue
