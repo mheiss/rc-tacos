@@ -4,22 +4,24 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GenericGroupDto<K, V> implements Serializable {
+import at.redcross.tacos.dbal.entity.EntityImpl;
+
+public class GenericGroupDto<K extends EntityImpl, V extends EntityImpl> implements Serializable {
 
     private static final long serialVersionUID = -3064068916375006299L;
 
     /** the object to group by */
-    protected final K entity;
+    protected final GenericDto<K> group;
 
     /** the list of elements for this group */
-    protected final List<V> elements;
+    protected final List<GenericDto<V>> elements;
 
     /**
      * Creates a new group by using the given parent
      */
-    public GenericGroupDto(K entity) {
-        this.entity = entity;
-        this.elements = new ArrayList<V>();
+    public GenericGroupDto(K group) {
+        this.group = new GenericDto<K>(group);
+        this.elements = new ArrayList<GenericDto<V>>();
     }
 
     /** Adds the given element to the list of elements of this group */
@@ -27,14 +29,14 @@ public class GenericGroupDto<K, V> implements Serializable {
         if (elements.contains(element)) {
             return;
         }
-        elements.add(element);
+        elements.add(new GenericDto<V>(element));
     }
 
-    public K getEntity() {
-        return entity;
+    public GenericDto<K> getGroup() {
+        return group;
     }
 
-    public List<V> getElements() {
+    public List<GenericDto<V>> getElements() {
         return elements;
     }
 }

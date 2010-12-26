@@ -4,9 +4,7 @@
 <body>
 <ui:composition>
 	<h:panelGroup rendered="#{empty values}">
-		<div class="emptyBox italic">
-			<h:outputText value="Keine Einträge gefunden" />
-		</div>
+		<div class="emptyBox italic"><h:outputText value="Keine Einträge gefunden" /></div>
 	</h:panelGroup>
 	<rich:panel rendered="#{not empty values}">
 		<rich:datascroller styleClass="defaultScroller" for="table-#{tabId}" maxPages="#{bean.maxResults}" page="#{bean.page}" id="scroller-top-#{tabId}" />
@@ -45,56 +43,55 @@
 					</rich:column>
 				</rich:columnGroup>
 			</f:facet>
-			
+
 			<rich:column colspan="10" styleClass="groupHeader">
-				<h:outputText value="#{groupedDto.entity.displayString}" />
+				<h:outputText value="#{groupedDto.group.entity.displayString}" />
 			</rich:column>
-			
-			<rich:subTable var="dto" value="#{groupDto.elements}"
-				onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
+
+			<rich:subTable var="dto" value="#{groupedDto.elements}" onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
 				<rich:column styleClass="center">
-					<h:panelGroup rendered="#{dto.login.locked}">
-						<h:graphicImage library="images/24x24" name="user_#{dto.gender.name}_locked.png" />
+					<h:panelGroup rendered="#{dto.entity.login.locked}">
+						<h:graphicImage library="images/24x24" name="user_#{dto.entity.gender.name}_locked.png" />
 					</h:panelGroup>
-					<h:panelGroup rendered="#{dto.login.expired and not dto.login.locked}">
-						<h:graphicImage library="images/24x24" name="user_#{dto.gender.name}_expired.png" />
+					<h:panelGroup rendered="#{dto.entity.login.expired and not dto.entity.login.locked}">
+						<h:graphicImage library="images/24x24" name="user_#{dto.entity.gender.name}_expired.png" />
 					</h:panelGroup>
-					<h:panelGroup rendered="#{not dto.login.expired and not dto.login.locked}">
-						<h:graphicImage library="images/24x24" name="user_#{dto.gender.name}.png" />
+					<h:panelGroup rendered="#{not dto.entity.login.expired and not dto.entity.login.locked}">
+						<h:graphicImage library="images/24x24" name="user_#{dto.entity.gender.name}.png" />
 					</h:panelGroup>
 				</rich:column>
-				<rich:column styleClass="bold" sortBy="#{dto.pnr}" sortOrder="ASCENDING">
-					<h:outputText value="#{dto.pnr}" />
+				<rich:column styleClass="bold" sortBy="#{dto.entity.pnr}" sortOrder="ASCENDING">
+					<h:outputText value="#{dto.entity.pnr}" />
 				</rich:column>
-				<rich:column styleClass="bold" sortBy="#{dto.login.loginName}">
-					<h:outputText value="#{dto.login.loginName}" />
+				<rich:column styleClass="bold" sortBy="#{dto.entity.login.loginName}">
+					<h:outputText value="#{dto.entity.login.loginName}" />
 				</rich:column>
-				<rich:column styleClass="bold" sortBy="#{dto.lastName}">
-					<h:outputText value="#{dto.lastName}" />
+				<rich:column styleClass="bold" sortBy="#{dto.entity.lastName}">
+					<h:outputText value="#{dto.entity.lastName}" />
 				</rich:column>
-				<rich:column styleClass="bold" sortBy="#{dto.firstName}">
-					<h:outputText value="#{dto.firstName}" />
+				<rich:column styleClass="bold" sortBy="#{dto.entity.firstName}">
+					<h:outputText value="#{dto.entity.firstName}" />
 				</rich:column>
-				<rich:column sortBy="#{dto.address.email}">
-					<h:outputText value="#{dto.address.email}" />
+				<rich:column sortBy="#{dto.entity.address.email}">
+					<h:outputText value="#{dto.entity.address.email}" />
 				</rich:column>
 				<rich:column>
-					<h:outputText value="#{dto.address.phone}" />
+					<h:outputText value="#{dto.entity.address.phone}" />
 				</rich:column>
 				<rich:column>
-					<h:outputText value="#{dto.address.phone2}" />
+					<h:outputText value="#{dto.entity.address.phone2}" />
 				</rich:column>
 				<rich:column styleClass="mediumColumn">
-					<h:outputText value="#{dto.location.name}" />
+					<h:outputText value="#{dto.entity.location.name}" />
 				</rich:column>
 				<rich:column title="Aktionen" styleClass="actionColumn">
-					<a4j:commandLink rendered="#{dto.historyEnabled}"  reRender="page-panels" oncomplete="#{rich:component('historyPanel')}.show(); return false;" title="Protokoll anzeigen">
-						<a4j:actionparam name="entryId" assignTo="#{historyBean.primaryKey}" value="#{dto.id}" />
-						<a4j:actionparam name="entryClass" assignTo="#{historyBean.className}" value="#{dto.class.name}" actionListener="#{historyBean.queryHistory}" />
+					<a4j:commandLink rendered="#{dto.historyEnabled}" reRender="page-panels" oncomplete="#{rich:component('historyPanel')}.show(); return false;" title="Protokoll anzeigen">
+						<a4j:actionparam name="entryId" assignTo="#{historyBean.primaryKey}" value="#{dto.entity.id}" />
+						<a4j:actionparam name="entryClass" assignTo="#{historyBean.className}" value="#{dto.entity.class.name}" actionListener="#{historyBean.queryHistory}" />
 						<h:graphicImage library="images/16x16" name="info.png" />
 					</a4j:commandLink>
 					<pretty:link rendered="#{userOverviewBean.editUserEnabled}" mappingId="info-userEditMaintenance" title="Mitarbeitereintrag bearbeiten">
-						<f:param value="#{dto.id}" />
+						<f:param value="#{dto.entity.id}" />
 						<h:graphicImage library="images/16x16" name="edit.png" />
 					</pretty:link>
 				</rich:column>

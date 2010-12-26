@@ -9,7 +9,7 @@
 				<h:outputText value="Keine Einträge gefunden" />
 			</div>
 		</h:panelGroup>
-		<rich:dataTable styleClass="defaultStyle" rendered="#{not empty values}" value="#{values}" var="statisticDto">
+		<rich:dataTable styleClass="defaultStyle" rendered="#{not empty values}" value="#{values}" var="groupedDto">
 			<f:facet name="header">
 				<rich:columnGroup>
 					<rich:column>
@@ -39,44 +39,44 @@
 				</rich:columnGroup>
 			</f:facet>
 
-			<rich:column styleClass="bold" sortBy="#{statisticDto.systemUser.lastName}" colspan="8">
-				<h:outputText value="#{statisticDto.systemUser.lastName} #{statisticDto.systemUser.firstName}" />
+			<rich:column styleClass="groupHeader" sortBy="#{groupedDto.group.entity.lastName}" colspan="8">
+				<h:outputText value="#{groupedDto.group.entity.lastName} #{groupedDto.group.entity.firstName}" />
 			</rich:column>
 
-			<rich:subTable value="#{statisticDto.entryList}" var="statisticEntry">
+			<rich:subTable value="#{groupedDto.elements}" var="statisticDto">
 				<rich:column>
-					<h:outputText value="#{statisticEntry.entity.plannedStartDateTime}">
+					<h:outputText value="#{statisticDto.entity.rosterEntry.plannedStartDateTime}">
 						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 					</h:outputText>
 				</rich:column>
 				<rich:column>
-					<h:outputText value="#{statisticEntry.entity.plannedEndDateTime}">
+					<h:outputText value="#{statisticDto.entity.rosterEntry.plannedEndDateTime}">
 						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 					</h:outputText>
 				</rich:column>
 				<rich:column>
-					<h:outputText value="#{statisticEntry.entity.realStartDateTime}">
+					<h:outputText value="#{statisticDto.entity.rosterEntry.realStartDateTime}">
 						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 					</h:outputText>
 				</rich:column>
 				<rich:column>
-					<h:outputText value="#{statisticEntry.entity.realEndDateTime}">
+					<h:outputText value="#{statisticDto.entity.rosterEntry.realEndDateTime}">
 						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 					</h:outputText>
 				</rich:column>
 				<rich:column>
-					<h:outputText value="#{statisticEntry.entity.location.name}" />
+					<h:outputText value="#{statisticDto.entity.rosterEntry.location.name}" />
 				</rich:column>
 				<rich:column>
-					<h:outputText value="#{statisticEntry.entity.assignment.name}" />
+					<h:outputText value="#{statisticDto.entity.rosterEntry.assignment.name}" />
 				</rich:column>
 				<rich:column>
-					<h:outputText value="#{statisticEntry.entity.serviceType.name}" />
+					<h:outputText value="#{statisticDto.entity.rosterEntry.serviceType.name}" />
 				</rich:column>
 				<rich:column>
-					<h:outputText value="#{statisticEntry.amount}" />
+					 <h:outputText value="#{statisticDto.entity.amount}" />
 					 <f:facet name="footer">
-					 	<h:outputText value="#{statisticDto.amount}" />
+					 	<h:outputText value="#{groupedDto.amount}" />
 					 </f:facet>
 				</rich:column>
 			</rich:subTable>
