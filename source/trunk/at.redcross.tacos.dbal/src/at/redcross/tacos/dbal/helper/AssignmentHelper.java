@@ -10,7 +10,10 @@ import at.redcross.tacos.dbal.entity.Assignment;
 public class AssignmentHelper {
 
     public static List<Assignment> list(EntityManager manager) {
-        return manager.createQuery("from Assignment", Assignment.class).getResultList();
+        StringBuilder builder = new StringBuilder();
+        builder.append(" from Assignment a ");
+        builder.append(" order by a.name asc ");
+        return manager.createQuery(builder.toString(), Assignment.class).getResultList();
     }
 
     public static Assignment getByName(EntityManager manager, String name) {

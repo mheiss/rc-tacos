@@ -12,8 +12,14 @@ import at.redcross.tacos.dbal.query.SystemUserQueryParam;
 public class SystemUserHelper {
 
     public static List<SystemUser> list(EntityManager manager) {
-        TypedQuery<SystemUser> query = manager.createQuery(
-                "from SystemUser user order by user.lastName desc", SystemUser.class);
+        StringBuilder builder = new StringBuilder();
+        builder.append(" select distinct user from SystemUser user ");
+        builder.append(" join user.location location ");
+        builder.append(" join user.login login ");
+        builder.append(" left join user.competences comp ");
+        builder.append(" left join user.groups userGroup ");
+        builder.append(" order by user.lastName asc");
+        TypedQuery<SystemUser> query = manager.createQuery(builder.toString(), SystemUser.class);
         return query.getResultList();
     }
 

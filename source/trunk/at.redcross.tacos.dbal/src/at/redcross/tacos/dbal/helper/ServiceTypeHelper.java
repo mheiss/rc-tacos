@@ -10,7 +10,10 @@ import at.redcross.tacos.dbal.entity.ServiceType;
 public class ServiceTypeHelper {
 
     public static List<ServiceType> list(EntityManager manager) {
-        return manager.createQuery("from ServiceType", ServiceType.class).getResultList();
+        StringBuilder builder = new StringBuilder();
+        builder.append(" from ServiceType st ");
+        builder.append(" order by st.name asc ");
+        return manager.createQuery(builder.toString(), ServiceType.class).getResultList();
     }
 
     public static ServiceType getByName(EntityManager manager, String name) {
