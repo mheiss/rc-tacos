@@ -25,7 +25,7 @@ public class RosterStatisticDto extends GenericGroupDto<SystemUser, RosterStatis
         super.addElement(element);
         amount += element.getAmount();
         // rounding is done by using a helper
-        BigDecimal bigDecimal = new BigDecimal(String.valueOf(this.amount));
+        BigDecimal bigDecimal = new BigDecimal(String.valueOf(amount));
         amount = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 

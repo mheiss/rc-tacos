@@ -3,9 +3,12 @@ package at.redcross.tacos.web.beans.dto;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import at.redcross.tacos.dbal.entity.EntityImpl;
 import at.redcross.tacos.dbal.entity.RosterEntry;
 
-public class RosterStatisticEntry {
+public class RosterStatisticEntry extends EntityImpl {
+
+    private static final long serialVersionUID = 7278065110302498134L;
 
     /** the wrapped entry */
     private final RosterEntry entity;
@@ -21,6 +24,16 @@ public class RosterStatisticEntry {
         this.amount = calcAmount(entity);
     }
 
+    @Override
+    public String getDisplayString() {
+        return entity.getDisplayString() + " amount=" + amount;
+    }
+
+    @Override
+    public Object getOid() {
+        return null;
+    }
+
     private double calcAmount(RosterEntry entry) {
         // if no end or start is set then nothing can be done
         Date start = entry.getRealStartDateTime();
@@ -33,8 +46,8 @@ public class RosterStatisticEntry {
         BigDecimal bigDecimal = new BigDecimal(String.valueOf(duration));
         return bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
-
-    public RosterEntry getEntity() {
+    
+    public RosterEntry getRosterEntry() {
         return entity;
     }
 

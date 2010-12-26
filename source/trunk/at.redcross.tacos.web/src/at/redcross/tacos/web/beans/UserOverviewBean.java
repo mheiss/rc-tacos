@@ -101,6 +101,8 @@ public class UserOverviewBean extends PagingBean {
     }
 
     public void resetFilter(ActionEvent event) {
+        groupByCompetence = false;
+        groupByUserGroup = false;
         queryParam = new SystemUserQueryParam();
     }
 
