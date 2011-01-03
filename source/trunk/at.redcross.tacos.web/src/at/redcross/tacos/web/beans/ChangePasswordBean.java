@@ -6,118 +6,153 @@ import javax.persistence.EntityManager;
 import org.ajax4jsf.model.KeepAlive;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
-import at.redcross.tacos.dbal.entity.Address;
 import at.redcross.tacos.dbal.entity.Login;
 import at.redcross.tacos.dbal.entity.SystemUser;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
+import at.redcross.tacos.web.security.WebUserDetails;
 import at.redcross.tacos.web.utils.StringUtils;
-
 
 @KeepAlive
 @ManagedBean(name = "changePasswordBean")
-public class ChangePasswordBean extends PasswordBean {
+public class ChangePasswordBean extends BaseBean {
 
-	private static final long serialVersionUID = -7043407990380211119L;
+    private static final long serialVersionUID = -7043407990380211119L;
 
-	//private final static Log logger = LogFactory.getLog(ForgotPasswordBean.class);
+    /** The old password in the database */
+    private String oldPassword;
 
-	private String oldPassword;
-	private String password;
-	private String password2;
-	
-	/** the entities to manage */
-    private SystemUser systemUser;
-    private Login login;
-	
+    /** The new password */
+    private String password;
 
-    /** the request parameter */
-    private long userId = -1;
-    
+    /** Confirm the new password */
+    private String password2;
+
     /** Encode passwords using SHA */
     private transient PasswordEncoder encoder;
-    
-    
+
+    @Override
     public void init() throws Exception {
+        encoder = new ShaPasswordEncoder(256);
+    }
+
+    public String persist() {
         EntityManager manager = null;
         try {
-            manager = EntityManagerFactory.createEntityManager();
-            loadfromDatabase(manager, userId);
-            encoder = new ShaPasswordEncoder(256);
-        } finally {
-            manager = EntityManagerHelper.close(manager);
-        }
-    }
-	
-	public String persist() {
-        EntityManager manager = null;
-        try {        	
-            // update the password if required
-            oldPassword = StringUtils.saveString(oldPassword);
-            password = StringUtils.saveString(password);  
-            //TODO
+            // get the currently authenticated user
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            WebUserDetails details = (WebUserDetails) auth.getPrincipal();
+            Login login = details.getLogin();
+
+            // check if the old password matches
+            if (!login.getPassword().equals(encoder.encodePassword(oldPassword, null))) {
+                FacesUtils.addErrorMessage("Der Benutzername bzw. das Passwort ist falsch");
+                return null;
+            }
+            // check if the passwords are matching
+            password = StringUtils.saveString(password);
+            password2 = StringUtils.saveString(password);
+            if (!password.equals(password2)) {
+                FacesUtils.addErrorMessage("Die Kennwörter stimmen nicht überein");
+                return null;
+            }
+            // old and new cannot be the same
+            if (login.getPassword().equals(encoder.encodePassword(password, null))) {
+                FacesUtils.addErrorMessage("Das neue Kennwort darf nicht mit dem alten Kennwort "
+                        + "übereinstimmen.");
+                return null;
+            }
+
+            // validate the strength
+            if (!checkPasswordStrength(login, password)) {
+                return null;
+            }
+
+            // set the new password and commit the changes
             login.setPassword(encoder.encodePassword(password, null));
-            System.out.println("ChangePasswordBean.java - encodePassword");
-            
+
             manager = EntityManagerFactory.createEntityManager();
             manager.merge(login);
-            
             EntityManagerHelper.commit(manager);
             return FacesUtils.pretty("profile");
         } catch (Exception ex) {
-            FacesUtils.addErrorMessage("Die Passwortänderung konnte nicht gespeichert werden");
+            FacesUtils.addErrorMessage("Das Passwort konnte nicht geändert werden");
             return null;
         } finally {
             manager = EntityManagerHelper.close(manager);
         }
     }
-	
-	// ---------------------------------
-    // Helper methods
-    // ---------------------------------
-    private void loadfromDatabase(EntityManager manager, long id) {
-        systemUser = manager.find(SystemUser.class, id);
-        if (systemUser == null) {
-            userId = -1;
-            systemUser = new SystemUser();
-            systemUser.setAddress(new Address());
-            login = new Login();
-            systemUser.setLogin(login);
-            login.setSystemUser(systemUser);
+
+    public String abort() {
+        return FacesUtils.pretty("profile");
+    }
+
+    /** Ensures the strength of the password */
+    private boolean checkPasswordStrength(Login login, String newPassword) {
+        // match the password and the login
+        if (newPassword.equals(login.getLoginName())) {
+            FacesUtils.addErrorMessage("Das Passwort darf nicht mit Ihrem Login übereinstimmen");
+            return false;
         }
-        login = systemUser.getLogin();
+        // match the password and the system user
+        SystemUser systemUser = login.getSystemUser();
+        if (newPassword.equals(systemUser.getFirstName())) {
+            FacesUtils.addErrorMessage("Das Passwort darf nicht mit Ihrem Vornamen übereinstimmen");
+            return false;
+        }
+        if (newPassword.equals(systemUser.getLastName())) {
+            FacesUtils.addErrorMessage("Das Passwort darf nicht mit Ihrem Nachname übereinstimmen");
+            return false;
+        }
+        if (newPassword.equals(systemUser.getFirstName() + "." + systemUser.getLastName())) {
+            FacesUtils.addErrorMessage("Das Passwort darf nicht mit Ihrem Namen übereinstimmen");
+            return false;
+        }
+        if (newPassword.equals(systemUser.getLastName() + "." + systemUser.getFirstName())) {
+            FacesUtils.addErrorMessage("Das Passwort darf nicht mit Ihrem Namen übereinstimmen");
+            return false;
+        }
+        if (newPassword.equals(systemUser.getPnr())) {
+            FacesUtils.addErrorMessage("Das Passwort darf nicht mit Ihrer "
+                    + "Personalnummer übereinstimmen");
+            return false;
+        }
+
+        // simple methods checked, so we accept the password
+        return true;
     }
 
-	// ---------------------------------
-	// Setters for the properties
-	// ---------------------------------
-    public void setOldPassword(String oldPassword){
-    	this.oldPassword = oldPassword;
-    }
-    
-    public void setPassword(String password){
-    	this.password = password;
-    }
-    
-    public void setPassword2 (String password2){
-    	this.password2 = password2;
+    // ---------------------------------
+    // Setters for the properties
+    // ---------------------------------
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
     }
 
-	// ---------------------------------
-	// Getters for the properties
-	// ---------------------------------
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-    public String getOldPassword(){
-    	return oldPassword;
+    public void setPassword2(String password2) {
+        this.password2 = password2;
     }
-    
-    public String getPassword(){
-    	return password;
+
+    // ---------------------------------
+    // Getters for the properties
+    // ---------------------------------
+    public String getOldPassword() {
+        return oldPassword;
     }
-    
-    public String getPassword2(){
-    	return password2;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getPassword2() {
+        return password2;
     }
 }
