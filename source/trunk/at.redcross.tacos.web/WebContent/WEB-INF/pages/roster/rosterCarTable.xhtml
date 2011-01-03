@@ -42,7 +42,7 @@
 					<h:graphicImage library="images/16x16" name="notes.png" rendered="#{not empty rosterDto.entity.notes}" />
 				</a4j:outputPanel>
 			</rich:column>
-			<rich:column styleClass="center #{rosterDto.styleClass}" sortBy="#{rosterDto.entity.plannedStartTime}">
+			<rich:column styleClass="center #{rosterDto.styleClass}" sortBy="#{rosterDto.entity.plannedStartDateTime}">
 				<f:facet name="header">
 					<h:panelGroup>
 						<h:outputText value="Dienstzeit von" />
@@ -52,7 +52,7 @@
 					<f:convertDateTime pattern="dd.MM.yyyy HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 				</h:outputText>
 			</rich:column>
-			<rich:column styleClass="center #{rosterDto.styleClass}" sortBy="#{rosterDto.entity.plannedEndTime}">
+			<rich:column styleClass="center #{rosterDto.styleClass}" sortBy="#{rosterDto.entity.plannedEndDateTime}">
 				<f:facet name="header">
 					<h:panelGroup>
 						<h:outputText value="Dienstzeit bis" />
