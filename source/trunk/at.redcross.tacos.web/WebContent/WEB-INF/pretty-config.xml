@@ -46,6 +46,7 @@
 	<url-mapping id="changePassword">
 		<pattern>/changePassword</pattern>
 		<view-id>/WEB-INF/pages/home/changePassword.faces</view-id>
+		<action onPostback="false">#{changePasswordBean.prettyInit}</action>
 	</url-mapping>
 
 
