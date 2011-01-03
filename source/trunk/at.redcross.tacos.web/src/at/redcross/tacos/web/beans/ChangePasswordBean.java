@@ -116,7 +116,7 @@ public class ChangePasswordBean extends BaseBean {
             FacesUtils.addErrorMessage("Das Passwort darf nicht mit Ihrem Namen übereinstimmen");
             return false;
         }
-        if (newPassword.equals(systemUser.getPnr())) {
+        if (newPassword.equals(String.valueOf(systemUser.getPnr()))) {
             FacesUtils.addErrorMessage("Das Passwort darf nicht mit Ihrer "
                     + "Personalnummer übereinstimmen");
             return false;
