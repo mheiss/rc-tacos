@@ -43,6 +43,10 @@
 		<view-id>/WEB-INF/pages/home/links.faces</view-id>
 		<action onPostback="false">#{linkOverviewBean.prettyInit}</action>
 	</url-mapping>
+	<url-mapping id="changePassword">
+		<pattern>/changePassword</pattern>
+		<view-id>/WEB-INF/pages/home/changePassword.faces</view-id>
+	</url-mapping>
 
 
 	<!-- ################ ROSTER ####################### -->
