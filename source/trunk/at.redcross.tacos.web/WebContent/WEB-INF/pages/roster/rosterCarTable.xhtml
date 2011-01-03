@@ -42,6 +42,12 @@
 					<h:graphicImage library="images/16x16" name="notes.png" rendered="#{not empty rosterDto.entity.notes}" />
 				</a4j:outputPanel>
 			</rich:column>
+			<rich:column styleClass="smallColumn #{rosterDto.styleClass}" sortBy="#{rosterDto.entity.location.name}">
+				<f:facet name="header">
+					<h:outputText value="Dienststelle" />
+				</f:facet>
+				<h:outputText value="#{rosterDto.entity.location.shortName}" title="#{rosterDto.entity.location.name}" />
+			</rich:column>
 			<rich:column styleClass="center #{rosterDto.styleClass}" sortBy="#{rosterDto.entity.plannedStartDateTime}">
 				<f:facet name="header">
 					<h:panelGroup>
@@ -49,7 +55,7 @@
 					</h:panelGroup>
 				</f:facet>
 				<h:outputText value="#{rosterDto.entity.plannedStartDateTime}">
-					<f:convertDateTime pattern="dd.MM.yyyy HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+					<f:convertDateTime pattern="dd.MM.yy HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 				</h:outputText>
 			</rich:column>
 			<rich:column styleClass="center #{rosterDto.styleClass}" sortBy="#{rosterDto.entity.plannedEndDateTime}">
@@ -59,7 +65,7 @@
 					</h:panelGroup>
 				</f:facet>
 				<h:outputText value="#{rosterDto.entity.plannedEndDateTime}">
-					<f:convertDateTime pattern="dd.MM.yyyy HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+					<f:convertDateTime pattern="dd.MM.yy HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 				</h:outputText>
 			</rich:column>
 			<rich:column styleClass="#{rosterDto.styleClass}" sortBy="#{rosterDto.entity.assignment.name}">
