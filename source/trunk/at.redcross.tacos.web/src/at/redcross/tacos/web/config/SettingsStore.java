@@ -89,7 +89,7 @@ public class SettingsStore {
 				logger.warn("No system.properties file found in classpath");
 				return p;
 			}
-			resource.openStream();
+			in = resource.openStream();
 			p.load(in);
 			return p;
 		} catch (Exception ex) {
