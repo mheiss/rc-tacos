@@ -65,18 +65,6 @@
 			<zipfileset file="${config.jpa}" prefix="WEB-INF/classes/META-INF" /> 
 		</war>
 	</target>
-		
-	<!-- Deploys the war file to a remote server -->
-	<target name="deployRemote" depends="build">
-		<echo message="Deploying application" />
-		<taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask">
-			<classpath refid="tomcat.classpath" />
-		</taskdef>
-
-	    <deploy url="${tomcat.manager.url}" path="/${project.name}"
-	        username="${tomcat.manager.username}" password="${tomcat.manager.password}"
-	        war="file:${builder.dir}/${project.name}.war" update="true" />
-	</target>
 	
 	<!-- Define the application classpath -->
 	<target name="setup-classpath" depends="init">
