@@ -38,7 +38,7 @@ public class VersionBean extends BaseBean {
 	private String readVersionString() throws IOException {
 		// read from configuration file
 		Properties p = SettingsStore.getInstance().getSystemProperties();
-		systemVersion = p.getProperty("tacos.version", "");
+		systemVersion = p.getProperty("tacos.version", "DEV-${date}");
 		// replace patterns in the format string
 		if (!systemVersion.contains("${date}")) {
 			return systemVersion;
