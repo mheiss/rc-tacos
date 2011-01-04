@@ -24,7 +24,8 @@ public class RosterEntryHelper {
         param.endDate = DateUtils.truncate(param.endDate, Calendar.DAY_OF_MONTH);
         // the HQL query
         StringBuilder builder = new StringBuilder();
-        builder.append(" FROM RosterEntry entry ");
+        builder.append(" SELECT entry FROM RosterEntry entry ");
+        builder.append(" LEFT JOIN entry.car car ");
         builder.append(" WHERE ");
         builder.append(" ( ");
         builder.append(" 	( ");
@@ -39,10 +40,11 @@ public class RosterEntryHelper {
         builder.append(" 		:end <= entry.plannedEndDateTime ");
         builder.append(" 	) ");
         builder.append(" ) ");
-        builder.append(" AND entry.state IN (:states)");
+        builder.append(" AND entry.state IN (:states) ");
         if (param.location != null) {
-            builder.append(" AND entry.location.id = :locationId");
+            builder.append(" AND entry.location.id = :locationId ");
         }
+        builder.append(" order by entry.plannedStartDateTime, car.name ");
 
         // set the parameters for the date range
         TypedQuery<RosterEntry> query = manager.createQuery(builder.toString(), RosterEntry.class);
