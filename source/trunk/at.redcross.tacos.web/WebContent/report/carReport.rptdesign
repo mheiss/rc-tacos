@@ -142,37 +142,6 @@
     <page-setup>
         <simple-master-page name="TacosMasterPage" id="73" extends="tacos.TacosMasterPage">
             <property name="leftMargin">10mm</property>
-            <overridden-values>
-                <ref-entry baseId="34" id="34"/>
-                <ref-entry baseId="35" id="35"/>
-                <ref-entry baseId="36" id="36"/>
-                <ref-entry baseId="37" id="37"/>
-                <ref-entry baseId="38" id="38"/>
-                <ref-entry baseId="72" name="NewImage" id="72"/>
-                <ref-entry baseId="40" id="40"/>
-                <ref-entry baseId="41" id="41"/>
-                <ref-entry baseId="42" id="42"/>
-                <ref-entry baseId="51" name="TacosFooter" id="51"/>
-                <ref-entry baseId="52" id="52"/>
-                <ref-entry baseId="53" id="53"/>
-                <ref-entry baseId="54" id="54"/>
-                <ref-entry baseId="55" id="55"/>
-                <ref-entry baseId="56" id="56"/>
-                <ref-entry baseId="70" name="NewText1" id="70"/>
-                <ref-entry baseId="57" id="57"/>
-                <ref-entry baseId="58" id="58"/>
-                <ref-entry baseId="61" name="NewGrid1" id="61"/>
-                <ref-entry baseId="62" id="62"/>
-                <ref-entry baseId="63" id="63"/>
-                <ref-entry baseId="64" id="64"/>
-                <ref-entry baseId="65" id="65"/>
-                <ref-entry baseId="66" id="66"/>
-                <ref-entry baseId="59" name="NewAutoText" id="59"/>
-                <ref-entry baseId="67" id="67"/>
-                <ref-entry baseId="69" name="NewText" id="69"/>
-                <ref-entry baseId="68" id="68"/>
-                <ref-entry baseId="60" name="NewAutoText1" id="60"/>
-            </overridden-values>
             <property name="headerHeight">20mm</property>
             <property name="footerHeight">10mm</property>
         </simple-master-page>
@@ -240,12 +209,12 @@ if (BirtDateTime.diffDay(dataSetRow["startDateTime"],dataSetRow["endDateTime"]) 
             </list-property>
             <list-property name="sort">
                 <structure>
-                    <expression name="key" type="javascript">row["car"]</expression>
+                    <expression name="key" type="javascript">row["startDateTime"]</expression>
                     <property name="direction">asc</property>
                     <property name="strength">-1</property>
                 </structure>
                 <structure>
-                    <expression name="key" type="javascript">row["startDateTime"]</expression>
+                    <expression name="key" type="javascript">row["car"]</expression>
                     <property name="direction">asc</property>
                     <property name="strength">-1</property>
                 </structure>
