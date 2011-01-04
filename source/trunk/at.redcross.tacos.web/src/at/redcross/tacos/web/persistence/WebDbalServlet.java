@@ -1,6 +1,7 @@
 package at.redcross.tacos.web.persistence;
 
 import java.io.InputStream;
+import java.net.URL;
 import java.util.Properties;
 
 import javax.servlet.ServletConfig;
@@ -36,7 +37,12 @@ public class WebDbalServlet extends HttpServlet {
 		InputStream in = null;
 		Properties p = new Properties();
 		try {
-			in = context.getResourceAsStream("/WEB-INF/classes/system.properties");
+			URL resource = context.getResource("/WEB-INF/classes/system.properties");
+			if (resource == null) {
+				logger.warn("No system.properties file found in classpath");
+				return p;
+			}
+			in = resource.openStream();
 			p.load(in);
 			return p;
 		} catch (Exception ex) {

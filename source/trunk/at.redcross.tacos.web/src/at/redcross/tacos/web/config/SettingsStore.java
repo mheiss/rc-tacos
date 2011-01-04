@@ -2,6 +2,7 @@ package at.redcross.tacos.web.config;
 
 import java.io.File;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.Properties;
 
 import javax.faces.context.ExternalContext;
@@ -83,7 +84,12 @@ public class SettingsStore {
 		Properties p = new Properties();
 		try {
 			ExternalContext ext = FacesContext.getCurrentInstance().getExternalContext();
-			in = ext.getResourceAsStream("/WEB-INF/classes/system.properties");
+			URL resource = ext.getResource("/WEB-INF/classes/system.properties");
+			if (resource == null) {
+				logger.warn("No system.properties file found in classpath");
+				return p;
+			}
+			resource.openStream();
 			p.load(in);
 			return p;
 		} catch (Exception ex) {
@@ -101,7 +107,7 @@ public class SettingsStore {
 			File customHome = new File(System.getProperty(TACOS_HOME));
 			if (initHome(customHome)) {
 				homeDir = customHome;
-				logger.info("Using custom home directory");
+				logger.info("Using custom home directory ('" + homeDir + "')");
 				return;
 			}
 		}
@@ -110,7 +116,7 @@ public class SettingsStore {
 		File defaultHome = new File(System.getProperty(DEFAULT_HOME), ".tacos");
 		if (initHome(defaultHome)) {
 			homeDir = defaultHome;
-			logger.info("Using default home directory");
+			logger.info("Using default home directory ('" + homeDir + "')");
 			return;
 		}
 
