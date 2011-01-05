@@ -69,6 +69,11 @@
                     <property name="name">car</property>
                     <property name="dataType">string</property>
                 </structure>
+                <structure>
+                    <property name="position">13</property>
+                    <property name="name">standby</property>
+                    <property name="dataType">boolean</property>
+                </structure>
             </list-property>
             <list-property name="columnHints">
                 <structure>
@@ -118,6 +123,10 @@
                 <structure>
                     <property name="columnName">car</property>
                     <text-property name="displayName">Fahrzeug</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">standby</property>
+                    <text-property name="displayName">Standby</text-property>
                 </structure>
             </list-property>
             <structure name="cachedMetaData">
@@ -182,6 +191,11 @@
                         <property name="name">car</property>
                         <property name="dataType">string</property>
                     </structure>
+                    <structure>
+                        <property name="position">13</property>
+                        <property name="name">standby</property>
+                        <property name="dataType">boolean</property>
+                    </structure>
                 </list-property>
             </structure>
             <property name="dataSource">TacosDataSource</property>
@@ -203,10 +217,10 @@ if(count < reportParam.size()){
 	dataSetRow["endDateTime"] = entry.getPlannedEndDateTime();
 	dataSetRow["assignment"] = entry.getAssignment().getDisplayString();
 	dataSetRow["serviceType"] = entry.getServiceType().getDisplayString();
+	dataSetRow["standby"] = entry.isStandby();
 	if(entry.getCar() != null)  {
 		dataSetRow["car"] = entry.getCar().getDisplayString();
 	} 
-	
 	return true;
 }
 // no more records

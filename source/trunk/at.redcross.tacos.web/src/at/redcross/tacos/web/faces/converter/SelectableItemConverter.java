@@ -11,6 +11,7 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.SelectItem;
 
 import at.redcross.tacos.web.model.SelectableItem;
+import at.redcross.tacos.web.utils.StringUtils;
 
 @FacesConverter(value = "converter.selectableItem")
 public class SelectableItemConverter implements Converter {
@@ -18,6 +19,7 @@ public class SelectableItemConverter implements Converter {
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
         UIComponentBase componentBase = (UIComponentBase) component;
+        value = StringUtils.saveString(value).trim();
         for (UIComponent child : componentBase.getChildren()) {
             UISelectItems childItem = (UISelectItems) child;
 

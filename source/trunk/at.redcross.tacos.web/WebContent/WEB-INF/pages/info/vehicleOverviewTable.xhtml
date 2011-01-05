@@ -21,13 +21,13 @@
 					<h:graphicImage library="images/16x16" name="data_ok.png" title="Einsatzbereit" />
 				</h:panelGroup>
 			</rich:column>
-			<rich:column styleClass="smallColumn bold" sortBy="#{dto.entity.name}" sortOrder="ASCENDING">
+			<rich:column styleClass="bold" sortBy="#{dto.entity.name}" sortOrder="ASCENDING">
 				<f:facet name="header">
 					<h:outputText value="Name" title="Fahrzeug" />
 				</f:facet>
 				<h:outputText value="#{dto.entity.name}" />
 			</rich:column>
-			<rich:column styleClass="smallColumn" sortBy="#{dto.entity.type}">
+			<rich:column sortBy="#{dto.entity.type}">
 				<f:facet name="header">
 					<h:outputText value="Typ" title="Typ" />
 				</f:facet>

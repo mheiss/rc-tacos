@@ -87,6 +87,7 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
         params.reportName = "Fahrzeugzuweisung_" + sdfFile.format(date) + ".pdf";
         params.reportFile = "carReport.rptdesign";
         params.arguments.put("reportParam", getFilteredEntries());
+        params.arguments.put("reportNotes", notification.getNotes());
         params.arguments.put("reportName", String.format("Fahrzeugzuweisung für %1$s", sdfDisplay
                 .format(date)));
         return params;

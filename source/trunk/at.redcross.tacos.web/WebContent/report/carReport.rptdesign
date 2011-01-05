@@ -58,6 +58,11 @@
                     <property name="name">car</property>
                     <property name="dataType">string</property>
                 </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">standby</property>
+                    <property name="dataType">boolean</property>
+                </structure>
             </list-property>
             <list-property name="columnHints">
                 <structure>
@@ -70,7 +75,7 @@
                 </structure>
                 <structure>
                     <property name="columnName">startDateTime</property>
-                    <text-property name="displayName">Start [Datum/Zeit]</text-property>
+                    <text-property name="displayName">Start</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">serviceType</property>
@@ -86,11 +91,15 @@
                 </structure>
                 <structure>
                     <property name="columnName">endDateTime</property>
-                    <text-property name="displayName">Ende [Datum/Zeit]</text-property>
+                    <text-property name="displayName">Ende</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">car</property>
                     <text-property name="displayName">Fahrzeug</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">standby</property>
+                    <text-property name="displayName">Standby</text-property>
                 </structure>
             </list-property>
             <structure name="cachedMetaData">
@@ -135,8 +144,14 @@
                         <property name="name">car</property>
                         <property name="dataType">string</property>
                     </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">standby</property>
+                        <property name="dataType">boolean</property>
+                    </structure>
                 </list-property>
             </structure>
+            <property name="dataSource">TacosDataSource</property>
         </script-data-set>
     </data-sets>
     <page-setup>
@@ -148,8 +163,15 @@
     </page-setup>
     <body>
         <text name="ReportHeader" id="124" extends="tacos.ReportHeader"/>
+        <text id="293">
+            <property name="marginBottom">6pt</property>
+            <property name="paddingTop">4pt</property>
+            <property name="paddingBottom">4pt</property>
+            <property name="contentType">html</property>
+            <text-property name="content"><![CDATA[<B><U>Anmerkungen:</U></B> <value-of format="html">params["reportNotes"]</value-of>]]></text-property>
+        </text>
         <table id="199">
-            <property name="width">7.697916666666667in</property>
+            <property name="width">7.604166666666667in</property>
             <property name="dataSet">TacosDataSet</property>
             <list-property name="boundDataColumns">
                 <structure>
@@ -193,7 +215,7 @@
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="name">Column Binding</property>
+                    <property name="name">dateTime</property>
                     <text-property name="displayName">date</text-property>
                     <expression name="expression" type="javascript">importPackage(Packages.java.text);&#13;
 &#13;
@@ -204,6 +226,20 @@ if (BirtDateTime.diffDay(dataSetRow["startDateTime"],dataSetRow["endDateTime"]) 
 	sdf = new java.text.SimpleDateFormat("dd.MM.yy HH:mm");&#13;
   	sdf.format(dataSetRow["startDateTime"]) + " - " + sdf.format(dataSetRow["endDateTime"]);&#13;
   }</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">standby</property>
+                    <expression name="expression" type="javascript">dataSetRow["standby"]</expression>
+                    <property name="dataType">boolean</property>
+                </structure>
+                <structure>
+                    <property name="name">standbyImage</property>
+                    <expression name="expression" type="javascript">if(dataSetRow["standby"]== false) {&#13;
+	"resources/images/report/checkbox.png"&#13;
+} else {&#13;
+	"resources/images/report/nothing.png"&#13;
+}</expression>
                     <property name="dataType">string</property>
                 </structure>
             </list-property>
@@ -220,19 +256,22 @@ if (BirtDateTime.diffDay(dataSetRow["startDateTime"],dataSetRow["endDateTime"]) 
                 </structure>
             </list-property>
             <column id="277">
-                <property name="width">0.7916666666666666in</property>
+                <property name="width">1.0416666666666667in</property>
             </column>
             <column id="212">
-                <property name="width">1.6041666666666667in</property>
+                <property name="width">1.4583333333333333in</property>
             </column>
             <column id="214">
-                <property name="width">1.90625in</property>
+                <property name="width">1.875in</property>
             </column>
             <column id="236">
-                <property name="width">1.71875in</property>
+                <property name="width">1.5104166666666667in</property>
             </column>
             <column id="244">
-                <property name="width">1.6666666666666667in</property>
+                <property name="width">1.46875in</property>
+            </column>
+            <column id="287">
+                <property name="width">0.25in</property>
             </column>
             <header>
                 <row id="200">
@@ -268,6 +307,7 @@ if (BirtDateTime.diffDay(dataSetRow["startDateTime"],dataSetRow["endDateTime"]) 
                             <text-property name="text">Dienstverhältnis</text-property>
                         </label>
                     </cell>
+                    <cell id="282"/>
                 </row>
             </header>
             <group id="215">
@@ -294,6 +334,7 @@ if (BirtDateTime.diffDay(dataSetRow["startDateTime"],dataSetRow["endDateTime"]) 
                                 <property name="resultSetColumn">location</property>
                             </data>
                         </cell>
+                        <cell id="283"/>
                     </row>
                 </header>
                 <footer>
@@ -304,6 +345,7 @@ if (BirtDateTime.diffDay(dataSetRow["startDateTime"],dataSetRow["endDateTime"]) 
                         <cell id="223"/>
                         <cell id="234"/>
                         <cell id="242"/>
+                        <cell id="285"/>
                     </row>
                 </footer>
             </group>
@@ -335,7 +377,7 @@ if (BirtDateTime.diffDay(dataSetRow["startDateTime"],dataSetRow["endDateTime"]) 
                         <data id="281">
                             <property name="textAlign">center</property>
                             <property name="verticalAlign">middle</property>
-                            <property name="resultSetColumn">Column Binding</property>
+                            <property name="resultSetColumn">dateTime</property>
                         </data>
                     </cell>
                     <cell id="233">
@@ -352,6 +394,20 @@ if (BirtDateTime.diffDay(dataSetRow["startDateTime"],dataSetRow["endDateTime"]) 
                             <property name="resultSetColumn">serviceType</property>
                         </data>
                     </cell>
+                    <cell id="284">
+                        <image id="292">
+                            <property name="textAlign">center</property>
+                            <property name="verticalAlign">middle</property>
+                            <property name="height">12px</property>
+                            <property name="width">12px</property>
+                            <property name="source">file</property>
+                            <expression name="uri" type="javascript">if(row["standby"] == true) {
+	"resources/images/report/checkbox.png"
+} else {
+	"resources/images/report/nothing.png"
+}</expression>
+                        </image>
+                    </cell>
                 </row>
             </detail>
             <footer>
@@ -361,6 +417,7 @@ if (BirtDateTime.diffDay(dataSetRow["startDateTime"],dataSetRow["endDateTime"]) 
                     <cell id="211"/>
                     <cell id="235"/>
                     <cell id="243"/>
+                    <cell id="286"/>
                 </row>
             </footer>
         </table>
