@@ -14,7 +14,7 @@
 							<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 							<rich:ajaxValidator event="onchanged" />
 							<rich:ajaxValidator event="oninputblur" />
-							<a4j:support event="onchanged" actionListener="#{bean.filterChanged}" reRender="dateTitle,filter,rosterTab,rosterFooter" />
+							<a4j:support event="onchanged" actionListener="#{bean.filterChanged}" reRender="page-content" />
 						</rich:calendar> 
 						<rich:message for="date" errorClass="error" />
 					</div>

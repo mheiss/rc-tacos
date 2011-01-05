@@ -36,7 +36,7 @@
 	
 	<ui:define name="page-toolbar">
 		<li>
-			<a4j:commandLink actionListener="#{rosterCarAllocationOverviewBean.navigateNext}" reRender="menu-wrapper,page-content">
+			<a4j:commandLink actionListener="#{rosterCarAllocationOverviewBean.navigateNext}" reRender="page-content">
 				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="next.png" />
 				<h:outputText styleClass="toolbarText" value="Nächster Tag"  />
 			</a4j:commandLink>
@@ -48,13 +48,13 @@
 			</a4j:htmlCommandLink>
 		</li>
 		<li>
-			<a4j:commandLink actionListener="#{rosterCarAllocationOverviewBean.navigatePrevious}" reRender="menu-wrapper,page-content">
+			<a4j:commandLink actionListener="#{rosterCarAllocationOverviewBean.navigatePrevious}" reRender="page-content">
 				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="back.png" />
 				<h:outputText styleClass="toolbarText" value="Vorheriger Tag"  />
 			</a4j:commandLink>
 		</li>
 		<li>
-			<a4j:commandLink ajaxSingle="false" actionListener="#{rosterCarAllocationOverviewBean.saveEntries}" reRender="menu-wrapper,page-content" title="Speichern">
+			<a4j:commandLink ajaxSingle="false" actionListener="#{rosterCarAllocationOverviewBean.saveEntries}" reRender="page-content" title="Speichern">
 				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="save.png" />
 				<h:outputText styleClass="toolbarText" value="Speichern" />
 			</a4j:commandLink>
