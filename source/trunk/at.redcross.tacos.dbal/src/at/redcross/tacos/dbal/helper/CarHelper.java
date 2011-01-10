@@ -10,7 +10,7 @@ import at.redcross.tacos.dbal.entity.Car;
 public class CarHelper {
 
 	public static List<Car> list(EntityManager manager, boolean outOfOrder) {
-		String hqlQuery = "from Car c where c.outOfOrder = :outOfOrder";
+		String hqlQuery = "from Car c where c.outOfOrder = :outOfOrder order by c.name";
 		TypedQuery<Car> query = manager.createQuery(hqlQuery, Car.class);
 		query.setParameter("outOfOrder", outOfOrder);
 		return query.getResultList();
@@ -25,10 +25,11 @@ public class CarHelper {
 
 	public static List<Car> listByLocationName(EntityManager manager, String locationName) {
 		StringBuilder builder = new StringBuilder();
-		builder.append("from Car car ");
+		builder.append("from Car car");
 		if (locationName != null) {
-			builder.append("where car.location.name = :locationName");
+			builder.append(" where car.location.name = :locationName");
 		}
+		builder.append(" order by car.name");
 		TypedQuery<Car> query = manager.createQuery(builder.toString(), Car.class);
 		if (locationName != null) {
 			query.setParameter("locationName", locationName);
