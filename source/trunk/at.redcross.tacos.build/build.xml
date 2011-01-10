@@ -5,9 +5,9 @@
 	<target name="init">
 		<!-- Check required files -->
 		<available file="build.properties" property="build.file" />
-		<available file="config/log4j.properties" property="log.file" />
-		<available file="config/system.properties" property="system.file" />
-		<available file="config/persistence.xml" property="jpa.file" />
+		<available file="../${releng.dir}/config/log4j.properties" property="log.file" />
+		<available file="../${releng.dir}/config/system.properties" property="system.file" />
+		<available file="../${releng.dir}/config/persistence.xml" property="jpa.file" />
 		<fail unless="build.file" message="Please provide a configuration file for the build." />
 		<fail unless="log.file" message="Please provide a log file for the application." />
 		<fail unless="jpa.file" message="Please provide a JPA file for the application." />
