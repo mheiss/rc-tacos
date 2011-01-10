@@ -171,6 +171,9 @@
             <text-property name="content"><![CDATA[<B><U>Anmerkungen:</U></B> <value-of format="html">params["reportNotes"]</value-of>]]></text-property>
         </text>
         <table id="199">
+            <property name="pageBreakAfter">avoid</property>
+            <property name="pageBreakBefore">avoid</property>
+            <property name="pageBreakInside">avoid</property>
             <property name="width">7.604166666666667in</property>
             <property name="dataSet">TacosDataSet</property>
             <list-property name="boundDataColumns">
@@ -243,6 +246,7 @@ if (BirtDateTime.diffDay(dataSetRow["startDateTime"],dataSetRow["endDateTime"]) 
                     <property name="dataType">string</property>
                 </structure>
             </list-property>
+            <property name="pageBreakInterval">0</property>
             <list-property name="sort">
                 <structure>
                     <expression name="key" type="javascript">row["startDateTime"]</expression>
@@ -321,9 +325,9 @@ if (BirtDateTime.diffDay(dataSetRow["startDateTime"],dataSetRow["endDateTime"]) 
                 </structure>
                 <property name="repeatHeader">true</property>
                 <property name="hideDetail">false</property>
-                <property name="pageBreakAfter">auto</property>
-                <property name="pageBreakBefore">auto</property>
-                <property name="pageBreakInside">auto</property>
+                <property name="pageBreakAfter">avoid</property>
+                <property name="pageBreakBefore">avoid</property>
+                <property name="pageBreakInside">avoid</property>
                 <header>
                     <row id="216">
                         <property name="style">GroupHeader</property>
