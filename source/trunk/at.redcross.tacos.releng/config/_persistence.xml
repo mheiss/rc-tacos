@@ -1,0 +1,45 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd" version="2.0">
+	<persistence-unit name="tacosWeb" transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<properties>
+			<property name="hibernate.connection.driver_class" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
+			<property name="hibernate.connection.url" value="jdbc:sqlserver://localhost;databaseName=tacosWeb;" />
+			<property name="hibernate.connection.username" value="sa" />
+			<property name="hibernate.connection.password" value="" />
+
+			<!-- Configuration for the connection pool -->
+			<property name="hibernate.connection.provider_class" value="org.hibernate.connection.C3P0ConnectionProvider" />
+        	<property name="c3p0.acquire_increment" value="1" />
+       		<property name="c3p0.idle_test_period" value="100" />
+        	<property name="c3p0.max_size" value="100" />
+        	<property name="c3p0.max_statements" value="0" />
+        	<property name="c3p0.min_size" value="15" />
+        	<property name="c3p0.timeout" value="100" />
+
+			<!-- SQL-Dialect -->
+			<property name="hibernate.dialect" value="org.hibernate.dialect.SQLServerDialect" />
+
+			<!-- Print out all SQL statements -->
+			<property name="hibernate.show_sql" value="false" />
+
+			<!-- Embedded columns will have a prefix -->
+			<property name="hibernate.ejb.naming_strategy" value="org.hibernate.cfg.DefaultComponentSafeNamingStrategy" />
+
+			<!-- Enable automatic session context management -->
+			<property name="hibernate.current_session_context_class" value="thread" />
+			<property name="hibernate.archive.autodetection" value="class" />
+
+			<!-- Disable the second-level cache -->
+			<property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider" />
+			
+			<!-- We want to explicitly track any changes to an entity  -->
+			<property name="hibernate.ejb.event.post-insert" value="org.hibernate.envers.event.AuditEventListener" />
+			<property name="hibernate.ejb.event.post-update" value="org.hibernate.envers.event.AuditEventListener" />
+			<property name="hibernate.ejb.event.post-delete" value="org.hibernate.envers.event.AuditEventListener" />
+			<property name="hibernate.ejb.event.pre-collection-update" value="org.hibernate.envers.event.AuditEventListener" />
+			<property name="hibernate.ejb.event.pre-collection-remove" value="org.hibernate.envers.event.AuditEventListener" />
+			<property name="hibernate.ejb.event.post-collection-recreate" value="org.hibernate.envers.event.AuditEventListener" />
+		</properties>
+	</persistence-unit>
+</persistence>
