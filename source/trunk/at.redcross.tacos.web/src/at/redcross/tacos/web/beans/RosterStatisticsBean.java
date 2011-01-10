@@ -1,7 +1,6 @@
 package at.redcross.tacos.web.beans;
 
 import java.text.DateFormatSymbols;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -17,10 +16,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import org.ajax4jsf.model.KeepAlive;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import at.redcross.tacos.dbal.entity.DataState;
-import at.redcross.tacos.dbal.entity.Login;
 import at.redcross.tacos.dbal.entity.RosterEntry;
 import at.redcross.tacos.dbal.entity.SystemUser;
 import at.redcross.tacos.dbal.helper.LocationHelper;
@@ -35,7 +32,6 @@ import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.model.SelectableItem;
 import at.redcross.tacos.web.model.SelectableItemHelper;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
-import at.redcross.tacos.web.security.WebUserDetails;
 
 @KeepAlive
 @ManagedBean(name = "rosterStatisticsBean")
@@ -148,13 +144,7 @@ public class RosterStatisticsBean extends PagingBean {
         Calendar cal = Calendar.getInstance();
         queryParam.month = cal.get(Calendar.MONTH);
         queryParam.year = cal.get(Calendar.YEAR);
-        //
-        WebUserDetails details = (WebUserDetails) SecurityContextHolder.getContext()
-                .getAuthentication().getPrincipal();
-        Login login = details.getLogin();
-        SystemUser user = login.getSystemUser();
-        //
-        queryParam.systemUser = user;
+        queryParam.systemUser = FacesUtils.getPrincipal().getLogin().getSystemUser();
         return queryParam;
     }
 

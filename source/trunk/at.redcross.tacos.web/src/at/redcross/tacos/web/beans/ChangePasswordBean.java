@@ -6,15 +6,12 @@ import javax.persistence.EntityManager;
 import org.ajax4jsf.model.KeepAlive;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import at.redcross.tacos.dbal.entity.Login;
 import at.redcross.tacos.dbal.entity.SystemUser;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
-import at.redcross.tacos.web.security.WebUserDetails;
 import at.redcross.tacos.web.utils.StringUtils;
 
 @KeepAlive
@@ -44,9 +41,7 @@ public class ChangePasswordBean extends BaseBean {
         EntityManager manager = null;
         try {
             // get the currently authenticated user
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            WebUserDetails details = (WebUserDetails) auth.getPrincipal();
-            Login login = details.getLogin();
+            Login login = FacesUtils.getPrincipal().getLogin();
 
             // check if the old password matches
             if (!login.getPassword().equals(encoder.encodePassword(oldPassword, null))) {

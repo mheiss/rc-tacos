@@ -6,10 +6,9 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 
 import org.ajax4jsf.model.KeepAlive;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import at.redcross.tacos.dbal.entity.SystemUser;
+import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.security.WebPermissionManager;
 import at.redcross.tacos.web.security.WebUserDetails;
 
@@ -28,20 +27,11 @@ public class WebPermissionBean extends WebPermissionManager implements Serializa
     // Principal requests
     // ---------------------------------
     public SystemUser getSystemUser() {
-        WebUserDetails principal = getPrincipal();
+        WebUserDetails principal = FacesUtils.getPrincipal();
         if (principal == null) {
             return null;
         }
         return principal.getLogin().getSystemUser();
-    }
-
-    public WebUserDetails getPrincipal() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Object principal = auth.getPrincipal();
-        if (principal instanceof WebUserDetails) {
-            return (WebUserDetails) principal;
-        }
-        return null;
     }
 
     // ---------------------------------
