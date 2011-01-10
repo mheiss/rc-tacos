@@ -10,7 +10,7 @@
 	</h:panelGroup>
 	<rich:panel rendered="#{not empty values}">
 		<rich:dataTable id="table-#{tabId}" styleClass="defaultStyle" value="#{values}" var="dto" onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
-			<rich:column sortBy="#{dto.entity.outOfOrder}" sortOrder="ASCENDING" styleClass="center smallColumn">
+			<rich:column styleClass="center smallColumn">
 				<f:facet name="header">
 					<h:outputText value="Status" title="Status" />
 				</f:facet>
