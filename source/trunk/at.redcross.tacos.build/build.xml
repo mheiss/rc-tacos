@@ -5,9 +5,9 @@
 	<target name="init">
 		<!-- Check required files -->
 		<available file="build.properties" property="build.file" />
-		<available file="../${releng.dir}/config/log4j.properties" property="log.file" />
-		<available file="../${releng.dir}/config/system.properties" property="system.file" />
-		<available file="../${releng.dir}/config/persistence.xml" property="jpa.file" />
+		<available file="${base.dir}/${releng.dir}/config/log4j.properties" property="log.file" />
+		<available file="${base.dir}/${releng.dir}/config/system.properties" property="system.file" />
+		<available file="${base.dir}/${releng.dir}/config/persistence.xml" property="jpa.file" />
 		<fail unless="build.file" message="Please provide a configuration file for the build." />
 		<fail unless="log.file" message="Please provide a log file for the application." />
 		<fail unless="jpa.file" message="Please provide a JPA file for the application." />
@@ -23,9 +23,9 @@
 		<property name="builder.dir" value="${base.dir}/${tacos.builder}/builder" />
 
 		<!-- Configuration files needed for the application -->
-		<property name="config.system" value="${base.dir}/${tacos.builder}/config/system.properties" />
-		<property name="config.jpa" value="${base.dir}/${tacos.builder}/config/persistence.xml" />
-		<property name="config.log4j" value="${base.dir}/${tacos.builder}/config/log4j.properties" />
+		<property name="config.system" value="${base.dir}/${releng.dir}/config/system.properties" />
+		<property name="config.jpa" value="${base.dir}/${releng.dir}/config/persistence.xml" />
+		<property name="config.log4j" value="${base.dir}/${releng.dir}/config/log4j.properties" />
 	</target>
 
 	<!-- cleanup the builder -->
