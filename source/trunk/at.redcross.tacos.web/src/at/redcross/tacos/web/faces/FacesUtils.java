@@ -17,6 +17,10 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+import at.redcross.tacos.web.security.WebUserDetails;
 
 import com.ocpsoft.pretty.PrettyContext;
 import com.ocpsoft.pretty.config.PrettyConfig;
@@ -48,6 +52,15 @@ public class FacesUtils {
     public static String getContextRoot() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         return facesContext.getExternalContext().getRequestContextPath();
+    }
+
+    public static WebUserDetails getPrincipal() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = auth.getPrincipal();
+        if (principal instanceof WebUserDetails) {
+            return (WebUserDetails) principal;
+        }
+        return null;
     }
 
     // ---------------------------------

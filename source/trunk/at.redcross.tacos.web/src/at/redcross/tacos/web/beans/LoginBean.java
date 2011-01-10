@@ -27,162 +27,156 @@ import at.redcross.tacos.dbal.entity.SystemUser;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
-import at.redcross.tacos.web.security.WebUserDetails;
 
 @KeepAlive
 @ManagedBean(name = "loginBean")
 public class LoginBean extends BaseBean {
 
-	private final static Logger logger = LoggerFactory.getLogger(LoginBean.class);
+    private final static Logger logger = LoggerFactory.getLogger(LoginBean.class);
 
-	private final static long serialVersionUID = -4477225555616492426L;
+    private final static long serialVersionUID = -4477225555616492426L;
 
-	private String username;
-	private String password;
-	private String password2;
-	private String currentPassword;
+    private String username;
+    private String password;
+    private String password2;
+    private String currentPassword;
 
-	@Override
-	protected void init() throws Exception {
-		// nothing to do :)
-	}
+    @Override
+    protected void init() throws Exception {
+        // nothing to do :)
+    }
 
-	// ---------------------------------
-	// Actions
-	// ---------------------------------
-	/** Delegate request to SpringSecurity */
-	public void login(ActionEvent event) throws IOException, ServletException {
-		// setup the request URL that is passed to the security check
-		StringBuilder builder = new StringBuilder("/j_spring_security_check");
-		builder.append("?j_username=").append(username);
-		builder.append("&j_password=").append(password);
+    // ---------------------------------
+    // Actions
+    // ---------------------------------
+    /** Delegate request to SpringSecurity */
+    public void login(ActionEvent event) throws IOException, ServletException {
+        // setup the request URL that is passed to the security check
+        StringBuilder builder = new StringBuilder("/j_spring_security_check");
+        builder.append("?j_username=").append(username);
+        builder.append("&j_password=").append(password);
 
-		// password field will NOT be restored
-		password = null;
+        // password field will NOT be restored
+        password = null;
 
-		// now delegate to SpringSecurity
-		redirectToPage(builder.toString());
-	}
+        // now delegate to SpringSecurity
+        redirectToPage(builder.toString());
+    }
 
-	public void changePassword(ActionEvent event) {
-		EntityManager manager = null;
-		try {
-			Login login = getLogin();
-			manager = EntityManagerFactory.createEntityManager();
-			// validate old password
-			PasswordEncoder encoder = new ShaPasswordEncoder(256);
-			currentPassword = encoder.encodePassword(currentPassword, null);
-			if (!currentPassword.equals(login.getPassword())) {
-				logger.error("Password missmatch");
-				FacesUtils.addErrorMessage("Ihr aktuelles Kennwort ist ungültig.");
-				return;
-			}
-			if(password == null || password.trim().isEmpty()) {
-				FacesUtils.addErrorMessage("Das neue Kennwort kann nicht leer sein.");
-				return;
-			}
-			if(!password.equals(password2)) {
-				FacesUtils.addErrorMessage("Die eingegebenen Kennwörter stimmen nicht überein.");
-				return;
-			}
-			
-			// update password and persist changes
-			login.setPassword(encoder.encodePassword(password, null));
-			manager.merge(login);
-			EntityManagerHelper.commit(manager);
-			// reset state
-			password = null;
-			password2 = null;
-			currentPassword = null;
-		} catch (Exception ex) {
-			logger.error("Failed to persist the groups", ex);
-			FacesUtils.addErrorMessage("Die Änderungen konnten nicht gespeichert werden");
-		} finally {
-			manager = EntityManagerHelper.close(manager);
-		}
-	}
+    public void changePassword(ActionEvent event) {
+        EntityManager manager = null;
+        try {
+            Login login = getLogin();
+            manager = EntityManagerFactory.createEntityManager();
+            // validate old password
+            PasswordEncoder encoder = new ShaPasswordEncoder(256);
+            currentPassword = encoder.encodePassword(currentPassword, null);
+            if (!currentPassword.equals(login.getPassword())) {
+                logger.error("Password missmatch");
+                FacesUtils.addErrorMessage("Ihr aktuelles Kennwort ist ungültig.");
+                return;
+            }
+            if (password == null || password.trim().isEmpty()) {
+                FacesUtils.addErrorMessage("Das neue Kennwort kann nicht leer sein.");
+                return;
+            }
+            if (!password.equals(password2)) {
+                FacesUtils.addErrorMessage("Die eingegebenen Kennwörter stimmen nicht überein.");
+                return;
+            }
 
-	// ---------------------------------
-	// Properties
-	// ---------------------------------
-	public Login getLogin() {
-		if (!isAuthenticated()) {
-			return null;
-		}
-		WebUserDetails details = (WebUserDetails) getAuthentication().getPrincipal();
-		return details.getLogin();
-	}
+            // update password and persist changes
+            login.setPassword(encoder.encodePassword(password, null));
+            manager.merge(login);
+            EntityManagerHelper.commit(manager);
+            // reset state
+            password = null;
+            password2 = null;
+            currentPassword = null;
+        } catch (Exception ex) {
+            logger.error("Failed to persist the groups", ex);
+            FacesUtils.addErrorMessage("Die Änderungen konnten nicht gespeichert werden");
+        } finally {
+            manager = EntityManagerHelper.close(manager);
+        }
+    }
 
-	public SystemUser getUser() {
-		if (!isAuthenticated()) {
-			return null;
-		}
-		return getLogin().getSystemUser();
-	}
+    // ---------------------------------
+    // Properties
+    // ---------------------------------
+    public Login getLogin() {
+        if (!isAuthenticated()) {
+            return null;
+        }
+        return FacesUtils.getPrincipal().getLogin();
+    }
 
-	public boolean isAuthenticated() {
-		SecurityContext context = SecurityContextHolder.getContext();
-		if (context instanceof SecurityContext) {
-			Authentication authentication = context.getAuthentication();
-			if (authentication instanceof AnonymousAuthenticationToken) {
-				return false;
-			}
-		}
-		return true;
-	}
+    public SystemUser getUser() {
+        if (!isAuthenticated()) {
+            return null;
+        }
+        return getLogin().getSystemUser();
+    }
 
-	// ---------------------------------
-	// Setters for the properties
-	// ---------------------------------
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public boolean isAuthenticated() {
+        SecurityContext context = SecurityContextHolder.getContext();
+        if (context instanceof SecurityContext) {
+            Authentication authentication = context.getAuthentication();
+            if (authentication instanceof AnonymousAuthenticationToken) {
+                return false;
+            }
+        }
+        return true;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    // ---------------------------------
+    // Setters for the properties
+    // ---------------------------------
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public void setPassword2(String password2) {
-		this.password2 = password2;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public void setCurrentPassword(String currentPassword) {
-		this.currentPassword = currentPassword;
-	}
+    public void setPassword2(String password2) {
+        this.password2 = password2;
+    }
 
-	// ---------------------------------
-	// Getters for the properties
-	// ---------------------------------
-	public String getUsername() {
-		return username;
-	}
+    public void setCurrentPassword(String currentPassword) {
+        this.currentPassword = currentPassword;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    // ---------------------------------
+    // Getters for the properties
+    // ---------------------------------
+    public String getUsername() {
+        return username;
+    }
 
-	public String getPassword2() {
-		return password2;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public String getCurrentPassword() {
-		return currentPassword;
-	}
+    public String getPassword2() {
+        return password2;
+    }
 
-	// ---------------------------------
-	// Private helpers
-	// ---------------------------------
-	private Authentication getAuthentication() {
-		return SecurityContextHolder.getContext().getAuthentication();
-	}
+    public String getCurrentPassword() {
+        return currentPassword;
+    }
 
-	private void redirectToPage(String page) throws IOException, ServletException {
-		FacesContext currentInstance = FacesContext.getCurrentInstance();
-		ExternalContext context = currentInstance.getExternalContext();
-		ServletRequest request = (ServletRequest) context.getRequest();
-		ServletResponse response = (ServletResponse) context.getResponse();
-		RequestDispatcher dispatcher = request.getRequestDispatcher(page);
-		dispatcher.forward(request, response);
-		currentInstance.responseComplete();
-	}
+    // ---------------------------------
+    // Private helpers
+    // ---------------------------------
+    private void redirectToPage(String page) throws IOException, ServletException {
+        FacesContext currentInstance = FacesContext.getCurrentInstance();
+        ExternalContext context = currentInstance.getExternalContext();
+        ServletRequest request = (ServletRequest) context.getRequest();
+        ServletResponse response = (ServletResponse) context.getResponse();
+        RequestDispatcher dispatcher = request.getRequestDispatcher(page);
+        dispatcher.forward(request, response);
+        currentInstance.responseComplete();
+    }
 }

@@ -13,6 +13,7 @@ import javax.persistence.EntityManager;
 import at.redcross.tacos.dbal.entity.Category;
 import at.redcross.tacos.dbal.entity.Info;
 import at.redcross.tacos.dbal.entity.Location;
+import at.redcross.tacos.dbal.entity.SystemUser;
 import at.redcross.tacos.dbal.helper.CategoryHelper;
 import at.redcross.tacos.dbal.helper.LocationHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
@@ -26,68 +27,66 @@ import at.redcross.tacos.web.reporting.ReportRenderer.ReportRenderParameters;
 
 public abstract class InfoOverviewBean extends BaseBean {
 
-	private static final long serialVersionUID = 6781733157974000763L;
+    private static final long serialVersionUID = 6781733157974000763L;
 
-	/** the id of the selected info entry */
-	private long infoId;
+    /** the id of the selected info entry */
+    private long infoId;
 
-	/** the available locations */
-	protected List<Location> locations;
-	protected List<Category> categories;
-	
-	/** filter by category */
-	protected String locationName = "*";
-	protected String categoryName = "*";
-	
-	/** filter by location*/
-	protected Location location;
-	protected List<SelectItem> locationItems;
-	
-	/** filter by category */
-	protected Category category;
-	protected List<SelectItem> categoryItems;
+    /** the available locations */
+    protected List<Location> locations;
+    protected List<Category> categories;
 
-	/** query result */
-	protected List<InfoDto> infos;
-	
-	/** filter by */
-	protected String shortName;
-	protected Date displayStartDate;
-	protected Date displayEndDate;
-	
+    /** filter by category */
+    protected String locationName = null;
+    protected String categoryName = "*";
 
-	// ---------------------------------
-	// Initialization
-	// ---------------------------------
-	@Override
-	protected void init() throws Exception {
-		EntityManager manager = null;
-		try {
-			manager = EntityManagerFactory.createEntityManager();
-			locations = LocationHelper.list(manager);
-			locationItems = SelectableItemHelper.convertToItems(locations);
-			categories = CategoryHelper.list(manager);
-			categoryItems = SelectableItemHelper.convertToItems(categories);
-			infos = getEntries(manager, getParamForQuery());
-		} finally {
-			manager = EntityManagerHelper.close(manager);
-		}
-	}
+    /** filter by location */
+    protected Location location;
+    protected List<SelectItem> locationItems;
 
-	// ---------------------------------
+    /** filter by category */
+    protected Category category;
+    protected List<SelectItem> categoryItems;
+
+    /** query result */
+    protected List<InfoDto> infos;
+
+    /** filter by */
+    protected String shortName;
+    protected Date displayStartDate;
+    protected Date displayEndDate;
+
+    // ---------------------------------
+    // Initialization
+    // ---------------------------------
+    @Override
+    protected void init() throws Exception {
+        EntityManager manager = null;
+        try {
+            manager = EntityManagerFactory.createEntityManager();
+            locations = LocationHelper.list(manager);
+            locationItems = SelectableItemHelper.convertToItems(locations);
+            categories = CategoryHelper.list(manager);
+            categoryItems = SelectableItemHelper.convertToItems(categories);
+            infos = getEntries(manager, getParamForQuery());
+            // initialize location and category
+            SystemUser systemUser = FacesUtils.getPrincipal().getLogin().getSystemUser();
+            locationName = systemUser.getLocation().getName();
+            category = getCategoryByName(categoryName);
+        } finally {
+            manager = EntityManagerHelper.close(manager);
+        }
+    }
+
+    // ---------------------------------
     // Actions
     // ---------------------------------
     public void filterChanged(ActionEvent event) {
         EntityManager manager = null;
         try {
-            // provide default value if category is null
-            if (category == null) {
-                category = getCategoryByName(categoryName);
-            }
             manager = EntityManagerFactory.createEntityManager();
             infos = getEntries(manager, getParamForQuery());
-        }
-        finally {
+        } finally {
             manager = EntityManagerHelper.close(manager);
         }
     }
@@ -97,28 +96,24 @@ public abstract class InfoOverviewBean extends BaseBean {
         try {
             manager = EntityManagerFactory.createEntityManager();
             infos = getEntries(manager, getParamForQuery());
-        }
-        finally {
+        } finally {
             manager = EntityManagerHelper.close(manager);
         }
     }
 
-	// ---------------------------------
-	// Business methods
-	// ---------------------------------
-	public void createPdfReport(ActionEvent event) {
-		try {
-			// define the parameters for the report
-			ReportRenderParameters params = getReportParams();
+    // ---------------------------------
+    // Business methods
+    // ---------------------------------
+    public void createPdfReport(ActionEvent event) {
+        try {
+            ReportRenderParameters params = getReportParams();
+            ReportRenderer.getInstance().renderReport(params);
+        } catch (Exception e) {
+            FacesUtils.addErrorMessage("Failed to create report");
+        }
+    }
 
-			// render the report
-			ReportRenderer.getInstance().renderReport(params);
-		} catch (Exception e) {
-			FacesUtils.addErrorMessage("Failed to create report");
-		}
-	}
-	
-	public void markToDelete(ActionEvent event) {
+    public void markToDelete(ActionEvent event) {
         EntityManager manager = null;
         try {
             manager = EntityManagerFactory.createEntityManager();
@@ -133,87 +128,81 @@ public abstract class InfoOverviewBean extends BaseBean {
                 iter.remove();
             }
             EntityManagerHelper.commit(manager);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             FacesUtils.addErrorMessage("Der Info-Eintrag konnte nicht gelöscht werden");
-        }
-        finally {
+        } finally {
             manager = EntityManagerHelper.close(manager);
         }
     }
 
-	/** Loads the info entries using the given filter parameters */
-	protected abstract List<InfoDto> getEntries(EntityManager manager, InfoQueryParam param);
+    /** Loads the info entries using the given filter parameters */
+    protected abstract List<InfoDto> getEntries(EntityManager manager, InfoQueryParam param);
 
-	/** Returns the parameters for the report generation */
-	protected abstract ReportRenderParameters getReportParams();
-	
-	// ---------------------------------
-	// Helper methods
-	// ---------------------------------
-	protected InfoQueryParam getParamForQuery() {
+    /** Returns the parameters for the report generation */
+    protected abstract ReportRenderParameters getReportParams();
+
+    // ---------------------------------
+    // Helper methods
+    // ---------------------------------
+    protected InfoQueryParam getParamForQuery() {
         InfoQueryParam param = new InfoQueryParam();
         param.location = getLocationByName(locationName);
         param.category = category;
         return param;
     }
-	
-	protected Location getLocationByName(String locationName) {
-		if (locationName == null || "*".equals(locationName)) {
-			return null;
-		}
-		for (Location location : locations) {
-			if (location.getName().equals(locationName)) {
-				return location;
-			}
-		}
-		return null;
-	}
-	
-	protected Category getCategoryByName(String categoryName) {
-		if (categoryName == null || "*".equals(categoryName)) {
-			return null;
-		}
-		for (Category category : categories) {
-			if (category.getName().equals(categoryName)) {
-				return category;
-			}
-		}
-		return null;
-	}	
-	
 
-	// ---------------------------------
-	// Setters for the properties
-	// ---------------------------------
-	public void setInfoId(long infoId) {
-		this.infoId = infoId;
-	}
+    protected Location getLocationByName(String locationName) {
+        for (Location location : locations) {
+            if (location.getName().equals(locationName)) {
+                return location;
+            }
+        }
+        return null;
+    }
 
-	public void setLocation(Location location) {
-		this.location = location;
-	}
-	
-	public void setCategory(Category category) {
-		this.category = category;
-	}
-	
-	public void setLocationName(String locationName) {
-		this.locationName = locationName;
-	}
-	
-	public void setCategoryName(String categoryName) {
-		this.categoryName = categoryName;
-	}
+    protected Category getCategoryByName(String categoryName) {
+        if (categoryName == null || "*".equals(categoryName)) {
+            return null;
+        }
+        for (Category category : categories) {
+            if (category.getName().equals(categoryName)) {
+                return category;
+            }
+        }
+        return null;
+    }
 
-	// ---------------------------------
-	// Getters for the properties
-	// ---------------------------------
-	public long getInfoId() {
-		return infoId;
-	}
-	
-	public InfoDto getInfo() {
+    // ---------------------------------
+    // Setters for the properties
+    // ---------------------------------
+    public void setInfoId(long infoId) {
+        this.infoId = infoId;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public void setLocationName(String locationName) {
+        this.locationName = locationName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    // ---------------------------------
+    // Getters for the properties
+    // ---------------------------------
+    public long getInfoId() {
+        return infoId;
+    }
+
+    public InfoDto getInfo() {
         for (InfoDto dto : infos) {
             if (dto.getEntity().getId() != infoId) {
                 continue;
@@ -223,43 +212,43 @@ public abstract class InfoOverviewBean extends BaseBean {
         return null;
     }
 
-	public Location getLocation() {
-		return location;
-	}
+    public Location getLocation() {
+        return location;
+    }
 
-	public List<InfoDto> getInfos() {
-		return infos;
-	}
+    public List<InfoDto> getInfos() {
+        return infos;
+    }
 
-	public List<SelectItem> getLocationItems() {
-		return locationItems;
-	}
-	
-	public List<SelectItem> getCategoryItems(){
-		return categoryItems;
-	}
-	
-	public List<Location> getLocations() {
-		return locations;
-	}
-	
-	public String getLocationName() {
-		return locationName;
-	}
-	
-	public String getShortName(){
-		return shortName;
-	}
-	
-	public Category getCategory() {
-		return category;
-	}
-	
-	public String getCategoryName() {
-		return categoryName;
-	}
-	
-	public List<Category> getCategories() {
-		return categories;
-	}
+    public List<SelectItem> getLocationItems() {
+        return locationItems;
+    }
+
+    public List<SelectItem> getCategoryItems() {
+        return categoryItems;
+    }
+
+    public List<Location> getLocations() {
+        return locations;
+    }
+
+    public String getLocationName() {
+        return locationName;
+    }
+
+    public String getShortName() {
+        return shortName;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
 }
