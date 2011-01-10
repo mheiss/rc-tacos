@@ -1,6 +1,6 @@
 <project name="TacosBuilder" default="build">
 	<property file="build.properties" />
-	
+
 	<!-- Basic initializsation -->
 	<target name="init">
 		<!-- Check required files -->
@@ -12,7 +12,7 @@
 		<fail unless="log.file" message="Please provide a log file for the application." />
 		<fail unless="jpa.file" message="Please provide a JPA file for the application." />
 		<fail unless="system.file" message="Please provide a system configuration file." />
-		
+
 		<!-- Common properties for the build script -->
 		<property name="project.name" value="tacos" />
 		<property name="tacos.web" value="at.redcross.tacos.web" />
@@ -21,51 +21,34 @@
 		<property name="tacos.logging" value="at.redcross.tacos.logging" />
 		<property name="tacos.builder" value="at.redcross.tacos.build" />
 		<property name="builder.dir" value="${base.dir}/${tacos.builder}/builder" />
-		
+
 		<!-- Configuration files needed for the application -->
 		<property name="config.system" value="${base.dir}/${tacos.builder}/config/system.properties" />
 		<property name="config.jpa" value="${base.dir}/${tacos.builder}/config/persistence.xml" />
 		<property name="config.log4j" value="${base.dir}/${tacos.builder}/config/log4j.properties" />
 	</target>
-	
+
 	<!-- cleanup the builder -->
 	<target name="cleanup" depends="init">
 		<echo message="Cleaning up the builder" />
 		<delete dir="${builder.dir}" failonerror="false" />
 	</target>
-	
+
 	<!-- Performs a clean rebuild -->
 	<target name="build" depends="cleanup,setup-classpath">
-		<echo message="Building application" />
-		<mkdir dir="${builder.dir}/classes" />
-		<mkdir dir="${builder.dir}/libs" />
+		<!-- Prepare the builder -->
+		<antcall target="doPrepare" />
 		
 		<!-- Compile the application -->
-		<javac destdir="${builder.dir}/classes">
-			<!-- external libs -->
-			<classpath refid="application.classpath" />
-			<classpath refid="tomcat.classpath" />
-			<!-- application source -->
-			<src path="${base.dir}/${tacos.dbal}/src" />
-			<src path="${base.dir}/${tacos.web}/src" />
-		</javac>
-		
+		<antcall target="doCompile" />
+
 		<!-- Copy all needed libraries -->
-		<copy todir="${builder.dir}/libs" preservelastmodified="true">
-			<path refid="application.classpath"/>
-		</copy>
-		
+		<antcall target="doCopyLibs" />
+
 		<!-- Create the war file -->
-		<war destfile="${builder.dir}/${project.name}.war" webxml="${base.dir}/${tacos.web}/WebContent/WEB-INF/web.xml">
-			<fileset dir="${base.dir}/${tacos.web}/WebContent" excludes="WEB-INF/lib/*.jar WEB-INF/classes/*" />
-			<lib dir="${builder.dir}/libs" includes="*.jar" />
-			<classes dir="${builder.dir}/classes" includes="*/**" />
-			<zipfileset file="${config.log4j}" prefix="WEB-INF/classes" /> 
-			<zipfileset file="${config.system}" prefix="WEB-INF/classes" /> 
-			<zipfileset file="${config.jpa}" prefix="WEB-INF/classes/META-INF" /> 
-		</war>
+		<antcall target="doCreateWar" />
 	</target>
-	
+
 	<!-- Define the application classpath -->
 	<target name="setup-classpath" depends="init">
 		<path id="application.classpath">
@@ -79,5 +62,42 @@
 				<include name="**/*.jar" />
 			</fileset>
 		</path>
+	</target>
+
+	<!-- prepare the builder and create the directories -->
+	<target name="doPrepare">
+		<mkdir dir="${builder.dir}/classes" />
+		<mkdir dir="${builder.dir}/libs" />
+	</target>
+
+	<!-- Internal helper target to compile the source -->
+	<target name="doCompile" unless="noCompile" depends="setup-classpath">
+		<javac destdir="${builder.dir}/classes">
+			<!-- external libs -->
+			<classpath refid="application.classpath" />
+			<classpath refid="tomcat.classpath" />
+			<!-- application source -->
+			<src path="${base.dir}/${tacos.dbal}/src" />
+			<src path="${base.dir}/${tacos.web}/src" />
+		</javac>
+	</target>
+
+	<!-- Internal helper target to copy the libraries -->
+	<target name="doCopyLibs" unless="noLib" depends="setup-classpath">
+		<copy todir="${builder.dir}/libs" preservelastmodified="true">
+			<path refid="application.classpath" />
+		</copy>
+	</target>
+
+	<!-- Internal helper target to create the war file -->
+	<target name="doCreateWar" unless="noWar" depends="setup-classpath">
+		<war destfile="${builder.dir}/${project.name}.war" webxml="${base.dir}/${tacos.web}/WebContent/WEB-INF/web.xml">
+			<fileset dir="${base.dir}/${tacos.web}/WebContent" excludes="WEB-INF/lib/*.jar WEB-INF/classes/*" />
+			<lib dir="${builder.dir}/libs" includes="*.jar" />
+			<classes dir="${builder.dir}/classes" includes="*/**" />
+			<zipfileset file="${config.log4j}" prefix="WEB-INF/classes" />
+			<zipfileset file="${config.system}" prefix="WEB-INF/classes" />
+			<zipfileset file="${config.jpa}" prefix="WEB-INF/classes/META-INF" />
+		</war>
 	</target>
 </project>
