@@ -27,11 +27,15 @@ public class WebPermissionBean extends WebPermissionManager implements Serializa
     // Principal requests
     // ---------------------------------
     public SystemUser getSystemUser() {
-        WebUserDetails principal = FacesUtils.getPrincipal();
+        WebUserDetails principal = getPrincipal();
         if (principal == null) {
             return null;
         }
         return principal.getLogin().getSystemUser();
+    }
+    
+    public WebUserDetails getPrincipal() {
+        return FacesUtils.getPrincipal();
     }
 
     // ---------------------------------
