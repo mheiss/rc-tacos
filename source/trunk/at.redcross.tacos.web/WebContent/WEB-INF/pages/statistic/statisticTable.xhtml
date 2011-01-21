@@ -5,9 +5,7 @@
 <ui:composition>
 	<rich:simpleTogglePanel id="statisticTable" label="Suchergebnis" bodyClass="defaultToggleBodyStyle" styleClass="defaultToggleStyle" switchType="server">
 		<h:panelGroup rendered="#{empty values}">
-			<div class="emptyBox italic">
-				<h:outputText value="Keine Einträge gefunden" />
-			</div>
+			<div class="emptyBox italic"><h:outputText value="Keine Einträge gefunden" /></div>
 		</h:panelGroup>
 		<rich:dataTable styleClass="defaultStyle" rendered="#{not empty values}" value="#{values}" var="groupedDto">
 			<f:facet name="header">
@@ -39,11 +37,11 @@
 				</rich:columnGroup>
 			</f:facet>
 
-			<rich:column styleClass="groupHeader" sortBy="#{groupedDto.group.entity.lastName}" colspan="8">
+			<rich:column styleClass="groupHeader" colspan="8">
 				<h:outputText value="#{groupedDto.group.entity.lastName} #{groupedDto.group.entity.firstName}" />
 			</rich:column>
 
-			<rich:subTable value="#{groupedDto.elements}" var="statisticDto">
+			<rich:subTable value="#{groupedDto.elements}" var="statisticDto" rendered="#{not empty groupedDto.elements}">
 				<rich:column>
 					<h:outputText value="#{statisticDto.entity.rosterEntry.plannedStartDateTime}">
 						<f:convertDateTime pattern="dd.MM.yyyy HH:mm" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
@@ -74,10 +72,10 @@
 					<h:outputText value="#{statisticDto.entity.rosterEntry.serviceType.name}" />
 				</rich:column>
 				<rich:column>
-					 <h:outputText value="#{statisticDto.entity.amount}" />
-					 <f:facet name="footer">
-					 	<h:outputText value="#{groupedDto.amount}" />
-					 </f:facet>
+					<h:outputText value="#{statisticDto.entity.amount}" />
+					<f:facet name="footer">
+						<h:outputText value="#{groupedDto.amount}" />
+					</f:facet>
 				</rich:column>
 			</rich:subTable>
 		</rich:dataTable>

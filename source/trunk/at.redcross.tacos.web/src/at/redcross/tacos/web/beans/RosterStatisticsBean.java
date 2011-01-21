@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -26,6 +27,7 @@ import at.redcross.tacos.dbal.helper.SystemUserHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.dbal.query.RosterQueryParam;
 import at.redcross.tacos.dbal.query.RosterStatisticQueryParam;
+import at.redcross.tacos.web.beans.dto.GenericDto;
 import at.redcross.tacos.web.beans.dto.RosterStatisticDto;
 import at.redcross.tacos.web.beans.dto.RosterStatisticEntry;
 import at.redcross.tacos.web.faces.FacesUtils;
@@ -100,6 +102,24 @@ public class RosterStatisticsBean extends PagingBean {
                 }
                 rosterEntries.add(dto);
             }
+            // filter empty entries out of the list
+            Iterator<RosterStatisticDto> sIter = rosterEntries.iterator();
+            while (sIter.hasNext()) {
+                RosterStatisticDto next = sIter.next();
+                // remove if no amount at all
+                if (next.getAmount() == 0) {
+                    sIter.remove();
+                    continue;
+                }
+                // remove single entries without amount
+                Iterator<GenericDto<RosterStatisticEntry>> eIter = next.getElements().iterator();
+                while (eIter.hasNext()) {
+                    RosterStatisticEntry entry = eIter.next().getEntity();
+                    if (entry.getAmount() == 0) {
+                        eIter.remove();
+                    }
+                }
+            }
         } catch (Exception e) {
             FacesUtils.addErrorMessage("Fehler beim Suchen der Dienstplaneinträge");
         } finally {
@@ -142,7 +162,7 @@ public class RosterStatisticsBean extends PagingBean {
     private RosterStatisticQueryParam initQueryParam() {
         RosterStatisticQueryParam queryParam = new RosterStatisticQueryParam();
         Calendar cal = Calendar.getInstance();
-        queryParam.month = cal.get(Calendar.MONTH);
+        queryParam.month = cal.get(Calendar.MONTH) + 1;
         queryParam.year = cal.get(Calendar.YEAR);
         queryParam.systemUser = FacesUtils.getPrincipal().getLogin().getSystemUser();
         return queryParam;
@@ -153,14 +173,17 @@ public class RosterStatisticsBean extends PagingBean {
         // the HQL query
         StringBuilder builder = new StringBuilder();
         builder.append(" FROM RosterEntry entry ");
+        builder.append(" LEFT JOIN FETCH entry.systemUser user");
         builder.append(" WHERE ");
         builder.append(" ( ");
-        builder.append("    ( ");
-        builder.append("        month(entry.plannedStartDateTime) = :month ");
-        builder.append("        OR  ");
-        builder.append("        month(entry.plannedEndDateTime) = :month ");
-        builder.append("    ) ");
-        builder.append("    AND ");
+        if (param.month > 0) {
+            builder.append("    ( ");
+            builder.append("        month(entry.plannedStartDateTime) = :month ");
+            builder.append("        OR  ");
+            builder.append("        month(entry.plannedEndDateTime) = :month ");
+            builder.append("    ) ");
+            builder.append("    AND ");
+        }
         builder.append("    ( ");
         builder.append("        year(entry.plannedStartDateTime) = :year ");
         builder.append("        AND  ");
@@ -180,10 +203,13 @@ public class RosterStatisticsBean extends PagingBean {
         if (param.serviceType != null) {
             builder.append(" AND entry.serviceType.id = :serviceTypeId");
         }
+        builder.append(" ORDER BY entry.systemUser.lastName");
 
         // set the parameters for the date range
         TypedQuery<RosterEntry> query = manager.createQuery(builder.toString(), RosterEntry.class);
-        query.setParameter("month", param.month);
+        if (param.month > 0) {
+            query.setParameter("month", param.month);
+        }
         query.setParameter("year", param.year);
 
         // filter by location of the entry
