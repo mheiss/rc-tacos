@@ -22,124 +22,130 @@ import at.redcross.tacos.web.beans.dto.EntryState;
 import at.redcross.tacos.web.beans.dto.GenericDto;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
+import at.redcross.tacos.web.security.WebPermissionListenerRegistry;
 
 @KeepAlive
 @ManagedBean(name = "securedResourceMaintenanceBean")
 public class SecuredResourceMaintenanceBean extends SecuredBean {
 
-	private static final long serialVersionUID = -8165438157429138118L;
+    private static final long serialVersionUID = -8165438157429138118L;
 
-	private final static Logger logger = LoggerFactory
-			.getLogger(SecuredResourceMaintenanceBean.class);
+    private final static Logger logger = LoggerFactory
+            .getLogger(SecuredResourceMaintenanceBean.class);
 
-	/** the available secured resources */
-	private List<GenericDto<SecuredResource>> resources;
+    /** the available secured resources */
+    private List<GenericDto<SecuredResource>> resources;
 
-	/** the id of the selected resources */
-	private long securedResourceId;
+    /** the id of the selected resources */
+    private long securedResourceId;
 
-	@Override
-	public void init() throws Exception {
-		super.init();
-		EntityManager manager = null;
-		try {
-			manager = EntityManagerFactory.createEntityManager();
-			resources = DtoHelper.fromList(SecuredResource.class, SecuredResourceHelper
-					.list(manager));
-		} finally {
-			manager = EntityManagerHelper.close(manager);
-		}
-	}
+    @Override
+    public void init() throws Exception {
+        super.init();
+        EntityManager manager = null;
+        try {
+            manager = EntityManagerFactory.createEntityManager();
+            resources = DtoHelper.fromList(SecuredResource.class, SecuredResourceHelper
+                    .list(manager));
+        } finally {
+            manager = EntityManagerHelper.close(manager);
+        }
+    }
 
-	// ---------------------------------
-	// Business methods
-	// ---------------------------------
-	public void removeSecuredResource(ActionEvent event) {
-		Iterator<GenericDto<SecuredResource>> iter = resources.iterator();
-		while (iter.hasNext()) {
-			GenericDto<SecuredResource> dto = iter.next();
-			SecuredResource securedResource = dto.getEntity();
-			if (securedResource.getId() != securedResourceId) {
-				continue;
-			}
-			if (dto.getState() == EntryState.NEW) {
-				iter.remove();
-			}
-			dto.setState(EntryState.DELETE);
-		}
-	}
+    // ---------------------------------
+    // Business methods
+    // ---------------------------------
+    public void removeSecuredResource(ActionEvent event) {
+        Iterator<GenericDto<SecuredResource>> iter = resources.iterator();
+        while (iter.hasNext()) {
+            GenericDto<SecuredResource> dto = iter.next();
+            SecuredResource securedResource = dto.getEntity();
+            if (securedResource.getId() != securedResourceId) {
+                continue;
+            }
+            if (dto.getState() == EntryState.NEW) {
+                iter.remove();
+            }
+            dto.setState(EntryState.DELETE);
+        }
+    }
 
-	public void unremoveSecuredResource(ActionEvent event) {
-		for (GenericDto<SecuredResource> dto : resources) {
-			SecuredResource securedResource = dto.getEntity();
-			if (securedResource.getId() != securedResourceId) {
-				continue;
-			}
-			dto.setState(EntryState.SYNC);
-		}
-	}
+    public void unremoveSecuredResource(ActionEvent event) {
+        for (GenericDto<SecuredResource> dto : resources) {
+            SecuredResource securedResource = dto.getEntity();
+            if (securedResource.getId() != securedResourceId) {
+                continue;
+            }
+            dto.setState(EntryState.SYNC);
+        }
+    }
 
-	public void addSecuredResource(ActionEvent event) {
-		GenericDto<SecuredResource> dto = new GenericDto<SecuredResource>(new SecuredResource());
-		dto.setState(EntryState.NEW);
-		resources.add(dto);
-	}
+    public void addSecuredResource(ActionEvent event) {
+        GenericDto<SecuredResource> dto = new GenericDto<SecuredResource>(new SecuredResource());
+        dto.setState(EntryState.NEW);
+        resources.add(dto);
+    }
 
-	public void saveSecuredResources() {
-		EntityManager manager = null;
-		try {
-			int errorCount = 0;
-			for (GenericDto<SecuredResource> dto : resources) {
-				// no validation for records that will be removed
-				if (dto.getState() == EntryState.DELETE) {
-					continue;
-				}
-				SecuredResource resource = dto.getEntity();
-				String access = resource.getAccess();
-				if (!isValidExpression(access)) {
-					FacesUtils.addErrorMessage("No valid access definition");
-					errorCount++;
-				}
-			}
-			// do commit the changes if we have no errors
-			if (errorCount > 0) {
-				return;
-			}
-			manager = EntityManagerFactory.createEntityManager();
-			DtoHelper.syncronize(manager, resources);
-			EntityManagerHelper.commit(manager);
-			DtoHelper.filter(resources);
-		} catch (Exception ex) {
-			logger.error("Failed to persist the secured resources", ex);
-			FacesUtils.addErrorMessage("Die Änderungen konnten nicht gespeichert werden");
-		} finally {
-			EntityManagerHelper.close(manager);
-		}
-	}
+    public void saveSecuredResources() {
+        EntityManager manager = null;
+        try {
+            int errorCount = 0;
+            for (GenericDto<SecuredResource> dto : resources) {
+                // no validation for records that will be removed
+                if (dto.getState() == EntryState.DELETE) {
+                    continue;
+                }
+                SecuredResource resource = dto.getEntity();
+                String access = resource.getAccess();
+                if (!isValidExpression(access)) {
+                    FacesUtils.addErrorMessage("No valid access definition");
+                    errorCount++;
+                }
+            }
+            // do not continue with invalid data
+            if (errorCount > 0) {
+                return;
+            }
 
-	public void validateSecuredResource(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-		String stringValue = (String) value;
-		if (isValidExpression(stringValue)) {
-			return;
-		}
-		throw new ValidatorException(FacesUtils.createErrorMessage("No valid access definition"));
-	}
+            // commit the changes
+            manager = EntityManagerFactory.createEntityManager();
+            DtoHelper.syncronize(manager, resources);
+            EntityManagerHelper.commit(manager);
+            DtoHelper.filter(resources);
 
-	// ---------------------------------
-	// Setters for the properties
-	// ---------------------------------
-	public void setSecuredResourceId(long securedResourceId) {
-		this.securedResourceId = securedResourceId;
-	}
+            // notify that the cache needs to be updated
+            WebPermissionListenerRegistry.getInstance().notifyInvalidateCache();
+        } catch (Exception ex) {
+            logger.error("Failed to persist the secured resources", ex);
+            FacesUtils.addErrorMessage("Die Änderungen konnten nicht gespeichert werden");
+        } finally {
+            EntityManagerHelper.close(manager);
+        }
+    }
 
-	// ---------------------------------
-	// Getters for the properties
-	// ---------------------------------
-	public long getSecuredResourceId() {
-		return securedResourceId;
-	}
+    public void validateSecuredResource(FacesContext context, UIComponent component, Object value) throws ValidatorException {
+        String stringValue = (String) value;
+        if (isValidExpression(stringValue)) {
+            return;
+        }
+        throw new ValidatorException(FacesUtils.createErrorMessage("No valid access definition"));
+    }
 
-	public List<GenericDto<SecuredResource>> getResources() {
-		return resources;
-	}
+    // ---------------------------------
+    // Setters for the properties
+    // ---------------------------------
+    public void setSecuredResourceId(long securedResourceId) {
+        this.securedResourceId = securedResourceId;
+    }
+
+    // ---------------------------------
+    // Getters for the properties
+    // ---------------------------------
+    public long getSecuredResourceId() {
+        return securedResourceId;
+    }
+
+    public List<GenericDto<SecuredResource>> getResources() {
+        return resources;
+    }
 }

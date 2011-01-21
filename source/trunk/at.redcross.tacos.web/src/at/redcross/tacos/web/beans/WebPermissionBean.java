@@ -2,26 +2,19 @@ package at.redcross.tacos.web.beans;
 
 import java.io.Serializable;
 
-import javax.annotation.PostConstruct;
+import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
-
-import org.ajax4jsf.model.KeepAlive;
 
 import at.redcross.tacos.dbal.entity.SystemUser;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.security.WebPermissionManager;
 import at.redcross.tacos.web.security.WebUserDetails;
 
-@KeepAlive
+@ApplicationScoped
 @ManagedBean(name = "permissionBean")
 public class WebPermissionBean extends WebPermissionManager implements Serializable {
 
     private static final long serialVersionUID = 1368029789717485124L;
-
-    @PostConstruct
-    protected void init() {
-        initManager();
-    }
 
     // ---------------------------------
     // Principal requests
@@ -33,7 +26,7 @@ public class WebPermissionBean extends WebPermissionManager implements Serializa
         }
         return principal.getLogin().getSystemUser();
     }
-    
+
     public WebUserDetails getPrincipal() {
         return FacesUtils.getPrincipal();
     }

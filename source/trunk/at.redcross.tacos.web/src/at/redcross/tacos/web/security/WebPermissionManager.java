@@ -1,5 +1,7 @@
 package at.redcross.tacos.web.security;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -28,7 +30,7 @@ import com.ocpsoft.pretty.PrettyContext;
 import com.ocpsoft.pretty.config.PrettyConfig;
 import com.ocpsoft.pretty.config.PrettyUrlMapping;
 
-public abstract class WebPermissionManager {
+public abstract class WebPermissionManager implements PropertyChangeListener {
 
     private final static Logger log = LoggerFactory.getLogger(WebPermissionBean.class);
 
@@ -41,17 +43,15 @@ public abstract class WebPermissionManager {
     /** parser for the action / resource expressions */
     private transient ExpressionParser parser;
 
-    /** Initializes the permission manager */
-    protected void initManager() {
-        EntityManager manager = null;
-        try {
-            manager = EntityManagerFactory.createEntityManager();
-            securedResources = SecuredResourceHelper.list(manager);
-            securedActions = SecuredActionHelper.list(manager);
-            parser = new SpelExpressionParser();
-        } finally {
-            manager = EntityManagerHelper.close(manager);
-        }
+    /** Creates a new manager instance */
+    public WebPermissionManager() {
+        initPermissions();
+        WebPermissionListenerRegistry.getInstance().addListener(this);
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        initPermissions();
     }
 
     // ---------------------------------
@@ -165,4 +165,18 @@ public abstract class WebPermissionManager {
         EvaluationContext ctx = new StandardEvaluationContext(root);
         return ExpressionUtils.evaluateAsBoolean(expression, ctx);
     }
+
+    /** Initializes the cache with the values from the database */
+    private void initPermissions() {
+        EntityManager manager = null;
+        try {
+            parser = new SpelExpressionParser();
+            manager = EntityManagerFactory.createEntityManager();
+            securedResources = SecuredResourceHelper.list(manager);
+            securedActions = SecuredActionHelper.list(manager);
+        } finally {
+            manager = EntityManagerHelper.close(manager);
+        }
+    }
+
 }
