@@ -9,26 +9,18 @@
 				<li class="left">
 					<h:outputLabel for="normal" value="Mitarbeiter" />
 					<div class="input">
-						<h:inputText value="#{bean.queryParam.userName}">
-							<a4j:support event="onkeypress" actionListener="#{bean.filterChanged}" reRender="userTab" />
-						</h:inputText>
+						<h:inputText value="#{bean.queryParam.userName}" />
 					</div>
 				</li>
 				<li class="right">
 					<h:outputLabel for="normal" value="Mitarbeiterstatus" />
 					<div class="input right">
 						<h:outputText value="Normal" styleClass="checkBoxLabel" />
-						<h:selectBooleanCheckbox id="normal" value="#{bean.queryParam.stateNormal}">
-							<a4j:support event="onclick" actionListener="#{bean.filterChanged}" reRender="userTab" />
-						</h:selectBooleanCheckbox>
+						<h:selectBooleanCheckbox id="normal" value="#{bean.queryParam.stateNormal}" />
 						<h:outputText value="Gesperrt" styleClass="checkBoxLabel" />
-						<h:selectBooleanCheckbox id="locked" value="#{bean.queryParam.stateLocked}">
-							<a4j:support event="onclick" actionListener="#{bean.filterChanged}" reRender="userTab" />
-						</h:selectBooleanCheckbox>
+						<h:selectBooleanCheckbox id="locked" value="#{bean.queryParam.stateLocked}" />
 						<h:outputText value="Gelöscht" styleClass="checkBoxLabel" />
-						<h:selectBooleanCheckbox id="delete" value="#{bean.queryParam.stateDelete}">
-							<a4j:support event="onclick" actionListener="#{bean.filterChanged}" reRender="userTab" />
-						</h:selectBooleanCheckbox>
+						<h:selectBooleanCheckbox id="delete" value="#{bean.queryParam.stateDelete}" />
 					</div>
 				</li>
 				<li class="left">
@@ -39,7 +31,6 @@
 							<f:selectItems value="#{bean.groups}" />
 							<f:validator validatorId="validator.selectableItem" />
 							<f:converter converterId="converter.selectableItem" />
-							<a4j:support event="onchange" reRender="userTab" actionListener="#{bean.filterChanged}" />
 						</rich:comboBox>
 					</div>
 				</li>
@@ -47,13 +38,9 @@
 					<h:outputLabel for="normal" value="Gruppieren" />
 					<div class="input right">
 						<h:outputText value="Kompetenz" styleClass="checkBoxLabel" />
-						<h:selectBooleanCheckbox id="competenceGrouping" value="#{bean.groupByCompetence}">
-							<a4j:support event="onclick" actionListener="#{bean.filterChanged}" reRender="page-content" />
-						</h:selectBooleanCheckbox>
+						<h:selectBooleanCheckbox id="competenceGrouping" value="#{bean.groupByCompetence}" />
 						<h:outputText value="Benutzergruppe" styleClass="checkBoxLabel" />
-						<h:selectBooleanCheckbox id="userGroupGrouping" value="#{bean.groupByUserGroup}">
-							<a4j:support event="onclick" actionListener="#{bean.filterChanged}" reRender="page-content" />
-						</h:selectBooleanCheckbox>
+						<h:selectBooleanCheckbox id="userGroupGrouping" value="#{bean.groupByUserGroup}" />
 					</div>
 				</li>
 				<li class="left">
@@ -64,7 +51,6 @@
 							<f:selectItems value="#{bean.competences}" />
 							<f:validator validatorId="validator.selectableItem" />
 							<f:converter converterId="converter.selectableItem" />
-							<a4j:support event="onchange" reRender="userTab" actionListener="#{bean.filterChanged}" />
 						</rich:comboBox>
 					</div>
 				</li>
