@@ -49,6 +49,12 @@ public class Car extends EntityImpl {
 
     @Column
     private Date registrationDate;
+    
+    @Column
+    private Date inspectionDate;
+    
+    @Column
+    private String licenceNumber;
 
     @EmbeddedComparison
     @OneToOne(optional = true, fetch = FetchType.EAGER)
@@ -126,11 +132,19 @@ public class Car extends EntityImpl {
         this.registrationDate = registrationDate;
     }
 
-    public CarDetail getDetail() {
-        return detail;
+    public void setDetail(CarDetail detail) {
+        this.detail = detail;
     }
+   
+	public void setInspectionDate(Date inspectionDate) {
+		this.inspectionDate = inspectionDate;
+	}
 
-    // ---------------------------------
+	public void setLicenceNumber(String licenceNumber) {
+		this.licenceNumber = licenceNumber;
+	}
+
+	// ---------------------------------
     // Getters for the properties
     // ---------------------------------
     public long getId() {
@@ -164,8 +178,16 @@ public class Car extends EntityImpl {
     public Date getRegistrationDate() {
         return registrationDate;
     }
-
-    public void setDetail(CarDetail detail) {
-        this.detail = detail;
+    
+    public CarDetail getDetail() {
+        return detail;
     }
+    
+    public Date getInspectionDate() {
+		return inspectionDate;
+	}
+    
+    public String getLicenceNumber() {
+		return licenceNumber;
+	}
 }

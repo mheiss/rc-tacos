@@ -1,0 +1,90 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich" xmlns:pretty="http://ocpsoft.com/prettyfaces"
+	xmlns:c="http://java.sun.com/jstl/core">
+<body>
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+	<ui:param name="htmlTitle" value="Fahrzeug warten" />
+	<ui:param name="section" value="info" />
+	<ui:param name="page" value="carCareEntryMaintenance" />
+
+	<ui:define name="navigation">
+		<ui:include src="navigation.xhtml" />
+	</ui:define>
+
+	<ui:define name="page-header">
+		<h:graphicImage library="images/32x32" name="vehicle.png" />
+		<h2 class="title"><h:outputText value="Fahrzeugwartung für Fahrzeug " /></h2>
+	</ui:define>
+
+	<ui:define name="page-toolbar">
+		<li>
+			<a4j:commandLink ajaxSingle="false" actionListener="#{carCareEntryMaintenanceBean.saveCarCareEntries}" reRender="carCareEntryMaintenance" title="Speichern">
+				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="save.png" />
+				<h:outputText styleClass="toolbarText" value="Änderungen speichern" />
+			</a4j:commandLink>
+		</li>
+		<li>
+			<a4j:commandLink actionListener="#{carCareEntryMaintenanceBean.addCarCareEntry}" reRender="carCareEntryMaintenance" title="Neuen Wartungseintrag anlegen">
+				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="add.png" />
+				<h:outputText styleClass="toolbarText" value="Wartungseintrag anlegen" />
+			</a4j:commandLink>
+		</li>
+	</ui:define>
+
+	<ui:define name="page-content">
+		<rich:messages id="carCareEntries" errorClass="errorMessage" />
+		<rich:panel rendered="#{empty carCareEntryMaintenanceBean.carCareEntries}" style="margin-top:10px;">
+			<h:outputText value="Keine Einträge gefunden" styleClass="italic" />
+		</rich:panel>
+		<rich:dataTable id="carCareEntryMaintenance" styleClass="defaultStyle" value="#{carCareEntryMaintenanceBean.carCareEntries}" var="dto" rowKeyVar="row"
+			onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
+			<rich:column styleClass="smallColumn">
+				<f:facet name="header">
+					<rich:spacer />
+				</f:facet>
+				<h:outputText value="#{row+1}" />
+			</rich:column>
+			<rich:column styleClass="smallColumn">
+				<f:facet name="header">
+					<h:outputText value="Status" />
+				</f:facet>
+				<h:graphicImage library="images/16x16" name="data_new.png" rendered="#{dto.state.name eq 'new'}" title="Sync" />
+				<h:graphicImage library="images/16x16" name="data.png" rendered="#{dto.state.name eq 'sync'}" title="Neu" />
+				<h:graphicImage library="images/16x16" name="data_delete.png" rendered="#{dto.state.name eq 'delete'}" title="Zu löschen" />	
+			</rich:column>
+			<rich:column sortBy="#{dto.entity.type}" styleClass="smallColumn">
+				<f:facet name="header">
+					<h:outputText value="Art" />
+				</f:facet>
+				<rich:inplaceInput value="#{dto.entity.type}" maxlength="5" layout="block" />
+			</rich:column>
+			<rich:column sortBy="#{dto.entity.status}" styleClass="mediumColumn">
+				<f:facet name="header">
+					<h:outputText value="Status" />
+				</f:facet>
+				<rich:inplaceInput value="#{dto.entity.status}" maxlength="30" layout="block" />
+			</rich:column>
+			<rich:column sortBy="#{dto.entity.description}">
+				<f:facet name="header">
+					<h:outputText value="Beschreibung der Wartungsarbeit" />
+				</f:facet>
+				<rich:inplaceInput value="#{dto.entity.description}" maxlength="255" layout="block" />
+			</rich:column>
+			<rich:column sortBy="#{dto.entity.doneFrom}">
+				<f:facet name="header">
+					<h:outputText value="Erledigt von" />
+				</f:facet>
+				<rich:inplaceInput value="#{dto.entity.doneFrom}" maxlength="30" layout="block" />
+			</rich:column>
+			<rich:column sortBy="#{dto.entity.executedOn}">
+				<f:facet name="header">
+					<h:outputText value="Erledigt am" />
+				</f:facet>
+				<rich:inplaceInput value="#{dto.entity.executedOn}" maxlength="30" layout="block" />
+			</rich:column>
+		</rich:dataTable>
+	</ui:define>	
+</ui:composition>
+</body>
+</html>

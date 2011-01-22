@@ -36,6 +36,7 @@ public class VehicleMaintenanceBean extends BaseBean {
 	public void init() throws Exception {
 		EntityManager manager = null;
 		try {
+			System.out.println("carId in der init der VehicleMaintenanceBean: " +carId);
 			manager = EntityManagerFactory.createEntityManager();
 			loadfromDatabase(manager, carId);
 			if (!FacesUtils.lookupBean(WebPermissionBean.class).isAuthorizedToEditVehicle()) {
@@ -101,6 +102,7 @@ public class VehicleMaintenanceBean extends BaseBean {
 	// Setters for the properties
 	// ---------------------------------
 	public void setCarId(long carId) {
+		System.out.println("in setCarId in der VehicleMaintenanceBean: " +carId);
 		this.carId = carId;
 	}
 
@@ -112,6 +114,7 @@ public class VehicleMaintenanceBean extends BaseBean {
 	}
 
 	public long getCarId() {
+		System.out.println("in getCarId in der VehicleMaintenanceBean: " +carId);
 		return carId;
 	}
 

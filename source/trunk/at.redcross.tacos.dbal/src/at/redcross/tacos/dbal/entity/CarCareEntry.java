@@ -39,12 +39,6 @@ public class CarCareEntry extends EntityImpl {
 	private String status;
 
 	@Column
-	private String responsible;
-
-	@Column
-	private Date executeUntil;
-
-	@Column
 	private String doneFrom;
 
 	@Column
@@ -111,14 +105,6 @@ public class CarCareEntry extends EntityImpl {
 		this.status = status;
 	}
 
-	public void setResponsible(String responsible) {
-		this.responsible = responsible;
-	}
-
-	public void setExecuteUntil(Date executeUntil) {
-		this.executeUntil = executeUntil;
-	}
-
 	public void setDoneFrom(String doneFrom) {
 		this.doneFrom = doneFrom;
 	}
@@ -148,14 +134,6 @@ public class CarCareEntry extends EntityImpl {
 
 	public String getStatus() {
 		return status;
-	}
-
-	public String getResponsible() {
-		return responsible;
-	}
-
-	public Date getExecuteUntil() {
-		return executeUntil;
 	}
 
 	public String getDoneFrom() {
