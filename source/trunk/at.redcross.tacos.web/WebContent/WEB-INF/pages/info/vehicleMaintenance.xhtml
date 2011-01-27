@@ -85,15 +85,8 @@
 				</div>
 			</li>
 			<li class="right">
-			<style type="text/css">
-	.special tr[id]{
-		display:none; 
-	}
-</style>
 				<h:outputLabel for="inspectionDate" value="§ 57a Fälligkeit" />
-					<div class="input">
-					
-					
+					<div class="input">					
 						<rich:calendar id="inspectionDate" value="#{vehicleMaintenanceBean.car.inspectionDate}" styleClass="special" enableManualInput="true" converterMessage="Bitte geben Sie ein gültiges § 57a Fälligkeitsdatum an" datePattern="MM_yyyy" locale="#{localeBean.locale}"
 							timeZone="#{localeBean.timeZone}" popup="true" showWeekDaysBar="false" showFooter="false" oncurrentdateselected="event.rich.component.selectDate(event.rich.date)">
 							<f:convertDateTime pattern="MM_yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />

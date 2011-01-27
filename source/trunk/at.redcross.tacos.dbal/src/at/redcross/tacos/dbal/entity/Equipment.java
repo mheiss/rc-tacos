@@ -8,15 +8,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.envers.Audited;
-
-import at.redcross.tacos.dbal.utils.EmbeddedComparison;
 
 @Entity
 @Audited
@@ -26,95 +23,92 @@ public class Equipment extends EntityImpl {
 	private static final long serialVersionUID = 9142841798539867173L;
 
 	@Id
-    @GeneratedValue
-    private long id;
+	@GeneratedValue
+	private long id;
 
-    @Column(nullable = false)
-    private String name;
+	@Column(nullable = false)
+	private String name;
 
-    @Column
-    private int inventoryNumber;
+	@Column
+	private int inventoryNumber;
 
-    @Column
-    private int actualNumber;
-    
-    @Column
-    private int theoreticalNumber;
-    
-    @Column (length = 1024)
-    private String notes;
-    
-    @Column
-    private Date expirationDate;
-    
-    
+	@Column
+	private int actualNumber;
 
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private Location location;
+	@Column
+	private int theoreticalNumber;
 
-    @Column
-    private boolean toDelete;
+	@Column(length = 1024)
+	private String notes;
 
-    @Column
-    private String type;
+	@Column
+	private Date expirationDate;
 
-    @Column
-    private Date registrationDate;
-    
-    @Column
-    private Date lastChangeDate;
-    
-    @Column
-    private Date lastInventoryDate;
-    
-    @Column
-    private Date inspectionDate;
-    
+	@ManyToOne(optional = false, fetch = FetchType.EAGER)
+	private Location location;
 
-    // ---------------------------------
-    // EntityImpl
-    // ---------------------------------
-    @Override
-    public Object getOid() {
-        return id;
-    }
+	@Column
+	private boolean toDelete;
 
-    @Override
-    public String getDisplayString() {
-        return name;
-    }
+	@Column
+	private String type;
 
-    // ---------------------------------
-    // Object related methods
-    // ---------------------------------
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this).append("id", id).toString();
-    }
+	@Column
+	private Date registrationDate;
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder().append(id).hashCode();
-    }
+	@Column
+	private Date lastChangeDate;
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        if (obj.getClass() != getClass()) {
-            return false;
-        }
-        Equipment rhs = (Equipment) obj;
-        return new EqualsBuilder().append(id, rhs.id).isEquals();
-    }
-    
-    // ---------------------------------
-    // Setters for the properties
-    // ---------------------------------
+	@Column
+	private Date lastInventoryDate;
+
+	@Column
+	private Date inspectionDate;
+
+	// ---------------------------------
+	// EntityImpl
+	// ---------------------------------
+	@Override
+	public Object getOid() {
+		return id;
+	}
+
+	@Override
+	public String getDisplayString() {
+		return name;
+	}
+
+	// ---------------------------------
+	// Object related methods
+	// ---------------------------------
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).append("id", id).toString();
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().append(id).hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
+		if (obj.getClass() != getClass()) {
+			return false;
+		}
+		Equipment rhs = (Equipment) obj;
+		return new EqualsBuilder().append(id, rhs.id).isEquals();
+	}
+
+	// ---------------------------------
+	// Setters for the properties
+	// ---------------------------------
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -166,10 +160,10 @@ public class Equipment extends EntityImpl {
 	public void setInspectionDate(Date inspectionDate) {
 		this.inspectionDate = inspectionDate;
 	}
-	
+
 	// ---------------------------------
-    // Getters for the properties
-    // ---------------------------------
+	// Getters for the properties
+	// ---------------------------------
 	public String getName() {
 		return name;
 	}

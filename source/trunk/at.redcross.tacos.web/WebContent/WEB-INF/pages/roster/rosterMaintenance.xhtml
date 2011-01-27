@@ -173,12 +173,10 @@
 		</fieldset>
 		<fieldset class="defaultStyle">
 			<legend><h:outputText value="Anmerkungen" /></legend> 
-			<a4j:outputPanel ajaxRendered="true" id="editorObserver">
-				<p><h:outputText value="#{rosterMaintenanceBean.currentDescLength}/#{rosterMaintenanceBean.maxDescLength} Zeichen" styleClass="italic" /></p>
-			</a4j:outputPanel>
-			<rich:editor id="editor" value="#{rosterMaintenanceBean.rosterEntry.notes}" theme="simple" oninit="smartEditor()" autoResize="true" language="de">
-				<a4j:support event="onchange" reRender="editorObserver" ajaxSingle="true" />				
-			</rich:editor>
+			<rich:editor id="editor" value="#{rosterMaintenanceBean.rosterEntry.notes}" theme="simple" oninit="smartEditor()" autoResize="true" language="de"
+				onsetup="limitCharsSetup(ed,event,'characterLimitInfo',#{rosterMaintenanceBean.maxDescLength});" 
+				onchange="limitChars(inst,'characterLimitInfo',#{rosterMaintenanceBean.maxDescLength});" />
+			<span id="characterLimitInfo" class="hint"> <h:outputText value="Bitte beachten sie das Limit von #{rosterMaintenanceBean.maxDescLength} Zeichen." /> </span>
 		</fieldset>
 		
 		<fieldset class="defaultStyle last">
