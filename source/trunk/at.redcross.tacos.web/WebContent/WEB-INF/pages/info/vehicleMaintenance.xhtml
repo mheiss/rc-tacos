@@ -117,7 +117,11 @@
 	
 		<fieldset class="defaultStyle">
 			<legend> <h:outputText value="Anmerkungen" /> </legend> 
-			<rich:editor value="#{vehicleMaintenanceBean.car.notes}" theme="simple" oninit="smartEditor()" autoResize="true" language="de" />
+			<rich:editor value="#{vehicleMaintenanceBean.car.notes}" theme="simple" autoResize="true" language="de"
+				oninit="smartEditor()"
+				onsetup="limitCharsSetup(ed,event,'characterLimitInfo',#{vehicleMaintenanceBean.maxDescLength});" 
+				onchange="limitChars(inst,'characterLimitInfo',#{vehicleMaintenanceBean.maxDescLength});" />
+			<span id="characterLimitInfo" class="hint"> <h:outputText value="Bitte beachten sie das Limit von #{vehicleMaintenanceBean.maxDescLength} Zeichen." /> </span>
 		</fieldset>
 
 		<fieldset class="defaultStyle last">

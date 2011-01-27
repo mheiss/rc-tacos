@@ -2,7 +2,6 @@ package at.redcross.tacos.web.beans;
 
 import java.util.List;
 
-
 import javax.faces.bean.ManagedBean;
 import javax.faces.model.SelectItem;
 import javax.persistence.EntityManager;
@@ -13,6 +12,7 @@ import at.redcross.tacos.dbal.entity.Info;
 import at.redcross.tacos.dbal.helper.CategoryHelper;
 import at.redcross.tacos.dbal.helper.LocationHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
+import at.redcross.tacos.dbal.utils.EntityUtils;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.model.SelectableItemHelper;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
@@ -29,6 +29,9 @@ public class InfoMaintenanceBean extends BaseBean {
 	// the suggested values for the drop down boxes
 	private List<SelectItem> locationItems;
 	private List<SelectItem> categoryItems;
+	
+	// the maximum length of the information
+	private int maxDescLength = -1;
 
 	@Override
 	public void init() throws Exception {
@@ -42,6 +45,7 @@ public class InfoMaintenanceBean extends BaseBean {
 			}
 			locationItems = SelectableItemHelper.convertToItems(LocationHelper.list(manager));
 			categoryItems = SelectableItemHelper.convertToItems(CategoryHelper.list(manager));
+			maxDescLength = EntityUtils.getColumnLength(Info.class, "description");
 		} finally {
 			manager = EntityManagerHelper.close(manager);
 		}
@@ -50,7 +54,6 @@ public class InfoMaintenanceBean extends BaseBean {
 	// ---------------------------------
 	// Business methods
 	// ---------------------------------
-
 	public String persist() {
 		EntityManager manager = null;
 		try {
@@ -145,5 +148,8 @@ public class InfoMaintenanceBean extends BaseBean {
 	public Info getInfo() {
 		return info;
 	}
-
+    
+	public int getMaxDescLength() {
+		return maxDescLength;
+	}
 }

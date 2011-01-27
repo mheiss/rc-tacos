@@ -11,7 +11,6 @@ import javax.faces.model.SelectItem;
 import javax.persistence.EntityManager;
 
 import org.ajax4jsf.model.KeepAlive;
-import org.apache.commons.lang.StringUtils;
 
 import at.redcross.tacos.dbal.entity.RosterEntry;
 import at.redcross.tacos.dbal.helper.AssignmentHelper;
@@ -22,8 +21,8 @@ import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.dbal.utils.EntityUtils;
 import at.redcross.tacos.web.beans.dto.RosterDto;
 import at.redcross.tacos.web.faces.FacesUtils;
-import at.redcross.tacos.web.model.SelectableItemHelper;
 import at.redcross.tacos.web.model.SelectableItem;
+import at.redcross.tacos.web.model.SelectableItemHelper;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
 import at.redcross.tacos.web.utils.TacosDateUtils;
 
@@ -182,10 +181,6 @@ public class RosterMaintenanceBean extends BaseBean {
 
 	public int getMaxDescLength() {
 		return maxDescLength;
-	}
-
-	public int getCurrentDescLength() {
-		return StringUtils.length(rosterEntry.getNotes());
 	}
 
 	public List<SelectItem> getUserItems() {

@@ -15,6 +15,7 @@ import at.redcross.tacos.dbal.entity.Notification;
 import at.redcross.tacos.dbal.helper.CarHelper;
 import at.redcross.tacos.dbal.helper.NotificationHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
+import at.redcross.tacos.dbal.utils.EntityUtils;
 import at.redcross.tacos.web.beans.dto.RosterDto;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.model.SelectableItemHelper;
@@ -33,12 +34,16 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
 
     // the notification of the day
     private Notification notification;
+    
+	// the maximum length of the notification
+	private int maxDescLength = -1;
 
     @Override
     protected void init(EntityManager manager) {
         super.init(manager);
         carItems = SelectableItemHelper.convertToItems(CarHelper.list(manager, false));
         notification = getNotification(manager, date);
+        maxDescLength = EntityUtils.getColumnLength(Notification.class, "notes");
     }
 
     // ---------------------------------
@@ -114,4 +119,8 @@ public class RosterCarAllocationOverviewBean extends RosterOverviewBean {
     public Notification getNotification() {
         return notification;
     }
+    
+	public int getMaxDescLength() {
+		return maxDescLength;
+	}
 }
