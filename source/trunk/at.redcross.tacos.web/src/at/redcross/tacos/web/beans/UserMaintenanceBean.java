@@ -1,7 +1,6 @@
 package at.redcross.tacos.web.beans;
 
 import java.util.ArrayList;
-
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -27,9 +26,10 @@ import at.redcross.tacos.dbal.helper.CompetenceHelper;
 import at.redcross.tacos.dbal.helper.GroupHelper;
 import at.redcross.tacos.dbal.helper.LocationHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
+import at.redcross.tacos.dbal.utils.EntityUtils;
 import at.redcross.tacos.web.faces.FacesUtils;
-import at.redcross.tacos.web.model.SelectableItemHelper;
 import at.redcross.tacos.web.model.SelectableItem;
+import at.redcross.tacos.web.model.SelectableItemHelper;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
 import at.redcross.tacos.web.utils.StringUtils;
 
@@ -38,187 +38,193 @@ import at.redcross.tacos.web.utils.StringUtils;
 @ManagedBean(name = "userMaintenanceBean")
 public class UserMaintenanceBean extends BaseBean {
 
-    private static final long serialVersionUID = -8941798819713448843L;
+	private static final long serialVersionUID = -8941798819713448843L;
 
-    /** the request parameter */
-    private long userId = -1;
+	/** the request parameter */
+	private long userId = -1;
 
-    /** the entities to manage */
-    private SystemUser systemUser;
-    private Login login;
+	/** the entities to manage */
+	private SystemUser systemUser;
+	private Login login;
 
-    /** the values for the drop down fields */
-    private List<SelectItem> genderItems;
-    private List<SelectItem> competenceItems;
-    private List<SelectItem> locationItems;
-    private List<SelectItem> groupItems;
+	/** the values for the drop down fields */
+	private List<SelectItem> genderItems;
+	private List<SelectItem> competenceItems;
+	private List<SelectItem> locationItems;
+	private List<SelectItem> groupItems;
 
-    /** passwords -> not directly attached to entity */
-    private String password;
-    private String password2;
+	/** passwords -> not directly attached to entity */
+	private String password;
+	private String password2;
 
-    /** selected values */
-    private Group selectedGroup;
-    private Competence selectedCompetence;
+	/** selected values */
+	private Group selectedGroup;
+	private Competence selectedCompetence;
 
-    private long selectedGroupId;
-    private long selectedCompetenceId;
+	private long selectedGroupId;
+	private long selectedCompetenceId;
 
-    /** Encode passwords using SHA */
-    private transient PasswordEncoder encoder;
+	/** Encode passwords using SHA */
+	private transient PasswordEncoder encoder;
 
-    @Override
-    public void init() throws Exception {
-        EntityManager manager = null;
-        try {
-            manager = EntityManagerFactory.createEntityManager();
-            loadfromDatabase(manager, userId);
-            if (!FacesUtils.lookupBean(WebPermissionBean.class).isAuthorizedToEditUser()) {
-                FacesUtils.redirectAccessDenied("Entry '" + systemUser + "' cannot be edited");
-                return;
-            }
-            competenceItems = SelectableItemHelper.convertToItems(CompetenceHelper.list(manager));
-            locationItems = SelectableItemHelper.convertToItems(LocationHelper.list(manager));
-            groupItems = SelectableItemHelper.convertToItems(GroupHelper.list(manager));
-            genderItems = new ArrayList<SelectItem>();
-            genderItems.add(new SelectableItem("männlich", Gender.MALE).getItem());
-            genderItems.add(new SelectableItem("weiblich", Gender.FEMALE).getItem());
-            genderItems.add(new SelectableItem("unbekannt", Gender.UNKNOWN).getItem());
-            encoder = new ShaPasswordEncoder(256);
-            // filter duplicate elements
-            filterDuplicate(groupItems, systemUser.getGroups());
-            filterDuplicate(competenceItems, systemUser.getCompetences());
-        } finally {
-            manager = EntityManagerHelper.close(manager);
-        }
-    }
+	// the maximum length of the information
+	private int maxDescLength = -1;
 
-    // ---------------------------------
-    // Business methods
-    // ---------------------------------
+	@Override
+	public void init() throws Exception {
+		EntityManager manager = null;
+		try {
+			manager = EntityManagerFactory.createEntityManager();
+			loadfromDatabase(manager, userId);
+			if (!FacesUtils.lookupBean(WebPermissionBean.class).isAuthorizedToEditUser()) {
+				FacesUtils.redirectAccessDenied("Entry '" + systemUser + "' cannot be edited");
+				return;
+			}
+			competenceItems = SelectableItemHelper.convertToItems(CompetenceHelper.list(manager));
+			locationItems = SelectableItemHelper.convertToItems(LocationHelper.list(manager));
+			groupItems = SelectableItemHelper.convertToItems(GroupHelper.list(manager));
+			genderItems = new ArrayList<SelectItem>();
+			genderItems.add(new SelectableItem("männlich", Gender.MALE).getItem());
+			genderItems.add(new SelectableItem("weiblich", Gender.FEMALE).getItem());
+			genderItems.add(new SelectableItem("unbekannt", Gender.UNKNOWN).getItem());
+			encoder = new ShaPasswordEncoder(256);
+			// filter duplicate elements
+			filterDuplicate(groupItems, systemUser.getGroups());
+			filterDuplicate(competenceItems, systemUser.getCompetences());
 
-    public String persist() {
-        EntityManager manager = null;
-        try {
-            // update the password if required
-            password = StringUtils.saveString(password);
-            password2 = StringUtils.saveString(password2);
-            if (!password.isEmpty() && !password2.isEmpty()) {
-                login.setPassword(encoder.encodePassword(password, null));
-            }
-            manager = EntityManagerFactory.createEntityManager();
-            if (isNew()) {
-                // systemUser before login!
-                manager.persist(systemUser);
-                manager.persist(login);
+			// get the max length of the description
+			maxDescLength = EntityUtils.getColumnLength(SystemUser.class, "notes");
+		} finally {
+			manager = EntityManagerHelper.close(manager);
+		}
+	}
 
-            } else {
-                manager.merge(login);
-                manager.merge(systemUser);
-            }
-            EntityManagerHelper.commit(manager);
-            return FacesUtils.pretty("info-userOverview");
-        } catch (Exception ex) {
-            FacesUtils.addErrorMessage("Der Mitarbeitereintrag konnte nicht gespeichert werden");
-            return null;
-        } finally {
-            manager = EntityManagerHelper.close(manager);
-        }
-    }
+	// ---------------------------------
+	// Business methods
+	// ---------------------------------
 
-    public String revert() {
-        EntityManager manager = null;
-        try {
-            manager = EntityManagerFactory.createEntityManager();
-            loadfromDatabase(manager, systemUser.getId());
-            return FacesUtils.pretty("info-userEditMaintenance");
-        } catch (Exception ex) {
-            FacesUtils.addErrorMessage("Der Mitarbeitereintrag konnte nicht zurückgesetzt werden");
-            return null;
-        } finally {
-            manager = EntityManagerHelper.close(manager);
-        }
-    }
+	public String persist() {
+		EntityManager manager = null;
+		try {
+			// update the password if required
+			password = StringUtils.saveString(password);
+			password2 = StringUtils.saveString(password2);
+			if (!password.isEmpty() && !password2.isEmpty()) {
+				login.setPassword(encoder.encodePassword(password, null));
+			}
+			manager = EntityManagerFactory.createEntityManager();
+			if (isNew()) {
+				// systemUser before login!
+				manager.persist(systemUser);
+				manager.persist(login);
 
-    public void addGroup(ActionEvent event) {
-        // silently ignore invalid requests
-        if (selectedGroup == null) {
-            return;
-        }
-        List<Group> groups = systemUser.getGroups();
-        if (!groups.contains(selectedGroup)) {
-            groups.add(selectedGroup);
-        }
-        filterDuplicate(groupItems, systemUser.getGroups());
-        selectedGroup = null;
-    }
+			} else {
+				manager.merge(login);
+				manager.merge(systemUser);
+			}
+			EntityManagerHelper.commit(manager);
+			return FacesUtils.pretty("info-userOverview");
+		} catch (Exception ex) {
+			FacesUtils.addErrorMessage("Der Mitarbeitereintrag konnte nicht gespeichert werden");
+			return null;
+		} finally {
+			manager = EntityManagerHelper.close(manager);
+		}
+	}
 
-    public void addCompetence(ActionEvent event) {
-        // silently ignore invalid requests
-        if (selectedCompetence == null) {
-            return;
-        }
-        List<Competence> competences = systemUser.getCompetences();
-        if (!competences.contains(selectedCompetence)) {
-            competences.add(selectedCompetence);
-        }
-        filterDuplicate(competenceItems, systemUser.getCompetences());
-        selectedCompetence = null;
-    }
+	public String revert() {
+		EntityManager manager = null;
+		try {
+			manager = EntityManagerFactory.createEntityManager();
+			loadfromDatabase(manager, systemUser.getId());
+			return FacesUtils.pretty("info-userEditMaintenance");
+		} catch (Exception ex) {
+			FacesUtils.addErrorMessage("Der Mitarbeitereintrag konnte nicht zurückgesetzt werden");
+			return null;
+		} finally {
+			manager = EntityManagerHelper.close(manager);
+		}
+	}
 
-    public void removeGroup(ActionEvent event) {
-        Iterator<Group> groupIter = systemUser.getGroups().iterator();
-        while (groupIter.hasNext()) {
-            Group group = groupIter.next();
-            if (group.getId() == selectedGroupId) {
-                groupIter.remove();
-                groupItems.add(new SelectableItem(group).getItem());
-            }
-        }
-    }
+	public void addGroup(ActionEvent event) {
+		// silently ignore invalid requests
+		if (selectedGroup == null) {
+			return;
+		}
+		List<Group> groups = systemUser.getGroups();
+		if (!groups.contains(selectedGroup)) {
+			groups.add(selectedGroup);
+		}
+		filterDuplicate(groupItems, systemUser.getGroups());
+		selectedGroup = null;
+	}
 
-    public void removeCompetence(ActionEvent event) {
-        Iterator<Competence> comptIter = systemUser.getCompetences().iterator();
-        while (comptIter.hasNext()) {
-            Competence competence = comptIter.next();
-            if (competence.getId() == selectedCompetenceId) {
-                comptIter.remove();
-                competenceItems.add(new SelectableItem(competence).getItem());
-            }
-        }
-    }
+	public void addCompetence(ActionEvent event) {
+		// silently ignore invalid requests
+		if (selectedCompetence == null) {
+			return;
+		}
+		List<Competence> competences = systemUser.getCompetences();
+		if (!competences.contains(selectedCompetence)) {
+			competences.add(selectedCompetence);
+		}
+		filterDuplicate(competenceItems, systemUser.getCompetences());
+		selectedCompetence = null;
+	}
 
-    // ---------------------------------
-    // Helper methods
-    // ---------------------------------
-    private void loadfromDatabase(EntityManager manager, long id) {
-        systemUser = manager.find(SystemUser.class, id);
-        if (systemUser == null) {
-            userId = -1;
-            systemUser = new SystemUser();
-            systemUser.setAddress(new Address());
-            login = new Login();
-            systemUser.setLogin(login);
-            login.setSystemUser(systemUser);
-        }
-        login = systemUser.getLogin();
-    }
+	public void removeGroup(ActionEvent event) {
+		Iterator<Group> groupIter = systemUser.getGroups().iterator();
+		while (groupIter.hasNext()) {
+			Group group = groupIter.next();
+			if (group.getId() == selectedGroupId) {
+				groupIter.remove();
+				groupItems.add(new SelectableItem(group).getItem());
+			}
+		}
+	}
 
-    /** Removes all elements from the source list that are in the target list */
-    private void filterDuplicate(List<SelectItem> sourceList, Collection<? extends EntityImpl> targetList) {
-        Iterator<SelectItem> iter = sourceList.iterator();
-        while (iter.hasNext()) {
-            SelectableItem dropDown = (SelectableItem) iter.next().getValue();
-            EntityImpl impl = (EntityImpl) dropDown.getValue();
-            if (targetList.contains(impl)) {
-                iter.remove();
-            }
-        }
-    }
-    
-    /**
-	 * Returns whether or not the current authenticated user can edit (delete or change) a role
-	 * entry. The following restrictions are considered:
+	public void removeCompetence(ActionEvent event) {
+		Iterator<Competence> comptIter = systemUser.getCompetences().iterator();
+		while (comptIter.hasNext()) {
+			Competence competence = comptIter.next();
+			if (competence.getId() == selectedCompetenceId) {
+				comptIter.remove();
+				competenceItems.add(new SelectableItem(competence).getItem());
+			}
+		}
+	}
+
+	// ---------------------------------
+	// Helper methods
+	// ---------------------------------
+	private void loadfromDatabase(EntityManager manager, long id) {
+		systemUser = manager.find(SystemUser.class, id);
+		if (systemUser == null) {
+			userId = -1;
+			systemUser = new SystemUser();
+			systemUser.setAddress(new Address());
+			login = new Login();
+			systemUser.setLogin(login);
+			login.setSystemUser(systemUser);
+		}
+		login = systemUser.getLogin();
+	}
+
+	/** Removes all elements from the source list that are in the target list */
+	private void filterDuplicate(List<SelectItem> sourceList, Collection<? extends EntityImpl> targetList) {
+		Iterator<SelectItem> iter = sourceList.iterator();
+		while (iter.hasNext()) {
+			SelectableItem dropDown = (SelectableItem) iter.next().getValue();
+			EntityImpl impl = (EntityImpl) dropDown.getValue();
+			if (targetList.contains(impl)) {
+				iter.remove();
+			}
+		}
+	}
+
+	/**
+	 * Returns whether or not the current authenticated user can edit (delete or
+	 * change) a role entry. The following restrictions are considered:
 	 * <ul>
 	 * <li>Principal must have the permission to edit a role</li>
 	 * </ul>
@@ -231,10 +237,10 @@ public class UserMaintenanceBean extends BaseBean {
 		// edit denied
 		return false;
 	}
-	
+
 	/**
-	 * Returns whether or not the current authenticated user can edit (delete or change) a competence
-	 * The following restrictions are considered:
+	 * Returns whether or not the current authenticated user can edit (delete or
+	 * change) a competence The following restrictions are considered:
 	 * <ul>
 	 * <li>Principal must have the permission to edit a competence</li>
 	 * </ul>
@@ -248,85 +254,89 @@ public class UserMaintenanceBean extends BaseBean {
 		return false;
 	}
 
-    // ---------------------------------
-    // Setters for the properties
-    // ---------------------------------
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
+	// ---------------------------------
+	// Setters for the properties
+	// ---------------------------------
+	public void setUserId(long userId) {
+		this.userId = userId;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public void setPassword2(String password2) {
-        this.password2 = password2;
-    }
+	public void setPassword2(String password2) {
+		this.password2 = password2;
+	}
 
-    public void setSelectedGroup(Group selectedGroup) {
-        this.selectedGroup = selectedGroup;
-    }
+	public void setSelectedGroup(Group selectedGroup) {
+		this.selectedGroup = selectedGroup;
+	}
 
-    public void setSelectedCompetence(Competence selectedCompetence) {
-        this.selectedCompetence = selectedCompetence;
-    }
+	public void setSelectedCompetence(Competence selectedCompetence) {
+		this.selectedCompetence = selectedCompetence;
+	}
 
-    public void setSelectedCompetenceId(long selectedCompetenceId) {
-        this.selectedCompetenceId = selectedCompetenceId;
-    }
+	public void setSelectedCompetenceId(long selectedCompetenceId) {
+		this.selectedCompetenceId = selectedCompetenceId;
+	}
 
-    public void setSelectedGroupId(long selectedGroupId) {
-        this.selectedGroupId = selectedGroupId;
-    }
+	public void setSelectedGroupId(long selectedGroupId) {
+		this.selectedGroupId = selectedGroupId;
+	}
 
-    // ---------------------------------
-    // Getters for the properties
-    // ---------------------------------
-    public boolean isNew() {
-        return userId == -1;
-    }
+	// ---------------------------------
+	// Getters for the properties
+	// ---------------------------------
+	public boolean isNew() {
+		return userId == -1;
+	}
 
-    public long getUserId() {
-        return userId;
-    }
+	public long getUserId() {
+		return userId;
+	}
 
-    public List<SelectItem> getLocationItems() {
-        return locationItems;
-    }
+	public List<SelectItem> getLocationItems() {
+		return locationItems;
+	}
 
-    public List<SelectItem> getCompetenceItems() {
-        return competenceItems;
-    }
+	public List<SelectItem> getCompetenceItems() {
+		return competenceItems;
+	}
 
-    public List<SelectItem> getGenderItems() {
-        return genderItems;
-    }
+	public List<SelectItem> getGenderItems() {
+		return genderItems;
+	}
 
-    public List<SelectItem> getGroupItems() {
-        return groupItems;
-    }
+	public List<SelectItem> getGroupItems() {
+		return groupItems;
+	}
 
-    public Login getLogin() {
-        return login;
-    }
+	public Login getLogin() {
+		return login;
+	}
 
-    public SystemUser getSystemUser() {
-        return systemUser;
-    }
+	public SystemUser getSystemUser() {
+		return systemUser;
+	}
 
-    public Group getSelectedGroup() {
-        return selectedGroup;
-    }
+	public Group getSelectedGroup() {
+		return selectedGroup;
+	}
 
-    public Competence getSelectedCompetence() {
-        return selectedCompetence;
-    }
+	public Competence getSelectedCompetence() {
+		return selectedCompetence;
+	}
 
-    public String getPassword() {
-        return "";
-    }
+	public String getPassword() {
+		return "";
+	}
 
-    public String getPassword2() {
-        return "";
-    }
+	public String getPassword2() {
+		return "";
+	}
+
+	public int getMaxDescLength() {
+		return maxDescLength;
+	}
 }

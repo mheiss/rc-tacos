@@ -53,8 +53,8 @@ function limitChars(editor,infoDiv,limit) {
 	if(contentLength > limit) {
 		jQuery('#' + infoDiv).addClass('error');
 		jQuery('#' + infoDiv).removeClass('hint');
-		jQuery('#' + infoDiv).html('Es sind nicht mehr als '+limit+' Zeichen erlaubt!');
-		editor.getBody().innerHTML = content.substr(0,limit);
+		jQuery('#' + infoDiv).html('Es sind nicht mehr als '+limit+' Zeichen erlaubt! (Aktuell:'+contentLength+')');
+		editor.getBody().innerHTML = content.substr(0,limit-10);
 		return false;
 	} else {
 		jQuery('#' + infoDiv).addClass('hint');

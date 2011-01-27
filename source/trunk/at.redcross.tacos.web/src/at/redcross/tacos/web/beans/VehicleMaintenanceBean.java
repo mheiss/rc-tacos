@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import at.redcross.tacos.dbal.entity.Car;
 import at.redcross.tacos.dbal.helper.LocationHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
+import at.redcross.tacos.dbal.utils.EntityUtils;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.model.SelectableItemHelper;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
@@ -32,11 +33,14 @@ public class VehicleMaintenanceBean extends BaseBean {
 	/** the values for the drop down fields */
 	private List<SelectItem> locationItems;
 
+	// the maximum length of the information
+	private int maxDescLength = -1;
+
 	@Override
 	public void init() throws Exception {
 		EntityManager manager = null;
 		try {
-			System.out.println("carId in der init der VehicleMaintenanceBean: " +carId);
+			System.out.println("carId in der init der VehicleMaintenanceBean: " + carId);
 			manager = EntityManagerFactory.createEntityManager();
 			loadfromDatabase(manager, carId);
 			if (!FacesUtils.lookupBean(WebPermissionBean.class).isAuthorizedToEditVehicle()) {
@@ -44,6 +48,7 @@ public class VehicleMaintenanceBean extends BaseBean {
 				return;
 			}
 			locationItems = SelectableItemHelper.convertToItems(LocationHelper.list(manager));
+			maxDescLength = EntityUtils.getColumnLength(Car.class, "notes");
 		} finally {
 			manager = EntityManagerHelper.close(manager);
 		}
@@ -96,13 +101,12 @@ public class VehicleMaintenanceBean extends BaseBean {
 			car = new Car();
 		}
 	}
-	
 
 	// ---------------------------------
 	// Setters for the properties
 	// ---------------------------------
 	public void setCarId(long carId) {
-		System.out.println("in setCarId in der VehicleMaintenanceBean: " +carId);
+		System.out.println("in setCarId in der VehicleMaintenanceBean: " + carId);
 		this.carId = carId;
 	}
 
@@ -114,7 +118,7 @@ public class VehicleMaintenanceBean extends BaseBean {
 	}
 
 	public long getCarId() {
-		System.out.println("in getCarId in der VehicleMaintenanceBean: " +carId);
+		System.out.println("in getCarId in der VehicleMaintenanceBean: " + carId);
 		return carId;
 	}
 
@@ -124,5 +128,9 @@ public class VehicleMaintenanceBean extends BaseBean {
 
 	public Car getCar() {
 		return car;
+	}
+
+	public int getMaxDescLength() {
+		return maxDescLength;
 	}
 }
