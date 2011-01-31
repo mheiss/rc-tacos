@@ -170,6 +170,11 @@
 		<view-id>/WEB-INF/pages/info/carCareEntryMaintenance.faces</view-id>
 		<action onPostback="false">#{carCareEntryMaintenanceBean.prettyInit}</action>
 	</url-mapping>
+	<url-mapping id="info-equipmentMaintenance">
+		<pattern>/info/equipment</pattern>
+		<view-id>/WEB-INF/pages/info/equipmentMaintenance.faces</view-id>
+		<action onPostback="false">#{equipmentMaintenanceBean.prettyInit}</action>
+	</url-mapping>
 	<!-- ################ ADMINISTRATION ####################### -->
 	<url-mapping id="admin-home">
 		<pattern>/admin</pattern>
