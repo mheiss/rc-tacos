@@ -1,0 +1,134 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich" xmlns:pretty="http://ocpsoft.com/prettyfaces"
+	xmlns:c="http://java.sun.com/jstl/core">
+<body>
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+	<ui:param name="htmlTitle" value="Dienstverhältnisse pflegen" />
+	<ui:param name="section" value="admin" />
+	<ui:param name="page" value="equipmentMaintenance" />
+
+	<ui:define name="navigation">
+		<ui:include src="navigation.xhtml" />
+	</ui:define>
+
+	<ui:define name="page-header">
+		<h:graphicImage library="images/32x32" name="profile.png" />
+		<h2 class="title"><h:outputText value="Materialverwaltung" /></h2>
+	</ui:define>
+
+	<ui:define name="page-toolbar">
+		<li>
+			<a4j:commandLink ajaxSingle="false" actionListener="#{equipmentMaintenanceBean.saveEquipments}" reRender="equipmentTable" title="Speichern">
+				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="save.png" />
+				<h:outputText styleClass="toolbarText" value="Änderungen speichern" />
+			</a4j:commandLink>
+		</li>
+		<li>
+			<a4j:commandLink actionListener="#{equipmentMaintenanceBean.addEquipment}" reRender="equipmentTable" title="Neues Dienstverhältnis anlegen">
+				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="add.png" />
+				<h:outputText styleClass="toolbarText" value="Material anlegen" />
+			</a4j:commandLink>
+		</li>
+	</ui:define>
+
+	<ui:define name="page-content">
+		<rich:messages id="messages" errorClass="errorMessage" />
+		<rich:panel rendered="#{empty equipmentMaintenanceBean.equipments}" style="margin-top:10px;">
+			<h:outputText value="Keine Einträge gefunden" styleClass="italic" />
+		</rich:panel>
+		<rich:dataTable id="equipmentTable" styleClass="defaultStyle" value="#{equipmentMaintenanceBean.equipments}" var="dto" rowKeyVar="row"
+			onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
+			<rich:column styleClass="smallColumn">
+				<f:facet name="header">
+					<h:outputText value="" />
+				</f:facet>
+				<h:outputText value="#{row+1}" />
+			</rich:column>
+			<rich:column styleClass="smallColumn">
+				<f:facet name="header">
+					<h:outputText value="Status" />
+				</f:facet>
+				<h:graphicImage library="images/16x16" name="data_new.png" rendered="#{dto.state.name eq 'new'}" title="Sync" />
+				<h:graphicImage library="images/16x16" name="data.png" rendered="#{dto.state.name eq 'sync'}" title="Neu" />
+				<h:graphicImage library="images/16x16" name="data_delete.png" rendered="#{dto.state.name eq 'delete'}" title="Zu löschen" />	
+			</rich:column>
+			<rich:column sortBy="#{dto.entity.name}">
+				<f:facet name="header">
+					<h:outputText value="Artikelbezeichnung" />
+				</f:facet>
+				<rich:inplaceInput value="#{dto.entity.name}" maxlength="130" layout="block" />
+			</rich:column>
+			
+			<rich:column sortBy="#{dto.entity.inventoryNumber}" styleClass="smallColumn">
+				<f:facet name="header">
+					<h:outputText value="Lager Nr." />
+				</f:facet>
+				<rich:inplaceInput value="#{dto.entity.inventoryNumber}" />
+			</rich:column>
+			
+			<rich:column sortBy="#{dto.entity.actualNumber}" styleClass="smallColumn">
+				<f:facet name="header">
+					<h:outputText value="Stk. Ist" />
+				</f:facet>
+				<rich:inplaceInput value="#{dto.entity.actualNumber}" maxlength="5" layout="block" />
+			</rich:column>
+			
+			<rich:column sortBy="#{dto.entity.theoreticalNumber}" styleClass="smallColumn">
+				<f:facet name="header">
+					<h:outputText value="Stk. Soll" />
+				</f:facet>
+				<rich:inplaceInput value="#{dto.entity.theoreticalNumber}" maxlength="5" layout="block" />
+			</rich:column>
+			
+			<rich:column sortBy="#{dto.entity.notes}">
+				<f:facet name="header">
+					<h:outputText value="Anmerkungen" />
+				</f:facet>
+				<rich:inplaceInput value="#{dto.entity.notes}" maxlength="255" layout="block" />
+			</rich:column>
+			
+			<rich:column sortBy="#{dto.entity.expirationDate}">
+				<f:facet name="header">
+					<h:outputText value="Ablaufdatum" />
+				</f:facet>
+				<rich:calendar value="#{dto.entity.expirationDate}" styleClass="smallColumn" />
+			</rich:column>
+			
+			<rich:column sortBy="#{dto.entity.lastInventoryDate}">
+				<f:facet name="header">
+					<h:outputText value="Datum der letzten Inventur" />
+				</f:facet>
+				<rich:calendar value="#{dto.entity.lastInventoryDate}" styleClass="smallColumn" />
+			</rich:column>
+			
+			<rich:column styleClass="actionColumn">
+				<f:facet name="header">
+					<h:outputText value="Aktionen" />
+				</f:facet>
+				<a4j:commandLink rendered="#{dto.historyEnabled}" reRender="page-panels" oncomplete="#{rich:component('historyPanel')}.show(); return false;" title="Protokoll anzeigen">
+					<a4j:actionparam name="entryId" assignTo="#{historyBean.primaryKey}" value="#{dto.entity.id}" />
+					<a4j:actionparam name="entryClass" assignTo="#{historyBean.className}" value="#{dto.entity.class.name}" actionListener="#{historyBean.queryHistory}" />
+					<h:graphicImage library="images/16x16" name="info.png" />
+				</a4j:commandLink>
+				<a4j:commandLink reRender="equipmentTable" rendered="#{dto.state.name ne 'delete'}" immediate="true">
+					<a4j:actionparam name="equipmentId" assignTo="#{equipmentMaintenanceBean.equipmentId}" value="#{dto.entity.id}"
+						actionListener="#{equipmentMaintenanceBean.removeEquipment}" />
+					<h:graphicImage library="images/16x16" name="remove.png" />
+				</a4j:commandLink>
+				<a4j:commandLink reRender="equipmentTable" rendered="#{dto.state.name eq 'delete'}">
+					<a4j:actionparam name="equipmentId" assignTo="#{equipmentMaintenanceBean.equipmentId}" value="#{dto.entity.id}"
+						actionListener="#{equipmentMaintenanceBean.unremoveEquipment}" />
+					<h:graphicImage library="images/16x16" name="remove.png" />
+				</a4j:commandLink>
+			</rich:column>
+		</rich:dataTable>
+	</ui:define>
+	
+	<ui:define name="page-panels">
+		<ui:decorate template="/WEB-INF/templates/widgets/historyPanel.xhtml" />
+	</ui:define>
+	
+</ui:composition>
+</body>
+</html>

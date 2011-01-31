@@ -164,6 +164,10 @@ public class Equipment extends EntityImpl {
 	// ---------------------------------
 	// Getters for the properties
 	// ---------------------------------
+	public long getId() {
+		return id;
+	}
+	
 	public String getName() {
 		return name;
 	}
