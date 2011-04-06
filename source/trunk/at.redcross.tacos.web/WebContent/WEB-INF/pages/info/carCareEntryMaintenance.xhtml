@@ -14,7 +14,7 @@
 
 	<ui:define name="page-header">
 		<h:graphicImage library="images/32x32" name="vehicle.png" />
-		<h2 class="title"><h:outputText value="Fahrzeugwartung für Fahrzeug " /></h2>
+		<h2 class="title"><h:outputText value="Fahrzeugwartung für Fahrzeug '#{carCareEntryMaintenanceBean.car.name}'" /></h2>
 	</ui:define>
 
 	<ui:define name="page-toolbar">
@@ -81,7 +81,24 @@
 				<f:facet name="header">
 					<h:outputText value="Erledigt am" />
 				</f:facet>
-				<rich:calendar value="#{dto.entity.executedOn}" maxlength="30" layout="block" />
+				<rich:calendar id="date" value="#{dto.entity.executedOn}" styleClass="rich-calendar" defaultTime="#{localeBean.date}" datePattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" converterMessage="Bitte geben Sie ein gültiges Datum an.">
+				<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+							<rich:ajaxValidator event="onchanged" />
+							<rich:ajaxValidator event="oninputblur" />
+						</rich:calendar> 
+						<rich:message for="date" errorClass="error" />
+						
+						
+			</rich:column>
+			<rich:column styleClass="actionColumn">
+				<f:facet name="header">
+					<h:outputText value="Aktionen" />
+				</f:facet>
+				<a4j:commandLink reRender="carCareEntryMaintenance" rendered="#{dto.state.name ne 'delete'}" immediate="true">
+					<a4j:actionparam name="carCareEntryId" assignTo="#{carCareEntryMaintenanceBean.carCareEntryId}" value="#{dto.entity.id}"
+						actionListener="#{carCareEntryMaintenanceBean.removeCarCareEntry}" />
+					<h:graphicImage library="images/16x16" name="remove.png" />
+				</a4j:commandLink>
 			</rich:column>
 		</rich:dataTable>
 	</ui:define>	
