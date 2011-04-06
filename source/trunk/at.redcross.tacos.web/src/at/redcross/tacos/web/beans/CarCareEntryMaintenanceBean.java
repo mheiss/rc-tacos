@@ -11,6 +11,7 @@ import org.ajax4jsf.model.KeepAlive;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import at.redcross.tacos.dbal.entity.Car;
 import at.redcross.tacos.dbal.entity.CarCareEntry;
 import at.redcross.tacos.dbal.helper.CarCareEntryHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
@@ -36,17 +37,19 @@ public class CarCareEntryMaintenanceBean extends BaseBean {
 	
 	/** the id of the car - the request parameter */
 	private long carId;
+	
+	/** the entities to manage */
+	private Car car;
 
 	@Override
 	protected void init() throws Exception {
 		EntityManager manager = null;
 		try {
-			System.out.println("carId in der init der CarCareEntryMaintenanceBean" +carId);
 			manager = EntityManagerFactory.createEntityManager();
 			carCareEntries = DtoHelper.fromList(CarCareEntry.class, CarCareEntryHelper.list(manager,carId));
-			System.out.println("carCareEntries: " +carCareEntries.size());
+			manager = EntityManagerFactory.createEntityManager();
+			loadfromDatabase(manager, carId);
 		} finally {
-			System.out.println("close......--------------------------------");
 			manager = EntityManagerHelper.close(manager);
 		}
 	}
@@ -80,33 +83,35 @@ public class CarCareEntryMaintenanceBean extends BaseBean {
 	}
 
 	public void addCarCareEntry(ActionEvent event) {
-		System.out.println("add ......................................");
 		GenericDto<CarCareEntry> dto = new GenericDto<CarCareEntry>(new CarCareEntry());
 		dto.setState(EntryState.NEW);
-		//TODO dto.getEntity().setCar(car)
-		
+		dto.getEntity().setCar(car);
 		carCareEntries.add(dto);
 	}
 
-	public void saveCarCareEntrys() {
+	public void saveCarCareEntries() {
 		EntityManager manager = null;
 		try {
-			System.out.println("save 1");
 			manager = EntityManagerFactory.createEntityManager();
-			System.out.println("save 2");
 			DtoHelper.syncronize(manager, carCareEntries);
-			System.out.println("save 3");
 			EntityManagerHelper.commit(manager);
-			System.out.println("save 4");
 			DtoHelper.filter(carCareEntries);
-			System.out.println("save 5");
 		} catch (Exception ex) {
 			logger.error("Failed to persist carCareEntries", ex);
 			FacesUtils.addErrorMessage("Die Änderungen konnten nicht gespeichert werden");
 		} finally {
-			System.out.println("save 6");
 			EntityManagerHelper.close(manager);
-			System.out.println("save 7");
+		}
+	}
+	
+	// ---------------------------------
+	// Helper methods
+	// ---------------------------------
+	private void loadfromDatabase(EntityManager manager, long id) {
+		car = manager.find(Car.class, id);
+		if (car == null) {
+			carId = -1;
+			car = new Car();
 		}
 	}
 
@@ -118,7 +123,6 @@ public class CarCareEntryMaintenanceBean extends BaseBean {
 	}
 	
 	public void setCarId(long carId){
-		System.out.println("in setCarId der CarCareEntrymaintenanceBean: " +carId);
 		this.carId = carId;
 	}
 
@@ -134,7 +138,10 @@ public class CarCareEntryMaintenanceBean extends BaseBean {
 	}
 	
 	public long getCarId(){
-		System.out.println("in getCarId der CarCareEntrymaintenanceBean: " +carId);
 		return carId;
+	}
+	
+	public Car getCar() {
+		return car;
 	}
 }
