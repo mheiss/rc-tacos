@@ -1,10 +1,13 @@
 package at.redcross.tacos.web.beans;
 
+import java.util.ArrayList;
+
 import java.util.Iterator;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.event.ActionEvent;
+import javax.faces.model.SelectItem;
 import javax.persistence.EntityManager;
 
 import org.ajax4jsf.model.KeepAlive;
@@ -19,13 +22,14 @@ import at.redcross.tacos.web.beans.dto.DtoHelper;
 import at.redcross.tacos.web.beans.dto.EntryState;
 import at.redcross.tacos.web.beans.dto.GenericDto;
 import at.redcross.tacos.web.faces.FacesUtils;
+import at.redcross.tacos.web.model.SelectableItem;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
 
 @KeepAlive
 @ManagedBean(name = "carCareEntryMaintenanceBean")
 public class CarCareEntryMaintenanceBean extends BaseBean {
 
-	private static final long serialVersionUID = 7433415254202431575L;
+	private static final long serialVersionUID = -4905250662686238760L;
 
 	private final static Log logger = LogFactory.getLog(CarCareEntryMaintenanceBean.class);
 
@@ -41,14 +45,21 @@ public class CarCareEntryMaintenanceBean extends BaseBean {
 	/** the entities to manage */
 	private Car car;
 
+	// the suggested values for the drop down boxes
+	private List<SelectItem> statusItems;
+	
 	@Override
 	protected void init() throws Exception {
 		EntityManager manager = null;
 		try {
 			manager = EntityManagerFactory.createEntityManager();
 			carCareEntries = DtoHelper.fromList(CarCareEntry.class, CarCareEntryHelper.list(manager,carId));
-			manager = EntityManagerFactory.createEntityManager();
+			//manager = EntityManagerFactory.createEntityManager();
 			loadfromDatabase(manager, carId);
+			statusItems = new ArrayList<SelectItem>();
+			statusItems.add(new SelectableItem("offen", "offen").getItem());
+			statusItems.add(new SelectableItem("in Bearbeitung", "in Bearbeitung").getItem());
+			statusItems.add(new SelectableItem("abgeschlossen", "abgeschlossen").getItem());
 		} finally {
 			manager = EntityManagerHelper.close(manager);
 		}
@@ -143,5 +154,9 @@ public class CarCareEntryMaintenanceBean extends BaseBean {
 	
 	public Car getCar() {
 		return car;
+	}
+	
+	public List<SelectItem> getStatusItems() {
+		return statusItems;
 	}
 }

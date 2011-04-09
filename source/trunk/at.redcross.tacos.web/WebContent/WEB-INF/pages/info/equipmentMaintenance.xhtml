@@ -4,8 +4,8 @@
 	xmlns:c="http://java.sun.com/jstl/core">
 <body>
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
-	<ui:param name="htmlTitle" value="Dienstverhältnisse pflegen" />
-	<ui:param name="section" value="admin" />
+	<ui:param name="htmlTitle" value="Materialverwaltung" />
+	<ui:param name="section" value="info" />
 	<ui:param name="page" value="equipmentMaintenance" />
 
 	<ui:define name="navigation">
@@ -19,7 +19,7 @@
 
 	<ui:define name="page-toolbar">
 		<li>
-			<a4j:commandLink ajaxSingle="false" actionListener="#{equipmentMaintenanceBean.saveEquipments}" reRender="equipmentTable" title="Speichern">
+			<a4j:commandLink ajaxSingle="false" actionListener="#{equipmentMaintenanceBean.saveEquipmentEntries}" reRender="equipmentTable" title="Speichern">
 				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="save.png" />
 				<h:outputText styleClass="toolbarText" value="Änderungen speichern" />
 			</a4j:commandLink>
@@ -34,10 +34,10 @@
 
 	<ui:define name="page-content">
 		<rich:messages id="messages" errorClass="errorMessage" />
-		<rich:panel rendered="#{empty equipmentMaintenanceBean.equipments}" style="margin-top:10px;">
+		<rich:panel rendered="#{empty equipmentMaintenanceBean.equipmentEntries}" style="margin-top:10px;">
 			<h:outputText value="Keine Einträge gefunden" styleClass="italic" />
 		</rich:panel>
-		<rich:dataTable id="equipmentTable" styleClass="defaultStyle" value="#{equipmentMaintenanceBean.equipments}" var="dto" rowKeyVar="row"
+		<rich:dataTable id="equipmentTable" styleClass="defaultStyle" value="#{equipmentMaintenanceBean.equipmentEntries}" var="dto" rowKeyVar="row"
 			onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
 			<rich:column styleClass="smallColumn">
 				<f:facet name="header">
@@ -52,7 +52,7 @@
 				<h:graphicImage library="images/16x16" name="data_new.png" rendered="#{dto.state.name eq 'new'}" title="Sync" />
 				<h:graphicImage library="images/16x16" name="data.png" rendered="#{dto.state.name eq 'sync'}" title="Neu" />
 				<h:graphicImage library="images/16x16" name="data_delete.png" rendered="#{dto.state.name eq 'delete'}" title="Zu löschen" />	
-			</rich:column>
+			</rich:column>		
 			<rich:column sortBy="#{dto.entity.name}">
 				<f:facet name="header">
 					<h:outputText value="Artikelbezeichnung" />
@@ -64,7 +64,7 @@
 				<f:facet name="header">
 					<h:outputText value="Lager Nr." />
 				</f:facet>
-				<rich:inplaceInput value="#{dto.entity.inventoryNumber}" />
+				<rich:inplaceInput value="#{dto.entity.inventoryNumber}" maxlength="5" layout="block" />
 			</rich:column>
 			
 			<rich:column sortBy="#{dto.entity.actualNumber}" styleClass="smallColumn">
@@ -88,18 +88,31 @@
 				<rich:inplaceInput value="#{dto.entity.notes}" maxlength="255" layout="block" />
 			</rich:column>
 			
-			<rich:column sortBy="#{dto.entity.expirationDate}">
+			<rich:column sortBy="#{dto.entity.expirationDate}" styleClass="smallColumn">
 				<f:facet name="header">
 					<h:outputText value="Ablaufdatum" />
 				</f:facet>
-				<rich:calendar value="#{dto.entity.expirationDate}" styleClass="smallColumn" />
+				<rich:calendar inputSize="7" value="#{dto.entity.expirationDate}" styleClass="smallColumn"
+				defaultTime="#{localeBean.date}" datePattern="dd.MM.yyyy"
+				locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" converterMessage="Bitte geben Sie ein gültiges Datum an.">
+						<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+							<rich:ajaxValidator event="onchanged" />
+							<rich:ajaxValidator event="oninputblur" />
+						</rich:calendar> 
+						<rich:message for="date" errorClass="error" />	
 			</rich:column>
-			
-			<rich:column sortBy="#{dto.entity.lastInventoryDate}">
+			<rich:column sortBy="#{dto.entity.lastInventoryDate}" styleClass="smallColumn">
 				<f:facet name="header">
-					<h:outputText value="Datum der letzten Inventur" />
+					<h:outputText value="Letzte Inventur am" />
 				</f:facet>
-				<rich:calendar value="#{dto.entity.lastInventoryDate}" styleClass="smallColumn" />
+				<rich:calendar inputSize="7" value="#{dto.entity.lastInventoryDate}" styleClass="smallColumn" 
+				defaultTime="#{localeBean.date}" datePattern="dd.MM.yyyy"
+				locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" converterMessage="Bitte geben Sie ein gültiges Datum an.">
+						<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+							<rich:ajaxValidator event="onchanged" />
+							<rich:ajaxValidator event="oninputblur" />
+						</rich:calendar> 
+						<rich:message for="date" errorClass="error" />	
 			</rich:column>
 			
 			<rich:column styleClass="actionColumn">
@@ -124,11 +137,9 @@
 			</rich:column>
 		</rich:dataTable>
 	</ui:define>
-	
 	<ui:define name="page-panels">
 		<ui:decorate template="/WEB-INF/templates/widgets/historyPanel.xhtml" />
 	</ui:define>
-	
 </ui:composition>
 </body>
 </html>

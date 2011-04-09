@@ -4,7 +4,7 @@
 	xmlns:c="http://java.sun.com/jstl/core">
 <body>
 <ui:composition template="/WEB-INF/templates/layout.xhtml">
-	<ui:param name="htmlTitle" value="Fahrzeug warten" />
+	<ui:param name="htmlTitle" value="Fahrzeuge" />
 	<ui:param name="section" value="info" />
 	<ui:param name="page" value="carCareEntryMaintenance" />
 
@@ -57,13 +57,21 @@
 				<f:facet name="header">
 					<h:outputText value="Art" />
 				</f:facet>
-				<rich:inplaceInput value="#{dto.entity.type}" maxlength="5" layout="block" />
+				<rich:inplaceInput value="#{dto.entity.type}" maxlength="10" layout="block" />
 			</rich:column>
-			<rich:column sortBy="#{dto.entity.status}" styleClass="mediumColumn">
+			<rich:column sortBy="#{dto.entity.status}" styleClass="smallColumn">
 				<f:facet name="header">
 					<h:outputText value="Status" />
 				</f:facet>
-				<rich:inplaceInput value="#{dto.entity.status}" maxlength="30" layout="block" />
+				
+				<rich:comboBox width="110px" id="status" value="#{dto.entity.status}" enableManualInput="false" 
+						selectFirstOnUpdate="false" defaultLabel="Status">
+						<f:selectItems value="#{carCareEntryMaintenanceBean.statusItems}" />
+						<f:validator validatorId="validator.selectableItem" />
+						<f:converter converterId="converter.selectableItem" />
+						<rich:ajaxValidator event="onchange" />
+					</rich:comboBox> 
+					<rich:message for="status" errorClass="error" />
 			</rich:column>
 			<rich:column sortBy="#{dto.entity.description}">
 				<f:facet name="header">
@@ -75,33 +83,46 @@
 				<f:facet name="header">
 					<h:outputText value="Erledigt von" />
 				</f:facet>
-				<rich:inplaceInput value="#{dto.entity.doneFrom}" maxlength="30" layout="block" />
+				<rich:inplaceInput value="#{dto.entity.doneFrom}" maxlength="255" layout="block" />
 			</rich:column>
-			<rich:column sortBy="#{dto.entity.executedOn}">
+			<rich:column sortBy="#{dto.entity.executedOn}" styleClass="smallColumn">
 				<f:facet name="header">
-					<h:outputText value="Erledigt am" />
+					<h:outputText value="Erledigt am"/>
 				</f:facet>
-				<rich:calendar id="date" value="#{dto.entity.executedOn}" styleClass="rich-calendar" defaultTime="#{localeBean.date}" datePattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" converterMessage="Bitte geben Sie ein gültiges Datum an.">
+				<rich:calendar inputSize="7" id="date" value="#{dto.entity.executedOn}" 
+				styleClass="rich-calendar" defaultTime="#{localeBean.date}" datePattern="dd.MM.yyyy"
+				locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" converterMessage="Bitte geben Sie ein gültiges Datum an.">
 				<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 							<rich:ajaxValidator event="onchanged" />
 							<rich:ajaxValidator event="oninputblur" />
 						</rich:calendar> 
-						<rich:message for="date" errorClass="error" />
-						
-						
+						<rich:message for="date" errorClass="error" />						
 			</rich:column>
 			<rich:column styleClass="actionColumn">
 				<f:facet name="header">
 					<h:outputText value="Aktionen" />
 				</f:facet>
+				<a4j:commandLink rendered="#{dto.historyEnabled}" reRender="page-panels" oncomplete="#{rich:component('historyPanel')}.show(); return false;" title="Protokoll anzeigen">
+					<a4j:actionparam name="entryId" assignTo="#{historyBean.primaryKey}" value="#{dto.entity.id}" />
+					<a4j:actionparam name="entryClass" assignTo="#{historyBean.className}" value="#{dto.entity.class.name}" actionListener="#{historyBean.queryHistory}" />
+					<h:graphicImage library="images/16x16" name="info.png" />
+				</a4j:commandLink>
 				<a4j:commandLink reRender="carCareEntryMaintenance" rendered="#{dto.state.name ne 'delete'}" immediate="true">
 					<a4j:actionparam name="carCareEntryId" assignTo="#{carCareEntryMaintenanceBean.carCareEntryId}" value="#{dto.entity.id}"
 						actionListener="#{carCareEntryMaintenanceBean.removeCarCareEntry}" />
 					<h:graphicImage library="images/16x16" name="remove.png" />
 				</a4j:commandLink>
+				<a4j:commandLink reRender="carCareEntryMaintenance" rendered="#{dto.state.name eq 'delete'}">
+					<a4j:actionparam name="carCareEntryId" assignTo="#{carCareEntryMaintenanceBean.carCareEntryId}" value="#{dto.entity.id}"
+						actionListener="#{carCareEntryMaintenanceBean.unremoveCarCareEntry}" />
+					<h:graphicImage library="images/16x16" name="remove.png" />
+				</a4j:commandLink>
 			</rich:column>
 		</rich:dataTable>
 	</ui:define>	
+	<ui:define name="page-panels">
+		<ui:decorate template="/WEB-INF/templates/widgets/historyPanel.xhtml" />
+	</ui:define>
 </ui:composition>
 </body>
 </html>

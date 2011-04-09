@@ -2,12 +2,11 @@ package at.redcross.tacos.dbal.entity;
 
 import java.util.Date;
 
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -44,9 +43,6 @@ public class Equipment extends EntityImpl {
 	@Column
 	private Date expirationDate;
 
-	@ManyToOne(optional = false, fetch = FetchType.EAGER)
-	private Location location;
-
 	@Column
 	private boolean toDelete;
 
@@ -54,16 +50,8 @@ public class Equipment extends EntityImpl {
 	private String type;
 
 	@Column
-	private Date registrationDate;
-
-	@Column
-	private Date lastChangeDate;
-
-	@Column
 	private Date lastInventoryDate;
 
-	@Column
-	private Date inspectionDate;
 
 	// ---------------------------------
 	// EntityImpl
@@ -133,10 +121,6 @@ public class Equipment extends EntityImpl {
 		this.expirationDate = expirationDate;
 	}
 
-	public void setLocation(Location location) {
-		this.location = location;
-	}
-
 	public void setToDelete(boolean toDelete) {
 		this.toDelete = toDelete;
 	}
@@ -145,20 +129,8 @@ public class Equipment extends EntityImpl {
 		this.type = type;
 	}
 
-	public void setRegistrationDate(Date registrationDate) {
-		this.registrationDate = registrationDate;
-	}
-
-	public void setLastChangeDate(Date lastChangeDate) {
-		this.lastChangeDate = lastChangeDate;
-	}
-
 	public void setLastInventoryDate(Date lastInventoryDate) {
 		this.lastInventoryDate = lastInventoryDate;
-	}
-
-	public void setInspectionDate(Date inspectionDate) {
-		this.inspectionDate = inspectionDate;
 	}
 
 	// ---------------------------------
@@ -192,10 +164,6 @@ public class Equipment extends EntityImpl {
 		return expirationDate;
 	}
 
-	public Location getLocation() {
-		return location;
-	}
-
 	public boolean isToDelete() {
 		return toDelete;
 	}
@@ -204,19 +172,7 @@ public class Equipment extends EntityImpl {
 		return type;
 	}
 
-	public Date getRegistrationDate() {
-		return registrationDate;
-	}
-
-	public Date getLastChangeDate() {
-		return lastChangeDate;
-	}
-
 	public Date getLastInventoryDate() {
 		return lastInventoryDate;
-	}
-
-	public Date getInspectionDate() {
-		return inspectionDate;
 	}
 }
