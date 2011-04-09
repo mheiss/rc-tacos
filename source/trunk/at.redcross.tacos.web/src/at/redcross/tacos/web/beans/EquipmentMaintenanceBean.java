@@ -1,6 +1,7 @@
 package at.redcross.tacos.web.beans;
 
 import java.util.Iterator;
+
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -29,7 +30,7 @@ public class EquipmentMaintenanceBean extends BaseBean {
 	private final static Log logger = LogFactory.getLog(EquipmentMaintenanceBean.class);
 
 	/** the available equipments */
-	private List<GenericDto<Equipment>> equipments;
+	private List<GenericDto<Equipment>> equipmentEntries;
 
 	/** the id of the selected equipments */
 	private long equipmentId;
@@ -39,7 +40,7 @@ public class EquipmentMaintenanceBean extends BaseBean {
 		EntityManager manager = null;
 		try {
 			manager = EntityManagerFactory.createEntityManager();
-			equipments = DtoHelper.fromList(Equipment.class, EquipmentHelper.list(manager));
+			equipmentEntries = DtoHelper.fromList(Equipment.class, EquipmentHelper.list(manager));
 		} finally {
 			manager = EntityManagerHelper.close(manager);
 		}
@@ -50,7 +51,7 @@ public class EquipmentMaintenanceBean extends BaseBean {
 	// ---------------------------------
 
 	public void removeEquipment(ActionEvent event) {
-		Iterator<GenericDto<Equipment>> iter = equipments.iterator();
+		Iterator<GenericDto<Equipment>> iter = equipmentEntries.iterator();
 		while (iter.hasNext()) {
 			GenericDto<Equipment> dto = iter.next();
 			Equipment equipment = dto.getEntity();
@@ -66,7 +67,7 @@ public class EquipmentMaintenanceBean extends BaseBean {
 	}
 
 	public void unremoveEquipment(ActionEvent event) {
-		for (GenericDto<Equipment> dto : equipments) {
+		for (GenericDto<Equipment> dto : equipmentEntries) {
 			Equipment equipment = dto.getEntity();
 			if (equipment.getId() != equipmentId) {
 				continue;
@@ -78,23 +79,24 @@ public class EquipmentMaintenanceBean extends BaseBean {
 	public void addEquipment(ActionEvent event) {
 		GenericDto<Equipment> dto = new GenericDto<Equipment>(new Equipment());
 		dto.setState(EntryState.NEW);
-		equipments.add(dto);
+		equipmentEntries.add(dto);
 	}
 
-	public void saveEquipments() {
+	public void saveEquipmentEntries() {
 		EntityManager manager = null;
 		try {
 			manager = EntityManagerFactory.createEntityManager();
-			DtoHelper.syncronize(manager, equipments);
+			DtoHelper.syncronize(manager, equipmentEntries);
 			EntityManagerHelper.commit(manager);
-			DtoHelper.filter(equipments);
+			DtoHelper.filter(equipmentEntries);
 		} catch (Exception ex) {
-			logger.error("Failed to remove equipment '" + equipmentId + "'", ex);
+			logger.error("Failed to save equipment '" + equipmentId + "'", ex);
 			FacesUtils.addErrorMessage("Die Änderungen konnten nicht gespeichert werden");
 		} finally {
 			EntityManagerHelper.close(manager);
 		}
 	}
+	
 
 	// ---------------------------------
 	// Setters for the properties
@@ -110,7 +112,7 @@ public class EquipmentMaintenanceBean extends BaseBean {
 		return equipmentId;
 	}
 
-	public List<GenericDto<Equipment>> getEquipments() {
-		return equipments;
+	public List<GenericDto<Equipment>> getEquipmentEntries() {
+		return equipmentEntries;
 	}
 }
