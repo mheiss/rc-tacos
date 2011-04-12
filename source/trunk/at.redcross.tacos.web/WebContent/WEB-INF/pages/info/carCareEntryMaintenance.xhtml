@@ -90,9 +90,9 @@
 					<h:outputText value="Erledigt am"/>
 				</f:facet>
 				<rich:calendar inputSize="7" id="date" value="#{dto.entity.executedOn}" 
-				styleClass="rich-calendar" defaultTime="#{localeBean.date}" datePattern="dd.MM.yyyy"
-				locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" converterMessage="Bitte geben Sie ein gültiges Datum an.">
-				<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+						styleClass="rich-calendar" defaultTime="#{localeBean.date}" datePattern="dd.MM.yyyy"
+						locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" converterMessage="Bitte geben Sie ein gültiges Datum an.">
+						<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
 							<rich:ajaxValidator event="onchanged" />
 							<rich:ajaxValidator event="oninputblur" />
 						</rich:calendar> 
@@ -120,9 +120,11 @@
 			</rich:column>
 		</rich:dataTable>
 	</ui:define>	
+	
 	<ui:define name="page-panels">
 		<ui:decorate template="/WEB-INF/templates/widgets/historyPanel.xhtml" />
 	</ui:define>
+	
 </ui:composition>
 </body>
 </html>
