@@ -31,6 +31,8 @@
         history_changedby varchar(255) not null,
         history_createdat datetime null,
         history_createdby varchar(255) not null,
+        inspectiondate datetime null,
+        licencenumber varchar(255) null,
         name varchar(255) not null unique,
         notes varchar(1024) null,
         outoforder tinyint null,
@@ -50,9 +52,7 @@
         history_createdby varchar(255) not null,
         description varchar(255) null,
         donefrom varchar(255) null,
-        executeuntil datetime null,
         executedon datetime null,
-        responsible varchar(255) null,
         status varchar(255) null,
         type varchar(255) null,
         car_id numeric(19,0) null,
@@ -69,9 +69,7 @@
         history_createdby varchar(255) null,
         description varchar(255) null,
         donefrom varchar(255) null,
-        executeuntil datetime null,
         executedon datetime null,
-        responsible varchar(255) null,
         status varchar(255) null,
         type varchar(255) null,
         car_id numeric(19,0) null,
@@ -172,6 +170,8 @@
         history_changedby varchar(255) null,
         history_createdat datetime null,
         history_createdby varchar(255) null,
+        inspectiondate datetime null,
+        licencenumber varchar(255) null,
         name varchar(255) null,
         notes varchar(1024) null,
         outoforder tinyint null,
@@ -230,6 +230,44 @@
         description varchar(255) null,
         name varchar(255) null,
         shortname varchar(255) null,
+        primary key (id, REV)
+    );
+
+    create table Equipment (
+        id numeric(19,0) identity not null,
+        history_changedat datetime null,
+        history_changedby varchar(255) not null,
+        history_createdat datetime null,
+        history_createdby varchar(255) not null,
+        actualnumber int null,
+        expirationdate datetime null,
+        inventorynumber int null,
+        lastinventorydate datetime null,
+        name varchar(255) not null,
+        notes varchar(1024) null,
+        theoreticalnumber int null,
+        todelete tinyint null,
+        type varchar(255) null,
+        primary key (id)
+    );
+
+    create table Equipment_AUD (
+        id numeric(19,0) not null,
+        REV int not null,
+        revtype tinyint null,
+        history_changedat datetime null,
+        history_changedby varchar(255) null,
+        history_createdat datetime null,
+        history_createdby varchar(255) null,
+        actualnumber int null,
+        expirationdate datetime null,
+        inventorynumber int null,
+        lastinventorydate datetime null,
+        name varchar(255) null,
+        notes varchar(1024) null,
+        theoreticalnumber int null,
+        todelete tinyint null,
+        type varchar(255) null,
         primary key (id, REV)
     );
 
@@ -668,6 +706,11 @@
 
     alter table Competence_AUD 
         add constraint FKE7F8853ADF74E053 
+        foreign key (REV) 
+        references REVINFO;
+
+    alter table Equipment_AUD 
+        add constraint FKA749CC3FDF74E053 
         foreign key (REV) 
         references REVINFO;
 

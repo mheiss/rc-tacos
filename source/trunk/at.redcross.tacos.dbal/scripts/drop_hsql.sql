@@ -26,6 +26,9 @@
     alter table Competence_AUD 
         drop constraint FKE7F8853ADF74E053;
 
+    alter table Equipment_AUD 
+        drop constraint FKA749CC3FDF74E053;
+
     alter table Info 
         drop constraint FK22D8CE716F1CD8;
 
@@ -130,6 +133,10 @@
     drop table Competence if exists;
 
     drop table Competence_AUD if exists;
+
+    drop table Equipment if exists;
+
+    drop table Equipment_AUD if exists;
 
     drop table Info if exists;
 

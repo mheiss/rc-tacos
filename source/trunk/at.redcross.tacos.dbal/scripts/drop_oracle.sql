@@ -23,6 +23,10 @@
 
     drop table Competence_AUD cascade constraints;
 
+    drop table Equipment cascade constraints;
+
+    drop table Equipment_AUD cascade constraints;
+
     drop table Info cascade constraints;
 
     drop table Info_AUD cascade constraints;

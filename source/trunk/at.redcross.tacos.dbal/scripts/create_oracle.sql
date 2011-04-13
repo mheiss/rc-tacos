@@ -31,6 +31,8 @@
         history_changedby varchar2(255 char) not null,
         history_createdat timestamp,
         history_createdby varchar2(255 char) not null,
+        inspectiondate timestamp,
+        licencenumber varchar2(255 char),
         name varchar2(255 char) not null unique,
         notes varchar2(1024 char),
         outoforder number(1,0),
@@ -50,9 +52,7 @@
         history_createdby varchar2(255 char) not null,
         description varchar2(255 char),
         donefrom varchar2(255 char),
-        executeuntil timestamp,
         executedon timestamp,
-        responsible varchar2(255 char),
         status varchar2(255 char),
         type varchar2(255 char),
         car_id number(19,0),
@@ -69,9 +69,7 @@
         history_createdby varchar2(255 char),
         description varchar2(255 char),
         donefrom varchar2(255 char),
-        executeuntil timestamp,
         executedon timestamp,
-        responsible varchar2(255 char),
         status varchar2(255 char),
         type varchar2(255 char),
         car_id number(19,0),
@@ -172,6 +170,8 @@
         history_changedby varchar2(255 char),
         history_createdat timestamp,
         history_createdby varchar2(255 char),
+        inspectiondate timestamp,
+        licencenumber varchar2(255 char),
         name varchar2(255 char),
         notes varchar2(1024 char),
         outoforder number(1,0),
@@ -230,6 +230,44 @@
         description varchar2(255 char),
         name varchar2(255 char),
         shortname varchar2(255 char),
+        primary key (id, REV)
+    );
+
+    create table Equipment (
+        id number(19,0) not null,
+        history_changedat timestamp,
+        history_changedby varchar2(255 char) not null,
+        history_createdat timestamp,
+        history_createdby varchar2(255 char) not null,
+        actualnumber number(10,0),
+        expirationdate timestamp,
+        inventorynumber number(10,0),
+        lastinventorydate timestamp,
+        name varchar2(255 char) not null,
+        notes varchar2(1024 char),
+        theoreticalnumber number(10,0),
+        todelete number(1,0),
+        type varchar2(255 char),
+        primary key (id)
+    );
+
+    create table Equipment_AUD (
+        id number(19,0) not null,
+        REV number(10,0) not null,
+        revtype number(3,0),
+        history_changedat timestamp,
+        history_changedby varchar2(255 char),
+        history_createdat timestamp,
+        history_createdby varchar2(255 char),
+        actualnumber number(10,0),
+        expirationdate timestamp,
+        inventorynumber number(10,0),
+        lastinventorydate timestamp,
+        name varchar2(255 char),
+        notes varchar2(1024 char),
+        theoreticalnumber number(10,0),
+        todelete number(1,0),
+        type varchar2(255 char),
         primary key (id, REV)
     );
 
@@ -668,6 +706,11 @@
 
     alter table Competence_AUD 
         add constraint FKE7F8853ADF74E053 
+        foreign key (REV) 
+        references REVINFO;
+
+    alter table Equipment_AUD 
+        add constraint FKA749CC3FDF74E053 
         foreign key (REV) 
         references REVINFO;
 
