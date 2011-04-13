@@ -35,6 +35,10 @@
         drop 
         foreign key FKE7F8853ADF74E053;
 
+    alter table Equipment_AUD 
+        drop 
+        foreign key FKA749CC3FDF74E053;
+
     alter table Info 
         drop 
         foreign key FK22D8CE716F1CD8;
@@ -166,6 +170,10 @@
     drop table if exists Competence;
 
     drop table if exists Competence_AUD;
+
+    drop table if exists Equipment;
+
+    drop table if exists Equipment_AUD;
 
     drop table if exists Info;
 

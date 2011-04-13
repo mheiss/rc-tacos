@@ -31,6 +31,8 @@
         history_changedby varchar(255) not null,
         history_createdat datetime,
         history_createdby varchar(255) not null,
+        inspectiondate datetime,
+        licencenumber varchar(255),
         name varchar(255) not null unique,
         notes longtext,
         outoforder bit,
@@ -50,9 +52,7 @@
         history_createdby varchar(255) not null,
         description varchar(255),
         donefrom varchar(255),
-        executeuntil datetime,
         executedon datetime,
-        responsible varchar(255),
         status varchar(255),
         type varchar(255),
         car_id bigint,
@@ -69,9 +69,7 @@
         history_createdby varchar(255),
         description varchar(255),
         donefrom varchar(255),
-        executeuntil datetime,
         executedon datetime,
-        responsible varchar(255),
         status varchar(255),
         type varchar(255),
         car_id bigint,
@@ -172,6 +170,8 @@
         history_changedby varchar(255),
         history_createdat datetime,
         history_createdby varchar(255),
+        inspectiondate datetime,
+        licencenumber varchar(255),
         name varchar(255),
         notes longtext,
         outoforder bit,
@@ -230,6 +230,44 @@
         description varchar(255),
         name varchar(255),
         shortname varchar(255),
+        primary key (id, REV)
+    );
+
+    create table Equipment (
+        id bigint not null auto_increment,
+        history_changedat datetime,
+        history_changedby varchar(255) not null,
+        history_createdat datetime,
+        history_createdby varchar(255) not null,
+        actualnumber integer,
+        expirationdate datetime,
+        inventorynumber integer,
+        lastinventorydate datetime,
+        name varchar(255) not null,
+        notes longtext,
+        theoreticalnumber integer,
+        todelete bit,
+        type varchar(255),
+        primary key (id)
+    );
+
+    create table Equipment_AUD (
+        id bigint not null,
+        REV integer not null,
+        revtype tinyint,
+        history_changedat datetime,
+        history_changedby varchar(255),
+        history_createdat datetime,
+        history_createdby varchar(255),
+        actualnumber integer,
+        expirationdate datetime,
+        inventorynumber integer,
+        lastinventorydate datetime,
+        name varchar(255),
+        notes longtext,
+        theoreticalnumber integer,
+        todelete bit,
+        type varchar(255),
         primary key (id, REV)
     );
 
@@ -677,6 +715,12 @@
     alter table Competence_AUD 
         add index FKE7F8853ADF74E053 (REV), 
         add constraint FKE7F8853ADF74E053 
+        foreign key (REV) 
+        references REVINFO (REV);
+
+    alter table Equipment_AUD 
+        add index FKA749CC3FDF74E053 (REV), 
+        add constraint FKA749CC3FDF74E053 
         foreign key (REV) 
         references REVINFO (REV);
 
