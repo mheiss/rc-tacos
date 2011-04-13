@@ -4,6 +4,9 @@ import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -102,17 +105,30 @@ public class RosterStatisticsBean extends PagingBean {
                 }
                 rosterEntries.add(dto);
             }
-            // filter empty entries out of the list
+            // do some post-processing and sorting
             Iterator<RosterStatisticDto> sIter = rosterEntries.iterator();
             while (sIter.hasNext()) {
                 RosterStatisticDto next = sIter.next();
+                // sort all entries by the date
+                List<GenericDto<RosterStatisticEntry>> elements = next.getElements();
+                Collections.sort(elements, new Comparator<GenericDto<RosterStatisticEntry>>() {
+
+                    @Override
+                    public int compare(GenericDto<RosterStatisticEntry> lhs, GenericDto<RosterStatisticEntry> rhs) {
+                        Date lhsTime = lhs.getEntity().getRosterEntry().getPlannedStartDateTime();
+                        Date rhsTime = rhs.getEntity().getRosterEntry().getPlannedStartDateTime();
+                        return lhsTime.compareTo(rhsTime);
+                    };
+                });
+
                 // remove if no amount at all
                 if (next.getAmount() == 0) {
                     sIter.remove();
                     continue;
                 }
+
                 // remove single entries without amount
-                Iterator<GenericDto<RosterStatisticEntry>> eIter = next.getElements().iterator();
+                Iterator<GenericDto<RosterStatisticEntry>> eIter = elements.iterator();
                 while (eIter.hasNext()) {
                     RosterStatisticEntry entry = eIter.next().getEntity();
                     if (entry.getAmount() == 0) {
@@ -120,6 +136,17 @@ public class RosterStatisticsBean extends PagingBean {
                     }
                 }
             }
+            // sort the entries by name
+            Collections.sort(rosterEntries, new Comparator<RosterStatisticDto>() {
+
+                @Override
+                public int compare(RosterStatisticDto lhs, RosterStatisticDto rhs) {
+                    String lhsName = lhs.getGroup().getEntity().getLastName();
+                    String rhsName = rhs.getGroup().getEntity().getLastName();
+                    return lhsName.compareTo(rhsName);
+                }
+            });
+
         } catch (Exception e) {
             FacesUtils.addErrorMessage("Fehler beim Suchen der Dienstplaneinträge");
         } finally {
