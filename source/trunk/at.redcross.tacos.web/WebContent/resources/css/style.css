@@ -380,6 +380,14 @@ table.defaultStyle .rosterDelete {
 	background-color: #CCCCCC;
 }
 
+table.defaultStyle .equipmentNumber {
+	background-color: #9A0000;
+}
+
+table.defaultStyle .equipmentDate {
+	background-color : #9A0000;
+}
+
 table.defaultStyle .cellError {
 	color: #000;
 	background-color: #f00;
