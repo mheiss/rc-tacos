@@ -143,7 +143,7 @@ public class RosterStatisticsBean extends PagingBean {
                 public int compare(RosterStatisticDto lhs, RosterStatisticDto rhs) {
                     String lhsName = lhs.getGroup().getEntity().getLastName();
                     String rhsName = rhs.getGroup().getEntity().getLastName();
-                    return lhsName.compareTo(rhsName);
+                    return lhsName.compareToIgnoreCase(rhsName);
                 }
             });
 
