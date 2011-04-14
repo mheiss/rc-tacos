@@ -13,6 +13,16 @@ public enum EntryState {
     SYNC,
 
     /**
+     * The given entity has errors
+     */
+    ERROR,
+
+    /**
+     * The given entity has warnings
+     */
+    WARN,
+
+    /**
      * The given entity should be removed
      */
     DELETE;
