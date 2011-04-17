@@ -14,17 +14,32 @@
 
 	<ui:define name="page-header">
 		<h:panelGroup rendered="#{vehicleMaintenanceBean.new}">
-			<h:graphicImage library="images/32x32" name="user_add.png" />
+			<h:graphicImage library="images/32x32" name="vehicle_add.png" />
 			<h2 class="title">
 				<h:outputText value="Neues Fahrzeug" />
 			</h2>
 		</h:panelGroup>
 		<h:panelGroup rendered="#{not vehicleMaintenanceBean.new}">
-			<h:graphicImage library="images/32x32" name="user_edit.png" />
+			<h:graphicImage library="images/32x32" name="vehicle_edit.png" />
 			<h2 class="title">
 				<h:outputText value="Fahrzeug '#{vehicleMaintenanceBean.car.name}' bearbeiten" />
 			</h2>
 		</h:panelGroup>
+	</ui:define>
+	
+	<ui:define name="page-toolbar">
+		<li>
+			<a4j:commandLink actionListener="#{vehicleMaintenanceBean.addCarCareEntry}" reRender="carCarMaintenance" title="Neuen Wartungseintrag anlegen">
+				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="add.png" />
+				<h:outputText styleClass="toolbarText" value="Wartungseintrag anlegen" />
+			</a4j:commandLink>
+		</li>
+		<li>
+			<a4j:commandLink ajaxSingle="false" actionListener="#{vehicleMaintenanceBean.apply}" reRender="page-content" title="Speichern">
+			<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="save.png" />
+			<h:outputText styleClass="toolbarText" value="Änderungen speichern" />
+			</a4j:commandLink>
+		</li>
 	</ui:define>
 
 	<ui:define name="page-content">
@@ -108,13 +123,6 @@
 		</ol>
 		</fieldset>
 		
-		<pretty:link  mappingId="info-carCareEntryMaintenance" title="Fahrzeugwartung">
-					<f:param value="#{vehicleMaintenanceBean.carId}" />
-					<h:graphicImage library="images/32x32" name="maintenance.png" />
-				</pretty:link>
-		 
-				
-	
 		<fieldset class="defaultStyle">
 			<legend> <h:outputText value="Anmerkungen" /> </legend> 
 			<rich:editor value="#{vehicleMaintenanceBean.car.notes}" theme="simple" autoResize="true" language="de"
@@ -123,18 +131,114 @@
 				onchange="limitChars(inst,'characterLimitInfo',#{vehicleMaintenanceBean.maxDescLength});" />
 			<span id="characterLimitInfo" class="hint"> <h:outputText value="Bitte beachten sie das Limit von #{vehicleMaintenanceBean.maxDescLength} Zeichen." /> </span>
 		</fieldset>
-
+		
+		<fieldset class="defaultStyle">
+			<legend> <h:outputText value="Wartungseinträge" /> </legend>
+			<a4j:outputPanel id="carCarMaintenance" layout="block">
+				<rich:panel rendered="#{empty vehicleMaintenanceBean.carCareEntries}" style="margin-top:10px;">
+					<h:outputText value="Keine Wartungseinträge gefunden" styleClass="italic" />
+				</rich:panel>
+				<rich:dataTable styleClass="defaultStyle" value="#{vehicleMaintenanceBean.carCareEntries}" var="dto" rowKeyVar="row"
+					onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'"
+					rendered="#{not empty vehicleMaintenanceBean.carCareEntries}">
+					<rich:column styleClass="smallColumn">
+						<f:facet name="header">
+							<rich:spacer />
+						</f:facet>
+						<h:outputText value="#{row+1}" />
+					</rich:column>
+					<rich:column styleClass="smallColumn">
+						<f:facet name="header">
+							<h:outputText value="Status" />
+						</f:facet>
+						<h:graphicImage library="images/16x16" name="data_new.png" rendered="#{dto.state.name eq 'new'}" title="Sync" />
+						<h:graphicImage library="images/16x16" name="data.png" rendered="#{dto.state.name eq 'sync'}" title="Neu" />
+						<h:graphicImage library="images/16x16" name="data_delete.png" rendered="#{dto.state.name eq 'delete'}" title="Zu löschen" />	
+					</rich:column>
+					<rich:column sortBy="#{dto.entity.type}" styleClass="smallColumn">
+						<f:facet name="header">
+							<h:outputText value="Art" />
+						</f:facet>
+						<rich:inplaceInput value="#{dto.entity.type}" maxlength="10" layout="block" />
+					</rich:column>
+					<rich:column sortBy="#{dto.entity.status}" styleClass="smallColumn">
+						<f:facet name="header">
+							<h:outputText value="Status" />
+						</f:facet>
+						<rich:comboBox width="110px" id="status" value="#{dto.entity.status}" enableManualInput="false" 
+								selectFirstOnUpdate="false" defaultLabel="Status">
+								<f:selectItems value="#{vehicleMaintenanceBean.statusItems}" />
+								<f:validator validatorId="validator.selectableItem" />
+								<f:converter converterId="converter.selectableItem" />
+								<rich:ajaxValidator event="onchange" />
+							</rich:comboBox> 
+							<rich:message for="status" errorClass="error" />
+					</rich:column>
+					<rich:column sortBy="#{dto.entity.description}">
+						<f:facet name="header">
+							<h:outputText value="Beschreibung der Wartungsarbeit" />
+						</f:facet>
+						<rich:inplaceInput value="#{dto.entity.description}" maxlength="255" layout="block" />
+					</rich:column>
+					<rich:column sortBy="#{dto.entity.doneFrom}">
+						<f:facet name="header">
+							<h:outputText value="Erledigt von" />
+						</f:facet>
+						<rich:inplaceInput value="#{dto.entity.doneFrom}" maxlength="255" layout="block" />
+					</rich:column>
+					<rich:column sortBy="#{dto.entity.executedOn}" style="width:10em; text-align:center;">
+						<f:facet name="header">
+							<h:outputText value="Erledigt am"/>
+						</f:facet>
+						<rich:calendar id="date" inputSize="10" value="#{dto.entity.executedOn}" 
+								styleClass="rich-calendar" defaultTime="#{localeBean.date}" datePattern="dd.MM.yyyy"
+								locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" converterMessage="Bitte geben Sie ein gültiges Datum an.">
+								<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+								<rich:ajaxValidator event="onchanged" />
+								<rich:ajaxValidator event="oninputblur" />
+						</rich:calendar> 
+						<rich:message for="date" errorClass="error" />						
+					</rich:column>
+					<rich:column styleClass="actionColumn">
+						<f:facet name="header">
+							<h:outputText value="Aktionen" />
+						</f:facet>
+						<a4j:commandLink rendered="#{dto.historyEnabled}" reRender="page-panels" oncomplete="#{rich:component('historyPanel')}.show(); return false;" title="Protokoll anzeigen">
+							<a4j:actionparam name="entryId" assignTo="#{historyBean.primaryKey}" value="#{dto.entity.id}" />
+							<a4j:actionparam name="entryClass" assignTo="#{historyBean.className}" value="#{dto.entity.class.name}" actionListener="#{historyBean.queryHistory}" />
+							<h:graphicImage library="images/16x16" name="info.png" />
+						</a4j:commandLink>
+						<a4j:commandLink reRender="carCarMaintenance" rendered="#{dto.state.name ne 'delete'}" immediate="true">
+							<a4j:actionparam name="carCareId" assignTo="#{vehicleMaintenanceBean.carCareId}" value="#{dto.entity.id}"
+								actionListener="#{vehicleMaintenanceBean.removeCarCareEntry}" />
+							<h:graphicImage library="images/16x16" name="remove.png" />
+						</a4j:commandLink>
+						<a4j:commandLink reRender="carCarMaintenance" rendered="#{dto.state.name eq 'delete'}" immediate="true">
+							<a4j:actionparam name="carCareId" assignTo="#{vehicleMaintenanceBean.carCareId}" value="#{dto.entity.id}"
+								actionListener="#{vehicleMaintenanceBean.unremoveCarCareEntry}" />
+							<h:graphicImage library="images/16x16" name="remove.png" />
+						</a4j:commandLink>
+					</rich:column>
+				</rich:dataTable>
+			</a4j:outputPanel>
+		</fieldset>
+		
 		<fieldset class="defaultStyle last">
 			<div class="actionBar">
-				<a4j:commandLink immediate="true" reRender="content-wrapper" styleClass="button" action="#{vehicleMaintenanceBean.revert}">
+				<a4j:commandLink immediate="true" reRender="content-wrapper" styleClass="button" action="#{vehicleMaintenanceBean.revert}" title="Änderungen verwerfen">
 					<span> <h:outputText value="Zurücksetzen" /> </span>
 				</a4j:commandLink> 
-				<a4j:commandLink styleClass="button" action="#{vehicleMaintenanceBean.persist}">
-					<span> <h:outputText value="Fahrzeug speichern" /> </span>
+				<a4j:commandLink styleClass="button" action="#{vehicleMaintenanceBean.persist}" title="Änderungen speichern und zurück zur Übersicht">
+					<span> <h:outputText value="Speichern und schließen" /> </span>
 				</a4j:commandLink>
 			</div>
 		</fieldset>
 	</ui:define>
+	
+	<ui:define name="page-panels">
+		<ui:decorate template="/WEB-INF/templates/widgets/historyPanel.xhtml" />
+	</ui:define>
+	
 </ui:composition>
 </body>
 </html>
