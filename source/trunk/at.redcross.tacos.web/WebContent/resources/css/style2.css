@@ -41,7 +41,9 @@
 	position: relative;
 	background: #fff;
 	border: 2px solid #9A0000;
+	border-radius: 10px;
 	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
 }
 
 .container-text {

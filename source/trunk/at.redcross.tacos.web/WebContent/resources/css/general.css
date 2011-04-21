@@ -21,7 +21,9 @@ a,a:link,a:visited {
 }
 
 input, select, textarea {
+	border-radius:4px 4px 4px 4px;
 	-moz-border-radius:4px 4px 4px 4px;
+	-webkit-border-radius:4px 4px 4px 4px;
 	border:1px solid #C0BCB7;
 }
 
