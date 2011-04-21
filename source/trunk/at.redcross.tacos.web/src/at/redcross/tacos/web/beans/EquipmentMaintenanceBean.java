@@ -50,7 +50,6 @@ public class EquipmentMaintenanceBean extends BaseBean {
     // ---------------------------------
     // Business methods
     // ---------------------------------
-
     public void removeEquipment(ActionEvent event) {
         Iterator<EquipmentDto> iter = equipmentEntries.iterator();
         while (iter.hasNext()) {
@@ -62,8 +61,8 @@ public class EquipmentMaintenanceBean extends BaseBean {
             if (dto.getState() == EntryState.NEW) {
                 iter.remove();
             }
-
             dto.setState(EntryState.DELETE);
+            return;
         }
     }
 

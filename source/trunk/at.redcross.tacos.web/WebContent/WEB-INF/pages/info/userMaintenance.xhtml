@@ -265,11 +265,10 @@
 		<fieldset class="defaultStyle">
 			<legend> <h:outputText value="Anmerkungen" /> </legend> 
 			<p>	<h:outputText value="Hier können Sie Anmerkungen zum Benutzer hinterlegen." /> </p>
-			<rich:editor value="#{userMaintenanceBean.systemUser.notes}" theme="simple" autoResize="true" language="de"
-				oninit="smartEditor()"
-				onsetup="limitCharsSetup(ed,event,'characterLimitInfo',#{userMaintenanceBean.maxDescLength});" 
-				onchange="limitChars(inst,'characterLimitInfo',#{userMaintenanceBean.maxDescLength});" />
-			<span id="characterLimitInfo" class="hint"> <h:outputText value="Bitte beachten sie das Limit von #{userMaintenanceBean.maxDescLength} Zeichen." /> </span>
+			<ui:decorate template="/WEB-INF/templates/widgets/editorPanel.xhtml">
+				<ui:param name="value" value="#{userMaintenanceBean.systemUser.notes}" />
+				<ui:param name="length" value="#{userMaintenanceBean.maxDescLength}" />
+			</ui:decorate>
 		</fieldset>
 
 		<fieldset class="defaultStyle last">

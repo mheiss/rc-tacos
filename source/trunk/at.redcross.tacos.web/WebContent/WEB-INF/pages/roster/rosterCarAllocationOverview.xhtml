@@ -80,11 +80,11 @@
 		<rich:simpleTogglePanel opened="#{not empty rosterCarAllocationOverviewBean.notification.notes}" label="Anmerkungen" bodyClass="defaultToggleBodyStyle" styleClass="defaultToggleStyle" 
 			switchType="client"	onclick="smartEditor()" rendered="#{permissionBean.authorizedToAssignCar}" >
 			<fieldset class="defaultStyle">
-				<legend> <h:outputText value="" /> </legend> 
-				<rich:editor id="editor" height="50" value="#{rosterCarAllocationOverviewBean.notification.notes}" theme="simple" oninit="smartEditor()" autoResize="true" language="de"
-					onsetup="limitCharsSetup(ed,event,'characterLimitInfo',#{rosterCarAllocationOverviewBean.maxDescLength});" 
-					onchange="limitChars(inst,'characterLimitInfo',#{rosterCarAllocationOverviewBean.maxDescLength});" />
-			<span id="characterLimitInfo" class="hint"> <h:outputText value="Bitte beachten sie das Limit von #{rosterCarAllocationOverviewBean.maxDescLength} Zeichen." /> </span>
+				<legend> <h:outputText value="" /> </legend>
+				<ui:decorate template="/WEB-INF/templates/widgets/editorPanel.xhtml">
+					<ui:param name="value" value="#{rosterCarAllocationOverviewBean.notification.notes}" />
+					<ui:param name="length" value="#{rosterCarAllocationOverviewBean.maxDescLength}" />
+				</ui:decorate>
 			</fieldset>
 		</rich:simpleTogglePanel>
 	</ui:define>
