@@ -112,12 +112,11 @@
 		</ol>
 		</fieldset>
 		<fieldset class="defaultStyle">
-			<legend><h:outputText value="Beschreibung" /></legend> 
-			<rich:editor value="#{infoMaintenanceBean.info.description}" theme="simple" 
-					oninit="smartEditor()" autoResize="true" language="de" 
-					onsetup="limitCharsSetup(ed,event,'characterLimitInfo',#{infoMaintenanceBean.maxDescLength});" 
-					onchange="limitChars(inst,'characterLimitInfo',#{infoMaintenanceBean.maxDescLength});" />
-			<span id="characterLimitInfo" class="hint"> <h:outputText value="Bitte beachten sie das Limit von #{infoMaintenanceBean.maxDescLength} Zeichen." /> </span>
+			<legend><h:outputText value="Beschreibung" /></legend>
+			<ui:decorate template="/WEB-INF/templates/widgets/editorPanel.xhtml">
+				<ui:param name="value" value="#{infoMaintenanceBean.info.description}" />
+				<ui:param name="length" value="#{infoMaintenanceBean.maxDescLength}" />
+			</ui:decorate>
 		</fieldset>
 		
 		<fieldset class="defaultStyle last">

@@ -173,10 +173,10 @@
 		</fieldset>
 		<fieldset class="defaultStyle">
 			<legend><h:outputText value="Anmerkungen" /></legend> 
-			<rich:editor id="editor" value="#{rosterMaintenanceBean.rosterEntry.notes}" theme="simple" oninit="smartEditor()" autoResize="true" language="de"
-				onsetup="limitCharsSetup(ed,event,'characterLimitInfo',#{rosterMaintenanceBean.maxDescLength});" 
-				onchange="limitChars(inst,'characterLimitInfo',#{rosterMaintenanceBean.maxDescLength});" />
-			<span id="characterLimitInfo" class="hint"> <h:outputText value="Bitte beachten sie das Limit von #{rosterMaintenanceBean.maxDescLength} Zeichen." /> </span>
+			<ui:decorate template="/WEB-INF/templates/widgets/editorPanel.xhtml">
+				<ui:param name="value" value="#{rosterMaintenanceBean.rosterEntry.notes}" />
+				<ui:param name="length" value="#{rosterMaintenanceBean.maxDescLength}" />
+			</ui:decorate>
 		</fieldset>
 		
 		<fieldset class="defaultStyle last">

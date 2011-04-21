@@ -124,12 +124,11 @@
 		</fieldset>
 		
 		<fieldset class="defaultStyle">
-			<legend> <h:outputText value="Anmerkungen" /> </legend> 
-			<rich:editor value="#{vehicleMaintenanceBean.car.notes}" theme="simple" autoResize="true" language="de"
-				oninit="smartEditor()"
-				onsetup="limitCharsSetup(ed,event,'characterLimitInfo',#{vehicleMaintenanceBean.maxDescLength});" 
-				onchange="limitChars(inst,'characterLimitInfo',#{vehicleMaintenanceBean.maxDescLength});" />
-			<span id="characterLimitInfo" class="hint"> <h:outputText value="Bitte beachten sie das Limit von #{vehicleMaintenanceBean.maxDescLength} Zeichen." /> </span>
+			<legend> <h:outputText value="Anmerkungen" /> </legend>
+			<ui:decorate template="/WEB-INF/templates/widgets/editorPanel.xhtml">
+				<ui:param name="value" value="#{vehicleMaintenanceBean.car.notes}" />
+				<ui:param name="length" value="#{vehicleMaintenanceBean.maxDescLength}" />
+			</ui:decorate>
 		</fieldset>
 		
 		<fieldset class="defaultStyle">

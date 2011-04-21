@@ -1,0 +1,13 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:a4j="http://richfaces.org/a4j" xmlns:rich="http://richfaces.org/rich">
+<body>
+<ui:composition>
+	<rich:editor id="editor" value="#{value}"  rendered="#{configBean.richEditor}"
+		theme="simple" oninit="smartEditor()" autoResize="true" language="de"
+		onsetup="limitCharsSetup(ed,event,'characterLimitInfo',#{length});" 
+		onchange="limitChars(inst,'characterLimitInfo',#{length});" />
+	<h:inputTextarea rendered="#{not configBean.richEditor}" value="#{value}" style="width:100%; height:12em" />
+	<span id="characterLimitInfo" class="hint"> <h:outputText value="Bitte beachten sie das Limit von #{length} Zeichen." /> </span>
+</ui:composition>
+</body>
+</html>
