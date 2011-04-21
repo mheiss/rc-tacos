@@ -65,13 +65,21 @@ h2.block-title {
 	padding: 8px 8px 6px 46px;
 	text-align: right;
 	text-shadow: 1px 1px #545454;
+	border-radius-topleft:3px;
+	border-radius-topright:3px;
 	-moz-border-radius-topleft: 3px;
 	-moz-border-radius-topright: 3px;
+	-webkit-border-radius-topleft: 3px;
+	-webkit-border-radius-topright: 3px;
 }
 
 div.block div.content {
+	border-radius-bottomleft:6px;
+	border-radius-bottomright:6px;
 	-moz-border-radius-bottomleft: 6px;
 	-moz-border-radius-bottomright: 6px;
+	-webkit-border-radius-bottomleft: 3px;
+	-webkit-border-radius-bottomright: 3px;
 	background: url("../images/custom/box_gradient.png") no-repeat scroll center bottom transparent;
 	border-bottom: 3px solid #F1F5F7;
 	padding: 10px 10px 8px;
