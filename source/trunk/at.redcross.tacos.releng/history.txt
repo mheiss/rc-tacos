@@ -9,4 +9,9 @@ What's new in v1.0.1 (2011.01.11)
 ---------------------------------
 # Delete roster entry in assign car not working
 # Added sorting to car listing
-# Removed 'All Locations' tab at the info page 
+# Removed 'All Locations' tab at the info page
+
+What's new in v1.0.2 (2011.22.04)
+---------------------------------
+# Minor bugfixes and enhancements
+# Equipment maintenance added
