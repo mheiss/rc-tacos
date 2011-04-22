@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.event.ActionEvent;
 
 import at.redcross.tacos.web.faces.FacesUtils;
 
@@ -25,6 +26,23 @@ public class ConfigurationBean implements Serializable {
         richEditor = detectEditorSupport();
     }
 
+    // ---------------------------------
+    // Business methods
+    // ---------------------------------
+    public void changeEditorMode(ActionEvent ae) {
+        this.richEditor = !this.richEditor;
+    }
+
+    // ---------------------------------
+    // Setter for the properties
+    // ---------------------------------
+    public void setRichEditor(boolean richEditor) {
+        this.richEditor = richEditor;
+    }
+
+    // ---------------------------------
+    // Getters for the properties
+    // ---------------------------------
     public boolean isRichEditor() {
         return richEditor;
     }
@@ -34,7 +52,7 @@ public class ConfigurationBean implements Serializable {
         String userAgent = FacesUtils.getHttpServletRequest().getHeader("user-agent");
         Pattern pattern = Pattern.compile("MSIE ([0-9]{1,}[\\.0-9]{0,})");
         Matcher matcher = pattern.matcher(userAgent);
-        if(!matcher.find()) {
+        if (!matcher.find()) {
             return true;
         }
         String group = matcher.group(1);
