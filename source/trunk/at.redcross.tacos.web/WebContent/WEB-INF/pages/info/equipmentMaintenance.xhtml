@@ -29,104 +29,106 @@
 	</ui:define>
 
 	<ui:define name="page-content">
-		<rich:messages id="messages" errorClass="errorMessage" />
-		<rich:panel rendered="#{empty equipmentMaintenanceBean.equipmentEntries}" style="margin-top:10px;">
-			<h:outputText value="Keine Einträge gefunden" styleClass="italic" />
-		</rich:panel>
-		<rich:dataTable id="equipmentTable" styleClass="defaultStyle" value="#{equipmentMaintenanceBean.equipmentEntries}" var="dto" rowKeyVar="row" onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
-			<rich:column styleClass="smallColumn">
-				<f:facet name="header">
-					<h:outputText value="" />
-				</f:facet>
-				<h:outputText value="#{row+1}" />
-			</rich:column>
-			<rich:column styleClass="smallColumn">
-				<f:facet name="header">
-					<h:outputText value="Status" />
-				</f:facet>
-				<h:graphicImage library="images/16x16" name="data_new.png" rendered="#{dto.state.name eq 'new'}" title="Sync" />
-				<h:graphicImage library="images/16x16" name="data.png" rendered="#{dto.state.name eq 'sync'}" title="Neu" />
-				<h:graphicImage library="images/16x16" name="data_warn.png" rendered="#{dto.state.name eq 'warn'}" title="Achtung" />
-				<h:graphicImage library="images/16x16" name="data_delete.png" rendered="#{dto.state.name eq 'delete'}" title="Zu löschen" />
-			</rich:column>
-			<rich:column sortBy="#{dto.entity.name}">
-				<f:facet name="header">
-					<h:outputText value="Artikelbezeichnung" />
-				</f:facet>
-				<rich:inplaceInput value="#{dto.entity.name}" maxlength="130" layout="block" />
-			</rich:column>
-
-			<rich:column sortBy="#{dto.entity.inventoryNumber}" styleClass="smallColumn">
-				<f:facet name="header">
-					<h:outputText value="Lager Nr." />
-				</f:facet>
-				<rich:inplaceInput value="#{dto.entity.inventoryNumber}" maxlength="5" layout="block" />
-			</rich:column>
-
-			<rich:column sortBy="#{dto.entity.actualNumber}" styleClass="#{dto.thresholdStyleClass} smallColumn">
-				<f:facet name="header">
-					<h:outputText value="Stk. Ist" />
-				</f:facet>
-				<rich:inplaceInput value="#{dto.entity.actualNumber}" maxlength="5" layout="block" />
-			</rich:column>
-
-			<rich:column sortBy="#{dto.entity.theoreticalNumber}" styleClass="#{dto.thresholdStyleClass} smallColumn">
-				<f:facet name="header">
-					<h:outputText value="Stk. Soll" />
-				</f:facet>
-				<rich:inplaceInput value="#{dto.entity.theoreticalNumber}" maxlength="5" layout="block" />
-			</rich:column>
-
-			<rich:column sortBy="#{dto.entity.notes}">
-				<f:facet name="header">
-					<h:outputText value="Anmerkungen" />
-				</f:facet>
-				<rich:inplaceInput value="#{dto.entity.notes}" maxlength="255" layout="block" />
-			</rich:column>
-
-			<rich:column sortBy="#{dto.entity.expirationDate}" styleClass="#{dto.dateStyleClass}" style="width:9em; text-align:center;">
-				<f:facet name="header">
-					<h:outputText value="Ablaufdatum" />
-				</f:facet>
-				<rich:calendar inputSize="10" value="#{dto.entity.expirationDate}" defaultTime="#{localeBean.date}" datePattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" converterMessage="Bitte geben Sie ein gültiges Datum an.">
-					<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
-					<rich:ajaxValidator event="onchanged" />
-					<rich:ajaxValidator event="oninputblur" />
-				</rich:calendar>
-				<rich:message for="date" errorClass="error" />
-			</rich:column>
-			
-			<rich:column sortBy="#{dto.entity.lastInventoryDate}" style="width:9em; text-align:center;">
-				<f:facet name="header">
-					<h:outputText value="Inventurdatum" />
-				</f:facet>
-				<rich:calendar inputSize="10" value="#{dto.entity.lastInventoryDate}" defaultTime="#{localeBean.date}" datePattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" converterMessage="Bitte geben Sie ein gültiges Datum an.">
-					<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
-					<rich:ajaxValidator event="onchanged" />
-					<rich:ajaxValidator event="oninputblur" />
-				</rich:calendar>
-				<rich:message for="date" errorClass="error" />
-			</rich:column>
-
-			<rich:column styleClass="actionColumn">
-				<f:facet name="header">
-					<h:outputText value="Aktionen" />
-				</f:facet>
-				<a4j:commandLink rendered="#{dto.historyEnabled}" reRender="page-panels" oncomplete="#{rich:component('historyPanel')}.show(); return false;" title="Protokoll anzeigen">
-					<a4j:actionparam name="entryId" assignTo="#{historyBean.primaryKey}" value="#{dto.entity.id}" />
-					<a4j:actionparam name="entryClass" assignTo="#{historyBean.className}" value="#{dto.entity.class.name}" actionListener="#{historyBean.queryHistory}" />
-					<h:graphicImage library="images/16x16" name="info.png" />
-				</a4j:commandLink>
-				<a4j:commandLink reRender="equipmentTable" rendered="#{dto.state.name ne 'delete'}" immediate="true">
-					<a4j:actionparam name="equipmentId" assignTo="#{equipmentMaintenanceBean.equipmentId}" value="#{dto.entity.id}" actionListener="#{equipmentMaintenanceBean.removeEquipment}" />
-					<h:graphicImage library="images/16x16" name="remove.png" />
-				</a4j:commandLink>
-				<a4j:commandLink reRender="equipmentTable" rendered="#{dto.state.name eq 'delete'}">
-					<a4j:actionparam name="equipmentId" assignTo="#{equipmentMaintenanceBean.equipmentId}" value="#{dto.entity.id}" actionListener="#{equipmentMaintenanceBean.unremoveEquipment}" />
-					<h:graphicImage library="images/16x16" name="remove.png" />
-				</a4j:commandLink>
-			</rich:column>
-		</rich:dataTable>
+		<a4j:outputPanel id="equipmentTable" layout="block">
+			<rich:messages id="messages" errorClass="errorMessage" />
+			<rich:panel rendered="#{empty equipmentMaintenanceBean.equipmentEntries}" style="margin-top:10px;">
+				<h:outputText value="Keine Einträge gefunden" styleClass="italic" />
+			</rich:panel>
+			<rich:dataTable rendered="#{not empty equipmentMaintenanceBean.equipmentEntries}" styleClass="defaultStyle" value="#{equipmentMaintenanceBean.equipmentEntries}" var="dto" rowKeyVar="row" onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
+				<rich:column styleClass="smallColumn">
+					<f:facet name="header">
+						<h:outputText value="" />
+					</f:facet>
+					<h:outputText value="#{row+1}" />
+				</rich:column>
+				<rich:column styleClass="smallColumn">
+					<f:facet name="header">
+						<h:outputText value="Status" />
+					</f:facet>
+					<h:graphicImage library="images/16x16" name="data_new.png" rendered="#{dto.state.name eq 'new'}" title="Sync" />
+					<h:graphicImage library="images/16x16" name="data.png" rendered="#{dto.state.name eq 'sync'}" title="Neu" />
+					<h:graphicImage library="images/16x16" name="data_warn.png" rendered="#{dto.state.name eq 'warn'}" title="Achtung" />
+					<h:graphicImage library="images/16x16" name="data_delete.png" rendered="#{dto.state.name eq 'delete'}" title="Zu löschen" />
+				</rich:column>
+				<rich:column sortBy="#{dto.entity.name}">
+					<f:facet name="header">
+						<h:outputText value="Artikelbezeichnung" />
+					</f:facet>
+					<rich:inplaceInput value="#{dto.entity.name}" maxlength="130" layout="block" />
+				</rich:column>
+	
+				<rich:column sortBy="#{dto.entity.inventoryNumber}" styleClass="smallColumn">
+					<f:facet name="header">
+						<h:outputText value="Lager Nr." />
+					</f:facet>
+					<rich:inplaceInput value="#{dto.entity.inventoryNumber}" maxlength="5" layout="block" />
+				</rich:column>
+	
+				<rich:column sortBy="#{dto.entity.actualNumber}" styleClass="#{dto.thresholdStyleClass} smallColumn">
+					<f:facet name="header">
+						<h:outputText value="Stk. Ist" />
+					</f:facet>
+					<rich:inplaceInput value="#{dto.entity.actualNumber}" maxlength="5" layout="block" />
+				</rich:column>
+	
+				<rich:column sortBy="#{dto.entity.theoreticalNumber}" styleClass="#{dto.thresholdStyleClass} smallColumn">
+					<f:facet name="header">
+						<h:outputText value="Stk. Soll" />
+					</f:facet>
+					<rich:inplaceInput value="#{dto.entity.theoreticalNumber}" maxlength="5" layout="block" />
+				</rich:column>
+	
+				<rich:column sortBy="#{dto.entity.notes}">
+					<f:facet name="header">
+						<h:outputText value="Anmerkungen" />
+					</f:facet>
+					<rich:inplaceInput value="#{dto.entity.notes}" maxlength="255" layout="block" />
+				</rich:column>
+	
+				<rich:column sortBy="#{dto.entity.expirationDate}" styleClass="#{dto.dateStyleClass}" style="width:9em; text-align:center;">
+					<f:facet name="header">
+						<h:outputText value="Ablaufdatum" />
+					</f:facet>
+					<rich:calendar inputSize="10" value="#{dto.entity.expirationDate}" defaultTime="#{localeBean.date}" datePattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" converterMessage="Bitte geben Sie ein gültiges Datum an.">
+						<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+						<rich:ajaxValidator event="onchanged" />
+						<rich:ajaxValidator event="oninputblur" />
+					</rich:calendar>
+					<rich:message for="date" errorClass="error" />
+				</rich:column>
+				
+				<rich:column sortBy="#{dto.entity.lastInventoryDate}" style="width:9em; text-align:center;">
+					<f:facet name="header">
+						<h:outputText value="Inventurdatum" />
+					</f:facet>
+					<rich:calendar inputSize="10" value="#{dto.entity.lastInventoryDate}" defaultTime="#{localeBean.date}" datePattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" converterMessage="Bitte geben Sie ein gültiges Datum an.">
+						<f:convertDateTime pattern="dd.MM.yyyy" locale="#{localeBean.locale}" timeZone="#{localeBean.timeZone}" />
+						<rich:ajaxValidator event="onchanged" />
+						<rich:ajaxValidator event="oninputblur" />
+					</rich:calendar>
+					<rich:message for="date" errorClass="error" />
+				</rich:column>
+	
+				<rich:column styleClass="actionColumn">
+					<f:facet name="header">
+						<h:outputText value="Aktionen" />
+					</f:facet>
+					<a4j:commandLink rendered="#{dto.historyEnabled}" reRender="page-panels" oncomplete="#{rich:component('historyPanel')}.show(); return false;" title="Protokoll anzeigen">
+						<a4j:actionparam name="entryId" assignTo="#{historyBean.primaryKey}" value="#{dto.entity.id}" />
+						<a4j:actionparam name="entryClass" assignTo="#{historyBean.className}" value="#{dto.entity.class.name}" actionListener="#{historyBean.queryHistory}" />
+						<h:graphicImage library="images/16x16" name="info.png" />
+					</a4j:commandLink>
+					<a4j:commandLink reRender="equipmentTable" rendered="#{dto.state.name ne 'delete'}" immediate="true">
+						<a4j:actionparam name="equipmentId" assignTo="#{equipmentMaintenanceBean.equipmentId}" value="#{dto.entity.id}" actionListener="#{equipmentMaintenanceBean.removeEquipment}" />
+						<h:graphicImage library="images/16x16" name="remove.png" />
+					</a4j:commandLink>
+					<a4j:commandLink reRender="equipmentTable" rendered="#{dto.state.name eq 'delete'}">
+						<a4j:actionparam name="equipmentId" assignTo="#{equipmentMaintenanceBean.equipmentId}" value="#{dto.entity.id}" actionListener="#{equipmentMaintenanceBean.unremoveEquipment}" />
+						<h:graphicImage library="images/16x16" name="remove.png" />
+					</a4j:commandLink>
+				</rich:column>
+			</rich:dataTable>
+		</a4j:outputPanel>
 	</ui:define>
 	<ui:define name="page-panels">
 		<ui:decorate template="/WEB-INF/templates/widgets/historyPanel.xhtml" />
