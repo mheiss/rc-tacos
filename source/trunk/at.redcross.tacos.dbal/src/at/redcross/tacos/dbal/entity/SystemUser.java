@@ -100,8 +100,8 @@ public class SystemUser extends EntityImpl {
     // ---------------------------------
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("id", id).append("firstName", firstName).append(
-                "lastName", lastName).toString();
+        return new ToStringBuilder(this).append("id", id).append("firstName", firstName)
+                .append("lastName", lastName).toString();
     }
 
     @Override
@@ -122,6 +122,18 @@ public class SystemUser extends EntityImpl {
         }
         SystemUser rhs = (SystemUser) obj;
         return new EqualsBuilder().append(id, rhs.id).isEquals();
+    }
+
+    // ---------------------------------
+    // Business relevant methods
+    // ---------------------------------
+    public boolean hasCompetence(String competenceName) {
+        for (Competence competence : competences) {
+            if (competence.getName().equals(competenceName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     // ---------------------------------

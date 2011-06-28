@@ -24,7 +24,7 @@ import at.redcross.tacos.web.persistence.EntityManagerFactory;
 
 @KeepAlive
 @ManagedBean(name = "equipmentMaintenanceBean")
-public class EquipmentMaintenanceBean extends BaseBean {
+public class EquipmentMaintenanceBean extends PagingBean {
 
     private static final long serialVersionUID = 9185867004047296041L;
 

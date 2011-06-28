@@ -34,7 +34,8 @@
 			<rich:panel rendered="#{empty equipmentMaintenanceBean.equipmentEntries}" style="margin-top:10px;">
 				<h:outputText value="Keine Einträge gefunden" styleClass="italic" />
 			</rich:panel>
-			<rich:dataTable rendered="#{not empty equipmentMaintenanceBean.equipmentEntries}" styleClass="defaultStyle" value="#{equipmentMaintenanceBean.equipmentEntries}" var="dto" rowKeyVar="row" onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
+			<rich:datascroller styleClass="defaultScroller" for="table-equipment" maxPages="#{equipmentMaintenanceBean.maxResults}" page="#{equipmentMaintenanceBean.page}" id="scroller-top-equipment" />
+			<rich:dataTable id="table-equipment" rendered="#{not empty equipmentMaintenanceBean.equipmentEntries}" styleClass="defaultStyle" value="#{equipmentMaintenanceBean.equipmentEntries}" var="dto" rowKeyVar="row" onRowMouseOut="this.style.backgroundColor='#{a4jSkin.tableBackgroundColor}'" onRowMouseOver="this.style.backgroundColor='#D8D8D8'">
 				<rich:column styleClass="smallColumn">
 					<f:facet name="header">
 						<h:outputText value="" />
@@ -128,6 +129,7 @@
 					</a4j:commandLink>
 				</rich:column>
 			</rich:dataTable>
+			<rich:datascroller styleClass="defaultScroller" for="table-equipment" maxPages="#{equipmentMaintenanceBean.maxResults}" page="#{equipmentMaintenanceBean.page}" id="scroller-bottom-equipment" />
 		</a4j:outputPanel>
 	</ui:define>
 	<ui:define name="page-panels">

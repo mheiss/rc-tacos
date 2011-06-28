@@ -52,7 +52,6 @@ public class Equipment extends EntityImpl {
 	@Column
 	private Date lastInventoryDate;
 
-
 	// ---------------------------------
 	// EntityImpl
 	// ---------------------------------

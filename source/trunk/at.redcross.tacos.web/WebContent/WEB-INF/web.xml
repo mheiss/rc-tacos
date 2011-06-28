@@ -105,6 +105,11 @@
 		<servlet-class>at.redcross.tacos.web.security.WebActionDefinitionServlet</servlet-class>
 		<load-on-startup>2</load-on-startup>
 	</servlet>
+		<servlet>
+		<servlet-name>TacosRuleServlet</servlet-name>
+		<servlet-class>at.redcross.tacos.web.beans.bl.RuleDefinitionServlet</servlet-class>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
 	
 	<!-- JSF configuration -->
 	<servlet>
