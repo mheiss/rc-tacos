@@ -244,7 +244,19 @@
 		<action onPostback="false">#{categoryMaintenanceBean.prettyInit}</action>
 	</url-mapping>
 	
-		<!-- ################ ADMINISTRATION - SYSTEM ####################### -->
+	<!-- ################ ADMINISTRATION - RULES ####################### -->
+	<url-mapping id="admin-ruleMaintenance">
+		<pattern>/admin/rules</pattern>
+		<view-id>/WEB-INF/pages/administration/ruleMaintenance.faces</view-id>
+		<action onPostback="false">#{ruleMainteanceBean.prettyInit}</action>
+	</url-mapping>
+	<url-mapping id="admin-ruleParamMaintenance">
+		<pattern>/admin/rule/#{ruleParamMainteanceBean.ruleId}</pattern>
+		<view-id>/WEB-INF/pages/administration/ruleParamMaintenance.faces</view-id>
+		<action onPostback="false">#{ruleParamMainteanceBean.prettyInit}</action>
+	</url-mapping>
+	
+	<!-- ################ ADMINISTRATION - SYSTEM ####################### -->
 	<url-mapping id="admin-systemMaintenance">
 		<pattern>/admin/system</pattern>
 		<view-id>/WEB-INF/pages/administration/systemMaintenance.faces</view-id>
