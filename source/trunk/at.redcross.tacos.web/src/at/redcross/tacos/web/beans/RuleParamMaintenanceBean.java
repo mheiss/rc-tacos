@@ -1,12 +1,14 @@
 package at.redcross.tacos.web.beans;
 
 import javax.faces.bean.ManagedBean;
+import javax.faces.event.ActionEvent;
 import javax.persistence.EntityManager;
 
 import org.ajax4jsf.model.KeepAlive;
 
 import at.redcross.tacos.dbal.entity.FilterRule;
 import at.redcross.tacos.dbal.entity.FilterRuleParam;
+import at.redcross.tacos.dbal.helper.FilterRuleHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
 import at.redcross.tacos.web.faces.FacesUtils;
 import at.redcross.tacos.web.persistence.EntityManagerFactory;
@@ -29,6 +31,12 @@ public class RuleParamMaintenanceBean extends PagingBean {
         try {
             manager = EntityManagerFactory.createEntityManager();
             rule = manager.find(FilterRule.class, ruleId);
+            if (rule == null) {
+                FacesUtils.redirectAccessDenied("Die Regel '" + ruleId
+                        + "' konnte nicht gefunden werden");
+                return;
+            }
+            FilterRuleHelper.replaceParams(rule);
         } finally {
             manager = EntityManagerHelper.close(manager);
         }
@@ -41,7 +49,6 @@ public class RuleParamMaintenanceBean extends PagingBean {
         EntityManager manager = null;
         try {
             manager = EntityManagerFactory.createEntityManager();
-            manager.merge(rule);
             for (FilterRuleParam param : rule.getParams()) {
                 manager.merge(param);
             }
@@ -53,6 +60,10 @@ public class RuleParamMaintenanceBean extends PagingBean {
         } finally {
             manager = EntityManagerHelper.close(manager);
         }
+    }
+
+    public void paramChanged(ActionEvent event) {
+        FilterRuleHelper.replaceParams(rule);
     }
 
     // ---------------------------------

@@ -14,7 +14,7 @@
 
 	<ui:define name="page-header">
 		<h:graphicImage library="images/32x32" name="profile.png" />
-		<h2 class="title"><h:outputText value="#{ruleParamMainteanceBean.rule.description}" /></h2>
+		<h2 class="title"><h:outputText value="Regel '#{ruleParamMainteanceBean.rule.name}' bearbeiten" /></h2>
 	</ui:define>
 
 	<ui:define name="page-toolbar">
@@ -24,36 +24,30 @@
 				<h:outputText styleClass="toolbarText" value="Änderungen speichern" />
 			</a4j:commandLink>
 		</li>
-		<li>
-			<a4j:commandLink reRender="page-panels" oncomplete="#{rich:component('historyPanel')}.show(); return false;" title="Protokoll anzeigen">
-				<a4j:actionparam name="entryId" assignTo="#{historyBean.primaryKey}" value="#{ruleParamMainteanceBean.rule.id}" />
-				<a4j:actionparam name="entryClass" assignTo="#{historyBean.className}" value="#{ruleParamMainteanceBean.rule.class.name}" actionListener="#{historyBean.queryHistory}" />
-				<h:graphicImage styleClass="toolbarItem" library="images/24x24" name="info.png" />
-				<h:outputText styleClass="toolbarText" value="Protokoll anzeigenn" />
-			</a4j:commandLink>
-		</li>
 	</ui:define>
 
 	<ui:define name="page-content">
 		<rich:messages errorClass="errorMessage" globalOnly="true" />
+		<p>
+			<h:outputText styleClass="bold" value="#{ruleParamMainteanceBean.rule.description}" id="paramDesc" />
+		</p>
 		<fieldset class="defaultStyle">
-			<legend> <h:outputText value="Benutzerdefinierte Werte" /> </legend>
+			<legend> <h:outputText value="Parameter konfigurieren:" /> </legend>
+			
 			<ol>
 				<c:forEach items="#{ruleParamMainteanceBean.rule.params}" var="param" >
 					<li class="left">
 						<h:outputLabel value="#{param.name}" />
 						<div class="largeInput">
-							<h:inputText value="#{param.value}" />
+							<h:inputText value="#{param.value}">
+								<a4j:support event="onkeypress" actionListener="#{ruleParamMainteanceBean.paramChanged}" reRender="paramDesc" />
+							</h:inputText>
 							<h:outputText styleClass="hint" value="#{param.description}" />
 						</div>
 					</li>
 				</c:forEach>
 			</ol>
 		</fieldset>
-	</ui:define>
-	
-	<ui:define name="page-panels">
-		<ui:decorate template="/WEB-INF/templates/widgets/historyPanel.xhtml" />
 	</ui:define>
 	
 </ui:composition>

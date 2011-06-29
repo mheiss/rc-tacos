@@ -49,27 +49,18 @@
 				<f:facet name="header">
 					<h:outputText value="Beschreibung" />
 				</f:facet>
-				<rich:inplaceInput value="#{rule.description}" maxlength="255" layout="block" />
+				<h:outputText value="#{rule.description}" layout="block" />
 			</rich:column>
 			<rich:column styleClass="actionColumn">
 				<f:facet name="header">
 					<h:outputText value="Aktionen" />
 				</f:facet>
-				<a4j:commandLink reRender="page-panels" oncomplete="#{rich:component('historyPanel')}.show(); return false;" title="Protokoll anzeigen">
-					<a4j:actionparam name="entryId" assignTo="#{historyBean.primaryKey}" value="#{rule.id}" />
-					<a4j:actionparam name="entryClass" assignTo="#{historyBean.className}" value="#{rule.class.name}" actionListener="#{historyBean.queryHistory}" />
-					<h:graphicImage library="images/16x16" name="info.png" />
-				</a4j:commandLink>
 				<pretty:link mappingId="admin-ruleParamMaintenance" title="Regel bearbeiten">
 					<f:param value="#{rule.id}" />
 					<h:graphicImage library="images/16x16" name="edit.png" />
 				</pretty:link>
 			</rich:column>
 		</rich:dataTable>
-	</ui:define>
-	
-	<ui:define name="page-panels">
-		<ui:decorate template="/WEB-INF/templates/widgets/historyPanel.xhtml" />
 	</ui:define>
 	
 </ui:composition>

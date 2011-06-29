@@ -16,11 +16,11 @@ public abstract class FilterRuleDefinition implements IFilterRule {
     public FilterRuleDefinition(String ruleId) {
         this.ruleId = ruleId;
         this.params = new ArrayList<FilterParamDefinition>();
-        init(params);
+        addParams(params);
     }
 
     /** Initializes this rule */
-    protected abstract void init(List<FilterParamDefinition> params);
+    protected abstract void addParams(List<FilterParamDefinition> params);
 
     @Override
     public String getId() {

@@ -17,6 +17,8 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.envers.Audited;
 
+import at.redcross.tacos.dbal.utils.EmbeddedComparison;
+
 @Entity
 @Audited
 @Table(name = "FilterRule")
@@ -34,7 +36,11 @@ public class FilterRule extends EntityImpl {
     @Column(length = 1024)
     private String description;
 
+    @Column(length = 1024)
+    private String descriptionTemplate;
+
     @ManyToMany
+    @EmbeddedComparison
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<FilterRuleParam> params;
 
@@ -105,6 +111,10 @@ public class FilterRule extends EntityImpl {
         this.description = description;
     }
 
+    public void setDescriptionTemplate(String descriptionTemplate) {
+        this.descriptionTemplate = descriptionTemplate;
+    }
+
     public void setParams(List<FilterRuleParam> params) {
         this.params = params;
     }
@@ -123,6 +133,10 @@ public class FilterRule extends EntityImpl {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getDescriptionTemplate() {
+        return descriptionTemplate;
     }
 
     public List<FilterRuleParam> getParams() {
