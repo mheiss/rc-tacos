@@ -271,6 +271,71 @@
         primary key (id, REV)
     );
 
+    create table FilterRule (
+        id bigint not null auto_increment,
+        history_changedat datetime,
+        history_changedby varchar(255) not null,
+        history_createdat datetime,
+        history_createdby varchar(255) not null,
+        description longtext,
+        descriptiontemplate longtext,
+        name varchar(255),
+        primary key (id)
+    );
+
+    create table FilterRuleParam (
+        id bigint not null auto_increment,
+        history_changedat datetime,
+        history_changedby varchar(255) not null,
+        history_createdat datetime,
+        history_createdby varchar(255) not null,
+        description longtext,
+        name varchar(255),
+        value longtext,
+        primary key (id)
+    );
+
+    create table FilterRuleParam_AUD (
+        id bigint not null,
+        REV integer not null,
+        revtype tinyint,
+        history_changedat datetime,
+        history_changedby varchar(255),
+        history_createdat datetime,
+        history_createdby varchar(255),
+        description longtext,
+        name varchar(255),
+        value longtext,
+        primary key (id, REV)
+    );
+
+    create table FilterRule_AUD (
+        id bigint not null,
+        REV integer not null,
+        revtype tinyint,
+        history_changedat datetime,
+        history_changedby varchar(255),
+        history_createdat datetime,
+        history_createdby varchar(255),
+        description longtext,
+        descriptiontemplate longtext,
+        name varchar(255),
+        primary key (id, REV)
+    );
+
+    create table FilterRule_FilterRuleParam (
+        FilterRule_id bigint not null,
+        params_id bigint not null
+    );
+
+    create table FilterRule_FilterRuleParam_AUD (
+        REV integer not null,
+        FilterRule_id bigint not null,
+        params_id bigint not null,
+        revtype tinyint,
+        primary key (REV, FilterRule_id, params_id)
+    );
+
     create table Info (
         id bigint not null auto_increment,
         history_changedat datetime,
@@ -721,6 +786,36 @@
     alter table Equipment_AUD 
         add index FKA749CC3FDF74E053 (REV), 
         add constraint FKA749CC3FDF74E053 
+        foreign key (REV) 
+        references REVINFO (REV);
+
+    alter table FilterRuleParam_AUD 
+        add index FK2A0E6B8ADF74E053 (REV), 
+        add constraint FK2A0E6B8ADF74E053 
+        foreign key (REV) 
+        references REVINFO (REV);
+
+    alter table FilterRule_AUD 
+        add index FKE5C8EA85DF74E053 (REV), 
+        add constraint FKE5C8EA85DF74E053 
+        foreign key (REV) 
+        references REVINFO (REV);
+
+    alter table FilterRule_FilterRuleParam 
+        add index FKD034A6AE61A5C7CF (params_id), 
+        add constraint FKD034A6AE61A5C7CF 
+        foreign key (params_id) 
+        references FilterRuleParam (id);
+
+    alter table FilterRule_FilterRuleParam 
+        add index FKD034A6AE5425CD18 (FilterRule_id), 
+        add constraint FKD034A6AE5425CD18 
+        foreign key (FilterRule_id) 
+        references FilterRule (id);
+
+    alter table FilterRule_FilterRuleParam_AUD 
+        add index FKC331CD7FDF74E053 (REV), 
+        add constraint FKC331CD7FDF74E053 
         foreign key (REV) 
         references REVINFO (REV);
 
