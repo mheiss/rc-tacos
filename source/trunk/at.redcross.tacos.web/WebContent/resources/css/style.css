@@ -523,6 +523,10 @@ div#serviceSection .securedActionImage {
 	background: url(../images/32x32/securedAction.png) no-repeat scroll left top;
 }
 
+div#serviceSection .filterRuleImage {
+	background: url(../images/32x32/filter.png) no-repeat scroll left top;
+}
+
 div#serviceSection .groupImage {
 	background: url(../images/32x32/users.png) no-repeat scroll left top;
 }
