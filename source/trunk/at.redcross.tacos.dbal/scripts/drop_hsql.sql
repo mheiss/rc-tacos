@@ -29,6 +29,21 @@
     alter table Equipment_AUD 
         drop constraint FKA749CC3FDF74E053;
 
+    alter table FilterRuleParam_AUD 
+        drop constraint FK2A0E6B8ADF74E053;
+
+    alter table FilterRule_AUD 
+        drop constraint FKE5C8EA85DF74E053;
+
+    alter table FilterRule_FilterRuleParam 
+        drop constraint FKD034A6AE61A5C7CF;
+
+    alter table FilterRule_FilterRuleParam 
+        drop constraint FKD034A6AE5425CD18;
+
+    alter table FilterRule_FilterRuleParam_AUD 
+        drop constraint FKC331CD7FDF74E053;
+
     alter table Info 
         drop constraint FK22D8CE716F1CD8;
 
@@ -137,6 +152,18 @@
     drop table Equipment if exists;
 
     drop table Equipment_AUD if exists;
+
+    drop table FilterRule if exists;
+
+    drop table FilterRuleParam if exists;
+
+    drop table FilterRuleParam_AUD if exists;
+
+    drop table FilterRule_AUD if exists;
+
+    drop table FilterRule_FilterRuleParam if exists;
+
+    drop table FilterRule_FilterRuleParam_AUD if exists;
 
     drop table Info if exists;
 

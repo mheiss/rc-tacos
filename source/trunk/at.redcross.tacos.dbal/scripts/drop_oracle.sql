@@ -27,6 +27,18 @@
 
     drop table Equipment_AUD cascade constraints;
 
+    drop table FilterRule cascade constraints;
+
+    drop table FilterRuleParam cascade constraints;
+
+    drop table FilterRuleParam_AUD cascade constraints;
+
+    drop table FilterRule_AUD cascade constraints;
+
+    drop table FilterRule_FilterRuleParam cascade constraints;
+
+    drop table FilterRule_FilterRuleParam_AUD cascade constraints;
+
     drop table Info cascade constraints;
 
     drop table Info_AUD cascade constraints;

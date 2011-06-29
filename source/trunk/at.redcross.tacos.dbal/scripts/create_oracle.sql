@@ -271,6 +271,71 @@
         primary key (id, REV)
     );
 
+    create table FilterRule (
+        id number(19,0) not null,
+        history_changedat timestamp,
+        history_changedby varchar2(255 char) not null,
+        history_createdat timestamp,
+        history_createdby varchar2(255 char) not null,
+        description varchar2(1024 char),
+        descriptiontemplate varchar2(1024 char),
+        name varchar2(255 char),
+        primary key (id)
+    );
+
+    create table FilterRuleParam (
+        id number(19,0) not null,
+        history_changedat timestamp,
+        history_changedby varchar2(255 char) not null,
+        history_createdat timestamp,
+        history_createdby varchar2(255 char) not null,
+        description varchar2(1024 char),
+        name varchar2(255 char),
+        value varchar2(1024 char),
+        primary key (id)
+    );
+
+    create table FilterRuleParam_AUD (
+        id number(19,0) not null,
+        REV number(10,0) not null,
+        revtype number(3,0),
+        history_changedat timestamp,
+        history_changedby varchar2(255 char),
+        history_createdat timestamp,
+        history_createdby varchar2(255 char),
+        description varchar2(1024 char),
+        name varchar2(255 char),
+        value varchar2(1024 char),
+        primary key (id, REV)
+    );
+
+    create table FilterRule_AUD (
+        id number(19,0) not null,
+        REV number(10,0) not null,
+        revtype number(3,0),
+        history_changedat timestamp,
+        history_changedby varchar2(255 char),
+        history_createdat timestamp,
+        history_createdby varchar2(255 char),
+        description varchar2(1024 char),
+        descriptiontemplate varchar2(1024 char),
+        name varchar2(255 char),
+        primary key (id, REV)
+    );
+
+    create table FilterRule_FilterRuleParam (
+        FilterRule_id number(19,0) not null,
+        params_id number(19,0) not null
+    );
+
+    create table FilterRule_FilterRuleParam_AUD (
+        REV number(10,0) not null,
+        FilterRule_id number(19,0) not null,
+        params_id number(19,0) not null,
+        revtype number(3,0),
+        primary key (REV, FilterRule_id, params_id)
+    );
+
     create table Info (
         id number(19,0) not null,
         history_changedat timestamp,
@@ -711,6 +776,31 @@
 
     alter table Equipment_AUD 
         add constraint FKA749CC3FDF74E053 
+        foreign key (REV) 
+        references REVINFO;
+
+    alter table FilterRuleParam_AUD 
+        add constraint FK2A0E6B8ADF74E053 
+        foreign key (REV) 
+        references REVINFO;
+
+    alter table FilterRule_AUD 
+        add constraint FKE5C8EA85DF74E053 
+        foreign key (REV) 
+        references REVINFO;
+
+    alter table FilterRule_FilterRuleParam 
+        add constraint FKD034A6AE61A5C7CF 
+        foreign key (params_id) 
+        references FilterRuleParam;
+
+    alter table FilterRule_FilterRuleParam 
+        add constraint FKD034A6AE5425CD18 
+        foreign key (FilterRule_id) 
+        references FilterRule;
+
+    alter table FilterRule_FilterRuleParam_AUD 
+        add constraint FKC331CD7FDF74E053 
         foreign key (REV) 
         references REVINFO;
 
