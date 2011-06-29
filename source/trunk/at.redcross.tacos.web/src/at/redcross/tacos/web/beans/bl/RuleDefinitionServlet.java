@@ -79,6 +79,7 @@ public class RuleDefinitionServlet extends HttpServlet {
             FilterRule rule = new FilterRule();
             rule.setName(definition.getId());
             rule.setDescription(definition.getDescription());
+            rule.setDescriptionTemplate(definition.getDescription());
             for (FilterParamDefinition paramDef : definition.getParams()) {
                 FilterRuleParam param = new FilterRuleParam();
                 param.setName(paramDef.getId());

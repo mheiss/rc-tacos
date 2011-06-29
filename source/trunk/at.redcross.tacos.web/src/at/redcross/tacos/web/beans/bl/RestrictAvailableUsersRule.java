@@ -26,11 +26,13 @@ public class RestrictAvailableUsersRule extends FilterRuleDefinition {
 
     @Override
     public String getDescription() {
-        return "Mitarbeitereinschränkungen für Dienstplaneinträge festlegen";
+        return "Nur Mitarbeiter mit der Kompetenz '$" + REQUIRED_COMPETENCE_ID
+                + "$' dürfen Dienstplaneinträge für Mitarbeiter" + " mit der Kompetenz '$"
+                + AFFECTED_COMPETENCE_ID + "$' anlegen.";
     }
 
     @Override
-    protected void init(List<FilterParamDefinition> params) {
+    protected void addParams(List<FilterParamDefinition> params) {
         {
             FilterParamDefinition param = new FilterParamDefinition(REQUIRED_COMPETENCE_ID);
             param.setDescription("Kompetenz um Dienstplaneinträge für alle Mitarbeiter zu erstellen");
