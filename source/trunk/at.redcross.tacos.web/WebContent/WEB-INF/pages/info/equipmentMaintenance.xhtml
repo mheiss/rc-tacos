@@ -31,6 +31,9 @@
 	<ui:define name="page-content">
 		<a4j:outputPanel id="equipmentTable" layout="block">
 			<rich:messages id="messages" errorClass="errorMessage" />
+			<ui:decorate template="equipmentFilter.xhtml">
+				<ui:param name="bean" value="#{equipmentMaintenanceBean}" />
+			</ui:decorate>
 			<rich:panel rendered="#{empty equipmentMaintenanceBean.equipmentEntries}" style="margin-top:10px;">
 				<h:outputText value="Keine Einträge gefunden" styleClass="italic" />
 			</rich:panel>
@@ -87,7 +90,7 @@
 						<rich:inplaceInput value="#{dto.entity.notes}" maxlength="255" layout="block" />
 					</rich:column>
 		
-					<rich:column sortBy="#{dto.entity.expirationDate}" styleClass="#{dto.dateStyleClass}" style="width:9em; text-align:center;">
+					<rich:column sortBy="#{dto.entity.expirationDate}" styleClass="#{dto.dateStyleClass} dateColumn">
 						<f:facet name="header">
 							<h:outputText value="Ablaufdatum" />
 						</f:facet>
@@ -99,7 +102,7 @@
 						<rich:message for="date" errorClass="error" />
 					</rich:column>
 					
-					<rich:column sortBy="#{dto.entity.lastInventoryDate}" style="width:9em; text-align:center;">
+					<rich:column sortBy="#{dto.entity.lastInventoryDate}" styleClass="dateColumn">
 						<f:facet name="header">
 							<h:outputText value="Inventurdatum" />
 						</f:facet>

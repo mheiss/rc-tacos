@@ -240,8 +240,8 @@ public class FacesUtils {
      */
     public static ValueExpression createValueExpression(String valueExpression, Class<?> valueType) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        return facesContext.getApplication().getExpressionFactory().createValueExpression(
-                facesContext.getELContext(), valueExpression, valueType);
+        return facesContext.getApplication().getExpressionFactory()
+                .createValueExpression(facesContext.getELContext(), valueExpression, valueType);
     }
 
     /**
@@ -256,8 +256,11 @@ public class FacesUtils {
      */
     public static MethodExpression createActionExpression(String actionExpression, Class<?> returnType) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        return facesContext.getApplication().getExpressionFactory().createMethodExpression(
-                facesContext.getELContext(), actionExpression, returnType, new Class[0]);
+        return facesContext
+                .getApplication()
+                .getExpressionFactory()
+                .createMethodExpression(facesContext.getELContext(), actionExpression, returnType,
+                        new Class[0]);
     }
 
     /**
@@ -315,6 +318,21 @@ public class FacesUtils {
         message.setSummary(messageText);
         message.setDetail(detailText);
         message.setSeverity(FacesMessage.SEVERITY_ERROR);
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
+
+    /**
+     * Creates a new {@link FacesMessage} with the severity
+     * {@link FacesMessage#SEVERITY_INFO} and adds it to the current
+     * {@link FacesContext}
+     * 
+     * @param messageText
+     *            the message to display
+     */
+    public static void addInfoMessage(String messageText) {
+        FacesMessage message = new FacesMessage();
+        message.setSummary(messageText);
+        message.setSeverity(FacesMessage.SEVERITY_INFO);
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 }
