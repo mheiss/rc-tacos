@@ -2,7 +2,6 @@ package at.redcross.tacos.dbal.entity;
 
 import java.util.Date;
 
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,159 +18,159 @@ import org.hibernate.envers.Audited;
 @Table(name = "Equipment")
 public class Equipment extends EntityImpl {
 
-	private static final long serialVersionUID = 9142841798539867173L;
+    private static final long serialVersionUID = 9142841798539867173L;
 
-	@Id
-	@GeneratedValue
-	private long id;
+    @Id
+    @GeneratedValue
+    private long id;
 
-	@Column(nullable = false)
-	private String name;
+    @Column(nullable = false)
+    private String name;
 
-	@Column
-	private int inventoryNumber;
+    @Column
+    private String type;
 
-	@Column
-	private int actualNumber;
+    @Column(length = 1024)
+    private String notes;
 
-	@Column
-	private int theoreticalNumber;
+    @Column
+    private int inventoryNumber;
 
-	@Column(length = 1024)
-	private String notes;
+    @Column
+    private int actualNumber;
 
-	@Column
-	private Date expirationDate;
+    @Column
+    private int theoreticalNumber;
 
-	@Column
-	private boolean toDelete;
+    @Column
+    private boolean toDelete;
 
-	@Column
-	private String type;
+    @Column
+    private Date expirationDate;
 
-	@Column
-	private Date lastInventoryDate;
+    @Column
+    private Date lastInventoryDate;
 
-	// ---------------------------------
-	// EntityImpl
-	// ---------------------------------
-	@Override
-	public Object getOid() {
-		return id;
-	}
+    // ---------------------------------
+    // EntityImpl
+    // ---------------------------------
+    @Override
+    public Object getOid() {
+        return id;
+    }
 
-	@Override
-	public String getDisplayString() {
-		return name;
-	}
+    @Override
+    public String getDisplayString() {
+        return name;
+    }
 
-	// ---------------------------------
-	// Object related methods
-	// ---------------------------------
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this).append("id", id).toString();
-	}
+    // ---------------------------------
+    // Object related methods
+    // ---------------------------------
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this).append("id", id).toString();
+    }
 
-	@Override
-	public int hashCode() {
-		return new HashCodeBuilder().append(id).hashCode();
-	}
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(id).hashCode();
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null) {
-			return false;
-		}
-		if (obj == this) {
-			return true;
-		}
-		if (obj.getClass() != getClass()) {
-			return false;
-		}
-		Equipment rhs = (Equipment) obj;
-		return new EqualsBuilder().append(id, rhs.id).isEquals();
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        if (obj.getClass() != getClass()) {
+            return false;
+        }
+        Equipment rhs = (Equipment) obj;
+        return new EqualsBuilder().append(id, rhs.id).isEquals();
+    }
 
-	// ---------------------------------
-	// Setters for the properties
-	// ---------------------------------
-	public void setName(String name) {
-		this.name = name;
-	}
+    // ---------------------------------
+    // Setters for the properties
+    // ---------------------------------
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setInventoryNumber(int inventoryNumber) {
-		this.inventoryNumber = inventoryNumber;
-	}
+    public void setInventoryNumber(int inventoryNumber) {
+        this.inventoryNumber = inventoryNumber;
+    }
 
-	public void setActualNumber(int actualNumber) {
-		this.actualNumber = actualNumber;
-	}
+    public void setActualNumber(int actualNumber) {
+        this.actualNumber = actualNumber;
+    }
 
-	public void setTheoreticalNumber(int theoreticalNumber) {
-		this.theoreticalNumber = theoreticalNumber;
-	}
+    public void setTheoreticalNumber(int theoreticalNumber) {
+        this.theoreticalNumber = theoreticalNumber;
+    }
 
-	public void setNotes(String notes) {
-		this.notes = notes;
-	}
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
 
-	public void setExpirationDate(Date expirationDate) {
-		this.expirationDate = expirationDate;
-	}
+    public void setExpirationDate(Date expirationDate) {
+        this.expirationDate = expirationDate;
+    }
 
-	public void setToDelete(boolean toDelete) {
-		this.toDelete = toDelete;
-	}
+    public void setToDelete(boolean toDelete) {
+        this.toDelete = toDelete;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public void setLastInventoryDate(Date lastInventoryDate) {
-		this.lastInventoryDate = lastInventoryDate;
-	}
+    public void setLastInventoryDate(Date lastInventoryDate) {
+        this.lastInventoryDate = lastInventoryDate;
+    }
 
-	// ---------------------------------
-	// Getters for the properties
-	// ---------------------------------
-	public long getId() {
-		return id;
-	}
-	
-	public String getName() {
-		return name;
-	}
+    // ---------------------------------
+    // Getters for the properties
+    // ---------------------------------
+    public long getId() {
+        return id;
+    }
 
-	public int getInventoryNumber() {
-		return inventoryNumber;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public int getActualNumber() {
-		return actualNumber;
-	}
+    public int getInventoryNumber() {
+        return inventoryNumber;
+    }
 
-	public int getTheoreticalNumber() {
-		return theoreticalNumber;
-	}
+    public int getActualNumber() {
+        return actualNumber;
+    }
 
-	public String getNotes() {
-		return notes;
-	}
+    public int getTheoreticalNumber() {
+        return theoreticalNumber;
+    }
 
-	public Date getExpirationDate() {
-		return expirationDate;
-	}
+    public String getNotes() {
+        return notes;
+    }
 
-	public boolean isToDelete() {
-		return toDelete;
-	}
+    public Date getExpirationDate() {
+        return expirationDate;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public boolean isToDelete() {
+        return toDelete;
+    }
 
-	public Date getLastInventoryDate() {
-		return lastInventoryDate;
-	}
+    public String getType() {
+        return type;
+    }
+
+    public Date getLastInventoryDate() {
+        return lastInventoryDate;
+    }
 }

@@ -27,9 +27,6 @@
 	</ui:define>
 
 	<ui:define name="page-content">
-		<rich:simpleTogglePanel id="filter" opened="false" label="Filter" bodyClass="defaultToggleBodyStyle" styleClass="defaultToggleStyle" switchType="client">
-			<fieldset class="defaultStyle"></fieldset>
-		</rich:simpleTogglePanel>
 		<h:panelGroup id="d">
 			<rich:tabPanel selectedTab="#{vehicleOverviewBean.locationName}" switchType="ajax" valueChangeListener="#{vehicleOverviewBean.tabChanged}"
 				styleClass="defaultTabPanelStyle" tabClass="defaultTabStyle" headerClass="defaultTabHeaderStyle">

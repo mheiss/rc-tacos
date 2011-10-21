@@ -1,7 +1,6 @@
 package at.redcross.tacos.web.beans;
 
 import java.util.Iterator;
-
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -15,6 +14,7 @@ import org.apache.commons.logging.LogFactory;
 import at.redcross.tacos.dbal.entity.Equipment;
 import at.redcross.tacos.dbal.helper.EquipmentHelper;
 import at.redcross.tacos.dbal.manager.EntityManagerHelper;
+import at.redcross.tacos.dbal.query.EquipmentQueryParam;
 import at.redcross.tacos.web.beans.dto.DtoHelper;
 import at.redcross.tacos.web.beans.dto.EntryState;
 import at.redcross.tacos.web.beans.dto.EquipmentDto;
@@ -30,6 +30,9 @@ public class EquipmentMaintenanceBean extends PagingBean {
 
     private final static Log logger = LogFactory.getLog(EquipmentMaintenanceBean.class);
 
+    /** query parameter rules to apply */
+    private EquipmentQueryParam params = new EquipmentQueryParam();
+
     /** the available equipments */
     private List<EquipmentDto> equipmentEntries;
 
@@ -41,7 +44,7 @@ public class EquipmentMaintenanceBean extends PagingBean {
         EntityManager manager = null;
         try {
             manager = EntityManagerFactory.createEntityManager();
-            equipmentEntries = EquipmentDto.fromList(EquipmentHelper.list(manager));
+            equipmentEntries = EquipmentDto.fromList(EquipmentHelper.list(manager, params));
         } finally {
             manager = EntityManagerHelper.close(manager);
         }
@@ -100,6 +103,14 @@ public class EquipmentMaintenanceBean extends PagingBean {
         }
     }
 
+    public void resetFilter(ActionEvent event) {
+        params = new EquipmentQueryParam();
+    }
+
+    public void filterChanged(ActionEvent event) {
+        prettyInit();
+    }
+
     // ---------------------------------
     // Setters for the properties
     // ---------------------------------
@@ -112,6 +123,10 @@ public class EquipmentMaintenanceBean extends PagingBean {
     // ---------------------------------
     public long getEquipmentId() {
         return equipmentId;
+    }
+
+    public EquipmentQueryParam getParams() {
+        return params;
     }
 
     public List<EquipmentDto> getEquipmentEntries() {

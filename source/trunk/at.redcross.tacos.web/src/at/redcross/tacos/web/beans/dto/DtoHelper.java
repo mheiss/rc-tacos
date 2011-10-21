@@ -54,7 +54,9 @@ public class DtoHelper {
                 case NEW:
                     manager.persist(dto.getEntity());
                     break;
+                case WARN:
                 case SYNC:
+                case ERROR:
                     manager.merge(dto.getEntity());
                     break;
             }
@@ -78,7 +80,6 @@ public class DtoHelper {
                     iter.remove();
                     break;
                 case NEW:
-                case SYNC:
                     dto.setState(EntryState.SYNC);
                     break;
             }

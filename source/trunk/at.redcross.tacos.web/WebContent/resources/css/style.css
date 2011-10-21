@@ -160,7 +160,8 @@ fieldset.defaultStyle .checkBoxLabel {
 	position: relative;
 	top: -0.5em;
 	padding-right: 0.4em;
-	margin-left: 2em;
+	padding-left:0.4em;
+	margin-right: 2em;
 }
 
 fieldset.defaultStyle .largeInput input {
@@ -382,6 +383,11 @@ table.defaultStyle .rosterDelete {
 
 table.defaultStyle .equipmentNumber {
 	background-color: #9A0000;
+}
+
+table.defaultStyle td.dateColumn {
+	width:10em;
+	text-align:center;
 }
 
 table.defaultStyle .equipmentDate {
