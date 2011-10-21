@@ -151,7 +151,7 @@ public class VehicleMaintenanceBean extends BaseBean {
         EntityManager manager = null;
         try {
             manager = EntityManagerFactory.createEntityManager();
-            if (isNew()) {
+            if (!isBackedUp()) {
                 manager.persist(car);
             } else {
                 manager.merge(car);
@@ -182,8 +182,8 @@ public class VehicleMaintenanceBean extends BaseBean {
     // ---------------------------------
     // Getters for the properties
     // ---------------------------------
-    public boolean isNew() {
-        return carId == -1;
+    public boolean isBackedUp() {
+        return carId > 0;
     }
 
     public long getCarId() {

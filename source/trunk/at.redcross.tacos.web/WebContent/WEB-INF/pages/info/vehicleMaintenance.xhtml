@@ -13,13 +13,13 @@
 	</ui:define>
 
 	<ui:define name="page-header">
-		<h:panelGroup rendered="#{vehicleMaintenanceBean.new}">
+		<h:panelGroup rendered="#{not vehicleMaintenanceBean.backedUp}">
 			<h:graphicImage library="images/32x32" name="vehicle_add.png" />
 			<h2 class="title">
 				<h:outputText value="Neues Fahrzeug" />
 			</h2>
 		</h:panelGroup>
-		<h:panelGroup rendered="#{not vehicleMaintenanceBean.new}">
+		<h:panelGroup rendered="#{vehicleMaintenanceBean.backedUp}">
 			<h:graphicImage library="images/32x32" name="vehicle_edit.png" />
 			<h2 class="title">
 				<h:outputText value="Fahrzeug '#{vehicleMaintenanceBean.car.name}' bearbeiten" />
@@ -204,7 +204,7 @@
 						</f:facet>
 						<a4j:commandLink rendered="#{dto.historyEnabled}" reRender="page-panels" oncomplete="#{rich:component('historyPanel')}.show(); return false;" title="Protokoll anzeigen">
 							<a4j:actionparam name="entryId" assignTo="#{historyBean.primaryKey}" value="#{dto.entity.id}" />
-							<a4j:actionparam name="entryClass" assignTo="#{historyBean.className}" value="#{dto.entity.class.name}" actionListener="#{historyBean.queryHistory}" />
+							<a4j:actionparam name="entryClass" assignTo="#{historyBean.className}" value="#{dto.entityClass}" actionListener="#{historyBean.queryHistory}" />
 							<h:graphicImage library="images/16x16" name="info.png" />
 						</a4j:commandLink>
 						<a4j:commandLink reRender="carCarMaintenance" rendered="#{dto.state.name ne 'delete'}" immediate="true">

@@ -113,7 +113,7 @@ public class UserMaintenanceBean extends BaseBean {
 				login.setPassword(encoder.encodePassword(password, null));
 			}
 			manager = EntityManagerFactory.createEntityManager();
-			if (isNew()) {
+			if (!isBackedUp()) {
 				// systemUser before login!
 				manager.persist(systemUser);
 				manager.persist(login);
@@ -288,8 +288,8 @@ public class UserMaintenanceBean extends BaseBean {
 	// ---------------------------------
 	// Getters for the properties
 	// ---------------------------------
-	public boolean isNew() {
-		return userId == -1;
+	public boolean isBackedUp() {
+		return userId > 0;
 	}
 
 	public long getUserId() {

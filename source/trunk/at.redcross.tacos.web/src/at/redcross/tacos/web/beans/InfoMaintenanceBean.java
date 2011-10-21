@@ -58,7 +58,7 @@ public class InfoMaintenanceBean extends BaseBean {
 		EntityManager manager = null;
 		try {
 			manager = EntityManagerFactory.createEntityManager();
-			if (isNew()) {
+			if (!isBackedUp()) {
 				manager.persist(info);
 			} else {
 				manager.merge(info);
@@ -129,8 +129,8 @@ public class InfoMaintenanceBean extends BaseBean {
 	// ---------------------------------
 	// Getters for the properties
 	// ---------------------------------
-	public boolean isNew() {
-		return infoId == -1;
+	public boolean isBackedUp() {
+		return infoId > 0;
 	}
 	
 	public long getInfoId() {

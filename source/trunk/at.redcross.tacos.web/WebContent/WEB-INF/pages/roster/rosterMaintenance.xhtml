@@ -26,11 +26,11 @@
 
 	<!-- Customize the title and image -->
 	<ui:define name="page-header">
-		<h:graphicImage rendered="#{rosterMaintenanceBean.new}" library="images/32x32" name="calendar_add.png" />
-		<h:graphicImage rendered="#{not rosterMaintenanceBean.new}" library="images/32x32" name="calendar_edit.png" />
+		<h:graphicImage rendered="#{not rosterMaintenanceBean.backedUp}" library="images/32x32" name="calendar_add.png" />
+		<h:graphicImage rendered="#{rosterMaintenanceBean.backedUp}" library="images/32x32" name="calendar_edit.png" />
 		<h2 class="title">
-			<h:outputText value="Neuer Dienstplaneintrag" rendered="#{rosterMaintenanceBean.new}" />
-			<h:outputText value="Dienstplaneintrag bearbeiten" rendered="#{not rosterMaintenanceBean.new}" />
+			<h:outputText value="Neuer Dienstplaneintrag" rendered="#{not rosterMaintenanceBean.backedUp}" />
+			<h:outputText value="Dienstplaneintrag bearbeiten" rendered="#{rosterMaintenanceBean.backedUp}" />
 		</h2>
 	</ui:define>
 	

@@ -32,7 +32,7 @@
 			<rich:column styleClass="actionColumn" style="background-color:#aaa;">
 				<a4j:commandLink rendered="#{infoDto.historyEnabled}" reRender="page-panels" oncomplete="#{rich:component('historyPanel')}.show(); return false;" title="Protokoll anzeigen">
 					<a4j:actionparam name="entryId" assignTo="#{historyBean.primaryKey}" value="#{infoDto.entity.id}" />
-					<a4j:actionparam name="entryClass" assignTo="#{historyBean.className}" value="#{infoDto.entity.class.name}" actionListener="#{historyBean.queryHistory}" />
+					<a4j:actionparam name="entryClass" assignTo="#{historyBean.className}" value="#{infoDto.entityClass}" actionListener="#{historyBean.queryHistory}" />
 					<h:graphicImage library="images/16x16" name="info.png" />
 				</a4j:commandLink>
 				<pretty:link rendered="#{infoDto.editEnabled}" mappingId="info-editMaintenance" title="Information bearbeiten">

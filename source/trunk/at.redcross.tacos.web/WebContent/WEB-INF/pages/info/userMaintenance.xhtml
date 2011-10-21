@@ -12,13 +12,13 @@
 	</ui:define>
 
 	<ui:define name="page-header">
-		<h:panelGroup rendered="#{userMaintenanceBean.new}">
+		<h:panelGroup rendered="#{not userMaintenanceBean.backedUp}">
 			<h:graphicImage library="images/32x32" name="user_add.png" />
 			<h2 class="title">
 				<h:outputText value="Neuen Mitarbeiter anlegen" />
 			</h2>
 		</h:panelGroup>
-		<h:panelGroup rendered="#{not userMaintenanceBean.new}">
+		<h:panelGroup rendered="#{userMaintenanceBean.backedUp}">
 			<h:graphicImage library="images/32x32" name="user_edit.png" />
 			<h2 class="title">
 				<h:outputText value="Mitarbeiter '#{userMaintenanceBean.systemUser.lastName} #{userMaintenanceBean.systemUser.firstName}' bearbeiten" />
@@ -142,7 +142,7 @@
 				<li class="left">
 					<h:outputLabel for="password" value="Passwort"> <em class="required">*</em> </h:outputLabel>
 					<div class="input">
-						<h:inputSecret id="password" value="#{userMaintenanceBean.password}" required="#{userMaintenanceBean.new}" requiredMessage="Bitte geben Sie ein Passwort ein" >
+						<h:inputSecret id="password" value="#{userMaintenanceBean.password}" required="#{not userMaintenanceBean}" requiredMessage="Bitte geben Sie ein Passwort ein" >
 							<f:validator validatorId="validator.passwordMatch" />
 							<rich:ajaxValidator event="onblur" />
 						</h:inputSecret> 
@@ -152,7 +152,7 @@
 				<li class="right">
 					<h:outputLabel for="password2" value="Wiederholen"> <em class="required">*</em> </h:outputLabel>
 					<div class="input">
-						<h:inputSecret id="password2" value="#{userMaintenanceBean.password2}" required="#{userMaintenanceBean.new}" requiredMessage="Bitte wiederholen Sie ihr Passwort" >
+						<h:inputSecret id="password2" value="#{userMaintenanceBean.password2}" required="#{not userMaintenanceBean}" requiredMessage="Bitte wiederholen Sie ihr Passwort" >
 							<f:validator validatorId="validator.passwordMatch" />
 							<rich:ajaxValidator event="onblur" />
 						</h:inputSecret>
