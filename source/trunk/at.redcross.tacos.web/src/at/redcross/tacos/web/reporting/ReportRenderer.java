@@ -112,8 +112,7 @@ public class ReportRenderer {
             task.run();
             long duration = System.currentTimeMillis() - start;
             logger.info("Finished report generation in '" + duration + "'ms");
-        }
-        finally {
+        } finally {
             // cleanup resources
             IOUtils.closeQuietly(stream);
             if (task != null) {
@@ -159,8 +158,7 @@ public class ReportRenderer {
                     .createFactoryObject(IReportEngineFactory.EXTENSION_REPORT_ENGINE_FACTORY);
             engine = factory.createReportEngine(config);
             logger.info("Using reporting engine '" + engine.getVersion() + "'");
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             logger.error("Failed to initialize the reporting engine.", ex);
         }
     }
