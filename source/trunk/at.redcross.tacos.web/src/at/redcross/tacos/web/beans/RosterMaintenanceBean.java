@@ -66,7 +66,7 @@ public class RosterMaintenanceBean extends BaseBean {
             manager = EntityManagerFactory.createEntityManager();
             rosterEntry = loadfromDatabase(manager, rosterId);
             RosterDto dto = new RosterDto(rosterEntry);
-            if (!isNew() && !dto.isEditEnabled()) {
+            if (isBackedUp() && !dto.isEditEnabled()) {
                 FacesUtils.redirectAccessDenied("Entry '" + rosterEntry + "' cannot be edited");
                 return;
             }
@@ -104,7 +104,7 @@ public class RosterMaintenanceBean extends BaseBean {
                     entryStartTime).getTime());
             rosterEntry.setPlannedEndDateTime(TacosDateUtils.mergeDateAndTime(entryEndDate,
                     entryEndTime).getTime());
-            if (isNew()) {
+            if (!isBackedUp()) {
                 manager.persist(rosterEntry);
             } else {
                 manager.merge(rosterEntry);
@@ -190,8 +190,8 @@ public class RosterMaintenanceBean extends BaseBean {
     // ---------------------------------
     // Getters for the properties
     // ---------------------------------
-    public boolean isNew() {
-        return rosterId == -1;
+    public boolean isBackedUp() {
+        return rosterId > 0;
     }
 
     public boolean isFiltered() {

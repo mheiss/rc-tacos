@@ -15,67 +15,69 @@ import at.redcross.tacos.web.faces.FacesUtils;
  */
 public class GenericDto<T extends EntityImpl> implements Serializable {
 
-	private static final long serialVersionUID = 7715478489903222917L;
+    private static final long serialVersionUID = 7715478489903222917L;
 
-	/** the object to be wrapped */
-	protected final T entity;
+    /** the object to be wrapped */
+    protected final T entity;
 
-	/** this object is selected */
-	protected boolean selected;
+    /** this object is selected */
+    protected boolean selected;
 
-	/** the current state of this DTO */
-	protected EntryState state = EntryState.SYNC;
+    /** the current state of this DTO */
+    protected EntryState state = EntryState.SYNC;
 
-	/**
-	 * Creates a new generic DTO object wrapping the given entity
-	 * 
-	 * @param entity
-	 *            the entity to wrap
-	 */
-	public GenericDto(T entity) {
-		this.entity = entity;
-	}
-	
+    /**
+     * Creates a new generic DTO object wrapping the given entity
+     * 
+     * @param entity
+     *            the entity to wrap
+     */
+    public GenericDto(T entity) {
+        this.entity = entity;
+    }
+
     // ---------------------------------
     // Business relevant methods
     // ---------------------------------
-	/**
-	 * Returns whether or not the current authenticated user can view the
-	 * history of the entry.
-	 * <ul>
-	 * <li>Principal must have the permission to view the history</li>
-	 * </ul>
-	 */
-	public boolean isHistoryEnabled() {
-		return FacesUtils.lookupBean(WebPermissionBean.class).isAuthorizedToViewHistory();
-	}
+    /**
+     * Returns whether or not the current authenticated user can view the
+     * history of the entry.
+     * <ul>
+     * <li>Principal must have the permission to view the history</li>
+     * </ul>
+     */
+    public boolean isHistoryEnabled() {
+        return FacesUtils.lookupBean(WebPermissionBean.class).isAuthorizedToViewHistory();
+    }
 
     // ---------------------------------
     // Setters for the properties
     // ---------------------------------
-	public void setState(EntryState state) {
-		this.state = state;
-	}
+    public void setState(EntryState state) {
+        this.state = state;
+    }
 
-	public void setSelected(boolean selected) {
-		this.selected = selected;
-	}
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
 
     // ---------------------------------
     // Getters for the properties
     // ---------------------------------
-	public T getEntity() {
-		return entity;
-	}
+    public String getEntityClass() {
+        return entity.getClass().getName();
+    }
 
-	public EntryState getState() {
-		return state;
-	}
+    public T getEntity() {
+        return entity;
+    }
 
-	public boolean isSelected() {
-		return selected;
-	}
-	
+    public EntryState getState() {
+        return state;
+    }
 
-	
+    public boolean isSelected() {
+        return selected;
+    }
+
 }

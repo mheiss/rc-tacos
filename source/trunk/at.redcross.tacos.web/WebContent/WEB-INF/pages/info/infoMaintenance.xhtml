@@ -26,11 +26,11 @@
 
 	<!-- Customize the title and image -->
 	<ui:define name="page-header">
-		<h:graphicImage rendered="#{infoMaintenanceBean.new}" library="images/32x32" name="calendar_add.png" />
-		<h:graphicImage rendered="#{not infoMaintenanceBean.new}" library="images/32x32" name="calendar_edit.png" />
+		<h:graphicImage rendered="#{not infoMaintenanceBean.backedUp}" library="images/32x32" name="calendar_add.png" />
+		<h:graphicImage rendered="#{infoMaintenanceBean.backedUp}" library="images/32x32" name="calendar_edit.png" />
 		<h2 class="title">
-			<h:outputText value="Neue Information" rendered="#{infoMaintenanceBean.new}" />
-			<h:outputText value="Information bearbeiten" rendered="#{not infoMaintenanceBean.new}" />
+			<h:outputText value="Neue Information" rendered="#{not infoMaintenanceBean.backedUp}" />
+			<h:outputText value="Information bearbeiten" rendered="#{infoMaintenanceBean.backedUp}" />
 		</h2>
 	</ui:define>
 	

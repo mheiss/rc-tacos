@@ -80,7 +80,7 @@
 				</f:facet>
 				<a4j:commandLink rendered="#{dto.historyEnabled}" reRender="page-panels" oncomplete="#{rich:component('historyPanel')}.show(); return false;" title="Protokoll anzeigen">
 					<a4j:actionparam name="entryId" assignTo="#{historyBean.primaryKey}" value="#{dto.entity.id}" />
-					<a4j:actionparam name="entryClass" assignTo="#{historyBean.className}" value="#{dto.entity.class.name}" actionListener="#{historyBean.queryHistory}" />
+					<a4j:actionparam name="entryClass" assignTo="#{historyBean.className}" value="#{dto.entityClass}" actionListener="#{historyBean.queryHistory}" />
 					<h:graphicImage library="images/16x16" name="info.png" />
 				</a4j:commandLink>
 				<a4j:commandLink reRender="securedResourceTable" rendered="#{dto.state.name ne 'delete'}" immediate="true">
