@@ -19,4 +19,7 @@ What's new in v1.0.2 (2011.22.04)
 What's new in v1.0.3 (2011.29.06)
 ---------------------------------
 # Rules added to filter RosterEntries
+
+What's new in v1.0.4 (2011.10.21)
+---------------------------------
 # Added filter for equipment maintenance
