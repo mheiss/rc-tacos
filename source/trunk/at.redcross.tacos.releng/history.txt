@@ -1,9 +1,22 @@
 Version and ChangeLog History
 =============================
 
-What's new in v1.0.0 (2011.01.05)
+What's new in v1.0.5 (2011.10.25)
 ---------------------------------
-#Initial release
+# Fixed regression bug in user maintenance
+
+What's new in v1.0.4 (2011.10.21)
+---------------------------------
+# Added filter for equipment maintenance
+
+What's new in v1.0.3 (2011.29.06)
+---------------------------------
+# Rules added to filter RosterEntries
+
+What's new in v1.0.2 (2011.22.04)
+---------------------------------
+# Minor bugfixes and enhancements
+# Equipment maintenance added
 
 What's new in v1.0.1 (2011.01.11)
 ---------------------------------
@@ -11,15 +24,6 @@ What's new in v1.0.1 (2011.01.11)
 # Added sorting to car listing
 # Removed 'All Locations' tab at the info page
 
-What's new in v1.0.2 (2011.22.04)
+What's new in v1.0.0 (2011.01.05)
 ---------------------------------
-# Minor bugfixes and enhancements
-# Equipment maintenance added
-
-What's new in v1.0.3 (2011.29.06)
----------------------------------
-# Rules added to filter RosterEntries
-
-What's new in v1.0.4 (2011.10.21)
----------------------------------
-# Added filter for equipment maintenance
+#Initial release
